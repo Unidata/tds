@@ -86,7 +86,7 @@ abstract class PublishingUtil {
                         } else if (javaComponent) {
                             from javaComponent
                         } else {
-                            assert project.name == 'thredds' : "'${project.name}' doesn't produce a software component."
+                            assert project.name == 'thredds-data-server' : "'${project.name}' doesn't produce a software component."
                         }
                     }
                 }

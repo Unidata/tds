@@ -5,9 +5,9 @@ apply from: "$rootDir/gradle/any/archiving.gradle"
 apply from: "$rootDir/gradle/any/publishing.gradle"
 
 dependencies {
-    compile project(':dap4:d4core')
-    compile project(':dap4:d4lib')
-    compile project(":httpservices")
+    compile libraries["d4core"]
+    compile libraries["d4lib"]
+    compile libraries["httpservices"]
 
     compileOnly libraries["javax.servlet-api"]
     compile libraries["slf4j-api"]

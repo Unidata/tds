@@ -19,18 +19,18 @@ apply from: "$rootDir/gradle/any/gretty.gradle"
 apply plugin: 'groovy'  // For Spock tests.
 
 dependencies {
-    testCompile project(":cdm")
-    testCompile project(":httpservices")
+    testCompile libraries["cdm"]
+    testCompile libraries["httpservices"]
     testCompile project(":tdcommon")
     testCompile(project(":tds")) {
         exclude group: "org.apache.logging.log4j"  // We don't want TDS's log4j cruft.
     }
 
-    testRuntime project(":clcommon")
-    testRuntime project(":grib")
-    testRuntime project(":opendap")
-    testRuntime project(":visadCdm")
-    testRuntime project(':dap4:d4cdm')
+    testRuntime libraries["clcommon"]
+    testRuntime libraries["grib"]
+    testRuntime libraries["opendap"]
+    testRuntime libraries["visadCdm"]
+    testRuntime libraries["d4cdm"]
 
     testCompile libraries["jdom2"]
     testCompile libraries["commons-io"]

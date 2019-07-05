@@ -7,8 +7,8 @@ apply from: "$rootDir/gradle/any/java.gradle"
 // testUtil is not published
 
 dependencies {
-    compile project(":cdm")
-    compile project(":httpservices")
+    compile libraries["cdm"]
+    compile libraries["httpservices"]
     
     compile libraries["junit"]
     compile libraries["slf4j-api"]

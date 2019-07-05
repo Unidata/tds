@@ -17,22 +17,22 @@ apply from: "$rootDir/gradle/any/gretty.gradle"
 apply plugin: 'war'
 
 dependencies {
-    compile project(":bufr")
-    compile project(":cdm")
-    compile project(":clcommon")
-    compile project(":grib")
-    compile project(":httpservices")
-    compile project(":netcdf4")
-    compile project(":opendap")
+    compile libraries["bufr"]
+    compile libraries["cdm"]
+    compile libraries["clcommon"]
+    compile libraries["grib"]
+    compile libraries["httpservices"]
+    compile libraries["netcdf4"]
+    compile libraries["opendap"]
     compile project(":tdcommon")
-    runtime project(":visadCdm")
-    compile project(":waterml")
+    runtime libraries["visadCdm"]
+    compile libraries["waterml"]
 
     // DAP4 Dependencies (technically forward)
-    compile project(":dap4:d4cdm")
+    compile libraries["d4cdm"]
     compile project(":dap4:d4servlet")
-    compile project(':dap4:d4core')
-    compile project(':dap4:d4lib')
+    compile libraries["d4core"]
+    compile libraries["d4lib"]
 
     // Server stuff
     compileOnly libraries["javax.servlet-api"]
@@ -121,29 +121,12 @@ test {
     exclude 'thredds/tds/**'
 }
 
-// Need to evaluate :uicdm first so that the 'webstartCodebase' property is available.
-Project uiProject = rootProject.project(':uicdm')
-evaluationDependsOn uiProject.path
-
-task toolsUiJnlpBase(type: ToolsUiJnlpBaseTask) {
-    codebase = uiProject.webstartCodebase
-    applicationArgument = '{catalog}#{dataset}'
-    outputFile = file("$buildDir/webstart/ToolsUI.jnlp")
-}
-
 processTestResources {
     from "src/main/webapp"
     from "src/main/webapp/WEB-INF/classes"
     
     // Tests expect for test resources to be copied to the same directory as the test classes.
     destinationDir = compileTestJava.destinationDir
-
-    // Creates an inferred task dependency on toolsUiJnlpBase.
-    // See https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:task_input_output_side_effects
-    // This file is needed by ViewControllerTest.testLaunchViewerToolsUIVRequest().
-    from (tasks.toolsUiJnlpBase.outputs) {
-        into 'WEB-INF/views'
-    }
 }
 
 war {
@@ -171,11 +154,6 @@ war {
     from('README.txt') {
         into 'docs'
         expand properties
-    }
-
-    // This file is needed by ViewerServiceImpl.ToolsUI.getViewerLinkHtml().
-    from (tasks.toolsUiJnlpBase.outputs) {
-        into 'WEB-INF/views'
     }
 }
 

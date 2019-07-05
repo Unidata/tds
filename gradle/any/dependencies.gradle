@@ -63,6 +63,25 @@ libraries["license-gradle-plugin"] = "gradle.plugin.nl.javadude.gradle.plugins:l
 
 libraries["jruby-gradle-plugin"] = "com.github.jruby-gradle:jruby-gradle-plugin:1.5.0"
 
+/////////////////////////////////////// netCDF-Java ////////////////////////////////////////
+
+versions["ncj"] = "5.0.0-SNAPSHOT"
+
+libraries["bufr"] = "edu.ucar:bufr:${versions["ncj"]}"
+libraries["cdm"] = "edu.ucar:cdm:${versions["ncj"]}"
+libraries["clcommon"] = "edu.ucar:clcommon:${versions["ncj"]}"
+libraries["grib"] = "edu.ucar:grib:${versions["ncj"]}"
+libraries["httpservices"] = "edu.ucar:httpservices:${versions["ncj"]}"
+libraries["netcdf4"] = "edu.ucar:netcdf4:${versions["ncj"]}"
+libraries["opendap"] = "edu.ucar:opendap:${versions["ncj"]}"
+libraries["visadCdm"] = "edu.ucar:visadCdm:${versions["ncj"]}"
+libraries["waterml"] = "edu.ucar:waterml:${versions["ncj"]}"
+
+libraries["d4cdm"] = "edu.ucar:d4cdm:${versions["ncj"]}"
+libraries["d4servlet"] = "edu.ucar:d4servlet:${versions["ncj"]}"
+libraries["d4core"] = "edu.ucar:d4core:${versions["ncj"]}"
+libraries["d4lib"] = "edu.ucar:d4lib:${versions["ncj"]}"
+
 ////////////////////////////////////////// Spring //////////////////////////////////////////
 
 versions["spring"] = "4.3.20.RELEASE"

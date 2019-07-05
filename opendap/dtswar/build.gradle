@@ -10,8 +10,8 @@ apply from: "$rootDir/gradle/any/gretty.gradle"
 apply plugin: 'war'
 
 dependencies {
-    compile project(':cdm')
-    compile project(':opendap')
+    compile libraries["cdm"]
+    compile libraries["opendap"]
 
     compileOnly libraries["javax.servlet-api"]
     runtime libraries["taglibs-standard-spec"]

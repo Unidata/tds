@@ -7,9 +7,9 @@ apply from: "$rootDir/gradle/any/archiving.gradle"
 apply from: "$rootDir/gradle/any/publishing.gradle"
 
 dependencies {
-    compile project(':httpservices')
-    compile project(':cdm')
-    compile project(':grib')
+    compile libraries["httpservices"]
+    compile libraries["cdm"]
+    compile libraries["grib"]
     compile project(':tdcommon')
 
     compile libraries["httpclient"]

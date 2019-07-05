@@ -8,13 +8,13 @@ apply from: "$rootDir/gradle/any/gretty.gradle"
 dependencies {
     // A lot of these dependencies should be in the testRuntime config, not testCompile.
 
-    testCompile project(':dap4:d4core')
-    testCompile project(':dap4:d4lib')
+    testCompile libraries["d4core"]
+    testCompile libraries["d4lib"]
     testCompile project(':dap4:d4servlet')
     testCompile project(':dap4:d4ts')
-    testCompile project(':dap4:d4cdm')
-    testCompile project(':cdm')
-    testCompile project(':httpservices')
+    testCompile libraries["d4cdm"]
+    testCompile libraries["cdm"]
+    testCompile libraries["httpservices"]
     
     testCompile(project(":tds")) {
         exclude group: "org.apache.logging.log4j"  // We don't want TDS's log4j cruft.

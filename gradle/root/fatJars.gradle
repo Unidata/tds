@@ -12,47 +12,17 @@ buildscript {
     }
 }
 
-if (name != "thredds") {
+if (name != "thredds-data-server") {
     throw new GradleException("This script plugin should only be applied to the root project, not '$name'.")
 }
 
 configurations {
-    ncIdv
     tdmFat
-    netcdfAll
-    toolsUI
-    dap4lib
     d4ts
 }
 
 dependencies {
-    ncIdv project(':cdm')
-    ncIdv project(':clcommon')
-    ncIdv project(':bufr')
-    ncIdv project(':grib')
-    ncIdv project(':netcdf4')
-    ncIdv project(':opendap')
-    ncIdv project(':visadCdm')
-    ncIdv project(':httpservices')
-    ncIdv project(':legacy')
-
     tdmFat project(':tdm')
-    
-    netcdfAll project(":cdm")
-    netcdfAll project(":clcommon")
-    netcdfAll project(":bufr")
-    netcdfAll project(":grib")
-    netcdfAll project(":netcdf4")
-    netcdfAll project(":opendap")
-    netcdfAll project(":httpservices")
-    netcdfAll project(':visadCdm')  // For Gempak IOSPs.
-
-    toolsUI project(':uicdm')
-    
-    dap4lib project(':dap4:d4core')
-    dap4lib project(':dap4:d4lib')
-    dap4lib libraries["logback-classic"]
-    
     d4ts project(':dap4:d4ts')
 }
 
@@ -61,22 +31,6 @@ apply plugin: 'com.github.johnrengelman.shadow'
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 def fatJarTasks = []
-
-fatJarTasks << tasks.create(name: 'buildNcIdv', type: ShadowJar) {
-    baseName = 'ncIdv'
-    configurations = [project.configurations.ncIdv]
-    
-    dependencies {
-        exclude(dependency('c3p0:c3p0'))  // Transitive dependency dragged in by libraries["quartz"]
-    }
-    
-    // Filter out crap from libraries["visad"]
-    exclude 'edu/wisc/**'
-    exclude 'nom/**'
-    exclude 'visad/**'
-    
-    manifest.attributes 'Implementation-Title': 'ncIdv Module'
-}
 
 fatJarTasks << tasks.create(name: 'buildTdmFat', type: ShadowJar) {
     baseName = 'tdmFat'
@@ -87,32 +41,6 @@ fatJarTasks << tasks.create(name: 'buildTdmFat', type: ShadowJar) {
     }
 }
 
-fatJarTasks << tasks.create(name: 'buildNetcdfAll', type: ShadowJar) {
-    baseName = 'netcdfAll'
-    configurations = [project.configurations.netcdfAll]
-    
-    doFirst {
-        manifest.attributes project(':cdm').tasks.jar.manifest.attributes
-    }
-}
-
-fatJarTasks << tasks.create(name: 'buildToolsUI', type: ShadowJar) {
-    baseName = 'toolsUI'
-    configurations = [project.configurations.toolsUI]
-    
-    doFirst {
-        manifest.attributes project(':uicdm').tasks.jar.manifest.attributes
-    }
-}
-
-fatJarTasks << tasks.create(name: 'buildDap4Lib', type: ShadowJar) {
-    baseName = 'dap4lib'
-    configurations = [project.configurations.dap4lib]
-    
-    doFirst {
-        manifest.attributes project(':dap4:d4lib').tasks.jar.manifest.attributes
-    }
-}
 
 fatJarTasks << tasks.create(name: 'buildD4TS', type: ShadowJar) {
     baseName = 'd4ts'
@@ -166,10 +94,6 @@ apply plugin: 'base'
 
 // The base-plugin's "assemble" task automatically creates all artifacts added to the "archives" configuration.
 artifacts {
-    archives buildNcIdv
     archives buildTdmFat
-    archives buildNetcdfAll
-    archives buildToolsUI
-    archives buildDap4Lib
     archives buildD4TS
 }

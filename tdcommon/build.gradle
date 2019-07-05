@@ -8,8 +8,8 @@ apply from: "$rootDir/gradle/any/archiving.gradle"
 apply from: "$rootDir/gradle/any/publishing.gradle"
 
 dependencies {
-    compile project(':cdm')
-    compile project(':grib')
+    compile libraries["cdm"]
+    compile libraries["grib"]
 
     compile libraries["jdom2"]        // Required for reading THREDDS, NcML, BUFR, HDF-EOS, NEXRAD2, OPeNDAP files.
     compile libraries["spring-core"]
