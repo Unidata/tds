@@ -47,7 +47,7 @@ public class RemoteCatalogControllerTest {
  	}
 
 	String dataset="casestudies/ccs039/grids/netCDF/1998062912_eta.nc";
-	String catalog="http://thredds.ucar.edu/thredds/catalog/casestudies/ccs039/grids/netCDF/catalog.xml";
+	String catalog="https://thredds.ucar.edu/thredds/catalog/casestudies/ccs039/grids/netCDF/catalog.xml";
 	String path ="/remoteCatalogService";
 	String htmlContent = "text/html;charset=UTF-8";
 
