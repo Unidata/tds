@@ -77,7 +77,7 @@ gradle.projectsEvaluated {  // Evaluate all projects first so that SourceSets wi
     task buildJavadocAll(type: Javadoc) {
         description = "Generate Javadoc for all Java subprojects."
         
-        title = "NetCDF-Java All API v${version}"
+        title = "TDS Javadoc (not public) v${project.docVersion}"
         destinationDir = file("$buildDir/javadocAll/")
         
         source publishedProjects.collect { project -> project.sourceSets.main.allJava }
@@ -101,7 +101,7 @@ tasks.withType(PublishToRawRepoTask).all {  // Common PublishToRawRepoTask confi
     group = "Documentation"
     
     host = "https://artifacts.unidata.ucar.edu/"
-    repoName = "thredds-doc"
+    repoName = "tds-docs"
     
     onlyIf {
         // Will be evaluated at task execution time, not during configuration.
@@ -116,7 +116,7 @@ task publishUserGuide(type: PublishToRawRepoTask, dependsOn: buildUserGuide) {
     description = "Publish user guide to Nexus."
 
     srcFile = userGuideDestDir
-    destPath = "$version/userguide/"
+    destPath = "tds/$project.docVersion/userguide/"
 }
 
 
@@ -128,7 +128,7 @@ gradle.projectsEvaluated {
         description = "Publish Javadoc for all Java subprojects to Nexus."
         
         srcFile = tasks.buildJavadocAll.destinationDir
-        destPath = "$version/javadocAll/"
+        destPath = "tds/$project.docVersion/javadocAll/"
     }
     
     // We're deliberately NOT naming this task "publish", because we don't want it running when we do a:
@@ -148,6 +148,14 @@ import edu.ucar.build.publishing.DeleteFromNexusTask
 // To actually delete those components, do:  ./gradlew :docs:deleteFromNexus --dryRun=false
 task deleteFromNexus(type: DeleteFromNexusTask) {
     host = "https://artifacts.unidata.ucar.edu/"
-    searchQueryParameters.repository = 'thredds-doc'
-    searchQueryParameters.q = '*'  // Nuke everything in the repo.
+    searchQueryParameters.repository = 'tds-docs'
+    searchQueryParameters.group = "/tds/$project.docVersion/*"
+
+    onlyIf {
+        // Will be evaluated at task execution time, not during configuration.
+        // Fails the build if the specified properties haven't been provided.
+        username = getPropertyOrFailBuild NEXUS_USERNAME_KEY
+        password = getPropertyOrFailBuild NEXUS_PASSWORD_KEY
+        return true
+    }
 }

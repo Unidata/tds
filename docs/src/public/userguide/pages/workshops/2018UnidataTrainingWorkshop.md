@@ -93,10 +93,10 @@ permalink:  workshop2018.html
 ### 10:00 (15 minutes) Break
 
 ### 10:15 (15 minutes) NcML modifications (Sean)
-* [Basic NcML tutorial](tds_basic_ncml_tutorial.html)
+* [Basic NcML tutorial](https://docs.unidata.ucar.edu/thredds/netcdf-java/5.0.0/userguide/ncj_basic_ncml_tutorial.html){:target="_blank"}
 
 ### 10:30 (30 minutes) NcML aggregation (Sean)
-* [NcML Aggregation](tds_ncml_aggregation.html)
+* [NcML Aggregation](https://docs.unidata.ucar.edu/thredds/netcdf-java/5.0.0/userguide/ncj_ncml_aggregation.html){:target="_blank"}
 * [NcML Aggregation Example Problems](ncml_aggregation_examples.html)
 * NcML Aggregations vs Feature Collections ([pdf](https://www.unidata.ucar.edu/software/thredds/current/tds/tutorial/files/NcMLvsFeatureCollections.pdf){:target="_blank"})
 

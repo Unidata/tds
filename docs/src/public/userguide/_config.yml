@@ -2,13 +2,13 @@
 output: web
 # this property is useful for conditional filtering of content that is separate from the PDF.
 
-topnav_title: THREDDS Documentation
+topnav_title: THREDDS Data Server Documentation
 # this appears on the top navigation bar next to the home button
 
-site_title: THREDDS Documentation
+site_title: THREDDS Data Server Documentation
 # this appears in the html browser tab for the site title (seen mostly by search engines, not users)
 
-site_topic: THREDDS
+site_topic: THREDDS Data Server
 # this appears in the footer
 
 company_name: Unidata
@@ -32,7 +32,7 @@ port: 4005
 #  - Gemfile.lock
 # these are the files and directories that jekyll will exclude from the build
 
-feedback_subject_line: THREDDS Documentation Feedback
+feedback_subject_line: THREDDS Data Server Documentation Feedback
 
 feedback_email: support-thredds@unidata.ucar.edu
 # used as a contact email for the Feedback link in the top navigation bar
@@ -97,7 +97,6 @@ defaults:
 sidebars:
 - project_sidebar
 - tdsTutorial_sidebar
-- netcdfJavaTutorial_sidebar
 
 description: "This is a documentation site for the netCDF-Java and THREDDS Data Server (TDS) technologies, which are part of the THREDDS Project."
 # the description is used in the feed.xml file

@@ -120,10 +120,10 @@ The following shows the default configuration of the htmlSetup element:
 </htmlSetup>
 ~~~
 
-More details are given in the [threddsConfig.xml Reference document](/tds_config_ref.html#generated-html-pages).
-The Catalog and Dataset HTML pages are generated using the Thymeleaf templating library.
+More details are given in the [threddsConfig.xml Reference document](tds_config_ref.html#generated-html-pages).
+The Catalog and Dataset HTML pages are generated using the Thymeleaf 1templating library.
 This means you have full control over how these pages are generated.
-Please see the [customizing the tds look and feel](/customizing_tds_look_and_feel.html) for more information.
+Please see the [customizing the tds look and feel](customizing_tds_look_and_feel.html) for more information.
 
 
 ## Include Generated JSON-LD in Dataset HTML Pages

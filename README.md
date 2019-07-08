@@ -31,7 +31,7 @@ are available from Unidata's Maven repositories
 * https://artifacts.unidata.ucar.edu/#browse/browse/components:unidata-releases
 * https://artifacts.unidata.ucar.edu/#browse/browse/components:unidata-snapshots
 
-To build the software yourself, follow [this tutorial](https://docs.unidata.ucar.edu/thredds/5.0.0-SNAPSHOT/userguide/building_from_source.html).
+To build the software yourself, follow [this tutorial](https://docs.unidata.ucar.edu/thredds/tds/5.0.0/userguide/building_from_source.html).
 
 ## netCDF-Java/CDM
 
