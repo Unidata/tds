@@ -86,7 +86,7 @@ public class TestCEEvaluator extends UnitTestCommon
         //if(userdir.endsWith("cdm")) {
         if(userdir.endsWith("tds")) {
             // we are being run under TestAll
-            this.testdir = "../opendap/" +  this.testdir;
+            this.testdir = "../tds/" +  this.testdir;
         }
     }
 
