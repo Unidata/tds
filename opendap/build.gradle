@@ -5,33 +5,4 @@ ext.title = "OPeNDAP"
 ext.vendor = "OPeNDAP"
 ext.url = "http://opendap.org/"
 
-apply from: "$rootDir/gradle/any/dependencies.gradle"
 apply from: "$rootDir/gradle/any/java.gradle"
-apply from: "$rootDir/gradle/any/testing.gradle"
-apply from: "$rootDir/gradle/any/coverage.gradle"
-apply from: "$rootDir/gradle/any/archiving.gradle"
-apply from: "$rootDir/gradle/any/publishing.gradle"
-apply from: "$rootDir/gradle/any/gretty.gradle"
-
-dependencies {
-    compile libraries["cdm"]
-    compile libraries["httpservices"]
-
-    compileOnly libraries["javax.servlet-api"]
-    compile libraries["jdom2"]
-    compile libraries["httpclient"]
-    compile libraries["httpcore"]
-    compile libraries["jsr305"]
-    compile libraries["coverity-escapers"]
-
-    compile libraries["slf4j-api"]
-    testRuntime libraries["logback-classic"]
-    
-    testCompile libraries["JUnitParams"]
-}
-
-gretty {
-    overlayAndApplyConfigOf ':opendap:dtswar'
-    
-    integrationTestTask = 'test'
-}

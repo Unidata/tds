@@ -5,7 +5,6 @@ apply from: "$rootDir/gradle/any/dependencies.gradle"
 apply from: "$rootDir/gradle/any/java.gradle"
 // dtswar has no tests
 apply from: "$rootDir/gradle/any/publishing.gradle"
-apply from: "$rootDir/gradle/any/gretty.gradle"
 
 apply plugin: 'war'
 
@@ -21,11 +20,3 @@ dependencies {
     runtime libraries["log4j-slf4j-impl"]
     runtime libraries["log4j-web"]
 }
-
-// This will be used by :dtswar, :opendap, and :httpservices.
-ext.grettyConfig = {
-    httpPort = 8082
-    contextPath = '/dts'
-}
-
-gretty grettyConfig
