@@ -98,7 +98,7 @@ libraries["spring-webmvc"] = "org.springframework:spring-webmvc:${versions["spri
 
 ////////////////////////////////////////// Spring security //////////////////////////////////////////
 
-versions["spring-security"] = "4.2.12.RELEASE"
+versions["spring-security"] = "4.2.13.RELEASE"
 
 libraries["spring-security-config"] = "org.springframework.security:spring-security-config:${versions["spring-security"]}"
 
@@ -237,7 +237,7 @@ libraries["aws-java-sdk-s3"] = dependencies.create("com.amazonaws:aws-java-sdk-s
 // replace the jackson.core libs that were excluded from aws-java-sdk-s3
 libraries["jackson-core"] = "com.fasterxml.jackson.core:jackson-core:2.9.9"
 libraries["jackson-annotations"] = "com.fasterxml.jackson.core:jackson-annotations:2.9.9"
-libraries["jackson-databind"] = "com.fasterxml.jackson.core:jackson-databind:2.9.9"
+libraries["jackson-databind"] = "com.fasterxml.jackson.core:jackson-databind:2.9.9.1"
 
 libraries["chronicle-map"] = dependencies.create("net.openhft:chronicle-map:3.17.0") {
     // the version of jna shipped with chronicle-map requires GLIBC 2.14
