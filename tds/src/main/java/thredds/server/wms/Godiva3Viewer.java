@@ -58,7 +58,7 @@ public class Godiva3Viewer implements Viewer {
   @Override
   public boolean isViewable(Dataset ds) {
     Access access = ds.getAccess(ServiceType.WMS);
-    return access != null && (ThreddsConfig.getBoolean("WMS.allow", false));
+    return access != null;
   }
 
   @Override
