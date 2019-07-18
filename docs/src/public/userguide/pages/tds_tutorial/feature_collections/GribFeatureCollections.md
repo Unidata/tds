@@ -8,8 +8,8 @@ permalink: grib_feature_collections.html
 
 ## GRIB Feature Collection
 
-The featureCollection element is a way to tell the TDS to serve collections of [CDM Feature Datasets](https://docs.unidata.ucar.edu/thredds/netcdf-java/5.0/userguide/ncj_feature_datasets.html){:target="_blank"}.
-Currently this is used mostly for [gridded data](https://docs.unidata.ucar.edu/thredds/netcdf-java/5.0/userguide/ncj_grid_data_type.html){:target="_blank"} whose time and spatial coordinates are recognized by the CDM software stack.
+The featureCollection element is a way to tell the TDS to serve collections of [CDM Feature Datasets](https://docs.unidata.ucar.edu/thredds/netcdf-java/5.0/userguide/feature_datasets.html){:target="_blank"}.
+Currently this is used mostly for [gridded data](https://docs.unidata.ucar.edu/thredds/netcdf-java/5.0/userguide/grid_data_type.html){:target="_blank"} whose time and spatial coordinates are recognized by the CDM software stack.
 In this tutorial, we will work with featureCollection for collections of GRIB files.
 
 ## Creating a GRIB Feature Collection
