@@ -88,6 +88,27 @@
 
   <!-- end edal-wms servlet -->
 
+  <!-- edal-wms screenshot servlet -->
+
+  <servlet>
+    <servlet-name>screenshots</servlet-name>
+    <servlet-class>uk.ac.rdg.resc.edal.wms.ScreenshotServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>screenshots</servlet-name>
+    <url-pattern>/screenshots/*</url-pattern>
+  </servlet-mapping>
+
+
+  <filter-mapping>
+    <filter-name>RequestQueryFilter</filter-name>
+    <servlet-name>screenshots</servlet-name>
+  </filter-mapping>
+
+  <!-- end edal-wms screenshot servlet -->
+
   <!-- ++++++++++ Setup security restrictions ++++++++++ -->
   <!-- Following does not appear to work, so commented out -->
   <!--
