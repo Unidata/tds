@@ -62,7 +62,7 @@ ext {
     vendor = "UCAR/Unidata"
 
     // It makes sense to publish major.minor versions of the docs, as
-    // any patch bumps should be backwards compatiable bug fixes only
+    // any patch bumps should be backwards compatible bug fixes only
     // To do this, we need to make a special "doc version" string.
     // First, drop any dangling snapshot, alpha, beta tags
     cleanVersion = "$version".split("-")[0]

@@ -424,7 +424,7 @@ You can still define your own services, either globally in the root catalog, or 
     FeatureCollection is used.
     <ul>
       <li>More details are available
-        <a href="https://docs.unidata.ucar.edu/thredds/netcdf-java/5.0.0/userguide/ncj_cdmremote.html">here</a>.
+        <a href="https://docs.unidata.ucar.edu/thredds/netcdf-java/5.0/userguide/cdmremote.html">here</a>.
       </li>
     </ul>
   </td>

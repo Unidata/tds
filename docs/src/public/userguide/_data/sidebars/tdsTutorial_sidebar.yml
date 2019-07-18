@@ -4,7 +4,7 @@
 entries:
 - title: Sidebar
   product: TDS Tutorial
-  version: 5.0.0
+  version: 5.0
   folders:
 
   - title:
@@ -304,7 +304,7 @@ entries:
       output: web, pdf
 
     - title: netCDF-Java and TDS Doc Guide
-      url: https://docs.unidata.ucar.edu/thredds/netcdf-java/5.0.0/userguide/ncj_doc_guide.html
+      external_url: https://docs.unidata.ucar.edu/thredds/netcdf-java/5.0/userguide/doc_guide.html
       output: web, pdf
 
     - title: Server-side Catalog Specification
