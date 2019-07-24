@@ -24,7 +24,7 @@ entries:
     folderitems:
 
     - title: TDS Overview
-      url: /tds_tutorial_index.html
+      url: /index.html
       output: web, pdf
     - title: Installing Java and Tomcat
       url: /install_java_tomcat.html
