@@ -117,7 +117,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 
 ## Creation Of TDS `$CONTENT_ROOT`
 
-Remember the `$CONTENT_ROOT` directory we specified in the JVM options in the custom  [`$TOMCAT_HOME/bin/setenv.sh`](running_tomcat.html#setting-java_home-java_opts-catalina_home-catalina_base-and-content_root){:target="_blank"} file?
+Remember the `$CONTENT_ROOT` directory we specified in the JVM options in the custom  [`$TOMCAT_HOME/bin/setenv.sh`](running_tomcat.html#setting-java_home-java_opts-catalina_home-catalina_base-and-content_root) file?
 
 ~~~~bash
 # TDS specific ENVARS
