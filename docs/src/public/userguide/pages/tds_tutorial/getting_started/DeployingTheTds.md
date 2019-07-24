@@ -22,7 +22,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 
 #### Downloading and renaming the TDS WAR file
 
-1. [Download](http://www.unidata.ucar.edu/downloads/thredds/index.jsp){:target="_blank"} the TDS WAR file from Unidata's web site (`tds-5.0.0-beta5.war` for this example).
+1. [Download](http://www.unidata.ucar.edu/downloads/tds/index.jsp){:target="_blank"} the TDS WAR file from Unidata's web site (`tds-5.0.0-beta5.war` for this example).
 
 2. Rename the WAR file.
    
@@ -117,7 +117,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 
 ## Creation Of TDS `$CONTENT_ROOT`
 
-Remember the `$CONTENT_ROOT` directory we specified in the JVM options in the custom  [`$TOMCAT_HOME/bin/setenv.sh`](running_tomcat.html#setting-java_home-java_opts-catalina_home-catalina_base-and-content_root){:target="_blank"} file?
+Remember the `$CONTENT_ROOT` directory we specified in the JVM options in the custom  [`$TOMCAT_HOME/bin/setenv.sh`](running_tomcat.html#setting-java_home-java_opts-catalina_home-catalina_base-and-content_root) file?
 
 ~~~~bash
 # TDS specific ENVARS

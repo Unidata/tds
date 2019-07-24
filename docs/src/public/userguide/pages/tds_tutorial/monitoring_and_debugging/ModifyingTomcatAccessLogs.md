@@ -18,7 +18,7 @@ This section assumes you are familiar with the <a href=\"install_java_tomcat.htm
 * As of Tomcat 7, enabled in Tomcat by default in `${tomcat_home}/conf/server.xml`.
 * Information it contains is different from other logs in `${tomcat_home}/logs`.
 * Used for monitoring who is using your server and as a way of obtaining "feedback" about the activity and performance of the server.
-* In order to use the [`TdsMonitor`](using_the_tdsmonitor_tool.html){:target="_blank"}  tool, you will need to change the default configuration of the `AccessLogValve`.
+* In order to use the [`TdsMonitor`](using_the_tdsmonitor_tool.html)  tool, you will need to change the default configuration of the `AccessLogValve`.
 
 ### Modifying Tomcat Access Logging For The `TdsMonitor`
 

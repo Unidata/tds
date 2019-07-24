@@ -226,7 +226,7 @@ ncWMS provides several styling and displaying capabilities that are also availab
 * Godiva3 (WMS) [free - distributed with TDS]
 * [NASA WorldWind](https://worldwind.arc.nasa.gov){:target="_blank"} (WMS) [free]
 * [IDV](https://www.unidata.ucar.edu/software/idv/){:target="_blank"} (WMS) [free]
-* [ToolsUI](http://www.unidata.ucar.edu/downloads/netcdf/netcdf-java-4/index.jsp){:target="_blank"} (WMS) [free]
+* [ToolsUI](http://www.unidata.ucar.edu/downloads/netcdf-java/index.jsp){:target="_blank"} (WMS) [free]
 * [OWSlib](http://geopython.github.io/OWSLib/){:target="_blank"} (WMS and WCS) [free]
 * [Map Express](https://www.cadcorp.com/products/free-mapping-software/){:target="_blank"} (`WMS` and `WCS`) [commercial / free]
 * [IDL](http://www.harrisgeospatial.com/ProductsandSolutions/GeospatialProducts/IDL.aspx){:target="_blank"} (WMS) [commercial]

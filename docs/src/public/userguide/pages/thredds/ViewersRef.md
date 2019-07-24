@@ -1,6 +1,6 @@
 ---
 title: TDS Dataset Viewer Links
-last_updated: 2018-04-02
+last_updated: 2019-07-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: viewers_ref.html
@@ -8,13 +8,19 @@ permalink: viewers_ref.html
 
 Currently, the TDS automatically adds, when appropriate, the following _standard viewer links_ at the bottom of a datasets HTML web page:
 
-* a Godiva2 web-based WMS client link to any dataset that has a WMS service
-* a NetCDF-Java ToolsUI link to any direct dataset that has an ID
-* an IDV link to any dataset that has an OPeNDAP service and has a DataType of GRID.
+* a Godiva3 web-based WMS client link to any dataset that has a WMS service
+* a Jupyter Notebook viewer which provides the boilerplate python code to access remote data for a direct access dataset
 
 For example:
 
 {% include image.html file="tds/reference/viewers/StandardViewers.png" alt="Viewers" caption="" %}
+
+In previous versions of the TDS, we also included the following Java WebStart Viewers:
+
+* a NetCDF-Java ToolsUI link to any direct dataset that has an ID
+* an IDV link to any dataset that has an OPeNDAP service and has a DataType of GRID.
+
+However, Java WebStart [has been deprecated as of version 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and we have removed such viewers from the TDS.
 
 The TDS also supports three ways to configure other custom viewer links.
 
@@ -23,6 +29,7 @@ The TDS also supports three ways to configure other custom viewer links.
 *  If your viewer link points to a JNLP file, the TDS can [generate the JNLP file from a template file](#returning-a-jnlp-file).
 
 Each of these methods are described in the sections below.
+However, given the status of Java WebStart, _the third method is no longer recommended_.
 
 ## Adding viewer links with `viewer` property elements
 
