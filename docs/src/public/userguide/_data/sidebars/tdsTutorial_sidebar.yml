@@ -3,7 +3,7 @@
 
 entries:
 - title: Sidebar
-  product: TDS Tutorial
+  product: TDS Tutorial and Reference Documentation
   version: 5.0
   folders:
 
@@ -24,7 +24,7 @@ entries:
     folderitems:
 
     - title: TDS Overview
-      url: /tds_tutorial_index.html
+      url: /index.html
       output: web, pdf
     - title: Installing Java and Tomcat
       url: /install_java_tomcat.html
