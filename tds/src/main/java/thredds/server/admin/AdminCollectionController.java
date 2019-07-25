@@ -31,7 +31,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import thredds.core.DataRootManager;
 import thredds.core.DatasetManager;
@@ -40,13 +39,10 @@ import thredds.featurecollection.InvDatasetFeatureCollection;
 import thredds.featurecollection.FeatureCollectionConfig;
 import thredds.featurecollection.FeatureCollectionType;
 import thredds.inventory.*;
-import thredds.monitor.FmrcCacheMonitorImpl;
 import thredds.server.catalog.FeatureCollectionRef;
 import thredds.server.config.TdsContext;
 import thredds.servlet.ServletUtil;
 import thredds.util.ContentType;
-import thredds.util.TdsPathUtils;
-import ucar.nc2.constants.CDM;
 import ucar.nc2.grib.collection.GribCdmIndex;
 import ucar.nc2.util.IO;
 import ucar.unidata.util.StringUtil2;
@@ -159,27 +155,6 @@ public class AdminCollectionController {
     };
     debugHandler.addAction(act);
 
-    act = new DebugCommands.Action("showFmrcCache", "Show FMRC Cache") {
-      public void doAction(DebugCommands.Event e) {
-        e.pw.println("<p>cache location = " + monitor.getCacheLocation() + "<p>");
-        String statUrl = tdsContext.getContextPath() + FMRC_PATH + "/" + STATISTICS;
-        e.pw.println("<p/> <a href='" + statUrl + "'>Show Cache Statistics</a>");
-        for (String name : monitor.getCachedCollections()) {
-          String ename =  urlParamEscaper.escape(name);
-          String url = tdsContext.getContextPath() + FMRC_PATH + "?" + COLLECTION + "=" + ename;
-          e.pw.println("<p/> <a href='" + url + "'>" + Escape.html(name) + "</a>");
-        }
-      }
-    };
-    debugHandler.addAction(act);
-
-    act = new DebugCommands.Action("syncFmrcCache", "Flush FMRC Cache to disk") {
-      public void doAction(DebugCommands.Event e) {
-        monitor.sync();
-        e.pw.println("<p>bdb cache location = " + monitor.getCacheLocation() + "<p> flushed to disk");
-      }
-    };
-    debugHandler.addAction(act);
   }
 
   @RequestMapping(value = "/"+SHOW_COLLECTION, method = RequestMethod.GET)
@@ -355,88 +330,5 @@ public class AdminCollectionController {
     out.format("%n<pre>%n");
     fcd.showStatus(out);
     out.format("%n</pre>%n");
-  }
-
-  /////////////////////////////////////////////////////////////
-  // old FmrcController - deprecated
-  private static final String FMRC_PATH = "/admin/collection/showFmrc";
-  private static final String STATISTICS = "cacheStatistics.txt";
-  private static final String CMD = "cmd";
-  private static final String FILE = "file";
-  private final FmrcCacheMonitorImpl monitor = new FmrcCacheMonitorImpl();
-
-  @RequestMapping(value = {"/showFmrc", "/showFmrc/*"})
-  protected ModelAndView showFmrcCache(HttpServletRequest req, HttpServletResponse res) throws Exception {
-    String path = TdsPathUtils.extractPath(req, "admin/");   // LOOK probably wrong
-
-    if (path.endsWith(STATISTICS)) {
-      res.setContentType(ContentType.text.getContentHeader());
-      Formatter f = new Formatter();
-      monitor.getCacheStatistics(f);
-      String s = f.toString();
-      PrintWriter pw = res.getWriter();
-      pw.println(s);
-      pw.flush();
-      return null;
-    }
-
-    String collectName = StringUtil2.unescape(req.getParameter(COLLECTION)); // this is the collection name
-    String fileName = req.getParameter(FILE);
-    String cmd = req.getParameter(CMD);
-
-    // show the file
-    if (fileName != null) {
-      String ufilename = java.net.URLDecoder.decode(fileName, CDM.UTF8);
-      String contents = monitor.getCachedFile(collectName, ufilename);
-      if (null == contents) {
-        res.setContentType(ContentType.html.getContentHeader());
-        PrintWriter pw = res.getWriter();
-        pw.println("<p/> Cant find filename=" + Escape.html(fileName) + " in collection = " + Escape.html(collectName));
-      } else {
-        res.setContentType(ContentType.xml.getContentHeader());
-        PrintWriter pw = res.getWriter();
-        pw.println(contents);
-      }
-
-      return null;
-    }
-
-    // list the collection
-    if (collectName != null) {
-      String ecollectName = Escape.uriParam(collectName);
-      String url = tdsContext.getContextPath() + FMRC_PATH + "?" + COLLECTION + "=" + ecollectName;
-      res.setContentType(ContentType.html.getContentHeader());
-      PrintWriter pw = res.getWriter();
-
-      pw.println("Files for collection = " + Escape.html(collectName) + "");
-
-      // allow delete
-      String deleteUrl = tdsContext.getContextPath() + FMRC_PATH + "?" + COLLECTION + "=" + ecollectName + "&" + CMD + "=delete";
-      pw.println("<a href='" + deleteUrl + "'> Delete Cache" + "</a>");
-
-      pw.println("<ol>");
-      for (String filename : monitor.getFilesInCollection(collectName)) {
-        String efileName = java.net.URLEncoder.encode(filename, CDM.UTF8);
-        pw.println("<li> <a href='" + url + "&" + FILE + "=" + efileName + "'>" + filename + "</a>");
-      }
-      pw.println("</ol>");
-    }
-
-    if (cmd != null && cmd.equals("delete")) {
-      res.setContentType(ContentType.html.getContentHeader());
-      PrintWriter pw = res.getWriter();
-
-      try {
-        monitor.deleteCollection(collectName);
-        pw.println("<p/>deleted");
-
-      } catch (Exception e) {
-        pw.println("<pre>delete failed on collection = " + Escape.html(collectName));
-        e.printStackTrace(pw);
-        pw.println("</pre>");
-      }
-    }
-
-    return null;
   }
 }

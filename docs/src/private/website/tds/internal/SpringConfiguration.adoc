@@ -258,8 +258,7 @@ RootController
 |  | 
 
 |AdminCollectionController |/admin/collection |/showStatus[.csv] +
- /trigger +
- /showFmrc |trigger requires _tdsTrigger_ role (used by TDM) | 
+ /trigger |trigger requires _tdsTrigger_ role (used by TDM) | 
 
 |AdminDebugController |/admin/debug |?cmd |  | 
 

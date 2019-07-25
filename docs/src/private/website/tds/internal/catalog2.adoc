@@ -239,7 +239,6 @@ https://localhost:8443/thredds/admin/spring/map
 
 [source,bash]
 ----
-    [/admin/showFmrc, /admin/showFmrc/*]: thredds.server.admin.CollectionController.showFmrcCache()
     [/admin/collection/showStatus]: thredds.server.admin.CollectionController.handleCollectionStatus()
     [/admin/collection/showStatus.csv]: thredds.server.admin.CollectionController.handleCollectionStatusCsv()
     [/admin/collection, /admin/collection/trigger]: thredds.server.admin.CollectionController.handleCollectionTriggers()

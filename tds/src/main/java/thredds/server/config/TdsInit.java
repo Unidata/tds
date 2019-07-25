@@ -357,14 +357,6 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     if (-1 == jvmPercent)
       jvmPercent = ThreddsConfig.getInt("FeatureCollection.jvmPercent", 2);
 
-    try {
-      thredds.inventory.bdb.MetadataManager.setCacheDirectory(fcCache, maxSizeBytes, jvmPercent);
-      thredds.inventory.CollectionManagerAbstract.setMetadataStore(thredds.inventory.bdb.MetadataManager.getFactory());  // LOOK
-      startupLog.info("TdsInit: CollectionManagerAbstract.setMetadataStore= " + fcCache);
-    } catch (Exception e) {
-      startupLog.error("TdsInit: Failed to open CollectionManagerAbstract.setMetadataStore= " + fcCache, e);
-    }
-
     ///////////////////////////////////////////////
     // Object caching
     int min, max, secs;
@@ -459,7 +451,6 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
       cdmDiskCacheTimer.cancel();
     FileCache.shutdown();              // this handles background threads for all instances of FileCache
     DiskCache2.exit();                // this handles background threads for all instances of DiskCache2
-    thredds.inventory.bdb.MetadataManager.closeAll();
     executor.shutdownNow();
 
     /* try {
