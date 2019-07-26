@@ -217,20 +217,3 @@ not needed for just fmrc. most useful for datasetScan?
 
 CDM default is dont use, must turn on by calling
 DatasetCollectionManager.setController()
-
-== FMRC Caching
-
-* uses Berkeley DB
-* default root dir is $\{user.home}/.unidata/bdb
-* MetadataManager.setCacheDirectory(); +
-
-=== motherlode memory use
-
-* 44 FMRC (45M)
-* 44 FmrcInvLite (33M)
-* 469 FmrcInvLite.GridInventory (21M)
-* 106 FmrcInvLite.GridSet (10M)
-* 98K FmrcInvLite.TimeInv (4M)
-* 44 NetcdfDataset (7M)
-* 3K VariableDS (7M)
-* 32K Attributes (4M)
