@@ -43,8 +43,12 @@ If so, you can skip to step 4.
     - As long as we don't make it to the artifact publishing step, we can always fix any issues by squashing new commits and pushing to the branch on Unidata/tds
 
 1. Update Unidata download page
-    - check http://www.unidata.ucar.edu/downloads/tds/index.jsp
+    - check https://www.unidata.ucar.edu/downloads/tds/index.jsp
       * modify `www:/content/downloads/tds/toc.xml` as needed
+
+1. Update latest.xml file
+    - check https://www.unidata.ucar.edu/software/tds/latest.xml
+      * modify `www:/content/software/tds/latest.xml` as needed
 
 1. Prepare for next round of development.
     - Update the project version. Increment it and add the "-SNAPSHOT" suffix.
@@ -87,7 +91,7 @@ If so, you can skip to step 4.
       https://github.com/Unidata/tds/pulls?q=base%3Amaster+merged%3A%3E%3D2016-02-12
 
 1. Make blog post for the release.
-    - Example: http://www.unidata.ucar.edu/blogs/news/entry/netcdf-java-library-and-tds4
+    - Example: https://www.unidata.ucar.edu/blogs/news/entry/netcdf-java-library-and-tds4
     - Best to leave it relatively short and just link to the GitHub release.
 
 1. Make a release announcement to the mailing lists: thredds@unidata.ucar.edu
