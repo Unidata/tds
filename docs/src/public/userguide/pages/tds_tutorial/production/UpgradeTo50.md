@@ -1,6 +1,6 @@
 ---
-title: Upgrading to CDM / TDS version 5
-last_updated: 2018-04-02
+title: Upgrading to TDS version 5
+last_updated: 2018-07-26
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: upgrade_to_5.html
@@ -72,7 +72,13 @@ The following is no longer used:
 
 * By default, most services are enabled, but may still be turned off in `threddsConfig.xml`.
 
-## Catalogs
+## Java Web Start
+
+Java Web Start has been [deprecated as of Java 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998), and has been removed in [Java 11](https://www.oracle.com/technetwork/java/javase/11-relnote-issues-5012449.html), which is the Long-term Release post-Java 8.
+Due to these changes, the netCDF-Java project no longer provide Java Web Start files as of version 5.0.0.
+Following suite, the TDS no longer provide any Web Start based Viewers on Dataset pages out of the box.
+
+### Catalogs
 
 ### Catalog Schema changes
 
