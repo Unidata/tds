@@ -43,11 +43,14 @@ THREDDS Catalog documentation (including the specification) is available at
 
 ## Licensing
 
-Copyright and licensing information can be found [here](https://www.unidata.ucar.edu/software/netcdf/copyright.html),
-as well as in the `LICENSE.txt` file accompanying the software.
+The THREDDS Data Server is released under the BSD-3 licence, which can be found can be found [here](https://github.com/Unidata/tds/blob/master/LICENSE)
 
 Furthermore, this project includes code from third-party open-source software components:
 * [Gretty](https://github.com/akhikhl/gretty): for details, see `buildSrc/README.md`
 * [JUnit](https://github.com/junit-team/junit4): for details, see `testUtil/README.md`
 
 Each of these software components have their own license. Please see `docs/src/private/licenses/third-party/`.
+
+## Previous releases
+
+Prior to `v5.0.0`, the netCDF-Java/CDM library and the THREDDS Data Server (TDS) have been built and released together. Starting with version 5, these two packages have been decoupled, allowing new features or bug fixes to be implemented in each package separately, and released independently. Releases prior to `v5.0.0` were managed at <https://github.com/unidata/thredds>, which holds the combined code based used by `v4.6` and earlier.
