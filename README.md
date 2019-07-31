@@ -13,7 +13,7 @@ installed in any servlet container such as Apache Tomcat.
 
 For more information about the TDS, see the TDS web page at
 
-* https://docs.unidata.ucar.edu/tds/5.0.0/userguide/
+* https://docs.unidata.ucar.edu/tds/5.0/userguide/
 
 You can obtain a copy of the latest released version of TDS software from
 
