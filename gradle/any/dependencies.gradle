@@ -65,7 +65,7 @@ libraries["jruby-gradle-plugin"] = "com.github.jruby-gradle:jruby-gradle-plugin:
 
 /////////////////////////////////////// netCDF-Java ////////////////////////////////////////
 
-versions["ncj"] = "5.0.0"
+versions["ncj"] = "5.0.1-SNAPSHOT"
 
 libraries["bufr"] = "edu.ucar:bufr:${versions["ncj"]}"
 libraries["cdm"] = "edu.ucar:cdm:${versions["ncj"]}"
