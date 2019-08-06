@@ -217,12 +217,17 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
 
     result.addDataset(top);
 
-    for (DatasetBuilder ds : makeRunDatasets(top))
-      top.addDataset(ds);
-
     return result;
   }
 
+  /**
+   * Make catalog for Forecast Model Run datasets
+   *
+   * @param catURI     base URI of the request
+   * @param localState FMRC state
+   * @return
+   * @throws IOException
+   */
   private CatalogBuilder makeCatalogRuns(URI catURI, State localState) throws IOException {
     CatalogBuilder runCatalog = makeCatalog(catURI, localState, RUN_TITLE);
     DatasetBuilder top = runCatalog.getTopDataset();
@@ -234,6 +239,14 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
     return runCatalog;
   }
 
+  /**
+   * Make catalog for Constant Forecast Offset datasets
+   *
+   * @param catURI     base URI of the request
+   * @param localState FMRC state
+   * @return
+   * @throws IOException
+   */
   private CatalogBuilder makeCatalogOffsets(URI catURI, State localState) throws IOException {
     CatalogBuilder offCatalog = makeCatalog(catURI, localState, OFFSET_TITLE);
     DatasetBuilder top = offCatalog.getTopDataset();
@@ -245,15 +258,24 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
     return offCatalog;
   }
 
+  /**
+   *
+   * Make catalog for Constant Forecast Date datasets
+   *
+   * @param catURI     base URI of the request
+   * @param localState FMRC state
+   * @return
+   * @throws IOException
+   */
   private CatalogBuilder makeCatalogForecasts(URI catURI, State localState) throws IOException {
-    CatalogBuilder offCatalog = makeCatalog(catURI, localState, OFFSET_TITLE);
-    DatasetBuilder top = offCatalog.getTopDataset();
+    CatalogBuilder forecastCatalog = makeCatalog(catURI, localState, FORECAST_TITLE);
+    DatasetBuilder top = forecastCatalog.getTopDataset();
 
     if (top != null)
-      for (DatasetBuilder ds : makeOffsetDatasets(top))
+      for (DatasetBuilder ds : makeForecastDatasets(top))
         top.addDataset(ds);
 
-    return offCatalog;
+    return forecastCatalog;
   }
 
   private List<DatasetBuilder> makeRunDatasets(DatasetBuilder parent) throws IOException {
