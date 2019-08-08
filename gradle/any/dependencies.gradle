@@ -4,6 +4,13 @@
 //================================================ Repositories ================================================//
 
 repositories {
+    // When running one version of the netcdf-java tests on travis, we want to test the TDS against the changes
+    // proposed by a netCDF-Java PR. In order to do this, we need to publish snapshot artifacts of netcdf-java to
+    // the local maven repository and build the TDS with those. In the netCDF-java travis build script, 
+    // we use sed to uncomment the following line so that the tds build uses those local snapshot artifacts in its
+    // build.
+    //mavenLocal()
+    
     // Prefer JCenter to Maven Central. See
     // https://blog.bintray.com/2015/02/09/android-studio-migration-from-maven-central-to-jcenter/
     jcenter()
