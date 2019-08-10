@@ -5,4 +5,4 @@ DOWNLOAD_DIR="-Dtds.download.dir=/tmp/download"
 UPLOAD_DIR="-Dtds.upload.dir=/tmp/upload"
 SYSTEM_PROPS="$CONTENT_ROOT $DOWNLOAD_DIR $UPLOAD_DIR"
 
-$TRAVIS_BUILD_DIR/gradlew $SYSTEM_PROPS --info --stacktrace testAll
+$TRAVIS_BUILD_DIR/gradlew $SYSTEM_PROPS --info --stacktrace testAll --refresh-dependencies
