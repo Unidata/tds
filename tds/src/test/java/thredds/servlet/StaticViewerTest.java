@@ -116,8 +116,6 @@ public class StaticViewerTest {
   }
 
   private Dataset constructCatalogAndAssertAsExpected(URI docBaseUri, String catalogAsString) {
-
-    try {
       CatalogBuilder builder = new CatalogBuilder();
       Catalog cat = builder.buildFromString(catalogAsString, docBaseUri);
 
@@ -134,12 +132,6 @@ public class StaticViewerTest {
       assertNotNull(ds1);
       Assert.assertEquals("ds 1", ds1.getName());
       return ds1;
-
-    } catch (IOException e) {
-      e.printStackTrace();
-      assert false;
-      return null;
-    }
   }
 
   private static String setupCatDsWithViewerProperty(String viewerName, String viewerValue) {
