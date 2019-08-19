@@ -191,9 +191,9 @@ public class WcsCoverage {
 
         // netCDF File Checks
         // this will estimate the size of a single coverage.
-        Optional<Long> estimatedSize = CFGridCoverageWriter2.writeOrTestSize(this.wcsDataset.getDataset(),
+        Optional<Long> estimatedSize = CFGridCoverageWriter2.getSizeOfOutput(this.wcsDataset.getDataset(),
                 Collections.singletonList(this.coverage.getName()),
-                params, true, true, null);
+                params, true);
 
         if (estimatedSize.isPresent()) {
           // check to make sure estimated size isn't greater than the netCDf-3 limit, otherwise
@@ -207,9 +207,9 @@ public class WcsCoverage {
         }
 
         try (NetcdfFileWriter writer = NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, outFile.getAbsolutePath())) {
-          estimatedSize = CFGridCoverageWriter2.writeOrTestSize(this.wcsDataset.getDataset(),
+          estimatedSize = CFGridCoverageWriter2.write(this.wcsDataset.getDataset(),
                   Collections.singletonList(this.coverage.getName()),
-                  params, true, false, writer);
+                  params, true, writer);
         }
 
         return outFile;
