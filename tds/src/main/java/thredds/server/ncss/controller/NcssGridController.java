@@ -143,8 +143,8 @@ public class NcssGridController extends AbstractNcssController {
     // Test maxFileDownloadSize
     long maxFileDownloadSize = ThreddsConfig.getBytes("NetcdfSubsetService.maxFileDownloadSize", -1L);
     if (maxFileDownloadSize > 0) {
-      Optional<Long> estimatedSizeo = CFGridCoverageWriter2.writeOrTestSize(
-              gcd, params.getVar(), subset, params.isAddLatLon(), true, null);
+      Optional<Long> estimatedSizeo = CFGridCoverageWriter2.getSizeOfOutput(
+              gcd, params.getVar(), subset, params.isAddLatLon());
       if (!estimatedSizeo.isPresent())
         throw new InvalidRangeException("Request contains no data: " + estimatedSizeo.getErrorMessage());
 
@@ -161,8 +161,8 @@ public class NcssGridController extends AbstractNcssController {
     NetcdfFileWriter writer = NetcdfFileWriter.createNew(
             version, responseFilename, null);  // default chunking - let user control at some point
 
-    Optional<Long> estimatedSizeo = CFGridCoverageWriter2.writeOrTestSize(
-            gcd, params.getVar(), subset, params.isAddLatLon(), false, writer);
+    Optional<Long> estimatedSizeo = CFGridCoverageWriter2.write(
+            gcd, params.getVar(), subset, params.isAddLatLon(),writer);
     if (!estimatedSizeo.isPresent())
       throw new InvalidRangeException("Request contains no data: " + estimatedSizeo.getErrorMessage());
 
