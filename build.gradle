@@ -12,9 +12,6 @@ buildscript {
     // The buildscript {} block is odd: even though we applied dependencies.gradle above, the repositories therein
     // do not get included here. Instead, we must explicitly define the repos again. Yay for duplication.
     repositories {
-        // This next line is for use by the netcdf-java library travis test. Do not edit. See note in
-        // tds/gradle/any/dependencies.gradle
-        //mavenLocal()
         jcenter()
         maven {
             url "https://plugins.gradle.org/m2/"  // For Gradle plugins.
