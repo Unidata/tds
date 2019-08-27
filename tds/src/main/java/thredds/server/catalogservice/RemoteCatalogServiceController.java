@@ -53,8 +53,8 @@ public class RemoteCatalogServiceController {
   @Autowired
   private CatalogViewContextParser parser;
 
-  @InitBinder // ("RemoteCatalogRequest")  LOOK
-  protected void initBinder(WebDataBinder binder) {
+  @InitBinder("remoteCatalogRequest")
+  protected void initRemoteCatalogRequestBinder(WebDataBinder binder) {
     binder.setValidator(new RemoteCatalogRequestValidator());
   }
 
