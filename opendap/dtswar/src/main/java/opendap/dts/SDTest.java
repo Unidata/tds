@@ -50,10 +50,6 @@ package opendap.dts;
 import java.io.*;
 import java.util.Enumeration;
 
-//import gnu.getopt.Getopt;
-import opendap.servlet.AbstractServlet;
-import opendap.util.Getopts;
-import opendap.util.InvalidSwitch;
 import opendap.dap.BaseType;
 import opendap.servers.*;
 
