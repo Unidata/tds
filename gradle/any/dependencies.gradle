@@ -195,11 +195,6 @@ libraries["jcommander"] = "com.beust:jcommander:1.48"
 
 libraries["jdom2"] = "org.jdom:jdom2:2.0.6"
 
-libraries["jna"] = "net.java.dev.jna:jna:5.4.0"
-
-// replaces the one that we exclude from chronicle-map
-libraries["jna-platform"] = "net.java.dev.jna:jna-platform:4.2.2"
-
 // used by wms server
 libraries["joda-time"] = "joda-time:joda-time:2.10.3"
 
@@ -242,22 +237,18 @@ libraries["jackson-core"] = "com.fasterxml.jackson.core:jackson-core:2.9.9"
 libraries["jackson-annotations"] = "com.fasterxml.jackson.core:jackson-annotations:2.9.9"
 libraries["jackson-databind"] = "com.fasterxml.jackson.core:jackson-databind:2.9.9.1"
 
-libraries["chronicle-map"] = dependencies.create("net.openhft:chronicle-map:3.17.0") {
-    // the version of jna shipped with chronicle-map requires GLIBC 2.14
-    // which prevents the use of the TDS on several versions of linux, such
-    // as CentOS and Hed Hat 6. We already include jna in netCDF-Java for
-    // netCDF-C support, so we will rely on that version instead.
-    // We should be able to get rid of this on the next release of chronicle-map,
-    // as their snapshot BOM pom shows that they pulled back on jna.
+libraries["chronicle-map"] = dependencies.create("net.openhft:chronicle-map:3.17.4") {
+    // The TDS pulls in jna via the netcdf4 module in netcdf-java, so let's exclude
+    // the one pulled in by chronicle-map and make sure we use the same version
+    // netcdf4 uses
     exclude group: 'net.java.dev.jna', module: 'jna'
     exclude group: 'net.java.dev.jna', module: 'jna-platform'
-    // We do not need XStream for our use of chronicle-map.
-    // Nuke it. [SEC]
-    exclude group: 'com.thoughtworks.xstream', module: 'xstream'
-    // We do not need pax-url-aether
-    // Nuke it. [SEC]
-    exclude group: 'org.ops4j.pax.url', module: 'pax-url-aether'
 }
+
+// replaces the one that we exclude from chronicle-map
+// Match the version of jna used by the netcdf4 module of the netcdf-java project
+libraries["jna"] = "net.java.dev.jna:jna:5.4.0"
+libraries["jna-platform"] = "net.java.dev.jna:jna-platform:5.4.0"
 
 libraries["javax.servlet-api"] = "javax.servlet:javax.servlet-api:3.1.0"
 
