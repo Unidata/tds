@@ -1,5 +1,6 @@
 package thredds.server.services;
 
+import java.nio.charset.StandardCharsets;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -75,7 +76,7 @@ public class ConsistentDatesTest {
   public void checkWMSDates() throws JDOMException, IOException {
     String endpoint = TestOnLocalServer.withHttpPath("/wms/cdmUnitTest/ncss/climatology/PF5_SST_Climatology_Monthly_1985_2001.nc?service=WMS&version=1.3.0&request=GetCapabilities");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.xml);
-    Reader in = new StringReader( new String(result, CDM.utf8Charset));
+    Reader in = new StringReader( new String(result, StandardCharsets.UTF_8));
     SAXBuilder sb = new SAXBuilder();
     Document doc = sb.build(in);
 
@@ -102,7 +103,7 @@ public class ConsistentDatesTest {
   public void checkWCSDates() throws JDOMException, IOException {
     String endpoint = TestOnLocalServer.withHttpPath("/wcs/cdmUnitTest/ncss/climatology/PF5_SST_Climatology_Monthly_1985_2001.nc?service=WCS&version=1.0.0&request=DescribeCoverage&coverage=sst");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.xml);
-    Reader in = new StringReader( new String(result, CDM.utf8Charset));
+    Reader in = new StringReader( new String(result, StandardCharsets.UTF_8));
     SAXBuilder sb = new SAXBuilder();
     Document doc = sb.build(in);
 
@@ -127,7 +128,7 @@ public class ConsistentDatesTest {
   public void checkNCSSDates() throws JDOMException, IOException {
     String endpoint = TestOnLocalServer.withHttpPath("/ncss/grid/cdmUnitTest/ncss/climatology/PF5_SST_Climatology_Monthly_1985_2001.nc?var=sst&latitude=45&longitude=-20&temporal=all&accept=xml");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.xml);
-    String results = new String(result, CDM.utf8Charset);
+    String results = new String(result, StandardCharsets.UTF_8);
     if (show) System.out.printf("checkNCSSDates%n%s%n", results);
     Reader in = new StringReader( results );
     SAXBuilder sb = new SAXBuilder();

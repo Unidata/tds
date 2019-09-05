@@ -4,6 +4,7 @@
  */
 package thredds.server.opendap;
 
+import java.nio.charset.StandardCharsets;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -18,7 +19,6 @@ import ucar.ma2.Array;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 import ucar.nc2.VariableSimpleIF;
-import ucar.nc2.constants.CDM;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -50,7 +50,7 @@ public class TestTdsDodsServer {
     String endpoint = TestOnLocalServer.withHttpPath("/dodsC/scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2.ascii?Visibility_surface[0:1:0][0:1:0][0:1:0]");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, null);
     Assert.assertNotNull(result);
-    String results = new String(result, CDM.utf8Charset);
+    String results = new String(result, StandardCharsets.UTF_8);
     assert results.contains("scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2");
     assert results.contains("15636.879");
   }

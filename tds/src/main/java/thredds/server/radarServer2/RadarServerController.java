@@ -7,6 +7,7 @@
 package thredds.server.radarServer2;
 
 import com.google.common.base.Joiner;
+import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -316,7 +317,7 @@ public class RadarServerController {
         if (makeIDVCatalog) {
             String xml = os.toString(CDM.UTF8);
             xml = idvDatasetCatalog(xml);
-            xmlBytes = xml.getBytes(CDM.utf8Charset);
+            xmlBytes = xml.getBytes(StandardCharsets.UTF_8);
         } else {
             xmlBytes = os.toByteArray();
         }
@@ -359,7 +360,7 @@ public class RadarServerController {
 
     HttpEntity<byte[]> simpleString(String str)
     {
-        byte[] bytes = str.getBytes(CDM.utf8Charset);
+        byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "text"));
         header.setContentLength(bytes.length);

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import org.springframework.http.HttpHeaders;
 
 import thredds.server.ncss.exception.NcssException;
@@ -15,7 +16,6 @@ import thredds.util.ContentType;
 import thredds.util.TdsPathUtils;
 import ucar.ma2.Array;
 import ucar.nc2.VariableSimpleIF;
-import ucar.nc2.constants.CDM;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft.point.StationPointFeature;
 import ucar.nc2.ft2.coverage.SubsetParams;
@@ -32,7 +32,7 @@ public class StationSubsetWriterCSV extends AbstractStationSubsetWriter {
     public StationSubsetWriterCSV(FeatureDatasetPoint fdPoint, SubsetParams ncssParams, OutputStream out)
             throws NcssException, IOException {
         super(fdPoint, ncssParams);
-        this.writer = new PrintWriter(new OutputStreamWriter(out, CDM.utf8Charset));
+        this.writer = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
     }
 
     @Override

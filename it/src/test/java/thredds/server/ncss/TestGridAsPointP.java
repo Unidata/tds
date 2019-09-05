@@ -4,6 +4,7 @@
  */
 package thredds.server.ncss;
 
+import java.nio.charset.StandardCharsets;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -27,7 +28,6 @@ import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.VariableSimpleIF;
-import ucar.nc2.constants.CDM;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.ft.FeatureDataset;
@@ -96,7 +96,7 @@ public class TestGridAsPointP {
     String endpoint = TestOnLocalServer.withHttpPath(ds + "?var=" + varName + query + "&accept=csv");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.csv);
     Assert.assertNotNull(result);
-    logger.debug("CSV\n{}", new String( result, CDM.utf8Charset));
+    logger.debug("CSV\n{}", new String( result, StandardCharsets.UTF_8));
   }
 
   @Test
