@@ -2,8 +2,6 @@ package thredds.server.ncss.view.dsg;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +23,7 @@ import ucar.nc2.ft2.coverage.SubsetParams;
 import ucar.nc2.iosp.netcdf4.Nc4;
 import ucar.nc2.jni.netcdf.Nc4Iosp;
 import ucar.nc2.ogc.MarshallingUtil;
+import ucar.nc2.time.Calendar;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.nc2.util.CompareNetcdf2;
@@ -66,8 +65,8 @@ public class DsgSubsetWriterTest {
         // The WaterML marshaller usually initializes wml2:generationDate and om:resultTime to "now". This is a problem,
         // because those values will always differ from the fixed values we have in our expectedResultResource files.
         // So, to facilitate testing, we're going to fix the values that the marshaller emits.
-        MarshallingUtil.fixedGenerationDate = new DateTime(1970, 1, 1, 0, 0, DateTimeZone.UTC);
-        MarshallingUtil.fixedResultTime     = new DateTime(1970, 1, 1, 0, 0, DateTimeZone.UTC);
+        MarshallingUtil.fixedGenerationDate = CalendarDate.of(Calendar.gregorian, 1970, 1, 1, 0, 0, 0);
+        MarshallingUtil.fixedResultTime     = CalendarDate.of(Calendar.gregorian,1970, 1, 1, 0, 0, 0);
 
         ncssDiskCache = new NcssDiskCache(DiskCache2.getDefault().getRootDirectory());
 
