@@ -15,7 +15,7 @@
             </om:phenomenonTime>
             <om:resultTime>
                 <gml:TimeInstant gml:id="TimeInstantType.1">
-                    <gml:timePosition>1970-01-01T00:00:00.000Z</gml:timePosition>
+                    <gml:timePosition>1970-01-01T00:00:00Z</gml:timePosition>
                 </gml:TimeInstant>
             </om:resultTime>
             <om:procedure xlink:title="Unknown" xlink:href="http://www.opengis.net/def/nil/OGC/0/unknown"/>
@@ -84,7 +84,7 @@
             </om:phenomenonTime>
             <om:resultTime>
                 <gml:TimeInstant gml:id="TimeInstantType.2">
-                    <gml:timePosition>1970-01-01T00:00:00.000Z</gml:timePosition>
+                    <gml:timePosition>1970-01-01T00:00:00Z</gml:timePosition>
                 </gml:TimeInstant>
             </om:resultTime>
             <om:procedure xlink:title="Unknown" xlink:href="http://www.opengis.net/def/nil/OGC/0/unknown"/>
@@ -153,7 +153,7 @@
             </om:phenomenonTime>
             <om:resultTime>
                 <gml:TimeInstant gml:id="TimeInstantType.3">
-                    <gml:timePosition>1970-01-01T00:00:00.000Z</gml:timePosition>
+                    <gml:timePosition>1970-01-01T00:00:00Z</gml:timePosition>
                 </gml:TimeInstant>
             </om:resultTime>
             <om:procedure xlink:title="Unknown" xlink:href="http://www.opengis.net/def/nil/OGC/0/unknown"/>
@@ -222,7 +222,7 @@
             </om:phenomenonTime>
             <om:resultTime>
                 <gml:TimeInstant gml:id="TimeInstantType.4">
-                    <gml:timePosition>1970-01-01T00:00:00.000Z</gml:timePosition>
+                    <gml:timePosition>1970-01-01T00:00:00Z</gml:timePosition>
                 </gml:TimeInstant>
             </om:resultTime>
             <om:procedure xlink:title="Unknown" xlink:href="http://www.opengis.net/def/nil/OGC/0/unknown"/>
@@ -291,7 +291,7 @@
             </om:phenomenonTime>
             <om:resultTime>
                 <gml:TimeInstant gml:id="TimeInstantType.5">
-                    <gml:timePosition>1970-01-01T00:00:00.000Z</gml:timePosition>
+                    <gml:timePosition>1970-01-01T00:00:00Z</gml:timePosition>
                 </gml:TimeInstant>
             </om:resultTime>
             <om:procedure xlink:title="Unknown" xlink:href="http://www.opengis.net/def/nil/OGC/0/unknown"/>
@@ -360,7 +360,7 @@
             </om:phenomenonTime>
             <om:resultTime>
                 <gml:TimeInstant gml:id="TimeInstantType.6">
-                    <gml:timePosition>1970-01-01T00:00:00.000Z</gml:timePosition>
+                    <gml:timePosition>1970-01-01T00:00:00Z</gml:timePosition>
                 </gml:TimeInstant>
             </om:resultTime>
             <om:procedure xlink:title="Unknown" xlink:href="http://www.opengis.net/def/nil/OGC/0/unknown"/>
