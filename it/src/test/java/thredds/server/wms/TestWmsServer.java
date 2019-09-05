@@ -5,6 +5,7 @@
 
 package thredds.server.wms;
 
+import java.nio.charset.StandardCharsets;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -28,7 +29,6 @@ import java.util.List;
 
 import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
-import ucar.nc2.constants.CDM;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 import static org.junit.Assert.assertEquals;
@@ -43,7 +43,7 @@ public class TestWmsServer {
     public void testCapabilites() throws IOException, JDOMException {
         String endpoint = TestOnLocalServer.withHttpPath("/wms/scanCdmUnitTests/conventions/coards/sst.mnmean.nc?service=WMS&version=1.3.0&request=GetCapabilities");
         byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.xmlwms);
-        Reader in = new StringReader(new String(result, CDM.utf8Charset));
+        Reader in = new StringReader(new String(result, StandardCharsets.UTF_8));
         SAXBuilder sb = new SAXBuilder();
         Document doc = sb.build(in);
 

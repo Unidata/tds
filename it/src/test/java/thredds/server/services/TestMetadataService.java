@@ -1,6 +1,7 @@
 /* Copyright */
 package thredds.server.services;
 
+import java.nio.charset.StandardCharsets;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -10,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
-import ucar.nc2.constants.CDM;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 import java.lang.invoke.MethodHandles;
@@ -53,7 +53,7 @@ public class TestMetadataService {
     String endpoint = TestOnLocalServer.withHttpPath(url+"&accept=xml");
     byte[] response = TestOnLocalServer.getContent(endpoint, statusCodes, ContentType.xml);
     if (show && response != null)
-      System.out.printf("%s%n", new String(response, CDM.utf8Charset));
+      System.out.printf("%s%n", new String(response, StandardCharsets.UTF_8));
   }
 
   @Test
@@ -61,7 +61,7 @@ public class TestMetadataService {
     String endpoint = TestOnLocalServer.withHttpPath(url);
     byte[] response = TestOnLocalServer.getContent(endpoint, statusCodes, ContentType.html);
     if (show && response != null)
-      System.out.printf("%s%n", new String(response, CDM.utf8Charset));
+      System.out.printf("%s%n", new String(response, StandardCharsets.UTF_8));
   }
 }
 

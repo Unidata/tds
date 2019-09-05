@@ -3,6 +3,7 @@
  */
 package thredds.server.wcs;
 
+import java.nio.charset.StandardCharsets;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -32,7 +33,6 @@ import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.constants.AxisType;
-import ucar.nc2.constants.CDM;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.ft2.coverage.Coverage;
 import ucar.nc2.ft2.coverage.CoverageCollection;
@@ -78,7 +78,7 @@ public class TestWcsServer {
     String endpoint = TestOnLocalServer.withHttpPath(dataset1+"&request=GetCapabilities");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.xml);
 
-    Reader in = new StringReader( new String(result, CDM.utf8Charset));
+    Reader in = new StringReader( new String(result, StandardCharsets.UTF_8));
     SAXBuilder sb = new SAXBuilder();
     Document doc = sb.build(in);
 
@@ -291,7 +291,7 @@ public class TestWcsServer {
 
   private boolean isGetCoverageWcsDoc(String url) throws JDOMException, IOException {
     byte[] result = TestOnLocalServer.getContent(url+baloney+"&request=GetCapabilities", 200, ContentType.xml);
-    Reader in = new StringReader( new String(result, CDM.utf8Charset));
+    Reader in = new StringReader( new String(result, StandardCharsets.UTF_8));
     SAXBuilder sb = new SAXBuilder();
     Document doc = sb.build(in);
 

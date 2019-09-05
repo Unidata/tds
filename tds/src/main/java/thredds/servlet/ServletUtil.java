@@ -5,10 +5,10 @@
 
 package thredds.servlet;
 
+import java.nio.charset.StandardCharsets;
 import thredds.core.ConfigCatalogHtmlWriter;
 import thredds.util.ContentType;
 import thredds.util.RequestForwardUtils;
-import ucar.nc2.constants.CDM;
 import ucar.nc2.util.EscapeStrings;
 import ucar.nc2.util.IO;
 import ucar.unidata.io.RandomAccessFile;
@@ -259,7 +259,7 @@ public class ServletUtil {
 
     try {
       ServletOutputStream out = res.getOutputStream();
-      IO.copy(new ByteArrayInputStream(contents.getBytes(CDM.utf8Charset)), out);
+      IO.copy(new ByteArrayInputStream(contents.getBytes(StandardCharsets.UTF_8)), out);
     } catch (IOException e) {
       log.error(" IOException sending string: ", e);
       res.sendError(HttpServletResponse.SC_NOT_FOUND, "Problem sending string: " + e.getMessage());

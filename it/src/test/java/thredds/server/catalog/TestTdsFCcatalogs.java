@@ -1,6 +1,7 @@
 /* Copyright */
 package thredds.server.catalog;
 
+import java.nio.charset.StandardCharsets;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -10,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
-import ucar.nc2.constants.CDM;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 import java.lang.invoke.MethodHandles;
@@ -58,7 +58,7 @@ public class TestTdsFCcatalogs {
     String endpoint = TestOnLocalServer.withHttpPath("catalog/"+path+".xml"+query);
     byte[] response = TestOnLocalServer.getContent(endpoint, 200, ContentType.xml);
     Assert.assertNotNull(response);
-    logger.debug(new String(response, CDM.utf8Charset));
+    logger.debug(new String(response, StandardCharsets.UTF_8));
   }
 
   @Test
@@ -66,6 +66,6 @@ public class TestTdsFCcatalogs {
     String endpoint = TestOnLocalServer.withHttpPath("catalog/"+path+".html"+query);
     byte[] response = TestOnLocalServer.getContent(endpoint, 200, ContentType.html);
     Assert.assertNotNull(response);
-    logger.debug(new String(response, CDM.utf8Charset));
+    logger.debug(new String(response, StandardCharsets.UTF_8));
   }
 }

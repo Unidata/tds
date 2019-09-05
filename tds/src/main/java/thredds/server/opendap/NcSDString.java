@@ -8,6 +8,7 @@
 
 package thredds.server.opendap;
 
+import java.nio.charset.StandardCharsets;
 import opendap.servers.*;
 
 import java.io.IOException;
@@ -15,7 +16,6 @@ import java.io.DataOutputStream;
 
 import ucar.ma2.*;
 import ucar.nc2.*;
-import ucar.nc2.constants.CDM;
 
 /**
  * Wraps a netcdf scalar or 1D char variable.
@@ -75,7 +75,7 @@ public class NcSDString extends SDString implements HasNetcdfVariable {
         ArrayChar a = (ArrayChar) data;
         byte[] b = new byte[1];
         b[0] = (byte) a.getChar(0);
-        localVal = new String(b, CDM.utf8Charset);
+        localVal = new String(b, StandardCharsets.UTF_8);
       } else {
         // 1D
         ArrayChar a = (ArrayChar) data;

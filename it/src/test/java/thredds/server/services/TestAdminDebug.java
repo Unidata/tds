@@ -1,5 +1,6 @@
 package thredds.server.services;
 
+import java.nio.charset.StandardCharsets;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -10,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
-import ucar.nc2.constants.CDM;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class TestAdminDebug {
         String endpoint = urlPrefix + path;
         byte[] response = TestOnLocalServer.getContent(goodCred, endpoint, new int[] { 200 }, ContentType.html);
         if (response != null) {
-            logger.debug(new String(response, CDM.utf8Charset));
+            logger.debug(new String(response, StandardCharsets.UTF_8));
         }
     }
 
@@ -62,7 +62,7 @@ public class TestAdminDebug {
                 .getContent(badCred, endpoint, new int[] { HttpStatus.SC_UNAUTHORIZED, HttpStatus.SC_FORBIDDEN }, ContentType.html);
 
         if (response != null) {
-            logger.debug(new String(response, CDM.utf8Charset));
+            logger.debug(new String(response, StandardCharsets.UTF_8));
         }
     }
 }
