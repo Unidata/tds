@@ -19,15 +19,8 @@
 # top level modules #
 #####################
 
-httpservices/** @DennisHeimbigner
-netcdf4/** @DennisHeimbigner
-
-waterml/** @lesserwhirls
 gradle/** @lesserwhirls
 travis/* @lesserwhirls
-
-grib/** @lesserwhirls
-idv/** @lesserwhirls
 
 ###########################################
 # classpath / not module specific matches #
@@ -59,5 +52,4 @@ gradle/any/dependencies.gradle @lesserwhirls @DennisHeimbigner
 
 docs/internal/release.md @lesserwhirls
 
-idv/build.gradle @lesserwhirls
 tds/src/main/webapp/Godiva.html @lesserwhirls
