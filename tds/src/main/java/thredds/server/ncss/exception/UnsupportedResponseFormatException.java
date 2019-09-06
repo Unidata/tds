@@ -14,8 +14,8 @@ package thredds.server.ncss.exception;
  */
 public class UnsupportedResponseFormatException extends NcssException {
 
-	public UnsupportedResponseFormatException(String message){
-		super(message);
-	}
-		
+  public UnsupportedResponseFormatException(String message){
+    super(message);
+  }
+
 }

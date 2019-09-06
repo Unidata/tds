@@ -6,9 +6,9 @@
 package thredds.server.ncss.exception;
 
 public class VariableNotContainedInDatasetException extends NcssException {
-	
-	public VariableNotContainedInDatasetException(String message){
-		super(message);
-	}
+
+  public VariableNotContainedInDatasetException(String message){
+    super(message);
+  }
 
 }

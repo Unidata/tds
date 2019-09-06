@@ -8,22 +8,22 @@ package thredds.server.wfs;
  *
  */
 public enum GMLFeatureType {
-	
-	Polygon("Polygon");
-	
 
-	
-	
-	
-	
-	private String stringRepresent;
-	
-	public String toString() {
-		return this.stringRepresent;
-	}
-	
-	private GMLFeatureType(String stringRepresent) {
-		this.stringRepresent = stringRepresent;
-	}
+  Polygon("Polygon");
+
+
+
+
+
+
+  private String stringRepresent;
+
+  public String toString() {
+    return this.stringRepresent;
+  }
+
+  private GMLFeatureType(String stringRepresent) {
+    this.stringRepresent = stringRepresent;
+  }
 
 }

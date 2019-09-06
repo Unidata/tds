@@ -159,7 +159,7 @@ public class TestServlet extends DapTestCommon
 
     /* USESPRING
     @Autowired
-	private WebApplicationContext wac;
+  private WebApplicationContext wac;
     */
 
     //////////////////////////////////////////////////
@@ -173,7 +173,7 @@ public class TestServlet extends DapTestCommon
         //if(DEBUGDATA) DapController.DUMPDATA = true;
         /*USESPRING
           this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-	else */
+  else */
         {
             StandaloneMockMvcBuilder mvcbuilder =
                     MockMvcBuilders.standaloneSetup(new Dap4Controller());

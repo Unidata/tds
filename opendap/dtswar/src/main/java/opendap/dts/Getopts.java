@@ -52,7 +52,7 @@ import java.util.Enumeration;
  * 'args' String array that has to be parsed opposite the 'flags'
  * string.
  * <PRE>
- * new Getopts("oif:", args)	-o, -i are boolean flags,
+ * new Getopts("oif:", args)  -o, -i are boolean flags,
  * -f takes an argument
  * </PRE>
  * The class processes single-character switches with switch

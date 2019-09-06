@@ -33,10 +33,10 @@ Such a setup will work with both FileSystemXmlApplicationContext (which will loa
 with an underlying MockServletContext (as long as the MockServletContext has been configured with a FileSystemResourceLoader).
  */
 public class MockTdsServletContext extends MockServletContext {
-	
-	public MockTdsServletContext(){
+
+  public MockTdsServletContext(){
     super();
-		// super("src/main/webapp");   // default resourceBasePath - HACK i think
+    // super("src/main/webapp");   // default resourceBasePath - HACK i think
 
     String current = null;
     try {
@@ -44,28 +44,28 @@ public class MockTdsServletContext extends MockServletContext {
     } catch (IOException e) {
       e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
     }
-	}
-	
-	public MockTdsServletContext(ResourceLoader resourceLoader) {
-		super(resourceLoader);
-	}
-	
-	public MockTdsServletContext(String resourceBasePath){
-		super(resourceBasePath);
-	}
-	
-	public MockTdsServletContext(String resourceBasePath, ResourceLoader resourceLoader) {
-		super(resourceBasePath, resourceLoader);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.springframework.mock.web.MockServletContext#getNamedDispatcher(java.lang.String)
-	 */
-	@Override
-	public RequestDispatcher getNamedDispatcher(String path){
-		
-		return new MockRequestDispatcher(path);
-	}
+  }
+
+  public MockTdsServletContext(ResourceLoader resourceLoader) {
+    super(resourceLoader);
+  }
+
+  public MockTdsServletContext(String resourceBasePath){
+    super(resourceBasePath);
+  }
+
+  public MockTdsServletContext(String resourceBasePath, ResourceLoader resourceLoader) {
+    super(resourceBasePath, resourceLoader);
+  }
+
+  /* (non-Javadoc)
+   * @see org.springframework.mock.web.MockServletContext#getNamedDispatcher(java.lang.String)
+   */
+  @Override
+  public RequestDispatcher getNamedDispatcher(String path){
+
+    return new MockRequestDispatcher(path);
+  }
 
   public javax.servlet.descriptor.JspConfigDescriptor getJspConfigDescriptor()
   {
@@ -73,16 +73,16 @@ public class MockTdsServletContext extends MockServletContext {
   }
 
 
-	/**
- 	 * Build a full resource location for the given path,
- 	 * prepending the resource base path of this MockServletContext.
- 	 * @param path the path as specified
- 	 * @return the full resource path
- 	 *
- 	protected String getResourceLocation(String path) {
- 		if (!path.startsWith("/")) {
- 			path = "/" + path;
- 		}
- 		return "src/main/webapp" + path;
- 	} */
+  /**
+    * Build a full resource location for the given path,
+    * prepending the resource base path of this MockServletContext.
+    * @param path the path as specified
+    * @return the full resource path
+    *
+   protected String getResourceLocation(String path) {
+     if (!path.startsWith("/")) {
+       path = "/" + path;
+     }
+     return "src/main/webapp" + path;
+   } */
 }

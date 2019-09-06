@@ -24,29 +24,29 @@ import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 @ContextConfiguration(locations={"/WEB-INF/applicationContext.xml"}, loader=MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class DatasetHandlerAdapterTest {
-	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	private String pathInfo;
-	
-	public DatasetHandlerAdapterTest(String pathInfo){
-		this.pathInfo=pathInfo;
-	}
-	
-	@Parameters
-	public static List<String[]> getTestParameters(){
-		
-		return GridPathParams.getPathInfoAsListOfArrays();
+  private String pathInfo;
+
+  public DatasetHandlerAdapterTest(String pathInfo){
+    this.pathInfo=pathInfo;
+  }
+
+  @Parameters
+  public static List<String[]> getTestParameters(){
+
+    return GridPathParams.getPathInfoAsListOfArrays();
  
-	}
-	
+  }
 
-	@Test
-	public void shouldGetGridDataset() throws IOException{
-		
-		GridDataset gds = DatasetHandlerAdapter.openGridDataset(pathInfo);
-		
-		assertNotNull(gds);
+
+  @Test
+  public void shouldGetGridDataset() throws IOException{
+
+    GridDataset gds = DatasetHandlerAdapter.openGridDataset(pathInfo);
+
+    assertNotNull(gds);
 
     gds.close();
-	}
+  }
 }

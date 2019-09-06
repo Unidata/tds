@@ -211,7 +211,7 @@ The `dataType` of a `featureCollection` is always known, so there is no need to 
       <keyword>Precipitation</keyword>
       <creator>
         <name>National Weather Service</name>
-	    <contact url="http://water.weather.gov/precip/" email="AHPS.Precip@noaa.gov" />
+      <contact url="http://water.weather.gov/precip/" email="AHPS.Precip@noaa.gov" />
       </creator>
       <dataType>Grid</dataType>
     </metadata>
@@ -244,11 +244,11 @@ The `datasetScan` element is an extension of the `dataset` element and so can co
                    path="precip" location="/machine/tds/data/precip/">
           <metadata inherited="true">
               <serviceName>all</serviceName>
-	          <documentation>Multi-sensor precipitation estimates</documentation>
+            <documentation>Multi-sensor precipitation estimates</documentation>
               <keyword>Precipitation</keyword>
               <creator>
                 <name>National Weather Service</name>
-	            <contact url="http://water.weather.gov/precip/" 
+              <contact url="http://water.weather.gov/precip/" 
                          email="AHPS.Precip@noaa.gov" />
               </creator>
               <dataType>Grid</dataType>

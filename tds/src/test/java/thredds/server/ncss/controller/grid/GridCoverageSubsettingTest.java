@@ -88,8 +88,8 @@ public class GridCoverageSubsettingTest {
   public static Collection<Object[]> getTestParameters() {
 
     return Arrays.asList(new Object[][]{
-            //			{ new int[]{1,2,2} , "/ncss/grid/scanCdmUnitTests/ft/grid/GFS_Global_onedeg_20081229_1800.grib2.nc", "Pressure_surface", true, 50.0, -10.0, 50, 110 }, //No vertical levels
-            //			{ new int[]{1,2,2} , "/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", true, 45.0, 15.0, -120, -90 }, //No vertical levels
+            //      { new int[]{1,2,2} , "/ncss/grid/scanCdmUnitTests/ft/grid/GFS_Global_onedeg_20081229_1800.grib2.nc", "Pressure_surface", true, 50.0, -10.0, 50, 110 }, //No vertical levels
+            //      { new int[]{1,2,2} , "/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", true, 45.0, 15.0, -120, -90 }, //No vertical levels
             {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 700.0, 2700.0, -2000, 666,
                     new Expected(new int[]{1, 149, 198}, new ProjectionRect(-2004.745, 697.882, 663.620, 2702.542)) },
             {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 0, 4000.0, 1234, 4000,
@@ -205,11 +205,11 @@ public class GridCoverageSubsettingTest {
     //ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
     //assertTrue( gdsDataset.getCalendarDateRange().isPoint());
 
-		/* int[][] shapes = new int[vars.size()][];
+    /* int[][] shapes = new int[vars.size()][];
     int count = 0;
-			GeoGrid grid = gdsDataset.findGridByShortName(varName);
-			shapes[count++] = grid.getShape();
-		assertArrayEquals(expectedShapes, shapes);  */
+      GeoGrid grid = gdsDataset.findGridByShortName(varName);
+      shapes[count++] = grid.getShape();
+    assertArrayEquals(expectedShapes, shapes);  */
   }
 
 

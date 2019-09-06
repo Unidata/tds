@@ -41,26 +41,26 @@ import java.lang.invoke.MethodHandles;
 @Category(NeedsCdmUnitTest.class)
 public class GridDatasetControllerTest {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-	
-	@Autowired
-	private WebApplicationContext wac;
-	
-	private MockMvc mockMvc;
-	
-	@Before
-	public void setup(){
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-	}
+
+  @Autowired
+  private WebApplicationContext wac;
+
+  private MockMvc mockMvc;
+
+  @Before
+  public void setup(){
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+  }
 
   @Test
- 	public void getGridSubsetOnGridDataset() throws Exception{
- 		RequestBuilder rb = MockMvcRequestBuilders.get("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
- 				.servletPath("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
- 				.param("accept", SupportedFormat.NETCDF3.getFormatName())
- 				.param("var", "Relative_humidity_height_above_ground", "Temperature_height_above_ground");
+   public void getGridSubsetOnGridDataset() throws Exception{
+     RequestBuilder rb = MockMvcRequestBuilders.get("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
+         .servletPath("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
+         .param("accept", SupportedFormat.NETCDF3.getFormatName())
+         .param("var", "Relative_humidity_height_above_ground", "Temperature_height_above_ground");
 
      MvcResult result =  this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
- 			.andExpect(MockMvcResultMatchers.content().contentType(SupportedFormat.NETCDF3.getMimeType()))
+       .andExpect(MockMvcResultMatchers.content().contentType(SupportedFormat.NETCDF3.getMimeType()))
        .andExpect(MockMvcResultMatchers.header().string(Constants.Content_Disposition, new FilenameMatcher(".nc")))
        .andReturn();
 
@@ -68,17 +68,17 @@ public class GridDatasetControllerTest {
      for (String name : result.getResponse().getHeaderNames()) {
        System.out.printf(  "%s= %s%n", name, result.getResponse().getHeader(name));
      }
- 	}
+   }
 
   @Test
- 	public void getGridSubsetOnGridDatasetNc4() throws Exception{
- 		RequestBuilder rb = MockMvcRequestBuilders.get("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
- 				.servletPath("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
- 				.param("accept", SupportedFormat.NETCDF4.getFormatName())
- 				.param("var", "Relative_humidity_height_above_ground", "Temperature_height_above_ground");
+   public void getGridSubsetOnGridDatasetNc4() throws Exception{
+     RequestBuilder rb = MockMvcRequestBuilders.get("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
+         .servletPath("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
+         .param("accept", SupportedFormat.NETCDF4.getFormatName())
+         .param("var", "Relative_humidity_height_above_ground", "Temperature_height_above_ground");
 
      MvcResult result =  this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
- 			.andExpect(MockMvcResultMatchers.content().contentType(SupportedFormat.NETCDF4.getMimeType()))
+       .andExpect(MockMvcResultMatchers.content().contentType(SupportedFormat.NETCDF4.getMimeType()))
       .andExpect(MockMvcResultMatchers.header().string(Constants.Content_Disposition, new FilenameMatcher(".nc4")))
       .andReturn();
 
@@ -86,7 +86,7 @@ public class GridDatasetControllerTest {
      for (String name : result.getResponse().getHeaderNames()) {
        System.out.printf(  "%s= %s%n", name, result.getResponse().getHeader(name));
      }
- 	}
+   }
 
   private class FilenameMatcher extends BaseMatcher<String> {
     String suffix;

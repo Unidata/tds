@@ -94,11 +94,11 @@ public class UploadController extends LoadCommon
             File root = tdsContext.getServletRootDirectory();
             upform = new File(root, DEFAULTUPLOADFORM);
         }
-	try {
-	this.uploadform = loadForm(upform);
-	} catch (IOException ioe) {
+  try {
+  this.uploadform = loadForm(upform);
+  } catch (IOException ioe) {
             throw new SendError(HttpStatus.SC_PRECONDITION_FAILED, ioe);
-	}
+  }
     }
 
     // Setup for each request

@@ -13,16 +13,16 @@ import thredds.client.catalog.Dataset;
 
 public interface ViewerService {
 
-	List<Viewer>  getViewers();
-	
-	Viewer getViewer(String viewer);
-	
-	String getViewerTemplate(String template);
-	
-	boolean registerViewer(Viewer v);
-	
-	void showViewers(Formatter sbuff, Dataset dataset, HttpServletRequest req);
+  List<Viewer>  getViewers();
 
-	List<ViewerLinkProvider.ViewerLink> getViewerLinks(Dataset dataset, HttpServletRequest req);
-	
+  Viewer getViewer(String viewer);
+
+  String getViewerTemplate(String template);
+
+  boolean registerViewer(Viewer v);
+
+  void showViewers(Formatter sbuff, Dataset dataset, HttpServletRequest req);
+
+  List<ViewerLinkProvider.ViewerLink> getViewerLinks(Dataset dataset, HttpServletRequest req);
+
 }

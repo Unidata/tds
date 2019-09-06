@@ -72,7 +72,7 @@ public class FixedValue extends Value
         case UInt32:
         case Int64:
         case UInt64:
-	        return null;
+          return null;
 
         case Float32:
         case Float64:
@@ -88,7 +88,7 @@ public class FixedValue extends Value
             return null;
 
         case Opaque:
-	    return null;
+      return null;
 
         case Enum:
             return null;
@@ -100,9 +100,9 @@ public class FixedValue extends Value
 
 
     public int nextCount(int max)
-	throws DapException
+  throws DapException
     {
-	return 0;
+  return 0;
     }
 
 

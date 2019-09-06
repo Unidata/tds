@@ -103,7 +103,7 @@ public class CollectionUpdater {
 
     try {
       if(!scheduler.checkExists(updateJob.getKey())) {
-      	scheduler.addJob(updateJob, false);
+        scheduler.addJob(updateJob, false);
       } else {
         logger.warn("scheduler failed to add updateJob for " + updateJob.getKey() +". Another Job exists with that identification." );
       }
@@ -147,7 +147,7 @@ public class CollectionUpdater {
                 .build();
 
       try {
-    		scheduler.scheduleJob(rescanTrigger);
+        scheduler.scheduleJob(rescanTrigger);
         logger.info("scheduleJob recurring scan for '{}' cronExpr={}", config.collectionName, updateConfig.rescan);
       } catch (Throwable e) {
         logger.error("scheduleJob failed to schedule cron Job", e);

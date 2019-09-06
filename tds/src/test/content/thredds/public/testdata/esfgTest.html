@@ -120,33 +120,33 @@ body { font-family: Arial,Helvetica,sans-serif; }
 function pad(number,length) {
     var str = '' + number;
     while (str.length < length)
-	str = '0' + str;
+  str = '0' + str;
     return str;
 }
 
 function togglestyle1(el){
     if (el.className == 'button_on') {
-    	el.className='button_off';
+      el.className='button_off';
     } 
     else {
-    	el.className='button_on';
+      el.className='button_on';
     }
 }
 
 function togglestyle2(el){
     switch (el.value) {
-	case 'XOR' :
-    		el.value='OR';
-    		el.className='button_OR';
-    		break;
-	case 'OR' :
-    		el.value='AND';
-    		el.className='button_AND';
-    		break;
-	case 'AND' :
-    		el.value='XOR';
-    		el.className='button_XOR';
-    		break;
+  case 'XOR' :
+        el.value='OR';
+        el.className='button_OR';
+        break;
+  case 'OR' :
+        el.value='AND';
+        el.className='button_AND';
+        break;
+  case 'AND' :
+        el.value='XOR';
+        el.className='button_XOR';
+        break;
     }
 }
 
@@ -154,21 +154,21 @@ function count() {
     var images_inline=0;
     var images_number=0;
     for (var i=0; i<document.getElementsByTagName('table').length; i++) {
-	if (document.getElementsByTagName('table').item(i).className == 'image') {
-	    if (document.getElementsByTagName('table').item(i).style.display == 'inline') {
-	    	images_inline=images_inline+1;
-	    }
-	    images_number=images_number+1;
-	}
+  if (document.getElementsByTagName('table').item(i).className == 'image') {
+      if (document.getElementsByTagName('table').item(i).style.display == 'inline') {
+        images_inline=images_inline+1;
+      }
+      images_number=images_number+1;
+  }
     }
     document.getElementById('IMAGES_RATIO').value=pad(images_inline,3)+' / '+pad(images_number,3);
 }
 
 function show_all() {
     for (var i=0; i<document.getElementsByTagName('table').length; i++) {
-	if (document.getElementsByTagName('table').item(i).className == 'image') {
-    		document.getElementsByTagName('table').item(i).style.display='inline';
-    	}
+  if (document.getElementsByTagName('table').item(i).className == 'image') {
+        document.getElementsByTagName('table').item(i).style.display='inline';
+      }
     }
     count();
     document.getElementById('FILTER_READONLY').value='.*';
@@ -176,32 +176,32 @@ function show_all() {
 
 function hide_all() {
     for (var i=0; i<document.getElementsByTagName('table').length; i++) {
-	if (document.getElementsByTagName('table').item(i).className == 'image') {
-        	document.getElementsByTagName('table').item(i).style.display='none';
-    	}
+  if (document.getElementsByTagName('table').item(i).className == 'image') {
+          document.getElementsByTagName('table').item(i).style.display='none';
+      }
     }
 }
 
 function show_table(name) {
     for (var i=0; i<document.getElementsByTagName('table').length; i++) {
-	if (document.getElementsByTagName('table').item(i).className == 'image') {
-    		tablename=document.getElementsByTagName('table').item(i).getAttribute('name');
-    		//alert('tablename '+tablename);
-    		if (tablename.match(eval('/('+name+')/'))) {
-    			document.getElementsByTagName('table').item(i).style.display='inline';
-    		}
-    	}
+  if (document.getElementsByTagName('table').item(i).className == 'image') {
+        tablename=document.getElementsByTagName('table').item(i).getAttribute('name');
+        //alert('tablename '+tablename);
+        if (tablename.match(eval('/('+name+')/'))) {
+          document.getElementsByTagName('table').item(i).style.display='inline';
+        }
+      }
     }
 }
 
 function set_input_off() {
     for (var i=0; i<document.getElementsByTagName('input').length; i++) {
-    	if (document.getElementsByTagName('input')[i].className == 'button_on') {
-    		value=document.getElementsByTagName('input')[i].getAttribute('value');
-    		if (value != 'ALL') {
-    			document.getElementsByTagName('input')[i].className='button_off';
-    		}
-    	}
+      if (document.getElementsByTagName('input')[i].className == 'button_on') {
+        value=document.getElementsByTagName('input')[i].getAttribute('value');
+        if (value != 'ALL') {
+          document.getElementsByTagName('input')[i].className='button_off';
+        }
+      }
     }
 }
 
@@ -210,14 +210,14 @@ function filter(el) {
     hide_all();
     operator=document.getElementById('OPERATOR').value;
     if (operator == 'XOR') {
-	set_input_off();
-	el.className='button_on';
-	exp=el.value;
+  set_input_off();
+  el.className='button_on';
+  exp=el.value;
     } 
     else {   // exp is the pattern to be build from all input buttons when OR or AND
-    	var exp='';
-    	for (var i=0; i<document.getElementsByTagName('input').length; i++) {
-    		if ((document.getElementsByTagName('input')[i].className == 'button_on') 
+      var exp='';
+      for (var i=0; i<document.getElementsByTagName('input').length; i++) {
+      	if ((document.getElementsByTagName('input')[i].className == 'button_on')
     		    && (document.getElementsByTagName('input')[i].name != 'FILTER_READONLY')) {
     			value=document.getElementsByTagName('input')[i].value;
 			//alert('DETECTED '+value);

@@ -5,10 +5,10 @@
 package thredds.server.ncss.exception;
 
 public class FeaturesNotFoundException extends NcssException {
-	public FeaturesNotFoundException(String message){
-		super(message);
-	}
-	public FeaturesNotFoundException(String message, Exception cause){
-		super(message, cause);
-	}	
+  public FeaturesNotFoundException(String message){
+    super(message);
+  }
+  public FeaturesNotFoundException(String message, Exception cause){
+    super(message, cause);
+  }
 }

@@ -50,12 +50,12 @@ public class CdmrControllerTest {
 
    @Before
    public void setup(){
- 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
- 	}
+     this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+   }
 
   @SpringJUnit4ParameterizedClassRunner.Parameters
- 	public static Collection<Object[]> getTestParameters(){
- 		return Arrays.asList(new Object[][]{
+   public static Collection<Object[]> getTestParameters(){
+     return Arrays.asList(new Object[][]{
             {"/cdmremote/NCOF/POLCOMS/IRISH_SEA/files/20060925_0600.nc", 5, 12, 16, "Precipitable_water(0:1,43:53,20:40)"},        // FMRC
             {"/cdmremote/testStationFeatureCollection/files/Surface_METAR_20060325_0000.nc", 9, 22, 47, "wind_speed(0:1)"},  // station
             {"/cdmremote/testBuoyFeatureCollection/files/Surface_Buoy_20130804_0000.nc", 5, 2, 58, "meanWind(0:1)"},  // point
@@ -76,7 +76,7 @@ public class CdmrControllerTest {
   @Test
    public void cdmRemoteRequestCapabilitiesTest() throws Exception {
      RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
-   				.param("req", "capabilities");
+           .param("req", "capabilities");
 
       logger.debug("{}?req=capabilities", path);
 
@@ -97,7 +97,7 @@ public class CdmrControllerTest {
   @Test
   public void cdmRemoteRequestCdlTest() throws Exception {
     RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
-  				.param("req", "cdl");
+          .param("req", "cdl");
 
     MvcResult result = this.mockMvc.perform( rb )
               .andExpect(MockMvcResultMatchers.status().is(200))
@@ -113,7 +113,7 @@ public class CdmrControllerTest {
   @Test
    public void cdmRemoteRequestNcmlTest() throws Exception {
      RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
-   				.param("req", "ncml");
+           .param("req", "ncml");
 
      MvcResult result = this.mockMvc.perform( rb )
                .andExpect(MockMvcResultMatchers.status().is(200))
@@ -140,7 +140,7 @@ public class CdmrControllerTest {
   @Test
    public void cdmRemoteRequestHeaderTest() throws Exception {
      RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
-   				.param("req", "header");
+           .param("req", "header");
 
      MvcResult result = this.mockMvc.perform( rb )
                .andExpect(MockMvcResultMatchers.status().is(200))
@@ -161,8 +161,8 @@ public class CdmrControllerTest {
   @Test
    public void cdmRemoteRequestDataTest() throws Exception {
      RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
-   				.param("req", "data")
-   				.param("var", dataReq);
+           .param("req", "data")
+           .param("var", dataReq);
 
      MvcResult result = this.mockMvc.perform( rb )
                .andExpect(MockMvcResultMatchers.status().is(200))

@@ -47,22 +47,22 @@ public class TestPointFCController {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   @Autowired
- 	private WebApplicationContext wac;
+   private WebApplicationContext wac;
 
- 	private MockMvc mockMvc;
+   private MockMvc mockMvc;
 
- 	@Before
- 	public void setup(){
- 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
- 	}
+   @Before
+   public void setup(){
+     this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+   }
 
   @SpringJUnit4ParameterizedClassRunner.Parameters
- 	public static Collection<Object[]> getTestParameters(){
- 		return Arrays.asList(new Object[][]{
+   public static Collection<Object[]> getTestParameters(){
+     return Arrays.asList(new Object[][]{
             {"/ncss/point/testBuoyFeatureCollection/Surface_Buoy_Point_Data_fc.cdmr", 54, "point"},
             {"/ncss/point/testSurfaceSynopticFeatureCollection/Surface_Synoptic_Point_Data_fc.cdmr", 41, "point"},
     });
- 	}
+   }
 
   String path, type;
   int nvars;

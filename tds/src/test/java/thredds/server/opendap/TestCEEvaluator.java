@@ -54,9 +54,9 @@ public class TestCEEvaluator extends UnitTestCommon
                     "4","?t[0:2:3][3:4][4:5][0:2:6]",
             },
             new String[]{
-		    "0","tst-PROFILER.nc",
-		    "1","?wmoStaNum",
-		    "2","staName"
+        "0","tst-PROFILER.nc",
+        "1","?wmoStaNum",
+        "2","staName"
             },
     };
 

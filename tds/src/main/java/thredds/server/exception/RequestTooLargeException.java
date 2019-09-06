@@ -7,12 +7,12 @@ package thredds.server.exception;
 
 public class RequestTooLargeException extends RuntimeException {
 
-	public RequestTooLargeException(String message){
-		super(message);
-	}
-	
-	public RequestTooLargeException(String message, Exception cause){
-		super(message, cause);
-	}	
+  public RequestTooLargeException(String message){
+    super(message);
+  }
+
+  public RequestTooLargeException(String message, Exception cause){
+    super(message, cause);
+  }
 
 }
