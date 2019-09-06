@@ -64,39 +64,39 @@ import java.util.List;
 @ContextConfiguration(locations = { "/WEB-INF/applicationContext.xml" }, loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class GridRequestTooLargeTest {
-	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	@Autowired
-	private NcssGridController featureDatasetController;
+  @Autowired
+  private NcssGridController featureDatasetController;
 
-	private MockHttpServletResponse response ;
-	private MockHttpServletRequest request;
+  private MockHttpServletResponse response ;
+  private MockHttpServletRequest request;
 
   //   <featureCollection featureType="GRIB" name="GFS_CONUS_80km" path="gribCollection/GFS_CONUS_80km">
-	private String pathInfo="/ncss/grid/gribCollection/GFS_CONUS_80km/best";
+  private String pathInfo="/ncss/grid/gribCollection/GFS_CONUS_80km/best";
 
-	@Before
-	public void setUp() throws IOException{
+  @Before
+  public void setUp() throws IOException{
 
-		response = new MockHttpServletResponse();
-		request = new MockHttpServletRequest();
-		request.setPathInfo(pathInfo);
-		request.setServletPath(pathInfo);
+    response = new MockHttpServletResponse();
+    request = new MockHttpServletRequest();
+    request.setPathInfo(pathInfo);
+    request.setServletPath(pathInfo);
 
-	}
+  }
 
-	@Test(expected=RequestTooLargeException.class)
-	public void testRequestTooLargeException() throws Exception{
-		BindingResult validationResult;
-		NcssGridParamsBean params = new NcssGridParamsBean();
-		params.setTemporal("all");
-		List<String> vars = new ArrayList<>();
-		vars.add("u-component_of_wind_isobaric");
-		vars.add("v-component_of_wind_isobaric");
-		vars.add("Geopotential_height_isobaric");
-		params.setVar(vars);
-		validationResult = new BeanPropertyBindingResult(params, "params");
-		featureDatasetController.handleRequest(request, response, params, validationResult);
-	}
+  @Test(expected=RequestTooLargeException.class)
+  public void testRequestTooLargeException() throws Exception{
+    BindingResult validationResult;
+    NcssGridParamsBean params = new NcssGridParamsBean();
+    params.setTemporal("all");
+    List<String> vars = new ArrayList<>();
+    vars.add("u-component_of_wind_isobaric");
+    vars.add("v-component_of_wind_isobaric");
+    vars.add("Geopotential_height_isobaric");
+    params.setVar(vars);
+    validationResult = new BeanPropertyBindingResult(params, "params");
+    featureDatasetController.handleRequest(request, response, params, validationResult);
+  }
 
 }

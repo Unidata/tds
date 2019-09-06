@@ -18,18 +18,18 @@ import ucar.nc2.dt.GridDataset;
  *
  */
 public final class DatasetHandlerAdapter {
-	
-	private DatasetHandlerAdapter(){}
-	
-	public static final GridDataset openGridDataset(String pathInfo) throws IOException{
-		
-		MockHttpServletRequest req = new MockHttpServletRequest();
-		MockHttpServletResponse res= new MockHttpServletResponse();
-		
-		req.setPathInfo(pathInfo);
-		
+
+  private DatasetHandlerAdapter(){}
+
+  public static final GridDataset openGridDataset(String pathInfo) throws IOException{
+
+    MockHttpServletRequest req = new MockHttpServletRequest();
+    MockHttpServletResponse res= new MockHttpServletResponse();
+
+    req.setPathInfo(pathInfo);
+
     String datasetPath = AbstractNcssController.getDatasetPath(pathInfo);
-		return TdsRequestedDataset.getGridDataset(req, res, datasetPath);
-	}
+    return TdsRequestedDataset.getGridDataset(req, res, datasetPath);
+  }
 
 }

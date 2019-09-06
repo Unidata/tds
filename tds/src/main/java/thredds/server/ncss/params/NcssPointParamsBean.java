@@ -22,7 +22,7 @@ import java.util.List;
 public class NcssPointParamsBean extends NcssParamsBean {
 
   //// station only
-	private List<String> stns;
+  private List<String> stns;
 
   public List<String> getStns() {
     return stns;

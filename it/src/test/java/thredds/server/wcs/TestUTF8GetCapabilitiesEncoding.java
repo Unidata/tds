@@ -41,11 +41,11 @@ public class TestUTF8GetCapabilitiesEncoding {
 
   @Parameterized.Parameters(name="{0}")
   public static Collection<Object[]> getTestParameters(){
- 		return Arrays.asList(new Object[][]{
+     return Arrays.asList(new Object[][]{
             {"/wcs/scanCdmUnitTests/tds/ncep/GFS_Global_2p5deg_20100602_1200.grib2", "service=WCS&version=1.0.0&request=GetCapabilities"},
             // {"/wms/scanCdmUnitTests/tds/ncep/GFS_Global_2p5deg_20100602_1200.grib2", "service=WMS&version=1.3.0&request=GetCapabilities"},
     });
- 	}
+   }
 
   String path, query;
   public TestUTF8GetCapabilitiesEncoding(String path, String query) {

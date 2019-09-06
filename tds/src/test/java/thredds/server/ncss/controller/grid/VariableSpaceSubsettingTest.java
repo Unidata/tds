@@ -80,82 +80,82 @@ import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 @ContextConfiguration(locations = { "/WEB-INF/applicationContext.xml" }, loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class VariableSpaceSubsettingTest {
-	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	@Autowired
-	private WebApplicationContext wac;
+  @Autowired
+  private WebApplicationContext wac;
 
-	private MockMvc mockMvc;		
-	private RequestBuilder requestBuilder;	
+  private MockMvc mockMvc;
+  private RequestBuilder requestBuilder;
 
-	private String accept;
-	private String pathInfo;
-	private int[][] expectedShapes;
-	private List<String> vars;
+  private String accept;
+  private String pathInfo;
+  private int[][] expectedShapes;
+  private List<String> vars;
 
-	@Parameters
-	public static Collection<Object[]> getTestParameters(){
+  @Parameters
+  public static Collection<Object[]> getTestParameters(){
 
-		return Arrays.asList( new Object[][]{
-				{ SupportedFormat.NETCDF3, new int[][]{ {1,65,93}, {1,65,93} } , GridPathParams.getPathInfo().get(4), GridDataParameters.getVars().get(0)}, //No vertical levels
-				{ SupportedFormat.NETCDF3, new int[][]{ {1,1,65,93}, {1,1,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(1)}, //Same vertical level (one level)
-				{ SupportedFormat.NETCDF3, new int[][]{ {1,29,65,93}, {1,29,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(2)}, //Same vertical level (multiple level)
-				{ SupportedFormat.NETCDF3, new int[][]{ {1,65,93}, {1,29,65,93}, {1,1,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(3)}, //No vertical levels and vertical levels
-				{ SupportedFormat.NETCDF3, new int[][]{ {1,1,65,93}, {1,29,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(4)}, //Different vertical levels
+    return Arrays.asList( new Object[][]{
+        { SupportedFormat.NETCDF3, new int[][]{ {1,65,93}, {1,65,93} } , GridPathParams.getPathInfo().get(4), GridDataParameters.getVars().get(0)}, //No vertical levels
+        { SupportedFormat.NETCDF3, new int[][]{ {1,1,65,93}, {1,1,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(1)}, //Same vertical level (one level)
+        { SupportedFormat.NETCDF3, new int[][]{ {1,29,65,93}, {1,29,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(2)}, //Same vertical level (multiple level)
+        { SupportedFormat.NETCDF3, new int[][]{ {1,65,93}, {1,29,65,93}, {1,1,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(3)}, //No vertical levels and vertical levels
+        { SupportedFormat.NETCDF3, new int[][]{ {1,1,65,93}, {1,29,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(4)}, //Different vertical levels
 
-				{ SupportedFormat.NETCDF4,  new int[][]{ {1,65,93}, {1,65,93} } , GridPathParams.getPathInfo().get(4), GridDataParameters.getVars().get(0)}, //No vertical levels
-				{ SupportedFormat.NETCDF4, new int[][]{ {1,1,65,93}, {1,1,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(1)}, //Same vertical level (one level)
-				{ SupportedFormat.NETCDF4, new int[][]{ {1,29,65,93}, {1,29,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(2)}, //Same vertical level (multiple level)
-				{ SupportedFormat.NETCDF4, new int[][]{ {1,65,93}, {1,29,65,93}, {1,1,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(3)}, //No vertical levels and vertical levels
-				{ SupportedFormat.NETCDF4, new int[][]{ {1,1,65,93}, {1,29,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(4)}, //Different vertical levels
-		});
-	}
+        { SupportedFormat.NETCDF4,  new int[][]{ {1,65,93}, {1,65,93} } , GridPathParams.getPathInfo().get(4), GridDataParameters.getVars().get(0)}, //No vertical levels
+        { SupportedFormat.NETCDF4, new int[][]{ {1,1,65,93}, {1,1,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(1)}, //Same vertical level (one level)
+        { SupportedFormat.NETCDF4, new int[][]{ {1,29,65,93}, {1,29,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(2)}, //Same vertical level (multiple level)
+        { SupportedFormat.NETCDF4, new int[][]{ {1,65,93}, {1,29,65,93}, {1,1,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(3)}, //No vertical levels and vertical levels
+        { SupportedFormat.NETCDF4, new int[][]{ {1,1,65,93}, {1,29,65,93} }, GridPathParams.getPathInfo().get(3), GridDataParameters.getVars().get(4)}, //Different vertical levels
+    });
+  }
 
-	public VariableSpaceSubsettingTest(SupportedFormat format, int[][] result, String pathInfo, List<String> vars){
-		this.accept = format.getAliases().get(0);
-		this.expectedShapes= result;
-		this.pathInfo = pathInfo;
-		this.vars = vars;
-	}
+  public VariableSpaceSubsettingTest(SupportedFormat format, int[][] result, String pathInfo, List<String> vars){
+    this.accept = format.getAliases().get(0);
+    this.expectedShapes= result;
+    this.pathInfo = pathInfo;
+    this.vars = vars;
+  }
 
-	@Before
-	public void setUp() throws IOException{
-		String servletPath = pathInfo;
-		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+  @Before
+  public void setUp() throws IOException{
+    String servletPath = pathInfo;
+    mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 
-		Iterator<String> it = vars.iterator();
-		String varParamVal = it.next();
-		while(it.hasNext()){
-			String next = it.next();
-			varParamVal =varParamVal+","+next;
-		}		
+    Iterator<String> it = vars.iterator();
+    String varParamVal = it.next();
+    while(it.hasNext()){
+      String next = it.next();
+      varParamVal =varParamVal+","+next;
+    }
 
-		requestBuilder = MockMvcRequestBuilders.get(servletPath).servletPath(servletPath)
-				.param("accept", accept)
-				.param("var", varParamVal);
-	}
+    requestBuilder = MockMvcRequestBuilders.get(servletPath).servletPath(servletPath)
+        .param("accept", accept)
+        .param("var", varParamVal);
+  }
 
-	@Test
-	public void shouldGetVariablesSubset() throws Exception{
+  @Test
+  public void shouldGetVariablesSubset() throws Exception{
 
-		mockMvc.perform(requestBuilder)
-		.andExpect( MockMvcResultMatchers.status().isOk() )
-		.andExpect( new ResultMatcher(){
-			public void match(MvcResult result) throws Exception{
-				//Open the binary response in memory
-				NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray() );
-				ucar.nc2.dt.grid.GridDataset gdsDataset =new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));		
-				assertTrue( gdsDataset.getCalendarDateRange().isPoint());
+    mockMvc.perform(requestBuilder)
+    .andExpect( MockMvcResultMatchers.status().isOk() )
+    .andExpect( new ResultMatcher(){
+      public void match(MvcResult result) throws Exception{
+        //Open the binary response in memory
+        NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray() );
+        ucar.nc2.dt.grid.GridDataset gdsDataset =new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
+        assertTrue( gdsDataset.getCalendarDateRange().isPoint());
 
-				int[][] shapes = new int[vars.size()][];
-				int count = 0;
-				for (String varName : vars){
-					GeoGrid grid = gdsDataset.findGridByShortName(varName);
-					shapes[count++] = grid.getShape();
-				}
-				assertArrayEquals(expectedShapes, shapes);										
-			}
-		});								
-	}
+        int[][] shapes = new int[vars.size()][];
+        int count = 0;
+        for (String varName : vars){
+          GeoGrid grid = gdsDataset.findGridByShortName(varName);
+          shapes[count++] = grid.getShape();
+        }
+        assertArrayEquals(expectedShapes, shapes);
+      }
+    });
+  }
 
 }

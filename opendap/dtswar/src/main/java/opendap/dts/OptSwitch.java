@@ -41,7 +41,7 @@ package opendap.dts;
 
 
 /**
- * OptSwitch	- class definition for Switches
+ * OptSwitch  - class definition for Switches
  * <p/>
  * Description:  this class defines a switch element.
  * a switch is considered to be used (having been set or assigned
@@ -51,14 +51,14 @@ package opendap.dts;
  * <p/>
  * Permitted values for 'type' field:
  * <p/>
- * protected static final int NONE 	uninitialized
- * protected static final int BOOL 	boolean type switch
- * protected static final int VAL  	value type switch
+ * protected static final int NONE   uninitialized
+ * protected static final int BOOL   boolean type switch
+ * protected static final int VAL    value type switch
  * <p/>
- * Fields:	sw	the switch name
- * type	boolean/value
- * set	value is set/clear
- * val	switch value (not applicable to boolean type switch)
+ * Fields:  sw  the switch name
+ * type  boolean/value
+ * set  value is set/clear
+ * val  switch value (not applicable to boolean type switch)
  *
  * @author Arieh Markel
  * @version 1.0

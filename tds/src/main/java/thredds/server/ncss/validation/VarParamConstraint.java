@@ -22,11 +22,11 @@ import javax.validation.Payload;
 @Constraint(validatedBy=VarParamsValidator.class)
 @Documented
 public @interface VarParamConstraint {
-	
-	String message() default "{thredds.server.ncSubset.validation.varparams}";
-	
-	Class<?>[] groups() default {};
-	
-	Class<? extends Payload>[] payload() default {};	
+
+  String message() default "{thredds.server.ncSubset.validation.varparams}";
+
+  Class<?>[] groups() default {};
+
+  Class<? extends Payload>[] payload() default {};
 
 }

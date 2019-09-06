@@ -20,10 +20,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface NcssGridRequestConstraint {
 
-	String message() default "{thredds.server.ncSubset.validation.failure}";
+  String message() default "{thredds.server.ncSubset.validation.failure}";
 
-	Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 
 }

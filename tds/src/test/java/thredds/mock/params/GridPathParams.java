@@ -41,36 +41,36 @@ import java.util.List;
  * @author mhermida
  */
 public final class GridPathParams {
-	/**
-	 * List that contains one pathInfo for each of the datasets in catalog.xml
-	 */
-	private static List<String> pathInfo;
-	
-	private GridPathParams(){}
-	
-	static {
-		pathInfo = Arrays.asList(
+  /**
+   * List that contains one pathInfo for each of the datasets in catalog.xml
+   */
+  private static List<String> pathInfo;
+
+  private GridPathParams(){}
+
+  static {
+    pathInfo = Arrays.asList(
             "/ncss/grid/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc",//single dataset
             "/ncss/grid/testGridScan/GFS_CONUS_80km_20120227_0000.grib1", //datasetScan
             "/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_fmrc.ncd", //FeatureCollection --> TwoD
             "/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd", //FeatureCollection --> Best
             "/ncss/grid/testGFSfmrc/files/GFS_CONUS_80km_20120418_1200.nc", //FeatureCollection --> Files
             "/ncss/grid/testGFSfmrc/runs/GFS_CONUS_80km_RUN_2012-04-18T12:00:00.000Z" //FeatureCollection --> Runs
-    	);
-	}
-	
-	public static List<String> getPathInfo() {
-		return pathInfo;
-	}
-	
-	public static List<String[]> getPathInfoAsListOfArrays() {
-		String[][] listStr = new String[pathInfo.size()][1];
-		
-		for(int i=0; i < pathInfo.size(); i++  ){
-			listStr[i] = new String[]{ pathInfo.get(i) };
-		}
-		
-		return Arrays.asList(listStr);
-		
-	}
+      );
+  }
+
+  public static List<String> getPathInfo() {
+    return pathInfo;
+  }
+
+  public static List<String[]> getPathInfoAsListOfArrays() {
+    String[][] listStr = new String[pathInfo.size()][1];
+
+    for(int i=0; i < pathInfo.size(); i++  ){
+      listStr[i] = new String[]{ pathInfo.get(i) };
+    }
+
+    return Arrays.asList(listStr);
+
+  }
 }

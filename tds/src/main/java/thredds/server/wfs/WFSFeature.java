@@ -10,87 +10,87 @@ import java.util.ArrayList;
  */
 public class WFSFeature {
 
-	private final String name;
-	private final String title;
-	private String fileDSName;
-	private final String type;
-	private final ArrayList<WFSFeatureAttribute> attributes;	
-	
-	/**
-	 * Gets the name of this WFS feature.
-	 * 
-	 * @return name
-	 */
-	public String getName() {
-		return name;
-	}
-	
-	/**
-	 * Gets the title of this WFS feature.
-	 * 
-	 * @return
-	 */
-	public String getTitle() {
-		return title;
-	}
+  private final String name;
+  private final String title;
+  private String fileDSName;
+  private final String type;
+  private final ArrayList<WFSFeatureAttribute> attributes;
 
-	/**
-	 * gets the type of this WFS Feature
-	 *
-	 * @return
-	 */
-	public String getType() { return type; }
+  /**
+   * Gets the name of this WFS feature.
+   *
+   * @return name
+   */
+  public String getName() {
+    return name;
+  }
 
-	/**
-	 * gets the list of attributes of this WFS Feature
-	 *
-	 * @return
-	 */
-	public ArrayList<WFSFeatureAttribute> getAttributes() {return attributes;}
-	
-	/**
-	 * Gets the file / dataset name from which the WFS feature was retrieved.
-	 * 
-	 * The File DS name is used for the namespace of the feature type.
-	 * 
-	 * @return
-	 */
-	public String getFileDSName() {
-		return fileDSName;
-	}
+  /**
+   * Gets the title of this WFS feature.
+   *
+   * @return
+   */
+  public String getTitle() {
+    return title;
+  }
 
-	/**
-	 * Create a new WFS Feature with the given name and title
-	 *
-	 * @param name
-	 * @param title
-	 */
-	public WFSFeature(String name, String title) {
-		this(name, title, null, null);
-	}
+  /**
+   * gets the type of this WFS Feature
+   *
+   * @return
+   */
+  public String getType() { return type; }
 
-	/**
-	 * Create a new WFS Feature with given name, title, type, and attributes
-	 *
-	 * @param name
-	 * @param title
-	 * @param type
-	 * @param attributes
-	 */
-	public WFSFeature(String name, String title, String type, ArrayList<WFSFeatureAttribute> attributes) {
-		this.name = name;
-		this.title = title;
-		fileDSName = null;
-		this.type = type;
-		this.attributes = attributes;
-	}
+  /**
+   * gets the list of attributes of this WFS Feature
+   *
+   * @return
+   */
+  public ArrayList<WFSFeatureAttribute> getAttributes() {return attributes;}
 
-	/**
-	 * add attributes to list of attributes
-	 *
-	 * @param attribute
-	 */
-	public void addAttribute(WFSFeatureAttribute attribute) {
-		attributes.add(attribute);
-	}
+  /**
+   * Gets the file / dataset name from which the WFS feature was retrieved.
+   *
+   * The File DS name is used for the namespace of the feature type.
+   *
+   * @return
+   */
+  public String getFileDSName() {
+    return fileDSName;
+  }
+
+  /**
+   * Create a new WFS Feature with the given name and title
+   *
+   * @param name
+   * @param title
+   */
+  public WFSFeature(String name, String title) {
+    this(name, title, null, null);
+  }
+
+  /**
+   * Create a new WFS Feature with given name, title, type, and attributes
+   *
+   * @param name
+   * @param title
+   * @param type
+   * @param attributes
+   */
+  public WFSFeature(String name, String title, String type, ArrayList<WFSFeatureAttribute> attributes) {
+    this.name = name;
+    this.title = title;
+    fileDSName = null;
+    this.type = type;
+    this.attributes = attributes;
+  }
+
+  /**
+   * add attributes to list of attributes
+   *
+   * @param attribute
+   */
+  public void addAttribute(WFSFeatureAttribute attribute) {
+    attributes.add(attribute);
+  }
 }

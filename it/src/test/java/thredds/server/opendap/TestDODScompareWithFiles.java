@@ -60,7 +60,7 @@ public class TestDODScompareWithFiles {
     result.add( new Object[]{"conventions/mm5/n040.nc"}); //
 
     return result;
- 	}
+   }
 
 
   public TestDODScompareWithFiles(String filename) {

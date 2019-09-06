@@ -122,15 +122,15 @@ public class TestDir {
 
     String rts = System.getProperty(remoteTestServerPropName);
     if(rts != null && rts.length() > 0)
-	    remoteTestServer = rts;
+      remoteTestServer = rts;
 
     String dts = System.getProperty(dap2TestServerPropName);
     if(dts != null && dts.length() > 0)
-	    dap2TestServer = dts;
+      dap2TestServer = dts;
 
     String d4ts = System.getProperty(dap4TestServerPropName);
     if(d4ts != null && d4ts.length() > 0)
-      	dap4TestServer = d4ts;
+        dap4TestServer = d4ts;
 
     AliasTranslator.addAlias("${cdmUnitTest}", cdmUnitTestDir);
   }

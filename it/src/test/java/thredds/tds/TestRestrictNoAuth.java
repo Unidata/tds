@@ -32,7 +32,7 @@ public class TestRestrictNoAuth {
       int statusCode = method.execute();
 
       Assert.assertTrue("Expected HttpStatus.SC_UNAUTHORIZED|HttpStatus.SC_FORBIDDEN",
-			statusCode== HttpStatus.SC_UNAUTHORIZED || statusCode == HttpStatus.SC_FORBIDDEN);
+      statusCode== HttpStatus.SC_UNAUTHORIZED || statusCode == HttpStatus.SC_FORBIDDEN);
 
     } catch (ucar.httpservices.HTTPException e) {
       Assert.fail(e.getMessage());

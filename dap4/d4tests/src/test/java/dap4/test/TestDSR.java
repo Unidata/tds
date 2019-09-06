@@ -55,7 +55,7 @@ public class TestDSR extends DapTestCommon
 
     @Before
     public void setup()
-	throws Exception
+  throws Exception
     {
         StandaloneMockMvcBuilder mvcbuilder =
                 MockMvcBuilders.standaloneSetup(new D4TSController());

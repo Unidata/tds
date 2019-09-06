@@ -32,77 +32,77 @@ import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 @ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"}, loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class CatalogControllerTest {
-	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	@Autowired
-	private WebApplicationContext wac;
+  @Autowired
+  private WebApplicationContext wac;
 
-	private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
-	@Before
- 	public void setup(){
- 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
- 	}
+  @Before
+   public void setup(){
+     this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+   }
 
-	@SpringJUnit4ParameterizedClassRunner.Parameters
-	public static Collection<Object[]> getTestParameters(){
-		return Arrays.asList(new Object[][]{
-					{"/catalog/scanCdmUnitTests/agg/pointFeatureCollection/netCDFbuoydata/catalog.html", "text/html;charset=UTF-8"},
-					{"/catalog/scanCdmUnitTests/agg/pointFeatureCollection/netCDFbuoydata/catalog.xml", ContentType.xml.getContentHeader()},
-	});
-	}
+  @SpringJUnit4ParameterizedClassRunner.Parameters
+  public static Collection<Object[]> getTestParameters(){
+    return Arrays.asList(new Object[][]{
+          {"/catalog/scanCdmUnitTests/agg/pointFeatureCollection/netCDFbuoydata/catalog.html", "text/html;charset=UTF-8"},
+          {"/catalog/scanCdmUnitTests/agg/pointFeatureCollection/netCDFbuoydata/catalog.xml", ContentType.xml.getContentHeader()},
+  });
+  }
 
-	String path, expectType;
-	public CatalogControllerTest(String path, String expectType) {
-	  this.path = path;
-	  this.expectType = expectType;
-	}
+  String path, expectType;
+  public CatalogControllerTest(String path, String expectType) {
+    this.path = path;
+    this.expectType = expectType;
+  }
 
-	@Ignore("No longer fails - we ignore command=xxxx")
-	@Test
-	public void validateCommandTest() throws Exception{
+  @Ignore("No longer fails - we ignore command=xxxx")
+  @Test
+  public void validateCommandTest() throws Exception{
 
-		RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
-				.param("dataset", "scanCdmUnitTests/agg/pointFeatureCollection/netCDFbuoydata/BOD001_000_20050627_20051109.nc")
-				.param("command", "validate");
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
+        .param("dataset", "scanCdmUnitTests/agg/pointFeatureCollection/netCDFbuoydata/BOD001_000_20050627_20051109.nc")
+        .param("command", "validate");
 
-		MvcResult result = this.mockMvc.perform( rb )
+    MvcResult result = this.mockMvc.perform( rb )
             .andExpect(MockMvcResultMatchers.status().is(400))
             .andExpect(MockMvcResultMatchers.content().string(new StringContains("UnsupportedOperationException")))
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.TEXT_PLAIN))
             .andReturn();
 
-		System.out.printf("%s%n", result.getResponse().getContentAsString());
-	}
+    System.out.printf("%s%n", result.getResponse().getContentAsString());
+  }
 
-	@Test
-	public void subsetCommandTest() throws Exception{
+  @Test
+  public void subsetCommandTest() throws Exception{
 
-		RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
-				.param("dataset", "scanCdmUnitTests/agg/pointFeatureCollection/netCDFbuoydata/BOD001_000_20050627_20051109.nc");
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
+        .param("dataset", "scanCdmUnitTests/agg/pointFeatureCollection/netCDFbuoydata/BOD001_000_20050627_20051109.nc");
 
-		MvcResult result = this.mockMvc.perform( rb )
+    MvcResult result = this.mockMvc.perform( rb )
             .andExpect(MockMvcResultMatchers.status().is(200))
             .andExpect(MockMvcResultMatchers.content().string(
-										new StringContains("scanCdmUnitTests/agg/pointFeatureCollection/netCDFbuoydata/BOD001_000_20050627_20051109.nc"))) // LOOK not actually testing subset
+                    new StringContains("scanCdmUnitTests/agg/pointFeatureCollection/netCDFbuoydata/BOD001_000_20050627_20051109.nc"))) // LOOK not actually testing subset
             .andExpect(MockMvcResultMatchers.content().contentType(expectType))
             .andReturn();
 
-		System.out.printf("%s%n", result.getResponse().getContentAsString());
-	}
+    System.out.printf("%s%n", result.getResponse().getContentAsString());
+  }
 
-	@Test
-	public void showCommandTest() throws Exception{
+  @Test
+  public void showCommandTest() throws Exception{
 
-		RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
-		MvcResult result = this.mockMvc.perform( rb )
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
+    MvcResult result = this.mockMvc.perform( rb )
             .andExpect(MockMvcResultMatchers.status().is(200))
             .andExpect(MockMvcResultMatchers.content().string(new StringContains("catalog")))
             .andExpect(MockMvcResultMatchers.content().contentType(expectType))
             .andReturn();
 
-		System.out.printf("%s%n", result.getResponse().getContentAsString());
-	}
+    System.out.printf("%s%n", result.getResponse().getContentAsString());
+  }
 
 
 }

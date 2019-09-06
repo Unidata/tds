@@ -591,7 +591,7 @@ abstract public class LoadCommon
 
     static String
     loadForm(File form)
-	throws IOException
+  throws IOException
     {
         if(form == null)
             throw new SendError(HttpServletResponse.SC_PRECONDITION_FAILED, "No form path specified");
@@ -603,12 +603,12 @@ abstract public class LoadCommon
                     "HTML form not readable: " + form.getName());
         try {
             FileInputStream fis = new FileInputStream(form);
-	    String content = HTTPUtil.readtextfile(fis);
+      String content = HTTPUtil.readtextfile(fis);
             fis.close();
-	    return content;
+      return content;
         } catch (IOException e) {
             logServerStartup.warn("Cannot read HTML form file: " + form.getName());
-	    throw e;
+      throw e;
         }
     }
 

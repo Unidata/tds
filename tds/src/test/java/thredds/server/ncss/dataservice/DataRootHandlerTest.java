@@ -34,42 +34,42 @@ public class DataRootHandlerTest {
   DataRootManager matcher;
 
   @SpringJUnit4ParameterizedClassRunner.Parameters
- 	public static List<String[]> getTestParameters(){
- 		return GridPathParams.getPathInfoAsListOfArrays();
- 	}
+   public static List<String[]> getTestParameters(){
+     return GridPathParams.getPathInfoAsListOfArrays();
+   }
   private String pathInfo;
 
- 	public DataRootHandlerTest(String pathInfo){
- 		this.pathInfo=pathInfo;
- 	}
+   public DataRootHandlerTest(String pathInfo){
+     this.pathInfo=pathInfo;
+   }
 
   @Test
   public void testAllRoots() {
     System.out.printf("pathInfo=%s%n", pathInfo);
     String datasetPath = AbstractNcssController.getDatasetPath(this.pathInfo);
     DataRootManager.DataRootMatch match = matcher.findDataRootMatch(datasetPath);
-		assertNotNull(match);
- 	}
-		
-	/* @Test
-	public void testAliasExpandersDatasetScan(){
-		
-		//datasetScan request path 
-		//reqPath ="/opendapTest/GFS_Puerto_Rico_191km_20100515_0000.grib1";
-		reqPath =PathInfoParams.getPathInfo().get(1);
+    assertNotNull(match);
+   }
+
+  /* @Test
+  public void testAliasExpandersDatasetScan(){
+
+    //datasetScan request path
+    //reqPath ="/opendapTest/GFS_Puerto_Rico_191km_20100515_0000.grib1";
+    reqPath =PathInfoParams.getPathInfo().get(1);
     System.out.printf("reqPath=%s%n", reqPath);
-		DataRootHandler.DataRootMatch match = DataRootHandler.getInstance().findDataRootMatch(reqPath);
-		assertNotNull(match);
-								
-	}
-	
-	@Test
-	public void testAliasExpandersDatasetFeaturecollection(){
-		//featureCollection request path
-		reqPath =PathInfoParams.getPathInfo().get(3);
+    DataRootHandler.DataRootMatch match = DataRootHandler.getInstance().findDataRootMatch(reqPath);
+    assertNotNull(match);
+
+  }
+
+  @Test
+  public void testAliasExpandersDatasetFeaturecollection(){
+    //featureCollection request path
+    reqPath =PathInfoParams.getPathInfo().get(3);
     System.out.printf("reqPath=%s%n", reqPath);
-		DataRootHandler.DataRootMatch match = DataRootHandler.getInstance().findDataRootMatch(reqPath);
-		assertNotNull(match);		
-	}    */
+    DataRootHandler.DataRootMatch match = DataRootHandler.getInstance().findDataRootMatch(reqPath);
+    assertNotNull(match);
+  }    */
 
 }

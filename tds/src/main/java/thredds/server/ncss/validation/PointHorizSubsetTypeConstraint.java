@@ -26,11 +26,11 @@ import javax.validation.Payload;
 @Constraint(validatedBy=PointHorizSubsetTypeValidator.class)
 @Documented
 public @interface PointHorizSubsetTypeConstraint {
-	
-	String message() default "{thredds.server.ncSubset.validation.subsettypeerror}";
-	
-	Class<?>[] groups() default {};
-	
-	Class<? extends Payload>[] payload() default {};	
+
+  String message() default "{thredds.server.ncSubset.validation.subsettypeerror}";
+
+  Class<?>[] groups() default {};
+
+  Class<? extends Payload>[] payload() default {};
 
 }

@@ -503,9 +503,9 @@ class DatasetContext {
             break;
 
           case WFS:
-        	queryString = "service=WFS&version=2.0.0&request=GetCapabilities";
-        	break;
-        	 
+          queryString = "service=WFS&version=2.0.0&request=GetCapabilities";
+          break;
+
           case NCML:
           case UDDC:
           case ISO:

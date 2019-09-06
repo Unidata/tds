@@ -28,40 +28,40 @@ import java.lang.invoke.MethodHandles;
 @ContextConfiguration(locations={"/WEB-INF/applicationContext.xml"},loader=MockTdsContextLoader.class)
 @Category(NeedsContentRoot.class)
 public class RootControllerTest {
-	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	@Autowired
-	private WebApplicationContext wac;
-	
-	private MockMvc mockMvc;
+  @Autowired
+  private WebApplicationContext wac;
 
-	private RequestBuilder requestBuilder;
+  private MockMvc mockMvc;
 
-	@PostConstruct
-	public void init() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-	}
-		
-	@Test
-	public void testRootRedirect() throws Exception{
-		requestBuilder = MockMvcRequestBuilders.get("/");
-		MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-		//Check that "/" is redirected
-		assertEquals(302, mvc.getResponse().getStatus());		
-		assertEquals("redirect:/catalog/catalog.html", mvc.getModelAndView().getViewName());
-	}
+  private RequestBuilder requestBuilder;
 
-	@Test
-	public void testStaticContent() throws Exception{
-		requestBuilder = MockMvcRequestBuilders.get("/tdsCat.css");
-		MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-		//Check that "/" is redirected
-		Assert.assertEquals(200, mvc.getResponse().getStatus());
-		String content = mvc.getResponse().getContentAsString();
-		System.out.printf("content='%s'%n", content);
-		//Assert.assertNotNull(mvc.getModelAndView());
-		//assertEquals("redirect:/catalog/catalog.html", mvc.getModelAndView().getViewName());
-	}
+  @PostConstruct
+  public void init() {
+    mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+  }
+
+  @Test
+  public void testRootRedirect() throws Exception{
+    requestBuilder = MockMvcRequestBuilders.get("/");
+    MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
+    //Check that "/" is redirected
+    assertEquals(302, mvc.getResponse().getStatus());
+    assertEquals("redirect:/catalog/catalog.html", mvc.getModelAndView().getViewName());
+  }
+
+  @Test
+  public void testStaticContent() throws Exception{
+    requestBuilder = MockMvcRequestBuilders.get("/tdsCat.css");
+    MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
+    //Check that "/" is redirected
+    Assert.assertEquals(200, mvc.getResponse().getStatus());
+    String content = mvc.getResponse().getContentAsString();
+    System.out.printf("content='%s'%n", content);
+    //Assert.assertNotNull(mvc.getModelAndView());
+    //assertEquals("redirect:/catalog/catalog.html", mvc.getModelAndView().getViewName());
+  }
 
 
 }

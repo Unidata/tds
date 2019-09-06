@@ -22,14 +22,14 @@ import thredds.servlet.ServletUtil;
 //@Controller
 public class TestController {
 
-	//@RequestMapping(value="/test/**")
-	public @ResponseBody String getRequestDetails(HttpServletRequest req,	HttpServletResponse res) throws Exception {
+  //@RequestMapping(value="/test/**")
+  public @ResponseBody String getRequestDetails(HttpServletRequest req,  HttpServletResponse res) throws Exception {
 
-		String path = req.getPathInfo();
-		if (path == null)
-			path = "";
-		String requestDetails = ServletUtil.showRequestDetail(req);
-		System.out.printf("%s%n", requestDetails);
-		return requestDetails;
-	}
+    String path = req.getPathInfo();
+    if (path == null)
+      path = "";
+    String requestDetails = ServletUtil.showRequestDetail(req);
+    System.out.printf("%s%n", requestDetails);
+    return requestDetails;
+  }
 }

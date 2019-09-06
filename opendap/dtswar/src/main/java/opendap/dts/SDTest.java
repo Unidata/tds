@@ -90,16 +90,16 @@ public class SDTest {
 
             if(s.isRead()){
 
-		try {
-		    bt.printVal(System.out, "    ",true);
-		}
-		    catch(NullPointerException except){
-		    System.out.println(" Instance not Allocated.");
-		}
-	    }
-	    else {
-		System.out.println(" Item not yet initialized.");
-	    }
+    try {
+        bt.printVal(System.out, "    ",true);
+    }
+        catch(NullPointerException except){
+        System.out.println(" Instance not Allocated.");
+    }
+      }
+      else {
+    System.out.println(" Item not yet initialized.");
+      }
 
 */
 
@@ -139,13 +139,13 @@ public class SDTest {
                 case 'f':
                     arg = g.getOptarg();
                     if (Debug)
-//			System.out.print("DDS File: " + ((arg != null) ? arg : "null") + "\n");
+//      System.out.print("DDS File: " + ((arg != null) ? arg : "null") + "\n");
                     DDSFile = arg;
                     break;
                 case 'c':
                     arg = g.getOptarg();
                     if (Debug)
-//			System.out.print("Constraint Expression: \"" + ((arg != null) ? arg : "null") + "\"\n");
+//      System.out.print("Constraint Expression: \"" + ((arg != null) ? arg : "null") + "\"\n");
 
                     ConstraintExpression = arg;
                     break;
@@ -155,7 +155,7 @@ public class SDTest {
 
                 default:
                     if (Debug)
-//			System.out.print("getopt() returned " + c + "\n");
+//      System.out.print("getopt() returned " + c + "\n");
             }
         }
 */
@@ -167,19 +167,19 @@ public class SDTest {
             if (opts.getSwitch(new Character('f')).set) {
                 arg = opts.getSwitch(new Character('f')).val;
                 if (Debug)
-//			System.out.print("DDS File: " + ((arg != null) ? arg : "null") + "\n");
+//      System.out.print("DDS File: " + ((arg != null) ? arg : "null") + "\n");
                 DDSFile = arg;
             }
             if (opts.getSwitch(new Character('c')).set) {
                 arg = g.getOptarg();
                 if (Debug)
-//		    System.out.print("Constraint Expression: \"" + ((arg != null) ? arg : "null") + "\"\n");
+//        System.out.print("Constraint Expression: \"" + ((arg != null) ? arg : "null") + "\"\n");
                 ConstraintExpression = arg;
-	    }
+      }
         }
         catch (InvalidSwitch e) {
-	    System.err.println("Invalid Switch: "+e);
-	}
+      System.err.println("Invalid Switch: "+e);
+  }
     }
     //***************************************************************
 

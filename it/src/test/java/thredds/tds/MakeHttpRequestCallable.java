@@ -69,7 +69,7 @@ public class MakeHttpRequestCallable implements Callable<MakeHttpRequestResult>
 //versus      InputStream is = method.getResponseBodyAsStream();
       if ( is != null )
         result.setBytesRead( IO.copy2null(is, 10 * 1000 )); // read data and throw away
-//versus	result.setBytesRead( IO.copy2null( method.getResponseBodyAsStream(), 10 * 1000 )); // read data and throw away
+//versus  result.setBytesRead( IO.copy2null( method.getResponseBodyAsStream(), 10 * 1000 )); // read data and throw away
     } finally {
       if ( method != null )
         method.releaseConnection();

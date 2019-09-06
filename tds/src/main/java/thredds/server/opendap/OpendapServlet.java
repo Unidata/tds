@@ -600,7 +600,7 @@ public class OpendapServlet extends AbstractServlet {
       response.setContentType("text/html");
       response.setHeader("Content-Description", "dods-form");
 
-      // Utilize the getDDS() method to get	a parsed and populated DDS
+      // Utilize the getDDS() method to get  a parsed and populated DDS
       // for this server.
       ServerDDS myDDS = ds.getDDS();
       DAS das = ds.getDAS();

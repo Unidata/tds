@@ -69,35 +69,35 @@ import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 @ContextConfiguration(locations = { "/WEB-INF/applicationContext.xml" }, loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class AllVariablesSubsettingTest {
-	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	@Autowired
-	private WebApplicationContext wac;
-	
-	private MockMvc mockMvc;		
-	private RequestBuilder requestBuilder;
-		
-	
-	@Before
-	public void setUp() throws IOException{
-		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();	
-		String servletPath = GridPathParams.getPathInfo().get(0);
-		requestBuilder = MockMvcRequestBuilders.get(servletPath).servletPath(servletPath).param("var", "all");
-	}
-	
-	@Test
-	public void shouldGetAllVariables() throws Exception{
-		MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-		assertEquals(200, mvc.getResponse().getStatus());
-		
-		//Open the binary response in memory
-		//NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", response.getContentAsByteArray() );
-		NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray() );
-		
-		ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
-		assertTrue( gdsDataset.getCalendarDateRange().isPoint());
-		assertEquals(7, gdsDataset.getDataVariables().size());
-		
-	}
-	
+  @Autowired
+  private WebApplicationContext wac;
+
+  private MockMvc mockMvc;
+  private RequestBuilder requestBuilder;
+
+
+  @Before
+  public void setUp() throws IOException{
+    mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+    String servletPath = GridPathParams.getPathInfo().get(0);
+    requestBuilder = MockMvcRequestBuilders.get(servletPath).servletPath(servletPath).param("var", "all");
+  }
+
+  @Test
+  public void shouldGetAllVariables() throws Exception{
+    MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
+    assertEquals(200, mvc.getResponse().getStatus());
+
+    //Open the binary response in memory
+    //NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", response.getContentAsByteArray() );
+    NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray() );
+
+    ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
+    assertTrue( gdsDataset.getCalendarDateRange().isPoint());
+    assertEquals(7, gdsDataset.getDataVariables().size());
+
+  }
+
 }

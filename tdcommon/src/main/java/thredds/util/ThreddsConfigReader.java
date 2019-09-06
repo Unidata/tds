@@ -44,7 +44,7 @@ public class ThreddsConfigReader {
       SAXBuilder builder = new SAXBuilder();
       doc = builder.build(is);
     } catch (IOException | JDOMException e) {
-    	log.error( "ThreddsConfigReader: incorrectly formed xml file [" + filename + "]: " + e.getMessage());
+      log.error( "ThreddsConfigReader: incorrectly formed xml file [" + filename + "]: " + e.getMessage());
       return;
     }
     rootElem = doc.getRootElement();
@@ -56,7 +56,7 @@ public class ThreddsConfigReader {
       RuntimeConfigParser.read(elem, errlog);
       if (errlog.length() > 0)
         //System.out.println( "ThreddsConfig:WARN: " + errlog.toString());
-    	  log.warn( "ThreddsConfigReader nj22Config: {}", errlog.toString());
+        log.warn( "ThreddsConfigReader nj22Config: {}", errlog.toString());
     }
   }
 

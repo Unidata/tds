@@ -356,12 +356,12 @@ public class Main
 {
     public static void main(String[] argv)
     {
-	String url = argv[0];
-	try (HTTPSession session = new HTTPSession(url);
-	     HTTPMethod method = HTTPMethod.Get(session,url);
-	     int status = method.execute();
+  String url = argv[0];
+  try (HTTPSession session = new HTTPSession(url);
+       HTTPMethod method = HTTPMethod.Get(session,url);
+       int status = method.execute();
              System.out.printf("Execute: status code = %d\n", status);
-	} // implicitly calls method.close() then session.close()
+  } // implicitly calls method.close() then session.close()
     }
 }
 </pre>
@@ -372,8 +372,8 @@ public class Main
 {
     public static void main(String[] argv)
     {
-	String url = argv[0[];
-	string content = HttpClientManager.getUrlContentsAsString(url,1024);
+  String url = argv[0[];
+  string content = HttpClientManager.getUrlContentsAsString(url,1024);
     }
 }
 </pre>
@@ -386,19 +386,19 @@ public class Main
 {
     public static void main(String[] argv)
     {
-	String url = argv[0];
-	String userpwd = argv[1];
+  String url = argv[0];
+  String userpwd = argv[1];
 
-	// Set some parameters at the global level
+  // Set some parameters at the global level
         HTTPSession.setGlobalCredentials(new UsernamePasswordCredentials(userpwd));
-	HTTPSession.setGlobalUserAgent("netcdf/java");
-	HTTPSession.setMaxConnections(4);
-	HTTPSession.setGlobalAuthenticationPreemptive(true);
+  HTTPSession.setGlobalUserAgent("netcdf/java");
+  HTTPSession.setMaxConnections(4);
+  HTTPSession.setGlobalAuthenticationPreemptive(true);
 
         try (HTTPMethod method = HTTPMethod.Get(url)) {//implicit session
-	    int status = method.execute();
+      int status = method.execute();
             System.out.printf("Execute: status code = %d\n", status);
-	}
+  }
     }
 }
 </pre>
@@ -409,19 +409,19 @@ public class Main
 {
     public static void main(String[] argv)
     {
-	String url = argv[0];
-	String userpwd = argv[1];
+  String url = argv[0];
+  String userpwd = argv[1];
 
         try (HTTPSession session = new HTTPSession(url)) {
             session.setCredentials(new UsernamePasswordCredentials(userpwd));
-	    session.setUserAgent("agent");
-	    session.setConnectionManagerTimeout(475);
-	    session.setSoTimeout(475);
-	    try (HTTPMethod method = HTTPMethod.Get(session)) {
-		int status = method.execute();
-		System.out.printf("Execute: status code = %d\n", status);
-	    } // method.close()
-	} // session.close()
+      session.setUserAgent("agent");
+      session.setConnectionManagerTimeout(475);
+      session.setSoTimeout(475);
+      try (HTTPMethod method = HTTPMethod.Get(session)) {
+    int status = method.execute();
+    System.out.printf("Execute: status code = %d\n", status);
+      } // method.close()
+  } // session.close()
     }
 }
 </pre>

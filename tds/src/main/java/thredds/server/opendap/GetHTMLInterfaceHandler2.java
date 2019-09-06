@@ -210,15 +210,15 @@ public class GetHTMLInterfaceHandler2
         // Now use that string to make an input stream to
         // pass to our new DDS for parsing.
 
-	// Since parser expects/requires InputStream,
-	// we must adapt utf16 string to at least utf-8
+  // Since parser expects/requires InputStream,
+  // we must adapt utf16 string to at least utf-8
 
-	ByteArrayInputStream bai = null;
+  ByteArrayInputStream bai = null;
         try {
-	    bai = new ByteArrayInputStream(ddsSW.toString().getBytes("UTF-8"));
-	} catch (UnsupportedEncodingException uee) {
-	    throw new DAP2Exception("UTF-8 encoding not supported");
-	}
+      bai = new ByteArrayInputStream(ddsSW.toString().getBytes("UTF-8"));
+  } catch (UnsupportedEncodingException uee) {
+      throw new DAP2Exception("UTF-8 encoding not supported");
+  }
         wwwDDS.parse(bai);
 
         return (wwwDDS);

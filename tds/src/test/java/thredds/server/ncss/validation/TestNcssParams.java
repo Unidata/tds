@@ -152,52 +152,52 @@ public class TestNcssParams {
   }
 
   @Test
- 	public void testNcssMissingLatLon(){
+   public void testNcssMissingLatLon(){
 
- 		NcssGridParamsBean params = new NcssGridParamsBean();
+     NcssGridParamsBean params = new NcssGridParamsBean();
 
- 		params.setLongitude(-105.0);
- 		params.setVar( Arrays.asList("var1", "var2") );
- 		params.setAccept("text/csv");
- 		params.setTime("2012-03-27T00:00:00Z");
+     params.setLongitude(-105.0);
+     params.setVar( Arrays.asList("var1", "var2") );
+     params.setAccept("text/csv");
+     params.setTime("2012-03-27T00:00:00Z");
 
- 		Set<ConstraintViolation<NcssGridParamsBean>> constraintViolations = validator.validate(params);
- 		assertEquals(1 , constraintViolations.size());
+     Set<ConstraintViolation<NcssGridParamsBean>> constraintViolations = validator.validate(params);
+     assertEquals(1 , constraintViolations.size());
     assertEquals(resolver.get("thredds.server.ncSubset.validation.lat_or_lon_missing"), constraintViolations.iterator().next().getMessage());
- 	}
+   }
 
- 	@Test
- 	public void testNcssInvalidSubsetTypeMissingLon(){
+   @Test
+   public void testNcssInvalidSubsetTypeMissingLon(){
 
- 		NcssGridParamsBean params = new NcssGridParamsBean();
- 		params.setLatitude(42.04);
- 		params.setVar( Arrays.asList("var1", "var2") );
- 		params.setAccept("text/csv");
- 		params.setTime("2012-03-27T00:00:00Z");
+     NcssGridParamsBean params = new NcssGridParamsBean();
+     params.setLatitude(42.04);
+     params.setVar( Arrays.asList("var1", "var2") );
+     params.setAccept("text/csv");
+     params.setTime("2012-03-27T00:00:00Z");
 
- 		Set<ConstraintViolation<NcssGridParamsBean>> constraintViolations = validator.validate(params);
- 		assertEquals(1 , constraintViolations.size());
+     Set<ConstraintViolation<NcssGridParamsBean>> constraintViolations = validator.validate(params);
+     assertEquals(1 , constraintViolations.size());
     assertEquals(resolver.get("thredds.server.ncSubset.validation.lat_or_lon_missing"), constraintViolations.iterator().next().getMessage());
- 	}
+   }
 
   @Test
- 	public void testNcssBBSubsetType(){
+   public void testNcssBBSubsetType(){
 
- 		NcssGridParamsBean params = new NcssGridParamsBean();
- 		params.setNorth(43.0);
- 		params.setSouth(38.0);
- 		params.setWest(-107.0);
- 		params.setEast(-102.0);
- 		params.setVar( Arrays.asList("var1", "var2") );
- 		params.setAccept("text/csv");
- 		params.setTime("2012-03-27T00:00:00Z");
+     NcssGridParamsBean params = new NcssGridParamsBean();
+     params.setNorth(43.0);
+     params.setSouth(38.0);
+     params.setWest(-107.0);
+     params.setEast(-102.0);
+     params.setVar( Arrays.asList("var1", "var2") );
+     params.setAccept("text/csv");
+     params.setTime("2012-03-27T00:00:00Z");
 
 
- 		Set<ConstraintViolation<NcssGridParamsBean>> constraintViolations = validator.validate(params);
- 		assertEquals(0 , constraintViolations.size());
- 		//assertEquals("Wrong subset type", constraintViolations.iterator().next().getMessage());
+     Set<ConstraintViolation<NcssGridParamsBean>> constraintViolations = validator.validate(params);
+     assertEquals(0 , constraintViolations.size());
+     //assertEquals("Wrong subset type", constraintViolations.iterator().next().getMessage());
 
- 	}
+   }
 
 
 

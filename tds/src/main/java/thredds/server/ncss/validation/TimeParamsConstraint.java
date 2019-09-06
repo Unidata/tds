@@ -32,11 +32,11 @@ import javax.validation.Payload;
 @Constraint(validatedBy=TimeParamsValidator.class)
 @Documented
 public @interface TimeParamsConstraint {
-	
-	String message() default "{thredds.server.ncSubset.validation.timeparams}";
-	
-	Class<?>[] groups() default {};
-	
-	Class<? extends Payload>[] payload() default {};
+
+  String message() default "{thredds.server.ncSubset.validation.timeparams}";
+
+  Class<?>[] groups() default {};
+
+  Class<? extends Payload>[] payload() default {};
 
 }

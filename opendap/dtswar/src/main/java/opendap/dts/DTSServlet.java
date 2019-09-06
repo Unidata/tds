@@ -1263,7 +1263,7 @@ public class DTSServlet extends AbstractServlet
             rs.getResponse().setContentType("text/html");
             rs.getResponse().setHeader("Content-Description", "dods-form");
 
-            // Utilize the getDDS() method to get	a parsed and populated DDS
+            // Utilize the getDDS() method to get  a parsed and populated DDS
             // for this server.
             ServerDDS myDDS = ds.getDDS();
             DAS das = ds.getDAS();
@@ -1769,7 +1769,7 @@ public class DTSServlet extends AbstractServlet
      */
     protected ReqState
     getRequestState(HttpServletRequest request, HttpServletResponse response)
-	throws DAP2Exception
+  throws DAP2Exception
     {
         ReqState rs = null;
         // The url and query strings will come to us in encoded form

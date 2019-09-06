@@ -19,9 +19,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface TdsContentRootPath {
-	/**
-	 * Our content root path 
-	 */
-	String path() default "../../content";
-	
+  /**
+   * Our content root path
+   */
+  String path() default "../../content";
+
 }

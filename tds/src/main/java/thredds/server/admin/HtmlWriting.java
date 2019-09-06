@@ -464,7 +464,7 @@ public class HtmlWriting {
           .append("    $('tr').removeAttr(\"bgcolor\");\n")
           .append("    $('table#datasets').addClass(\"hoverTable\");\n")
           .append("  });\n")
-	      .append("</script>\n").toString();
+        .append("</script>\n").toString();
   }
 
   private String getCollapsableCss() {
@@ -487,14 +487,14 @@ public class HtmlWriting {
   }
 
   public StringBuilder makeCollapsable(StringBuilder sb, int level) {
-	    if (level > 0) {
-	    String replaceThis = "<tr";
+      if (level > 0) {
+      String replaceThis = "<tr";
         String withThis = "<tr class=\"header\"";
         int strRepStart = sb.lastIndexOf(replaceThis);
         if (strRepStart != -1) {
           sb.replace(strRepStart, strRepStart + replaceThis.length(), withThis);
         }
-	  }
+    }
       return sb;
   }
    */

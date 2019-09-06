@@ -20,66 +20,66 @@ import thredds.server.config.TdsContext;
  */
 public class MockTdsContextLoader extends AbstractContextLoader {
 
-	private TdsContentRootPath tdsContentRootPath;
+  private TdsContentRootPath tdsContentRootPath;
 
-	public ApplicationContext loadContext(MergedContextConfiguration mcc) throws Exception {
-		return loadContext( mcc.getLocations() );
-	}
-	
-	@Override
-	public ApplicationContext loadContext(String... locations) throws Exception {
-		final MockServletContext servletContext = new MockTdsServletContext();			
-		final MockServletConfig servletConfig = new MockServletConfig(servletContext);
-		final XmlWebApplicationContext webApplicationContext = new XmlWebApplicationContext();
+  public ApplicationContext loadContext(MergedContextConfiguration mcc) throws Exception {
+    return loadContext( mcc.getLocations() );
+  }
 
-		servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,	webApplicationContext);
-		webApplicationContext.setServletConfig(servletConfig);
-		webApplicationContext.setConfigLocations(locations);
-		webApplicationContext.refresh();
+  @Override
+  public ApplicationContext loadContext(String... locations) throws Exception {
+    final MockServletContext servletContext = new MockTdsServletContext();
+    final MockServletConfig servletConfig = new MockServletConfig(servletContext);
+    final XmlWebApplicationContext webApplicationContext = new XmlWebApplicationContext();
 
-		TdsContext tdsContext = webApplicationContext.getBean(TdsContext.class);
-		checkContentRootPath(webApplicationContext, tdsContext);
+    servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,  webApplicationContext);
+    webApplicationContext.setServletConfig(servletConfig);
+    webApplicationContext.setConfigLocations(locations);
+    webApplicationContext.refresh();
 
-		webApplicationContext.registerShutdownHook();
+    TdsContext tdsContext = webApplicationContext.getBean(TdsContext.class);
+    checkContentRootPath(webApplicationContext, tdsContext);
 
-		return webApplicationContext;
-	}
+    webApplicationContext.registerShutdownHook();
 
-	@Override
-	protected String getResourceSuffix() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/**
-	 * If the test is annotated with TdsContentPath, override the contentRootPath with the provided path  
-	 */
-	private void checkContentRootPath(XmlWebApplicationContext webApplicationContext, TdsContext tdsContext){
-		if(tdsContentRootPath != null )
-			tdsContext.setContentRootPathProperty(tdsContentRootPath.path());
-	}
-	
-	/**
-	 * One of these two methods will get called before {@link #loadContext(String...)}.
-	 * We just use this chance to extract the configuration.
-	 */
-	@Override
-	protected String[] generateDefaultLocations(Class<?> clazz) {
-		extractConfiguration(clazz);		
-		return super.generateDefaultLocations(clazz);
-	}
-	
-	/**
-	 * One of these two methods will get called before {@link #loadContext(String...)}.
-	 * We just use this chance to extract the configuration.
-	 */
-	@Override
-	protected String[] modifyLocations(Class<?> clazz, String... locations) {
-		extractConfiguration(clazz);
-		return super.modifyLocations(clazz, locations);
-	}	
-	
-	private void extractConfiguration(Class<?> clazz){
-		tdsContentRootPath = AnnotationUtils.findAnnotation(clazz, TdsContentRootPath.class);
-	}
+    return webApplicationContext;
+  }
+
+  @Override
+  protected String getResourceSuffix() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /**
+   * If the test is annotated with TdsContentPath, override the contentRootPath with the provided path
+   */
+  private void checkContentRootPath(XmlWebApplicationContext webApplicationContext, TdsContext tdsContext){
+    if(tdsContentRootPath != null )
+      tdsContext.setContentRootPathProperty(tdsContentRootPath.path());
+  }
+
+  /**
+   * One of these two methods will get called before {@link #loadContext(String...)}.
+   * We just use this chance to extract the configuration.
+   */
+  @Override
+  protected String[] generateDefaultLocations(Class<?> clazz) {
+    extractConfiguration(clazz);
+    return super.generateDefaultLocations(clazz);
+  }
+
+  /**
+   * One of these two methods will get called before {@link #loadContext(String...)}.
+   * We just use this chance to extract the configuration.
+   */
+  @Override
+  protected String[] modifyLocations(Class<?> clazz, String... locations) {
+    extractConfiguration(clazz);
+    return super.modifyLocations(clazz, locations);
+  }
+
+  private void extractConfiguration(Class<?> clazz){
+    tdsContentRootPath = AnnotationUtils.findAnnotation(clazz, TdsContentRootPath.class);
+  }
 }
