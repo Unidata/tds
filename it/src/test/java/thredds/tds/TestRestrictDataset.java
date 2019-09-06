@@ -16,7 +16,6 @@ import ucar.httpservices.*;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,39 +31,36 @@ import java.util.Collection;
 public class TestRestrictDataset {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  @Parameterized.Parameters(name="{0}")
+  @Parameterized.Parameters(name = "{0}")
   public static Collection<Object[]> getTestParameters() {
-    return Arrays.asList(new Object[][]{
-            // These first 6 actually don't require cdmUnitTest/. Could be broken out into separate class that can
-            // run on Travis.
-            // explicit services
-            {"/dodsC/testRestrictedDataset/testData2.nc.dds"},
-            {"/cdmremote/testRestrictedDataset/testData2.nc?req=header"},
-            {"/fileServer/testRestrictedDataset/testData2.nc"},
-            // default services
-            {"/dodsC/testRestrictedDataset/testData.nc.dds"},
-            {"/cdmremote/testRestrictedDataset/testData.nc?req=header"},
-            {"/fileServer/testRestrictedDataset/testData.nc"},
-         //   {"/wms/testRestrictedDataset/testData2.nc?service=WMS&version=1.3.0&request=GetCapabilities"},
+    return Arrays.asList(new Object[][] {
+        // These first 6 actually don't require cdmUnitTest/. Could be broken out into separate class that can
+        // run on Travis.
+        // explicit services
+        {"/dodsC/testRestrictedDataset/testData2.nc.dds"}, {"/cdmremote/testRestrictedDataset/testData2.nc?req=header"},
+        {"/fileServer/testRestrictedDataset/testData2.nc"},
+        // default services
+        {"/dodsC/testRestrictedDataset/testData.nc.dds"}, {"/cdmremote/testRestrictedDataset/testData.nc?req=header"},
+        {"/fileServer/testRestrictedDataset/testData.nc"},
+        // {"/wms/testRestrictedDataset/testData2.nc?service=WMS&version=1.3.0&request=GetCapabilities"},
 
-            // restricted DatasetScan
-            {"/dodsC/testRestrictedScan/20131102/PROFILER_wind_06min_20131102_2354.nc.html"},
-            {"/cdmremote/testRestrictedScan/20131102/PROFILER_wind_06min_20131102_2354.nc?req=header"},
-            {"/fileServer/testRestrictedScan/20131102/PROFILER_wind_06min_20131102_2354.nc"},
-        //    {"/wms/testRestrictedScan/20131102/PROFILER_wind_06min_20131102_2354.nc?service=WMS&version=1.3.0&request=GetCapabilities"},
+        // restricted DatasetScan
+        {"/dodsC/testRestrictedScan/20131102/PROFILER_wind_06min_20131102_2354.nc.html"},
+        {"/cdmremote/testRestrictedScan/20131102/PROFILER_wind_06min_20131102_2354.nc?req=header"},
+        {"/fileServer/testRestrictedScan/20131102/PROFILER_wind_06min_20131102_2354.nc"},
+        // {"/wms/testRestrictedScan/20131102/PROFILER_wind_06min_20131102_2354.nc?service=WMS&version=1.3.0&request=GetCapabilities"},
 
-            // restricted GRIB collections
-            {"/dodsC/restrictCollection/GFS_CONUS_80km/TwoD.dds"},
-            {"/ncss/grid/restrictCollection/GFS_CONUS_80km/TwoD/dataset.html"},
-            {"/cdmremote/restrictCollection/GFS_CONUS_80km/TwoD?req=header"},
-        });
-    }
+        // restricted GRIB collections
+        {"/dodsC/restrictCollection/GFS_CONUS_80km/TwoD.dds"},
+        {"/ncss/grid/restrictCollection/GFS_CONUS_80km/TwoD/dataset.html"},
+        {"/cdmremote/restrictCollection/GFS_CONUS_80km/TwoD?req=header"},});
+  }
 
-    String path, query;
+  String path, query;
 
-    public TestRestrictDataset(String path) {
-      this.path = path;
-    }
+  public TestRestrictDataset(String path) {
+    this.path = path;
+  }
 
   @Test
   public void testFailNoAuth() {
@@ -116,8 +112,8 @@ public class TestRestrictDataset {
       HTTPMethod method = HTTPFactory.Get(session);
       int statusCode = method.execute();
 
-      //if (statusCode != HttpStatus.SC_UNAUTHORIZED && statusCode != HttpStatus.SC_FORBIDDEN)
-      //  assert false;
+      // if (statusCode != HttpStatus.SC_UNAUTHORIZED && statusCode != HttpStatus.SC_FORBIDDEN)
+      // assert false;
       Assert.assertTrue(statusCode == HttpStatus.SC_UNAUTHORIZED || statusCode == HttpStatus.SC_FORBIDDEN);
 
     } catch (ucar.httpservices.HTTPException e) {
@@ -158,7 +154,8 @@ public class TestRestrictDataset {
       try (HTTPMethod method = HTTPFactory.Get(endpoint)) {
         int statusCode = method.execute();
         if (statusCode != HttpStatus.SC_UNAUTHORIZED && statusCode != HttpStatus.SC_FORBIDDEN) {
-          logger.error(String.format("statuscode=%d expected HttpStatus.SC_UNAUTHORIZED or HttpStatus.SC_FORBIDDEN", statusCode));
+          logger.error(String.format("statuscode=%d expected HttpStatus.SC_UNAUTHORIZED or HttpStatus.SC_FORBIDDEN",
+              statusCode));
           assert false;
         }
       }

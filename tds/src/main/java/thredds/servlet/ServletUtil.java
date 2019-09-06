@@ -12,7 +12,6 @@ import thredds.util.RequestForwardUtils;
 import ucar.nc2.util.EscapeStrings;
 import ucar.nc2.util.IO;
 import ucar.unidata.io.RandomAccessFile;
-
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -36,7 +35,7 @@ public class ServletUtil {
    * Note: Dealing with path strings is fragile.
    * ToDo: Switch from using path strings to java.io.Files.
    *
-   * @param dirPath  the directory path.
+   * @param dirPath the directory path.
    * @param filePath the file path.
    * @return a full file path with the given directory and file paths.
    */
@@ -53,16 +52,16 @@ public class ServletUtil {
   /**
    * Write a file to the response stream.
    *
-   * @param servlet     called from this servlet, may be null
+   * @param servlet called from this servlet, may be null
    * @param contentPath file root path
-   * @param path        file path reletive to the root
-   * @param req         the request
-   * @param res         the response
+   * @param path file path reletive to the root
+   * @param req the request
+   * @param res the response
    * @param contentType content type, or null
    * @throws IOException on write error
    */
-  public static void returnFile(HttpServlet servlet, String contentPath, String path,
-                                HttpServletRequest req, HttpServletResponse res, String contentType) throws IOException {
+  public static void returnFile(HttpServlet servlet, String contentPath, String path, HttpServletRequest req,
+      HttpServletResponse res, String contentType) throws IOException {
 
     String filename = ServletUtil.formFilename(contentPath, path);
 
@@ -92,15 +91,15 @@ public class ServletUtil {
   /**
    * Write a file to the response stream. Handles Range requests.
    *
-   * @param servlet     called from this servlet, may be null
-   * @param req         the request
-   * @param res         the response
-   * @param file        to serve
+   * @param servlet called from this servlet, may be null
+   * @param req the request
+   * @param res the response
+   * @param file to serve
    * @param contentType content type, if null, will try to guess
    * @throws IOException on write error
    */
-  public static void returnFile(HttpServlet servlet, HttpServletRequest req, HttpServletResponse res, File file, String contentType)
-          throws IOException {
+  public static void returnFile(HttpServlet servlet, HttpServletRequest req, HttpServletResponse res, File file,
+      String contentType) throws IOException {
 
     // No file, nothing to view
     if (file == null) {
@@ -138,7 +137,8 @@ public class ServletUtil {
       else if (servlet != null)
         contentType = servlet.getServletContext().getMimeType(filename);
 
-      if (contentType == null) contentType = ContentType.binary.getContentHeader();
+      if (contentType == null)
+        contentType = ContentType.binary.getContentHeader();
     }
 
     returnFile(req, res, file, contentType);
@@ -147,13 +147,14 @@ public class ServletUtil {
   /**
    * Write a file to the response stream. Handles Range requests.
    *
-   * @param req         request
-   * @param res         response
-   * @param file        must exist and not be a directory
+   * @param req request
+   * @param res response
+   * @param file must exist and not be a directory
    * @param contentType must not be null
    * @throws IOException or error
    */
-  public static void returnFile(HttpServletRequest req, HttpServletResponse res, File file, String contentType) throws IOException {
+  public static void returnFile(HttpServletRequest req, HttpServletResponse res, File file, String contentType)
+      throws IOException {
     res.setContentType(contentType);
     res.addDateHeader("Last-Modified", file.lastModified());
     // res.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
@@ -188,7 +189,7 @@ public class ServletUtil {
     // when compression is turned on, ContentLength has to be overridden
     // this is also true for HEAD, since this must be the same as GET without the body
     if (contentLength > Integer.MAX_VALUE)
-      res.addHeader("Content-Length", Long.toString(contentLength));  // allow content length > MAX_INT
+      res.addHeader("Content-Length", Long.toString(contentLength)); // allow content length > MAX_INT
     else
       res.setContentLength((int) contentLength);
 
@@ -216,18 +217,21 @@ public class ServletUtil {
       // Return the file
       ServletOutputStream out = res.getOutputStream();
       IO.copyFileB(file, out, 60 * 1000);
-      /* try (WritableByteChannel cOut = Channels.newChannel(out)) {
-        IO.copyFileWithChannels(file, cOut);
-        res.flushBuffer();
-      } */
+      /*
+       * try (WritableByteChannel cOut = Channels.newChannel(out)) {
+       * IO.copyFileWithChannels(file, cOut);
+       * res.flushBuffer();
+       * }
+       */
     }
 
     // @todo Split up this exception handling: those from file access vs those from dealing with response
-    //       File access: catch and res.sendError()
-    //       response: don't catch (let bubble up out of doGet() etc)
+    // File access: catch and res.sendError()
+    // response: don't catch (let bubble up out of doGet() etc)
     catch (FileNotFoundException e) {
       log.error("returnFile(): FileNotFoundException= " + filename);
-      if (!res.isCommitted()) res.sendError(HttpServletResponse.SC_NOT_FOUND);
+      if (!res.isCommitted())
+        res.sendError(HttpServletResponse.SC_NOT_FOUND);
     } catch (java.net.SocketException e) {
       log.info("returnFile(): SocketException sending file: " + filename + " " + e.getMessage());
     } catch (IOException e) {
@@ -238,12 +242,13 @@ public class ServletUtil {
       }
 
       if (e.getMessage().startsWith("File transfer not complete")) { // coming from FileTransfer.transferTo()
-        log.debug("returnFile() "+e.getMessage());
+        log.debug("returnFile() " + e.getMessage());
         return;
       }
 
       log.error("returnFile(): IOException (" + e.getClass().getName() + ") sending file ", e);
-      if (!res.isCommitted()) res.sendError(HttpServletResponse.SC_NOT_FOUND, "Problem sending file: " + e.getMessage());
+      if (!res.isCommitted())
+        res.sendError(HttpServletResponse.SC_NOT_FOUND, "Problem sending file: " + e.getMessage());
     }
   }
 
@@ -251,11 +256,10 @@ public class ServletUtil {
    * Send given content string as the HTTP response.
    *
    * @param contents the string to return as the HTTP response.
-   * @param res      the HttpServletResponse
+   * @param res the HttpServletResponse
    * @throws IOException if an I/O error occurs while writing the response.
    */
-  public static void returnString(String contents, HttpServletResponse res)
-          throws IOException {
+  public static void returnString(String contents, HttpServletResponse res) throws IOException {
 
     try {
       ServletOutputStream out = res.getOutputStream();
@@ -274,7 +278,8 @@ public class ServletUtil {
    * @return the number of bytes
    * @throws UnsupportedEncodingException on bad character encoding
    */
-  public static int setResponseContentLength(HttpServletResponse response, String s) throws UnsupportedEncodingException {
+  public static int setResponseContentLength(HttpServletResponse response, String s)
+      throws UnsupportedEncodingException {
     int length = s.getBytes(response.getCharacterEncoding()).length;
     response.setContentLength(length);
     return length;
@@ -295,11 +300,11 @@ public class ServletUtil {
    *
    * @param req request
    * @param res response
-   * @throws IOException      on IO error
+   * @throws IOException on IO error
    * @throws ServletException other error
    */
   public static void forwardToCatalogServices(HttpServletRequest req, HttpServletResponse res)
-          throws IOException, ServletException {
+      throws IOException, ServletException {
 
     String reqs = "catalog=" + getReletiveURL(req);
     String query = req.getQueryString();
@@ -393,7 +398,7 @@ public class ServletUtil {
    * only be used if the parameter is known to only have one value. If used
    * on a multi-valued parameter, the first value is returned.
    *
-   * @param req       the HttpServletRequest
+   * @param req the HttpServletRequest
    * @param paramName the name of the parameter to find.
    * @return the value of the given parameter for the given request.
    */
@@ -411,7 +416,7 @@ public class ServletUtil {
   /**
    * Show details about the request
    *
-   * @param req     the request
+   * @param req the request
    * @return string showing the details of the request.
    */
   static public String showRequestDetail(HttpServletRequest req) {
@@ -425,11 +430,13 @@ public class ServletUtil {
     sbuff.append(" req.getPathInfo:").append(req.getPathInfo()).append("\n");
     sbuff.append(" req.getQueryString:").append(req.getQueryString()).append("\n");
     sbuff.append(" getQueryStringDecoded:").append(EscapeStrings.urlDecode(req.getQueryString())).append("\n");
-    /*try {
-      sbuff.append(" getQueryStringDecoded:").append(URLDecoder.decode(req.getQueryString(), "UTF-8")).append("\n");
-    } catch (UnsupportedEncodingException e1) {
-      e1.printStackTrace();
-    }*/
+    /*
+     * try {
+     * sbuff.append(" getQueryStringDecoded:").append(URLDecoder.decode(req.getQueryString(), "UTF-8")).append("\n");
+     * } catch (UnsupportedEncodingException e1) {
+     * e1.printStackTrace();
+     * }
+     */
     sbuff.append(" req.getRequestURI:").append(req.getRequestURI()).append("\n");
     sbuff.append(" getRequestBase:").append(getRequestBase(req)).append("\n");
     sbuff.append(" getRequestServer:").append(getRequestServer(req)).append("\n");
@@ -447,7 +454,8 @@ public class ServletUtil {
 
     sbuff.append(" req.getRemoteAddr():").append(req.getRemoteAddr());
     try {
-      sbuff.append(" getRemoteHost():").append(java.net.InetAddress.getByName(req.getRemoteHost()).getHostName()).append("\n");
+      sbuff.append(" getRemoteHost():").append(java.net.InetAddress.getByName(req.getRemoteHost()).getHostName())
+          .append("\n");
     } catch (java.net.UnknownHostException e) {
       sbuff.append(" getRemoteHost():").append(e.getMessage()).append("\n");
     }
@@ -471,7 +479,7 @@ public class ServletUtil {
     Enumeration names = req.getHeaderNames();
     while (names.hasMoreElements()) {
       String name = (String) names.nextElement();
-      Enumeration values = req.getHeaders(name);  // support multiple values
+      Enumeration values = req.getHeaders(name); // support multiple values
       if (values != null) {
         while (values.hasMoreElements()) {
           String value = (String) values.nextElement();
@@ -490,7 +498,7 @@ public class ServletUtil {
     Enumeration names = req.getHeaderNames();
     while (names.hasMoreElements()) {
       String name = (String) names.nextElement();
-      Enumeration values = req.getHeaders(name);  // support multiple values
+      Enumeration values = req.getHeaders(name); // support multiple values
       if (values != null) {
         while (values.hasMoreElements()) {
           String value = (String) values.nextElement();
@@ -501,8 +509,7 @@ public class ServletUtil {
     return sbuff.toString();
   }
 
-  static public void showSession(HttpServletRequest req, HttpServletResponse res,
-                                 PrintStream out) {
+  static public void showSession(HttpServletRequest req, HttpServletResponse res, PrintStream out) {
 
     // res.setContentType("text/html");
 
@@ -534,28 +541,21 @@ public class ServletUtil {
     }
 
     out.println("<H3>Here are some vital stats on your session:</H3>");
-    out.println("Session id: " + session.getId() +
-            " <I>(keep it secret)</I><BR>");
+    out.println("Session id: " + session.getId() + " <I>(keep it secret)</I><BR>");
     out.println("New session: " + session.isNew() + "<BR>");
     out.println("Timeout: " + session.getMaxInactiveInterval());
-    out.println("<I>(" + session.getMaxInactiveInterval() / 60 +
-            " minutes)</I><BR>");
+    out.println("<I>(" + session.getMaxInactiveInterval() / 60 + " minutes)</I><BR>");
     out.println("Creation time: " + session.getCreationTime());
     out.println("<I>(" + new Date(session.getCreationTime()) + ")</I><BR>");
     out.println("Last access time: " + session.getLastAccessedTime());
-    out.println("<I>(" + new Date(session.getLastAccessedTime()) +
-            ")</I><BR>");
+    out.println("<I>(" + new Date(session.getLastAccessedTime()) + ")</I><BR>");
 
-    out.println("Requested session ID from cookie: " +
-            req.isRequestedSessionIdFromCookie() + "<BR>");
-    out.println("Requested session ID from URL: " +
-            req.isRequestedSessionIdFromURL() + "<BR>");
-    out.println("Requested session ID valid: " +
-            req.isRequestedSessionIdValid() + "<BR>");
+    out.println("Requested session ID from cookie: " + req.isRequestedSessionIdFromCookie() + "<BR>");
+    out.println("Requested session ID from URL: " + req.isRequestedSessionIdFromURL() + "<BR>");
+    out.println("Requested session ID valid: " + req.isRequestedSessionIdValid() + "<BR>");
 
     out.println("<H3>Test URL Rewriting</H3>");
-    out.println("Click <A HREF=\"" +
-            res.encodeURL(req.getRequestURI()) + "\">here</A>");
+    out.println("Click <A HREF=\"" + res.encodeURL(req.getRequestURI()) + "\">here</A>");
     out.println("to test that session tracking works via URL");
     out.println("rewriting even when cookies aren't supported.");
 
@@ -563,30 +563,34 @@ public class ServletUtil {
   }
 
 
-  /* static public void showSession(HttpServletRequest req, PrintStream out) {
-
-    // res.setContentType("text/html");
-
-    // Get the current session object, create one if necessary
-    HttpSession session = req.getSession();
-
-    out.println("Session id: " + session.getId());
-    out.println(" session.isNew(): " + session.isNew());
-    out.println(" session.getMaxInactiveInterval(): " + session.getMaxInactiveInterval() + " secs");
-    out.println(" session.getCreationTime(): " + session.getCreationTime() + " (" + new Date(session.getCreationTime()) + ")");
-    out.println(" session.getLastAccessedTime(): " + session.getLastAccessedTime() + " (" + new Date(session.getLastAccessedTime()) + ")");
-    out.println(" req.isRequestedSessionIdFromCookie: " + req.isRequestedSessionIdFromCookie());
-    out.println(" req.isRequestedSessionIdFromURL: " + req.isRequestedSessionIdFromURL());
-    out.println(" req.isRequestedSessionIdValid: " + req.isRequestedSessionIdValid());
-
-    out.println("Saved session Attributes:");
-    Enumeration atts = session.getAttributeNames();
-    while (atts.hasMoreElements()) {
-      String name = (String) atts.nextElement();
-      out.println(" " + name + ": " + session.getAttribute(name) + "<BR>");
-    }
-
-  } */
+  /*
+   * static public void showSession(HttpServletRequest req, PrintStream out) {
+   * 
+   * // res.setContentType("text/html");
+   * 
+   * // Get the current session object, create one if necessary
+   * HttpSession session = req.getSession();
+   * 
+   * out.println("Session id: " + session.getId());
+   * out.println(" session.isNew(): " + session.isNew());
+   * out.println(" session.getMaxInactiveInterval(): " + session.getMaxInactiveInterval() + " secs");
+   * out.println(" session.getCreationTime(): " + session.getCreationTime() + " (" + new Date(session.getCreationTime())
+   * + ")");
+   * out.println(" session.getLastAccessedTime(): " + session.getLastAccessedTime() + " (" + new
+   * Date(session.getLastAccessedTime()) + ")");
+   * out.println(" req.isRequestedSessionIdFromCookie: " + req.isRequestedSessionIdFromCookie());
+   * out.println(" req.isRequestedSessionIdFromURL: " + req.isRequestedSessionIdFromURL());
+   * out.println(" req.isRequestedSessionIdValid: " + req.isRequestedSessionIdValid());
+   * 
+   * out.println("Saved session Attributes:");
+   * Enumeration atts = session.getAttributeNames();
+   * while (atts.hasMoreElements()) {
+   * String name = (String) atts.nextElement();
+   * out.println(" " + name + ": " + session.getAttribute(name) + "<BR>");
+   * }
+   * 
+   * }
+   */
 
   static public String showSecurity(HttpServletRequest req, String role) {
     StringBuilder sbuff = new StringBuilder();
@@ -600,47 +604,52 @@ public class ServletUtil {
     return sbuff.toString();
   }
 
-  /* from luca / ageci code, portResolver, portMapper not known
-    static public void getSecureRedirect(HttpServletRequest req) {
-        String pathInfo = req.getPathInfo();
-        String queryString = req.getQueryString();
-        String contextPath = req.getContextPath();
-        String destination = req.getServletPath() + ((pathInfo ==   null) ? "" : pathInfo)
-            + ((queryString == null) ? "" : ("?" + queryString));
-        String redirectUrl = contextPath;
+  /*
+   * from luca / ageci code, portResolver, portMapper not known
+   * static public void getSecureRedirect(HttpServletRequest req) {
+   * String pathInfo = req.getPathInfo();
+   * String queryString = req.getQueryString();
+   * String contextPath = req.getContextPath();
+   * String destination = req.getServletPath() + ((pathInfo == null) ? "" : pathInfo)
+   * + ((queryString == null) ? "" : ("?" + queryString));
+   * String redirectUrl = contextPath;
+   * 
+   * Integer httpPort = new Integer(portResolver.getServerPort(req));
+   * Integer httpsPort = portMapper.lookupHttpsPort(httpPort);
+   * if (httpsPort != null) {
+   * boolean includePort = true;
+   * if (httpsPort.intValue() == 443) {
+   * includePort = false;
+   * }
+   * redirectUrl = "https://" + req.getServerName() + ((includePort) ? (":" + httpsPort) : "") + contextPath
+   * + destination;
+   * }
+   * }
+   */
 
-        Integer httpPort = new Integer(portResolver.getServerPort(req));
-        Integer httpsPort = portMapper.lookupHttpsPort(httpPort);
-        if (httpsPort != null) {
-            boolean includePort = true;
-            if (httpsPort.intValue() == 443) {
-                includePort = false;
-            }
-            redirectUrl = "https://" + req.getServerName() +   ((includePort) ? (":" + httpsPort) : "") + contextPath
-                + destination;
-        }
-    } */
-
-  /* static private String getServerInfoName(String serverInfo) {
-    int slash = serverInfo.indexOf('/');
-    if (slash == -1) return serverInfo;
-    else return serverInfo.substring(0, slash);
-  }
-
-  static private String getServerInfoVersion(String serverInfo) {
-    // Version info is everything between the slash and the space
-    int slash = serverInfo.indexOf('/');
-    if (slash == -1) return null;
-    int space = serverInfo.indexOf(' ', slash);
-    if (space == -1) space = serverInfo.length();
-    return serverInfo.substring(slash + 1, space);
-  } */
+  /*
+   * static private String getServerInfoName(String serverInfo) {
+   * int slash = serverInfo.indexOf('/');
+   * if (slash == -1) return serverInfo;
+   * else return serverInfo.substring(0, slash);
+   * }
+   * 
+   * static private String getServerInfoVersion(String serverInfo) {
+   * // Version info is everything between the slash and the space
+   * int slash = serverInfo.indexOf('/');
+   * if (slash == -1) return null;
+   * int space = serverInfo.indexOf(' ', slash);
+   * if (space == -1) space = serverInfo.length();
+   * return serverInfo.substring(slash + 1, space);
+   * }
+   */
 
   static public void showThreads(PrintStream pw) {
     Thread current = Thread.currentThread();
     ThreadGroup group = current.getThreadGroup();
     while (true) {
-      if (group.getParent() == null) break;
+      if (group.getParent() == null)
+        break;
       group = group.getParent();
     }
     showThreads(pw, group, current);

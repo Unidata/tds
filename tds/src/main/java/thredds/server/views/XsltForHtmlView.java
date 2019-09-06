@@ -14,7 +14,6 @@ import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.servlet.view.AbstractView;
 import thredds.server.config.TdsContext;
 import thredds.util.ContentType;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Transformer;
@@ -37,7 +36,7 @@ public class XsltForHtmlView extends AbstractView {
 
     Document doc = (Document) model.get("Document");
     String transform = (String) model.get("Transform");
-    String resourceName = "/resources/xsl/"+transform;
+    String resourceName = "/resources/xsl/" + transform;
     Resource resource = new ClassPathResource(resourceName);
     try (InputStream is = resource.getInputStream()) {
       Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(is));
@@ -48,7 +47,7 @@ public class XsltForHtmlView extends AbstractView {
       transformer.transform(in, out);
       Document html = out.getDocument();
       if (html == null)
-        throw new IllegalStateException("Bad XSLT="+resourceName);
+        throw new IllegalStateException("Bad XSLT=" + resourceName);
 
       XMLOutputter fmt = new XMLOutputter(Format.getPrettyFormat());
       fmt.output(html, res.getOutputStream());
@@ -56,6 +55,6 @@ public class XsltForHtmlView extends AbstractView {
   }
 
   public String getContentType() {
-    return ContentType.html.getContentHeader();  // doesnt seem to get called, at least in mock framework
+    return ContentType.html.getContentHeader(); // doesnt seem to get called, at least in mock framework
   }
 }

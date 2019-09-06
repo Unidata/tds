@@ -16,7 +16,6 @@ import thredds.server.catalog.builder.ConfigCatalogBuilder;
 import ucar.nc2.util.AliasTranslator;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.TestDir;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -42,7 +41,8 @@ public class TestConfigCatalogBuilder {
     // get test catalog location
     ClassLoader cl = TestConfigCatalogBuilder.class.getClassLoader();
     URL url = cl.getResource(catName);
-    if (url == null) return null;
+    if (url == null)
+      return null;
 
     ConfigCatalogBuilder builder = new ConfigCatalogBuilder();
     Catalog cat = builder.buildFromLocation("file:" + url.getPath(), null);
@@ -79,7 +79,7 @@ public class TestConfigCatalogBuilder {
   }
 
 
-    //private String dsScanDir = "src/test/data";
+  // private String dsScanDir = "src/test/data";
   private String dsScanDir = TestDir.cdmLocalTestDataDir;
   private String dsScanFilter = ".*\\.nc$";
 
@@ -101,21 +101,23 @@ public class TestConfigCatalogBuilder {
   private String testInvDsScan_addDatasetSize_ResourceName = "testInvDsScan.addDatasetSize.result.xml";
   private String testInvDsScan_addLatest_ResourceName = "testInvDsScan.addLatest.result.xml";
 
-  private String testInvDsScan_compoundServerFilterProblem_1_ResourceName = "testInvDsScan.compoundServerFilterProblem.1.result.xml";
-  private String testInvDsScan_compoundServerFilterProblem_2_ResourceName = "testInvDsScan.compoundServerFilterProblem.2.result.xml";
+  private String testInvDsScan_compoundServerFilterProblem_1_ResourceName =
+      "testInvDsScan.compoundServerFilterProblem.1.result.xml";
+  private String testInvDsScan_compoundServerFilterProblem_2_ResourceName =
+      "testInvDsScan.compoundServerFilterProblem.2.result.xml";
 
   @Test
   public void testReadCatalog() throws IOException {
     String filePath = "../tds/src/test/content/thredds/catalog.xml";
-    ConfigCatalog cat = open("file:"+filePath);
+    ConfigCatalog cat = open("file:" + filePath);
     assert cat != null;
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    System.out.printf("%s%n",  writer.writeXML( cat ));
+    System.out.printf("%s%n", writer.writeXML(cat));
 
     List<DatasetRootConfig> roots = cat.getDatasetRoots();
     for (DatasetRootConfig root : roots)
       System.out.printf("DatasetRoot %s -> %s%n", root.path, root.location);
-    Assert.assertTrue("Incorrect # of catalog roots: expect 5 found "+roots.size(),roots.size() == 5);
+    Assert.assertTrue("Incorrect # of catalog roots: expect 5 found " + roots.size(), roots.size() == 5);
 
     Dataset ds = cat.findDatasetByID("Hyrax2TDS");
     assert ds != null;
@@ -136,25 +138,27 @@ public class TestConfigCatalogBuilder {
   }
 
   @Test
-   public void testReadFc() throws IOException {
-     String filePath = "../tds/src/test/content/thredds/catalogGrib.xml";
-     ConfigCatalog cat = open("file:"+filePath);
-     CatalogXmlWriter writer = new CatalogXmlWriter();
-     String catalogAsString = writer.writeXML( cat );
-     System.out.printf("%s%n",  catalogAsString);
+  public void testReadFc() throws IOException {
+    String filePath = "../tds/src/test/content/thredds/catalogGrib.xml";
+    ConfigCatalog cat = open("file:" + filePath);
+    CatalogXmlWriter writer = new CatalogXmlWriter();
+    String catalogAsString = writer.writeXML(cat);
+    System.out.printf("%s%n", catalogAsString);
 
-     List<Service> ss = cat.getServices();
-     for (Service s : ss)
-       System.out.printf("Service %s%n", s);
-     assert ss.size() == 2;
-   }
+    List<Service> ss = cat.getServices();
+    for (Service s : ss)
+      System.out.printf("Service %s%n", s);
+    assert ss.size() == 2;
+  }
 
-  public static void compareCatalogToCatalogDocFile( ConfigCatalog expandedCatalog, File expectedCatalogDocFile)
-          throws IOException {
+  public static void compareCatalogToCatalogDocFile(ConfigCatalog expandedCatalog, File expectedCatalogDocFile)
+      throws IOException {
     Assert.assertNotNull(expandedCatalog);
     Assert.assertNotNull(expectedCatalogDocFile);
-    Assert.assertTrue("File doesn't exist [" + expectedCatalogDocFile.getPath() + "].", expectedCatalogDocFile.exists());
-    Assert.assertTrue("File is a directory [" + expectedCatalogDocFile.getPath() + "].", expectedCatalogDocFile.isFile());
+    Assert.assertTrue("File doesn't exist [" + expectedCatalogDocFile.getPath() + "].",
+        expectedCatalogDocFile.exists());
+    Assert.assertTrue("File is a directory [" + expectedCatalogDocFile.getPath() + "].",
+        expectedCatalogDocFile.isFile());
     Assert.assertTrue("Can't read file [" + expectedCatalogDocFile.getPath() + "].", expectedCatalogDocFile.canRead());
 
     // Read in expected result catalog.
@@ -164,35 +168,35 @@ public class TestConfigCatalogBuilder {
     String catalogAsString;
     CatalogXmlWriter writer = new CatalogXmlWriter();
     try {
-      expectedCatalogAsString = writer.writeXML( expectedCatalog );
-      catalogAsString = writer.writeXML( expandedCatalog );
-    } catch ( IOException e ) {
-      System.out.println( "IOException trying to write catalog to sout: " + e.getMessage() );
+      expectedCatalogAsString = writer.writeXML(expectedCatalog);
+      catalogAsString = writer.writeXML(expandedCatalog);
+    } catch (IOException e) {
+      System.out.println("IOException trying to write catalog to sout: " + e.getMessage());
       return;
     }
     // Print expected and resulting catalogs to std out.
-    if ( true ) {
-      System.out.println( "Expected catalog (" + expectedCatalogDocFile.getPath() + "):" );
-      System.out.println( "--------------------" );
-      System.out.println( expectedCatalogAsString );
-      System.out.println( "--------------------" );
-      //System.out.println( "Resulting catalog (" + expandedCatalog.getUriString() + "):" );
-      System.out.println( "--------------------" );
-      System.out.println( catalogAsString );
-      System.out.println( "--------------------\n" );
+    if (true) {
+      System.out.println("Expected catalog (" + expectedCatalogDocFile.getPath() + "):");
+      System.out.println("--------------------");
+      System.out.println(expectedCatalogAsString);
+      System.out.println("--------------------");
+      // System.out.println( "Resulting catalog (" + expandedCatalog.getUriString() + "):" );
+      System.out.println("--------------------");
+      System.out.println(catalogAsString);
+      System.out.println("--------------------\n");
     }
     Assert.assertEquals(expectedCatalogAsString, catalogAsString);
-    System.out.println( "Expected catalog as String equals resulting catalog as String");
+    System.out.println("Expected catalog as String equals resulting catalog as String");
 
     // Compare the two catalogs.
-    //assertTrue( "Expanded catalog object does not equal expected catalog object.",
-    //            ( (InvCatalogImpl) expandedCatalog ).equals( expectedCatalog ) );
+    // assertTrue( "Expanded catalog object does not equal expected catalog object.",
+    // ( (InvCatalogImpl) expandedCatalog ).equals( expectedCatalog ) );
   }
 
-    /////////////////////////////////////
+  /////////////////////////////////////
   @Test
   public void testMisspell() throws IOException {
-        // get test catalog location
+    // get test catalog location
     ClassLoader cl = this.getClass().getClassLoader();
     URL url = cl.getResource("thredds/server/catalog/testInheritied.xml");
     assert (url != null);
@@ -208,7 +212,7 @@ public class TestConfigCatalogBuilder {
     assert list != null;
     assert list.size() == 0;
 
-   }
+  }
 
 
 }

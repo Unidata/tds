@@ -21,7 +21,6 @@ import ucar.nc2.util.Misc;
 import ucar.nc2.util.Optional;
 import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -42,17 +41,17 @@ public class TestGridCoverageRemoteP {
   public static List<Object[]> getTestParameters() {
     List<Object[]> result = new ArrayList<>();
 
-    result.add(new Object[]{"cdmrfeature/grid/scanCdmUnitTests/ft/grid/GFS_Global_onedeg_20081229_1800.grib2.nc", "Pressure_surface",
-            "2008-12-29T18:00:00Z",  null, null, null});
+    result.add(new Object[] {"cdmrfeature/grid/scanCdmUnitTests/ft/grid/GFS_Global_onedeg_20081229_1800.grib2.nc",
+        "Pressure_surface", "2008-12-29T18:00:00Z", null, null, null});
 
-    result.add(new Object[]{"cdmrfeature/grid/grib.v5/NDFD/CONUS_5km/NDFD_CONUS_5km_20131212_0000.grib2", "Categorical_Rain_Forecast_surface",
-            "2013-12-12T00:00:00Z",  "2013-12-17T12:00:00Z", null, null});
+    result.add(new Object[] {"cdmrfeature/grid/grib.v5/NDFD/CONUS_5km/NDFD_CONUS_5km_20131212_0000.grib2",
+        "Categorical_Rain_Forecast_surface", "2013-12-12T00:00:00Z", "2013-12-17T12:00:00Z", null, null});
 
-    result.add(new Object[]{"cdmrfeature/grid/gribCollection.v5/GFS_CONUS_80km/Best", "Temperature_isobaric",
-            "2012-02-28T00:00:00Z",  "2012-02-28T00:00:00Z", null, 850.0});        // set runtime for best
+    result.add(new Object[] {"cdmrfeature/grid/gribCollection.v5/GFS_CONUS_80km/Best", "Temperature_isobaric",
+        "2012-02-28T00:00:00Z", "2012-02-28T00:00:00Z", null, 850.0}); // set runtime for best
 
-    result.add(new Object[]{"cdmrfeature/grid/gribCollection.v5/GFS_CONUS_80km/Best", "Temperature_isobaric",
-            null,  "2012-02-28T00:00:00Z", null, 850.0}); // */
+    result.add(new Object[] {"cdmrfeature/grid/gribCollection.v5/GFS_CONUS_80km/Best", "Temperature_isobaric", null,
+        "2012-02-28T00:00:00Z", null, 850.0}); // */
 
     return result;
   }
@@ -63,7 +62,8 @@ public class TestGridCoverageRemoteP {
   CalendarDate time_val;
   Double time_offset, vert_level;
 
-  public TestGridCoverageRemoteP(String endpoint, String covName, String rt_val, String time_val, Double time_offset, Double vert_level) {
+  public TestGridCoverageRemoteP(String endpoint, String covName, String rt_val, String time_val, Double time_offset,
+      Double vert_level) {
     this.endpoint = ucar.nc2.ft.remote.CdmrFeatureDataset.SCHEME + TestOnLocalServer.withHttpPath(endpoint);
 
     this.covName = covName;
@@ -93,14 +93,16 @@ public class TestGridCoverageRemoteP {
       readOne(cover, rt_val, time_val, time_offset, vert_level);
 
     } finally {
-      if (cc != null) cc.close();
+      if (cc != null)
+        cc.close();
     }
   }
 
   // LOOK replicated from cdm_test/TestCoverageSubset
-  void readOne(Coverage cover, CalendarDate rt_val, CalendarDate time_val, Double time_offset, Double vert_level) throws IOException, InvalidRangeException {
-    logger.debug("===Request Subset {} runtime={} time={} timeOffset={} vert={}",
-            cover.getName(), rt_val, time_val, time_offset, vert_level);
+  void readOne(Coverage cover, CalendarDate rt_val, CalendarDate time_val, Double time_offset, Double vert_level)
+      throws IOException, InvalidRangeException {
+    logger.debug("===Request Subset {} runtime={} time={} timeOffset={} vert={}", cover.getName(), rt_val, time_val,
+        time_offset, vert_level);
 
     SubsetParams subset = new SubsetParams();
     if (rt_val != null)

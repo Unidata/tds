@@ -6,13 +6,13 @@ package thredds.server.wcs.v1_0_0_1;
 
 import thredds.server.wcs.Request;
 import ucar.nc2.ft2.coverage.CoverageCollection;
-
 import java.util.List;
 
 public class DescribeCoverageBuilder extends WcsRequestBuilder {
   private org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DescribeCoverageBuilder.class);
 
-  DescribeCoverageBuilder(String versionString, Request.Operation operation, CoverageCollection dataset, String datasetPath) {
+  DescribeCoverageBuilder(String versionString, Request.Operation operation, CoverageCollection dataset,
+      String datasetPath) {
     super(versionString, operation, dataset, datasetPath);
   }
 
@@ -27,14 +27,13 @@ public class DescribeCoverageBuilder extends WcsRequestBuilder {
     return this;
   }
 
-  public DescribeCoverage buildDescribeCoverage()
-          throws WcsException {
+  public DescribeCoverage buildDescribeCoverage() throws WcsException {
     if (this.coverageIdList == null)
       throw new IllegalStateException("Null coverage list not allowed.");
     if (this.coverageIdList.isEmpty())
       throw new IllegalStateException("Empty coverage list not allowed.");
 
-    return new DescribeCoverage(this.getOperation(), this.getVersionString(),
-            this.getWcsDataset(), this.coverageIdList);
+    return new DescribeCoverage(this.getOperation(), this.getVersionString(), this.getWcsDataset(),
+        this.coverageIdList);
   }
 }

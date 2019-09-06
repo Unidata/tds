@@ -22,7 +22,6 @@ import ucar.nc2.ft2.coverage.CoverageCollection;
 import ucar.nc2.ft2.simpgeometry.SimpleGeometryFeatureDataset;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.nc2.util.URLnaming;
-
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.*;
@@ -39,7 +38,8 @@ import java.util.List;
  * the catalog itself isnt constructed until the following call from DataRootHandler.makeDynamicCatalog():
  * match.dataRoot.featCollection.makeCatalog(match.remaining, path, baseURI);
  * <p>
- * The DatasetFeatureCollection object is held in the DataRootManager's FeatureCollectionCache; it may get closed and recreated.
+ * The DatasetFeatureCollection object is held in the DataRootManager's FeatureCollectionCache; it may get closed and
+ * recreated.
  *
  * @author caron
  * @since Mar 3, 2010
@@ -54,7 +54,7 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
 
   // can be changed
   static protected AllowedServices allowedServices;
-  static protected String contextName = "/thredds";  // set by TdsInit
+  static protected String contextName = "/thredds"; // set by TdsInit
 
   // cant use spring wiring because InvDatasetFeatureCollection not a spring component because depends on catalog config
   static public void setContextName(String c) {
@@ -92,9 +92,9 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
     protected ThreddsMetadata.GeospatialCoverage coverage;
     protected CalendarDateRange dateRange;
 
-    //protected DatasetBuilder top;        // top dataset LOOK why ??
-    protected long lastInvChange;        // last time dataset inventory was changed
-    protected long lastProtoChange;      // last time proto dataset was changed
+    // protected DatasetBuilder top; // top dataset LOOK why ??
+    protected long lastInvChange; // last time dataset inventory was changed
+    protected long lastProtoChange; // last time proto dataset was changed
 
     protected State(State from) {
       if (from != null) {
@@ -103,12 +103,12 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
         this.dateRange = from.dateRange;
         this.lastProtoChange = from.lastProtoChange;
 
-        //this.top = from.top;
+        // this.top = from.top;
         this.lastInvChange = from.lastInvChange;
       }
     }
 
-    protected State copy() {  // allow override
+    protected State copy() { // allow override
       return new State(this);
     }
   }
@@ -125,7 +125,8 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
   protected final FeatureCollectionType fcType;
   protected final FeatureCollectionConfig config;
   protected String topDirectory;
-  protected MFileCollectionManager datasetCollection; // defines the collection of datasets in this feature collection, actually final NOT USED BY GRIB
+  protected MFileCollectionManager datasetCollection; // defines the collection of datasets in this feature collection,
+                                                      // actually final NOT USED BY GRIB
 
   @GuardedBy("lock")
   protected State state;
@@ -173,8 +174,9 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
         nestedOk.add(service);
       }
     }
-    virtualService = new Service("VirtualServices", "", ServiceType.Compound.toString(), ServiceType.Compound.getDescription(),
-            null, nestedOk, orgService.getProperties(), ServiceType.Compound.getAccessType());
+    virtualService =
+        new Service("VirtualServices", "", ServiceType.Compound.toString(), ServiceType.Compound.getDescription(), null,
+            nestedOk, orgService.getProperties(), ServiceType.Compound.getAccessType());
   }
 
   public void close() {
@@ -190,14 +192,16 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
     datasetCollection = new MFileCollectionManager(config, errlog, logger);
     topDirectory = datasetCollection.getRoot();
     String errs = errlog.toString();
-    if (errs.length() > 0) logger.warn("MFileCollectionManager parse error = {} ", errs);
+    if (errs.length() > 0)
+      logger.warn("MFileCollectionManager parse error = {} ", errs);
   }
 
   //////////////////////////////////////////////////////
   // called by eventBus, this is where the trigger comes in
   @Subscribe
   public void processEvent(CollectionUpdateEvent event) {
-    if (!config.collectionName.equals(event.getCollectionName())) return; // not for me
+    if (!config.collectionName.equals(event.getCollectionName()))
+      return; // not for me
 
     try {
       update(event.getType());
@@ -235,8 +239,7 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
     return f.toString();
   }
 
-  protected void _showStatus(Formatter f, boolean summaryOnly, String type) throws IOException {
-  }
+  protected void _showStatus(Formatter f, boolean summaryOnly, String type) throws IOException {}
 
   protected String getPath() {
     return parent.getUrlPath();
@@ -287,7 +290,8 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
    *
    * @param force update type
    */
-  protected void update(CollectionUpdateType force) throws IOException {  // this may be called from a background thread, or from checkState() request thread
+  protected void update(CollectionUpdateType force) throws IOException { // this may be called from a background thread,
+                                                                         // or from checkState() request thread
     State localState;
 
     synchronized (lock) {
@@ -349,9 +353,11 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
   ///////////////////////////////////////////////////////////////////////////////////////////////////
 
   protected String makeFullName(DatasetNode ds) {
-    if (ds.getParent() == null) return ds.getName();
+    if (ds.getParent() == null)
+      return ds.getName();
     String parentName = makeFullName(ds.getParent());
-    if (parentName == null || parentName.length() == 0) return ds.getName();
+    if (parentName == null || parentName.length() == 0)
+      return ds.getName();
     return parentName + "/" + ds.getName();
   }
 
@@ -359,9 +365,9 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
    * Get one of the catalogs contained in this collection,
    * called by DataRootHandler.makeDynamicCatalog()
    *
-   * @param match   match.remaining
+   * @param match match.remaining
    * @param orgPath the path for the request.
-   * @param catURI  the base URI for the catalog to be made, used to resolve relative URLs.
+   * @param catURI the base URI for the catalog to be made, used to resolve relative URLs.
    * @return containing catalog
    */
   abstract public CatalogBuilder makeCatalog(String match, String orgPath, URI catURI) throws IOException;
@@ -372,10 +378,10 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
    * Make the containing catalog of this feature collection
    * "http://server:port/thredds/catalog/path/catalog.xml"
    *
-   * @param catURI     base URI of the request
+   * @param catURI base URI of the request
    * @param localState current state to use
    * @return the top FMRC catalog
-   * @throws java.io.IOException         on I/O error
+   * @throws java.io.IOException on I/O error
    * @throws java.net.URISyntaxException if path is misformed
    */
   protected CatalogBuilder makeCatalogTop(URI catURI, State localState) throws IOException, URISyntaxException {
@@ -388,13 +394,14 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
 
     DatasetBuilder top = makeDatasetTop(catURI, localState);
     topCatalog.addDataset(top);
-    // topCatalog.addService(StandardServices.latest.getService());  // in case its needed
+    // topCatalog.addService(StandardServices.latest.getService()); // in case its needed
     topCatalog.addService(virtualService);
     return topCatalog;
   }
 
   // this catalog lists the individual files comprising the collection.
-  protected CatalogBuilder makeCatalogFiles(URI catURI, State localState, List<String> filenames, boolean addLatest) throws IOException {
+  protected CatalogBuilder makeCatalogFiles(URI catURI, State localState, List<String> filenames, boolean addLatest)
+      throws IOException {
     Catalog parentCatalog = parent.getParentCatalog();
 
     CatalogBuilder result = new CatalogBuilder();
@@ -409,7 +416,7 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
 
     // add Variables, GeospatialCoverage, TimeCoverage
     ThreddsMetadata tmi = top.getInheritableMetadata();
-    tmi.set(Dataset.TimeCoverage, null);      // LOOK
+    tmi.set(Dataset.TimeCoverage, null); // LOOK
     if (localState.coverage != null) {
       tmi.set(Dataset.GeospatialCoverage, localState.coverage);
     }
@@ -491,8 +498,9 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
 
     result.addDataset(top);
 
-    MFile mfile = datasetCollection.getLatestFile();  // LOOK - assumes dcm is up to date
-    if (mfile == null) return null;
+    MFile mfile = datasetCollection.getLatestFile(); // LOOK - assumes dcm is up to date
+    if (mfile == null)
+      return null;
 
     String mpath = mfile.getPath();
     if (!mpath.startsWith(topDirectory))
@@ -536,7 +544,8 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
   public CoverageCollection getGridCoverage(String matchPath) throws IOException {
     return null;
   }
-  public SimpleGeometryFeatureDataset getSimpleGeometryDataset(String matchPath) throws IOException{
+
+  public SimpleGeometryFeatureDataset getSimpleGeometryDataset(String matchPath) throws IOException {
     return null;
   }
 
@@ -558,11 +567,11 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
 
     // this assumes that these are files. also might be remote datasets from a catalog
     if (type.equalsIgnoreCase(FILES)) {
-      if (topDirectory == null) return null;
+      if (topDirectory == null)
+        return null;
 
-      String filename = new StringBuilder(topDirectory)
-              .append(topDirectory.endsWith("/") ? "" : "/")
-              .append(name).toString();
+      String filename =
+          new StringBuilder(topDirectory).append(topDirectory.endsWith("/") ? "" : "/").append(name).toString();
       DatasetUrl durl = new DatasetUrl(null, filename);
 
       return NetcdfDataset.acquireDataset(null, durl, null, -1, null, null); // no enhancement
@@ -576,7 +585,8 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
   // may have to remove the extra "files" from the path
   // this says that a File URL has to be topDirectory + [FILES/ +] + match.remaining
   public File getFile(String remaining) {
-    if (null == topDirectory) return null;
+    if (null == topDirectory)
+      return null;
     int pos = remaining.indexOf(FILES);
     StringBuilder fname = new StringBuilder(topDirectory);
     if (!topDirectory.endsWith("/"))

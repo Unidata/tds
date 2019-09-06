@@ -19,10 +19,11 @@ public class DataRootTracker {
   DatasetTracker.Callback callback;
 
   public DataRootTracker(String pathname, boolean startOver, DatasetTracker.Callback callback) {
-    this.filepath = pathname +dbname ;
-    this.callback = callback ;
+    this.filepath = pathname + dbname;
+    this.callback = callback;
     File file = new File(filepath);
-    if (startOver) reinit();
+    if (startOver)
+      reinit();
     if (!file.exists() || startOver || readDataRoots() <= 0) {
       dataRoots = new HashSet<>();
       changed = true;
@@ -32,18 +33,19 @@ public class DataRootTracker {
   private void reinit() {
     File file = new File(filepath);
     if (file.exists()) {
-       boolean wasDeleted = file.delete();
-       if (!wasDeleted) {
-         throw new IllegalStateException("DatasetTrackerMapDB not able to delete "+ filepath);
-       }
-     }
+      boolean wasDeleted = file.delete();
+      if (!wasDeleted) {
+        throw new IllegalStateException("DatasetTrackerMapDB not able to delete " + filepath);
+      }
+    }
     dataRoots = new HashSet<>();
     changed = true;
   }
 
   public boolean trackDataRoot(DataRootExt ds) {
     changed = true;
-    if (callback != null) callback.hasDataRoot(ds);
+    if (callback != null)
+      callback.hasDataRoot(ds);
     return dataRoots.add(ds);
   }
 
@@ -75,7 +77,8 @@ public class DataRootTracker {
   }
 
   public void save() throws IOException {
-    if (!changed) return;
+    if (!changed)
+      return;
     try (DataOutputStream out = new DataOutputStream(new FileOutputStream(filepath))) {
       for (DataRootExt ext : dataRoots) {
         ext.writeExternal(out);

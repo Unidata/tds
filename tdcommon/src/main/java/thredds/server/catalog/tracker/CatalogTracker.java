@@ -2,7 +2,6 @@ package thredds.server.catalog.tracker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.*;
 import java.util.*;
 
@@ -29,23 +28,24 @@ public class CatalogTracker {
     this.nextCatId = nextCatId;
 
     File file = new File(filepath);
-    if (startOver) reinit();
+    if (startOver)
+      reinit();
     if (!file.exists() || startOver || readCatalogs() <= 0) {
       changed = true;
-      catalogs = new HashMap<>(2*expectedSize);
+      catalogs = new HashMap<>(2 * expectedSize);
     }
   }
 
   private void reinit() {
     File file = new File(filepath);
     if (file.exists()) {
-       boolean wasDeleted = file.delete();
-       if (!wasDeleted) {
-         throw new IllegalStateException("DatasetTrackerMapDB not able to delete "+ filepath);
-       }
-     }
+      boolean wasDeleted = file.delete();
+      if (!wasDeleted) {
+        throw new IllegalStateException("DatasetTrackerMapDB not able to delete " + filepath);
+      }
+    }
     changed = true;
-    catalogs = new HashMap<>(2*expectedSize);
+    catalogs = new HashMap<>(2 * expectedSize);
   }
 
   public long put(CatalogExt cat) {
@@ -62,17 +62,19 @@ public class CatalogTracker {
 
   public CatalogExt removeCatalog(String catPath) {
     changed = true;
-    return catalogs.remove( catPath);
+    return catalogs.remove(catPath);
   }
 
-    // return sorted catalogs
+  // return sorted catalogs
   public Iterable<? extends CatalogExt> getCatalogs() {
-    if (catalogs == null) readCatalogs();
+    if (catalogs == null)
+      readCatalogs();
 
     List<CatalogExt> result = new ArrayList<>();
     for (CatalogExt ext : catalogs.values())
       result.add(ext);
-    Collections.sort(result, (o1, o2) -> o1.getCatRelLocation().compareTo(o2.getCatRelLocation()));    // java 8 lambda, baby
+    Collections.sort(result, (o1, o2) -> o1.getCatRelLocation().compareTo(o2.getCatRelLocation())); // java 8 lambda,
+                                                                                                    // baby
     return result;
   }
 
@@ -88,14 +90,15 @@ public class CatalogTracker {
       }
 
     } catch (IOException e) {
-      logger.error("read "+filepath, e);
+      logger.error("read " + filepath, e);
       return 0;
     }
     return count;
   }
 
   public void save() throws IOException {
-    if (!changed) return;
+    if (!changed)
+      return;
     try (DataOutputStream out = new DataOutputStream(new FileOutputStream(filepath))) {
       for (CatalogExt ext : catalogs.values()) {
         ext.writeExternal(out);

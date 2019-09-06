@@ -6,7 +6,6 @@ package thredds.server.wcs;
 
 import thredds.servlet.ServletUtil;
 import thredds.util.ContentType;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +16,6 @@ import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
-
 import ucar.nc2.constants.CDM;
 import ucar.nc2.util.DiskCache2;
 
@@ -58,12 +56,13 @@ public class WcsHandler {
     try {
       URI serverURI = new URI(req.getRequestURL().toString());
       request = WcsRequestParser.parseRequest(this.getVersion().getVersionString(), serverURI, req, res);
-      if (request == null) return;
+      if (request == null)
+        return;
 
       if (request.getOperation().equals(Request.Operation.GetCapabilities)) {
         res.setContentType(ContentType.xml.getContentHeader());
         res.setStatus(HttpServletResponse.SC_OK);
-        //res.setCharacterEncoding(CDM.UTF8);
+        // res.setCharacterEncoding(CDM.UTF8);
 
         PrintWriter pw = res.getWriter();
         ((thredds.server.wcs.v1_0_0_1.GetCapabilities) request).writeCapabilitiesReport(pw);
@@ -88,10 +87,13 @@ public class WcsHandler {
             resultFilename = resultFilename + suffix;
           res.setHeader("Content-Disposition", "attachment; filename=\"" + resultFilename + "\"");
 
-          ServletUtil.returnFile(servlet, "", covFile.getPath(), req, res, ((thredds.server.wcs.v1_0_0_1.GetCoverage) request).getFormat().getMimeType());
-          if (deleteImmediately) covFile.delete();
+          ServletUtil.returnFile(servlet, "", covFile.getPath(), req, res,
+              ((thredds.server.wcs.v1_0_0_1.GetCoverage) request).getFormat().getMimeType());
+          if (deleteImmediately)
+            covFile.delete();
         } else {
-          log.error("handleKVP(): Failed to create coverage file" + (covFile == null ? "" : (": " + covFile.getAbsolutePath())));
+          log.error("handleKVP(): Failed to create coverage file"
+              + (covFile == null ? "" : (": " + covFile.getAbsolutePath())));
           throw new thredds.server.wcs.v1_0_0_1.WcsException("Problem creating requested coverage.");
         }
       }
@@ -118,36 +120,33 @@ public class WcsHandler {
     thredds.server.wcs.v1_0_0_1.GetCapabilities.ResponsibleParty respParty;
     thredds.server.wcs.v1_0_0_1.GetCapabilities.ResponsibleParty.ContactInfo contactInfo;
     contactInfo = new thredds.server.wcs.v1_0_0_1.GetCapabilities.ResponsibleParty.ContactInfo(
-            Collections.singletonList("voice phone"),
-            Collections.singletonList("voice phone"),
-            new thredds.server.wcs.v1_0_0_1.GetCapabilities.ResponsibleParty.Address(
-                    Collections.singletonList("address"), "city", "admin area", "postal code", "country",
-                    Collections.singletonList("email")
-            ),
-            new thredds.server.wcs.v1_0_0_1.GetCapabilities.ResponsibleParty.OnlineResource(null, "title")
-    );
+        Collections.singletonList("voice phone"), Collections.singletonList("voice phone"),
+        new thredds.server.wcs.v1_0_0_1.GetCapabilities.ResponsibleParty.Address(Collections.singletonList("address"),
+            "city", "admin area", "postal code", "country", Collections.singletonList("email")),
+        new thredds.server.wcs.v1_0_0_1.GetCapabilities.ResponsibleParty.OnlineResource(null, "title"));
     respParty = new thredds.server.wcs.v1_0_0_1.GetCapabilities.ResponsibleParty("indiv name", "org name", "position",
-            contactInfo);
+        contactInfo);
     sid = new thredds.server.wcs.v1_0_0_1.GetCapabilities.ServiceInfo("name", "label", "description",
-            Collections.singletonList("keyword"),
-            respParty, "no fees",
-            Collections.singletonList("no access constraints"));
+        Collections.singletonList("keyword"), respParty, "no fees", Collections.singletonList("no access constraints"));
 
     return sid;
   }
 
-  public void handleExceptionReport(HttpServletResponse res, thredds.server.wcs.v1_0_0_1.WcsException exception) throws IOException {
+  public void handleExceptionReport(HttpServletResponse res, thredds.server.wcs.v1_0_0_1.WcsException exception)
+      throws IOException {
     res.setContentType(ContentType.ogc_exception.getContentHeader());
     res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 
-    thredds.server.wcs.v1_0_0_1.ExceptionReport exceptionReport = new thredds.server.wcs.v1_0_0_1.ExceptionReport(exception);
+    thredds.server.wcs.v1_0_0_1.ExceptionReport exceptionReport =
+        new thredds.server.wcs.v1_0_0_1.ExceptionReport(exception);
 
     PrintWriter pw = res.getWriter();
     exceptionReport.writeExceptionReport(pw);
     pw.flush();
   }
 
-  public void handleExceptionReport(HttpServletResponse res, String code, String locator, String message) throws IOException {
+  public void handleExceptionReport(HttpServletResponse res, String code, String locator, String message)
+      throws IOException {
     thredds.server.wcs.v1_0_0_1.WcsException.Code c;
     thredds.server.wcs.v1_0_0_1.WcsException exception;
     try {
@@ -161,7 +160,8 @@ public class WcsHandler {
     handleExceptionReport(res, exception);
   }
 
-  public void handleExceptionReport(HttpServletResponse res, String code, String locator, Throwable t) throws IOException {
+  public void handleExceptionReport(HttpServletResponse res, String code, String locator, Throwable t)
+      throws IOException {
     handleExceptionReport(res, code, locator, t.getMessage());
 
     if (t instanceof FileNotFoundException)

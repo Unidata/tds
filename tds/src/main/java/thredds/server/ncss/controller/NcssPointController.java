@@ -29,7 +29,6 @@ import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.unidata.geoloc.LatLonPointImpl;
 import ucar.unidata.geoloc.LatLonRect;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -54,13 +53,14 @@ public class NcssPointController extends AbstractNcssController {
 
   @RequestMapping("**")
   public void handleRequest(HttpServletRequest req, HttpServletResponse res, @Valid NcssPointParamsBean params,
-                            BindingResult validationResult) throws Exception {
+      BindingResult validationResult) throws Exception {
     if (validationResult.hasErrors())
       throw new BindException(validationResult);
 
     String datasetPath = getDatasetPath(req);
     try (FeatureDatasetPoint fdp = TdsRequestedDataset.getPointDataset(req, res, datasetPath)) {
-      if (fdp == null) return;
+      if (fdp == null)
+        return;
 
       Formatter errs = new Formatter();
       if (!params.intersectsTime(fdp.getCalendarDateRange(), errs)) {
@@ -76,19 +76,20 @@ public class NcssPointController extends AbstractNcssController {
       SubsetParams ncssParams = params.makeSubset();
       SupportedFormat format = getSupportedOperation(fdp).getSupportedFormat(params.getAccept());
 
-      DsgSubsetWriter pds = DsgSubsetWriterFactory.newInstance(
-              fdp, ncssParams, ncssDiskCache, res.getOutputStream(), format);
-      setResponseHeaders(res, pds.getHttpHeaders(datasetPath, format.isStream() ));
+      DsgSubsetWriter pds =
+          DsgSubsetWriterFactory.newInstance(fdp, ncssParams, ncssDiskCache, res.getOutputStream(), format);
+      setResponseHeaders(res, pds.getHttpHeaders(datasetPath, format.isStream()));
       pds.respond(res, fdp, datasetPath, ncssParams, format);
     }
   }
 
-  @RequestMapping(value = { "**/dataset.xml", "**/pointDataset.xml" })
+  @RequestMapping(value = {"**/dataset.xml", "**/pointDataset.xml"})
   public ModelAndView getDatasetDescriptionXml(HttpServletRequest req, HttpServletResponse res) throws IOException {
     String datasetPath = getDatasetPath(req);
 
     try (FeatureDatasetPoint fdp = TdsRequestedDataset.getPointDataset(req, res, datasetPath)) {
-      if (fdp == null) return null; // restricted dataset
+      if (fdp == null)
+        return null; // restricted dataset
 
       String datasetUrlPath = buildDatasetUrl(datasetPath);
       SupportedOperation supportedOperation = getSupportedOperation(fdp);
@@ -103,12 +104,13 @@ public class NcssPointController extends AbstractNcssController {
     }
   }
 
-  @RequestMapping(value = { "**/dataset.html", "**/pointDataset.html" })
+  @RequestMapping(value = {"**/dataset.html", "**/pointDataset.html"})
   public ModelAndView getDatasetDescriptionHtml(HttpServletRequest req, HttpServletResponse res) throws IOException {
     String datasetPath = getDatasetPath(req);
 
     try (FeatureDatasetPoint fdp = TdsRequestedDataset.getPointDataset(req, res, datasetPath)) {
-      if (fdp == null) return null; // restricted dataset
+      if (fdp == null)
+        return null; // restricted dataset
 
       String datasetUrlPath = buildDatasetUrl(datasetPath);
       SupportedOperation supportedOperation = getSupportedOperation(fdp);
@@ -120,14 +122,14 @@ public class NcssPointController extends AbstractNcssController {
 
       List<DsgFeatureCollection> dsgFeatCols = fdp.getPointFeatureCollectionList();
       if (dsgFeatCols.size() != 1) {
-        throw new AssertionError(String.format(
-                "Expected dataset to contain exactly 1 DsgFeatureCollection, but instead it has %d. We " +
-                        "(the THREDDS developers) weren't certain that such datasets actually existed in the wild! " +
-                        "Please tell us about it at support-thredds@unidata.ucar.edu.", dsgFeatCols.size()));
+        throw new AssertionError(
+            String.format("Expected dataset to contain exactly 1 DsgFeatureCollection, but instead it has %d. We "
+                + "(the THREDDS developers) weren't certain that such datasets actually existed in the wild! "
+                + "Please tell us about it at support-thredds@unidata.ucar.edu.", dsgFeatCols.size()));
         // John Caron's comment on the topic from 2015-09-23 was:
-        //     It would be nice if FeatureDatasetPoint could only return a single DsgFeatureCollection, but I'm
-        //     skeptical, even though it's the common case. A Dataset is a file, and a file could contain multiple
-        //     collection types. We do see that occasionally.
+        // It would be nice if FeatureDatasetPoint could only return a single DsgFeatureCollection, but I'm
+        // skeptical, even though it's the common case. A Dataset is a file, and a file could contain multiple
+        // collection types. We do see that occasionally.
         // However, we don't have any such datasets in our test suite. Furthermore , I don't believe that it's possible
         // to construct one in a CF-compliant manner. So, if there really are multi-DSG datasets out there, hopefully
         // this message will prompt users to send them to us.
@@ -137,23 +139,21 @@ public class NcssPointController extends AbstractNcssController {
 
       LatLonRect boundingBox = dsgFeatCol.getBoundingBox();
       if (boundingBox == null) {
-        boundingBox = new LatLonRect(new LatLonPointImpl(-90, -180), new LatLonPointImpl(90, 180));  // Whole earth.
+        boundingBox = new LatLonRect(new LatLonPointImpl(-90, -180), new LatLonPointImpl(90, 180)); // Whole earth.
       }
       model.put("boundingBox", boundingBox);
 
-      String horizExtentWKT = String.format("POLYGON((%f %f, %f %f, %f %f, %f %f, %f %f))",
-              boundingBox.getLonMin(), boundingBox.getLatMax(),
-              boundingBox.getLonMax(), boundingBox.getLatMax(),
-              boundingBox.getLonMax(), boundingBox.getLatMin(),
-              boundingBox.getLonMin(), boundingBox.getLatMin(),
-              boundingBox.getLonMin(), boundingBox.getLatMax());
+      String horizExtentWKT = String.format("POLYGON((%f %f, %f %f, %f %f, %f %f, %f %f))", boundingBox.getLonMin(),
+          boundingBox.getLatMax(), boundingBox.getLonMax(), boundingBox.getLatMax(), boundingBox.getLonMax(),
+          boundingBox.getLatMin(), boundingBox.getLonMin(), boundingBox.getLatMin(), boundingBox.getLonMin(),
+          boundingBox.getLatMax());
       model.put("horizExtentWKT", horizExtentWKT);
 
       CalendarDateRange calendarDateRange = dsgFeatCol.getCalendarDateRange();
       if (calendarDateRange == null) {
-        CalendarDate start = CalendarDate.of(null, 0000, 1, 1, 0, 0, 0);  // 0000-01-01T00:00:00.00Z
-        CalendarDate end   = CalendarDate.present();
-        calendarDateRange  = CalendarDateRange.of(start, end);
+        CalendarDate start = CalendarDate.of(null, 0000, 1, 1, 0, 0, 0); // 0000-01-01T00:00:00.00Z
+        CalendarDate end = CalendarDate.present();
+        calendarDateRange = CalendarDateRange.of(start, end);
       }
       model.put("calendarDateRange", calendarDateRange);
 
@@ -165,31 +165,32 @@ public class NcssPointController extends AbstractNcssController {
     }
   }
 
-  @RequestMapping(value = { "**/station.xml" })
+  @RequestMapping(value = {"**/station.xml"})
   public ModelAndView getStations(HttpServletRequest req, HttpServletResponse res, NcssPointParamsBean params)
-          throws IOException {
+      throws IOException {
     String datasetPath = getDatasetPath(req);
     try (FeatureDatasetPoint fd = TdsRequestedDataset.getPointDataset(req, res, datasetPath)) {
-      if (fd == null) return null;
+      if (fd == null)
+        return null;
 
       if (fd.getFeatureType() != FeatureType.STATION)
         throw new java.lang.UnsupportedOperationException(
-                "Station list request is only supported for Station features");
+            "Station list request is only supported for Station features");
 
-      FeatureDatasetCapabilitiesWriter xmlWriter = new FeatureDatasetCapabilitiesWriter(
-              fd, buildDatasetUrl(datasetPath));
+      FeatureDatasetCapabilitiesWriter xmlWriter =
+          new FeatureDatasetCapabilitiesWriter(fd, buildDatasetUrl(datasetPath));
 
-      String[] stnsList = new String[]{};
+      String[] stnsList = new String[] {};
       if (params.getStns() != null)
         stnsList = params.getStns().toArray(stnsList);
       else
         stnsList = null;
 
       LatLonRect llrect = null;
-      if (params.getNorth() != null && params.getSouth() != null &&
-              params.getEast() != null && params.getWest() != null)
+      if (params.getNorth() != null && params.getSouth() != null && params.getEast() != null
+          && params.getWest() != null)
         llrect = new LatLonRect(new LatLonPointImpl(params.getSouth(), params.getWest()),
-                new LatLonPointImpl(params.getNorth(), params.getEast()));
+            new LatLonPointImpl(params.getNorth(), params.getEast()));
 
       Document doc = xmlWriter.makeStationCollectionDocument(llrect, stnsList);
       return new ModelAndView("threddsXmlView", "Document", doc);
@@ -198,10 +199,13 @@ public class NcssPointController extends AbstractNcssController {
 
   public static SupportedOperation getSupportedOperation(FeatureDataset fd) {
     switch (fd.getFeatureType()) {
-      case POINT:   return SupportedOperation.POINT_REQUEST;
-      case STATION: return SupportedOperation.STATION_REQUEST;
-      default:      throw new UnsupportedOperationException(String.format(
-              "'%s' format not currently supported for DSG subset writing.", fd.getFeatureType()));
+      case POINT:
+        return SupportedOperation.POINT_REQUEST;
+      case STATION:
+        return SupportedOperation.STATION_REQUEST;
+      default:
+        throw new UnsupportedOperationException(
+            String.format("'%s' format not currently supported for DSG subset writing.", fd.getFeatureType()));
     }
   }
 }

@@ -11,5 +11,5 @@ package thredds.servlet.restrict;
  * @author caron
  */
 public interface RoleSource {
-   public boolean hasRole(String username, String role);
+  public boolean hasRole(String username, String role);
 }

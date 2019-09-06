@@ -19,7 +19,6 @@ import ucar.nc2.constants.FeatureType;
 import ucar.nc2.ft2.coverage.*;
 import ucar.nc2.util.Misc;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
@@ -27,10 +26,11 @@ import java.lang.invoke.MethodHandles;
 public class TestCdmRemoteServer {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  /* Relies on:
-  <dataset name="Test Single Grid Dataset" ID="testSingleGridDataset" serviceName="all"
-          urlPath="cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc" dataType="Grid"/>
-      in tds/src/test/content/thredds/catalog.xml
+  /*
+   * Relies on:
+   * <dataset name="Test Single Grid Dataset" ID="testSingleGridDataset" serviceName="all"
+   * urlPath="cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc" dataType="Grid"/>
+   * in tds/src/test/content/thredds/catalog.xml
    */
   @Test
   public void testSingleDataset() throws IOException {
@@ -41,7 +41,7 @@ public class TestCdmRemoteServer {
     assert ds.getFeatureType() == FeatureType.GRID;
 
     DataFactory fac = new DataFactory();
-    try (DataFactory.Result dataResult = fac.openFeatureDataset( ds, null)) {
+    try (DataFactory.Result dataResult = fac.openFeatureDataset(ds, null)) {
       if (dataResult.fatalError) {
         System.out.printf("fatalError= %s%n", dataResult.errLog);
         assert false;
@@ -65,8 +65,8 @@ public class TestCdmRemoteServer {
 
       CoverageCoordAxis time = gcs.getTimeAxis();
       Assert.assertNotNull("time axis", time);
-      double[] expect = new double[]{0., 6.0, 12.0, 18.0};
-      double[] have = (double []) time.getCoordsAsArray().get1DJavaArray(DataType.DOUBLE);
+      double[] expect = new double[] {0., 6.0, 12.0, 18.0};
+      double[] have = (double[]) time.getCoordsAsArray().get1DJavaArray(DataType.DOUBLE);
       Assert.assertArrayEquals(expect, have, Misc.defaultMaxRelativeDiffDouble);
     }
   }

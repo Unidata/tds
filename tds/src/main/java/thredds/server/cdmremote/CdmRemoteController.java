@@ -34,7 +34,6 @@ import ucar.nc2.ParsedSectionSpec;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.ft.FeatureDatasetFactoryManager;
 import ucar.nc2.stream.NcStreamWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -67,7 +66,8 @@ public class CdmRemoteController {
 
   // everything but header, data, which is binary data, and capabilities which is XML
   @RequestMapping(value = "/**", method = RequestMethod.GET)
-  public ResponseEntity<String> handleCapabilitiesRequest(HttpServletRequest request, HttpServletResponse response, @RequestParam String req) throws IOException {
+  public ResponseEntity<String> handleCapabilitiesRequest(HttpServletRequest request, HttpServletResponse response,
+      @RequestParam String req) throws IOException {
 
     if (!allowedServices.isAllowed(StandardService.cdmRemote))
       throw new ServiceNotAllowed(StandardService.cdmRemote.toString());
@@ -83,7 +83,8 @@ public class CdmRemoteController {
 
     // LOOK heres where we want the Dataset, not the netcdfFile (!)
     try (NetcdfFile ncfile = TdsRequestedDataset.getNetcdfFile(request, response, datasetPath)) {
-      if (ncfile == null) return null;  // failed resource control
+      if (ncfile == null)
+        return null; // failed resource control
 
       responseHeaders = new HttpHeaders();
       responseHeaders.setDate("Last-Modified", TdsRequestedDataset.getLastModified(datasetPath));
@@ -92,15 +93,15 @@ public class CdmRemoteController {
       // just setHeader("Content-Description", "ncstream"), no body
       // on client, see DatasetUrl.disambiguateHttp
       if (req == null) {
-          response.setContentType(ContentType.binary.getContentHeader());
-          response.setHeader("Content-Description", "ncstream");
-          return new ResponseEntity<>(null, responseHeaders, HttpStatus.OK);
-        }
+        response.setContentType(ContentType.binary.getContentHeader());
+        response.setHeader("Content-Description", "ncstream");
+        return new ResponseEntity<>(null, responseHeaders, HttpStatus.OK);
+      }
 
       switch (req.toLowerCase()) {
-        case "form":    // ol
+        case "form": // ol
         case "cdl":
-          ncfile.setLocation(datasetPath); // hide where the file is stored  LOOK
+          ncfile.setLocation(datasetPath); // hide where the file is stored LOOK
           String cdl = ncfile.toString();
           responseHeaders.set(ContentType.HEADER, ContentType.text.getContentHeader());
           return new ResponseEntity<>(cdl, responseHeaders, HttpStatus.OK);
@@ -117,7 +118,8 @@ public class CdmRemoteController {
   }
 
   @RequestMapping(value = "/**", method = RequestMethod.GET, params = "req=capabilities")
-  public ModelAndView handleCapabilitiesRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public ModelAndView handleCapabilitiesRequest(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
 
     if (!allowedServices.isAllowed(StandardService.cdmRemote))
       throw new ServiceNotAllowed(StandardService.cdmRemote.toString());
@@ -126,14 +128,17 @@ public class CdmRemoteController {
     String absPath = getAbsolutePath(request);
 
     try (NetcdfFile ncfile = TdsRequestedDataset.getNetcdfFile(request, response, datasetPath)) {
-      if (ncfile == null) return null;
+      if (ncfile == null)
+        return null;
 
       Element rootElem = new Element("cdmRemoteCapabilities");
       Document doc = new Document(rootElem);
       rootElem.setAttribute("location", absPath);
 
       Element elem = new Element("featureDataset");
-      FeatureType ftFromMetadata = FeatureDatasetFactoryManager.findFeatureType(ncfile); // LOOK BAD - must figure out what is the featureType and save it
+      FeatureType ftFromMetadata = FeatureDatasetFactoryManager.findFeatureType(ncfile); // LOOK BAD - must figure out
+                                                                                         // what is the featureType and
+                                                                                         // save it
       if (ftFromMetadata != null)
         elem.setAttribute("type", ftFromMetadata.toString());
       elem.setAttribute("url", absPath);
@@ -144,7 +149,8 @@ public class CdmRemoteController {
   }
 
   @RequestMapping(value = "/**", method = RequestMethod.GET, params = "req=header")
-  public void handleHeaderRequest(HttpServletRequest request, HttpServletResponse response, OutputStream out) throws IOException {
+  public void handleHeaderRequest(HttpServletRequest request, HttpServletResponse response, OutputStream out)
+      throws IOException {
 
     if (!allowedServices.isAllowed(StandardService.cdmRemote))
       throw new ServiceNotAllowed(StandardService.cdmRemote.toString());
@@ -159,7 +165,8 @@ public class CdmRemoteController {
     }
 
     try (NetcdfFile ncfile = TdsRequestedDataset.getNetcdfFile(request, response, datasetPath)) {
-      if (ncfile == null) return;
+      if (ncfile == null)
+        return;
 
       response.setContentType(ContentType.binary.getContentHeader());
       response.setHeader("Content-Description", "ncstream");
@@ -175,9 +182,8 @@ public class CdmRemoteController {
   }
 
   @RequestMapping(value = "/**", method = RequestMethod.GET, params = "req=data")
-  public void handleDataRequest(HttpServletRequest request, HttpServletResponse response,
-                            @Valid CdmRemoteQueryBean qb, BindingResult validationResult, OutputStream out)
-          throws IOException, BindException, InvalidRangeException {
+  public void handleDataRequest(HttpServletRequest request, HttpServletResponse response, @Valid CdmRemoteQueryBean qb,
+      BindingResult validationResult, OutputStream out) throws IOException, BindException, InvalidRangeException {
 
     if (!allowedServices.isAllowed(StandardService.cdmRemote))
       throw new ServiceNotAllowed(StandardService.cdmRemote.toString());
@@ -195,13 +201,14 @@ public class CdmRemoteController {
     long start = System.currentTimeMillis();
 
     try (NetcdfFile ncfile = TdsRequestedDataset.getNetcdfFile(request, response, datasetPath)) {
-      if (ncfile == null) return;
+      if (ncfile == null)
+        return;
 
       response.setContentType(ContentType.binary.getContentHeader());
       response.setHeader("Content-Description", "ncstream");
 
       long size = 0;
-      //WritableByteChannel wbc = Channels.newChannel(out);
+      // WritableByteChannel wbc = Channels.newChannel(out);
       NcStreamWriter ncWriter = new NcStreamWriter(ncfile, ServletUtil.getRequestBase(request));
       String query;
       if (qb.getVar() != null)
@@ -227,8 +234,8 @@ public class CdmRemoteController {
       if (debug)
         System.out.printf("CdmRemoteController data ok, size=%s took=%d%n", size, System.currentTimeMillis() - start);
 
-    } //catch (IllegalArgumentException | InvalidRangeException e) { // ParsedSectionSpec failed
-     // response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+    } // catch (IllegalArgumentException | InvalidRangeException e) { // ParsedSectionSpec failed
+      // response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
     // }
 
   }

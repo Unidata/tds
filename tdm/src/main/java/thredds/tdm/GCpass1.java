@@ -26,7 +26,6 @@ import ucar.nc2.util.DiskCache2;
 import ucar.nc2.util.Indent;
 import ucar.unidata.io.RandomAccessFile;
 import ucar.unidata.util.StringUtil2;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -43,16 +42,22 @@ public class GCpass1 {
   static private final Logger logger = LoggerFactory.getLogger(GCpass1.class);
 
   /*
-String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -partition [none|file|directory] -useTableVersion [true|false] "+
-      "-useCacheDir <dir>"; */
+   * String usage =
+   * "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -partition [none|file|directory] -useTableVersion [true|false] "
+   * +
+   * "-useCacheDir <dir>";
+   */
   private static class CommandLine {
-    @Parameter(names = {"-spec"}, description = "Collection specification string, exactly as in the <featureCollection>.", required = false)
+    @Parameter(names = {"-spec"},
+        description = "Collection specification string, exactly as in the <featureCollection>.", required = false)
     public String spec;
 
-    @Parameter(names = {"-rootDir"}, description = "Collection rootDir, exactly as in the <featureCollection>.", required = false)
+    @Parameter(names = {"-rootDir"}, description = "Collection rootDir, exactly as in the <featureCollection>.",
+        required = false)
     public String rootDir;
 
-    @Parameter(names = {"-regexp"}, description = "Collection regexp string, exactly as in the <featureCollection>.", required = false)
+    @Parameter(names = {"-regexp"}, description = "Collection regexp string, exactly as in the <featureCollection>.",
+        required = false)
     public String regexp;
 
     @Parameter(names = {"-isGrib2"}, description = "Is Grib2 collection.", required = false)
@@ -61,7 +66,8 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
     @Parameter(names = {"-partition"}, description = "Partition type: none, directory, file", required = false)
     public FeatureCollectionConfig.PartitionType partitionType = FeatureCollectionConfig.PartitionType.directory;
 
-    @Parameter(names = {"-useTableVersion"}, description = "Use Table version to make seperate variables.", required = false)
+    @Parameter(names = {"-useTableVersion"}, description = "Use Table version to make seperate variables.",
+        required = false)
     public boolean useTableVersion = false;
 
     @Parameter(names = {"-useCacheDir"}, description = "Set the Grib index cache directory.", required = false)
@@ -73,8 +79,8 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
     private final JCommander jc;
 
     public CommandLine(String progName, String[] args) throws ParameterException {
-      this.jc = new JCommander(this, args);  // Parses args and uses them to initialize *this*.
-      jc.setProgramName(progName);           // Displayed in the usage information.
+      this.jc = new JCommander(this, args); // Parses args and uses them to initialize *this*.
+      jc.setProgramName(progName); // Displayed in the usage information.
     }
 
     public void printUsage() {
@@ -102,16 +108,17 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
     }
 
     /*
-      public FeatureCollectionConfig(String name, String path, FeatureCollectionType fcType, String spec, String collectionName,
-                                 String dateFormatMark, String olderThan, String timePartition, Element innerNcml)
+     * public FeatureCollectionConfig(String name, String path, FeatureCollectionType fcType, String spec, String
+     * collectionName,
+     * String dateFormatMark, String olderThan, String timePartition, Element innerNcml)
      */
-    FeatureCollectionConfig config = new FeatureCollectionConfig("GCpass1", "GCpass1", cmdLine.getFeatureCollectionType(),
-            cmdLine.spec, null, null, null, cmdLine.partitionType.toString(), null);
+    FeatureCollectionConfig config = new FeatureCollectionConfig("GCpass1", "GCpass1",
+        cmdLine.getFeatureCollectionType(), cmdLine.spec, null, null, null, cmdLine.partitionType.toString(), null);
     FeatureCollectionConfig.GribConfig gribConfig = config.gribConfig;
     gribConfig.useTableVersion = cmdLine.useTableVersion;
 
     if (cmdLine.rootDir != null && cmdLine.regexp != null)
-      config.setFilter(cmdLine.rootDir,cmdLine.regexp);
+      config.setFilter(cmdLine.rootDir, cmdLine.regexp);
 
     Formatter fm = new Formatter(System.out);
     GCpass1 pass1 = new GCpass1(config, fm);
@@ -144,8 +151,10 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+      if (this == o)
+        return true;
+      if (o == null || getClass() != o.getClass())
+        return false;
       Variable variable = (Variable) o;
       return cdmHash == variable.cdmHash;
     }
@@ -265,9 +274,12 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
     int vertCoordInGDS = countersOne.get("vertCoordInGDS").getUnique();
     int predefined = countersOne.get("predefined").getUnique();
     int thin = countersOne.get("thin").getUnique();
-    if (vertCoordInGDS != 0) fm.format("vertCoordInGDS=%d ", vertCoordInGDS);
-    if (predefined != 0) fm.format("predefined=%d ", vertCoordInGDS);
-    if (thin != 0) fm.format("thin=%d ", vertCoordInGDS);
+    if (vertCoordInGDS != 0)
+      fm.format("vertCoordInGDS=%d ", vertCoordInGDS);
+    if (predefined != 0)
+      fm.format("predefined=%d ", vertCoordInGDS);
+    if (thin != 0)
+      fm.format("thin=%d ", vertCoordInGDS);
     fm.format("%n");
   }
 
@@ -281,7 +293,8 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
     Path rootPath = Paths.get(specp.getRootDir());
     boolean isGrib1 = config.type == FeatureCollectionType.GRIB1;
 
-    try (MCollection topCollection = DirectoryBuilder.factory(config, rootPath, true, null, GribCdmIndex.NCX_SUFFIX, logger)) {
+    try (MCollection topCollection =
+        DirectoryBuilder.factory(config, rootPath, true, null, GribCdmIndex.NCX_SUFFIX, logger)) {
 
       if (topCollection instanceof DirectoryPartition) {
         DirectoryPartition dpart = (DirectoryPartition) topCollection;
@@ -297,10 +310,8 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
     }
   }
 
-  private Accum scanDirectoryPartitionRecurse(boolean isGrib1, DirectoryPartition dpart,
-                                              FeatureCollectionConfig config,
-                                              Counters countersParent,
-                                              Logger logger, Indent indent, Formatter fm) throws IOException {
+  private Accum scanDirectoryPartitionRecurse(boolean isGrib1, DirectoryPartition dpart, FeatureCollectionConfig config,
+      Counters countersParent, Logger logger, Indent indent, Formatter fm) throws IOException {
 
     fm.format("%n%sDirectory %s%n", indent, dpart.getRoot());
     indent.incr();
@@ -311,7 +322,8 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
       part.putAuxInfo(FeatureCollectionConfig.AUX_CONFIG, config);
       try {
         if (part instanceof DirectoryPartition) {
-          accum.add(scanDirectoryPartitionRecurse(isGrib1, (DirectoryPartition) part, config, countersPart, logger, indent, fm));
+          accum.add(scanDirectoryPartitionRecurse(isGrib1, (DirectoryPartition) part, config, countersPart, logger,
+              indent, fm));
         } else {
           Path partPath = Paths.get(part.getRoot());
           accum.add(scanLeafDirectoryCollection(isGrib1, config, countersPart, logger, partPath, false, indent, fm));
@@ -320,7 +332,7 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
         logger.warn("Error making partition " + part.getRoot(), t);
         dpart.removePartition(part);
       }
-    }   // loop over partitions
+    } // loop over partitions
 
     countersParent.addTo(countersPart);
     accum.last = reportOneDir(dpart.getRoot(), accum, countersPart, indent, accum.last);
@@ -331,14 +343,12 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
   /**
    * Update all the grib indices in one directory, and the collection index for that directory
    *
-   * @param config  FeatureCollectionConfig
+   * @param config FeatureCollectionConfig
    * @param dirPath directory path
    * @throws IOException
    */
-  private Accum scanLeafDirectoryCollection(boolean isGrib1, FeatureCollectionConfig config,
-                                            Counters parentCounters,
-                                            Logger logger, Path dirPath, boolean isTop,
-                                            Indent indent, Formatter fm) throws IOException {
+  private Accum scanLeafDirectoryCollection(boolean isGrib1, FeatureCollectionConfig config, Counters parentCounters,
+      Logger logger, Path dirPath, boolean isTop, Indent indent, Formatter fm) throws IOException {
 
     if (config.ptype == FeatureCollectionConfig.PartitionType.file) {
       reportOneFileHeader(indent, fm);
@@ -426,24 +436,26 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
     counters.count("referenceDate", pds.getReferenceDate());
 
     int gdsHash = gr.getGDS().hashCode();
-    int cdmHash = Grib1Variable.cdmVariableHash(cust1, gr, gdsHash, gribConfig.useTableVersion, gribConfig.intvMerge, gribConfig.useCenter);
+    int cdmHash = Grib1Variable.cdmVariableHash(cust1, gr, gdsHash, gribConfig.useTableVersion, gribConfig.intvMerge,
+        gribConfig.useCenter);
     String name = Grib1Iosp.makeVariableName(cust1, gribConfig, pds);
     counters.count("variable", new Variable(cdmHash, name));
-    if (counters.count("gds", gdsHash)) storeGrib1Record(gdsHash, gr);
+    if (counters.count("gds", gdsHash))
+      storeGrib1Record(gdsHash, gr);
     counters.count("gdsTemplate", gdss.getGridTemplate());
 
     if (gdss.isThin()) {
-      //fm.format("  THIN= (gds=%d)%n", gdss.getGridTemplate());
+      // fm.format(" THIN= (gds=%d)%n", gdss.getGridTemplate());
       counters.count("thin", gdss.getGridTemplate());
     }
 
     if (!pds.gdsExists()) {
-      //fm.format("   PREDEFINED GDS%n");
+      // fm.format(" PREDEFINED GDS%n");
       counters.count("predefined", gdss.getPredefinedGridDefinition());
     }
 
     if (gdss.hasVerticalCoordinateParameters()) {
-      //fm.format("   Has vertical coordinates in GDS%n");
+      // fm.format(" Has vertical coordinates in GDS%n");
       counters.count("vertCoordInGDS", pds.getLevelType());
     }
 
@@ -452,24 +464,29 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
   Grib2Tables cust2 = null;
 
   private void accumGrib2Record(ucar.nc2.grib.grib2.Grib2Record gr, Counters counters) throws IOException {
-    if (cust2 == null) {                              // first record LOOK test if assumption is valid
+    if (cust2 == null) { // first record LOOK test if assumption is valid
       cust2 = Grib2Tables.factory(gr);
     }
 
     Grib2SectionIdentification id = gr.getId();
-    //Grib2SectionProductDefinition pds = gr.getPDSsection();
-    //Grib2Pds pdss = gr.getPDSsection().getPDS();
+    // Grib2SectionProductDefinition pds = gr.getPDSsection();
+    // Grib2Pds pdss = gr.getPDSsection().getPDS();
 
-    String table = id.getCenter_id() + "-" + id.getSubcenter_id() + "-" + id.getMaster_table_version() + "-" + id.getLocal_table_version();
+    String table = id.getCenter_id() + "-" + id.getSubcenter_id() + "-" + id.getMaster_table_version() + "-"
+        + id.getLocal_table_version();
     counters.count("table version", table);
     counters.count("referenceDate", gr.getReferenceDate());
 
-    //counters.countS("param", gr.getDiscipline() + "-" + pdss.getParameterCategory() + "-" + pdss.getParameterNumber());
-    int cdmHash = Grib2Variable.cdmVariableHash(cust2, gr, 0, gribConfig.intvMerge, gribConfig.useGenType); // LOOK needs gdsHashOverride
+    // counters.countS("param", gr.getDiscipline() + "-" + pdss.getParameterCategory() + "-" +
+    // pdss.getParameterNumber());
+    int cdmHash = Grib2Variable.cdmVariableHash(cust2, gr, 0, gribConfig.intvMerge, gribConfig.useGenType); // LOOK
+                                                                                                            // needs
+                                                                                                            // gdsHashOverride
     String name = GribUtils.makeNameFromDescription(cust2.getVariableName(gr));
     counters.count("variable", new Variable(cdmHash, name));
     int gdsHash = gr.getGDS().hashCode();
-    if (counters.count("gds", gdsHash)) storeGrib2Record(gdsHash, gr);
+    if (counters.count("gds", gdsHash))
+      storeGrib2Record(gdsHash, gr);
     counters.count("gdsTemplate", gr.getGDSsection().getGDSTemplateNumber());
   }
 
@@ -481,9 +498,11 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
 
     Grib1Index index = new Grib1Index();
     if (!index.readIndex(path, mf.getLastModified(), CollectionUpdateType.test)) {
-      if (readOnly) return null;
+      if (readOnly)
+        return null;
       try (RandomAccessFile raf = new RandomAccessFile(path, "r")) {
-        if (!Grib1RecordScanner.isValidFile(raf)) return null;
+        if (!Grib1RecordScanner.isValidFile(raf))
+          return null;
         index.makeIndex(path, raf);
       }
     }
@@ -497,9 +516,11 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
 
     Grib2Index index = new Grib2Index();
     if (!index.readIndex(path, mf.getLastModified(), CollectionUpdateType.test)) {
-      if (readOnly) return null;
+      if (readOnly)
+        return null;
       try (RandomAccessFile raf = new RandomAccessFile(path, "r")) {
-        if (!Grib2RecordScanner.isValidFile(raf)) return null;
+        if (!Grib2RecordScanner.isValidFile(raf))
+          return null;
         index.makeIndex(path, raf);
       }
     }
@@ -507,13 +528,15 @@ String usage = "usage: thredds.tdm.GCpass1 -spec <collectionSpec> [-isGrib2] -pa
   }
 
   Map<Integer, Grib1Record> gds1set = new HashMap<>();
-  private void storeGrib1Record( int hash, Grib1Record gr1) {
+
+  private void storeGrib1Record(int hash, Grib1Record gr1) {
     gds1set.put(hash, gr1);
   }
 
 
   Map<Integer, Grib2Record> gds2set = new HashMap<>();
-  private void storeGrib2Record( int hash, Grib2Record gr2) {
+
+  private void storeGrib2Record(int hash, Grib2Record gr2) {
     gds2set.put(hash, gr2);
   }
 

@@ -12,7 +12,9 @@ import java.net.URI;
  * Uses JSR-303 Validation
  */
 public class RemoteCatalogRequest {
-  public enum Command { SHOW, SUBSET, VALIDATE }
+  public enum Command {
+    SHOW, SUBSET, VALIDATE
+  }
 
   private URI catalogUri;
 

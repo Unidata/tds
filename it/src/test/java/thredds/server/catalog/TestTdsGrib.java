@@ -16,7 +16,6 @@ import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.nc2.units.DateType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.HashSet;
@@ -41,7 +40,7 @@ public class TestTdsGrib {
 
     Set<String> ss = new HashSet<>();
     for (Service s : cat.getServices()) {
-      assert !ss.contains(s.getName()) : "already has "+s;
+      assert !ss.contains(s.getName()) : "already has " + s;
       ss.add(s.getName());
     }
 
@@ -49,7 +48,7 @@ public class TestTdsGrib {
     for (Dataset ds : top.getDatasetsLocal()) {
       if (ds instanceof CatalogRef) {
         CatalogRef catref = (CatalogRef) ds;
-        String name =  catref.getName();
+        String name = catref.getName();
         assert name != null : "name is null";
         assert name.length() > 0 : "name is empty";
       }
@@ -65,7 +64,7 @@ public class TestTdsGrib {
     Dataset top = cat.getDatasetsLocal().get(0);
     Assert.assertTrue(0 < top.getDataSize());
 
-    DateType dt =  top.getLastModifiedDate();
+    DateType dt = top.getLastModifiedDate();
     Assert.assertNotNull(dt);
     Assert.assertEquals("modified", dt.getType());
     Assert.assertTrue(dt.getCalendarDate().getMillis() > 0);
@@ -109,7 +108,7 @@ public class TestTdsGrib {
     String catalogPath = TestOnLocalServer.withHttpPath("catalog/Grib/Nonexist/catalog.xml");
     try (HTTPMethod method = HTTPFactory.Get(null, catalogPath)) {
       int statusCode = method.execute();
-      assert statusCode == 404;       // not 500
+      assert statusCode == 404; // not 500
     }
   }
 
@@ -118,22 +117,24 @@ public class TestTdsGrib {
     String catalogPath = TestOnLocalServer.withHttpPath("catalog/Grib/Emptiness/catalog.xml");
     try (HTTPMethod method = HTTPFactory.Get(null, catalogPath)) {
       int statusCode = method.execute();
-      assert statusCode == 404;       // not 500
+      assert statusCode == 404; // not 500
     }
   }
 
   ///////////////////////////////////////////////////
   // work with catalogs useing declared services
-  /*   <service name="some" base="" serviceType="compound">
-    <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/"/>
-    <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/"/>
-    <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/grid/"/>
-    <service name="cdmremote" serviceType="CdmRemote" base="/thredds/cdmremote/"/>
-  </service> */
+  /*
+   * <service name="some" base="" serviceType="compound">
+   * <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/"/>
+   * <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/"/>
+   * <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/grid/"/>
+   * <service name="cdmremote" serviceType="CdmRemote" base="/thredds/cdmremote/"/>
+   * </service>
+   */
 
   @Test
   public void testDeclaredServices() throws IOException {
-    String catUrl = "/catalog/grib/NDFD/CONUS_5km/catalog.xml";  // service name "some"
+    String catUrl = "/catalog/grib/NDFD/CONUS_5km/catalog.xml"; // service name "some"
     Catalog cat = TdsLocalCatalog.open(catUrl);
     Assert.assertNotNull(catUrl, cat);
 
@@ -148,7 +149,7 @@ public class TestTdsGrib {
 
   @Test
   public void testDeclaredServicesInNestedDatasets() throws IOException {
-    String catUrl = "catalog/grib/NDFD/CONUS_5km/NDFD_CONUS_5km_20131212_0000.grib2/catalog.xml";  // service name "some"
+    String catUrl = "catalog/grib/NDFD/CONUS_5km/NDFD_CONUS_5km_20131212_0000.grib2/catalog.xml"; // service name "some"
     Catalog cat = TdsLocalCatalog.open(catUrl);
     Assert.assertNotNull(catUrl, cat);
 
@@ -167,7 +168,7 @@ public class TestTdsGrib {
 
   @Test
   public void testDefaultGribServices() throws IOException {
-    String catalog = "/catalog/grib.v5/NDFD/CONUS_5km/catalog.xml";  // no service name, should use GRID default
+    String catalog = "/catalog/grib.v5/NDFD/CONUS_5km/catalog.xml"; // no service name, should use GRID default
     Catalog cat = TdsLocalCatalog.open(catalog);
     testCat(cat, 11, true, null, 0);
 
@@ -212,7 +213,8 @@ public class TestTdsGrib {
 
   @Test
   public void testUserDefinedServices() throws IOException {
-    String catalog = "/catalog/restrictCollection.v5/GFS_CONUS_80km/catalog.xml"; // serviceName ="cdmremoteOnly" from local catalog
+    String catalog = "/catalog/restrictCollection.v5/GFS_CONUS_80km/catalog.xml"; // serviceName ="cdmremoteOnly" from
+                                                                                  // local catalog
     Catalog cat = TdsLocalCatalog.open(catalog);
     Service localServices = cat.findService("cdmremoteOnly");
     Assert.assertNotNull(localServices);
@@ -238,9 +240,10 @@ public class TestTdsGrib {
         break;
       }
     }
-   }
+  }
 
-  private void testCat(Catalog cat, int virtCount, boolean hasResolver, String orgName, int orgCount) throws IOException {
+  private void testCat(Catalog cat, int virtCount, boolean hasResolver, String orgName, int orgCount)
+      throws IOException {
     Service virtualServices = cat.findService("VirtualServices");
     Assert.assertNotNull(virtualServices);
     Assert.assertEquals(ServiceType.Compound, virtualServices.getType());
@@ -265,7 +268,8 @@ public class TestTdsGrib {
       Assert.assertEquals(orgCount, orgServices.getNestedServices().size());
       boolean hasFileServer = false;
       for (Service sn : orgServices.getNestedServices())
-        if( ServiceType.HTTPServer == sn.getType()) hasFileServer = true;
+        if (ServiceType.HTTPServer == sn.getType())
+          hasFileServer = true;
       Assert.assertTrue(hasFileServer);
     }
   }

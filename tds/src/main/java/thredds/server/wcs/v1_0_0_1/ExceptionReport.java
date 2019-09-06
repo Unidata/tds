@@ -9,7 +9,6 @@ import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
@@ -59,8 +58,7 @@ public class ExceptionReport {
     return exceptionReport;
   }
 
-  public void writeExceptionReport(PrintWriter pw)
-          throws IOException {
+  public void writeExceptionReport(PrintWriter pw) throws IOException {
     XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
     xmlOutputter.output(exceptionReport, pw);
   }

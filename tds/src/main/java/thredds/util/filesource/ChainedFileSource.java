@@ -6,7 +6,6 @@ package thredds.util.filesource;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-
 import java.io.File;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import java.util.List;
  * @since 4.0
  */
 public class ChainedFileSource implements FileSource {
-  //private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger( ChainedFileSource.class );
+  // private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger( ChainedFileSource.class );
 
   private final List<DescendantFileSource> chain;
 
@@ -40,7 +39,8 @@ public class ChainedFileSource implements FileSource {
    * e.g., "dir1/../../dir2" once normalized would be "../dir2".
    *
    * @param path the relative path to the desired File.
-   * @return the File represented by the given relative path or null if the path is null or the File it represents does not exist.
+   * @return the File represented by the given relative path or null if the path is null or the File it represents does
+   *         not exist.
    */
   public File getFile(String path) {
     File file;
@@ -54,8 +54,6 @@ public class ChainedFileSource implements FileSource {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-            .add("chain", chain)
-            .toString();
+    return MoreObjects.toStringHelper(this).add("chain", chain).toString();
   }
 }

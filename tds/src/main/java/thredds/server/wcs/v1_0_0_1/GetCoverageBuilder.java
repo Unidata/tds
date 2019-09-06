@@ -9,17 +9,17 @@ import ucar.nc2.ft2.coverage.CoverageCollection;
 import ucar.nc2.time.CalendarDateRange;
 
 public class GetCoverageBuilder extends WcsRequestBuilder {
-  private org.slf4j.Logger logger =
-          org.slf4j.LoggerFactory.getLogger(GetCoverageBuilder.class);
+  private org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(GetCoverageBuilder.class);
 
-  GetCoverageBuilder(String versionString, Request.Operation operation, CoverageCollection dataset, String datasetPath) {
+  GetCoverageBuilder(String versionString, Request.Operation operation, CoverageCollection dataset,
+      String datasetPath) {
     super(versionString, operation, dataset, datasetPath);
   }
 
   private String coverageId, crs, responseCRS;
   private Request.BoundingBox bbox;
   private CalendarDateRange timeRange;
-  private WcsCoverage.VerticalRange verticalRange;  // parameter
+  private WcsCoverage.VerticalRange verticalRange; // parameter
   private Request.Format format;
 
   public String getCoverageId() {
@@ -86,13 +86,8 @@ public class GetCoverageBuilder extends WcsRequestBuilder {
   }
 
   public GetCoverage buildGetCoverage() throws WcsException {
-    return new GetCoverage(this.getOperation(),
-            this.getVersionString(),
-            this.getWcsDataset(),
-            coverageId,
-            crs, responseCRS,
-            bbox, timeRange, verticalRange,
-            format);
+    return new GetCoverage(this.getOperation(), this.getVersionString(), this.getWcsDataset(), coverageId, crs,
+        responseCRS, bbox, timeRange, verticalRange, format);
   }
 
 }

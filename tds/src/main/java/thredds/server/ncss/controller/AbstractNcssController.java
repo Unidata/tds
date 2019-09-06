@@ -21,7 +21,6 @@ import thredds.server.ncss.exception.NcssException;
 import thredds.server.ncss.format.SupportedFormat;
 import thredds.server.ncss.format.SupportedOperation;
 import thredds.util.TdsPathUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -50,12 +49,9 @@ public abstract class AbstractNcssController {
   //////////////////////////////////////////////////////////////////////////
   // common methods
 
-  private static final String[] endings = new String[] {
-          "/dataset.xml", "/dataset.html",
-          "/pointDataset.html", "/pointDataset.xml",
-          "/datasetBoundaries.xml", "/datasetBoundaries.wkt", "/datasetBoundaries.json",
-          "/station.xml"
-  };
+  private static final String[] endings =
+      new String[] {"/dataset.xml", "/dataset.html", "/pointDataset.html", "/pointDataset.xml",
+          "/datasetBoundaries.xml", "/datasetBoundaries.wkt", "/datasetBoundaries.json", "/station.xml"};
 
   public String getDatasetPath(HttpServletRequest req) {
     return TdsPathUtils.extractPath(req, getBase(), endings);
@@ -66,7 +62,7 @@ public abstract class AbstractNcssController {
     Set<String> keySet = httpHeaders.keySet();
     for (String key : keySet) {
       if (httpHeaders.containsKey(key)) { // LOOK why test again?
-        response.setHeader(key, httpHeaders.get(key).get(0));  // LOOK why only first one ?
+        response.setHeader(key, httpHeaders.get(key).get(0)); // LOOK why only first one ?
       }
     }
   }
@@ -74,7 +70,8 @@ public abstract class AbstractNcssController {
   abstract String getBase();
 
   protected String buildDatasetUrl(String path) {
-    if (path.startsWith("/")) path = path.substring(1);
+    if (path.startsWith("/"))
+      path = path.substring(1);
     return tdsContext.getContextPath() + getBase() + path;
   }
 
@@ -95,7 +92,7 @@ public abstract class AbstractNcssController {
     Element acceptList = new Element("AcceptList");
     for (SupportedFormat sf : ops.getSupportedFormats()) {
       Element accept =
-              new Element("accept").addContent(sf.getFormatName()).setAttribute("displayName", sf.getFormatName());
+          new Element("accept").addContent(sf.getFormatName()).setAttribute("displayName", sf.getFormatName());
       acceptList.addContent(accept);
     }
 
@@ -126,10 +123,10 @@ public abstract class AbstractNcssController {
   // unit testing
 
   public static String getDatasetPath(String path) {
-    if (path.startsWith(StandardService.netcdfSubsetGrid.getBase())) {               // strip off /ncss/grid/
+    if (path.startsWith(StandardService.netcdfSubsetGrid.getBase())) { // strip off /ncss/grid/
       path = path.substring(StandardService.netcdfSubsetGrid.getBase().length());
 
-    } else if (path.startsWith(StandardService.netcdfSubsetPoint.getBase())) {       // strip off /ncss/point/
+    } else if (path.startsWith(StandardService.netcdfSubsetPoint.getBase())) { // strip off /ncss/point/
       path = path.substring(StandardService.netcdfSubsetPoint.getBase().length());
     }
 

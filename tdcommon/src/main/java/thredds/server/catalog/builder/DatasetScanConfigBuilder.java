@@ -9,7 +9,7 @@
  * this software, and any derivative works thereof, and its supporting
  * documentation for any purpose whatsoever, provided that this entire
  * notice appears in all copies of the software, derivative works and
- * supporting documentation.  Further, UCAR requests that the user credit
+ * supporting documentation. Further, UCAR requests that the user credit
  * UCAR/Unidata in any publications that result from the use of this
  * software or in any product that includes this software. The names UCAR
  * and/or Unidata, however, may not be used in any advertising or publicity
@@ -39,7 +39,6 @@ import thredds.client.catalog.Catalog;
 import ucar.nc2.util.AliasTranslator;
 import thredds.server.catalog.DatasetScanConfig;
 import ucar.unidata.util.StringUtil2;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -65,29 +64,29 @@ public class DatasetScanConfigBuilder {
   }
 
   /*
-      <xsd:element name="datasetScan" substitutionGroup="dataset">
-      <xsd:complexType>
-        <xsd:complexContent>
-          <xsd:extension base="DatasetType">
-            <xsd:sequence>
-              <xsd:element ref="filter" minOccurs="0" maxOccurs="1"/>
-              <xsd:element ref="namer" minOccurs="0" maxOccurs="1"/>
-              <xsd:element ref="sort" minOccurs="0" maxOccurs="1"/>
-              <xsd:element ref="addLatest" minOccurs="0" maxOccurs="1"/>
-              <xsd:element ref="addProxies" minOccurs="0" maxOccurs="1"/>
-              <xsd:element name="addDatasetSize" minOccurs="0" maxOccurs="1"/>
-              <xsd:element ref="addTimeCoverage" minOccurs="0" maxOccurs="1"/>
-            </xsd:sequence>
-
-            <xsd:attribute name="path" type="xsd:string" use="required"/>
-            <xsd:attribute name="location" type="xsd:string"/>
-            <xsd:attribute name="addLatest" type="xsd:boolean"/>
-            <xsd:attribute name="filter" type="xsd:string"/> <!-- deprecated : use filter element -->
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-    </xsd:element>
-     */
+   * <xsd:element name="datasetScan" substitutionGroup="dataset">
+   * <xsd:complexType>
+   * <xsd:complexContent>
+   * <xsd:extension base="DatasetType">
+   * <xsd:sequence>
+   * <xsd:element ref="filter" minOccurs="0" maxOccurs="1"/>
+   * <xsd:element ref="namer" minOccurs="0" maxOccurs="1"/>
+   * <xsd:element ref="sort" minOccurs="0" maxOccurs="1"/>
+   * <xsd:element ref="addLatest" minOccurs="0" maxOccurs="1"/>
+   * <xsd:element ref="addProxies" minOccurs="0" maxOccurs="1"/>
+   * <xsd:element name="addDatasetSize" minOccurs="0" maxOccurs="1"/>
+   * <xsd:element ref="addTimeCoverage" minOccurs="0" maxOccurs="1"/>
+   * </xsd:sequence>
+   * 
+   * <xsd:attribute name="path" type="xsd:string" use="required"/>
+   * <xsd:attribute name="location" type="xsd:string"/>
+   * <xsd:attribute name="addLatest" type="xsd:boolean"/>
+   * <xsd:attribute name="filter" type="xsd:string"/> <!-- deprecated : use filter element -->
+   * </xsd:extension>
+   * </xsd:complexContent>
+   * </xsd:complexType>
+   * </xsd:element>
+   */
   public DatasetScanConfig readDatasetScanConfig(Element dsElem) {
     DatasetScanConfig result = new DatasetScanConfig();
 
@@ -138,16 +137,18 @@ public class DatasetScanConfigBuilder {
 
     // Deal with latest
     String addLatestAttribute = dsElem.getAttributeValue("addLatest");
-    Element addLatestElem = dsElem.getChild("addLatest", Catalog.defNS);      // not in docs
+    Element addLatestElem = dsElem.getChild("addLatest", Catalog.defNS); // not in docs
     Element addProxiesElem = dsElem.getChild("addProxies", Catalog.defNS);
     result.addLatest = readDatasetScanAddProxies(addProxiesElem, addLatestElem, addLatestAttribute);
 
-    /* Read addDatasetSize element.
-    Element addDsSizeElem = dsElem.getChild("addDatasetSize", Catalog.defNS);
-    if (addDsSizeElem != null) {                                               // docs: default true
-      if (addDsSizeElem.getTextNormalize().equalsIgnoreCase("false"))
-        result.addDatasetSize = false;
-    } */
+    /*
+     * Read addDatasetSize element.
+     * Element addDsSizeElem = dsElem.getChild("addDatasetSize", Catalog.defNS);
+     * if (addDsSizeElem != null) { // docs: default true
+     * if (addDsSizeElem.getTextNormalize().equalsIgnoreCase("false"))
+     * result.addDatasetSize = false;
+     * }
+     */
 
     // Read addTimeCoverage element.
     Element addTimeCovElem = dsElem.getChild("addTimeCoverage", Catalog.defNS);
@@ -159,27 +160,28 @@ public class DatasetScanConfigBuilder {
   }
 
   /*
-    <xsd:element name="filter">
-    <xsd:complexType>
-      <xsd:choice>
-        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
-          <xsd:element name="include" type="FilterSelectorType" minOccurs="0"/>
-          <xsd:element name="exclude" type="FilterSelectorType" minOccurs="0"/>
-        </xsd:sequence>
-      </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
-
-  <xsd:complexType name="FilterSelectorType">
-    <xsd:attribute name="regExp" type="xsd:string"/>
-    <xsd:attribute name="wildcard" type="xsd:string"/>
-    <xsd:attribute name="atomic" type="xsd:boolean"/>
-    <xsd:attribute name="collection" type="xsd:boolean"/>
-  </xsd:complexType>
+   * <xsd:element name="filter">
+   * <xsd:complexType>
+   * <xsd:choice>
+   * <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+   * <xsd:element name="include" type="FilterSelectorType" minOccurs="0"/>
+   * <xsd:element name="exclude" type="FilterSelectorType" minOccurs="0"/>
+   * </xsd:sequence>
+   * </xsd:choice>
+   * </xsd:complexType>
+   * </xsd:element>
+   * 
+   * <xsd:complexType name="FilterSelectorType">
+   * <xsd:attribute name="regExp" type="xsd:string"/>
+   * <xsd:attribute name="wildcard" type="xsd:string"/>
+   * <xsd:attribute name="atomic" type="xsd:boolean"/>
+   * <xsd:attribute name="collection" type="xsd:boolean"/>
+   * </xsd:complexType>
    */
   private List<DatasetScanConfig.Filter> readDatasetScanFilter(Element filterElem) {
     List<DatasetScanConfig.Filter> filters = new ArrayList<>();
-    if (filterElem == null) return null;
+    if (filterElem == null)
+      return null;
 
     for (Element curElem : filterElem.getChildren()) {
       String regExpAttVal = curElem.getAttributeValue("regExp");
@@ -187,7 +189,9 @@ public class DatasetScanConfigBuilder {
       String lastModLimitAttValS = curElem.getAttributeValue("lastModLimitInMillis");
       if (regExpAttVal == null && wildcardAttVal == null && lastModLimitAttValS == null) {
         // If no regExp or wildcard attributes, skip this selector.
-        errlog.format("WARN: readDatasetScanFilter(): no regExp, wildcard, or lastModLimitInMillis attribute in filter child <%s>%n", curElem.getName());
+        errlog.format(
+            "WARN: readDatasetScanFilter(): no regExp, wildcard, or lastModLimitInMillis attribute in filter child <%s>%n",
+            curElem.getName());
 
       } else {
         // Determine if applies to atomic datasets, default true.
@@ -217,7 +221,8 @@ public class DatasetScanConfigBuilder {
           }
         }
 
-        filters.add(new DatasetScanConfig.Filter(regExpAttVal, wildcardAttVal, lastModLimitAttVal, atomic, !notCollection, includer));
+        filters.add(new DatasetScanConfig.Filter(regExpAttVal, wildcardAttVal, lastModLimitAttVal, atomic,
+            !notCollection, includer));
       }
     }
 
@@ -225,24 +230,25 @@ public class DatasetScanConfigBuilder {
   }
 
   /*
-  <xsd:element name="namer">
-    <xsd:complexType>
-      <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="regExpOnName" type="NamerSelectorType"/>
-        <xsd:element name="regExpOnPath" type="NamerSelectorType"/>
-      </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
-
-  <xsd:complexType name="NamerSelectorType">
-    <xsd:attribute name="regExp" type="xsd:string"/>
-    <xsd:attribute name="replaceString" type="xsd:string"/>
-  </xsd:complexType>
+   * <xsd:element name="namer">
+   * <xsd:complexType>
+   * <xsd:choice maxOccurs="unbounded">
+   * <xsd:element name="regExpOnName" type="NamerSelectorType"/>
+   * <xsd:element name="regExpOnPath" type="NamerSelectorType"/>
+   * </xsd:choice>
+   * </xsd:complexType>
+   * </xsd:element>
+   * 
+   * <xsd:complexType name="NamerSelectorType">
+   * <xsd:attribute name="regExp" type="xsd:string"/>
+   * <xsd:attribute name="replaceString" type="xsd:string"/>
+   * </xsd:complexType>
    */
 
   protected List<DatasetScanConfig.Namer> readDatasetScanNamer(Element namerElem) {
     List<DatasetScanConfig.Namer> result = new ArrayList<>();
-    if (namerElem == null) return result;
+    if (namerElem == null)
+      return result;
 
     for (Element curElem : namerElem.getChildren()) {
       String regExp = curElem.getAttributeValue("regExp");
@@ -260,18 +266,18 @@ public class DatasetScanConfigBuilder {
   }
 
   /*
-  <xsd:element name="sort">
-    <xsd:complexType>
-    <xsd:choice>
-     <xsd:element name="lexigraphicByName">
-       <xsd:complexType>
-         <xsd:attribute name="increasing" type="xsd:boolean"/>
-       </xsd:complexType>
-     </xsd:element>
-     <xsd:element name="crawlableDatasetSorterImpl" minOccurs="0" type="UserImplType"/>
-    </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
+   * <xsd:element name="sort">
+   * <xsd:complexType>
+   * <xsd:choice>
+   * <xsd:element name="lexigraphicByName">
+   * <xsd:complexType>
+   * <xsd:attribute name="increasing" type="xsd:boolean"/>
+   * </xsd:complexType>
+   * </xsd:element>
+   * <xsd:element name="crawlableDatasetSorterImpl" minOccurs="0" type="UserImplType"/>
+   * </xsd:choice>
+   * </xsd:complexType>
+   * </xsd:element>
    */
 
 
@@ -300,11 +306,12 @@ public class DatasetScanConfigBuilder {
     return Optional.empty();
   }
 
-  protected DatasetScanConfig.AddLatest readDatasetScanAddProxies(Element addProxiesElem, Element addLatestElem, String addLatestAttribute) {
+  protected DatasetScanConfig.AddLatest readDatasetScanAddProxies(Element addProxiesElem, Element addLatestElem,
+      String addLatestAttribute) {
 
     // handle "addLatest attribute
     if (addLatestAttribute != null && addLatestAttribute.equalsIgnoreCase("true")) {
-      return new DatasetScanConfig.AddLatest();  // use defaults
+      return new DatasetScanConfig.AddLatest(); // use defaults
     }
 
     // Handle "addLatest" elements.
@@ -331,12 +338,12 @@ public class DatasetScanConfigBuilder {
   }
 
   /*
-   <xsd:complexType name="addLatestType">
-    <xsd:attribute name="name" type="xsd:string"/>
-    <xsd:attribute name="top" type="xsd:boolean"/>
-    <xsd:attribute name="serviceName" type="xsd:string"/>
-    <xsd:attribute name="lastModifiedLimit" type="xsd:float"/> <!-- minutes -->
-  </xsd:complexType>
+   * <xsd:complexType name="addLatestType">
+   * <xsd:attribute name="name" type="xsd:string"/>
+   * <xsd:attribute name="top" type="xsd:boolean"/>
+   * <xsd:attribute name="serviceName" type="xsd:string"/>
+   * <xsd:attribute name="lastModifiedLimit" type="xsd:float"/> <!-- minutes -->
+   * </xsd:complexType>
    */
 
 
@@ -352,10 +359,10 @@ public class DatasetScanConfigBuilder {
       latestName = tmpLatestName;
 
     String tmpserviceName = addLatestElem.getAttributeValue("serviceName");
-     if (tmpserviceName != null)
-       serviceName = tmpserviceName;
+    if (tmpserviceName != null)
+      serviceName = tmpserviceName;
 
-     // Does latest go on top or bottom of list.
+    // Does latest go on top or bottom of list.
     Attribute topAtt = addLatestElem.getAttribute("top");
     if (topAtt != null) {
       try {
@@ -374,16 +381,16 @@ public class DatasetScanConfigBuilder {
     return new DatasetScanConfig.AddLatest(latestName, serviceName, latestOnTop, lastModLimit);
   }
 
-/*
-  <xsd:element name="addTimeCoverage">
-    <xsd:complexType>
-      <xsd:attribute name="datasetNameMatchPattern" type="xsd:string"/>
-      <xsd:attribute name="datasetPathMatchPattern" type="xsd:string"/>
-      <xsd:attribute name="startTimeSubstitutionPattern" type="xsd:string"/>
-      <xsd:attribute name="duration" type="xsd:string"/>
-    </xsd:complexType>
-  </xsd:element>
- */
+  /*
+   * <xsd:element name="addTimeCoverage">
+   * <xsd:complexType>
+   * <xsd:attribute name="datasetNameMatchPattern" type="xsd:string"/>
+   * <xsd:attribute name="datasetPathMatchPattern" type="xsd:string"/>
+   * <xsd:attribute name="startTimeSubstitutionPattern" type="xsd:string"/>
+   * <xsd:attribute name="duration" type="xsd:string"/>
+   * </xsd:complexType>
+   * </xsd:element>
+   */
 
   protected DatasetScanConfig.AddTimeCoverage readDatasetScanAddTimeCoverage(Element addTimeCovElem) {
     String matchName = addTimeCovElem.getAttributeValue("datasetNameMatchPattern");
@@ -393,13 +400,16 @@ public class DatasetScanConfigBuilder {
 
     boolean err = false;
     if (subst == null) {
-      errlog.format("WARN: readDatasetScanAddTimeCoverage(): must have startTimeSubstitutionPattern elem=<%s>%n", addTimeCovElem);
+      errlog.format("WARN: readDatasetScanAddTimeCoverage(): must have startTimeSubstitutionPattern elem=<%s>%n",
+          addTimeCovElem);
       err = true;
     } else if (duration == null) {
       errlog.format("WARN: readDatasetScanAddTimeCoverage(): must have duration elem=<%s>%n", addTimeCovElem);
       err = true;
     } else if (matchName == null && matchPath == null) {
-      errlog.format("WARN: readDatasetScanAddTimeCoverage(): must have either datasetNameMatchPattern or datasetPathMatchPattern elem=<%s>%n", addTimeCovElem);
+      errlog.format(
+          "WARN: readDatasetScanAddTimeCoverage(): must have either datasetNameMatchPattern or datasetPathMatchPattern elem=<%s>%n",
+          addTimeCovElem);
       err = true;
     }
 

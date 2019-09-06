@@ -6,13 +6,13 @@
 package thredds.server.config;
 
 import thredds.util.ThreddsConfigReader;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Read and process the threddsConfig.xml file.
  * You can access the values by calling ThreddsConfig.getXXX(name1.name2), where
+ * 
  * <pre>
  *  <name1>
  *   <name2>value</name2>
@@ -28,17 +28,20 @@ public final class ThreddsConfig {
   }
 
   static public String get(String paramName, String defValue) {
-    if (reader == null) return defValue;
+    if (reader == null)
+      return defValue;
     return reader.get(paramName, defValue);
   }
 
   static public boolean hasElement(String paramName) {
-    if (reader == null) return false;
+    if (reader == null)
+      return false;
     return reader.hasElement(paramName);
   }
 
   static public boolean getBoolean(String paramName, boolean defValue) {
-    if (reader == null) return defValue;
+    if (reader == null)
+      return defValue;
     return reader.getBoolean(paramName, defValue);
   }
 
@@ -49,27 +52,32 @@ public final class ThreddsConfig {
 
 
   static public long getBytes(String paramName, long defValue) {
-    if (reader == null) return defValue;
+    if (reader == null)
+      return defValue;
     return reader.getBytes(paramName, defValue);
   }
 
   static public int getInt(String paramName, int defValue) {
-    if (reader == null) return defValue;
+    if (reader == null)
+      return defValue;
     return reader.getInt(paramName, defValue);
   }
 
   static public long getLong(String paramName, long defValue) {
-    if (reader == null) return defValue;
+    if (reader == null)
+      return defValue;
     return reader.getLong(paramName, defValue);
   }
 
   static public int getSeconds(String paramName, int defValue) {
-    if (reader == null) return defValue;
+    if (reader == null)
+      return defValue;
     return reader.getSeconds(paramName, defValue);
   }
 
   static public List<String> getRootList(String elementName) {
-    if (reader == null) return new ArrayList<>(0);
+    if (reader == null)
+      return new ArrayList<>(0);
     return reader.getRootList(elementName);
   }
 

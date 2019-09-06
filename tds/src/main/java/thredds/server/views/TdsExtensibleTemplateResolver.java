@@ -32,21 +32,23 @@ public class TdsExtensibleTemplateResolver extends SpringResourceTemplateResolve
   }
 
   @Override
-  protected String computeResourceName(
-          final IEngineConfiguration configuration, final String ownerTemplate, final String template,
-          final String prefix, final String suffix, final Map<String, String> templateAliases,
-          final Map<String, Object> templateResolutionAttributes) {
+  protected String computeResourceName(final IEngineConfiguration configuration, final String ownerTemplate,
+      final String template, final String prefix, final String suffix, final Map<String, String> templateAliases,
+      final Map<String, Object> templateResolutionAttributes) {
 
     Validate.notNull(template, "Template name cannot be null");
 
     // Don't bother computing resource name if template is not extensible
-    if (!template.startsWith(EXT_FRAG_PREFIX)) return template;
+    if (!template.startsWith(EXT_FRAG_PREFIX))
+      return template;
 
     String resourceName = template.substring(PREFIX_LENGTH);
-    if (!StringUtils.isEmptyOrWhitespace(prefix)) resourceName = prefix + resourceName;
-    if (!StringUtils.isEmptyOrWhitespace(suffix)) resourceName = resourceName + suffix;
+    if (!StringUtils.isEmptyOrWhitespace(prefix))
+      resourceName = prefix + resourceName;
+    if (!StringUtils.isEmptyOrWhitespace(suffix))
+      resourceName = resourceName + suffix;
 
-    TdsContext tdsContext = (TdsContext)applicationContext.getBean("TdsContext");
+    TdsContext tdsContext = (TdsContext) applicationContext.getBean("TdsContext");
     resourceName = tdsContext.getThreddsDirectory() + resourceName;
 
 
@@ -54,9 +56,10 @@ public class TdsExtensibleTemplateResolver extends SpringResourceTemplateResolve
   }
 
   @Override
-  protected ITemplateResource computeTemplateResource(
-          final IEngineConfiguration configuration, final String ownerTemplate, final String template, final String resourceName, final String characterEncoding, final Map<String, Object> templateResolutionAttributes) {
-      return new FileTemplateResource(resourceName, characterEncoding);
+  protected ITemplateResource computeTemplateResource(final IEngineConfiguration configuration,
+      final String ownerTemplate, final String template, final String resourceName, final String characterEncoding,
+      final Map<String, Object> templateResolutionAttributes) {
+    return new FileTemplateResource(resourceName, characterEncoding);
   }
 
   public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {

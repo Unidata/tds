@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import thredds.util.ContentType;
 import ucar.nc2.constants.CDM;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
@@ -37,7 +36,7 @@ public class AdminDebugController {
   HtmlWriting htmlu;
 
   // LOOK change to ResponseEntity<String>
-  @RequestMapping( method = RequestMethod.GET)
+  @RequestMapping(method = RequestMethod.GET)
   protected void showDebugPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType(ContentType.html.getContentHeader());
     response.setHeader("Content-Description", "thredds_debug");
@@ -113,7 +112,8 @@ public class AdminDebugController {
       pw.println("<h2>" + dh.name + "</h2>");
 
       for (DebugCommands.Action act : dh.actions.values()) {
-        if (act.desc == null) continue;
+        if (act.desc == null)
+          continue;
 
         String url = req.getRequestURI() + "?" + dh.name + "/" + act.name;
         pw.println("   <a href='" + url + "'>" + act.desc + "</a>");

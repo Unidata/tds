@@ -22,10 +22,7 @@ public interface Request {
   }
 
   enum Format {
-    NONE(""),
-    GeoTIFF("image/tiff"),
-    GeoTIFF_Float("image/tiff"),
-    NetCDF3("application/x-netcdf");
+    NONE(""), GeoTIFF("image/tiff"), GeoTIFF_Float("image/tiff"), NetCDF3("application/x-netcdf");
 
     private String mimeType;
 
@@ -58,7 +55,8 @@ public interface Request {
 
     public BoundingBox(double[] minPoint, double[] maxPoint) {
       if (minPoint.length != maxPoint.length)
-        throw new IllegalArgumentException("The dimension length of the minimum point [" + minPoint.length + "] and maximum point [" + maxPoint.length + "] must be equal.");
+        throw new IllegalArgumentException("The dimension length of the minimum point [" + minPoint.length
+            + "] and maximum point [" + maxPoint.length + "] must be equal.");
 
       boolean minMaxOk = true;
       StringBuilder minPSB = new StringBuilder("[");
@@ -75,7 +73,8 @@ public interface Request {
       maxPSB.replace(indx, indx + 1, "]");
 
       if (!minMaxOk)
-        throw new IllegalArgumentException("Minimum point " + minPSB.toString() + " not always smaller than maximum point " + maxPSB.toString() + ".");
+        throw new IllegalArgumentException(
+            "Minimum point " + minPSB.toString() + " not always smaller than maximum point " + maxPSB.toString() + ".");
 
       this.dimensionLength = minPoint.length;
       this.minPoint = minPoint;

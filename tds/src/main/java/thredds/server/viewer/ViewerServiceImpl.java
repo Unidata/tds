@@ -15,13 +15,10 @@ import java.util.Collections;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import thredds.client.catalog.*;
@@ -49,7 +46,7 @@ public class ViewerServiceImpl implements ViewerService {
   private TdsContext tdsContext;
 
   @Autowired
-  private JupyterNotebookServiceCache  jupyterNotebooks;
+  private JupyterNotebookServiceCache jupyterNotebooks;
 
   @Autowired
   private AllowedServices allowedServices;
@@ -92,9 +89,11 @@ public class ViewerServiceImpl implements ViewerService {
 
     int count = 0;
     for (Viewer viewer : viewers) {
-      if (viewer.isViewable(dataset)) count++;
+      if (viewer.isViewable(dataset))
+        count++;
     }
-    if (count == 0) return;
+    if (count == 0)
+      return;
 
     out.format("<h3>Viewers:</h3><ul>\r\n");
 
@@ -104,7 +103,8 @@ public class ViewerServiceImpl implements ViewerService {
           List<ViewerLinkProvider.ViewerLink> sp = ((ViewerLinkProvider) viewer).getViewerLinks(dataset, req);
           for (ViewerLinkProvider.ViewerLink vl : sp) {
             if (vl.getUrl() != null && !vl.getUrl().equals(""))
-              out.format("<li><a href='%s'>%s</a></li>\r\n", vl.getUrl(), vl.getTitle() != null ? vl.getTitle() : vl.getUrl());
+              out.format("<li><a href='%s'>%s</a></li>\r\n", vl.getUrl(),
+                  vl.getTitle() != null ? vl.getTitle() : vl.getUrl());
           }
 
         } else {
@@ -139,7 +139,8 @@ public class ViewerServiceImpl implements ViewerService {
   private void registerViewers() {
     registerViewer(new Godiva3Viewer());
     registerViewer(new StaticView());
-    registerViewer(new JupyterNotebookViewer(jupyterNotebooks, allowedServices, tdsContext.getContentRootPathProperty()));
+    registerViewer(
+        new JupyterNotebookViewer(jupyterNotebooks, allowedServices, tdsContext.getContentRootPathProperty()));
   }
 
   // Viewers...
@@ -153,7 +154,8 @@ public class ViewerServiceImpl implements ViewerService {
 
     private String contentDir;
 
-    public JupyterNotebookViewer (JupyterNotebookServiceCache jupyterNotebooks, AllowedServices allowedServices, String contentDir) {
+    public JupyterNotebookViewer(JupyterNotebookServiceCache jupyterNotebooks, AllowedServices allowedServices,
+        String contentDir) {
       this.jupyterNotebooks = jupyterNotebooks;
       this.allowedServices = allowedServices;
       this.contentDir = contentDir;
@@ -161,12 +163,12 @@ public class ViewerServiceImpl implements ViewerService {
 
     public boolean isViewable(Dataset ds) {
       return this.allowedServices.isAllowed(StandardService.jupyterNotebook)
-        && jupyterNotebooks.getNotebookFilename(ds) != null;
+          && jupyterNotebooks.getNotebookFilename(ds) != null;
     }
 
-    public String getViewerLinkHtml( Dataset ds, HttpServletRequest req) {
+    public String getViewerLinkHtml(Dataset ds, HttpServletRequest req) {
       ViewerLinkProvider.ViewerLink viewerLink = this.getViewerLink(ds, req);
-      return "<a href='" + viewerLink.getUrl() +  "'>" + viewerLink.getTitle() + "</a>";
+      return "<a href='" + viewerLink.getUrl() + "'>" + viewerLink.getTitle() + "</a>";
     }
 
     public ViewerLinkProvider.ViewerLink getViewerLink(Dataset ds, HttpServletRequest req) {
@@ -177,7 +179,8 @@ public class ViewerServiceImpl implements ViewerService {
         catUrl = catUrl.substring(catUrl.indexOf(contentDir) + contentDir.length());
       }
       String catalogServiceBase = StandardService.catalogRemote.getBase();
-      catUrl = catUrl.substring(catUrl.indexOf(catalogServiceBase) + catalogServiceBase.length()).replace("html", "xml");
+      catUrl =
+          catUrl.substring(catUrl.indexOf(catalogServiceBase) + catalogServiceBase.length()).replace("html", "xml");
 
       String url = req.getContextPath() + StandardService.jupyterNotebook.getBase() + ds.getID() + "?catalog=" + catUrl;
       return new ViewerLinkProvider.ViewerLink(JupyterNotebookViewer.title, url);

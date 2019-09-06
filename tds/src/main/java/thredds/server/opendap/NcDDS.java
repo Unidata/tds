@@ -8,12 +8,10 @@ package thredds.server.opendap;
 import opendap.dap.DAPNode;
 import ucar.nc2.*;
 import ucar.ma2.DataType;
-
 import opendap.servers.*;
 import opendap.dap.BaseType;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.NetcdfDataset;
-
 import java.util.*;
 
 /**
@@ -30,16 +28,17 @@ public class NcDDS extends ServerDDS {
 
   static private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NcDDS.class);
 
-  //private HashMap<String, BaseType> coordHash = new HashMap<String, BaseType>(50); // non grid coordinate variables
+  // private HashMap<String, BaseType> coordHash = new HashMap<String, BaseType>(50); // non grid coordinate variables
   // Track various subsets of the variables
   private Map<String, Variable> coordvars = new HashMap<>(50);
-  private List<Variable> ddsvars = new ArrayList<>(50);   // list of currently active variables
+  private List<Variable> ddsvars = new ArrayList<>(50); // list of currently active variables
   private Map<String, Variable> gridarrays = new HashMap<>(50);
   private Map<String, Variable> used = new HashMap<>(50);
 
   private Variable findVariable(String name) {
     for (Variable v : ddsvars) {
-      if (v.getFullName().equals(name)) return v;
+      if (v.getFullName().equals(name))
+        return v;
     }
     return null;
   }
@@ -47,7 +46,7 @@ public class NcDDS extends ServerDDS {
   /**
    * Constructor
    *
-   * @param name   name of the dataset, at bottom of DDS
+   * @param name name of the dataset, at bottom of DDS
    * @param ncfile create DDS from this
    */
   public NcDDS(String name, NetcdfFile ncfile) {
@@ -80,8 +79,10 @@ public class NcDDS extends ServerDDS {
 
     // collect grid array variables and set of used (in grids) coordinate variables
     for (Variable v : ddsvars) {
-      boolean isgridarray = (v.getRank() > 1) && (v.getDataType() != DataType.STRUCTURE) && (v.getParentStructure() == null);
-      if (!isgridarray) continue;
+      boolean isgridarray =
+          (v.getRank() > 1) && (v.getDataType() != DataType.STRUCTURE) && (v.getParentStructure() == null);
+      if (!isgridarray)
+        continue;
       List<Dimension> dimset = v.getDimensions();
       int rank = dimset.size();
       for (int i = 0; isgridarray && i < rank; i++) {
@@ -118,13 +119,15 @@ public class NcDDS extends ServerDDS {
       Variable cv = (Variable) o1;
       BaseType bt;
 
-      /* if (false && cv.isCoordinateVariable()) {
-        if ((cv.getDataType() == DataType.CHAR))
-          bt = (cv.getRank() > 1) ? new NcSDCharArray(cv) : new NcSDString(cv);
-        else
-          bt = new NcSDArray(cv, createScalarVariable(ncfile, cv));
-      } */
-      //if (bt == null)
+      /*
+       * if (false && cv.isCoordinateVariable()) {
+       * if ((cv.getDataType() == DataType.CHAR))
+       * bt = (cv.getRank() > 1) ? new NcSDCharArray(cv) : new NcSDString(cv);
+       * else
+       * bt = new NcSDArray(cv, createScalarVariable(ncfile, cv));
+       * }
+       */
+      // if (bt == null)
       bt = createVariable(ncfile, cv);
       addVariable(bt);
     }
@@ -132,7 +135,7 @@ public class NcDDS extends ServerDDS {
 
   // take advantage of the work already done by NetcdfDataset
   private void createFromDataset(NetcdfDataset ncd) {
-        // get coordinate variables, disjunct from variables
+    // get coordinate variables, disjunct from variables
     for (CoordinateAxis axis : ncd.getCoordinateAxes()) {
       coordvars.put(axis.getShortName(), axis);
     }
@@ -142,11 +145,14 @@ public class NcDDS extends ServerDDS {
 
     // collect grid array variables and set of coordinate variables used in grids
     for (Variable v : ncd.getVariables()) {
-      if (coordvars.containsKey(v.getShortName())) continue;  // skip coordinate variables
+      if (coordvars.containsKey(v.getShortName()))
+        continue; // skip coordinate variables
       ddsvars.add(v);
 
-      boolean isgridarray = (v.getRank() > 1) && (v.getDataType() != DataType.STRUCTURE) && (v.getParentStructure() == null);
-      if (!isgridarray) continue;
+      boolean isgridarray =
+          (v.getRank() > 1) && (v.getDataType() != DataType.STRUCTURE) && (v.getParentStructure() == null);
+      if (!isgridarray)
+        continue;
       List<Dimension> dimset = v.getDimensions();
       int rank = dimset.size();
       for (int i = 0; isgridarray && i < rank; i++) {
@@ -169,7 +175,7 @@ public class NcDDS extends ServerDDS {
       }
     }
 
-        // Create the set of coordinates
+    // Create the set of coordinates
     for (Variable cv : ncd.getCoordinateAxes()) {
       BaseType bt = createVariable(ncd, cv);
       addVariable(bt);
@@ -186,7 +192,7 @@ public class NcDDS extends ServerDDS {
 
   private BaseType createVariable(NetcdfFile ncfile, Variable v) {
     BaseType bt;
-    if (v.getRank() == 0)  // scalar
+    if (v.getRank() == 0) // scalar
       bt = createScalarVariable(ncfile, v);
 
     else if (v.getDataType() == DataType.CHAR) {
@@ -201,7 +207,7 @@ public class NcDDS extends ServerDDS {
       else
         bt = new NcSDArray(v, new NcSDString(v));
 
-    } else  // non-char multidim array
+    } else // non-char multidim array
       bt = createArray(ncfile, v);
 
     return bt;
@@ -275,8 +281,7 @@ public class NcDDS extends ServerDDS {
    * @param map track previously cloned nodes
    * @return a clone of this object.
    */
-  public DAPNode cloneDAG(CloneMap map)
-          throws CloneNotSupportedException {
+  public DAPNode cloneDAG(CloneMap map) throws CloneNotSupportedException {
     NcDDS d = (NcDDS) super.cloneDAG(map);
     d.coordvars = coordvars;
     return d;

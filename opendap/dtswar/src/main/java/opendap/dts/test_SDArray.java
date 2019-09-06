@@ -4,26 +4,26 @@
 //
 // Copyright (c) 2010, OPeNDAP, Inc.
 // Copyright (c) 2002,2003 OPeNDAP, Inc.
-// 
+//
 // Author: James Gallagher <jgallagher@opendap.org>
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms,
 // with or without modification, are permitted provided
 // that the following conditions are met:
-// 
+//
 // - Redistributions of source code must retain the above copyright
-//   notice, this list of conditions and the following disclaimer.
-// 
+// notice, this list of conditions and the following disclaimer.
+//
 // - Redistributions in binary form must reproduce the above copyright
-//   notice, this list of conditions and the following disclaimer in the
-//   documentation and/or other materials provided with the distribution.
-// 
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
+//
 // - Neither the name of the OPeNDAP nor the names of its contributors may
-//   be used to endorse or promote products derived from this software
-//   without specific prior written permission.
-// 
+// be used to endorse or promote products derived from this software
+// without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 // IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 // TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
@@ -43,7 +43,6 @@ package opendap.dts;
 
 import opendap.servers.*;
 import opendap.dap.*;
-
 import java.io.*;
 
 /**
@@ -55,75 +54,73 @@ import java.io.*;
  */
 public class test_SDArray extends SDArray {
 
-    private boolean Debug = false;
-    private int origShape[];
+  private boolean Debug = false;
+  private int origShape[];
 
-    /**
-     * Constructs a new <code>test_SDArray</code>.
-     */
-    public test_SDArray() {
-        super();
+  /**
+   * Constructs a new <code>test_SDArray</code>.
+   */
+  public test_SDArray() {
+    super();
+  }
+
+  /**
+   * Constructs a new <code>test_SDArray</code> with name <code>n</code>.
+   *
+   * @param n the name of the variable.
+   */
+  public test_SDArray(String n) {
+    super(n);
+  }
+
+
+  public void cacheShape() {
+
+    origShape = new int[numDimensions()];
+
+    try {
+      for (int dim = 0; dim < numDimensions(); dim++) {
+        DArrayDimension dad = getDimension(dim);
+        origShape[dim] = dad.getSize();
+      }
+    } catch (InvalidDimensionException e) {
+      System.out.println("ERROR! Unresolved problem in test_SDArray.cacheShape!");
     }
 
-    /**
-     * Constructs a new <code>test_SDArray</code> with name <code>n</code>.
-     *
-     * @param n the name of the variable.
-     */
-    public test_SDArray(String n) {
-        super(n);
-    }
+  }
 
+  public int getCachedShape(int dim) {
+    if (dim < origShape.length)
+      return (origShape[dim]);
+    else
+      return (-1);
+  }
 
-    public void cacheShape() {
+  /**
+   * Read a value from the named dataset for this variable.
+   *
+   * @param datasetName String identifying the file or other data store
+   *        from which to read a vaue for this variable.
+   * @param specialO This <code>Object</code> is a goody that is used by Server implementations
+   *        to deliver important, and as yet unknown, stuff to the read method. If you
+   *        don't need it, make it a <code>null</code>.
+   * @return <code>true</code> if more data remains to be read, otherwise
+   *         <code>false</code>. This is an abtsract method that must be implemented
+   *         as part of the installation/localization of a OPeNDAP server.
+   * @throws IOException
+   * @throws EOFException
+   */
+  public boolean read(String datasetName, Object specialO) throws NoSuchVariableException, IOException, EOFException {
 
-        origShape = new int[numDimensions()];
+    if (specialO == null)
+      throw new IOException("Null test engine");
+    testEngine te = (testEngine) specialO;
 
-        try {
-            for (int dim = 0; dim < numDimensions(); dim++) {
-                DArrayDimension dad = getDimension(dim);
-                origShape[dim] = dad.getSize();
-            }
-        }
-        catch (InvalidDimensionException e) {
-            System.out.println("ERROR! Unresolved problem in test_SDArray.cacheShape!");
-        }
+    te.newLoadTestArray(datasetName, this);
 
-    }
-
-    public int getCachedShape(int dim) {
-        if (dim < origShape.length)
-            return (origShape[dim]);
-        else
-            return (-1);
-    }
-
-    /**
-     * Read a value from the named dataset for this variable.
-     *
-     * @param datasetName String identifying the file or other data store
-     *                    from which to read a vaue for this variable.
-     * @param specialO    This <code>Object</code> is a goody that is used by Server implementations
-     *                    to deliver important, and as yet unknown, stuff to the read method. If you
-     *                    don't need it, make it a <code>null</code>.
-     * @return <code>true</code> if more data remains to be read, otherwise
-     *         <code>false</code>. This is an abtsract method that must be implemented
-     *         as part of the installation/localization of a OPeNDAP server.
-     * @throws IOException
-     * @throws EOFException
-     */
-    public boolean read(String datasetName, Object specialO)
-            throws NoSuchVariableException, IOException, EOFException {
-
-        if(specialO == null)
-            throw new IOException("Null test engine");
-        testEngine te = (testEngine) specialO;
-
-        te.newLoadTestArray(datasetName, this);
-
-        setRead(true);
-        return (false);
-    }
+    setRead(true);
+    return (false);
+  }
 }
 
 

@@ -26,12 +26,11 @@ import thredds.mock.web.MockTdsContextLoader;
 import thredds.server.ncss.format.SupportedFormat;
 import thredds.server.ncss.format.SupportedOperation;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.lang.invoke.MethodHandles;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = { "/WEB-INF/applicationContext.xml" }, loader = MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class TestGridAsPointMisc {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -42,31 +41,27 @@ public class TestGridAsPointMisc {
   private MockMvc mockMvc;
 
   @Before
-  public void setup(){
+  public void setup() {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
   }
 
   @Test
   public void fileNotFound() throws Exception {
     RequestBuilder rb = MockMvcRequestBuilders.get("/ncss/grid/cdmUnitTest/ncss/GFS/CONUS_80km/baddie.nc")
-            .servletPath("/ncss/grid/cdmUnitTest/ncss/GFS/CONUS_80km/baddie.nc")
-            .param("accept", "netcdf" )
-            .param("var", "Relative_humidity_height_above_ground", "Temperature_height_above_ground")
-            .param("latitude", "40.019")
-            .param("longitude", "-105.293");
+        .servletPath("/ncss/grid/cdmUnitTest/ncss/GFS/CONUS_80km/baddie.nc").param("accept", "netcdf")
+        .param("var", "Relative_humidity_height_above_ground", "Temperature_height_above_ground")
+        .param("latitude", "40.019").param("longitude", "-105.293");
 
     this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(404));
   }
 
   @Test
-  public void getGridAsPointSubsetAllSupportedFormats() throws Exception{
+  public void getGridAsPointSubsetAllSupportedFormats() throws Exception {
     for (SupportedFormat sf : SupportedOperation.GRID_AS_POINT_REQUEST.getSupportedFormats()) {
       RequestBuilder rb = MockMvcRequestBuilders.get("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
-              .servletPath("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
-              .param("accept", sf.toString())
-              .param("var", "Relative_humidity_height_above_ground", "Temperature_height_above_ground")
-              .param("latitude", "40.019")
-              .param("longitude", "-105.293");
+          .servletPath("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd").param("accept", sf.toString())
+          .param("var", "Relative_humidity_height_above_ground", "Temperature_height_above_ground")
+          .param("latitude", "40.019").param("longitude", "-105.293");
 
       System.out.printf("getGridAsPointSubsetAllSupportedFormats return type=%s%n", sf);
 

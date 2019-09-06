@@ -1,6 +1,7 @@
-/* Copyright 2012, UCAR/Unidata.
-   See the LICENSE file for more information.
-*/
+/*
+ * Copyright 2012, UCAR/Unidata.
+ * See the LICENSE file for more information.
+ */
 
 package dap4.d4ts;
 
@@ -13,7 +14,6 @@ import dap4.dap4lib.DapLog;
 import dap4.dap4lib.FileDSP;
 import dap4.dap4lib.netcdf.Nc4DSP;
 import dap4.servlet.*;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,180 +24,151 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import static dap4.d4ts.FrontPage.Root;
 
 
-public class D4TSServlet extends DapController
-{
+public class D4TSServlet extends DapController {
 
-    //////////////////////////////////////////////////
-    // Constants
+  //////////////////////////////////////////////////
+  // Constants
 
-    static final boolean DEBUG = false;
+  static final boolean DEBUG = false;
 
-    static final boolean PARSEDEBUG = false;
+  static final boolean PARSEDEBUG = false;
 
-    static protected final String RESOURCEPATH = "WEB-INF/resources";
+  static protected final String RESOURCEPATH = "WEB-INF/resources";
 
-    //////////////////////////////////////////////////
-    // Type Decls
+  //////////////////////////////////////////////////
+  // Type Decls
 
-    static class D4TSFactory extends DSPFactory
-    {
+  static class D4TSFactory extends DSPFactory {
 
-        public D4TSFactory()
-        {
-            // Register known DSP classes: order is important
-            // in event that two or more dsps can match a given file
-            // (e.q. FileDSP vs Nc4DSP).
-            // Only used in server
-            DapCache.dspregistry.register(Nc4DSP.class, DSPRegistry.LAST);
-            DapCache.dspregistry.register(SynDSP.class, DSPRegistry.LAST);
-            DapCache.dspregistry.register(FileDSP.class, DSPRegistry.LAST);
-        }
-
+    public D4TSFactory() {
+      // Register known DSP classes: order is important
+      // in event that two or more dsps can match a given file
+      // (e.q. FileDSP vs Nc4DSP).
+      // Only used in server
+      DapCache.dspregistry.register(Nc4DSP.class, DSPRegistry.LAST);
+      DapCache.dspregistry.register(SynDSP.class, DSPRegistry.LAST);
+      DapCache.dspregistry.register(FileDSP.class, DSPRegistry.LAST);
     }
 
-    //////////////////////////////////////////////////
+  }
 
-    static {
-        DapCache.setFactory(new D4TSFactory());
-    }
+  //////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////
-    // Instance variables
+  static {
+    DapCache.setFactory(new D4TSFactory());
+  }
 
-    protected List<Root> defaultroots = null;
+  //////////////////////////////////////////////////
+  // Instance variables
 
-    //////////////////////////////////////////////////
-    // Constructor(s)
+  protected List<Root> defaultroots = null;
 
-    public D4TSServlet()
-    {
-        super();
-    }
+  //////////////////////////////////////////////////
+  // Constructor(s)
 
-    @Override
-    public void initialize()
-    {
-        super.initialize();
-        DapLog.info("Initializing d4ts servlet");
-    }
+  public D4TSServlet() {
+    super();
+  }
 
-    //////////////////////////////////////////////////
+  @Override
+  public void initialize() {
+    super.initialize();
+    DapLog.info("Initializing d4ts servlet");
+  }
 
-    @Override
-    protected void doGet(HttpServletRequest req,
-                         HttpServletResponse resp)
-            throws ServletException,
-            java.io.IOException
-    {
-        super.handleRequest(req, resp);
-    }
+  //////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////
-    // Capabilities processors
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, java.io.IOException {
+    super.handleRequest(req, resp);
+  }
 
-    @Override
-    protected void
-    doFavicon(String icopath, DapContext cxt)
-            throws IOException
-    {
-        DapRequest drq = (DapRequest)cxt.get(DapRequest.class);
-        String favfile = getResourcePath(drq, icopath);
-        if(favfile != null) {
-            try (FileInputStream fav = new FileInputStream(favfile);) {
-                byte[] content = DapUtil.readbinaryfile(fav);
-                OutputStream out = drq.getOutputStream();
-                out.write(content);
-            }
-        }
-    }
+  //////////////////////////////////////////////////////////
+  // Capabilities processors
 
-    @Override
-    protected void
-    doCapabilities(DapRequest drq, DapContext cxt)
-            throws IOException
-    {
-        addCommonHeaders(drq);
-
-        // Generate the front page
-        FrontPage front = getFrontPage(drq, cxt);
-        String frontpage = front.buildPage();
-
-        if(frontpage == null)
-            throw new DapException("Cannot create front page")
-                    .setCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-
-        // // Convert to UTF-8 and then to byte[]
-        byte[] frontpage8 = DapUtil.extract(DapUtil.UTF8.encode(frontpage));
+  @Override
+  protected void doFavicon(String icopath, DapContext cxt) throws IOException {
+    DapRequest drq = (DapRequest) cxt.get(DapRequest.class);
+    String favfile = getResourcePath(drq, icopath);
+    if (favfile != null) {
+      try (FileInputStream fav = new FileInputStream(favfile);) {
+        byte[] content = DapUtil.readbinaryfile(fav);
         OutputStream out = drq.getOutputStream();
-        out.write(frontpage8);
-
+        out.write(content);
+      }
     }
+  }
 
-    @Override
-    public String
-    getResourcePath(DapRequest drq, String location)
-            throws DapException
-    {
-        String prefix = drq.getResourceRoot();
-        if(prefix == null)
-            throw new DapException("Cannot find location resource: " + location)
-                    .setCode(DapCodes.SC_NOT_FOUND);
-        location = DapUtil.canonicalpath(location);
-        String datasetfilepath = DapUtil.canonjoin(prefix, location);
-        // See if it really exists and is readable and of proper type
-        File dataset = new File(datasetfilepath);
-        if(!dataset.exists()) {
-            String msg = String.format("Requested file does not exist: prefix=%s location=%s datasetfilepath=%s",
-                    prefix, location, datasetfilepath);
-            throw new DapException(msg)
-                    .setCode(HttpServletResponse.SC_NOT_FOUND);
-        }
-        if(!dataset.canRead())
-            throw new DapException("Requested file not readable: " + datasetfilepath)
-                    .setCode(HttpServletResponse.SC_FORBIDDEN);
-        return datasetfilepath;
-    }
+  @Override
+  protected void doCapabilities(DapRequest drq, DapContext cxt) throws IOException {
+    addCommonHeaders(drq);
 
-    @Override
-    public long getBinaryWriteLimit()
-    {
-        return DEFAULTBINARYWRITELIMIT;
-    }
+    // Generate the front page
+    FrontPage front = getFrontPage(drq, cxt);
+    String frontpage = front.buildPage();
 
-    @Override
-    public String
-    getServletID()
-    {
-        return "d4ts";
-    }
+    if (frontpage == null)
+      throw new DapException("Cannot create front page").setCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
-    /**
-     * Isolate front page builder so we can override if desired for testing.
-     *
-     * @param drq
-     * @param cxt
-     * @return  FrontPage object
-     */
-    protected FrontPage
-    getFrontPage(DapRequest drq, DapContext cxt)
-            throws DapException
-    {
-        if(this.defaultroots == null) {
-            // Figure out the directory containing
-            // the files to display.
-            String pageroot;
-            pageroot = getResourcePath(drq, "");
-            if(pageroot == null)
-                throw new DapException("Cannot locate resources directory");
-            this.defaultroots = new ArrayList<>();
-            this.defaultroots.add(
-                    new Root("testfiles",pageroot));
-        }
-        return new FrontPage(this.defaultroots, drq);
+    // // Convert to UTF-8 and then to byte[]
+    byte[] frontpage8 = DapUtil.extract(DapUtil.UTF8.encode(frontpage));
+    OutputStream out = drq.getOutputStream();
+    out.write(frontpage8);
+
+  }
+
+  @Override
+  public String getResourcePath(DapRequest drq, String location) throws DapException {
+    String prefix = drq.getResourceRoot();
+    if (prefix == null)
+      throw new DapException("Cannot find location resource: " + location).setCode(DapCodes.SC_NOT_FOUND);
+    location = DapUtil.canonicalpath(location);
+    String datasetfilepath = DapUtil.canonjoin(prefix, location);
+    // See if it really exists and is readable and of proper type
+    File dataset = new File(datasetfilepath);
+    if (!dataset.exists()) {
+      String msg = String.format("Requested file does not exist: prefix=%s location=%s datasetfilepath=%s", prefix,
+          location, datasetfilepath);
+      throw new DapException(msg).setCode(HttpServletResponse.SC_NOT_FOUND);
     }
+    if (!dataset.canRead())
+      throw new DapException("Requested file not readable: " + datasetfilepath)
+          .setCode(HttpServletResponse.SC_FORBIDDEN);
+    return datasetfilepath;
+  }
+
+  @Override
+  public long getBinaryWriteLimit() {
+    return DEFAULTBINARYWRITELIMIT;
+  }
+
+  @Override
+  public String getServletID() {
+    return "d4ts";
+  }
+
+  /**
+   * Isolate front page builder so we can override if desired for testing.
+   *
+   * @param drq
+   * @param cxt
+   * @return FrontPage object
+   */
+  protected FrontPage getFrontPage(DapRequest drq, DapContext cxt) throws DapException {
+    if (this.defaultroots == null) {
+      // Figure out the directory containing
+      // the files to display.
+      String pageroot;
+      pageroot = getResourcePath(drq, "");
+      if (pageroot == null)
+        throw new DapException("Cannot locate resources directory");
+      this.defaultroots = new ArrayList<>();
+      this.defaultroots.add(new Root("testfiles", pageroot));
+    }
+    return new FrontPage(this.defaultroots, drq);
+  }
 
 }

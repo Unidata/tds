@@ -28,7 +28,6 @@ import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.nc2.units.DateRange;
 import ucar.unidata.util.StringUtil2;
-
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -77,7 +76,7 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
       String spec = config.spec;
       String catalog = parent.getParentCatalog().getUriString();
       String logMsg = String.format("The FMRC %s defined in %s cannot find any files matching the spec %s.",
-                                    collectionName, catalog,spec);
+          collectionName, catalog, spec);
       logger.warn(logMsg);
       String errMsg = String.format("The FMRC %s cannot find any files in the collection.", collectionName);
       throw new RuntimeException(errMsg);
@@ -102,12 +101,15 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
     super.close();
   }
 
-  /* @Override  // overriding superclass -WHY?
-  public void update(CollectionUpdateType force) {
-    fmrc.update();       // so when is work done?
-  } */
+  /*
+   * @Override // overriding superclass -WHY?
+   * public void update(CollectionUpdateType force) {
+   * fmrc.update(); // so when is work done?
+   * }
+   */
 
-  protected void update(CollectionUpdateType force) throws IOException {  // this may be called from a background thread, or from checkState() request thread
+  protected void update(CollectionUpdateType force) throws IOException { // this may be called from a background thread,
+                                                                         // or from checkState() request thread
     logger.debug("update {} force={}", name, force);
     boolean changed;
     MFileCollectionManager dcm;
@@ -133,7 +135,7 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
   }
 
   @Override
-  protected void updateCollection(State localState, CollectionUpdateType force) {  // LOOK probably not right
+  protected void updateCollection(State localState, CollectionUpdateType force) { // LOOK probably not right
     try {
       fmrc.update();
 
@@ -158,7 +160,7 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
       }
 
     } catch (IOException e) {
-      e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+      e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
     }
 
   }
@@ -182,7 +184,8 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
       else if (match.equals(OFFSET) && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.ConstantOffsets))
         return makeCatalogOffsets(catURI, localState);
 
-      else if (match.equals(FORECAST) && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.ConstantForecasts))
+      else if (match.equals(FORECAST)
+          && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.ConstantForecasts))
         return makeCatalogForecasts(catURI, localState);
 
       else if (match.startsWith(FILES) && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.Files)) {
@@ -202,7 +205,7 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
     CatalogBuilder result = new CatalogBuilder();
     result.setName(makeFullName(parent));
     result.setVersion(parentCatalog.getVersion());
-    result.setBaseURI(catURI);                       // LOOK is catURI right ??
+    result.setBaseURI(catURI); // LOOK is catURI right ??
     result.addService(virtualService);
 
     DatasetBuilder top = new DatasetBuilder(null);
@@ -211,9 +214,12 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
 
     ThreddsMetadata tmi = top.getInheritableMetadata();
     tmi.set(Dataset.ServiceName, virtualService.getName());
-    if (localState.coverage != null) tmi.set(Dataset.GeospatialCoverage, localState.coverage);
-    if (localState.dateRange != null) tmi.set(Dataset.TimeCoverage, localState.dateRange);
-    if (localState.vars != null) tmi.set(Dataset.VariableGroups, localState.vars);
+    if (localState.coverage != null)
+      tmi.set(Dataset.GeospatialCoverage, localState.coverage);
+    if (localState.dateRange != null)
+      tmi.set(Dataset.TimeCoverage, localState.dateRange);
+    if (localState.vars != null)
+      tmi.set(Dataset.VariableGroups, localState.vars);
 
     result.addDataset(top);
 
@@ -223,7 +229,7 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
   /**
    * Make catalog for Forecast Model Run datasets
    *
-   * @param catURI     base URI of the request
+   * @param catURI base URI of the request
    * @param localState FMRC state
    * @return
    * @throws IOException
@@ -242,7 +248,7 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
   /**
    * Make catalog for Constant Forecast Offset datasets
    *
-   * @param catURI     base URI of the request
+   * @param catURI base URI of the request
    * @param localState FMRC state
    * @return
    * @throws IOException
@@ -262,7 +268,7 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
    *
    * Make catalog for Constant Forecast Date datasets
    *
-   * @param catURI     base URI of the request
+   * @param catURI base URI of the request
    * @param localState FMRC state
    * @return
    * @throws IOException
@@ -289,7 +295,8 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
       nested.setName(myname);
       nested.put(Dataset.UrlPath, this.configPath + "/" + RUNS + "/" + myname);
       nested.put(Dataset.Id, this.configPath + "/" + RUNS + "/" + myname);
-      nested.addToList(Dataset.Documentation, new Documentation(null, null, null, "summary", "Data from Run " + myname));
+      nested.addToList(Dataset.Documentation,
+          new Documentation(null, null, null, "summary", "Data from Run " + myname));
       CalendarDateRange cdr = fmrc.getDateRangeForRun(runDate);
       if (cdr != null)
         nested.put(Dataset.TimeCoverage, new DateRange(cdr));
@@ -311,7 +318,8 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
       nested.setName(myname);
       nested.put(Dataset.UrlPath, this.configPath + "/" + OFFSET + "/" + myname);
       nested.put(Dataset.Id, this.configPath + "/" + OFFSET + "/" + myname);
-      nested.addToList(Dataset.Documentation, new Documentation(null, null, null, "summary", "Data from the " + offset + " hour forecasts, across different model runs."));
+      nested.addToList(Dataset.Documentation, new Documentation(null, null, null, "summary",
+          "Data from the " + offset + " hour forecasts, across different model runs."));
       CalendarDateRange cdr = fmrc.getDateRangeForOffset(offset);
       if (cdr != null)
         nested.put(Dataset.TimeCoverage, new DateRange(cdr));
@@ -333,7 +341,8 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
       nested.setName(myname);
       nested.put(Dataset.UrlPath, this.configPath + "/" + FORECAST + "/" + myname);
       nested.put(Dataset.Id, this.configPath + "/" + FORECAST + "/" + myname);
-      nested.addToList(Dataset.Documentation, new Documentation(null, null, null, "summary", "Data with the same forecast date, " + name + ", across different model runs."));
+      nested.addToList(Dataset.Documentation, new Documentation(null, null, null, "summary",
+          "Data with the same forecast date, " + name + ", across different model runs."));
       nested.put(Dataset.TimeCoverage, new DateRange(CalendarDateRange.of(forecastDate, forecastDate)));
       datasets.add(nested);
     }
@@ -351,12 +360,15 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
     top.setName(name);
     top.addServiceToCatalog(virtualService);
 
-    ThreddsMetadata tmi = top.getInheritableMetadata();  // LOOK allow to change ??
+    ThreddsMetadata tmi = top.getInheritableMetadata(); // LOOK allow to change ??
     tmi.set(Dataset.FeatureType, FeatureType.GRID.toString()); // override GRIB
     tmi.set(Dataset.ServiceName, virtualService.getName());
-    if (localState.coverage != null) tmi.set(Dataset.GeospatialCoverage, localState.coverage);
-    if (localState.dateRange != null) tmi.set(Dataset.TimeCoverage, localState.dateRange);
-    if (localState.vars != null) tmi.set(Dataset.VariableGroups, localState.vars);
+    if (localState.coverage != null)
+      tmi.set(Dataset.GeospatialCoverage, localState.coverage);
+    if (localState.dateRange != null)
+      tmi.set(Dataset.TimeCoverage, localState.dateRange);
+    if (localState.vars != null)
+      tmi.set(Dataset.VariableGroups, localState.vars);
 
     if (wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.TwoD)) {
       DatasetBuilder twoD = new DatasetBuilder(top);
@@ -365,7 +377,8 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
       myname = StringUtil2.replace(myname, ' ', "_");
       twoD.put(Dataset.UrlPath, this.configPath + "/" + myname);
       twoD.put(Dataset.Id, this.configPath + "/" + myname);
-      twoD.addToList(Dataset.Documentation, new Documentation(null, null, null, "summary", "Forecast Model Run Collection (2D time coordinates)."));
+      twoD.addToList(Dataset.Documentation,
+          new Documentation(null, null, null, "summary", "Forecast Model Run Collection (2D time coordinates)."));
       top.addDataset(twoD);
     }
 
@@ -376,7 +389,8 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
       myname = StringUtil2.replace(myname, ' ', "_");
       best.put(Dataset.UrlPath, this.configPath + "/" + myname);
       best.put(Dataset.Id, this.configPath + "/" + myname);
-      best.addToList(Dataset.Documentation, new Documentation(null, null, null, "summary", "Best time series, taking the data from the most recent run available."));
+      best.addToList(Dataset.Documentation, new Documentation(null, null, null, "summary",
+          "Best time series, taking the data from the most recent run available."));
       top.addDataset(best);
     }
 
@@ -388,7 +402,8 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
         myname = StringUtil2.replace(myname, ' ', "_");
         ds.put(Dataset.UrlPath, this.configPath + "/" + myname);
         ds.put(Dataset.Id, this.configPath + "/" + myname);
-        ds.addToList(Dataset.Documentation, new Documentation(null, null, null, "summary", "Best time series, excluding offset hours less than " + bd.greaterThan));
+        ds.addToList(Dataset.Documentation, new Documentation(null, null, null, "summary",
+            "Best time series, excluding offset hours less than " + bd.greaterThan));
         top.addDataset(ds);
       }
     }
@@ -426,12 +441,14 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
 
   public CoverageCollection getGridCoverage(String matchPath) throws IOException {
     NetcdfDataset ncd = getNetcdfDataset(matchPath);
-    if (ncd == null) return null;
+    if (ncd == null)
+      return null;
     DtCoverageDataset gds = new DtCoverageDataset(ncd);
     FeatureDatasetCoverage cc = DtCoverageAdapter.factory(gds, new Formatter());
-    if (cc == null) return null;
+    if (cc == null)
+      return null;
 
-    assert cc.getCoverageCollections().size() == 1;  // LOOK probably want to use endpoint#datasetName ?
+    assert cc.getCoverageCollections().size() == 1; // LOOK probably want to use endpoint#datasetName ?
     return cc.getCoverageCollections().get(0);
   }
 
@@ -449,16 +466,20 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
         NetcdfDataset ncd = getNetcdfDataset(matchPath);
         return ncd == null ? null : new ucar.nc2.dt.grid.GridDataset(ncd);
 
-      } else if (wantName.equals(hasName + FMRC) && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.TwoD)) {
+      } else if (wantName.equals(hasName + FMRC)
+          && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.TwoD)) {
         return fmrc.getDataset2D(null);
 
-      } else if (wantName.equals(hasName + BEST) && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.Best)) {
+      } else if (wantName.equals(hasName + BEST)
+          && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.Best)) {
         return fmrc.getDatasetBest();
 
-      } else if (wantType.equals(OFFSET) && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.ConstantOffsets)) {
+      } else if (wantType.equals(OFFSET)
+          && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.ConstantOffsets)) {
         int pos1 = wantName.lastIndexOf(OFFSET_NAME);
         int pos2 = wantName.lastIndexOf("hr");
-        if ((pos1 < 0) || (pos2 < 0)) return null;
+        if ((pos1 < 0) || (pos2 < 0))
+          return null;
         String id = wantName.substring(pos1 + OFFSET_NAME.length(), pos2);
         try {
           double hour = Double.parseDouble(id);
@@ -469,20 +490,25 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
 
       } else if (wantType.equals(RUNS) && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.Runs)) {
         int pos1 = wantName.indexOf(RUN_NAME);
-        if (pos1 < 0) return null;
+        if (pos1 < 0)
+          return null;
         String id = wantName.substring(pos1 + RUN_NAME.length());
 
         CalendarDate date = CalendarDate.parseISOformat(null, id);
-        if (date == null) return null; // user input error
+        if (date == null)
+          return null; // user input error
         return fmrc.getRunTimeDataset(date);
 
-      } else if (wantType.equals(FORECAST) && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.ConstantForecasts)) {
+      } else if (wantType.equals(FORECAST)
+          && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.ConstantForecasts)) {
         int pos1 = wantName.indexOf(FORECAST_NAME);
-        if (pos1 < 0) return null;
+        if (pos1 < 0)
+          return null;
         String id = wantName.substring(pos1 + FORECAST_NAME.length());
 
         CalendarDate date = CalendarDate.parseISOformat(null, id);
-        if (date == null) return null; // user input error
+        if (date == null)
+          return null; // user input error
         return fmrc.getConstantForecastDataset(date);
 
       } else if (config.fmrcConfig.getBestDatasets() != null) {

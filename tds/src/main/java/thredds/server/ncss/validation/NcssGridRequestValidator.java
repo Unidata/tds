@@ -7,7 +7,6 @@ package thredds.server.ncss.validation;
 
 import thredds.server.ncss.params.NcssGridParamsBean;
 import ucar.nc2.time.CalendarDate;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -24,7 +23,9 @@ import javax.validation.ConstraintValidatorContext;
  */
 public class NcssGridRequestValidator implements ConstraintValidator<NcssGridRequestConstraint, NcssGridParamsBean> {
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see javax.validation.ConstraintValidator#initialize(java.lang.annotation.Annotation)
    */
   @Override
@@ -34,6 +35,7 @@ public class NcssGridRequestValidator implements ConstraintValidator<NcssGridReq
 
   /*
    * since none of these are required, can only do consistency checks
+   * 
    * @see "http://www.unidata.ucar.edu/software/thredds/current/tds/reference/NetcdfSubsetServiceReference.html"
    */
   @Override
@@ -46,24 +48,33 @@ public class NcssGridRequestValidator implements ConstraintValidator<NcssGridReq
     if (params.getLatitude() != null || params.getLongitude() != null) {
       if (!params.hasLatLonPoint()) {
         isValid = false;
-        constraintValidatorContext.buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.lat_or_lon_missing}").addConstraintViolation();
+        constraintValidatorContext
+            .buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.lat_or_lon_missing}")
+            .addConstraintViolation();
       }
     }
 
     // lat/lon bb
-    if (params.getNorth() != null || params.getSouth() != null || params.getEast() != null || params.getWest() != null) {
+    if (params.getNorth() != null || params.getSouth() != null || params.getEast() != null
+        || params.getWest() != null) {
       if (!params.hasLatLonBB()) {
         isValid = false;
-        constraintValidatorContext.buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.wrong_bbox}").addConstraintViolation();
+        constraintValidatorContext
+            .buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.wrong_bbox}")
+            .addConstraintViolation();
       }
 
       if (params.getNorth() < params.getSouth()) {
         isValid = false;
-        constraintValidatorContext.buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.north_south}").addConstraintViolation();
+        constraintValidatorContext
+            .buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.north_south}")
+            .addConstraintViolation();
       }
       if (params.getEast() < params.getWest()) {
         isValid = false;
-        constraintValidatorContext.buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.east_west}").addConstraintViolation();
+        constraintValidatorContext
+            .buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.east_west}")
+            .addConstraintViolation();
       }
     }
 
@@ -71,16 +82,20 @@ public class NcssGridRequestValidator implements ConstraintValidator<NcssGridReq
     if (params.getMaxx() != null || params.getMinx() != null || params.getMaxy() != null || params.getMiny() != null) {
       if (!params.hasProjectionBB()) {
         isValid = false;
-        constraintValidatorContext.buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.wrong_pbox}").addConstraintViolation();
+        constraintValidatorContext
+            .buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.wrong_pbox}")
+            .addConstraintViolation();
       }
 
       if (params.getMaxx() < params.getMinx()) {
         isValid = false;
-        constraintValidatorContext.buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.rangex}").addConstraintViolation();
+        constraintValidatorContext.buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.rangex}")
+            .addConstraintViolation();
       }
       if (params.getMaxy() < params.getMiny()) {
         isValid = false;
-        constraintValidatorContext.buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.rangey}").addConstraintViolation();
+        constraintValidatorContext.buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.rangey}")
+            .addConstraintViolation();
       }
     }
 
@@ -93,7 +108,8 @@ public class NcssGridRequestValidator implements ConstraintValidator<NcssGridReq
         params.setAllRuntime(true);
 
       } else {
-        CalendarDate cd = TimeParamsValidator.validateISOString(params.getRuntime(), "{thredds.server.ncSubset.validation.param.runtime}", constraintValidatorContext);
+        CalendarDate cd = TimeParamsValidator.validateISOString(params.getRuntime(),
+            "{thredds.server.ncSubset.validation.param.runtime}", constraintValidatorContext);
         if (cd != null)
           params.setRuntimeDate(cd);
       }
@@ -109,7 +125,9 @@ public class NcssGridRequestValidator implements ConstraintValidator<NcssGridReq
           double val = Double.parseDouble(params.getTimeOffset());
           params.setTimeOffsetVal(val);
         } catch (NumberFormatException e) {
-          constraintValidatorContext.buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.param.time_offset}").addConstraintViolation();
+          constraintValidatorContext
+              .buildConstraintViolationWithTemplate("{thredds.server.ncSubset.validation.param.time_offset}")
+              .addConstraintViolation();
         }
       }
     }

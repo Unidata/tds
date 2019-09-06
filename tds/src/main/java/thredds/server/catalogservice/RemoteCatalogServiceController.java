@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.HtmlUtils;
-
 import thredds.client.catalog.Catalog;
 import thredds.client.catalog.Dataset;
 import thredds.client.catalog.builder.CatalogBuilder;
@@ -23,7 +22,6 @@ import thredds.core.AllowedServices;
 import thredds.core.StandardService;
 import thredds.server.config.HtmlConfigBean;
 import thredds.server.exception.ServiceNotAllowed;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -60,7 +58,7 @@ public class RemoteCatalogServiceController {
 
   @RequestMapping(method = {RequestMethod.GET})
   protected ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response,
-                                       @Valid RemoteCatalogRequest params, BindingResult validationResult) throws Exception {
+      @Valid RemoteCatalogRequest params, BindingResult validationResult) throws Exception {
 
     if (!allowedServices.isAllowed(StandardService.catalogRemote))
       throw new ServiceNotAllowed(StandardService.catalogRemote.toString());
@@ -90,7 +88,7 @@ public class RemoteCatalogServiceController {
     // Otherwise, handle catalog as indicated by "command".
     switch (params.getCommand()) {
       case SHOW:
-        return new ModelAndView("templates/catalog", parser.getCatalogViewContext(catalog, request,false));
+        return new ModelAndView("templates/catalog", parser.getCatalogViewContext(catalog, request, false));
 
       case SUBSET:
         String datasetId = params.getDataset();
@@ -120,27 +118,30 @@ public class RemoteCatalogServiceController {
     }
   }
 
-  public static ModelAndView constructValidationMessageModelAndView(URI uri, String validationMessage, HtmlConfigBean htmlConfig) {
+  public static ModelAndView constructValidationMessageModelAndView(URI uri, String validationMessage,
+      HtmlConfigBean htmlConfig) {
     Map<String, Object> model = new HashMap<>();
     model.put("catalogUrl", uri);
     model.put("message", validationMessage);
 
-    htmlConfig.addHtmlConfigInfoToModel(model);  // LOOK cant be right
+    htmlConfig.addHtmlConfigInfoToModel(model); // LOOK cant be right
     return new ModelAndView("/thredds/server/catalogservice/validationMessage", model);
   }
 
   /*
-  @RequestMapping(value = "/remoteCatalogValidation.html", method = {RequestMethod.GET})
-  protected ModelAndView handleFormRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-    if (!allowRemote)
-      throw new UnsupportedOperationException("Catalog services not supported for remote catalogs.");
-
-    Map<String, Object> model = new HashMap<>();
-
-    htmlConfig.addHtmlConfigInfoToModel(model); // LOOK cant be right
-
-    return new ModelAndView("/thredds/server/catalogservice/validationForm", model);
-  } */
+   * @RequestMapping(value = "/remoteCatalogValidation.html", method = {RequestMethod.GET})
+   * protected ModelAndView handleFormRequest(HttpServletRequest request, HttpServletResponse response) throws Exception
+   * {
+   * 
+   * if (!allowRemote)
+   * throw new UnsupportedOperationException("Catalog services not supported for remote catalogs.");
+   * 
+   * Map<String, Object> model = new HashMap<>();
+   * 
+   * htmlConfig.addHtmlConfigInfoToModel(model); // LOOK cant be right
+   * 
+   * return new ModelAndView("/thredds/server/catalogservice/validationForm", model);
+   * }
+   */
 
 }

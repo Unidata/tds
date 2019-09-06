@@ -2,7 +2,6 @@ package thredds.tds;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.lang.invoke.MethodHandles;
 
 /**
@@ -11,8 +10,7 @@ import java.lang.invoke.MethodHandles;
  * @author edavis
  * @since 4.1
  */
-public class MakeHttpRequestResult
-{
+public class MakeHttpRequestResult {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private long requestNumber;
@@ -24,7 +22,7 @@ public class MakeHttpRequestResult
   private String failMessage;
   private long responseTimeInMilliseconds;
 
-  public MakeHttpRequestResult( long requestNumber, String requestUrl ) {
+  public MakeHttpRequestResult(long requestNumber, String requestUrl) {
     this.requestNumber = requestNumber;
     this.requestUrl = requestUrl;
   }
@@ -41,49 +39,50 @@ public class MakeHttpRequestResult
     return this.statusCode;
   }
 
-  public void setStatusCode( int statusCode ) {
+  public void setStatusCode(int statusCode) {
     this.statusCode = statusCode;
   }
 
   public long getBytesRead() {
     return this.bytesRead;
   }
-  public void setBytesRead( long bytesRead ) {
+
+  public void setBytesRead(long bytesRead) {
     this.bytesRead = bytesRead;
   }
 
   public boolean isFailed() {
     return this.failed;
   }
-  public void setFailed( boolean failed ) {
+
+  public void setFailed(boolean failed) {
     this.failed = failed;
   }
 
   public String getFailMessage() {
     return this.failMessage;
   }
-  public void setFailMessage( String failMessage ) {
+
+  public void setFailMessage(String failMessage) {
     this.failMessage = failMessage;
   }
 
   public long getResponseTimeInMilliseconds() {
     return this.responseTimeInMilliseconds;
   }
-  public void setResponseTimeInMilliseconds( long responseTimeInMilliseconds ) {
+
+  public void setResponseTimeInMilliseconds(long responseTimeInMilliseconds) {
     this.responseTimeInMilliseconds = responseTimeInMilliseconds;
   }
 
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append( "[").append( requestNumber).append( "] ")
-            .append( requestUrl).append( " ");
-    if ( failed )
-      sb.append( "FAILED - ").append( failMessage);
+    sb.append("[").append(requestNumber).append("] ").append(requestUrl).append(" ");
+    if (failed)
+      sb.append("FAILED - ").append(failMessage);
     else
-      sb.append( statusCode).append( " ")
-              .append( bytesRead). append( " ")
-              .append( responseTimeInMilliseconds);
-    
+      sb.append(statusCode).append(" ").append(bytesRead).append(" ").append(responseTimeInMilliseconds);
+
     return sb.toString();
   }
 }

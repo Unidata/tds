@@ -9,11 +9,9 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.coverity.security.Escape;
 import com.google.common.escape.Escaper;
 import com.google.common.eventbus.EventBus;
@@ -31,7 +29,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import thredds.core.DataRootManager;
 import thredds.core.DatasetManager;
 import thredds.featurecollection.CollectionUpdater;
@@ -101,7 +98,7 @@ public class AdminCollectionController {
 
         for (FeatureCollectionRef fc : fcList) {
           String uriParam = Escape.uriParam(fc.getCollectionName());
-          String url = tdsContext.getContextPath() + PATH + "/"+SHOW_COLLECTION + "?" + COLLECTION + "=" + uriParam;
+          String url = tdsContext.getContextPath() + PATH + "/" + SHOW_COLLECTION + "?" + COLLECTION + "=" + uriParam;
           e.pw.printf("<p/><a href='%s'>%s</a> (%s)%n", url, fc.getCollectionName(), fc.getName());
           FeatureCollectionConfig config = fc.getConfig();
           if (config != null)
@@ -123,7 +120,8 @@ public class AdminCollectionController {
     act = new DebugCommands.Action("sched", "Show FeatureCollection update scheduler") {
       public void doAction(DebugCommands.Event e) {
         org.quartz.Scheduler scheduler = collectionUpdater.getScheduler();
-        if (scheduler == null) return;
+        if (scheduler == null)
+          return;
 
         try {
           e.pw.println(scheduler.getMetaData());
@@ -157,7 +155,7 @@ public class AdminCollectionController {
 
   }
 
-  @RequestMapping(value = "/"+SHOW_COLLECTION, method = RequestMethod.GET)
+  @RequestMapping(value = "/" + SHOW_COLLECTION, method = RequestMethod.GET)
   protected ResponseEntity<String> showCollection(@RequestParam String collection) throws Exception {
     Formatter out = new Formatter();
 
@@ -173,10 +171,11 @@ public class AdminCollectionController {
       showFeatureCollection(out, want);
 
       String uriParam = Escape.uriParam(want.getCollectionName());
-      String url = tdsContext.getContextPath() + PATH + "/"+TRIGGER+"?" + COLLECTION + "=" + uriParam + "&" + TRIGGER + "=" + CollectionUpdateType.nocheck;
+      String url = tdsContext.getContextPath() + PATH + "/" + TRIGGER + "?" + COLLECTION + "=" + uriParam + "&"
+          + TRIGGER + "=" + CollectionUpdateType.nocheck;
       out.format("<p/><a href='%s'>Send trigger to %s</a>%n", url, Escape.html(want.getCollectionName()));
 
-      String url2 = tdsContext.getContextPath() + PATH + "/"+DOWNLOAD+"?" + COLLECTION + "=" + uriParam;
+      String url2 = tdsContext.getContextPath() + PATH + "/" + DOWNLOAD + "?" + COLLECTION + "=" + uriParam;
       out.format("<p/><a href='%s'>Download index file for %s</a>%n", url2, Escape.html(want.getCollectionName()));
     }
 
@@ -185,7 +184,7 @@ public class AdminCollectionController {
     return new ResponseEntity<>(out.toString(), responseHeaders, status);
   }
 
-  @RequestMapping(value = {"/"+SHOW})
+  @RequestMapping(value = {"/" + SHOW})
   protected ResponseEntity<String> showCollectionStatus() throws Exception {
     Formatter out = new Formatter();
 
@@ -207,7 +206,7 @@ public class AdminCollectionController {
     return new ResponseEntity<>(out.toString(), responseHeaders, HttpStatus.OK);
   }
 
-  @RequestMapping(value = {"/"+SHOW_CSV})
+  @RequestMapping(value = {"/" + SHOW_CSV})
   protected ResponseEntity<String> showCollectionStatusCsv() throws Exception {
     Formatter out = new Formatter();
 
@@ -215,13 +214,16 @@ public class AdminCollectionController {
     List<FeatureCollectionRef> fcList = dataRootManager.getFeatureCollections();
     Collections.sort(fcList, (o1, o2) -> {
       int compareType = o1.getConfig().type.toString().compareTo(o1.getConfig().type.toString());
-      if (compareType != 0) return compareType;
+      if (compareType != 0)
+        return compareType;
       return o1.getCollectionName().compareTo(o2.getCollectionName());
     });
 
-    out.format("%s, %s, %s, %s, %s, %s, %s, %s, %s%n", "collection", "ed", "type", "group", "nrecords", "ndups", "%", "nmiss", "%");
+    out.format("%s, %s, %s, %s, %s, %s, %s, %s, %s%n", "collection", "ed", "type", "group", "nrecords", "ndups", "%",
+        "nmiss", "%");
     for (FeatureCollectionRef fc : fcList) {
-      if (fc.getConfig().type != FeatureCollectionType.GRIB1 && fc.getConfig().type != FeatureCollectionType.GRIB2) continue;
+      if (fc.getConfig().type != FeatureCollectionType.GRIB1 && fc.getConfig().type != FeatureCollectionType.GRIB2)
+        continue;
       InvDatasetFeatureCollection fcd = datasetManager.openFeatureCollection(fc);
       out.format("%s", fcd.showStatusShort("csv"));
     }
@@ -231,8 +233,9 @@ public class AdminCollectionController {
     return new ResponseEntity<>(out.toString(), responseHeaders, HttpStatus.OK);
   }
 
-  @RequestMapping(value = {"/trigger"})  // LOOK should require collection and trigger type params
-  protected ResponseEntity<String> triggerFeatureCollection(HttpServletRequest req, HttpServletResponse res) throws Exception {
+  @RequestMapping(value = {"/trigger"}) // LOOK should require collection and trigger type params
+  protected ResponseEntity<String> triggerFeatureCollection(HttpServletRequest req, HttpServletResponse res)
+      throws Exception {
     Formatter out = new Formatter();
 
     CollectionUpdateType triggerType = null;
@@ -275,14 +278,15 @@ public class AdminCollectionController {
     return new ResponseEntity<>(out.toString(), responseHeaders, HttpStatus.OK);
   }
 
-  @RequestMapping(value = {"/"+DOWNLOAD_ALL})
+  @RequestMapping(value = {"/" + DOWNLOAD_ALL})
   protected void downloadAll(HttpServletRequest req, HttpServletResponse res) throws IOException {
     File tempFile = File.createTempFile("CollectionIndex", ".zip");
     try (FileOutputStream fos = new FileOutputStream(tempFile.getPath())) {
       ZipOutputStream zout = new ZipOutputStream(fos);
       for (FeatureCollectionRef fc : dataRootManager.getFeatureCollections()) {
         File idxFile = GribCdmIndex.getTopIndexFileFromConfig(fc.getConfig());
-        if (idxFile == null) continue;
+        if (idxFile == null)
+          continue;
         ZipEntry entry = new ZipEntry(idxFile.getName());
         zout.putNextEntry(entry);
         IO.copyFile(idxFile.getPath(), zout);
@@ -296,7 +300,7 @@ public class AdminCollectionController {
     // tempFile.delete();
   }
 
-  @RequestMapping(value = {"/"+DOWNLOAD})
+  @RequestMapping(value = {"/" + DOWNLOAD})
   protected ResponseEntity<String> downloadIndex(HttpServletRequest req, HttpServletResponse res) throws Exception {
     String collectName = StringUtil2.unescape(req.getParameter(COLLECTION)); // this is the collection name
     FeatureCollectionRef want = dataRootManager.findFeatureCollection(collectName);

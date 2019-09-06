@@ -7,7 +7,6 @@ package thredds.util;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletContext;
@@ -25,15 +24,15 @@ public class RequestForwardUtils {
 
   private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(RequestForwardUtils.class);
 
-  private RequestForwardUtils() {
-  }
+  private RequestForwardUtils() {}
 
-  public static void forwardRequestRelativeToCurrentContext(String fwdPath, HttpServletRequest request, HttpServletResponse response)
-          throws IOException, ServletException {
+  public static void forwardRequestRelativeToCurrentContext(String fwdPath, HttpServletRequest request,
+      HttpServletResponse response) throws IOException, ServletException {
 
     if (fwdPath == null || request == null || response == null) {
       String msg = "Path, request, and response may not be null";
-      log.error("forwardRequestRelativeToCurrentContext() ERROR: " + msg + (fwdPath == null ? ": " : "[" + fwdPath + "]: "));
+      log.error(
+          "forwardRequestRelativeToCurrentContext() ERROR: " + msg + (fwdPath == null ? ": " : "[" + fwdPath + "]: "));
       throw new IllegalArgumentException(msg + ".");
     }
 
@@ -46,14 +45,12 @@ public class RequestForwardUtils {
       dispatcher.forward(request, response);
   }
 
-  public static void forwardRequestRelativeToGivenContext(String fwdPath,
-                                                          ServletContext targetContext,
-                                                          HttpServletRequest request,
-                                                          HttpServletResponse response)
-          throws IOException, ServletException {
+  public static void forwardRequestRelativeToGivenContext(String fwdPath, ServletContext targetContext,
+      HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     if (fwdPath == null || targetContext == null || request == null || response == null) {
       String msg = "Path, context, request, and response may not be null";
-      log.error("forwardRequestRelativeToGivenContext() ERROR: " + msg + (fwdPath == null ? ": " : "[" + fwdPath + "]: "));
+      log.error(
+          "forwardRequestRelativeToGivenContext() ERROR: " + msg + (fwdPath == null ? ": " : "[" + fwdPath + "]: "));
       throw new IllegalArgumentException(msg + ".");
     }
 
@@ -65,12 +62,13 @@ public class RequestForwardUtils {
       dispatcher.forward(request, response);
   }
 
-  public static void forwardRequest(String fwdPath, RequestDispatcher dispatcher, HttpServletRequest request, HttpServletResponse response)
-  throws IOException, ServletException {
+  public static void forwardRequest(String fwdPath, RequestDispatcher dispatcher, HttpServletRequest request,
+      HttpServletResponse response) throws IOException, ServletException {
 
     if (fwdPath == null || dispatcher == null || request == null || response == null) {
       String msg = "Path, dispatcher, request, and response may not be null";
-      log.error("forwardRequestRelativeToGivenContext() ERROR: " + msg + (fwdPath == null ? ": " : "[" + fwdPath + "]: "));
+      log.error(
+          "forwardRequestRelativeToGivenContext() ERROR: " + msg + (fwdPath == null ? ": " : "[" + fwdPath + "]: "));
       throw new IllegalArgumentException(msg + ".");
     }
 
@@ -78,7 +76,7 @@ public class RequestForwardUtils {
   }
 
   private static boolean dispatcherWasFound(String fwdPath, RequestDispatcher dispatcher, HttpServletResponse response)
-          throws IOException {
+      throws IOException {
 
     if (dispatcher == null) {
       log.error("dispatcherWasFound() ERROR : Dispatcher for forwarding [" + fwdPath + "] not found:");

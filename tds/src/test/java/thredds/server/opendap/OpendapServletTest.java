@@ -2,11 +2,9 @@ package thredds.server.opendap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -19,11 +17,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import org.springframework.test.context.web.WebAppConfiguration;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import javax.servlet.ServletConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -58,8 +54,8 @@ public class OpendapServletTest {
     opendapServlet.doGet(request, response);
     assertEquals(200, response.getStatus());
 
-    //String strResponse = response.getContentAsString();
-    //System.out.printf("%s%n", strResponse);
+    // String strResponse = response.getContentAsString();
+    // System.out.printf("%s%n", strResponse);
   }
 
   @Test

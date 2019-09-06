@@ -12,8 +12,7 @@ import java.io.File;
  * @author edavis
  * @since 4.0
  */
-public interface FileSource
-{
+public interface FileSource {
   /**
    * Return the File, if it exists, that the given path represents for the
    * FileSource implementation in use.
@@ -26,5 +25,5 @@ public interface FileSource
    * @param path the path to the desired File.
    * @return the File represented by the path or null.
    */
-  File getFile( String path);
+  File getFile(String path);
 }

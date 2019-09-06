@@ -21,7 +21,6 @@ import ucar.nc2.util.CompareNetcdf2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.StringUtil2;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Formatter;
@@ -42,7 +41,8 @@ public class TestCdmRemoteMisc {
 
   @Test
   public void testBackslashEscaped() throws Exception {
-    String url = TestOnLocalServer.withHttpPath(urlPath + "/hdf5/grid_1_3d_xyz_aug.h5?req=data&var=HDFEOS_INFORMATION/StructMetadata\\.0");
+    String url = TestOnLocalServer
+        .withHttpPath(urlPath + "/hdf5/grid_1_3d_xyz_aug.h5?req=data&var=HDFEOS_INFORMATION/StructMetadata\\.0");
     try (HTTPMethod m = HTTPFactory.Get(url)) {
       int statusCode = m.execute();
       System.out.printf("status = %d%n", statusCode);
@@ -52,7 +52,8 @@ public class TestCdmRemoteMisc {
   @Test
   public void problem() throws IOException {
     String problemFile = TestDir.cdmUnitTestDir + "formats/gempak/ndfd_20100913.gem";
-    String name = StringUtil2.substitute(problemFile.substring(TestCdmRemoteCompareHeadersP.contentRoot.length()), "\\", "/");
+    String name =
+        StringUtil2.substitute(problemFile.substring(TestCdmRemoteCompareHeadersP.contentRoot.length()), "\\", "/");
     String remote = TestOnLocalServer.withHttpPath(TestCdmRemoteCompareHeadersP.urlPath + name);
     TestCdmRemoteCompareHeadersP.compareDatasets(problemFile, remote, false);
   }
@@ -83,12 +84,13 @@ public class TestCdmRemoteMisc {
       String remoteFile = TestOnLocalServer.withHttpPath(urlPath + filename);
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
-      String localFile = contentRoot+filename;
+      String localFile = contentRoot + filename;
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true, true, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
+          true, true);
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -108,15 +110,16 @@ public class TestCdmRemoteMisc {
   public void testVlen() {
     try {
       String filename = "/netcdf4/vlen/tst_vl.nc";
-      String remoteFile = TestOnLocalServer.withHttpPath(urlPath+filename);
+      String remoteFile = TestOnLocalServer.withHttpPath(urlPath + filename);
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
-      String localFile = contentRoot+filename;
+      String localFile = contentRoot + filename;
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
+          false, true);
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -136,15 +139,16 @@ public class TestCdmRemoteMisc {
   public void testTopVlenInt() {
     try {
       String filename = "/netcdf4/vlen/vlenInt.nc";
-      String remoteFile = TestOnLocalServer.withHttpPath(urlPath+filename);
+      String remoteFile = TestOnLocalServer.withHttpPath(urlPath + filename);
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
-      String localFile = contentRoot+filename;
+      String localFile = contentRoot + filename;
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
+          false, true);
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -164,15 +168,16 @@ public class TestCdmRemoteMisc {
   public void testVlenInStructure() {
     try {
       String filename = "/netcdf4/vlen/IntTimSciSamp.nc";
-      String remoteFile = TestOnLocalServer.withHttpPath(urlPath+filename);
+      String remoteFile = TestOnLocalServer.withHttpPath(urlPath + filename);
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
-      String localFile = contentRoot+filename;
+      String localFile = contentRoot + filename;
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
+          false, true);
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -192,15 +197,16 @@ public class TestCdmRemoteMisc {
   public void testChardata() { // was failing on char data being sign extended
     try {
       String filename = "/netcdf3/files/c0_64.nc";
-      String remoteFile = TestOnLocalServer.withHttpPath(urlPath+filename);
+      String remoteFile = TestOnLocalServer.withHttpPath(urlPath + filename);
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
-      String localFile = contentRoot+filename;
+      String localFile = contentRoot + filename;
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
+          false, true);
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -220,15 +226,16 @@ public class TestCdmRemoteMisc {
   public void testStringArray() {
     try {
       String filename = "/netcdf4/files/tst_string_data.nc";
-      String remoteFile = TestOnLocalServer.withHttpPath(urlPath+filename);
+      String remoteFile = TestOnLocalServer.withHttpPath(urlPath + filename);
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
-      String localFile = contentRoot+filename;
+      String localFile = contentRoot + filename;
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
+          false, true);
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -248,15 +255,16 @@ public class TestCdmRemoteMisc {
   public void testVariableNameWithDot() {
     try {
       String filename = "/hdf5/grid_1_3d_xyz_aug.h5";
-      String remoteFile = TestOnLocalServer.withHttpPath(urlPath+filename);
+      String remoteFile = TestOnLocalServer.withHttpPath(urlPath + filename);
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
-      String localFile = contentRoot+filename;
+      String localFile = contentRoot + filename;
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), false, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), false,
+          false, true);
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);

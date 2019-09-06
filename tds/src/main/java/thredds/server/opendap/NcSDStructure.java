@@ -10,14 +10,12 @@ package thredds.server.opendap;
 import opendap.servers.*;
 import opendap.dap.BaseType;
 import opendap.dap.NoSuchVariableException;
-
 import java.io.IOException;
 import java.io.DataOutputStream;
 import java.util.List;
 import ucar.nc2.Variable;
 import ucar.nc2.Structure;
 import ucar.ma2.*;
-
 import org.slf4j.*;
 
 /**
@@ -26,7 +24,7 @@ import org.slf4j.*;
  * @author jcaron
  */
 
-public class NcSDStructure extends SDStructure  {
+public class NcSDStructure extends SDStructure {
   static private Logger log = LoggerFactory.getLogger(NcSDStructure.class);
 
   private Structure ncVar = null;
@@ -35,35 +33,39 @@ public class NcSDStructure extends SDStructure  {
   protected NcSDStructure org;
   protected StructureData sdata;
 
-  /** Constructor.
-   *  @param s the netcdf Structure
-   *  @param list of the member variables
+  /**
+   * Constructor.
+   * 
+   * @param s the netcdf Structure
+   * @param list of the member variables
    */
-  public NcSDStructure( Structure s, List<BaseType> list) {
-      //super( NcDDS.escapeName(s.getShortName()));
-      super(Variable.getDAPName(s));
+  public NcSDStructure(Structure s, List<BaseType> list) {
+    // super( NcDDS.escapeName(s.getShortName()));
+    super(Variable.getDAPName(s));
     this.ncVar = s;
 
-    for (BaseType aList : list) addVariable(aList, 0);
+    for (BaseType aList : list)
+      addVariable(aList, 0);
     memberBTlist = list;
   }
 
-  public NcSDStructure( NcSDStructure org, StructureData sdata) {
+  public NcSDStructure(NcSDStructure org, StructureData sdata) {
     super(org.getEncodedName());
     this.org = org;
     this.sdata = sdata;
   }
 
-   public Variable getVariable() { return ncVar; }
+  public Variable getVariable() {
+    return ncVar;
+  }
 
   // called if its scalar
-  public boolean read(String datasetName, Object specialO) throws NoSuchVariableException,
-    IOException {
+  public boolean read(String datasetName, Object specialO) throws NoSuchVariableException, IOException {
 
     // read the scalar structure into memory
     StructureData sdata = ncVar.readStructure();
-    setData( sdata);
-    return(false);
+    setData(sdata);
+    return (false);
   }
 
   // LOOK - should modify to use hasNetcdf.setData( StructureData) for efficiency
@@ -79,16 +81,16 @@ public class NcSDStructure extends SDStructure  {
 
       // extract the data and set it into the dods object
       Array data = sdata.getArray(m);
-      hasNetcdf.setData( data);
+      hasNetcdf.setData(data);
     }
 
     setRead(true);
   }
 
   ////////////////////////////////////////////////////////////////////////////////
- // overrride for array of Structures
-  public void serialize(String dataset,DataOutputStream sink,CEEvaluator ce,Object specialO)
-                                    throws NoSuchVariableException, DAP2ServerSideException, IOException {
+  // overrride for array of Structures
+  public void serialize(String dataset, DataOutputStream sink, CEEvaluator ce, Object specialO)
+      throws NoSuchVariableException, DAP2ServerSideException, IOException {
 
     if (org == null) {
       super.serialize(dataset, sink, ce, specialO);
@@ -107,7 +109,7 @@ public class NcSDStructure extends SDStructure  {
       boolean isProjected = ((ServerMethods) sm_org).isProject();
       if (isProjected) {
         StructureMembers.Member m = sm.getMember(count);
-        sm_org.serialize( sink, sdata, m);
+        sm_org.serialize(sink, sdata, m);
       }
       count++;
     }

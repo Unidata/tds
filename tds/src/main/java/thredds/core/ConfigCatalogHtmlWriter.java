@@ -21,7 +21,6 @@ import thredds.util.ContentType;
 import ucar.nc2.units.DateType;
 import ucar.unidata.util.Format;
 import ucar.unidata.util.StringUtil2;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -43,14 +42,14 @@ public class ConfigCatalogHtmlWriter {
   static private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ConfigCatalogHtmlWriter.class);
 
   static public String getHtmlDoctypeAndOpenTag() {
-    return "<!DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'\n" +
-            "        'http://www.w3.org/TR/html4/loose.dtd'>\n" + "<html>\n";
+    return "<!DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'\n"
+        + "        'http://www.w3.org/TR/html4/loose.dtd'>\n" + "<html>\n";
   }
 
   static public String getXHtmlDoctypeAndOpenTag() {
-    return "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN'\n" +
-            "        'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>\n" +
-            "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>";
+    return "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN'\n"
+        + "        'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>\n"
+        + "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>";
   }
 
   @Autowired
@@ -66,14 +65,15 @@ public class ConfigCatalogHtmlWriter {
   /**
    * Write an Catalog to the HttpServletResponse, return the size in bytes of the catalog written to the response.
    *
-   * @param req            the HttpServletRequest
-   * @param res            the HttpServletResponse.
-   * @param cat            the InvCatalogImpl to write to the HttpServletResponse.
+   * @param req the HttpServletRequest
+   * @param res the HttpServletResponse.
+   * @param cat the InvCatalogImpl to write to the HttpServletResponse.
    * @param isLocalCatalog indicates whether this catalog is local to this server.
    * @return the size in bytes of the catalog written to the HttpServletResponse.
    * @throws IOException if problems writing the response.
    */
-  public int writeCatalog(HttpServletRequest req, HttpServletResponse res, Catalog cat, boolean isLocalCatalog) throws IOException {
+  public int writeCatalog(HttpServletRequest req, HttpServletResponse res, Catalog cat, boolean isLocalCatalog)
+      throws IOException {
     String catHtmlAsString = convertCatalogToHtml(cat, isLocalCatalog);
 
     // Once this header is set, we know the encoding, and thus the actual
@@ -99,8 +99,10 @@ public class ConfigCatalogHtmlWriter {
     StringBuilder sb = new StringBuilder(10000);
 
     String uri = cat.getUriString();
-    if (uri == null) uri = cat.getName();
-    if (uri == null) uri = "unknown";
+    if (uri == null)
+      uri = cat.getName();
+    if (uri == null)
+      uri = "unknown";
     String catname = Escape.html(uri);
 
     // Render the page header
@@ -108,9 +110,9 @@ public class ConfigCatalogHtmlWriter {
     sb.append("<head>\r\n");
     sb.append("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
     sb.append("<title>");
-    //if (cat.isStatic())
-    //  sb.append("TdsStaticCatalog ").append(catname); // for searching
-    //else
+    // if (cat.isStatic())
+    // sb.append("TdsStaticCatalog ").append(catname); // for searching
+    // else
     sb.append("Catalog ").append(catname);
     sb.append("</title>\r\n");
     sb.append(getTdsCatalogCssLink()).append("\n");
@@ -120,12 +122,13 @@ public class ConfigCatalogHtmlWriter {
     sb.append("<h1>");
 
     // Logo
-    //String logoUrl = this.htmlConfig.getInstallLogoUrl();
+    // String logoUrl = this.htmlConfig.getInstallLogoUrl();
     String logoUrl = htmlConfig.prepareUrlStringForHtml(htmlConfig.getInstallLogoUrl());
     if (logoUrl != null) {
       sb.append("<img src='").append(logoUrl);
       String logoAlt = htmlConfig.getInstallLogoAlt();
-      if (logoAlt != null) sb.append("' alt='").append(logoAlt);
+      if (logoAlt != null)
+        sb.append("' alt='").append(logoAlt);
       sb.append("' align='left' valign='top'").append(">\n");
     }
 
@@ -161,21 +164,25 @@ public class ConfigCatalogHtmlWriter {
     return (sb.toString());
   }
 
-  private boolean doDatasets(Catalog cat, List<Dataset> datasets, StringBuilder sb, boolean shade, int level, boolean isLocalCatalog) {
-    //URI catURI = cat.getBaseURI();
+  private boolean doDatasets(Catalog cat, List<Dataset> datasets, StringBuilder sb, boolean shade, int level,
+      boolean isLocalCatalog) {
+    // URI catURI = cat.getBaseURI();
     String catHtml;
     if (!isLocalCatalog) {
       // Setup HREF url to link to HTML dataset page (more below).
-      catHtml = tdsContext.getContextPath() + "/remoteCatalogService?command=subset&catalog=" + cat.getUriString() + "&";
+      catHtml =
+          tdsContext.getContextPath() + "/remoteCatalogService?command=subset&catalog=" + cat.getUriString() + "&";
       // Can't be "/catalogServices?..." because subset decides on xml or html by trailing ".html" on URL path
 
     } else { // replace xml with html
       URI catURI = cat.getBaseURI();
       // Get the catalog name - we want a relative URL
       catHtml = catURI.getPath();
-      if (catHtml == null) catHtml = cat.getUriString();  // if URI is a file
+      if (catHtml == null)
+        catHtml = cat.getUriString(); // if URI is a file
       int pos = catHtml.lastIndexOf("/");
-      if (pos != -1) catHtml = catHtml.substring(pos + 1);
+      if (pos != -1)
+        catHtml = catHtml.substring(pos + 1);
 
       // change the ending to "catalog.html?"
       pos = catHtml.lastIndexOf('.');
@@ -187,16 +194,20 @@ public class ConfigCatalogHtmlWriter {
 
     for (Dataset ds : datasets) {
       String name = ds.getName();
-      if (name == null) name = ""; // eg catrefs
-      else name = Escape.html(ds.getName());
+      if (name == null)
+        name = ""; // eg catrefs
+      else
+        name = Escape.html(ds.getName());
 
       sb.append("<tr");
-      if (shade) sb.append(" bgcolor='#eeeeee'");
+      if (shade)
+        sb.append(" bgcolor='#eeeeee'");
       sb.append(">\r\n");
       shade = !shade;
 
       sb.append("<td align='left'>");
-      for (int j = 0; j <= level; j++) sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+      for (int j = 0; j <= level; j++)
+        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
       sb.append("\r\n");
 
       if (ds instanceof CatalogRef) {
@@ -209,11 +220,17 @@ public class ConfigCatalogHtmlWriter {
         try {
           URI uri = new URI(href);
           if (uri.isAbsolute()) {
-            boolean defaultUseRemoteCatalogService = htmlConfig.getUseRemoteCatalogService(); // read default as set in threddsConfig.xml
-            Boolean dsUseRemoteCatalogSerivce = ((CatalogRef) ds).useRemoteCatalogService();  // check to see if catalogRef contains tag that overrides default
-            boolean useRemoteCatalogService = defaultUseRemoteCatalogService; // by default, use the option found in threddsConfig.xml
+            boolean defaultUseRemoteCatalogService = htmlConfig.getUseRemoteCatalogService(); // read default as set in
+                                                                                              // threddsConfig.xml
+            Boolean dsUseRemoteCatalogSerivce = ((CatalogRef) ds).useRemoteCatalogService(); // check to see if
+                                                                                             // catalogRef contains tag
+                                                                                             // that overrides default
+            boolean useRemoteCatalogService = defaultUseRemoteCatalogService; // by default, use the option found in
+                                                                              // threddsConfig.xml
             if (dsUseRemoteCatalogSerivce == null)
-              dsUseRemoteCatalogSerivce = defaultUseRemoteCatalogService; // if the dataset does not have the useRemoteDataset option set, opt for the default behavior
+              dsUseRemoteCatalogSerivce = defaultUseRemoteCatalogService; // if the dataset does not have the
+                                                                          // useRemoteDataset option set, opt for the
+                                                                          // default behavior
 
             // if the default is not the same as what is defined in the catalog, go with the catalog option
             // as the user has explicitly overridden the default
@@ -245,10 +262,10 @@ public class ConfigCatalogHtmlWriter {
           folderIcon = "fc_folder.png";
         else
           folderIcon = "folder.png";
-          // folderIcon = htmlConfig.getFolderIconUrl();
+        // folderIcon = htmlConfig.getFolderIconUrl();
 
-        sb.append("<img src='").append(htmlConfig.prepareUrlStringForHtml(folderIcon))
-                .append("' alt='").append(htmlConfig.getFolderIconAlt()).append("'> &nbsp;");
+        sb.append("<img src='").append(htmlConfig.prepareUrlStringForHtml(folderIcon)).append("' alt='")
+            .append(htmlConfig.getFolderIconAlt()).append("'> &nbsp;");
         sb.append("<a href='");
         sb.append(Escape.html(href));
         sb.append("'><tt>");
@@ -257,8 +274,8 @@ public class ConfigCatalogHtmlWriter {
 
       } else { // Not a CatalogRef
         if (ds.hasNestedDatasets())
-          sb.append("<img src='").append(htmlConfig.prepareUrlStringForHtml("folder.png"))
-                  .append("' alt='").append(htmlConfig.getFolderIconAlt()).append("'> &nbsp;");
+          sb.append("<img src='").append(htmlConfig.prepareUrlStringForHtml("folder.png")).append("' alt='")
+              .append(htmlConfig.getFolderIconAlt()).append("'> &nbsp;");
 
         // Check if dataset has single resolver service.
         if (ds.getAccess().size() == 1 && ServiceType.Resolver == ds.getAccess().get(0).getService().getType()) {
@@ -273,7 +290,8 @@ public class ConfigCatalogHtmlWriter {
             if (pos != -1) {
               catBaseUriPath = catBaseUri.substring(0, pos);
             }
-            accessUrlName = tdsContext.getContextPath() + "/remoteCatalogService?catalog=" + catBaseUriPath + accessUrlName;
+            accessUrlName =
+                tdsContext.getContextPath() + "/remoteCatalogService?catalog=" + catBaseUriPath + accessUrlName;
           } else if (pos != -1) {
             accessUrlName = accessUrlName.substring(0, pos) + ".html";
           }
@@ -349,16 +367,15 @@ public class ConfigCatalogHtmlWriter {
     return acc.getStandardUrlName();
   }
 
-  private String convertDatasetToHtml(String catURL, Dataset dataset,
-                                      HttpServletRequest request,
-                                      boolean isLocalCatalog) {
+  private String convertDatasetToHtml(String catURL, Dataset dataset, HttpServletRequest request,
+      boolean isLocalCatalog) {
     Formatter out = new Formatter();
 
     out.format("%s<head>%n", getHtmlDoctypeAndOpenTag());
     out.format("<title>Catalog Services</title>%n");
     out.format("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>%n");
     out.format("%s%n", getTdsPageCssLink());
-    out.format(getGoogleTrackingContent());  // String already has EOL.
+    out.format(getGoogleTrackingContent()); // String already has EOL.
     out.format("</head>%n");
     out.format("<body>%n");
 
@@ -369,7 +386,8 @@ public class ConfigCatalogHtmlWriter {
     out.format("<h2> Catalog %s</h2>%n", catURL);
 
     DatasetHtmlWriter writer = new DatasetHtmlWriter();
-    // (Formatter out, Dataset ds, boolean complete, boolean isServer, boolean datasetEvents, boolean catrefEvents, boolean resolveRelativeUrls)
+    // (Formatter out, Dataset ds, boolean complete, boolean isServer, boolean datasetEvents, boolean catrefEvents,
+    // boolean resolveRelativeUrls)
     writer.writeHtmlDescription(out, dataset, false, true, false, false, !isLocalCatalog);
 
     // optional access through Viewers
@@ -382,11 +400,8 @@ public class ConfigCatalogHtmlWriter {
     return out.toString();
   }
 
-  public int showDataset(String catURL, Dataset dataset,
-                         HttpServletRequest request,
-                         HttpServletResponse response,
-                         boolean isLocalCatalog)
-          throws IOException {
+  public int showDataset(String catURL, Dataset dataset, HttpServletRequest request, HttpServletResponse response,
+      boolean isLocalCatalog) throws IOException {
     String datasetAsHtml = this.convertDatasetToHtml(catURL, dataset, request, isLocalCatalog);
 
     response.setStatus(HttpServletResponse.SC_OK);
@@ -401,81 +416,63 @@ public class ConfigCatalogHtmlWriter {
   }
 
 
-    //  public static final String UNIDATA_CSS
+  // public static final String UNIDATA_CSS
   public String getUserCSS() {
-    return new StringBuilder()
-            .append("<link rel='stylesheet' href='")
-            .append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getPageCssUrl()))
-            .append("' type='text/css' >").toString();
+    return new StringBuilder().append("<link rel='stylesheet' href='")
+        .append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getPageCssUrl())).append("' type='text/css' >")
+        .toString();
   }
 
   public String getTdsCatalogCssLink() {
-    return new StringBuilder()
-            .append("<link rel='stylesheet' href='")
-            .append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getCatalogCssUrl()))
-            .append("' type='text/css' >").toString();
+    return new StringBuilder().append("<link rel='stylesheet' href='")
+        .append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getCatalogCssUrl()))
+        .append("' type='text/css' >").toString();
   }
 
   public String getTdsPageCssLink() {
-    return new StringBuilder()
-            .append("<link rel='stylesheet' href='")
-            .append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getPageCssUrl()))
-            .append("' type='text/css' >").toString();
+    return new StringBuilder().append("<link rel='stylesheet' href='")
+        .append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getPageCssUrl())).append("' type='text/css' >")
+        .toString();
   }
 
-  //  public static final String UNIDATA_HEAD
+  // public static final String UNIDATA_HEAD
   public String getUserHead() {
-    return new StringBuilder()
-            .append("<table width='100%'><tr><td>\n")
-            .append("  <img src='").append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getHostInstLogoUrl()))
-            .append("'\n")
-            .append("       alt='").append(this.htmlConfig.getHostInstLogoAlt()).append("'\n")
-            .append("       align='left' valign='top'\n")
-            .append("       hspace='10' vspace='2'>\n")
-            .append("  <h3><strong>").append(this.tdsContext.getWebappDisplayName()).append("</strong></h3>\n")
-            .append("</td></tr></table>\n")
-            .toString();
+    return new StringBuilder().append("<table width='100%'><tr><td>\n").append("  <img src='")
+        .append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getHostInstLogoUrl())).append("'\n")
+        .append("       alt='").append(this.htmlConfig.getHostInstLogoAlt()).append("'\n")
+        .append("       align='left' valign='top'\n").append("       hspace='10' vspace='2'>\n")
+        .append("  <h3><strong>").append(this.tdsContext.getWebappDisplayName()).append("</strong></h3>\n")
+        .append("</td></tr></table>\n").toString();
   }
 
   public void appendOldStyleHeader(StringBuilder sb) {
-    appendOldStyleHeader(sb,
-            this.htmlConfig.getWebappName(), this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getWebappUrl()),
-            this.htmlConfig.getInstallLogoAlt(), this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getInstallLogoUrl()),
-            this.htmlConfig.getInstallName(), this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getInstallUrl()),
-            this.htmlConfig.getHostInstName(), this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getHostInstUrl()));
+    appendOldStyleHeader(sb, this.htmlConfig.getWebappName(),
+        this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getWebappUrl()), this.htmlConfig.getInstallLogoAlt(),
+        this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getInstallLogoUrl()), this.htmlConfig.getInstallName(),
+        this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getInstallUrl()), this.htmlConfig.getHostInstName(),
+        this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getHostInstUrl()));
   }
 
-  public void appendOldStyleHeader(StringBuilder sb,
-                                   String webappName, String webappUrl,
-                                   String logoAlt, String logoUrl,
-                                   String installName, String installUrl,
-                                   String hostName, String hostUrl) {
+  public void appendOldStyleHeader(StringBuilder sb, String webappName, String webappUrl, String logoAlt,
+      String logoUrl, String installName, String installUrl, String hostName, String hostUrl) {
     // Table setup.
-    sb.append("<table width='100%'>\n")
-            .append("<tr><td>\n");
+    sb.append("<table width='100%'>\n").append("<tr><td>\n");
     // Logo
-    sb.append("<img src='").append(logoUrl)
-            .append("' alt='").append(logoAlt)
-            .append("' align='left' valign='top'")
-            .append(" hspace='10' vspace='2'")
-            .append(">\n");
+    sb.append("<img src='").append(logoUrl).append("' alt='").append(logoAlt).append("' align='left' valign='top'")
+        .append(" hspace='10' vspace='2'").append(">\n");
 
     // Installation name.
-    sb.append("<h3><strong>")
-            .append("<a href='").append(installUrl).append("'>")
-            .append(installName).append("</a>")
-            .append("</strong>");
-    if (false) sb.append(" at ").append(hostName);
+    sb.append("<h3><strong>").append("<a href='").append(installUrl).append("'>").append(installName).append("</a>")
+        .append("</strong>");
+    if (false)
+      sb.append(" at ").append(hostName);
     sb.append("</h3>\n");
 
     // Webapp Name.
-    sb.append("<h3><strong>")
-            .append("<a href='").append(webappUrl).append("'>")
-            .append(webappName).append("</a>")
-            .append("</strong></h3>\n");
+    sb.append("<h3><strong>").append("<a href='").append(webappUrl).append("'>").append(webappName).append("</a>")
+        .append("</strong></h3>\n");
 
-    sb.append("</td></tr>\n")
-            .append("</table>\n");
+    sb.append("</td></tr>\n").append("</table>\n");
   }
 
   public void appendSimpleFooter(StringBuilder sb) {
@@ -495,36 +492,30 @@ public class ConfigCatalogHtmlWriter {
         sb.append("<a href='").append(hostInstUrl).append("'>");
       sb.append(this.htmlConfig.getHostInstName());
       if (hostInstUrl != null)
-      sb.append("</a>");
+        sb.append("</a>");
       sb.append(" see <a href='/thredds/info/serverInfo.html'> Info </a>");
       sb.append("<br>\n");
     }
 
-    sb.append( this.tdsContext.getWebappDisplayName() )
-            .append( " [Version " ).append( this.tdsContext.getVersionInfo() );
-    sb.append( "] <a href='" )
-            .append( this.htmlConfig.prepareUrlStringForHtml( this.htmlConfig.getWebappDocsUrl() ) )
-            .append( "'> Documentation</a>" );
-    sb.append( "</h3>\n" );
+    sb.append(this.tdsContext.getWebappDisplayName()).append(" [Version ").append(this.tdsContext.getVersionInfo());
+    sb.append("] <a href='").append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getWebappDocsUrl()))
+        .append("'> Documentation</a>");
+    sb.append("</h3>\n");
   }
 
   public String getGoogleTrackingContent() {
-    if (this.htmlConfig.getGoogleTrackingCode().isEmpty()){
+    if (this.htmlConfig.getGoogleTrackingCode().isEmpty()) {
       return "";
     } else {
       // See https://developers.google.com/analytics/devguides/collection/analyticsjs/
-      return new StringBuilder()
-              .append("<!-- Google Analytics -->\n")
-              .append("<script>\n")
-              .append("(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n")
-              .append("(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n")
-              .append("m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n")
-              .append("})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n")
-              .append('\n')
-              .append("ga('create', '").append(this.htmlConfig.getGoogleTrackingCode()).append("', 'auto');\n")
-              .append("ga('send', 'pageview');\n")
-              .append("</script>\n")
-              .append("<!-- End Google Analytics -->\n").toString();
+      return new StringBuilder().append("<!-- Google Analytics -->\n").append("<script>\n")
+          .append("(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n")
+          .append("(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n")
+          .append("m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n")
+          .append("})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n").append('\n')
+          .append("ga('create', '").append(this.htmlConfig.getGoogleTrackingCode()).append("', 'auto');\n")
+          .append("ga('send', 'pageview');\n").append("</script>\n").append("<!-- End Google Analytics -->\n")
+          .toString();
     }
   }
 }

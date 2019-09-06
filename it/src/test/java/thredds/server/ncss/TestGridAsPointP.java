@@ -36,7 +36,6 @@ import ucar.nc2.time.CalendarDate;
 import ucar.nc2.util.IO;
 import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -45,7 +44,6 @@ import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
-
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -59,18 +57,20 @@ import static org.junit.Assert.assertNotNull;
 public class TestGridAsPointP {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  @Rule public final TemporaryFolder tempFolder = new TemporaryFolder();
+  @Rule
+  public final TemporaryFolder tempFolder = new TemporaryFolder();
 
   static String ds1 = "ncss/grid/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1";
   static String varName1 = "Vertical_velocity_pressure_isobaric";
-  static String query1 = "&latitude=37.86&longitude=-122.2&vertCoord=850"; // this particular variable has only 500, 700, 850 after forecast 120
+  static String query1 = "&latitude=37.86&longitude=-122.2&vertCoord=850"; // this particular variable has only 500,
+                                                                           // 700, 850 after forecast 120
 
   @Parameterized.Parameters(name = "{0}")
   public static List<Object[]> getTestParameters() {
     List<Object[]> result = new ArrayList<>();
 
-    result.add(new Object[]{ ds1, varName1, query1, 1, .0046999454, "2012-03-08T00:00:00Z"});
-    result.add(new Object[]{ ds1, varName1, query1+"&time=all", 35, 0.08099997, "2012-02-27T06:00:00Z"});
+    result.add(new Object[] {ds1, varName1, query1, 1, .0046999454, "2012-03-08T00:00:00Z"});
+    result.add(new Object[] {ds1, varName1, query1 + "&time=all", 35, 0.08099997, "2012-02-27T06:00:00Z"});
 
     return result;
   }
@@ -96,7 +96,7 @@ public class TestGridAsPointP {
     String endpoint = TestOnLocalServer.withHttpPath(ds + "?var=" + varName + query + "&accept=csv");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.csv);
     Assert.assertNotNull(result);
-    logger.debug("CSV\n{}", new String( result, StandardCharsets.UTF_8));
+    logger.debug("CSV\n{}", new String(result, StandardCharsets.UTF_8));
   }
 
   @Test
@@ -104,7 +104,7 @@ public class TestGridAsPointP {
     String endpoint = TestOnLocalServer.withHttpPath(ds + "?var=" + varName + query + "&accept=xml");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.xml);
     Assert.assertNotNull(result);
-    String xml = new String( result);
+    String xml = new String(result);
 
     logger.debug("xml={}", xml);
     Reader in = new StringReader(xml);
@@ -113,7 +113,7 @@ public class TestGridAsPointP {
 
     String xpathq = String.format("/stationFeatureCollection/stationFeature");
     logger.debug("xpathq='{}'", xpathq);
-    XPathExpression <Element> xpath = XPathFactory.instance().compile(xpathq, Filters.element());
+    XPathExpression<Element> xpath = XPathFactory.instance().compile(xpathq, Filters.element());
     List<Element> elements = xpath.evaluate(doc);
     Assert.assertEquals((int) ntimes, elements.size());
     Element elem0 = elements.get(0);
@@ -133,7 +133,7 @@ public class TestGridAsPointP {
 
   @Test
   public void writeGridAsPointNetcdf() throws JDOMException, IOException {
-    String endpoint = TestOnLocalServer.withHttpPath(ds+"?var="+varName+query+"&accept=netcdf");
+    String endpoint = TestOnLocalServer.withHttpPath(ds + "?var=" + varName + query + "&accept=netcdf");
     File tempFile = tempFolder.newFile();
     logger.debug(" write {} to {}", endpoint, tempFile.getAbsolutePath());
 
@@ -147,11 +147,13 @@ public class TestGridAsPointP {
 
       IO.appendToFile(method.getResponseAsStream(), tempFile.getAbsolutePath());
     }
-    logger.debug(" file length {} bytes exists={} {}", tempFile.length(), tempFile.exists(), tempFile.getAbsolutePath());
+    logger.debug(" file length {} bytes exists={} {}", tempFile.length(), tempFile.exists(),
+        tempFile.getAbsolutePath());
 
     // Open the result file as Station feature dataset
     Formatter errlog = new Formatter();
-    try (FeatureDataset fd = FeatureDatasetFactoryManager.open(FeatureType.STATION, tempFile.getAbsolutePath(), null, errlog)) {
+    try (FeatureDataset fd =
+        FeatureDatasetFactoryManager.open(FeatureType.STATION, tempFile.getAbsolutePath(), null, errlog)) {
       assertNotNull(errlog.toString(), fd);
       VariableSimpleIF v = fd.getDataVariable(varName);
       assertNotNull(varName, v);
@@ -160,7 +162,7 @@ public class TestGridAsPointP {
 
   @Test
   public void checkGridAsPointNetcdf() throws JDOMException, IOException {
-    String endpoint = TestOnLocalServer.withHttpPath(ds+"?var="+varName+query+"&accept=netcdf");
+    String endpoint = TestOnLocalServer.withHttpPath(ds + "?var=" + varName + query + "&accept=netcdf");
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
     Assert.assertNotNull(content);
     logger.debug("return size = {}", content.length);

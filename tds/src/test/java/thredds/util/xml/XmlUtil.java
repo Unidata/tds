@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -17,10 +16,10 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 public class XmlUtil {
 
-  private XmlUtil() {
-  }
+  private XmlUtil() {}
 
-  public static Document getStringResponseAsDoc(MockHttpServletResponse response) throws UnsupportedEncodingException, JDOMException, IOException {
+  public static Document getStringResponseAsDoc(MockHttpServletResponse response)
+      throws UnsupportedEncodingException, JDOMException, IOException {
 
     SAXBuilder sb = new SAXBuilder();
     String strResponse = response.getContentAsString();

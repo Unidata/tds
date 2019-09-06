@@ -25,7 +25,7 @@ public interface Authorizer {
    *
    * @param roleSource tells whether a user has the named role.
    */
-  void setRoleSource( RoleSource roleSource);
+  void setRoleSource(RoleSource roleSource);
 
   /**
    * Decide is this request is authorized in the named role.
@@ -41,7 +41,8 @@ public interface Authorizer {
   boolean authorize(HttpServletRequest req, HttpServletResponse res, String role) throws IOException, ServletException;
 
   /**
-   * Process this request. May be a no-op. 
+   * Process this request. May be a no-op.
+   * 
    * @param req the request
    * @param res the response
    * @throws IOException I/O error, eg network

@@ -13,7 +13,6 @@ import thredds.client.catalog.CatalogRef;
 import thredds.client.catalog.Dataset;
 import thredds.client.catalog.builder.CatalogBuilder;
 import thredds.server.catalog.builder.ConfigCatalogBuilder;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
@@ -38,7 +37,7 @@ public class TestUseRemoteReference {
     URL url = cl.getResource(testCatalog);
     ConfigCatalogBuilder catFactory = new ConfigCatalogBuilder();
     cat = catFactory.buildFromLocation("file:" + url.getPath(), null);
-    //cat = catFactory.buildFromURI(url);  // LOOK does this work ??
+    // cat = catFactory.buildFromURI(url); // LOOK does this work ??
   }
 
   @Test

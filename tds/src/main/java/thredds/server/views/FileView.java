@@ -5,13 +5,11 @@
 package thredds.server.views;
 
 import org.springframework.web.servlet.view.AbstractView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletOutputStream;
 import java.util.Map;
 import java.io.File;
-
 import thredds.util.ContentType;
 import ucar.nc2.util.IO;
 import ucar.unidata.io.RandomAccessFile;
@@ -24,6 +22,7 @@ import ucar.unidata.io.RandomAccessFile;
  * <p/>
  * <p/>
  * This view supports the following model elements:
+ * 
  * <pre>
  *  KEY                  OBJECT             Required
  *  ===                  ======             ========
@@ -78,21 +77,24 @@ public class FileView extends AbstractView {
       ContentType type = ContentType.findContentTypeFromFilename(filename);
 
       if (type == null) {
-        contentType = this.getServletContext().getMimeType(filename);  // let servlet have a shot at it
+        contentType = this.getServletContext().getMimeType(filename); // let servlet have a shot at it
         if (null == contentType)
-          type = ContentType.binary;                                   // nope use default
+          type = ContentType.binary; // nope use default
       }
 
       if (null == contentType)
         contentType = type.toString();
     }
 
-    /* Do I need/want to do this?
-    if (characterEncoding == null) {
-      if ((!contentType.contains("charset=")) && (contentType.startsWith("text/") || contentType.startsWith("application/xml"))) {
-        characterEncoding = "utf-8";
-      }
-    } */
+    /*
+     * Do I need/want to do this?
+     * if (characterEncoding == null) {
+     * if ((!contentType.contains("charset=")) && (contentType.startsWith("text/") ||
+     * contentType.startsWith("application/xml"))) {
+     * characterEncoding = "utf-8";
+     * }
+     * }
+     */
 
     // Set content type and character encoding as given/determined.
     res.setContentType(contentType);

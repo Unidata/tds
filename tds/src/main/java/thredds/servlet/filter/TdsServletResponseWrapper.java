@@ -17,7 +17,7 @@ import java.io.IOException;
  * @since 4.1
  */
 public class TdsServletResponseWrapper extends HttpServletResponseWrapper {
-  //private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
+  // private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
 
   private int httpStatusCode = 200;
   private long httpResponseBodyLength = -1;

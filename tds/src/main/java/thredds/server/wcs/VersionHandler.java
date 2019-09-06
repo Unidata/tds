@@ -5,7 +5,6 @@
 package thredds.server.wcs;
 
 import ucar.nc2.util.DiskCache2;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,14 +33,10 @@ public interface VersionHandler {
    */
   public VersionHandler setDeleteImmediately(boolean deleteImmediately);
 
-  public void handleKVP(HttpServlet servlet,
-                        HttpServletRequest req,
-                        HttpServletResponse res)
-          throws ServletException, IOException;
+  public void handleKVP(HttpServlet servlet, HttpServletRequest req, HttpServletResponse res)
+      throws ServletException, IOException;
 
-  public void handleExceptionReport(HttpServletResponse res,
-                                    String code, String locator,
-                                    String message)
-          throws IOException;
+  public void handleExceptionReport(HttpServletResponse res, String code, String locator, String message)
+      throws IOException;
 
 }

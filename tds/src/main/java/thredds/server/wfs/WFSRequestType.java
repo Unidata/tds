@@ -8,14 +8,12 @@ package thredds.server.wfs;
  */
 public enum WFSRequestType {
 
-  GetCapabilities("GetCapabilities", 0),
-  GetFeature("GetFeature", 1),
-  DescribeFeatureType("DescribeFeatureType", 2);
+  GetCapabilities("GetCapabilities", 0), GetFeature("GetFeature", 1), DescribeFeatureType("DescribeFeatureType", 2);
 
   String requestType;
   int number;
 
-  WFSRequestType(String requestType, int identifier){
+  WFSRequestType(String requestType, int identifier) {
     this.requestType = requestType;
     this.number = identifier;
   }
@@ -24,8 +22,7 @@ public enum WFSRequestType {
     return requestType;
   }
 
-  public int toID()
-  {
+  public int toID() {
     return this.number;
   }
 
@@ -36,10 +33,15 @@ public enum WFSRequestType {
    * @return the string as a WFSRequestType if possible.
    */
   public static WFSRequestType getWFSRequestType(String request) {
-    if(request == null) return null;
-    if(request.equalsIgnoreCase(WFSRequestType.GetCapabilities.toString())) return WFSRequestType.GetCapabilities;
-    if(request.equalsIgnoreCase(WFSRequestType.GetFeature.toString())) return WFSRequestType.GetFeature;
-    if(request.equalsIgnoreCase(WFSRequestType.DescribeFeatureType.toString())) return WFSRequestType.DescribeFeatureType;
-    else return null;
+    if (request == null)
+      return null;
+    if (request.equalsIgnoreCase(WFSRequestType.GetCapabilities.toString()))
+      return WFSRequestType.GetCapabilities;
+    if (request.equalsIgnoreCase(WFSRequestType.GetFeature.toString()))
+      return WFSRequestType.GetFeature;
+    if (request.equalsIgnoreCase(WFSRequestType.DescribeFeatureType.toString()))
+      return WFSRequestType.DescribeFeatureType;
+    else
+      return null;
   }
 }

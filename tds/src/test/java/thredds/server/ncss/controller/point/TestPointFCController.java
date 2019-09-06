@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +24,10 @@ import thredds.mock.web.MockTdsContextLoader;
 import thredds.util.ContentType;
 import thredds.util.xml.XmlUtil;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -41,31 +38,32 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(SpringJUnit4ParameterizedClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"}, loader = MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"},
+    loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class TestPointFCController {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   @Autowired
-   private WebApplicationContext wac;
+  private WebApplicationContext wac;
 
-   private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
-   @Before
-   public void setup(){
-     this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-   }
+  @Before
+  public void setup() {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+  }
 
   @SpringJUnit4ParameterizedClassRunner.Parameters
-   public static Collection<Object[]> getTestParameters(){
-     return Arrays.asList(new Object[][]{
-            {"/ncss/point/testBuoyFeatureCollection/Surface_Buoy_Point_Data_fc.cdmr", 54, "point"},
-            {"/ncss/point/testSurfaceSynopticFeatureCollection/Surface_Synoptic_Point_Data_fc.cdmr", 41, "point"},
-    });
-   }
+  public static Collection<Object[]> getTestParameters() {
+    return Arrays
+        .asList(new Object[][] {{"/ncss/point/testBuoyFeatureCollection/Surface_Buoy_Point_Data_fc.cdmr", 54, "point"},
+            {"/ncss/point/testSurfaceSynopticFeatureCollection/Surface_Synoptic_Point_Data_fc.cdmr", 41, "point"},});
+  }
 
   String path, type;
   int nvars;
+
   public TestPointFCController(String path, int nvars, String type) {
     this.path = path;
     this.nvars = nvars;
@@ -77,17 +75,15 @@ public class TestPointFCController {
     String xmlpath = path + "/dataset.xml";
     System.out.printf("request='%s'%n", xmlpath);
     RequestBuilder rb = MockMvcRequestBuilders.get(xmlpath).servletPath(xmlpath);
-    MvcResult result = this.mockMvc.perform(rb)
-            .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(ContentType.xml.getContentHeader()))
-                .andReturn();
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.content().contentType(ContentType.xml.getContentHeader())).andReturn();
 
-        String ress = result.getResponse().getContentAsString();
-        System.out.printf("%s%n", ress);
+    String ress = result.getResponse().getContentAsString();
+    System.out.printf("%s%n", ress);
 
     Document doc = XmlUtil.getStringResponseAsDoc(result.getResponse());
 
-    List<Element> vars  = XmlUtil.evaluateXPath(doc, "//variable");
+    List<Element> vars = XmlUtil.evaluateXPath(doc, "//variable");
     assert vars != null;
     int nVars = vars.size();
     System.out.printf("nvars = %s%n", nVars);
@@ -106,10 +102,8 @@ public class TestPointFCController {
     String htmlpath = path + "/dataset.html";
     System.out.printf("request='%s'%n", htmlpath);
     RequestBuilder rb = MockMvcRequestBuilders.get(htmlpath).servletPath(htmlpath);
-    MvcResult result = this.mockMvc.perform(rb)
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType(ContentType.html.getContentHeader()))
-            .andReturn();
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.content().contentType(ContentType.html.getContentHeader())).andReturn();
 
     System.out.printf("%s%n", result.getResponse().getContentAsString());
   }

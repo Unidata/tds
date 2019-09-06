@@ -45,7 +45,8 @@ public class CAMSAuthorizer extends TomcatAuthorizer {
         session.setAttribute("camsRoles", rolesArray);
 
         if (origURI != null) {
-          if (log.isDebugEnabled()) log.debug("redirect to origRequest = " + origURI);
+          if (log.isDebugEnabled())
+            log.debug("redirect to origRequest = " + origURI);
           res.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
           String frag = (origURI.indexOf("?") > 0) ? "&auth" : "?auth";
           res.addHeader("Location", origURI + frag);

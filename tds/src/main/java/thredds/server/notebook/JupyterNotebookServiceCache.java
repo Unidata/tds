@@ -2,16 +2,13 @@ package thredds.server.notebook;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-
 import org.json.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import thredds.client.catalog.Dataset;
 import thredds.server.config.TdsContext;
-
 import java.io.*;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -32,10 +29,8 @@ public class JupyterNotebookServiceCache {
 
   public void init(int maxAge, int maxSize) {
     this.allNotebooks = new ArrayList<>();
-    this.notebookMappingCache = CacheBuilder.newBuilder()
-            .expireAfterAccess(Duration.ofSeconds(maxAge))
-            .maximumSize(maxSize)
-            .build();
+    this.notebookMappingCache =
+        CacheBuilder.newBuilder().expireAfterAccess(Duration.ofSeconds(maxAge)).maximumSize(maxSize).build();
     buildNotebookList();
   }
 
@@ -91,9 +86,13 @@ public class JupyterNotebookServiceCache {
     return bestMatch;
   }
 
-  public List<NotebookMetadata> getAllNotebooks() { return this.allNotebooks; }
+  public List<NotebookMetadata> getAllNotebooks() {
+    return this.allNotebooks;
+  }
 
-  public Map<String, NotebookMetadata> getNotebookMapping() { return this.notebookMappingCache.asMap(); }
+  public Map<String, NotebookMetadata> getNotebookMapping() {
+    return this.notebookMappingCache.asMap();
+  }
 
   private class NotebookMetadata {
 
@@ -116,7 +115,8 @@ public class JupyterNotebookServiceCache {
 
       JSONObject jobj = parseFile(notebookFile);
       if (jobj == null) {
-        throw new InvalidJupyterNotebookException(String.format("Notebook %s could not be parsed", notebookFile.getName()));
+        throw new InvalidJupyterNotebookException(
+            String.format("Notebook %s could not be parsed", notebookFile.getName()));
       }
 
       this.filename = notebookFile.getName();
@@ -135,7 +135,8 @@ public class JupyterNotebookServiceCache {
       if (this.accept_datasetIDs.contains(ds.getID())) {
         return true;
       }
-      if (this.accept_catalogs.contains(ds.getParentCatalog().getUriString()) || this.accept_catalogs.contains(ds.getParentCatalog().getName())) {
+      if (this.accept_catalogs.contains(ds.getParentCatalog().getUriString())
+          || this.accept_catalogs.contains(ds.getParentCatalog().getName())) {
         return true;
       }
       if (this.accept_dataset_types.contains(ds.getFeatureTypeName())) {
@@ -155,27 +156,52 @@ public class JupyterNotebookServiceCache {
 
       // dataset id
       String id = ds.getID();
-      if (this.accept_datasetIDs.contains(id) && md.accept_datasetIDs.contains(id)) { return tiebreaker; }
-      if (this.accept_datasetIDs.contains(id)) { return 1; }
-      if (md.accept_datasetIDs.contains(id)) { return -1; }
+      if (this.accept_datasetIDs.contains(id) && md.accept_datasetIDs.contains(id)) {
+        return tiebreaker;
+      }
+      if (this.accept_datasetIDs.contains(id)) {
+        return 1;
+      }
+      if (md.accept_datasetIDs.contains(id)) {
+        return -1;
+      }
 
       // catalogs
       String catUrl = ds.getParentCatalog().getUriString();
       String catName = ds.getParentCatalog().getName();
-      if ((this.accept_catalogs.contains(catUrl) || this.accept_catalogs.contains(catName)) && (md.accept_catalogs.contains(catUrl) || md.accept_catalogs.contains(catName))) { return tiebreaker; }
-      if (this.accept_catalogs.contains(catUrl) || this.accept_catalogs.contains(catName)) { return 1; }
-      if (md.accept_catalogs.contains(catUrl) || md.accept_catalogs.contains(catName)) { return -1; }
+      if ((this.accept_catalogs.contains(catUrl) || this.accept_catalogs.contains(catName))
+          && (md.accept_catalogs.contains(catUrl) || md.accept_catalogs.contains(catName))) {
+        return tiebreaker;
+      }
+      if (this.accept_catalogs.contains(catUrl) || this.accept_catalogs.contains(catName)) {
+        return 1;
+      }
+      if (md.accept_catalogs.contains(catUrl) || md.accept_catalogs.contains(catName)) {
+        return -1;
+      }
 
       // data type
       String dataType = ds.getFeatureTypeName();
-      if (this.accept_dataset_types.contains(dataType) && md.accept_dataset_types.contains(dataType)) { return tiebreaker; }
-      if (this.accept_dataset_types.contains(dataType)) { return 1; }
-      if (md.accept_dataset_types.contains(dataType)) { return -1; }
+      if (this.accept_dataset_types.contains(dataType) && md.accept_dataset_types.contains(dataType)) {
+        return tiebreaker;
+      }
+      if (this.accept_dataset_types.contains(dataType)) {
+        return 1;
+      }
+      if (md.accept_dataset_types.contains(dataType)) {
+        return -1;
+      }
 
       // accept all
-      if (this.accept_all && md.accept_all) { return tiebreaker; }
-      if (this.accept_all) { return 1; }
-      if (md.accept_all) { return -1; }
+      if (this.accept_all && md.accept_all) {
+        return tiebreaker;
+      }
+      if (this.accept_all) {
+        return 1;
+      }
+      if (md.accept_all) {
+        return -1;
+      }
 
       return 0;
     }
@@ -243,11 +269,8 @@ public class JupyterNotebookServiceCache {
   }
 
   private enum NotebookMetadataKeys {
-    acceptAll("accept_all"),
-    acceptDatasetIDs("accept_datasetIDs"),
-    acceptCatalogs("accept_catalogs"),
-    acceptDatasetTypes("accept_dataset_types"),
-    order("order");
+    acceptAll("accept_all"), acceptDatasetIDs("accept_datasetIDs"), acceptCatalogs(
+        "accept_catalogs"), acceptDatasetTypes("accept_dataset_types"), order("order");
 
     final String key;
 

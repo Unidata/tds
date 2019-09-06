@@ -11,7 +11,6 @@ import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.constants.CDM;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.URLEncoder;

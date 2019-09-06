@@ -9,7 +9,7 @@
  * this software, and any derivative works thereof, and its supporting
  * documentation for any purpose whatsoever, provided that this entire
  * notice appears in all copies of the software, derivative works and
- * supporting documentation.  Further, UCAR requests that the user credit
+ * supporting documentation. Further, UCAR requests that the user credit
  * UCAR/Unidata in any publications that result from the use of this
  * software or in any product that includes this software. The names UCAR
  * and/or Unidata, however, may not be used in any advertising or publicity
@@ -46,12 +46,10 @@ import ucar.nc2.time.CalendarDateFormatter;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.nc2.time.CalendarPeriod;
 import ucar.unidata.util.test.category.NeedsContentRoot;
-
 import java.lang.invoke.MethodHandles;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -59,7 +57,8 @@ import static org.junit.Assert.assertTrue;
  *
  */
 @RunWith(SpringJUnit4ParameterizedClassRunner.class)
-@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"}, loader = MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"},
+    loader = MockTdsContextLoader.class)
 @Category(NeedsContentRoot.class)
 public class DefaultDateRangeTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -76,20 +75,17 @@ public class DefaultDateRangeTest {
     CalendarDate dayBefore = now.add(-1, CalendarPeriod.Field.Day);
 
     String nowStr = CalendarDateFormatter.toDateTimeStringISO(now);
-    String dayAfterStr  = CalendarDateFormatter.toDateTimeStringISO(dayAfter);
+    String dayAfterStr = CalendarDateFormatter.toDateTimeStringISO(dayAfter);
     String dayBeforeStr = CalendarDateFormatter.toDateTimeStringISO(dayBefore);
 
-    return Arrays.asList( new Object[][]{
-        {0L, null, "present", "present", null},
-        {86400L, null, "present", dayAfterStr, null},
-        {86400L, null, dayBeforeStr,"present",  null},
-        {86400L*2,null, dayBeforeStr, dayAfterStr,  null},
-        {86400L*3,null, nowStr,null,  "P3D"},
-        {86400L*2,null,null, dayBeforeStr,  "P2D"}
-    });
+    return Arrays
+        .asList(new Object[][] {{0L, null, "present", "present", null}, {86400L, null, "present", dayAfterStr, null},
+            {86400L, null, dayBeforeStr, "present", null}, {86400L * 2, null, dayBeforeStr, dayAfterStr, null},
+            {86400L * 3, null, nowStr, null, "P3D"}, {86400L * 2, null, null, dayBeforeStr, "P2D"}});
   }
 
-  public DefaultDateRangeTest(long expectedDuration, String time, String time_start, String time_end, String time_duration){
+  public DefaultDateRangeTest(long expectedDuration, String time, String time_start, String time_end,
+      String time_duration) {
     durationInSeconds = expectedDuration;
     requestParams = new NcssGridParamsBean();
     requestParams.setTime(time);
@@ -100,12 +96,12 @@ public class DefaultDateRangeTest {
   }
 
   @Test
-  public void shouldGetPresent() throws ParseException{
-    CalendarDateRange range= requestParams.makeCalendarDateRange(Calendar.getDefault());
+  public void shouldGetPresent() throws ParseException {
+    CalendarDateRange range = requestParams.makeCalendarDateRange(Calendar.getDefault());
     System.out.printf("range=%s%n", range);
     System.out.printf(" duration: expected=%d actual=%d%n", durationInSeconds, range.getDurationInSecs());
-    //assertEquals(durationInSeconds, range.getDurationInSecs() );
-    //long duration =Math.abs( durationInSeconds - range.getDurationInSecs() );
-    assertTrue(Math.abs( durationInSeconds - range.getDurationInSecs() ) < 100 );
+    // assertEquals(durationInSeconds, range.getDurationInSecs() );
+    // long duration =Math.abs( durationInSeconds - range.getDurationInSecs() );
+    assertTrue(Math.abs(durationInSeconds - range.getDurationInSecs()) < 100);
   }
 }

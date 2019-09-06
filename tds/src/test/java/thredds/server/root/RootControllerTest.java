@@ -1,7 +1,6 @@
 package thredds.server.root;
 
 import static org.junit.Assert.assertEquals;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -17,15 +16,13 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.unidata.util.test.category.NeedsContentRoot;
-
 import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/WEB-INF/applicationContext.xml"},loader=MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
 @Category(NeedsContentRoot.class)
 public class RootControllerTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -43,24 +40,24 @@ public class RootControllerTest {
   }
 
   @Test
-  public void testRootRedirect() throws Exception{
+  public void testRootRedirect() throws Exception {
     requestBuilder = MockMvcRequestBuilders.get("/");
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-    //Check that "/" is redirected
+    // Check that "/" is redirected
     assertEquals(302, mvc.getResponse().getStatus());
     assertEquals("redirect:/catalog/catalog.html", mvc.getModelAndView().getViewName());
   }
 
   @Test
-  public void testStaticContent() throws Exception{
+  public void testStaticContent() throws Exception {
     requestBuilder = MockMvcRequestBuilders.get("/tdsCat.css");
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-    //Check that "/" is redirected
+    // Check that "/" is redirected
     Assert.assertEquals(200, mvc.getResponse().getStatus());
     String content = mvc.getResponse().getContentAsString();
     System.out.printf("content='%s'%n", content);
-    //Assert.assertNotNull(mvc.getModelAndView());
-    //assertEquals("redirect:/catalog/catalog.html", mvc.getModelAndView().getViewName());
+    // Assert.assertNotNull(mvc.getModelAndView());
+    // assertEquals("redirect:/catalog/catalog.html", mvc.getModelAndView().getViewName());
   }
 
 

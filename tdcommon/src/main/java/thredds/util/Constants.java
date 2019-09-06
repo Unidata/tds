@@ -18,7 +18,7 @@ public class Constants {
 
   public static final String Content_Length = "Content-Length";
 
-  //       res.setHeader("Content-Disposition", "attachment; filename=" + path + ".nc");
+  // res.setHeader("Content-Disposition", "attachment; filename=" + path + ".nc");
   public static String setContentDispositionValue(String filename) {
     return "attachment; filename=" + filename;
   }
@@ -34,12 +34,12 @@ public class Constants {
     return Long.toString(file.length());
   }
 
-    //       res.setHeader("Content-Disposition", "attachment; filename=" + path + ".nc");
+  // res.setHeader("Content-Disposition", "attachment; filename=" + path + ".nc");
   public static String setContentDispositionValue(String filename, String suffix) {
     int pos = filename.lastIndexOf('/');
-    String outname = (pos > 0) ? filename.substring(pos+1) : filename;
+    String outname = (pos > 0) ? filename.substring(pos + 1) : filename;
     int pos2 = outname.lastIndexOf('.');
-    outname = (pos > 0) ? outname.substring(0,pos2) : outname;
+    outname = (pos > 0) ? outname.substring(0, pos2) : outname;
     outname = outname + suffix;
     return setContentDispositionValue(outname);
   }

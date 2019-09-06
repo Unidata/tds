@@ -11,7 +11,6 @@ import ucar.nc2.units.TimeDuration;
 import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonPointImpl;
 import ucar.unidata.geoloc.LatLonRect;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Formatter;
@@ -89,18 +88,19 @@ public class CdmrFeatureQueryBean {
   }
 
   private List<String> errs;
+
   public void addError(String mess) {
-    if (errs == null) errs = new ArrayList<>();
+    if (errs == null)
+      errs = new ArrayList<>();
     errs.add(mess);
   }
+
   public boolean hasErrors() {
     return errs != null;
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-            .add("errs", errs)
-            .toString();
+    return MoreObjects.toStringHelper(this).add("errs", errs).toString();
   }
 }

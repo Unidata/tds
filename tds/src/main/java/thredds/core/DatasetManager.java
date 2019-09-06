@@ -34,7 +34,6 @@ import ucar.nc2.ft2.coverage.CoverageCollection;
 import ucar.nc2.ncml.NcMLReader;
 import ucar.nc2.util.Optional;
 import ucar.nc2.util.cache.FileFactory;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
@@ -51,8 +50,8 @@ import java.util.Formatter;
  * @author caron
  * @since 1/23/2015
  *
- * This needs revision to separate out the url path stuff from the more general
- * file stuff.
+ *        This needs revision to separate out the url path stuff from the more general
+ *        file stuff.
  */
 @Component
 public class DatasetManager implements InitializingBean {
@@ -81,7 +80,7 @@ public class DatasetManager implements InitializingBean {
 
   @Override
   public void afterPropertiesSet() throws Exception {
-    TdsRequestedDataset.setDatasetManager(this);      // LOOK why not autowire this ?  maybe because static ??
+    TdsRequestedDataset.setDatasetManager(this); // LOOK why not autowire this ? maybe because static ??
     makeDebugActions();
   }
 
@@ -96,8 +95,7 @@ public class DatasetManager implements InitializingBean {
     this.datasetTracker = datasetTracker;
   }
 
-  public DatasetManager() {
-  }
+  public DatasetManager() {}
 
   public String getLocationFromRequestPath(String reqPath) {
     return dataRootManager.getLocationFromRequestPath(reqPath);
@@ -115,14 +113,16 @@ public class DatasetManager implements InitializingBean {
       this.ncml = ncml;
     }
 
-    public NetcdfFile open(DatasetUrl durl, int buffer_size, ucar.nc2.util.CancelTask cancelTask, Object spiObject) throws IOException {
+    public NetcdfFile open(DatasetUrl durl, int buffer_size, ucar.nc2.util.CancelTask cancelTask, Object spiObject)
+        throws IOException {
       return NcMLReader.readNcML(new StringReader(ncml), durl.trueurl, cancelTask);
     }
   }
 
   // return null means request has been handled, and calling routine should exit without further processing
   public NetcdfFile openNetcdfFile(HttpServletRequest req, HttpServletResponse res, String reqPath) throws IOException {
-    if (log.isDebugEnabled()) log.debug("DatasetHandler wants " + reqPath);
+    if (log.isDebugEnabled())
+      log.debug("DatasetHandler wants " + reqPath);
 
     if (reqPath == null)
       return null;
@@ -138,8 +138,10 @@ public class DatasetManager implements InitializingBean {
     // look for a dataset (non scan, non fmrc) that has an ncml element
     String ncml = datasetTracker.findNcml(reqPath);
     if (ncml != null) {
-      NetcdfFile ncfile = NetcdfDataset.acquireFile(new NcmlFileFactory(ncml), null, DatasetUrl.findDatasetUrl(reqPath), -1, null, null);
-      if (ncfile == null) throw new FileNotFoundException(reqPath);
+      NetcdfFile ncfile = NetcdfDataset.acquireFile(new NcmlFileFactory(ncml), null, DatasetUrl.findDatasetUrl(reqPath),
+          -1, null, null);
+      if (ncfile == null)
+        throw new FileNotFoundException(reqPath);
       return ncfile;
     }
 
@@ -149,19 +151,22 @@ public class DatasetManager implements InitializingBean {
     // look for an feature collection dataset
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
       FeatureCollectionRef featCollection = match.dataRoot.getFeatureCollection();
-      if (log.isDebugEnabled()) log.debug("  -- DatasetHandler found FeatureCollection= " + featCollection);
+      if (log.isDebugEnabled())
+        log.debug("  -- DatasetHandler found FeatureCollection= " + featCollection);
       InvDatasetFeatureCollection fc = featureCollectionCache.get(featCollection);
       NetcdfFile ncfile = fc.getNetcdfDataset(match.remaining);
-      if (ncfile == null) throw new FileNotFoundException(reqPath);
+      if (ncfile == null)
+        throw new FileNotFoundException(reqPath);
       return ncfile;
     }
 
     // might be a pluggable DatasetSource:
     NetcdfFile ncfile = null;
-    for (DatasetSource datasetSource : datasetSources) {   // LOOK linear
+    for (DatasetSource datasetSource : datasetSources) { // LOOK linear
       if (datasetSource.isMine(req)) {
         ncfile = datasetSource.getNetcdfFile(req, res);
-        if (ncfile != null) return ncfile;
+        if (ncfile != null)
+          return ncfile;
       }
     }
 
@@ -170,7 +175,7 @@ public class DatasetManager implements InitializingBean {
       org.jdom2.Element netcdfElem = null; // find ncml if it exists
       if (match.dataRoot != null) {
         DatasetScan dscan = match.dataRoot.getDatasetScan();
-        // if (dscan == null) dscan = match.dataRoot.getDatasetRootProxy();  // no ncml possible in getDatasetRootProxy
+        // if (dscan == null) dscan = match.dataRoot.getDatasetRootProxy(); // no ncml possible in getDatasetRootProxy
         if (dscan != null)
           netcdfElem = dscan.getNcmlElement();
       }
@@ -184,8 +189,8 @@ public class DatasetManager implements InitializingBean {
       if (netcdfElem != null) {
         String ncmlLocation = "DatasetScan#" + location; // LOOK some descriptive name
         NetcdfDataset ncd = NcMLReader.readNcML(ncmlLocation, netcdfElem, "file:" + location, null);
-        //new NcMLReader().readNetcdf(reqPath, ncd, ncd, netcdfElem, null);
-        //if (log.isDebugEnabled()) log.debug("  -- DatasetHandler found DataRoot NcML = " + ds);
+        // new NcMLReader().readNetcdf(reqPath, ncd, ncd, netcdfElem, null);
+        // if (log.isDebugEnabled()) log.debug(" -- DatasetHandler found DataRoot NcML = " + ds);
         return ncd;
       }
 
@@ -193,7 +198,8 @@ public class DatasetManager implements InitializingBean {
       ncfile = NetcdfDataset.acquireFile(durl, null);
     }
 
-    if (ncfile == null) throw new FileNotFoundException(reqPath);
+    if (ncfile == null)
+      throw new FileNotFoundException(reqPath);
     return ncfile;
   }
 
@@ -201,7 +207,8 @@ public class DatasetManager implements InitializingBean {
    * Open a file as a GridDataset, using getNetcdfFile(), so that it gets wrapped in NcML if needed.
    */
   // return null means request has been handled, and calling routine should exit without further processing
-  public GridDataset openGridDataset(HttpServletRequest req, HttpServletResponse res, String reqPath) throws IOException {
+  public GridDataset openGridDataset(HttpServletRequest req, HttpServletResponse res, String reqPath)
+      throws IOException {
     // first look for a feature collection
     DataRootManager.DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
@@ -210,17 +217,20 @@ public class DatasetManager implements InitializingBean {
         return null;
 
       FeatureCollectionRef featCollection = match.dataRoot.getFeatureCollection();
-      if (log.isDebugEnabled()) log.debug("  -- DatasetHandler found FeatureCollection= " + featCollection);
+      if (log.isDebugEnabled())
+        log.debug("  -- DatasetHandler found FeatureCollection= " + featCollection);
 
       InvDatasetFeatureCollection fc = featureCollectionCache.get(featCollection);
       GridDataset gds = fc.getGridDataset(match.remaining);
-      if (gds == null) throw new FileNotFoundException(reqPath);
+      if (gds == null)
+        throw new FileNotFoundException(reqPath);
       return gds;
     }
 
     // fetch it as a NetcdfFile; this deals with possible NcML
     NetcdfFile ncfile = openNetcdfFile(req, res, reqPath);
-    if (ncfile == null) return null;
+    if (ncfile == null)
+      return null;
 
     NetcdfDataset ncd = null;
     try {
@@ -238,14 +248,16 @@ public class DatasetManager implements InitializingBean {
       if (t instanceof IOException)
         throw (IOException) t;
 
-      String msg = ncd == null ? "Problem wrapping NetcdfFile in NetcdfDataset" : "Problem creating GridDataset from NetcdfDataset";
+      String msg = ncd == null ? "Problem wrapping NetcdfFile in NetcdfDataset"
+          : "Problem creating GridDataset from NetcdfDataset";
       log.error("openGridDataset(): " + msg, t);
       throw new IOException(msg + t.getMessage());
     }
   }
 
   // return null means request has been handled, and calling routine should exit without further processing
-  public FeatureDatasetPoint openPointDataset(HttpServletRequest req, HttpServletResponse res, String reqPath) throws IOException {
+  public FeatureDatasetPoint openPointDataset(HttpServletRequest req, HttpServletResponse res, String reqPath)
+      throws IOException {
     // first look for a feature collection
     DataRootManager.DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
@@ -254,17 +266,20 @@ public class DatasetManager implements InitializingBean {
         return null;
 
       FeatureCollectionRef featCollection = match.dataRoot.getFeatureCollection();
-      if (log.isDebugEnabled()) log.debug("  -- DatasetHandler found FeatureCollection= " + featCollection);
+      if (log.isDebugEnabled())
+        log.debug("  -- DatasetHandler found FeatureCollection= " + featCollection);
 
       InvDatasetFeatureCollection fc = featureCollectionCache.get(featCollection);
       FeatureDatasetPoint fd = fc.getPointDataset(match.remaining);
-      if (fd == null) throw new IllegalArgumentException("Not a Point Dataset " + fc.getName());
+      if (fd == null)
+        throw new IllegalArgumentException("Not a Point Dataset " + fc.getName());
       return fd;
     }
 
     // fetch it as a NetcdfFile; this deals with possible NcML
     NetcdfFile ncfile = openNetcdfFile(req, res, reqPath);
-    if (ncfile == null) return null;
+    if (ncfile == null)
+      return null;
 
     Formatter errlog = new Formatter();
     NetcdfDataset ncd = null;
@@ -281,7 +296,8 @@ public class DatasetManager implements InitializingBean {
       if (t instanceof IOException)
         throw (IOException) t;
 
-      String msg = ncd == null ? "Problem wrapping NetcdfFile in NetcdfDataset; " : "Problem calling FeatureDatasetFactoryManager; ";
+      String msg = ncd == null ? "Problem wrapping NetcdfFile in NetcdfDataset; "
+          : "Problem calling FeatureDatasetFactoryManager; ";
       msg += errlog.toString();
       log.error("openGridDataset(): " + msg, t);
       throw new IOException(msg + t.getMessage());
@@ -289,7 +305,8 @@ public class DatasetManager implements InitializingBean {
   }
 
   // return null means request has been handled, and calling routine should exit without further processing
-  public CoverageCollection openCoverageDataset(HttpServletRequest req, HttpServletResponse res, String reqPath) throws IOException {
+  public CoverageCollection openCoverageDataset(HttpServletRequest req, HttpServletResponse res, String reqPath)
+      throws IOException {
     if (reqPath == null)
       return null;
 
@@ -305,11 +322,13 @@ public class DatasetManager implements InitializingBean {
     // first look for a feature collection
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
       FeatureCollectionRef featCollection = match.dataRoot.getFeatureCollection();
-      if (log.isDebugEnabled()) log.debug("  -- DatasetHandler found FeatureCollection= " + featCollection);
+      if (log.isDebugEnabled())
+        log.debug("  -- DatasetHandler found FeatureCollection= " + featCollection);
 
       InvDatasetFeatureCollection fc = featureCollectionCache.get(featCollection);
       CoverageCollection gds = fc.getGridCoverage(match.remaining);
-      if (gds == null) throw new FileNotFoundException(reqPath);
+      if (gds == null)
+        throw new FileNotFoundException(reqPath);
       return gds;
     }
 
@@ -322,7 +341,8 @@ public class DatasetManager implements InitializingBean {
       if (!opt.isPresent())
         throw new FileNotFoundException("Not a Grid Dataset " + reqPath + " err=" + opt.getErrorMessage());
 
-      if (log.isDebugEnabled()) log.debug("  -- DatasetHandler found FeatureCollection from file= " + location);
+      if (log.isDebugEnabled())
+        log.debug("  -- DatasetHandler found FeatureCollection from file= " + location);
       return opt.get().getSingleCoverageCollection(); // LOOK doesnt have to be single, then what is the URL?
 
     }
@@ -336,13 +356,16 @@ public class DatasetManager implements InitializingBean {
       if (!opt.isPresent())
         throw new FileNotFoundException("NcML is not a Grid Dataset " + reqPath + " err=" + opt.getErrorMessage());
 
-      if (log.isDebugEnabled()) log.debug("  -- DatasetHandler found FeatureCollection from NcML");
+      if (log.isDebugEnabled())
+        log.debug("  -- DatasetHandler found FeatureCollection from NcML");
       return opt.get().getSingleCoverageCollection();
     }
 
     return null;
   }
-  public SimpleGeometryFeatureDataset openSimpleGeometryDataset(HttpServletRequest req, HttpServletResponse res, String reqPath) throws IOException {
+
+  public SimpleGeometryFeatureDataset openSimpleGeometryDataset(HttpServletRequest req, HttpServletResponse res,
+      String reqPath) throws IOException {
     // first look for a feature collection
     DataRootManager.DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
@@ -351,23 +374,27 @@ public class DatasetManager implements InitializingBean {
         return null;
 
       FeatureCollectionRef featCollection = match.dataRoot.getFeatureCollection();
-      if (log.isDebugEnabled()) log.debug("  -- DatasetHandler found FeatureCollection= " + featCollection);
+      if (log.isDebugEnabled())
+        log.debug("  -- DatasetHandler found FeatureCollection= " + featCollection);
 
       InvDatasetFeatureCollection fc = featureCollectionCache.get(featCollection);
       SimpleGeometryFeatureDataset fd = fc.getSimpleGeometryDataset(match.remaining);
-      if (fd == null) throw new IllegalArgumentException("Not a Simple Geometry Dataset " + fc.getName());
+      if (fd == null)
+        throw new IllegalArgumentException("Not a Simple Geometry Dataset " + fc.getName());
       return fd;
     }
 
     // fetch it as a NetcdfFile; this deals with possible NcML
     NetcdfFile ncfile = openNetcdfFile(req, res, reqPath);
-    if (ncfile == null) return null;
+    if (ncfile == null)
+      return null;
 
     Formatter errlog = new Formatter();
     NetcdfDataset ncd = null;
     try {
       ncd = NetcdfDataset.wrap(ncfile, NetcdfDataset.getDefaultEnhanceMode());
-      return (SimpleGeometryFeatureDataset) FeatureDatasetFactoryManager.wrap(FeatureType.SIMPLE_GEOMETRY, ncd, null, errlog);
+      return (SimpleGeometryFeatureDataset) FeatureDatasetFactoryManager.wrap(FeatureType.SIMPLE_GEOMETRY, ncd, null,
+          errlog);
 
     } catch (Throwable t) {
       if (ncd == null)
@@ -378,7 +405,8 @@ public class DatasetManager implements InitializingBean {
       if (t instanceof IOException)
         throw (IOException) t;
 
-      String msg = ncd == null ? "Problem wrapping NetcdfFile in NetcdfDataset; " : "Problem calling FeatureDatasetFactoryManager; ";
+      String msg = ncd == null ? "Problem wrapping NetcdfFile in NetcdfDataset; "
+          : "Problem calling FeatureDatasetFactoryManager; ";
       msg += errlog.toString();
       log.error("openSimpleGeometryDataset(): " + msg, t);
       throw new IOException(msg + t.getMessage());
@@ -390,10 +418,11 @@ public class DatasetManager implements InitializingBean {
   /**
    * Check if this is making a request for a restricted dataset, and if so, if its allowed.
    *
-   * @param req     the request
-   * @param res     the response
+   * @param req the request
+   * @param res the response
    * @param reqPath the request path; if null, use req.getPathInfo()
-   * @return true if ok to proceed. If false, the appropriate error or redirect message has been sent, the caller only needs to return.
+   * @return true if ok to proceed. If false, the appropriate error or redirect message has been sent, the caller only
+   *         needs to return.
    */
   public boolean resourceControlOk(HttpServletRequest req, HttpServletResponse res, String reqPath) {
     if (null == reqPath)
@@ -414,9 +443,11 @@ public class DatasetManager implements InitializingBean {
   }
 
   private boolean resourceAuthorized(HttpServletRequest req, HttpServletResponse res, String rc) {
-    if (rc == null) return true;
-    if (debugResourceControl) System.out.println("DatasetHandler request has resource control =" + rc + "\n"
-            + ServletUtil.showRequestHeaders(req) + ServletUtil.showSecurity(req, rc));
+    if (rc == null)
+      return true;
+    if (debugResourceControl)
+      System.out.println("DatasetHandler request has resource control =" + rc + "\n"
+          + ServletUtil.showRequestHeaders(req) + ServletUtil.showSecurity(req, rc));
 
     // Principal p = req.getUserPrincipal(); // debug
 
@@ -428,7 +459,8 @@ public class DatasetManager implements InitializingBean {
       throw new RuntimeException(e.getMessage());
     }
 
-    if (debugResourceControl) System.out.println("ResourceControl granted = " + rc);
+    if (debugResourceControl)
+      System.out.println("ResourceControl granted = " + rc);
 
     return true;
   }
@@ -456,7 +488,8 @@ public class DatasetManager implements InitializingBean {
     try {
       instance = vClass.newInstance();
     } catch (InstantiationException e) {
-      log.error("Attempt to load Viewer class " + className + " cannot instantiate, probably need default Constructor.");
+      log.error(
+          "Attempt to load Viewer class " + className + " cannot instantiate, probably need default Constructor.");
       return;
     } catch (IllegalAccessException e) {
       log.error("Attempt to load Viewer class " + className + " is not accessible.");

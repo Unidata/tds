@@ -13,7 +13,6 @@ import ucar.unidata.geoloc.LatLonPoint;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import thredds.server.wcs.Request;
-
 import javax.annotation.Nonnull;
 
 /**
@@ -52,9 +51,8 @@ public abstract class WcsRequest {
     return wcsDataset;
   }
 
-  protected Element genCoverageOfferingBriefElem(String elemName,
-                                                 String covName, String covLabel, String covDescription,
-                                                 CoverageCoordSys gridCoordSys) {
+  protected Element genCoverageOfferingBriefElem(String elemName, String covName, String covLabel,
+      String covDescription, CoverageCoordSys gridCoordSys) {
 
     // <CoverageOfferingBrief>
     Element briefElem = new Element(elemName, wcsNS);
@@ -76,7 +74,7 @@ public abstract class WcsRequest {
     briefElem.addContent(genLonLatEnvelope(wcsDataset.getDataset(), gridCoordSys));
 
     // ToDo Add keywords capabilities.
-    // <CoverageOfferingBrief>/keywords [0..*]  /keywords [1..*] and /type [0..1]
+    // <CoverageOfferingBrief>/keywords [0..*] /keywords [1..*] and /type [0..1]
 
     return briefElem;
   }
@@ -94,14 +92,14 @@ public abstract class WcsRequest {
     String firstPosition = llpt.getLongitude() + " " + llpt.getLatitude();
     double lon = llpt.getLongitude() + llbb.getWidth();
     String secondPosition = lon + " " + urpt.getLatitude();
-// ToDo WCS 1.0Plus - Add vertical (Deal with conversion to meters. Yikes!!)
-//    CoordinateAxis1D vertAxis = gcs.getVerticalAxis();
-//    if ( vertAxis != null )
-//    {
-//      // See verAxis.getUnitsString()
-//      firstPosition += " " + vertAxis.getCoordValue( 0);
-//      secondPostion += " " + vertAxis.getCoordValue( ((int)vertAxis.getSize()) - 1);
-//    }
+    // ToDo WCS 1.0Plus - Add vertical (Deal with conversion to meters. Yikes!!)
+    // CoordinateAxis1D vertAxis = gcs.getVerticalAxis();
+    // if ( vertAxis != null )
+    // {
+    // // See verAxis.getUnitsString()
+    // firstPosition += " " + vertAxis.getCoordValue( 0);
+    // secondPostion += " " + vertAxis.getCoordValue( ((int)vertAxis.getSize()) - 1);
+    // }
 
     lonLatEnvelopeElem.addContent(new Element("pos", gmlNS).addContent(firstPosition));
     lonLatEnvelopeElem.addContent(new Element("pos", gmlNS).addContent(secondPosition));

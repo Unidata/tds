@@ -10,10 +10,8 @@ package thredds.server.opendap;
 
 import java.nio.charset.StandardCharsets;
 import opendap.servers.*;
-
 import java.io.IOException;
 import java.io.DataOutputStream;
-
 import ucar.ma2.*;
 import ucar.nc2.*;
 
@@ -32,7 +30,7 @@ public class NcSDString extends SDString implements HasNetcdfVariable {
    * @param v : the netcdf Variable
    */
   NcSDString(Variable v) {
-      super(Variable.getDAPName(v));
+    super(Variable.getDAPName(v));
     this.ncVar = v;
   }
 
@@ -41,7 +39,7 @@ public class NcSDString extends SDString implements HasNetcdfVariable {
    * Constructor
    *
    * @param name: name of variable
-   * @param val:  the value.
+   * @param val: the value.
    */
   NcSDString(String name, String val) {
     super(name);
@@ -87,10 +85,13 @@ public class NcSDString extends SDString implements HasNetcdfVariable {
     setRead(true);
   }
 
-  public Variable getVariable() { return ncVar; }
+  public Variable getVariable() {
+    return ncVar;
+  }
+
   public void serialize(DataOutputStream sink, StructureData sdata, StructureMembers.Member m) throws IOException {
     localVal = sdata.getScalarString(m);
     setValue(localVal);
-    externalize( sink);
+    externalize(sink);
   }
 }

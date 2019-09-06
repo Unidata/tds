@@ -42,7 +42,6 @@ import ucar.nc2.util.cache.FileCache;
 import ucar.unidata.io.RandomAccessFile;
 import ucar.util.prefs.PreferencesExt;
 import ucar.util.prefs.XMLStore;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
@@ -87,7 +86,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
 
   @Autowired
   @Qualifier("fcTriggerExecutor")
-  private ExecutorService executor;  // need this so we can shut it down
+  private ExecutorService executor; // need this so we can shut it down
 
   @Autowired
   private AllowedServices allowedServices;
@@ -106,7 +105,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
 
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
-    if (event != null) {  // startup
+    if (event != null) { // startup
       synchronized (this) {
         if (!wasInitialized) {
           wasInitialized = true;
@@ -125,12 +124,14 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
           readThreddsConfig();
           logVersionMessage();
           // add warning about web start deprecation
-          startupLog.warn("Web Start has been deprecated for >Java 9 and is slated for removal - see http://www.oracle.com/technetwork/java/eol-135779.html)");
+          startupLog.warn(
+              "Web Start has been deprecated for >Java 9 and is slated for removal - see http://www.oracle.com/technetwork/java/eol-135779.html)");
 
           // read catalogs
           String readModeS = ThreddsConfig.get("ConfigCatalog.reread", "always");
-          ConfigCatalogInitialization.ReadMode readMode =  ConfigCatalogInitialization.ReadMode.get(readModeS);
-          if (readMode == null) readMode = ConfigCatalogInitialization.ReadMode.always;
+          ConfigCatalogInitialization.ReadMode readMode = ConfigCatalogInitialization.ReadMode.get(readModeS);
+          if (readMode == null)
+            readMode = ConfigCatalogInitialization.ReadMode.always;
           configCatalogInitializer.init(readMode, (PreferencesExt) mainPrefs.node("configCatalog"));
           startupLog.info("TdsInit complete");
         }
@@ -172,8 +173,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     // read in persistent user-defined params from threddsConfig.xml
     File tdsConfigFile = new File(tdsContext.getThreddsDirectory(), tdsContext.getConfigFileProperty());
     if (!tdsConfigFile.exists()) {
-      startupLog.warn("TdsInit: TDS configuration file '{}' doesn't exist, using all defaults ", tdsConfigFile
-              .getAbsolutePath());
+      startupLog.warn("TdsInit: TDS configuration file '{}' doesn't exist, using all defaults ",
+          tdsConfigFile.getAbsolutePath());
       return;
     }
     ThreddsConfig.init(tdsConfigFile.getPath());
@@ -187,7 +188,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     logCatalogInit.info(message);
 
     // check and log the latest stable and development version information
-    //  only if it is OK according to the threddsConfig file.
+    // only if it is OK according to the threddsConfig file.
     if (tdsUpdateConfig.isLogVersionInfo()) {
       Map<String, String> latestVersionInfo = tdsUpdateConfig.getLatestVersionInfo(version);
       if (!latestVersionInfo.isEmpty()) {
@@ -222,17 +223,22 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     //////////////////////////////////////////////////////////
     // Controlling Data Services
     // allows users to control services in ThreddsConfig, but not override the default if they havent set
-    // LOOK only exposing the ones alreaady in use. maybe let user override tdsGlobalConfig.xml (phase out ThreddsConfig)
+    // LOOK only exposing the ones alreaady in use. maybe let user override tdsGlobalConfig.xml (phase out
+    ////////////////////////////////////////////////////////// ThreddsConfig)
 
-    allowedServices.setAllowService(StandardService.catalogRemote, ThreddsConfig.getBoolean("CatalogServices.allowRemote"));
+    allowedServices.setAllowService(StandardService.catalogRemote,
+        ThreddsConfig.getBoolean("CatalogServices.allowRemote"));
     allowedServices.setAllowService(StandardService.wcs, ThreddsConfig.getBoolean("WCS.allow"));
     allowedServices.setAllowService(StandardService.wms, ThreddsConfig.getBoolean("WMS.allow"));
-    allowedServices.setAllowService(StandardService.netcdfSubsetGrid, ThreddsConfig.getBoolean("NetcdfSubsetService.allow"));
-    allowedServices.setAllowService(StandardService.netcdfSubsetPoint, ThreddsConfig.getBoolean("NetcdfSubsetService.allow"));
+    allowedServices.setAllowService(StandardService.netcdfSubsetGrid,
+        ThreddsConfig.getBoolean("NetcdfSubsetService.allow"));
+    allowedServices.setAllowService(StandardService.netcdfSubsetPoint,
+        ThreddsConfig.getBoolean("NetcdfSubsetService.allow"));
     allowedServices.setAllowService(StandardService.iso_ncml, ThreddsConfig.getBoolean("NCISO.ncmlAllow"));
     allowedServices.setAllowService(StandardService.uddc, ThreddsConfig.getBoolean("NCISO.uddcAllow"));
     allowedServices.setAllowService(StandardService.iso, ThreddsConfig.getBoolean("NCISO.isoAllow"));
-    allowedServices.setAllowService(StandardService.jupyterNotebook, ThreddsConfig.getBoolean("JupyterNotebookService.allow"));
+    allowedServices.setAllowService(StandardService.jupyterNotebook,
+        ThreddsConfig.getBoolean("JupyterNotebookService.allow"));
 
 
     // CDM configuration
@@ -240,17 +246,17 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     allowedServices.finish(); // finish when we know everything is wired
     InvDatasetFeatureCollection.setAllowedServices(allowedServices);
     DatasetScan.setSpecialServices(allowedServices.getStandardService(StandardService.resolver),
-              allowedServices.getStandardService(StandardService.httpServer));
+        allowedServices.getStandardService(StandardService.httpServer));
     DatasetScan.setAllowedServices(allowedServices);
     allowedServices.makeDebugActions();
 
     /*
-      <Netcdf4Clibrary>
-        <libraryPath>/usr/local/lib</libraryPath>
-        <libraryName>netcdf</libraryName>
-        <useForReading>false</useForReading>
-      </Netcdf4Clibrary>
-    */
+     * <Netcdf4Clibrary>
+     * <libraryPath>/usr/local/lib</libraryPath>
+     * <libraryName>netcdf</libraryName>
+     * <useForReading>false</useForReading>
+     * </Netcdf4Clibrary>
+     */
     String libraryPath = ThreddsConfig.get("Netcdf4Clibrary.libraryPath", null);
     String libraryName = ThreddsConfig.get("Netcdf4Clibrary.libraryName", null);
     if (libraryPath != null || libraryName != null) {
@@ -268,12 +274,12 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
           startupLog.error("TdsInit: Unable to register IOSP: " + Nc4Iosp.class.getCanonicalName(), e);
         }
       } else {
-        startupLog.warn("TdsInit: In threddsConfig.xml, 'Netcdf4Clibrary.useForReading' is 'true' but the native C " +
-                "library couldn't be found on the system. Falling back to the pure-Java reader.");
+        startupLog.warn("TdsInit: In threddsConfig.xml, 'Netcdf4Clibrary.useForReading' is 'true' but the native C "
+            + "library couldn't be found on the system. Falling back to the pure-Java reader.");
       }
     }
 
-    if (Nc4Iosp.isClibraryPresent()) {  // NetCDF-4 lib could be set as an environment variable or as a JVM parameter.
+    if (Nc4Iosp.isClibraryPresent()) { // NetCDF-4 lib could be set as an environment variable or as a JVM parameter.
       FormatsAvailabilityService.setFormatAvailability(SupportedFormat.NETCDF4, true);
       // FormatsAvailabilityService.setFormatAvailability(SupportedFormat.NETCDF4EXT, true);
     }
@@ -292,7 +298,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     dir = ThreddsConfig.get("DiskCache.dir", new File(tdsContext.getThreddsDirectory(), "/cache/cdm/").getPath());
     boolean alwaysUse = ThreddsConfig.getBoolean("DiskCache.alwaysUse", false);
     scourSecs = ThreddsConfig.getSeconds("DiskCache.scour", 60 * 60); // default once an hour
-    long maxSize = ThreddsConfig.getBytes("DiskCache.maxSize", (long) 1000 * 1000 * 1000);  // default 1 Gbyte
+    long maxSize = ThreddsConfig.getBytes("DiskCache.maxSize", (long) 1000 * 1000 * 1000); // default 1 Gbyte
     DiskCache.setRootDirectory(dir);
     DiskCache.setCachePolicy(alwaysUse);
     startupLog.info("TdsInit: CdmCache= " + dir + " scour = " + scourSecs + " maxSize = " + maxSize);
@@ -304,7 +310,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     }
 
     // persist joinExisting aggregations. default every 24 hours, delete stuff older than 90 days
-    dir = ThreddsConfig.get("AggregationCache.dir", new File(tdsContext.getThreddsDirectory().getPath(), "/cache/agg/").getPath());
+    dir = ThreddsConfig.get("AggregationCache.dir",
+        new File(tdsContext.getThreddsDirectory().getPath(), "/cache/agg/").getPath());
     scourSecs = ThreddsConfig.getSeconds("AggregationCache.scour", 24 * 60 * 60);
     maxAgeSecs = ThreddsConfig.getSeconds("AggregationCache.maxAge", 90 * 24 * 60 * 60);
     DiskCache2 aggCache = new DiskCache2(dir, false, maxAgeSecs / 60, scourSecs / 60);
@@ -313,8 +320,9 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     Aggregation.setPersistenceCache(aggCache);
     startupLog.info("TdsInit: AggregationCache= " + dir + " scour = " + scourSecs + " maxAgeSecs = " + maxAgeSecs);
 
-    /* 4.3.15: grib index file placement, using DiskCache2  */
-    String gribIndexDir = ThreddsConfig.get("GribIndex.dir", new File(tdsContext.getThreddsDirectory(), "/cache/grib/").getPath());
+    /* 4.3.15: grib index file placement, using DiskCache2 */
+    String gribIndexDir =
+        ThreddsConfig.get("GribIndex.dir", new File(tdsContext.getThreddsDirectory(), "/cache/grib/").getPath());
     Boolean gribIndexAlwaysUse = ThreddsConfig.getBoolean("GribIndex.alwaysUse", false);
     Boolean gribIndexNeverUse = ThreddsConfig.getBoolean("GribIndex.neverUse", false);
     String gribIndexPolicy = ThreddsConfig.get("GribIndex.policy", null);
@@ -332,12 +340,15 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
 
     // LOOK is this used ??
     // 4.3.16
-    /* dir = ThreddsConfig.get("CdmRemote.dir", new File(tdsContext.getContentDirectory().getPath(), "/cache/cdmr/").getPath());
-    scourSecs = ThreddsConfig.getSeconds("CdmRemote.scour", 30 * 60);
-    maxAgeSecs = ThreddsConfig.getSeconds("CdmRemote.maxAge", 60 * 60);
-    DiskCache2 cdmrCache = new DiskCache2(dir, false, maxAgeSecs / 60, scourSecs / 60);
-    CdmrFeatureController.setDiskCache(cdmrCache);
-    startupLog.info("TdsInit: CdmRemote= " + dir + " scour = " + scourSecs + " maxAgeSecs = " + maxAgeSecs); */
+    /*
+     * dir = ThreddsConfig.get("CdmRemote.dir", new File(tdsContext.getContentDirectory().getPath(),
+     * "/cache/cdmr/").getPath());
+     * scourSecs = ThreddsConfig.getSeconds("CdmRemote.scour", 30 * 60);
+     * maxAgeSecs = ThreddsConfig.getSeconds("CdmRemote.maxAge", 60 * 60);
+     * DiskCache2 cdmrCache = new DiskCache2(dir, false, maxAgeSecs / 60, scourSecs / 60);
+     * CdmrFeatureController.setDiskCache(cdmrCache);
+     * startupLog.info("TdsInit: CdmRemote= " + dir + " scour = " + scourSecs + " maxAgeSecs = " + maxAgeSecs);
+     */
 
     // turn back on for 4.6 needed for FMRC
     // turned off for 4.5 not used ??
@@ -347,7 +358,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     if (fcCache == null)
       fcCache = ThreddsConfig.get("FeatureCollection.dir", null);
     if (fcCache == null)
-      fcCache = ThreddsConfig.get("FeatureCollection.cacheDirectory", tdsContext.getThreddsDirectory().getPath() + "/cache/collection/");  // cacheDirectory is old way
+      fcCache = ThreddsConfig.get("FeatureCollection.cacheDirectory",
+          tdsContext.getThreddsDirectory().getPath() + "/cache/collection/"); // cacheDirectory is old way
 
     long maxSizeBytes = ThreddsConfig.getBytes("FeatureCollectionCache.maxSize", -1);
     if (maxSizeBytes == -1)
@@ -388,8 +400,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
       startupLog.info("TdsInit: GribCdmIndex.initDefaultCollectionCache= [" + min + "," + max + "] scour = " + secs);
     }
 
-    //RandomAccessFile.enableDefaultGlobalFileCache();
-    //RandomAccessFile.setDebugLeaks(true);
+    // RandomAccessFile.enableDefaultGlobalFileCache();
+    // RandomAccessFile.setDebugLeaks(true);
 
     // Config Cat Cache
     max = ThreddsConfig.getInt("ConfigCatalog.keepInMemory", 100);
@@ -397,7 +409,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     ccc.init(rootPath, max);
 
     // Config Dataset Tracker
-    String trackerDir = ThreddsConfig.get("ConfigCatalog.dir", new File(tdsContext.getThreddsDirectory().getPath(), "/cache/catalog/").getPath());
+    String trackerDir = ThreddsConfig.get("ConfigCatalog.dir",
+        new File(tdsContext.getThreddsDirectory().getPath(), "/cache/catalog/").getPath());
     int trackerMax = ThreddsConfig.getInt("ConfigCatalog.maxDatasets", 10 * 1000);
     File trackerDirFile = new File(trackerDir);
     if (!trackerDirFile.exists()) {
@@ -410,7 +423,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     // Jupyter notebook service cache
     if (allowedServices.isAllowed(StandardService.jupyterNotebook)) {
       max = ThreddsConfig.getInt("JupyterNotebookService.maxFiles", 100);
-      secs = ThreddsConfig.getSeconds("JupyterNotebookService.maxAge", 60*60);
+      secs = ThreddsConfig.getSeconds("JupyterNotebookService.maxAge", 60 * 60);
       jupyterNotebooks.init(max, secs);
     }
   }
@@ -431,8 +444,9 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
   }
 
   /*
-  http://stackoverflow.com/questions/24660408/how-can-i-get-intellij-debugger-to-allow-my-apps-shutdown-hooks-to-run?lq=1
-  "Unfortunately, you can't use breakpoints in your shutdown hook body when you use Stop button: these breakpoints are silently ignored."
+   * http://stackoverflow.com/questions/24660408/how-can-i-get-intellij-debugger-to-allow-my-apps-shutdown-hooks-to-run?
+   * lq=1
+   * "Unfortunately, you can't use breakpoints in your shutdown hook body when you use Stop button: these breakpoints are silently ignored."
    */
   @Override
   public void destroy() {
@@ -449,16 +463,18 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     // background threads
     if (cdmDiskCacheTimer != null)
       cdmDiskCacheTimer.cancel();
-    FileCache.shutdown();              // this handles background threads for all instances of FileCache
-    DiskCache2.exit();                // this handles background threads for all instances of DiskCache2
+    FileCache.shutdown(); // this handles background threads for all instances of FileCache
+    DiskCache2.exit(); // this handles background threads for all instances of DiskCache2
     executor.shutdownNow();
 
-    /* try {
-      catalogWatcher.close();
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
-      startupLog.error("catalogWatcher close failed", ioe);
-    } */
+    /*
+     * try {
+     * catalogWatcher.close();
+     * } catch (IOException ioe) {
+     * ioe.printStackTrace();
+     * startupLog.error("catalogWatcher close failed", ioe);
+     * }
+     */
 
     // open file caches
     RandomAccessFile.shutdown();

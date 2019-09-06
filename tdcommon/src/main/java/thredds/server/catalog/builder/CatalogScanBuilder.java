@@ -30,7 +30,8 @@ public class CatalogScanBuilder extends DatasetBuilder {
   }
 
   public CatalogScan makeDataset(DatasetNode parent) {
-    String xlink = "/thredds/catalog/"+path+"/catalogScan.xml";   // LOOK hardcoded thredds, need context, or make it reletive ??
+    String xlink = "/thredds/catalog/" + path + "/catalogScan.xml"; // LOOK hardcoded thredds, need context, or make it
+                                                                    // reletive ??
     return new CatalogScan(parent, name, xlink, flds, path, location, watch);
   }
 }

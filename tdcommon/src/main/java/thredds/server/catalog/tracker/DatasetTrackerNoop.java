@@ -2,7 +2,6 @@
 package thredds.server.catalog.tracker;
 
 import thredds.client.catalog.Dataset;
-
 import java.util.Formatter;
 
 /**
@@ -15,19 +14,21 @@ public class DatasetTrackerNoop implements DatasetTracker {
 
   @Override
   public boolean trackDataset(long catId, Dataset ds, Callback callback) {
-    if (callback == null) return false;
+    if (callback == null)
+      return false;
 
     callback.hasDataset(ds);
     boolean track = false;
-     if (ds.getRestrictAccess() != null) {
-       callback.hasRestriction(ds);
-       track = true;
-     }
-    if (ds.getNcmlElement()!= null) {
+    if (ds.getRestrictAccess() != null) {
+      callback.hasRestriction(ds);
+      track = true;
+    }
+    if (ds.getNcmlElement() != null) {
       callback.hasNcml(ds);
       track = true;
     }
-    if (track) callback.hasTrackedDataset(ds);
+    if (track)
+      callback.hasTrackedDataset(ds);
 
     return false;
   }
@@ -43,12 +44,10 @@ public class DatasetTrackerNoop implements DatasetTracker {
   }
 
   @Override
-  public void close() {
-  }
+  public void close() {}
 
   @Override
-  public void save() {
-  }
+  public void save() {}
 
   @Override
   public boolean exists() {
@@ -61,7 +60,6 @@ public class DatasetTrackerNoop implements DatasetTracker {
   }
 
   @Override
-  public void showDB(Formatter f) {
-  }
+  public void showDB(Formatter f) {}
 
 }

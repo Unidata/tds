@@ -7,12 +7,10 @@ package thredds.server.views;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.view.AbstractView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.io.OutputStream;
-
 import thredds.client.catalog.Catalog;
 import thredds.client.catalog.tools.CatalogXmlWriter;
 import thredds.util.ContentType;

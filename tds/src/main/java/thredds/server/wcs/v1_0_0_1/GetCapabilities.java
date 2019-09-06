@@ -8,7 +8,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
 import thredds.server.wcs.Request;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
@@ -19,10 +18,8 @@ import java.util.List;
 public class GetCapabilities extends WcsRequest {
 
   public enum Section {
-    All(""),
-    Service("WCS_Capabilities/Service"),
-    Capability("WCS_Capabilities/Capability"),
-    ContentMetadata("WCS_Capabilities/ContentMetadata");
+    All(""), Service("WCS_Capabilities/Service"), Capability("WCS_Capabilities/Capability"), ContentMetadata(
+        "WCS_Capabilities/ContentMetadata");
 
     private final String altId;
 
@@ -53,9 +50,8 @@ public class GetCapabilities extends WcsRequest {
 
   private Document capabilitiesReport;
 
-  public GetCapabilities(Request.Operation operation, String version, WcsDataset dataset,
-                         URI serverURI, Section section, String updateSequence,
-                         ServiceInfo serviceInfo) {
+  public GetCapabilities(Request.Operation operation, String version, WcsDataset dataset, URI serverURI,
+      Section section, String updateSequence, ServiceInfo serviceInfo) {
     super(operation, version, dataset);
     this.serverURI = serverURI;
     this.section = section;
@@ -71,34 +67,30 @@ public class GetCapabilities extends WcsRequest {
 
   String getCurrentUpdateSequence() {
     // ToDo If decide to support updateSequence, need to
-    // ToDo     1) update getCurrentUpdateSequence() and
-    // ToDo     2) update logic to handle exceptions appropriately.
-    //if (updateSequence == null)
-    //  return null;
+    // ToDo 1) update getCurrentUpdateSequence() and
+    // ToDo 2) update logic to handle exceptions appropriately.
+    // if (updateSequence == null)
+    // return null;
     return null;
   }
 
-  public Document getCapabilitiesReport()
-          throws WcsException {
+  public Document getCapabilitiesReport() throws WcsException {
     if (this.capabilitiesReport == null)
       capabilitiesReport = generateCapabilities();
     return capabilitiesReport;
   }
 
-  public void writeCapabilitiesReport(PrintWriter pw)
-          throws WcsException, IOException {
+  public void writeCapabilitiesReport(PrintWriter pw) throws WcsException, IOException {
     XMLOutputter xmlOutputter = new XMLOutputter(org.jdom2.output.Format.getPrettyFormat());
     xmlOutputter.output(getCapabilitiesReport(), pw);
   }
 
-  public String writeCapabilitiesReportAsString()
-          throws WcsException {
+  public String writeCapabilitiesReportAsString() throws WcsException {
     XMLOutputter xmlOutputter = new XMLOutputter(org.jdom2.output.Format.getPrettyFormat());
     return xmlOutputter.outputString(getCapabilitiesReport());
   }
 
-  Document generateCapabilities()
-          throws WcsException {
+  Document generateCapabilities() throws WcsException {
     Element rootElem;
 
     if (section.equals(Section.All)) {
@@ -122,8 +114,8 @@ public class GetCapabilities extends WcsRequest {
     rootElem.setAttribute("version", this.getVersion());
 
     // ToDo If decide to support updateSequence, need to
-    // ToDo     1) update getCurrentUpdateSequence() and
-    // ToDo     2) update logic to handle exceptions appropriately.
+    // ToDo 1) update getCurrentUpdateSequence() and
+    // ToDo 2) update logic to handle exceptions appropriately.
     if (this.getCurrentUpdateSequence() != null)
       rootElem.setAttribute("updateSequence", this.getCurrentUpdateSequence());
 
@@ -155,8 +147,7 @@ public class GetCapabilities extends WcsRequest {
       // WCS_Capabilities/Service/keywords/keyword [1..*](string)
       // WCS_Capabilities/Service/keywords/type [0..1](string)
       // WCS_Capabilities/Service/keywords/type@codeSpace [0..1](URI)
-      if (serviceInfo.getKeywords() != null &&
-              serviceInfo.getKeywords().size() > 0) {
+      if (serviceInfo.getKeywords() != null && serviceInfo.getKeywords().size() > 0) {
         Element keywordsElem = new Element("keywords", wcsNS);
         for (String curKey : serviceInfo.getKeywords()) {
           keywordsElem.addContent(new Element("keyword", wcsNS).addContent(curKey));
@@ -169,11 +160,11 @@ public class GetCapabilities extends WcsRequest {
         // WCS_Capabilities/Service/responsibleParty [0..1](string)
         Element respPartyElem = new Element("responsibleParty", wcsNS);
 
-        //-----
+        // -----
         // WCS_Capabilities/Service/responsibleParty/individualName [1](string)
-        //   AND/OR
+        // AND/OR
         // WCS_Capabilities/Service/responsibleParty/organisationName [1](string)
-        //-----
+        // -----
         if (respParty.getIndividualName() != null)
           respPartyElem.addContent(new Element("individualName", wcsNS).addContent(respParty.getIndividualName()));
         if (respParty.getOrganizationName() != null)
@@ -215,24 +206,21 @@ public class GetCapabilities extends WcsRequest {
             }
             if (contactAddress.getAdminArea() != null) {
               // WCS_Capabilities/Service/responsibleParty/contactInfo/address/administrativeArea [0..1]
-              addressElem.addContent(new Element("administrativeArea", wcsNS)
-                      .addContent(contactAddress.getAdminArea()));
+              addressElem
+                  .addContent(new Element("administrativeArea", wcsNS).addContent(contactAddress.getAdminArea()));
             }
             if (contactAddress.getPostalCode() != null) {
               // WCS_Capabilities/Service/responsibleParty/contactInfo/address/postalCode [0..1]
-              addressElem.addContent(new Element("postalCode", wcsNS)
-                      .addContent(contactAddress.getPostalCode()));
+              addressElem.addContent(new Element("postalCode", wcsNS).addContent(contactAddress.getPostalCode()));
             }
             if (contactAddress.getCountry() != null) {
               // WCS_Capabilities/Service/responsibleParty/contactInfo/address/country [0..1]
-              addressElem.addContent(new Element("country", wcsNS)
-                      .addContent(contactAddress.getCountry()));
+              addressElem.addContent(new Element("country", wcsNS).addContent(contactAddress.getCountry()));
             }
             if (contactAddress.getEmail() != null) {
               for (String curEmail : contactAddress.getEmail()) {
                 // WCS_Capabilities/Service/responsibleParty/contactInfo/address/electronicMailAddress [0..*]
-                addressElem.addContent(new Element("electronicMailAddress", wcsNS)
-                        .addContent(curEmail));
+                addressElem.addContent(new Element("electronicMailAddress", wcsNS).addContent(curEmail));
               }
             }
 
@@ -281,9 +269,8 @@ public class GetCapabilities extends WcsRequest {
 
     capElem.addContent(requestElem);
 
-    capElem.addContent(
-            new Element("Exception", wcsNS).addContent(
-                    new Element("Format", wcsNS).addContent("application/vnd.ogc.se_xml")));
+    capElem.addContent(new Element("Exception", wcsNS)
+        .addContent(new Element("Format", wcsNS).addContent("application/vnd.ogc.se_xml")));
 
     return capElem;
   }
@@ -292,11 +279,8 @@ public class GetCapabilities extends WcsRequest {
     Element getCapOpsElem;
     getCapOpsElem = new Element(operationAsString, wcsNS);
     getCapOpsElem.addContent(
-            new Element("DCPType", wcsNS).addContent(
-                    new Element("HTTP", wcsNS).addContent(
-                            new Element("Get", wcsNS).addContent(
-                                    new Element("OnlineResource", wcsNS).setAttribute(
-                                            "href", serverURI.toString(), xlinkNS)))));
+        new Element("DCPType", wcsNS).addContent(new Element("HTTP", wcsNS).addContent(new Element("Get", wcsNS)
+            .addContent(new Element("OnlineResource", wcsNS).setAttribute("href", serverURI.toString(), xlinkNS)))));
     return getCapOpsElem;
   }
 
@@ -309,12 +293,8 @@ public class GetCapabilities extends WcsRequest {
     for (WcsCoverage curCoverage : this.getWcsDataset().getAvailableCoverageCollection())
       // WCS_Capabilities/ContentMetadata/CoverageOfferingBrief
       // WCS_Capabilities/ContentMetadata/CoverageOfferingBrief
-      contMdElem.addContent(
-              genCoverageOfferingBriefElem("CoverageOfferingBrief",
-                      curCoverage.getName(),
-                      curCoverage.getLabel(),
-                      curCoverage.getDescription(),
-                      curCoverage.getCoordinateSystem()));
+      contMdElem.addContent(genCoverageOfferingBriefElem("CoverageOfferingBrief", curCoverage.getName(),
+          curCoverage.getLabel(), curCoverage.getDescription(), curCoverage.getCoordinateSystem()));
 
     return contMdElem;
   }
@@ -329,9 +309,8 @@ public class GetCapabilities extends WcsRequest {
     private String fees;
     private List<String> accessConstraints;
 
-    public ServiceInfo(String name, String label, String description,
-                       List<String> keywords, ResponsibleParty responsibleParty,
-                       String fees, List<String> accessConstraints) {
+    public ServiceInfo(String name, String label, String description, List<String> keywords,
+        ResponsibleParty responsibleParty, String fees, List<String> accessConstraints) {
       this.name = name;
       this.label = label;
       this.description = description;
@@ -376,7 +355,7 @@ public class GetCapabilities extends WcsRequest {
    */
   public static class ResponsibleParty {
     public ResponsibleParty(String individualName, String organizationName, String positionName,
-                            ContactInfo contactInfo) {
+        ContactInfo contactInfo) {
       this.individualName = individualName;
       this.organizationName = organizationName;
       this.positionName = positionName;
@@ -408,8 +387,8 @@ public class GetCapabilities extends WcsRequest {
     private ContactInfo contactInfo;
 
     public static class ContactInfo {
-      public ContactInfo(List<String> voicePhone, List<String> faxPhone,
-                         Address address, OnlineResource onlineResource) {
+      public ContactInfo(List<String> voicePhone, List<String> faxPhone, Address address,
+          OnlineResource onlineResource) {
         this.voicePhone = new ArrayList<String>(voicePhone);
         this.faxPhone = new ArrayList<String>(faxPhone);
         this.address = address;
@@ -442,9 +421,8 @@ public class GetCapabilities extends WcsRequest {
     }
 
     public static class Address {
-      public Address(List<String> deliveryPoint, String city,
-                     String adminArea, String postalCode, String country,
-                     List<String> email) {
+      public Address(List<String> deliveryPoint, String city, String adminArea, String postalCode, String country,
+          List<String> email) {
         this.deliveryPoint = new ArrayList<String>(deliveryPoint);
         this.city = city;
         this.adminArea = adminArea;

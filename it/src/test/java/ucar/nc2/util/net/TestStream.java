@@ -16,7 +16,6 @@ import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
 import ucar.nc2.constants.CDM;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +38,7 @@ public class TestStream {
     URI catalogURI = new URI(catalogName);
 
     try (HTTPSession client = HTTPFactory.newSession(catalogName)) {
-      HTTPMethod m = HTTPFactory.Get(client,catalogName);
+      HTTPMethod m = HTTPFactory.Get(client, catalogName);
 
       int statusCode = m.execute();
       logger.debug("status = {}", statusCode);
@@ -62,7 +61,7 @@ public class TestStream {
     URI catalogURI = new URI(catalogName);
 
     try (HTTPSession client = HTTPFactory.newSession(catalogName)) {
-      HTTPMethod m = HTTPFactory.Get(client,catalogName);
+      HTTPMethod m = HTTPFactory.Get(client, catalogName);
 
       int statusCode = m.execute();
       logger.debug("status = {}", statusCode);

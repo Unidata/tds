@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +32,19 @@ public class TestFileServer {
   public static List<Object[]> getTestParameters() {
     List<Object[]> result = new ArrayList<>();
 
-    result.add(new Object[]{"fileServer/rdaTest/ds094.2_dt/files/flxf01.gdas.A_PCP.SFC.01Z.grb2.gbx9", ContentType.binary});
-    result.add(new Object[]{"fileServer/testStationFeatureCollection/files/Surface_METAR_20060325_0000.nc", ContentType.netcdf});
-    result.add(new Object[]{"fileServer/scanLocal/2004050312_eta_211.nc", ContentType.netcdf});
-    result.add(new Object[]{"fileServer/scanLocal/esfgTest.html", ContentType.html});
-    result.add(new Object[]{"fileServer/testNAMfmrc/files/20060925_0600.nc", ContentType.netcdf});
-    result.add(new Object[]{"fileServer/scanCdmUnitTests/formats/netcdf3/files/ctest0.nc", ContentType.netcdf}); // make sure files doesnt get removed
+    result.add(
+        new Object[] {"fileServer/rdaTest/ds094.2_dt/files/flxf01.gdas.A_PCP.SFC.01Z.grb2.gbx9", ContentType.binary});
+    result.add(new Object[] {"fileServer/testStationFeatureCollection/files/Surface_METAR_20060325_0000.nc",
+        ContentType.netcdf});
+    result.add(new Object[] {"fileServer/scanLocal/2004050312_eta_211.nc", ContentType.netcdf});
+    result.add(new Object[] {"fileServer/scanLocal/esfgTest.html", ContentType.html});
+    result.add(new Object[] {"fileServer/testNAMfmrc/files/20060925_0600.nc", ContentType.netcdf});
+    result.add(new Object[] {"fileServer/scanCdmUnitTests/formats/netcdf3/files/ctest0.nc", ContentType.netcdf}); // make
+                                                                                                                  // sure
+                                                                                                                  // files
+                                                                                                                  // doesnt
+                                                                                                                  // get
+                                                                                                                  // removed
 
     return result;
   }

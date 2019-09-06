@@ -13,7 +13,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import thredds.server.catalog.builder.ConfigCatalogBuilder;
 import ucar.unidata.util.StringUtil2;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,28 +37,22 @@ public class ConfigCatalogCache implements CatalogReader {
   private String rootPath;
   private Cache<String, ConfigCatalog> cache;
 
-  public ConfigCatalogCache() {
-  }
+  public ConfigCatalogCache() {}
 
   public ConfigCatalogCache(String rootPath, int maxSize) {
     this.rootPath = rootPath;
-    this.cache = CacheBuilder.newBuilder()
-            .maximumSize(maxSize)
-            .recordStats()
-            .build();
+    this.cache = CacheBuilder.newBuilder().maximumSize(maxSize).recordStats().build();
   }
 
   public void init(String rootPath, int maxSize) {
     this.rootPath = rootPath;
-    this.cache = CacheBuilder.newBuilder()
-            .maximumSize(maxSize)
-            .recordStats()
-                    // .removalListener(MY_LISTENER)
-            .build(new CacheLoader<String, ConfigCatalog>() {
-              public ConfigCatalog load(String key) throws IOException {
-                return readCatalog(key);
-              }
-            });
+    this.cache = CacheBuilder.newBuilder().maximumSize(maxSize).recordStats()
+        // .removalListener(MY_LISTENER)
+        .build(new CacheLoader<String, ConfigCatalog>() {
+          public ConfigCatalog load(String key) throws IOException {
+            return readCatalog(key);
+          }
+        });
   }
 
   public void put(String catKey, ConfigCatalog cat) throws IOException {
@@ -67,13 +60,14 @@ public class ConfigCatalogCache implements CatalogReader {
   }
 
   /*
-  public void invalidate(String catKey) throws IOException {
-    cache.invalidate(catKey);
-  }
-
-  public ConfigCatalog getIfPresent(String catKey) throws IOException {
-    return cache.getIfPresent(catKey);
-  } */
+   * public void invalidate(String catKey) throws IOException {
+   * cache.invalidate(catKey);
+   * }
+   * 
+   * public ConfigCatalog getIfPresent(String catKey) throws IOException {
+   * return cache.getIfPresent(catKey);
+   * }
+   */
 
   public void invalidateAll() {
     cache.invalidateAll();
@@ -94,19 +88,21 @@ public class ConfigCatalogCache implements CatalogReader {
   public ConfigCatalog get(final String catKey) throws IOException {
     try {
 
-      /* LOOK could check expires here
-          if (catalog != null) {  // see if its stale
-      CalendarDate expiresDateType = catalog.getExpires();
-      if ((expiresDateType != null) && expiresDateType.getMillis() < System.currentTimeMillis())
-        reread = true;     // LOOK reread ??
-    }
+      /*
+       * LOOK could check expires here
+       * if (catalog != null) { // see if its stale
+       * CalendarDate expiresDateType = catalog.getExpires();
+       * if ((expiresDateType != null) && expiresDateType.getMillis() < System.currentTimeMillis())
+       * reread = true; // LOOK reread ??
+       * }
        */
 
       return cache.get(catKey, () -> readCatalog(rootPath + catKey));
 
     } catch (ExecutionException e) {
       Throwable c = e.getCause();
-      if (c instanceof IOException) throw (IOException) c;
+      if (c instanceof IOException)
+        throw (IOException) c;
       throw new RuntimeException(e.getCause());
     }
   }
@@ -117,7 +113,7 @@ public class ConfigCatalogCache implements CatalogReader {
     File catFile = new File(catalogFullPath);
     if (!catFile.exists()) {
       int pos = catalogFullPath.indexOf("content/thredds/");
-      String filename = (pos > 0) ? catalogFullPath.substring(pos+16) : catalogFullPath;
+      String filename = (pos > 0) ? catalogFullPath.substring(pos + 16) : catalogFullPath;
       throw new FileNotFoundException(filename);
     }
 
@@ -130,7 +126,7 @@ public class ConfigCatalogCache implements CatalogReader {
     }
 
     ConfigCatalogBuilder builder = new ConfigCatalogBuilder();
-    ConfigCatalog cat = (ConfigCatalog) builder.buildFromURI(uri);          // LOOK use file and keep lastModified
+    ConfigCatalog cat = (ConfigCatalog) builder.buildFromURI(uri); // LOOK use file and keep lastModified
     if (builder.hasFatalError()) {
       throw new IOException("invalid catalog " + catalogFullPath);
     }

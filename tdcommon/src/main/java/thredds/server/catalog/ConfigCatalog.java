@@ -14,7 +14,6 @@ import thredds.client.catalog.builder.CatalogRefBuilder;
 import thredds.client.catalog.builder.DatasetBuilder;
 import thredds.server.catalog.builder.CatalogScanBuilder;
 import thredds.server.catalog.builder.FeatureCollectionRefBuilder;
-
 import javax.annotation.concurrent.Immutable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -80,17 +79,19 @@ public class ConfigCatalog extends Catalog {
   }
 
 
-    /* static public ConfigCatalog makeCatalogWithServices(ConfigCatalog cc, List<Service> services) {
-    Map<String, Object> flds = new HashMap<>();
-
-    for (Map.Entry<String, Object> entry : cc.getFldIterator()) {
-      flds.put(entry.getKey(), entry.getValue());
-    }
-    flds.put(Catalog.Services, services);
-
-    //   public ConfigCatalog(URI baseURI, String name, Map<String, Object> flds, List<DatasetBuilder> datasets) {
-    return new ConfigCatalog(cc.getBaseURI(), cc.getName(), flds, null);
-  }  */
+  /*
+   * static public ConfigCatalog makeCatalogWithServices(ConfigCatalog cc, List<Service> services) {
+   * Map<String, Object> flds = new HashMap<>();
+   * 
+   * for (Map.Entry<String, Object> entry : cc.getFldIterator()) {
+   * flds.put(entry.getKey(), entry.getValue());
+   * }
+   * flds.put(Catalog.Services, services);
+   * 
+   * // public ConfigCatalog(URI baseURI, String name, Map<String, Object> flds, List<DatasetBuilder> datasets) {
+   * return new ConfigCatalog(cc.getBaseURI(), cc.getName(), flds, null);
+   * }
+   */
 
 
 }

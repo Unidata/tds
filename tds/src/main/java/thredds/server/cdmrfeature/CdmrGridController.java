@@ -35,7 +35,6 @@ import ucar.nc2.iosp.IospHelper;
 import ucar.nc2.stream.NcStream;
 import ucar.nc2.stream.NcStreamDataCol;
 import ucar.nc2.stream.NcStreamProto;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -69,16 +68,18 @@ public class CdmrGridController {
 
   ////////////////////////////////////////////////////////////////////
 
-  @RequestMapping(value = "/**",  method = RequestMethod.GET, params = "req=featureType")
-  public ResponseEntity<String> handleFeatureTypeRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  @RequestMapping(value = "/**", method = RequestMethod.GET, params = "req=featureType")
+  public ResponseEntity<String> handleFeatureTypeRequest(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
     if (!allowedServices.isAllowed(StandardService.cdmrFeatureGrid))
       throw new ServiceNotAllowed(StandardService.cdmrFeatureGrid.toString());
 
     String datasetPath = TdsPathUtils.extractPath(request, StandardService.cdmrFeatureGrid.getBase());
 
     try (CoverageCollection cc = TdsRequestedDataset.getCoverageCollection(request, response, datasetPath)) {
-      if (cc == null) return null;
-        // return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
+      if (cc == null)
+        return null;
+      // return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
 
       HttpHeaders responseHeaders = new HttpHeaders();
       responseHeaders.set(ContentType.HEADER, ContentType.text.getContentHeader());
@@ -88,7 +89,8 @@ public class CdmrGridController {
   }
 
   @RequestMapping(value = "/**", method = RequestMethod.GET, params = "req=header")
-  public void handleHeaderRequest(HttpServletRequest request, HttpServletResponse response, OutputStream out) throws IOException {
+  public void handleHeaderRequest(HttpServletRequest request, HttpServletResponse response, OutputStream out)
+      throws IOException {
     if (showReq)
       System.out.printf("CdmrGridController '%s?%s'%n", request.getRequestURI(), request.getQueryString());
 
@@ -97,8 +99,10 @@ public class CdmrGridController {
 
     String datasetPath = TdsPathUtils.extractPath(request, StandardService.cdmrFeatureGrid.getBase());
 
-    try (CoverageCollection gridCoverageDataset = TdsRequestedDataset.getCoverageCollection(request, response, datasetPath)) {
-      if (gridCoverageDataset == null) return;
+    try (CoverageCollection gridCoverageDataset =
+        TdsRequestedDataset.getCoverageCollection(request, response, datasetPath)) {
+      if (gridCoverageDataset == null)
+        return;
 
       response.setContentType(ContentType.binary.getContentHeader());
       response.setHeader("Content-Description", "ncstream");
@@ -114,7 +118,8 @@ public class CdmrGridController {
   }
 
   @RequestMapping(value = "/**", method = RequestMethod.GET, params = "req=form")
-  public ResponseEntity<String> handleFormRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public ResponseEntity<String> handleFormRequest(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
     if (showReq)
       System.out.printf("CdmrGridController '%s?%s'%n", request.getRequestURI(), request.getQueryString());
 
@@ -124,8 +129,10 @@ public class CdmrGridController {
     String datasetPath = TdsPathUtils.extractPath(request, StandardService.cdmrFeatureGrid.getBase());
     HttpHeaders responseHeaders;
 
-    try (CoverageCollection gridCoverageDataset = TdsRequestedDataset.getCoverageCollection(request, response, datasetPath)) {
-      if (gridCoverageDataset == null) return null;
+    try (CoverageCollection gridCoverageDataset =
+        TdsRequestedDataset.getCoverageCollection(request, response, datasetPath)) {
+      if (gridCoverageDataset == null)
+        return null;
 
       String text = gridCoverageDataset.toString();
 
@@ -141,17 +148,18 @@ public class CdmrGridController {
   }
 
   @RequestMapping(value = "/**", method = RequestMethod.GET, params = "req=coord")
-  public void handleCoordRequest(HttpServletRequest request, HttpServletResponse response,
-                                 @RequestParam String var,
-                                 OutputStream out) throws IOException, BindException, InvalidRangeException {
+  public void handleCoordRequest(HttpServletRequest request, HttpServletResponse response, @RequestParam String var,
+      OutputStream out) throws IOException, BindException, InvalidRangeException {
 
     if (!allowedServices.isAllowed(StandardService.cdmrFeatureGrid))
       throw new ServiceNotAllowed(StandardService.cdmrFeatureGrid.toString());
 
     String datasetPath = TdsPathUtils.extractPath(request, StandardService.cdmrFeatureGrid.getBase());
 
-    try (CoverageCollection gridCoverageDataset = TdsRequestedDataset.getCoverageCollection(request, response, datasetPath)) {
-      if (gridCoverageDataset == null) return;
+    try (CoverageCollection gridCoverageDataset =
+        TdsRequestedDataset.getCoverageCollection(request, response, datasetPath)) {
+      if (gridCoverageDataset == null)
+        return;
 
       response.setContentType(ContentType.binary.getContentHeader());
       response.setHeader("Content-Description", "ncstream");
@@ -164,19 +172,20 @@ public class CdmrGridController {
           values = coord.getValues();
         else {
           values = new double[coord.getNcoords()];
-          for (int i=0; i<values.length; i++)
-            values[i] = coord.getStartValue() + i*coord.getResolution();
+          for (int i = 0; i < values.length; i++)
+            values[i] = coord.getStartValue() + i * coord.getResolution();
         }
         sendCoordData(coord.getName(), new Section(new Range(values.length)), Array.makeFromJavaArray(values), out);
       }
       out.flush();
 
     } catch (Throwable t) {
-      throw new RuntimeException("CdmrGridController on dataset "+datasetPath, t);
+      throw new RuntimeException("CdmrGridController on dataset " + datasetPath, t);
     }
   }
 
-  private long sendCoordData(String name, Section section, Array data, OutputStream out) throws IOException, InvalidRangeException {
+  private long sendCoordData(String name, Section section, Array data, OutputStream out)
+      throws IOException, InvalidRangeException {
     NcStreamDataCol encoder = new NcStreamDataCol();
     NcStreamProto.DataCol dataProto = encoder.encodeData2(name, false, section, data);
 
@@ -190,8 +199,8 @@ public class CdmrGridController {
   }
 
   @RequestMapping(value = "/**", method = RequestMethod.GET, params = "req=data")
-  public void handleDataRequest(HttpServletRequest request, HttpServletResponse response,
-                                @Valid NcssGridParamsBean qb, BindingResult validationResult, OutputStream out) throws IOException, BindException, InvalidRangeException {
+  public void handleDataRequest(HttpServletRequest request, HttpServletResponse response, @Valid NcssGridParamsBean qb,
+      BindingResult validationResult, OutputStream out) throws IOException, BindException, InvalidRangeException {
 
     if (showReq)
       System.out.printf("CdmrGridController '%s?%s'%n", request.getRequestURI(), request.getQueryString());
@@ -205,8 +214,10 @@ public class CdmrGridController {
 
     String datasetPath = TdsPathUtils.extractPath(request, StandardService.cdmrFeatureGrid.getBase());
 
-    try (CoverageCollection gridCoverageDataset = TdsRequestedDataset.getCoverageCollection(request, response, datasetPath)) {
-      if (gridCoverageDataset == null) return;
+    try (CoverageCollection gridCoverageDataset =
+        TdsRequestedDataset.getCoverageCollection(request, response, datasetPath)) {
+      if (gridCoverageDataset == null)
+        return;
 
       response.setContentType(ContentType.binary.getContentHeader());
       response.setHeader("Content-Description", "ncstream");
@@ -223,17 +234,19 @@ public class CdmrGridController {
       out.flush();
 
     } catch (Throwable t) {
-      throw new RuntimeException("CdmrGridController on dataset "+datasetPath, t);
+      throw new RuntimeException("CdmrGridController on dataset " + datasetPath, t);
     }
 
     if (showReq)
-       System.out.printf(" that took %d msecs%n", System.currentTimeMillis() - start);
+      System.out.printf(" that took %d msecs%n", System.currentTimeMillis() - start);
   }
 
-  private long sendDataResponse(List<GeoReferencedArray> arrays, OutputStream out, boolean deflate) throws IOException, InvalidRangeException {
+  private long sendDataResponse(List<GeoReferencedArray> arrays, OutputStream out, boolean deflate)
+      throws IOException, InvalidRangeException {
 
     // turns List into a Set
-    Set<CoverageCoordSys> sysSet = arrays.stream().map(GeoReferencedArray::getCoordSysForData).collect(Collectors.toSet());
+    Set<CoverageCoordSys> sysSet =
+        arrays.stream().map(GeoReferencedArray::getCoordSysForData).collect(Collectors.toSet());
 
     Set<CoverageTransform> transformSet = new HashSet<>();
     Set<CoverageCoordAxis> axisSet = new HashSet<>();
@@ -245,24 +258,29 @@ public class CdmrGridController {
     CdmrfWriter cdmrfWriter = new CdmrfWriter();
     long size = 0;
     size += writeBytes(out, NcStream.MAGIC_DATACOV);
-    CdmrFeatureProto.CoverageDataResponse dataProto = cdmrfWriter.encodeDataResponse(axisSet, sysSet, transformSet, arrays, deflate);
+    CdmrFeatureProto.CoverageDataResponse dataProto =
+        cdmrfWriter.encodeDataResponse(axisSet, sysSet, transformSet, arrays, deflate);
     byte[] datab = dataProto.toByteArray();
     size += NcStream.writeVInt(out, datab.length); // dataProto len
     size += writeBytes(out, datab); // dataProto
 
-    /* float ratio = ((float) uncompressedLength) / deflatedSize;
-    if (showRes)
-      System.out.printf("  org/compress= %d/%d = %f%n", uncompressedLength, deflatedSize, ratio); */
+    /*
+     * float ratio = ((float) uncompressedLength) / deflatedSize;
+     * if (showRes)
+     * System.out.printf("  org/compress= %d/%d = %f%n", uncompressedLength, deflatedSize, ratio);
+     */
 
 
     /*
-    size += NcStream.writeVInt(out, arrays.size()); // lenn
-
-    for (GeoReferencedArray array : arrays) {
-      long dataMessageLen = sendData(array.getData(), out, deflate);
-      if (showRes) System.out.printf(" CdmrGridController.sendData grid='%s' data message len=%d%n", array.getCoverageName(), dataMessageLen);
-      size += dataMessageLen;
-    } */
+     * size += NcStream.writeVInt(out, arrays.size()); // lenn
+     * 
+     * for (GeoReferencedArray array : arrays) {
+     * long dataMessageLen = sendData(array.getData(), out, deflate);
+     * if (showRes) System.out.printf(" CdmrGridController.sendData grid='%s' data message len=%d%n",
+     * array.getCoverageName(), dataMessageLen);
+     * size += dataMessageLen;
+     * }
+     */
 
     return size;
   }

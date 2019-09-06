@@ -6,16 +6,13 @@ package thredds.server.wcs.v1_0_0_1;
 
 import thredds.server.wcs.Request;
 import ucar.nc2.ft2.coverage.*;
-
 import java.net.URI;
 
 public class GetCapabilitiesBuilder extends WcsRequestBuilder {
   private org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(GetCapabilitiesBuilder.class);
 
-  GetCapabilitiesBuilder(String versionString,
-                         Request.Operation operation,
-                         CoverageCollection dataset,
-                         String datasetPath) {
+  GetCapabilitiesBuilder(String versionString, Request.Operation operation, CoverageCollection dataset,
+      String datasetPath) {
     super(versionString, operation, dataset, datasetPath);
   }
 
@@ -67,9 +64,7 @@ public class GetCapabilitiesBuilder extends WcsRequestBuilder {
     if (this.section == null)
       throw new IllegalStateException("Null section not allowed.");
 
-    return new GetCapabilities(this.getOperation(), this.getVersionString(),
-            this.getWcsDataset(),
-            this.serverUri, this.section,
-            this.updateSequence, this.serviceInfo);
+    return new GetCapabilities(this.getOperation(), this.getVersionString(), this.getWcsDataset(), this.serverUri,
+        this.section, this.updateSequence, this.serviceInfo);
   }
 }

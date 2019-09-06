@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +31,15 @@ public class TestMetadataService {
   public static List<Object[]> getTestParameters() {
 
     List<Object[]> result = new ArrayList<>(10);
-    result.add(new Object[]{"metadata/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1?metadata=variableMap", null});
-    result.add(new Object[]{"metadata/gribCollection/GFS_CONUS_80km/Best?metadata=variableMap", null});
-    result.add(new Object[]{"metadata/restrictCollection/GFS_CONUS_80km/TwoD?metadata=variableMap", new int[] {HttpStatus.SC_UNAUTHORIZED, HttpStatus.SC_FORBIDDEN}});
+    result.add(new Object[] {
+        "metadata/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1?metadata=variableMap", null});
+    result.add(new Object[] {"metadata/gribCollection/GFS_CONUS_80km/Best?metadata=variableMap", null});
+    result.add(new Object[] {"metadata/restrictCollection/GFS_CONUS_80km/TwoD?metadata=variableMap",
+        new int[] {HttpStatus.SC_UNAUTHORIZED, HttpStatus.SC_FORBIDDEN}});
 
     return result;
   }
+
   private static final boolean show = true;
 
   String url;
@@ -50,7 +52,7 @@ public class TestMetadataService {
 
   @Test
   public void testOpenXml() {
-    String endpoint = TestOnLocalServer.withHttpPath(url+"&accept=xml");
+    String endpoint = TestOnLocalServer.withHttpPath(url + "&accept=xml");
     byte[] response = TestOnLocalServer.getContent(endpoint, statusCodes, ContentType.xml);
     if (show && response != null)
       System.out.printf("%s%n", new String(response, StandardCharsets.UTF_8));

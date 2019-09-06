@@ -6,7 +6,6 @@ package thredds.util;
 
 import com.google.common.base.Preconditions;
 import ucar.nc2.NetcdfFileWriter;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -23,7 +22,7 @@ public class TdsPathUtils {
     if (dataPath == null) {
       dataPath = req.getServletPath();
     }
-    if (dataPath == null)  // not sure if this is possible
+    if (dataPath == null) // not sure if this is possible
       return "";
 
     // removePrefix or "/"+removePrefix
@@ -42,7 +41,7 @@ public class TdsPathUtils {
     if (dataPath.startsWith("/"))
       dataPath = dataPath.substring(1);
 
-    if (dataPath.contains(".."))  // LOOK what about escapes ??
+    if (dataPath.contains("..")) // LOOK what about escapes ??
       throw new IllegalArgumentException("path cannot contain '..'");
 
     return dataPath;
@@ -50,7 +49,8 @@ public class TdsPathUtils {
 
   public static String extractPath(HttpServletRequest req, String removePrefix, String[] endings) {
     String path = extractPath(req, removePrefix);
-    if (endings == null) return path;
+    if (endings == null)
+      return path;
 
     for (String ending : endings) {
       if (path.endsWith(ending)) {
@@ -92,7 +92,7 @@ public class TdsPathUtils {
   private static final char WINDOWS_SEPARATOR = '\\';
 
   private static String getBaseName(String filename) {
-    return removeExtension( getName(filename));
+    return removeExtension(getName(filename));
   }
 
   private static String removeExtension(String filename) {
@@ -142,7 +142,7 @@ public class TdsPathUtils {
       return null;
     }
     int index = indexOfLastSeparator(filename);
-    int endIndex = index+separatorAdd;
+    int endIndex = index + separatorAdd;
     if (prefix >= filename.length() || index < 0 || prefix >= endIndex) {
       return "";
     }
@@ -163,7 +163,7 @@ public class TdsPathUtils {
     }
     if (len == 1) {
       if (ch0 == '~') {
-        return 2;  // return a length greater than the input
+        return 2; // return a length greater than the input
       }
       return isSeparator(ch0) ? 1 : 0;
     } else {
@@ -171,7 +171,7 @@ public class TdsPathUtils {
         int posUnix = filename.indexOf(UNIX_SEPARATOR, 1);
         int posWin = filename.indexOf(WINDOWS_SEPARATOR, 1);
         if (posUnix == -1 && posWin == -1) {
-          return len + 1;  // return a length greater than the input
+          return len + 1; // return a length greater than the input
         }
         posUnix = posUnix == -1 ? posWin : posUnix;
         posWin = posWin == -1 ? posUnix : posWin;

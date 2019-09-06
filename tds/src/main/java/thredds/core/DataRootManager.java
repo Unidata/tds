@@ -10,16 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import org.springframework.util.StringUtils;
 import thredds.server.admin.DebugCommands;
 import thredds.server.catalog.*;
 import thredds.server.catalog.tracker.DataRootExt;
 import thredds.server.config.TdsContext;
-
 import thredds.util.filesource.FileSource;
 import ucar.nc2.util.AliasTranslator;
-
 import javax.annotation.Resource;
 import java.io.File;
 import java.util.*;
@@ -28,7 +25,8 @@ import java.util.*;
  * The DataRootHandler manages all the "data roots" for a TDS
  * and provides mappings from URLs to catalog and datasets.
  * <p/>
- * <p>The "data roots" are read in from one or more trees of config catalogs
+ * <p>
+ * The "data roots" are read in from one or more trees of config catalogs
  * and are defined by the datasetScan and datasetRoot and featureCollection elements in the config catalogs.
  * <p/>
  *
@@ -57,10 +55,9 @@ public class DataRootManager implements InitializingBean {
   @Autowired
   private DebugCommands debugCommands;
 
-  private DataRootManager() {
-  }
+  private DataRootManager() {}
 
-  //Set method must be called so annotation at method level rather than property level
+  // Set method must be called so annotation at method level rather than property level
   @Resource(name = "dataRootLocationAliasExpanders")
   public void setDataRootLocationAliasExpanders(Map<String, String> aliases) {
     for (Map.Entry<String, String> entry : aliases.entrySet())
@@ -76,13 +73,13 @@ public class DataRootManager implements InitializingBean {
         AliasTranslator.addAlias("content", StringUtils.cleanPath(file.getPath())); // LOOK
     }
 
-    File  uploaddir = tdsContext.getUploadDir();
-    if(uploaddir != null) {
-      AliasTranslator.addAlias("${tds.upload.dir}",StringUtils.cleanPath(uploaddir.getAbsolutePath()));
+    File uploaddir = tdsContext.getUploadDir();
+    if (uploaddir != null) {
+      AliasTranslator.addAlias("${tds.upload.dir}", StringUtils.cleanPath(uploaddir.getAbsolutePath()));
     }
 
     makeDebugActions();
-    startupLog.info("DataRootManager:" + AliasTranslator.size() +" aliases set ");
+    startupLog.info("DataRootManager:" + AliasTranslator.size() + " aliases set ");
   }
 
   public synchronized void setDataRootPathMatcher(DataRootPathMatcher dataRootPathMatcher) {
@@ -92,10 +89,10 @@ public class DataRootManager implements InitializingBean {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   static public class DataRootMatch {
-    public String rootPath;     // this is the matching part of the URL
-    public String remaining;   // this is the part of the URL that didnt match
-    public String dirLocation;   // this is the directory that should be substituted for the rootPath
-    public DataRoot dataRoot;  // this is the directory that should be substituted for the rootPath
+    public String rootPath; // this is the matching part of the URL
+    public String remaining; // this is the part of the URL that didnt match
+    public String dirLocation; // this is the directory that should be substituted for the rootPath
+    public DataRoot dataRoot; // this is the directory that should be substituted for the rootPath
   }
 
   /*
@@ -103,27 +100,30 @@ public class DataRootManager implements InitializingBean {
    * Aliasing has been done.
    *
    * @param path the dataRoot path name
+   * 
    * @return best DataRoot location or null if no match.
    *
-  public String findDataRootLocation(String path) {
-    if ((path.length() > 0) && (path.charAt(0) == '/'))
-      path = path.substring(1);
-
-    DataRoot dataRoot = dataRootPathMatcher.findLongestMatch(path);
-    return (dataRoot == null) ? null : dataRoot.getDirLocation();
-  }
-
-  /**
+   * public String findDataRootLocation(String path) {
+   * if ((path.length() > 0) && (path.charAt(0) == '/'))
+   * path = path.substring(1);
+   * 
+   * DataRoot dataRoot = dataRootPathMatcher.findLongestMatch(path);
+   * return (dataRoot == null) ? null : dataRoot.getDirLocation();
+   * }
+   * 
+   * /**
    * Extract the DataRoot from the request.
    * Use this when you need to manipulate the path based on the part that matches a DataRoot.
    *
    * @param req the request
+   * 
    * @return the DataRootMatch, or null if not found
    *
-  private DataRootMatch findDataRootMatch(HttpServletRequest req) {
-    String spath = TdsPathUtils.extractPath(req, null);
-    return findDataRootMatch(spath);
-  } */
+   * private DataRootMatch findDataRootMatch(HttpServletRequest req) {
+   * String spath = TdsPathUtils.extractPath(req, null);
+   * return findDataRootMatch(spath);
+   * }
+   */
 
   public DataRootMatch findDataRootMatch(String spath) {
     DataRoot dataRoot = findDataRoot(spath);
@@ -158,7 +158,8 @@ public class DataRootManager implements InitializingBean {
    *
    * @param reqPath the request path.
    * @return the location of the file on disk, or null
-   * @throws IllegalStateException if the request is not for a descendant of (or the same as) the matching DatasetRoot collection location.
+   * @throws IllegalStateException if the request is not for a descendant of (or the same as) the matching DatasetRoot
+   *         collection location.
    */
   public String getLocationFromRequestPath(String reqPath) {
     DataRoot reqDataRoot = findDataRoot(reqPath);
@@ -173,7 +174,7 @@ public class DataRootManager implements InitializingBean {
 
   public synchronized void showRoots(Formatter f) {
     List<Map.Entry<String, DataRootExt>> list = new ArrayList<>(dataRootPathMatcher.getValues());
-    Collections.sort(list, (o1, o2) -> o1.getKey().compareTo(o2.getKey()));    // java 8 lambda, baby
+    Collections.sort(list, (o1, o2) -> o1.getKey().compareTo(o2.getKey())); // java 8 lambda, baby
 
     for (Map.Entry<String, DataRootExt> entry : list) {
       f.format(" %s%n", entry.getValue());
@@ -215,7 +216,7 @@ public class DataRootManager implements InitializingBean {
       public void doAction(DebugCommands.Event e) {
         synchronized (DataRootManager.this) {
           List<Map.Entry<String, DataRootExt>> list = new ArrayList<>(dataRootPathMatcher.getValues());
-          Collections.sort(list, (o1, o2) -> o1.getKey().compareTo(o2.getKey()));    // java 8 lambda, baby
+          Collections.sort(list, (o1, o2) -> o1.getKey().compareTo(o2.getKey())); // java 8 lambda, baby
 
           for (Map.Entry<String, DataRootExt> entry : list) {
             DataRootExt ds = entry.getValue();

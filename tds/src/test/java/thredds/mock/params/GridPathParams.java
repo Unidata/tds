@@ -9,7 +9,7 @@
  * this software, and any derivative works thereof, and its supporting
  * documentation for any purpose whatsoever, provided that this entire
  * notice appears in all copies of the software, derivative works and
- * supporting documentation.  Further, UCAR requests that the user credit
+ * supporting documentation. Further, UCAR requests that the user credit
  * UCAR/Unidata in any publications that result from the use of this
  * software or in any product that includes this software. The names UCAR
  * and/or Unidata, however, may not be used in any advertising or publicity
@@ -36,7 +36,7 @@ import java.util.List;
 
 /**
  * Provide params for parameterized tests.
- * Params match with catalogs in catalog.xml in src/test/resources/content/thredds/catalog.xml 
+ * Params match with catalogs in catalog.xml in src/test/resources/content/thredds/catalog.xml
  * 
  * @author mhermida
  */
@@ -46,17 +46,17 @@ public final class GridPathParams {
    */
   private static List<String> pathInfo;
 
-  private GridPathParams(){}
+  private GridPathParams() {}
 
   static {
-    pathInfo = Arrays.asList(
-            "/ncss/grid/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc",//single dataset
-            "/ncss/grid/testGridScan/GFS_CONUS_80km_20120227_0000.grib1", //datasetScan
-            "/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_fmrc.ncd", //FeatureCollection --> TwoD
-            "/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd", //FeatureCollection --> Best
-            "/ncss/grid/testGFSfmrc/files/GFS_CONUS_80km_20120418_1200.nc", //FeatureCollection --> Files
-            "/ncss/grid/testGFSfmrc/runs/GFS_CONUS_80km_RUN_2012-04-18T12:00:00.000Z" //FeatureCollection --> Runs
-      );
+    pathInfo = Arrays.asList("/ncss/grid/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc", // single
+                                                                                                          // dataset
+        "/ncss/grid/testGridScan/GFS_CONUS_80km_20120227_0000.grib1", // datasetScan
+        "/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_fmrc.ncd", // FeatureCollection --> TwoD
+        "/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd", // FeatureCollection --> Best
+        "/ncss/grid/testGFSfmrc/files/GFS_CONUS_80km_20120418_1200.nc", // FeatureCollection --> Files
+        "/ncss/grid/testGFSfmrc/runs/GFS_CONUS_80km_RUN_2012-04-18T12:00:00.000Z" // FeatureCollection --> Runs
+    );
   }
 
   public static List<String> getPathInfo() {
@@ -66,8 +66,8 @@ public final class GridPathParams {
   public static List<String[]> getPathInfoAsListOfArrays() {
     String[][] listStr = new String[pathInfo.size()][1];
 
-    for(int i=0; i < pathInfo.size(); i++  ){
-      listStr[i] = new String[]{ pathInfo.get(i) };
+    for (int i = 0; i < pathInfo.size(); i++) {
+      listStr[i] = new String[] {pathInfo.get(i)};
     }
 
     return Arrays.asList(listStr);

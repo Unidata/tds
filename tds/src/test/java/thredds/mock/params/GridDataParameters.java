@@ -9,7 +9,7 @@
  * this software, and any derivative works thereof, and its supporting
  * documentation for any purpose whatsoever, provided that this entire
  * notice appears in all copies of the software, derivative works and
- * supporting documentation.  Further, UCAR requests that the user credit
+ * supporting documentation. Further, UCAR requests that the user credit
  * UCAR/Unidata in any publications that result from the use of this
  * software or in any product that includes this software. The names UCAR
  * and/or Unidata, however, may not be used in any advertising or publicity
@@ -32,7 +32,6 @@
 package thredds.mock.params;
 
 import com.beust.jcommander.internal.Lists;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,57 +42,60 @@ import java.util.List;
  */
 public class GridDataParameters {
 
-  private static  List<List<String>> vars;
+  private static List<List<String>> vars;
 
-  private static List<double[]> latlonRect; //Arrays containing west, south, east, north
+  private static List<double[]> latlonRect; // Arrays containing west, south, east, north
 
-  private static List<double[]> projectionRect; //Arrays containing minx, miny, maxx, maxy
+  private static List<double[]> projectionRect; // Arrays containing minx, miny, maxx, maxy
 
-  private GridDataParameters(){}
+  private GridDataParameters() {}
 
-  static{
+  static {
 
 
     vars = new ArrayList<>();
-    //Variables with no vertical level
+    // Variables with no vertical level
     vars.add(Lists.newArrayList("Pressure", "Pressure_reduced_to_MSL"));
-    //Variables with one vertical level
+    // Variables with one vertical level
     vars.add(Arrays.asList("Relative_humidity_height_above_ground", "Temperature_height_above_ground"));
-    //Variables with multiple vertical levels (hPa)
+    // Variables with multiple vertical levels (hPa)
     vars.add(Arrays.asList("Temperature", "Relative_humidity"));
-    //No vert level and vert levels
+    // No vert level and vert levels
     vars.add(Arrays.asList("Pressure", "Temperature", "Relative_humidity_height_above_ground"));
-    //Different vert levels
+    // Different vert levels
     vars.add(Arrays.asList("Relative_humidity_height_above_ground", "Temperature"));
 
     projectionRect = new ArrayList<>();
 
-    projectionRect.add(new double[]{-4226.106971141345, -832.6983183345455, -4126.106971141345, -732.6983183345455 }); //2x2
-    projectionRect.add(new double[]{-600, -600, 600, 600 });//15x16
-    projectionRect.add(new double[]{-4226.106971141345, 4268.6456816654545, 3250.825028858655, 4368.6456816654545 });//2x93
+    projectionRect.add(new double[] {-4226.106971141345, -832.6983183345455, -4126.106971141345, -732.6983183345455}); // 2x2
+    projectionRect.add(new double[] {-600, -600, 600, 600});// 15x16
+    projectionRect.add(new double[] {-4226.106971141345, 4268.6456816654545, 3250.825028858655, 4368.6456816654545});// 2x93
 
-    projectionRect.add(new double[]{-4264.248291015625, -872.8428344726562, 3293.955078125, 4409.772216796875 });//Full range
-    projectionRect.add(new double[]{-4864.248291015625, -1272.8428344726562, 0, 0 });//Intersects
+    projectionRect.add(new double[] {-4264.248291015625, -872.8428344726562, 3293.955078125, 4409.772216796875});// Full
+                                                                                                                 // range
+    projectionRect.add(new double[] {-4864.248291015625, -1272.8428344726562, 0, 0});// Intersects
 
-    //projectionRect.add(new double[]{-6464.248291015625, -1892.8428344726562, -4064.248291015625, -972.8428344726562 }); //DOES NOT INTERSECT
+    // projectionRect.add(new double[]{-6464.248291015625, -1892.8428344726562, -4064.248291015625, -972.8428344726562
+    // }); //DOES NOT INTERSECT
 
     latlonRect = new ArrayList<>();
-    latlonRect.add(new double[]{-153.5889, 11.7476, -48.5984,57.4843 });
-    latlonRect.add(new double[]{-160.5889, 40.7476, -106.93, 64.65 });
-    latlonRect.add(new double[]{-99.171226, 57.659579, -94.967505, 61.196857 }); //Intersects the Grid but not the declared bounding box
+    latlonRect.add(new double[] {-153.5889, 11.7476, -48.5984, 57.4843});
+    latlonRect.add(new double[] {-160.5889, 40.7476, -106.93, 64.65});
+    latlonRect.add(new double[] {-99.171226, 57.659579, -94.967505, 61.196857}); // Intersects the Grid but not the
+                                                                                 // declared bounding box
 
-    latlonRect.add(new double[]{40.0 , -40.0, 50.0, -30.0 }); //Does not intersect
+    latlonRect.add(new double[] {40.0, -40.0, 50.0, -30.0}); // Does not intersect
   }
 
-  public static List<List<String>>  getVars(){
+  public static List<List<String>> getVars() {
     return vars;
   }
 
-  public static List<double[]> getProjectionRect(){
+  public static List<double[]> getProjectionRect() {
     return projectionRect;
   }
 
-  public static List<double[]> getLatLonRect(){
+  public static List<double[]> getLatLonRect() {
     return latlonRect;
   }
 

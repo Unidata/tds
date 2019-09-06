@@ -7,9 +7,7 @@ package thredds.server.root;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import thredds.servlet.ServletUtil;
 
 /**
@@ -19,11 +17,11 @@ import thredds.servlet.ServletUtil;
  * @author caron
  * @since 7/5/11
  */
-//@Controller
+// @Controller
 public class TestController {
 
-  //@RequestMapping(value="/test/**")
-  public @ResponseBody String getRequestDetails(HttpServletRequest req,  HttpServletResponse res) throws Exception {
+  // @RequestMapping(value="/test/**")
+  public @ResponseBody String getRequestDetails(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
     String path = req.getPathInfo();
     if (path == null)

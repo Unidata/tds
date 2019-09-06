@@ -11,14 +11,11 @@ import org.springframework.stereotype.Component;
 import thredds.server.config.TdsContext;
 import thredds.servlet.ServletUtil;
 import ucar.nc2.dataset.NetcdfDataset;
-
 import java.io.ByteArrayOutputStream;
 import java.util.*;
 import java.io.PrintStream;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import ucar.nc2.grib.collection.GribCdmIndex;
 import ucar.nc2.util.cache.FileCacheIF;
 import ucar.unidata.io.RandomAccessFile;
@@ -82,7 +79,8 @@ public class DebugCommands {
     public ByteArrayOutputStream bos;
     public String target;
 
-    public Event(HttpServletRequest req, HttpServletResponse res, PrintStream pw, ByteArrayOutputStream bos, String target) {
+    public Event(HttpServletRequest req, HttpServletResponse res, PrintStream pw, ByteArrayOutputStream bos,
+        String target) {
       this.req = req;
       this.res = res;
       this.pw = pw;
@@ -115,21 +113,24 @@ public class DebugCommands {
         FileCacheIF fc;
 
         fc = RandomAccessFile.getGlobalFileCache();
-        if (fc == null) f.format("%nRandomAccessFile : turned off%n");
+        if (fc == null)
+          f.format("%nRandomAccessFile : turned off%n");
         else {
           f.format("%n%n");
           fc.showCache(f);
         }
 
         fc = NetcdfDataset.getNetcdfFileCache();
-        if (fc == null) f.format("NetcdfDatasetFileCache : turned off%n");
+        if (fc == null)
+          f.format("NetcdfDatasetFileCache : turned off%n");
         else {
           f.format("%n%n");
           fc.showCache(f);
         }
 
         fc = GribCdmIndex.gribCollectionCache;
-        if (fc == null) f.format("%nTimePartitionCache : turned off%n");
+        if (fc == null)
+          f.format("%nTimePartitionCache : turned off%n");
         else {
           f.format("%n%n");
           fc.showCache(f);
@@ -141,23 +142,24 @@ public class DebugCommands {
     debugHandler.addAction(act);
 
     act = new Action("clearCaches", "Clear All File Object Caches") {
-       public void doAction(Event e) {
-         NetcdfDataset.getNetcdfFileCache().clearCache(false);
-         RandomAccessFile.getGlobalFileCache().clearCache(false);
-         FileCacheIF fc = GribCdmIndex.gribCollectionCache;
-         if (fc != null) fc.clearCache(false);
-         e.pw.println("  ClearCache ok");
-       }
-     };
-     debugHandler.addAction(act);
+      public void doAction(Event e) {
+        NetcdfDataset.getNetcdfFileCache().clearCache(false);
+        RandomAccessFile.getGlobalFileCache().clearCache(false);
+        FileCacheIF fc = GribCdmIndex.gribCollectionCache;
+        if (fc != null)
+          fc.clearCache(false);
+        e.pw.println("  ClearCache ok");
+      }
+    };
+    debugHandler.addAction(act);
 
     act = new Action("disableRAFCache", "Disable RandomAccessFile Cache") {
-       public void doAction(Event e) {
-         RandomAccessFile.getGlobalFileCache().disable();
-         e.pw.println("  Disable RandomAccessFile Cache ok");
-       }
-     };
-     debugHandler.addAction(act);
+      public void doAction(Event e) {
+        RandomAccessFile.getGlobalFileCache().disable();
+        e.pw.println("  Disable RandomAccessFile Cache ok");
+      }
+    };
+    debugHandler.addAction(act);
 
     act = new Action("forceRAFCache", "Force clear RandomAccessFile Cache") {
       public void doAction(Event e) {
@@ -169,14 +171,14 @@ public class DebugCommands {
 
 
     act = new Action("disableNetcdfCache", "Disable NetcdfDatasetFile Cache") {
-       public void doAction(Event e) {
-         NetcdfDataset.disableNetcdfFileCache();
-         e.pw.println("  Disable NetcdfFile Cache ok");
-       }
-     };
-     debugHandler.addAction(act);
+      public void doAction(Event e) {
+        NetcdfDataset.disableNetcdfFileCache();
+        e.pw.println("  Disable NetcdfFile Cache ok");
+      }
+    };
+    debugHandler.addAction(act);
 
-     act = new Action("forceNCCache", "Force clear NetcdfDatasetFile Cache") {
+    act = new Action("forceNCCache", "Force clear NetcdfDatasetFile Cache") {
       public void doAction(Event e) {
         NetcdfDataset.getNetcdfFileCache().clearCache(true);
         e.pw.println("  NetcdfFileCache force clearCache done");
@@ -185,17 +187,18 @@ public class DebugCommands {
     debugHandler.addAction(act);
 
     act = new Action("disableTimePartitionCache", "Disable TimePartition Cache") {
-       public void doAction(Event e) {
-         GribCdmIndex.disableGribCollectionCache();
-         e.pw.println("  Disable gribCollectionCache ok");
-       }
-     };
-     debugHandler.addAction(act);
+      public void doAction(Event e) {
+        GribCdmIndex.disableGribCollectionCache();
+        e.pw.println("  Disable gribCollectionCache ok");
+      }
+    };
+    debugHandler.addAction(act);
 
     act = new Action("forceGCCache", "Force clear TimePartition Cache") {
       public void doAction(Event e) {
         FileCacheIF fc = GribCdmIndex.gribCollectionCache;
-        if (fc != null) fc.clearCache(true);
+        if (fc != null)
+          fc.clearCache(true);
         e.pw.println("  gribCollectionCache force clearCache done");
       }
     };
@@ -210,7 +213,7 @@ public class DebugCommands {
     act = new Action("enableRafHandles", "Toggle tracking open RAF") {
       public void doAction(Event e) {
         try {
-          RandomAccessFile.setDebugLeaks( !RandomAccessFile.getDebugLeaks());
+          RandomAccessFile.setDebugLeaks(!RandomAccessFile.getDebugLeaks());
           e.pw.println("  Tracking RAF=" + RandomAccessFile.getDebugLeaks());
         } catch (Exception ioe) {
           e.pw.println(ioe.getMessage());
@@ -243,8 +246,8 @@ public class DebugCommands {
     act = new Action("showVersion", "Show Build Version") {
       public void doAction(Event e) {
         try {
-          e.pw.println("version= "+webappVersion);                 // LOOK could show all of TdsContext
-          e.pw.println("build date= "+webappVersionBuildDate);
+          e.pw.println("version= " + webappVersion); // LOOK could show all of TdsContext
+          e.pw.println("build date= " + webappVersionBuildDate);
         } catch (Exception ioe) {
           e.pw.println(ioe.getMessage());
         }
@@ -300,6 +303,6 @@ public class DebugCommands {
       }
     };
     debugHandler.addAction(act);
-  }  
+  }
 
 }

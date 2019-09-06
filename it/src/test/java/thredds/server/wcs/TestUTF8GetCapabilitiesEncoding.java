@@ -18,7 +18,6 @@ import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.ByteArrayInputStream;
 import java.lang.invoke.MethodHandles;
 import java.nio.ByteBuffer;
@@ -39,15 +38,17 @@ import java.util.Collection;
 public class TestUTF8GetCapabilitiesEncoding {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  @Parameterized.Parameters(name="{0}")
-  public static Collection<Object[]> getTestParameters(){
-     return Arrays.asList(new Object[][]{
-            {"/wcs/scanCdmUnitTests/tds/ncep/GFS_Global_2p5deg_20100602_1200.grib2", "service=WCS&version=1.0.0&request=GetCapabilities"},
-            // {"/wms/scanCdmUnitTests/tds/ncep/GFS_Global_2p5deg_20100602_1200.grib2", "service=WMS&version=1.3.0&request=GetCapabilities"},
+  @Parameterized.Parameters(name = "{0}")
+  public static Collection<Object[]> getTestParameters() {
+    return Arrays.asList(new Object[][] {{"/wcs/scanCdmUnitTests/tds/ncep/GFS_Global_2p5deg_20100602_1200.grib2",
+        "service=WCS&version=1.0.0&request=GetCapabilities"},
+        // {"/wms/scanCdmUnitTests/tds/ncep/GFS_Global_2p5deg_20100602_1200.grib2",
+        // "service=WMS&version=1.3.0&request=GetCapabilities"},
     });
-   }
+  }
 
   String path, query;
+
   public TestUTF8GetCapabilitiesEncoding(String path, String query) {
     this.path = path;
     this.query = query;
@@ -104,7 +105,7 @@ public class TestUTF8GetCapabilitiesEncoding {
         int len = 100;
         byte[] dst = new byte[len];
         for (int i = 0; i < len; i++)
-          dst[i] = bb.get(pos-len+i);
+          dst[i] = bb.get(pos - len + i);
         String s = new String(dst);
         System.out.printf("before = %s%n", s);
 

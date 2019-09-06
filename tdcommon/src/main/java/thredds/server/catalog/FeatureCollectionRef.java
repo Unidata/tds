@@ -9,7 +9,7 @@
  * this software, and any derivative works thereof, and its supporting
  * documentation for any purpose whatsoever, provided that this entire
  * notice appears in all copies of the software, derivative works and
- * supporting documentation.  Further, UCAR requests that the user credit
+ * supporting documentation. Further, UCAR requests that the user credit
  * UCAR/Unidata in any publications that result from the use of this
  * software or in any product that includes this software. The names UCAR
  * and/or Unidata, however, may not be used in any advertising or publicity
@@ -40,7 +40,6 @@ import thredds.featurecollection.FeatureCollectionConfig;
 import thredds.featurecollection.FeatureCollectionType;
 import thredds.inventory.CollectionSpecParser;
 import ucar.nc2.util.AliasTranslator;
-
 import javax.annotation.concurrent.Immutable;
 import java.util.List;
 import java.util.Map;
@@ -57,11 +56,14 @@ public class FeatureCollectionRef extends CatalogRef {
   final thredds.featurecollection.FeatureCollectionConfig config;
   final String topDirectoryLocation;
 
-  public FeatureCollectionRef(DatasetNode parent, String name, String xlink, Map<String, Object> flds, List<AccessBuilder> accessBuilders, List<DatasetBuilder> datasetBuilders,
-                              thredds.featurecollection.FeatureCollectionConfig config) {
+  public FeatureCollectionRef(DatasetNode parent, String name, String xlink, Map<String, Object> flds,
+      List<AccessBuilder> accessBuilders, List<DatasetBuilder> datasetBuilders,
+      thredds.featurecollection.FeatureCollectionConfig config) {
     super(parent, name, xlink, flds, accessBuilders, datasetBuilders);
     this.config = config;
-    this.config.spec = AliasTranslator.translateAlias(this.config.spec); // <collection spec="${cdmUnitTest}/ncss/CONUS_80km_nc/GFS_CONUS_80km_#yyyyMMdd_HHmm#.nc$" />
+    this.config.spec = AliasTranslator.translateAlias(this.config.spec); // <collection
+                                                                         // spec="${cdmUnitTest}/ncss/CONUS_80km_nc/GFS_CONUS_80km_#yyyyMMdd_HHmm#.nc$"
+                                                                         // />
 
     CollectionSpecParser specp = new CollectionSpecParser(config.spec, null);
     topDirectoryLocation = specp.getRootDir();

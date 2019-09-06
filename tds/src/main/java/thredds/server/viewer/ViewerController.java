@@ -8,11 +8,9 @@ package thredds.server.viewer;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import thredds.server.config.TdsContext;
 import thredds.servlet.ServletUtil;
 import thredds.util.ContentType;
@@ -40,7 +37,8 @@ public class ViewerController {
   ViewerService viewerService;
 
   @RequestMapping(value = "{viewer}.jnlp", method = RequestMethod.GET)
-  public void launchViewer(@Valid ViewerRequestParamsBean params, BindingResult result, HttpServletResponse res, HttpServletRequest req) throws IOException {
+  public void launchViewer(@Valid ViewerRequestParamsBean params, BindingResult result, HttpServletResponse res,
+      HttpServletRequest req) throws IOException {
 
     if (result.hasErrors()) {
       res.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -54,7 +52,7 @@ public class ViewerController {
 
     String viewerName = StringUtil2.filter7bits(params.getViewer()) + ".jnlp";
 
-    //Check paths LOOK lame
+    // Check paths LOOK lame
     File viewPath = new File(tdsContext.getServletRootDirectory(), "/WEB-INF/views/" + viewerName);
     String template = viewerService.getViewerTemplate(viewPath.getPath());
 
@@ -75,7 +73,8 @@ public class ViewerController {
 
     } catch (Throwable t) {
       log.error(" jnlp=" + strResp, t);
-      if (!res.isCommitted()) res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      if (!res.isCommitted())
+        res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -93,7 +92,8 @@ public class ViewerController {
         String sname = "{" + name + "}";
         for (String value : values) {
           String filteredValue = StringUtil2.filter7bits(value);
-          StringUtil2.substitute(sbuff, sname, filteredValue); // multiple occurences in the template will all get replaced
+          StringUtil2.substitute(sbuff, sname, filteredValue); // multiple occurences in the template will all get
+                                                               // replaced
         }
       }
     }

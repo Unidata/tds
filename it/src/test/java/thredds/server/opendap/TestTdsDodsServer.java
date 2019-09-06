@@ -29,7 +29,6 @@ import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.StringUtil2;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Formatter;
@@ -41,13 +40,15 @@ public class TestTdsDodsServer {
 
   @Test
   public void checkBadRequest() {
-    String endpoint = TestOnLocalServer.withHttpPath("/dodsC/scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2.badascii?Visibility_surface[0:1:0][0:1:0][0:1:0]");
+    String endpoint = TestOnLocalServer.withHttpPath(
+        "/dodsC/scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2.badascii?Visibility_surface[0:1:0][0:1:0][0:1:0]");
     byte[] result = TestOnLocalServer.getContent(endpoint, 400, null);
   }
 
   @Test
   public void testGridArrayAscii() {
-    String endpoint = TestOnLocalServer.withHttpPath("/dodsC/scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2.ascii?Visibility_surface[0:1:0][0:1:0][0:1:0]");
+    String endpoint = TestOnLocalServer.withHttpPath(
+        "/dodsC/scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2.ascii?Visibility_surface[0:1:0][0:1:0][0:1:0]");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, null);
     Assert.assertNotNull(result);
     String results = new String(result, StandardCharsets.UTF_8);
@@ -58,32 +59,33 @@ public class TestTdsDodsServer {
   @Test
   public void testUrlReading() throws IOException {
     doOne(TestOnLocalServer.withHttpPath("dodsC/scanCdmUnitTests/tds/ncep/NAM_Alaska_22km_20100504_0000.grib1"));
-    doOne(TestOnLocalServer.withHttpPath("dodsC/scanCdmUnitTests/tds/ncep/NAM_Alaska_45km_conduit_20100913_0000.grib2"));
+    doOne(
+        TestOnLocalServer.withHttpPath("dodsC/scanCdmUnitTests/tds/ncep/NAM_Alaska_45km_conduit_20100913_0000.grib2"));
   }
 
   /*
-  Dataset {
-      Grid {
-       ARRAY:
-          Float32 Visibility_surface[time = 1][y = 1][x = 1];
-       MAPS:
-          Int32 time[time = 1];
-          Float32 y[y = 1];
-          Float32 x[x = 1];
-      } Visibility_surface;
-  } testTdsScan/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2;
-  ---------------------------------------------
-  Visibility_surface.Visibility_surface[1][1][1]
-  [0][0], 15636.879
-
-  Visibility_surface.time[1]
-  0
-
-  Visibility_surface.y[1]
-  -832.6978
-
-  Visibility_surface.x[1]
-  -4226.1084
+   * Dataset {
+   * Grid {
+   * ARRAY:
+   * Float32 Visibility_surface[time = 1][y = 1][x = 1];
+   * MAPS:
+   * Int32 time[time = 1];
+   * Float32 y[y = 1];
+   * Float32 x[x = 1];
+   * } Visibility_surface;
+   * } testTdsScan/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2;
+   * ---------------------------------------------
+   * Visibility_surface.Visibility_surface[1][1][1]
+   * [0][0], 15636.879
+   * 
+   * Visibility_surface.time[1]
+   * 0
+   * 
+   * Visibility_surface.y[1]
+   * -832.6978
+   * 
+   * Visibility_surface.x[1]
+   * -4226.1084
    */
 
   @Test
@@ -98,9 +100,9 @@ public class TestTdsDodsServer {
     try (DataFactory.Result dataResult = fac.openFeatureDataset(ds, null)) {
       Assert.assertTrue(dataResult.errLog.toString(), !dataResult.fatalError);
       Assert.assertNotNull(dataResult.featureDataset);
-      Assert.assertEquals( ucar.nc2.dt.grid.GridDataset.class, dataResult.featureDataset.getClass());
+      Assert.assertEquals(ucar.nc2.dt.grid.GridDataset.class, dataResult.featureDataset.getClass());
 
-      ucar.nc2.dt.grid.GridDataset gds = ( ucar.nc2.dt.grid.GridDataset) dataResult.featureDataset;
+      ucar.nc2.dt.grid.GridDataset gds = (ucar.nc2.dt.grid.GridDataset) dataResult.featureDataset;
       String gridName = "Z_sfc";
       VariableSimpleIF vs = gds.getDataVariable(gridName);
       Assert.assertNotNull(gridName, vs);
@@ -141,7 +143,7 @@ public class TestTdsDodsServer {
   @Test
   public void testCompareWithFile() throws IOException {
     final String urlPrefix = TestOnLocalServer.withHttpPath("/dodsC/scanCdmUnitTests/tds/opendap/");
-    final String dirName = TestDir.cdmUnitTestDir + "tds/opendap/";  // read all files from this dir
+    final String dirName = TestDir.cdmUnitTestDir + "tds/opendap/"; // read all files from this dir
 
     TestDir.actOnAll(dirName, new TestDir.FileFilterNoWant(".gbx8 .gbx9 .ncx .ncx2 .ncx3"), new TestDir.Act() {
       public int doAct(String filename) throws IOException {
@@ -156,12 +158,13 @@ public class TestTdsDodsServer {
 
         Formatter f = new Formatter();
         CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, false);
-        boolean ok = mind.compare(org_ncfile, dods_file, new TestDODScompareWithFiles.DodsObjFilter(), false, false, false);
+        boolean ok =
+            mind.compare(org_ncfile, dods_file, new TestDODScompareWithFiles.DodsObjFilter(), false, false, false);
         if (!ok) {
           logger.debug("--Compare {}", filename);
           logger.debug("  {}", f);
         }
-        Assert.assertTrue( localPath+ " != "+dodsUrl, ok);
+        Assert.assertTrue(localPath + " != " + dodsUrl, ok);
 
         return 1;
       }

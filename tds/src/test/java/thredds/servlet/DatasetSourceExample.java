@@ -5,21 +5,20 @@ import thredds.util.TdsPathUtils;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.dataset.NetcdfDataset;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 
 /**
- * DatasetSource test  LOOK this doesnt work
+ * DatasetSource test LOOK this doesnt work
  *
  * @author caron
  * @since 2/17/11
  */
 public class DatasetSourceExample implements thredds.servlet.DatasetSource {
-  static final String prefix =  "/special/";
-  static final int prefixLen =  prefix.length();
+  static final String prefix = "/special/";
+  static final int prefixLen = prefix.length();
 
   public DatasetSourceExample() {
     System.out.printf("%s%n", "YO");
@@ -42,9 +41,9 @@ public class DatasetSourceExample implements thredds.servlet.DatasetSource {
     int pos = match.remaining.lastIndexOf('.');
     String filename = match.remaining.substring(0, pos);
 
-    File file = new File(match.dirLocation+filename);
+    File file = new File(match.dirLocation + filename);
     if (!file.exists()) {
-      res.sendError(HttpServletResponse.SC_NOT_FOUND, match.dirLocation+filename);
+      res.sendError(HttpServletResponse.SC_NOT_FOUND, match.dirLocation + filename);
       return null;
     }
 

@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * @see "http://www.java-allandsundry.com/2012/03/endpoint-documentation-controller-for.html"
  */
 @Controller
-@RequestMapping(value ="/admin/spring", method= RequestMethod.GET)
+@RequestMapping(value = "/admin/spring", method = RequestMethod.GET)
 public class AdminSpringInfoController {
 
   @Autowired

@@ -9,10 +9,8 @@
 package thredds.server.opendap;
 
 import opendap.servers.*;
-
 import java.io.IOException;
 import java.io.DataOutputStream;
-
 import ucar.ma2.*;
 import ucar.nc2.*;
 
@@ -30,11 +28,13 @@ public class NcSDInt32 extends SDInt32 implements HasNetcdfVariable {
    * @param v : the netcdf Variable
    */
   NcSDInt32(Variable v) {
-      super(Variable.getDAPName(v));
+    super(Variable.getDAPName(v));
     this.ncVar = v;
   }
 
-  public Variable getVariable() { return ncVar; }
+  public Variable getVariable() {
+    return ncVar;
+  }
 
   /**
    * Read the value (parameters are ignored).
@@ -50,7 +50,7 @@ public class NcSDInt32 extends SDInt32 implements HasNetcdfVariable {
   }
 
   public void serialize(DataOutputStream sink, StructureData sdata, StructureMembers.Member m) throws IOException {
-    setValue( sdata.getScalarInt(m));
+    setValue(sdata.getScalarInt(m));
     externalize(sink);
   }
 }

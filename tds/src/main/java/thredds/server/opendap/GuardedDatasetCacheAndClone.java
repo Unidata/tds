@@ -6,7 +6,6 @@ package thredds.server.opendap;
 
 import opendap.servlet.GuardedDataset;
 import ucar.nc2.NetcdfFile;
-
 import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 

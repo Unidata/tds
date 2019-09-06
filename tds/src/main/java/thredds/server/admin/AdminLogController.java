@@ -7,10 +7,8 @@ package thredds.server.admin;
 
 import java.io.*;
 import java.util.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import thredds.core.DataRootManager;
 import thredds.server.config.TdsContext;
 import thredds.servlet.ServletUtil;
@@ -33,7 +30,7 @@ import thredds.util.TdsPathUtils;
  * @since 4.0
  */
 @Controller
-@RequestMapping(value="/admin/log", method=RequestMethod.GET)
+@RequestMapping(value = "/admin/log", method = RequestMethod.GET)
 public class AdminLogController {
   private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
 
@@ -53,7 +50,7 @@ public class AdminLogController {
     return new ResponseEntity<>(f.toString(), responseHeaders, HttpStatus.OK);
   }
 
-  @RequestMapping( "**")
+  @RequestMapping("**")
   protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse res) throws Exception {
     String path = TdsPathUtils.extractPath(req, "/admin/log");
 
@@ -85,7 +82,7 @@ public class AdminLogController {
       file = new File(tdsContext.getThreddsDirectory(), "logs/threddsServlet.log");
 
     } else if (path.equals("thredds/")) {
-      showFiles(new File(tdsContext.getThreddsDirectory(),"logs"), "thredds", res);
+      showFiles(new File(tdsContext.getThreddsDirectory(), "logs"), "thredds", res);
 
     } else if (path.startsWith("thredds/")) {
       file = new File(tdsContext.getThreddsDirectory(), "logs/" + path.substring(8));

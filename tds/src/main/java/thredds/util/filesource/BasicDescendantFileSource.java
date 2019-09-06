@@ -7,7 +7,6 @@ package thredds.util.filesource;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.springframework.util.StringUtils;
-
 import java.io.File;
 
 /**
@@ -17,7 +16,7 @@ import java.io.File;
  * @since 4.0
  */
 public class BasicDescendantFileSource implements DescendantFileSource {
-  //private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(BasicDescendantFileSource.class);
+  // private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(BasicDescendantFileSource.class);
 
   private final String rootDirectoryPath;
   private final File rootDirectory;
@@ -28,7 +27,8 @@ public class BasicDescendantFileSource implements DescendantFileSource {
     if (!rootDirectory.exists())
       throw new IllegalArgumentException("Root directory must exist: " + rootDirectory.getAbsolutePath() + ".");
     if (!rootDirectory.isDirectory())
-      throw new IllegalArgumentException("Root directory must be a directory: " + rootDirectory.getAbsolutePath() + ".");
+      throw new IllegalArgumentException(
+          "Root directory must be a directory: " + rootDirectory.getAbsolutePath() + ".");
     this.rootDirectoryPath = StringUtils.cleanPath(rootDirectory.getAbsolutePath());
     this.rootDirectory = new File(this.rootDirectoryPath);
   }
@@ -55,7 +55,8 @@ public class BasicDescendantFileSource implements DescendantFileSource {
    * (e.g., "dir1/../../dir2" once normalized would be "../dir2").
    *
    * @param path the relative path to the descendant File.
-   * @return the descendant File represented by the given relative path or null if the path is null, not relative to the root, not a descendant, or the File doesn't exist.
+   * @return the descendant File represented by the given relative path or null if the path is null, not relative to the
+   *         root, not a descendant, or the File doesn't exist.
    */
   public File getFile(String path) {
     if (path == null)
@@ -104,7 +105,7 @@ public class BasicDescendantFileSource implements DescendantFileSource {
       return null;
     String cleanPath = StringUtils.cleanPath(file.getAbsolutePath()).trim();
     if (cleanPath.startsWith(this.rootDirectoryPath + "/")
-            && cleanPath.length() > this.rootDirectoryPath.length() + 1) {
+        && cleanPath.length() > this.rootDirectoryPath.length() + 1) {
       String relativePath = cleanPath.substring(this.rootDirectoryPath.length() + 1);
       return relativePath.trim();
     }
@@ -119,8 +120,6 @@ public class BasicDescendantFileSource implements DescendantFileSource {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-            .add("rootDirectoryPath", rootDirectoryPath)
-            .toString();
+    return MoreObjects.toStringHelper(this).add("rootDirectoryPath", rootDirectoryPath).toString();
   }
 }

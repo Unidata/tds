@@ -18,7 +18,6 @@ import thredds.server.catalog.ConfigCatalog;
 import thredds.server.catalog.ConfigCatalogCache;
 import thredds.server.catalog.DatasetScan;
 import thredds.server.config.TdsContext;
-
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class CatalogManager {
    * The validity of the returned catalog is not guaranteed. Use Catalog.check() to
    * check that the catalog is valid.
    *
-   * @param path    the path for the requested catalog.
+   * @param path the path for the requested catalog.
    * @param baseURI the base URI for the catalog, used to resolve relative URLs.
    * @return the requested Catalog, or null if catalog does not exist or is not allowed.
    */
@@ -80,7 +79,7 @@ public class CatalogManager {
         catBuilder = (CatalogBuilder) dyno;
       } else {
         ConfigCatalog configCatalog = (ConfigCatalog) dyno;
-        catBuilder = configCatalog.makeCatalogBuilder();     // turn it back into mutable object
+        catBuilder = configCatalog.makeCatalogBuilder(); // turn it back into mutable object
       }
       addGlobalServices(catBuilder);
       return catBuilder.makeCatalog();
@@ -88,7 +87,8 @@ public class CatalogManager {
 
     // check cache and read if needed
     ConfigCatalog configCatalog = ccc.get(workPath);
-    if (configCatalog == null) return null;
+    if (configCatalog == null)
+      return null;
     CatalogBuilder catBuilder = configCatalog.makeCatalogBuilder();
     addGlobalServices(catBuilder);
     return catBuilder.makeCatalog();
@@ -121,7 +121,8 @@ public class CatalogManager {
     // DatasetScan
     DatasetScan dscan = match.dataRoot.getDatasetScan();
     if (dscan != null) {
-      if (log.isDebugEnabled()) log.debug("makeDynamicCatalog(): Calling DatasetScan.makeCatalogForDirectory( " + baseURI + ", " + path + ").");
+      if (log.isDebugEnabled())
+        log.debug("makeDynamicCatalog(): Calling DatasetScan.makeCatalogForDirectory( " + baseURI + ", " + path + ").");
       CatalogBuilder cat;
 
       if (isLatest)
@@ -142,7 +143,8 @@ public class CatalogManager {
         return catScan.getCatalog(tdsContext.getThreddsDirectory(), match.remaining, filename, ccc);
       }
 
-      if (log.isDebugEnabled()) log.debug("makeDynamicCatalog(): Calling CatalogScan.makeCatalogForDirectory( " + baseURI + ", " + path + ").");
+      if (log.isDebugEnabled())
+        log.debug("makeDynamicCatalog(): Calling CatalogScan.makeCatalogForDirectory( " + baseURI + ", " + path + ").");
       CatalogBuilder cat = catScan.makeCatalogFromDirectory(tdsContext.getThreddsDirectory(), match.remaining, baseURI);
 
       if (null == cat)
@@ -162,13 +164,15 @@ public class CatalogManager {
 
     // look for datasets that want to use global services
     Set<String> allServiceNames = new HashSet<>();
-    findServices(cat.getDatasets(), allServiceNames);  // all services used
+    findServices(cat.getDatasets(), allServiceNames); // all services used
     if (!allServiceNames.isEmpty()) {
-      List<Service> servicesMissing = new ArrayList<>();   // all services missing
+      List<Service> servicesMissing = new ArrayList<>(); // all services missing
       for (String name : allServiceNames) {
-        if (cat.hasServiceInDataset(name)) continue;
+        if (cat.hasServiceInDataset(name))
+          continue;
         Service s = globalServices.findGlobalService(name);
-        if (s != null) servicesMissing.add(s);
+        if (s != null)
+          servicesMissing.add(s);
       }
       servicesMissing.forEach(cat::addService);
     }

@@ -9,7 +9,6 @@ import thredds.client.catalog.Dataset;
 import thredds.client.catalog.ServiceType;
 import thredds.server.catalog.DatasetScan;
 import thredds.server.catalog.FeatureCollectionRef;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Formatter;
@@ -32,7 +31,8 @@ public class DatasetTrackerChronicle implements DatasetTracker {
   public static void cleanupBefore(String pathname, long trackerNumber) {
     for (long tnum = trackerNumber - 1; tnum > 0; tnum--) {
       File oldDatabaseFile = new File(pathname + datasetName + "." + tnum);
-      if (!oldDatabaseFile.exists()) break;
+      if (!oldDatabaseFile.exists())
+        break;
       if (oldDatabaseFile.delete()) {
         catalogInitLog.info("DatasetTrackerChronicle deleted {} ", oldDatabaseFile.getAbsolutePath());
       } else {
@@ -57,7 +57,8 @@ public class DatasetTrackerChronicle implements DatasetTracker {
       catalogInitLog.info("DatasetTrackerChronicle opened success on '" + dbFile.getAbsolutePath() + "'");
 
     } catch (Throwable e) {
-      catalogInitLog.error("DatasetTrackerChronicle failed on '" + dbFile.getAbsolutePath() + "', delete catalog cache and reload ", e);
+      catalogInitLog.error(
+          "DatasetTrackerChronicle failed on '" + dbFile.getAbsolutePath() + "', delete catalog cache and reload ", e);
       reinit();
     }
   }
@@ -97,14 +98,15 @@ public class DatasetTrackerChronicle implements DatasetTracker {
       return true;
 
     } catch (Throwable e) {
-      catalogInitLog.error("DatasetTrackerChronicle failed on '" + dbFile.getAbsolutePath() + "', delete catalog cache and reload ", e);
+      catalogInitLog.error(
+          "DatasetTrackerChronicle failed on '" + dbFile.getAbsolutePath() + "', delete catalog cache and reload ", e);
       return false;
     }
   }
 
   private void open() throws IOException {
     ChronicleMapBuilder<String, DatasetExt> builder = ChronicleMapBuilder.of(String.class, DatasetExt.class)
-            .averageValueSize(200).entries(maxDatasets).averageKeySize(averagePathLength);
+        .averageValueSize(200).entries(maxDatasets).averageKeySize(averagePathLength);
     datasetMap = builder.createPersistedTo(dbFile);
     changed = false;
   }
@@ -121,12 +123,15 @@ public class DatasetTrackerChronicle implements DatasetTracker {
         callback.hasNcml(dataset);
         track = true;
       }
-      if (track) callback.hasTrackedDataset(dataset);
+      if (track)
+        callback.hasTrackedDataset(dataset);
     }
 
     boolean hasRestrict = dataset.getRestrictAccess() != null;
-    boolean hasNcml = (dataset.getNcmlElement() != null) && !(dataset instanceof DatasetScan) && !(dataset instanceof FeatureCollectionRef);
-    if (!hasRestrict && !hasNcml) return false;
+    boolean hasNcml = (dataset.getNcmlElement() != null) && !(dataset instanceof DatasetScan)
+        && !(dataset instanceof FeatureCollectionRef);
+    if (!hasRestrict && !hasNcml)
+      return false;
 
     String path = null;
     if (dataset instanceof DatasetScan) {
@@ -147,8 +152,9 @@ public class DatasetTrackerChronicle implements DatasetTracker {
           continue;
         }
 
-        if (path == null) path = accessPath;
-        else if (!path.equals(accessPath)) { //LOOK must put all for restrict
+        if (path == null)
+          path = accessPath;
+        else if (!path.equals(accessPath)) { // LOOK must put all for restrict
           System.out.printf(" paths differ: %s%n %s%n%n", path, accessPath);
           catalogInitLog.warn(" paths differ: {} != {}", path, accessPath);
         }
@@ -183,13 +189,15 @@ public class DatasetTrackerChronicle implements DatasetTracker {
 
   public String findResourceControl(String path) {
     DatasetExt dext = datasetMap.get(path);
-    if (dext == null) return null;
+    if (dext == null)
+      return null;
     return dext.getRestrictAccess();
   }
 
   public String findNcml(String path) {
     DatasetExt dext = datasetMap.get(path);
-    if (dext == null) return null;
+    if (dext == null)
+      return null;
     return dext.getNcml();
   }
 
@@ -199,7 +207,8 @@ public class DatasetTrackerChronicle implements DatasetTracker {
     int count = 0;
     for (Map.Entry<String, DatasetExt> entry : datasetMap.entrySet()) {
       f.format("%4d: '%s' == %s%n", count++, entry.getKey(), entry.getValue());
-      if (count % 10 == 0) f.format("%n");
+      if (count % 10 == 0)
+        f.format("%n");
     }
   }
 

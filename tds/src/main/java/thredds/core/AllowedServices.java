@@ -15,7 +15,6 @@ import thredds.server.admin.DebugCommands;
 import thredds.server.catalog.AllowedServicesIF;
 import thredds.server.config.TdsContext;
 import ucar.nc2.constants.FeatureType;
-
 import javax.annotation.Nullable;
 import java.util.*;
 
@@ -50,7 +49,8 @@ public class AllowedServices implements AllowedServicesIF {
   private DebugCommands debugCommands;
 
   private Map<StandardService, AllowedService> allowed = new HashMap<>();
-  private List<String> allowedGridServiceNames, allowedPointServiceNames, allowedPointCollectionServiceNames, allowedRadialServiceNames;
+  private List<String> allowedGridServiceNames, allowedPointServiceNames, allowedPointCollectionServiceNames,
+      allowedRadialServiceNames;
   private List<Service> allowedGridServices = new ArrayList<>();
   private List<Service> allowedPointServices = new ArrayList<>();
   private List<Service> allowedPointCollectionServices = new ArrayList<>();
@@ -70,7 +70,8 @@ public class AllowedServices implements AllowedServicesIF {
 
   // allows users to turn off services in ThreddsConfig
   public void setAllowService(StandardService service, Boolean allow) {
-    if (allow == null) return;
+    if (allow == null)
+      return;
     AllowedService as = allowed.get(service);
     if (as == null)
       logServerStartup.error("AllowedService cant find StandardService " + service);
@@ -152,8 +153,10 @@ public class AllowedServices implements AllowedServicesIF {
 
   private Service makeService(StandardService ss) {
     String path = ss.base.startsWith("/") ? tdsContext.getContextPath() + ss.base : ss.base;
-    // (String name, String base, String typeS, String desc, String suffix, List<Service> nestedServices, List<Property> properties
-    return new Service(ss.type.toString(), path, ss.type.toString(), ss.type.getDescription(), null, null, null, ss.type.getAccessType());
+    // (String name, String base, String typeS, String desc, String suffix, List<Service> nestedServices, List<Property>
+    // properties
+    return new Service(ss.type.toString(), path, ss.type.toString(), ss.type.getDescription(), null, null, null,
+        ss.type.getAccessType());
   }
 
   ////////////////////////////////////////////////
@@ -167,18 +170,18 @@ public class AllowedServices implements AllowedServicesIF {
   public Service getStandardServices(FeatureType featType) {
     ServiceType compoundService = ServiceType.Compound;
     if (featType.isCoverageFeatureType()) {
-      return new Service("GridServices", "", compoundService.toString(), compoundService.getDescription(),
-              null, allowedGridServices, null, compoundService.getAccessType());
+      return new Service("GridServices", "", compoundService.toString(), compoundService.getDescription(), null,
+          allowedGridServices, null, compoundService.getAccessType());
     }
 
     if (featType.isPointFeatureType()) {
-      return new Service("PointServices", "", compoundService.toString(), compoundService.getDescription(),
-              null, allowedPointServices, null, compoundService.getAccessType());
+      return new Service("PointServices", "", compoundService.toString(), compoundService.getDescription(), null,
+          allowedPointServices, null, compoundService.getAccessType());
     }
 
     if (featType == FeatureType.RADIAL) {
-      return new Service("RadialServices", "", compoundService.toString(), compoundService.getDescription(),
-              null, allowedRadialServices, null, compoundService.getAccessType());
+      return new Service("RadialServices", "", compoundService.toString(), compoundService.getDescription(), null,
+          allowedRadialServices, null, compoundService.getAccessType());
     }
 
     return null;
@@ -188,12 +191,12 @@ public class AllowedServices implements AllowedServicesIF {
     ServiceType compoundService = ServiceType.Compound;
     if (featType.isCoverageFeatureType()) {
       return new Service("GridCollectionServices", "", compoundService.toString(), compoundService.getDescription(),
-              null, allowedGridServices, null, compoundService.getAccessType());
+          null, allowedGridServices, null, compoundService.getAccessType());
     }
 
     if (featType.isPointFeatureType()) {
-      return new Service("PointCollectionServices", "", compoundService.toString(),
-              null, null, allowedPointCollectionServices, null, compoundService.getAccessType());
+      return new Service("PointCollectionServices", "", compoundService.toString(), null, null,
+          allowedPointCollectionServices, null, compoundService.getAccessType());
     }
 
     return null;
@@ -207,7 +210,8 @@ public class AllowedServices implements AllowedServicesIF {
   @Nullable
   public Service getStandardService(StandardService type) {
     AllowedService s = allowed.get(type);
-    if (s == null) return null;
+    if (s == null)
+      return null;
     return !s.allowed ? null : makeService(s.ss);
   }
 
@@ -231,7 +235,8 @@ public class AllowedServices implements AllowedServicesIF {
   }
 
   public Service findGlobalService(String name) {
-    if (name == null) return null;
+    if (name == null)
+      return null;
     return globalServices.get(name);
   }
 
@@ -262,7 +267,7 @@ public class AllowedServices implements AllowedServicesIF {
 
     } else {
       AllowedService as = findByService(service);
-      if (as != null && !as.allowed)              // must be explicitly disallowed
+      if (as != null && !as.allowed) // must be explicitly disallowed
         disallowedServices.add(service.getName());
     }
   }
@@ -271,7 +276,8 @@ public class AllowedServices implements AllowedServicesIF {
     for (AllowedService entry : allowed.values()) {
       if (entry.ss.type == service.getType()) {
         if (entry.ss.type == ServiceType.NetcdfSubset) { // have to special case this
-          if (!service.getBase().startsWith(entry.ss.base)) continue; // keep going
+          if (!service.getBase().startsWith(entry.ss.base))
+            continue; // keep going
         }
         return entry; // otherwise we found it
       }
@@ -321,11 +327,13 @@ public class AllowedServices implements AllowedServicesIF {
   //////////////////////////////////////////////////////////////////////////////////////////////
 
   private List<String> isAThreddsDataset;
+
   public void setIsAThreddsDataset(List<String> list) {
     this.isAThreddsDataset = list;
   }
 
   private List<String> isNotAThreddsDataset;
+
   public void setIsNotAThreddsDataset(List<String> list) {
     this.isNotAThreddsDataset = list;
   }
@@ -333,11 +341,13 @@ public class AllowedServices implements AllowedServicesIF {
   public boolean isAThreddsDataset(String filename) {
     if (isAThreddsDataset != null) {
       for (String suffix : isAThreddsDataset)
-        if (filename.endsWith(suffix)) return true;
+        if (filename.endsWith(suffix))
+          return true;
     }
     if (isNotAThreddsDataset != null) {
       for (String suffix : isNotAThreddsDataset)
-        if (filename.endsWith(suffix)) return false;
+        if (filename.endsWith(suffix))
+          return false;
     }
 
     return true;

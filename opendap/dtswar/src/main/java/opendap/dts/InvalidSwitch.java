@@ -16,15 +16,15 @@ package opendap.dts;
 // that the following conditions are met:
 //
 // - Redistributions of source code must retain the above copyright
-//   notice, this list of conditions and the following disclaimer.
+// notice, this list of conditions and the following disclaimer.
 //
 // - Redistributions in binary form must reproduce the above copyright
-//   notice, this list of conditions and the following disclaimer in the
-//   documentation and/or other materials provided with the distribution.
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
 //
 // - Neither the name of the OPeNDAP nor the names of its contributors may
-//   be used to endorse or promote products derived from this software
-//   without specific prior written permission.
+// be used to endorse or promote products derived from this software
+// without specific prior written permission.
 //
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 // IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -44,10 +44,10 @@ package opendap.dts;
  * Exception throwable by the Getopts class
  */
 public class InvalidSwitch extends Throwable {
-/**
- *   This is the specific exception that is thrown when an invalid
- *   switch or another problem occurred in the Getopts class.
- */
+  /**
+   * This is the specific exception that is thrown when an invalid
+   * switch or another problem occurred in the Getopts class.
+   */
   /**
    * Used when no notification string other than the
    * standard one will be thrown with the exception.
@@ -59,12 +59,11 @@ public class InvalidSwitch extends Throwable {
   /**
    * Used when passing the string that will be thrown.
    *
-   * @param    s    the error string that is notified
+   * @param s the error string that is notified
    */
   public InvalidSwitch(String s) {
     super(s);
   }
 }
-
 
 

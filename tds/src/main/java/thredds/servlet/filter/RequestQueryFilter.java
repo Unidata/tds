@@ -5,7 +5,6 @@
 package thredds.servlet.filter;
 
 import thredds.util.StringValidateEncodeUtils;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +17,7 @@ import java.net.URLDecoder;
  * <p/>
  * The query string is considered valid if, after decoding, it is
  * a single-line string. For more details, see
- * {@link thredds.util.StringValidateEncodeUtils#validSingleLineString(String)}  validSingleLineString()}.
+ * {@link thredds.util.StringValidateEncodeUtils#validSingleLineString(String)} validSingleLineString()}.
  * <p/>
  * <p/>
  * <strong>Note:</strong>
@@ -41,21 +40,18 @@ public class RequestQueryFilter implements Filter {
   private boolean allowAngleBrackets = false;
 
   public void setAllowAngleBrackets(boolean allowAngleBrackets) throws ServletException {
-      this.allowAngleBrackets = allowAngleBrackets;
+    this.allowAngleBrackets = allowAngleBrackets;
   }
 
-  public void destroy() {
-  }
+  public void destroy() {}
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
     // do nothing
   }
 
-  public void doFilter(ServletRequest servletRequest,
-                       ServletResponse servletResponse,
-                       FilterChain filterChain)
-          throws IOException, ServletException {
+  public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+      throws IOException, ServletException {
     if (!(servletRequest instanceof HttpServletRequest)) {
       log.error("doFilter(): Not an HTTP request! How did this filter get here?");
       filterChain.doFilter(servletRequest, servletResponse);
@@ -66,14 +62,15 @@ public class RequestQueryFilter implements Filter {
     HttpServletResponse response = (HttpServletResponse) servletResponse;
     String query = request.getQueryString();
     if (query != null) {
-      //String decodedQuery = EscapeStrings.unescapeURLQuery(query);
+      // String decodedQuery = EscapeStrings.unescapeURLQuery(query);
       while (true) {
         String decodedQuery = URLDecoder.decode(query, StringValidateEncodeUtils.CHARACTER_ENCODING_UTF_8);
         boolean badQuery = false;
         if (!allowAngleBrackets && StringValidateEncodeUtils.containsAngleBracketCharacters(decodedQuery))
           badQuery = true;
 
-        // else if (StringValidateEncodeUtils.containsBackslashCharacters(decodedQuery) || !StringValidateEncodeUtils.validSingleLineString(decodedQuery))
+        // else if (StringValidateEncodeUtils.containsBackslashCharacters(decodedQuery) ||
+        // !StringValidateEncodeUtils.validSingleLineString(decodedQuery))
         else if (!StringValidateEncodeUtils.validSingleLineString(decodedQuery))
           badQuery = true;
 
@@ -84,7 +81,8 @@ public class RequestQueryFilter implements Filter {
           return;
         }
 
-        if (query.equals(decodedQuery)) break;
+        if (query.equals(decodedQuery))
+          break;
         query = decodedQuery;
       } // while
     }

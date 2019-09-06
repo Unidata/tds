@@ -23,12 +23,11 @@ import thredds.mock.web.MockTdsContextLoader;
 import ucar.unidata.util.test.category.NeedsContentRoot;
 import ucar.unidata.util.test.category.NeedsExternalResource;
 import ucar.unidata.util.test.TestDir;
-
 import java.lang.invoke.MethodHandles;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = { "/WEB-INF/applicationContext.xml" }, loader = MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
 @Category({NeedsContentRoot.class, NeedsExternalResource.class})
 public class RemoteCatalogControllerTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -38,61 +37,50 @@ public class RemoteCatalogControllerTest {
   private MockMvc mockMvc;
 
   @Autowired
-   private AllowedServices allowedServices;
+  private AllowedServices allowedServices;
 
   @Before
-   public void setup(){
-     this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+  public void setup() {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     allowedServices.setAllowService(StandardService.catalogRemote, true);
-   }
+  }
 
-  String dataset="casestudies/ccs039/grids/netCDF/1998062912_eta.nc";
-  String catalog="https://thredds.ucar.edu/thredds/catalog/casestudies/ccs039/grids/netCDF/catalog.xml";
-  String path ="/remoteCatalogService";
+  String dataset = "casestudies/ccs039/grids/netCDF/1998062912_eta.nc";
+  String catalog = "https://thredds.ucar.edu/thredds/catalog/casestudies/ccs039/grids/netCDF/catalog.xml";
+  String path = "/remoteCatalogService";
   String htmlContent = "text/html;charset=UTF-8";
 
   @Test
-  public void showCommandTest() throws Exception{
-    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
-            .param("command", "SHOW")
-            .param("catalog", catalog);
+  public void showCommandTest() throws Exception {
+    RequestBuilder rb =
+        MockMvcRequestBuilders.get(path).servletPath(path).param("command", "SHOW").param("catalog", catalog);
 
-    MvcResult result = this.mockMvc.perform( rb )
-            .andExpect(MockMvcResultMatchers.status().is(200))
-            .andExpect(MockMvcResultMatchers.content().contentType(htmlContent))
-            .andReturn();
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
 
     System.out.printf("showCommandTest status=%d%n", result.getResponse().getStatus());
     System.out.printf("%s%n", result.getResponse().getContentAsString());
   }
 
   @Test
-  public void subsetCommandTest() throws Exception{
-    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
-            .param("command", "SUBSET")
-            .param("catalog", catalog)
-            .param("dataset", dataset);
+  public void subsetCommandTest() throws Exception {
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path).param("command", "SUBSET")
+        .param("catalog", catalog).param("dataset", dataset);
 
-    MvcResult result = this.mockMvc.perform( rb )
-            .andExpect(MockMvcResultMatchers.status().is(200))
-            .andExpect(MockMvcResultMatchers.content().contentType(htmlContent))
-            .andReturn();
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
 
     System.out.printf("subsetCommandTest status=%d%n", result.getResponse().getStatus());
     System.out.printf("%s%n", result.getResponse().getContentAsString());
   }
 
   @Test
-  public void validateCommandTest() throws Exception{
-    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path)
-            .param("command", "VALIDATE")
-            .param("catalog", catalog)
-            .param("dataset", dataset);
+  public void validateCommandTest() throws Exception {
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path).param("command", "VALIDATE")
+        .param("catalog", catalog).param("dataset", dataset);
 
-    MvcResult result = this.mockMvc.perform( rb )
-            .andExpect(MockMvcResultMatchers.status().is(200))
-            .andExpect(MockMvcResultMatchers.content().contentType(htmlContent))
-            .andReturn();
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
 
     System.out.printf("validateCommandTest status=%d%n", result.getResponse().getStatus());
     System.out.printf("%s%n", result.getResponse().getContentAsString());

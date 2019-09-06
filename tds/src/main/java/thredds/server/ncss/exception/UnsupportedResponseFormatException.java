@@ -7,14 +7,15 @@ package thredds.server.ncss.exception;
 
 /**
  * 
- * UnsupportedResponseFormatException is thrown by the NcssControllers if some unexpected 'accept' value is in the request params.
+ * UnsupportedResponseFormatException is thrown by the NcssControllers if some unexpected 'accept' value is in the
+ * request params.
  * 
  * @author mhermida
  *
  */
 public class UnsupportedResponseFormatException extends NcssException {
 
-  public UnsupportedResponseFormatException(String message){
+  public UnsupportedResponseFormatException(String message) {
     super(message);
   }
 

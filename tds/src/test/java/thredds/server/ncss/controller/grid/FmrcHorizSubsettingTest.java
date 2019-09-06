@@ -29,14 +29,12 @@ import ucar.nc2.dt.grid.GeoGrid;
 import ucar.nc2.util.Misc;
 import ucar.unidata.geoloc.ProjectionRect;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -56,24 +54,47 @@ public class FmrcHorizSubsettingTest {
   @SpringJUnit4ParameterizedClassRunner.Parameters
   public static Collection<Object[]> getTestParameters() {
 
-    return Arrays.asList(new Object[][]{
-            {"/ncss/grid/testGFSfmrc/files/GFS_CONUS_80km_20120418_1200.nc", Lists.newArrayList("Pressure", "Pressure_reduced_to_MSL"),
-                    new int[][]{{1, 2, 2}, {1, 2, 2}}, new ProjectionRect(-4226.106971141345, -832.6983183345455, -4126.106971141345, -732.6983183345455)}, //No vertical levels
+    return Arrays.asList(new Object[][] {
+        {"/ncss/grid/testGFSfmrc/files/GFS_CONUS_80km_20120418_1200.nc",
+            Lists.newArrayList("Pressure", "Pressure_reduced_to_MSL"), new int[][] {{1, 2, 2}, {1, 2, 2}},
+            new ProjectionRect(-4226.106971141345, -832.6983183345455, -4126.106971141345, -732.6983183345455)}, // No
+                                                                                                                 // vertical
+                                                                                                                 // levels
 
-            {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd", Lists.newArrayList("Relative_humidity_height_above_ground", "Temperature_height_above_ground"),
-                    new int[][]{{1, 1, 16, 15}, {1, 1, 16, 15}}, new ProjectionRect(-600, -600, 600, 600)}, //Same vertical level (one level)
+        {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd",
+            Lists.newArrayList("Relative_humidity_height_above_ground", "Temperature_height_above_ground"),
+            new int[][] {{1, 1, 16, 15}, {1, 1, 16, 15}}, new ProjectionRect(-600, -600, 600, 600)}, // Same vertical
+                                                                                                     // level (one
+                                                                                                     // level)
 
-            {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd", Lists.newArrayList("Temperature", "Relative_humidity"),
-                    new int[][]{{1, 29, 2, 93}, {1, 29, 2, 93}}, new ProjectionRect(-4226.106971141345, 4268.6456816654545, 3250.825028858655, 4368.6456816654545)}, //Same vertical level (multiple level)
+        {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd", Lists.newArrayList("Temperature", "Relative_humidity"),
+            new int[][] {{1, 29, 2, 93}, {1, 29, 2, 93}},
+            new ProjectionRect(-4226.106971141345, 4268.6456816654545, 3250.825028858655, 4368.6456816654545)}, // Same
+                                                                                                                // vertical
+                                                                                                                // level
+                                                                                                                // (multiple
+                                                                                                                // level)
 
-            {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd", Lists.newArrayList("Pressure", "Temperature", "Relative_humidity_height_above_ground"),
-                    new int[][]{{1, 2, 93}, {1, 29, 2, 93}, {1, 1, 2, 93}}, new ProjectionRect(-4226.106971141345, 4268.6456816654545, 3250.825028858655, 4368.6456816654545)}, //No vertical levels and vertical levels
+        {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd",
+            Lists.newArrayList("Pressure", "Temperature", "Relative_humidity_height_above_ground"),
+            new int[][] {{1, 2, 93}, {1, 29, 2, 93}, {1, 1, 2, 93}},
+            new ProjectionRect(-4226.106971141345, 4268.6456816654545, 3250.825028858655, 4368.6456816654545)}, // No
+                                                                                                                // vertical
+                                                                                                                // levels
+                                                                                                                // and
+                                                                                                                // vertical
+                                                                                                                // levels
 
-            {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd", Lists.newArrayList("Relative_humidity_height_above_ground", "Temperature"),
-                    new int[][]{{1, 1, 65, 93}, {1, 29, 65, 93}}, new ProjectionRect(-4264.248291015625, -872.8428344726562, 3293.955078125, 4409.772216796875)}, //Full extension
+        {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd",
+            Lists.newArrayList("Relative_humidity_height_above_ground", "Temperature"),
+            new int[][] {{1, 1, 65, 93}, {1, 29, 65, 93}},
+            new ProjectionRect(-4264.248291015625, -872.8428344726562, 3293.955078125, 4409.772216796875)}, // Full
+                                                                                                            // extension
 
-            {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd", Lists.newArrayList("Relative_humidity_height_above_ground", "Temperature"),
-                    new int[][]{{1, 1, 11, 53}, {1, 29, 11, 53}}, new ProjectionRect(-4864.248291015625, -1272.8428344726562, 0, 0)}  //Intersection
+        {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd",
+            Lists.newArrayList("Relative_humidity_height_above_ground", "Temperature"),
+            new int[][] {{1, 1, 11, 53}, {1, 29, 11, 53}},
+            new ProjectionRect(-4864.248291015625, -1272.8428344726562, 0, 0)} // Intersection
     });
   }
 
@@ -106,12 +127,9 @@ public class FmrcHorizSubsettingTest {
       varParamVal = varParamVal + "," + next;
     }
 
-    RequestBuilder requestBuilder = MockMvcRequestBuilders.get(pathInfo).servletPath(pathInfo)
-            .param("var", varParamVal)
-            .param("minx", Double.toString(prect.getMinX()))
-            .param("miny", Double.toString(prect.getMinY()))
-            .param("maxx", Double.toString(prect.getMaxX()))
-            .param("maxy", Double.toString(prect.getMaxY()));
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.get(pathInfo).servletPath(pathInfo).param("var", varParamVal)
+        .param("minx", Double.toString(prect.getMinX())).param("miny", Double.toString(prect.getMinY()))
+        .param("maxx", Double.toString(prect.getMaxX())).param("maxy", Double.toString(prect.getMaxY()));
 
     System.out.printf("Request=%s%n", requestBuilder);
     System.out.printf("%n%s vars=%s%n", pathInfo, varParamVal);
@@ -122,17 +140,19 @@ public class FmrcHorizSubsettingTest {
 
     // Open the binary response in memory
     try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray())) {
-    /* System.out.printf("%s%n", nf);
-    Variable v = nf.findVariable(null, "x");
-    assert v != null;
-    System.out.printf("x= ");
-    NCdumpW.printArray(v.read());
-    System.out.printf("%n");
-    v = nf.findVariable(null, "y");
-    assert v != null;
-    System.out.printf("y= ");
-    NCdumpW.printArray(v.read());
-    System.out.printf("%n"); */
+      /*
+       * System.out.printf("%s%n", nf);
+       * Variable v = nf.findVariable(null, "x");
+       * assert v != null;
+       * System.out.printf("x= ");
+       * NCdumpW.printArray(v.read());
+       * System.out.printf("%n");
+       * v = nf.findVariable(null, "y");
+       * assert v != null;
+       * System.out.printf("y= ");
+       * NCdumpW.printArray(v.read());
+       * System.out.printf("%n");
+       */
 
       ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
       assertTrue(gdsDataset.getCalendarDateRange().isPoint());
