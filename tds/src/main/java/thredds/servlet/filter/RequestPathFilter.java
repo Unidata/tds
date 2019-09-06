@@ -8,7 +8,6 @@ import com.coverity.security.Escape;
 import thredds.servlet.ServletUtil;
 import thredds.util.StringValidateEncodeUtils;
 import thredds.util.TdsPathUtils;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,14 +34,12 @@ import java.io.IOException;
 public class RequestPathFilter implements javax.servlet.Filter {
   private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
 
-  public void init(FilterConfig filterConfig) throws ServletException {
-  }
+  public void init(FilterConfig filterConfig) throws ServletException {}
 
-  public void destroy() {
-  }
+  public void destroy() {}
 
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-          throws IOException, ServletException {
+      throws IOException, ServletException {
 
     if (!(servletRequest instanceof HttpServletRequest)) {
       log.error("doFilter(): Not an HTTP request! How did this filter get here?");
@@ -55,8 +52,8 @@ public class RequestPathFilter implements javax.servlet.Filter {
     String path = TdsPathUtils.extractPath(request, null);
     if (path != null) {
       if (StringValidateEncodeUtils.containsAngleBracketCharacters(path)
-//              || StringValidateEncodeUtils.containsBackslashCharacters(path)
-              || !StringValidateEncodeUtils.validPath(path)) {
+          // || StringValidateEncodeUtils.containsBackslashCharacters(path)
+          || !StringValidateEncodeUtils.validPath(path)) {
 
         String msg = "Invalid request path [" + Escape.html(ServletUtil.getRequestPath(request)) + "].";
         log.error("doFilter(): " + msg);

@@ -12,13 +12,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.nc2.util.DiskCache2;
 import ucar.unidata.util.test.category.NeedsContentRoot;
-
 import java.lang.invoke.MethodHandles;
-
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/WEB-INF/applicationContext.xml"},loader=MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
 @Category(NeedsContentRoot.class)
 public class ThreddsConfigTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -29,23 +27,23 @@ public class ThreddsConfigTest {
   private String threddsConfigPath;
 
   @Before
-  public void setUp(){
-    //threddsConfigPath ="/thredds/tds/src/test/content/thredds/threddsConfig.xml";
-    threddsConfigPath= tdsContext.getContentRootPathProperty() +  "/thredds/threddsConfig.xml";
+  public void setUp() {
+    // threddsConfigPath ="/thredds/tds/src/test/content/thredds/threddsConfig.xml";
+    threddsConfigPath = tdsContext.getContentRootPathProperty() + "/thredds/threddsConfig.xml";
     ThreddsConfig.init(threddsConfigPath);
   }
 
   @Test
-  public void testGet(){
-    assertEquals("THREDDS Support", ThreddsConfig.get( "serverInformation.contact.name", null));
-    assertEquals("true", ThreddsConfig.get( "CatalogServices.allowRemote", null));
-    assertEquals(null, ThreddsConfig.get( "WMS.allow", null));
-    assertEquals( 52428800, ThreddsConfig.getBytes( "NetcdfSubsetService.maxFileDownloadSize", -1L));
+  public void testGet() {
+    assertEquals("THREDDS Support", ThreddsConfig.get("serverInformation.contact.name", null));
+    assertEquals("true", ThreddsConfig.get("CatalogServices.allowRemote", null));
+    assertEquals(null, ThreddsConfig.get("WMS.allow", null));
+    assertEquals(52428800, ThreddsConfig.getBytes("NetcdfSubsetService.maxFileDownloadSize", -1L));
   }
 
   @Test
-  public void testHasElement(){
-     assertFalse(ThreddsConfig.hasElement("CORS") );
+  public void testHasElement() {
+    assertFalse(ThreddsConfig.hasElement("CORS"));
   }
 
   // Tests the "cachePathPolicy" element, added in response to this message on the thredds mailing list:

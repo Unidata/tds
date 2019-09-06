@@ -16,7 +16,6 @@ import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dt.grid.GridDataset;
 import ucar.unidata.io.http.HTTPRandomAccessFile;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
@@ -32,20 +31,17 @@ import java.util.Collection;
 public class TestHttpOpen {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  @Parameterized.Parameters(name="{0}")
+  @Parameterized.Parameters(name = "{0}")
   public static Collection testUrls() {
-      Object[][] data = new Object[][]{
-              {"fileServer/scanLocal/2004050412_eta_211.nc"},
-              {"fileServer/scanLocal/1day.nc"},
-              {"fileServer/scanLocal/testWrite.nc"},
-              {"fileServer/scanLocal/fultrak.hd5"},
-      };
-      return Arrays.asList(data);
+    Object[][] data = new Object[][] {{"fileServer/scanLocal/2004050412_eta_211.nc"}, {"fileServer/scanLocal/1day.nc"},
+        {"fileServer/scanLocal/testWrite.nc"}, {"fileServer/scanLocal/fultrak.hd5"},};
+    return Arrays.asList(data);
   }
 
   private final String url;
+
   public TestHttpOpen(String path) {
-      this.url = TestOnLocalServer.withHttpPath(path);
+    this.url = TestOnLocalServer.withHttpPath(path);
   }
 
   // HTTP = 4300 HTTP2 = 5500 msec 20-25% slower
@@ -83,12 +79,13 @@ public class TestHttpOpen {
 
       totalBytes = readAllData(ncfile);
     } finally {
-      System.out.printf("**testRad Data took= %d msecs %d kbytes%n", (System.currentTimeMillis() - start), totalBytes / 1000);
+      System.out.printf("**testRad Data took= %d msecs %d kbytes%n", (System.currentTimeMillis() - start),
+          totalBytes / 1000);
     }
   }
 
   private long readAllData(NetcdfFile ncfile) throws IOException {
-    System.out.println("------Open "+ncfile.getLocation());
+    System.out.println("------Open " + ncfile.getLocation());
 
     long total = 0;
     for (Variable v : ncfile.getVariables()) {

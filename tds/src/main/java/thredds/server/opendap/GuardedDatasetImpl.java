@@ -6,7 +6,6 @@ package thredds.server.opendap;
 
 import opendap.servlet.GuardedDataset;
 import ucar.nc2.NetcdfFile;
-
 import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 
@@ -43,12 +42,14 @@ public class GuardedDatasetImpl implements GuardedDataset {
   }
 
   public opendap.servers.ServerDDS getDDS() {
-    if (closed) throw new IllegalStateException("getDDS(): "+this + " closed");
+    if (closed)
+      throw new IllegalStateException("getDDS(): " + this + " closed");
     return new NcDDS(reqPath, org_file);
   }
 
   public opendap.dap.DAS getDAS() {
-    if (closed) throw new IllegalStateException("getDAS(): "+this + " closed");
+    if (closed)
+      throw new IllegalStateException("getDAS(): " + this + " closed");
     return new NcDAS(org_file);
   }
 

@@ -28,7 +28,6 @@ import thredds.server.ncss.format.SupportedFormat;
 import thredds.server.ncss.format.SupportedOperation;
 import thredds.util.ContentType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,53 +43,52 @@ import java.util.List;
 @ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class TestPointFCsubsetting {
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Autowired
-    private WebApplicationContext wac;
-    private String dataset = "/ncss/point/testBuoyFeatureCollection/Surface_Buoy_Point_Data_fc.cdmr";
-    private String req = "?req=point&var=ICE&var=PRECIP_amt&var=PRECIP_amt24&var=T&north=40&west=-170&east=-100&south" +
-            "=-40&time_start=2013-08-04T00:00:00Z&time_end=2013-08-05T00:00:00Z&accept=";
-    private MockMvc mockMvc;
+  @Autowired
+  private WebApplicationContext wac;
+  private String dataset = "/ncss/point/testBuoyFeatureCollection/Surface_Buoy_Point_Data_fc.cdmr";
+  private String req = "?req=point&var=ICE&var=PRECIP_amt&var=PRECIP_amt24&var=T&north=40&west=-170&east=-100&south"
+      + "=-40&time_start=2013-08-04T00:00:00Z&time_end=2013-08-05T00:00:00Z&accept=";
+  private MockMvc mockMvc;
 
-    @SpringJUnit4ParameterizedClassRunner.Parameters
-    public static List<Object[]> getTestParameters() {
-        List<Object[]> result = new ArrayList<Object[]>(10);
+  @SpringJUnit4ParameterizedClassRunner.Parameters
+  public static List<Object[]> getTestParameters() {
+    List<Object[]> result = new ArrayList<Object[]>(10);
 
-        for (SupportedFormat f : SupportedOperation.POINT_REQUEST.getSupportedFormats()) {
-            result.add(new Object[]{f});
-        }
-
-        return result;
+    for (SupportedFormat f : SupportedOperation.POINT_REQUEST.getSupportedFormats()) {
+      result.add(new Object[] {f});
     }
 
+    return result;
+  }
 
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
 
-    SupportedFormat format;
+  @Before
+  public void setup() {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+  }
 
-    public TestPointFCsubsetting(SupportedFormat format) {
-        this.format = format;
-    }
+  SupportedFormat format;
 
-    @Test
-    public void getSubsettedData() throws Exception {
-        // problem is that browser wont display text/csv in line, so use tesxt/plain; see thredds.server.ncss.view
-        // .dsg.PointWriter.WriterCSV
-        String expectFormat = (format == SupportedFormat.CSV_STREAM) ? ContentType.text.getContentHeader() : format
-                .getMimeType();
+  public TestPointFCsubsetting(SupportedFormat format) {
+    this.format = format;
+  }
 
-        RequestBuilder rb = MockMvcRequestBuilders.get(dataset + req + format.getFormatName()).servletPath(dataset);
-        System.out.printf("%nURL='%s'%n", dataset + req + format.getFormatName());
-        MvcResult result = this.mockMvc.perform(rb)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(expectFormat))
-                .andReturn();
+  @Test
+  public void getSubsettedData() throws Exception {
+    // problem is that browser wont display text/csv in line, so use tesxt/plain; see thredds.server.ncss.view
+    // .dsg.PointWriter.WriterCSV
+    String expectFormat =
+        (format == SupportedFormat.CSV_STREAM) ? ContentType.text.getContentHeader() : format.getMimeType();
 
-        MockHttpServletResponse response = result.getResponse();
-        System.out.printf("getSubsettedData format=%s status = %d type=%s%n", format, response.getStatus(), response.getContentType());
-    }
+    RequestBuilder rb = MockMvcRequestBuilders.get(dataset + req + format.getFormatName()).servletPath(dataset);
+    System.out.printf("%nURL='%s'%n", dataset + req + format.getFormatName());
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(expectFormat)).andReturn();
+
+    MockHttpServletResponse response = result.getResponse();
+    System.out.printf("getSubsettedData format=%s status = %d type=%s%n", format, response.getStatus(),
+        response.getContentType());
+  }
 }

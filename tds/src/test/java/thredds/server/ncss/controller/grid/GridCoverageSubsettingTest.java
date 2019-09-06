@@ -9,7 +9,7 @@
  * this software, and any derivative works thereof, and its supporting
  * documentation for any purpose whatsoever, provided that this entire
  * notice appears in all copies of the software, derivative works and
- * supporting documentation.  Further, UCAR requests that the user credit
+ * supporting documentation. Further, UCAR requests that the user credit
  * UCAR/Unidata in any publications that result from the use of this
  * software or in any product that includes this software. The names UCAR
  * and/or Unidata, however, may not be used in any advertising or publicity
@@ -59,7 +59,6 @@ import ucar.nc2.util.IO;
 import ucar.nc2.util.Misc;
 import ucar.unidata.geoloc.ProjectionRect;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -67,7 +66,6 @@ import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ParameterizedClassRunner.class)
@@ -77,7 +75,8 @@ import static org.junit.Assert.*;
 public class GridCoverageSubsettingTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
+  @Rule
+  public TemporaryFolder tempFolder = new TemporaryFolder();
 
   @Autowired
   private WebApplicationContext wac;
@@ -87,18 +86,24 @@ public class GridCoverageSubsettingTest {
   @Parameters
   public static Collection<Object[]> getTestParameters() {
 
-    return Arrays.asList(new Object[][]{
-            //      { new int[]{1,2,2} , "/ncss/grid/scanCdmUnitTests/ft/grid/GFS_Global_onedeg_20081229_1800.grib2.nc", "Pressure_surface", true, 50.0, -10.0, 50, 110 }, //No vertical levels
-            //      { new int[]{1,2,2} , "/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", true, 45.0, 15.0, -120, -90 }, //No vertical levels
-            {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 700.0, 2700.0, -2000, 666,
-                    new Expected(new int[]{1, 149, 198}, new ProjectionRect(-2004.745, 697.882, 663.620, 2702.542)) },
-            {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 0, 4000.0, 1234, 4000,
-                    new Expected(new int[]{1, 294, 114}, new ProjectionRect(1232.509766, -6.457754, 2763.094727, 3962.227295)) },
-            {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, -4000, 444, 1234, 4000,
-                    new Expected(new int[]{1, 77, 114}, new ProjectionRect(1232.510, -588.893, 2763.095, 440.527)) },
-            {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 2000, 4000, -4000, -833.102753,
-                    new Expected(new int[]{1, 146, 186}, new ProjectionRect(-3332.155, 1998.202, -826.330, 3962.227)) },
-    });
+    return Arrays.asList(new Object[][] {
+        // { new int[]{1,2,2} , "/ncss/grid/scanCdmUnitTests/ft/grid/GFS_Global_onedeg_20081229_1800.grib2.nc",
+        // "Pressure_surface", true, 50.0, -10.0, 50, 110 }, //No vertical levels
+        // { new int[]{1,2,2} , "/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2",
+        // "Pressure_surface", true, 45.0, 15.0, -120, -90 }, //No vertical levels
+        {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 700.0,
+            2700.0, -2000, 666,
+            new Expected(new int[] {1, 149, 198}, new ProjectionRect(-2004.745, 697.882, 663.620, 2702.542))},
+        {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 0, 4000.0,
+            1234, 4000,
+            new Expected(new int[] {1, 294, 114},
+                new ProjectionRect(1232.509766, -6.457754, 2763.094727, 3962.227295))},
+        {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, -4000,
+            444, 1234, 4000,
+            new Expected(new int[] {1, 77, 114}, new ProjectionRect(1232.510, -588.893, 2763.095, 440.527))},
+        {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 2000,
+            4000, -4000, -833.102753,
+            new Expected(new int[] {1, 146, 186}, new ProjectionRect(-3332.155, 1998.202, -826.330, 3962.227))},});
   }
 
   private static class Expected {
@@ -125,7 +130,8 @@ public class GridCoverageSubsettingTest {
   private double north, south, east, west;
   private boolean isLatLon;
 
-  public GridCoverageSubsettingTest(String pathInfo, String vars, boolean isLatLon, double south, double north, double west, double east, Expected expect) {
+  public GridCoverageSubsettingTest(String pathInfo, String vars, boolean isLatLon, double south, double north,
+      double west, double east, Expected expect) {
     this.pathInfo = pathInfo;
     this.vars = vars;
     this.north = north;
@@ -145,19 +151,13 @@ public class GridCoverageSubsettingTest {
 
     RequestBuilder requestBuilder;
     if (isLatLon)
-      requestBuilder = MockMvcRequestBuilders.get(pathInfo).servletPath(pathInfo)
-              .param("var", vars)
-              .param("north", Double.valueOf(north).toString())
-              .param("south", Double.valueOf(south).toString())
-              .param("east", Double.valueOf(east).toString())
-              .param("west", Double.valueOf(west).toString());
+      requestBuilder = MockMvcRequestBuilders.get(pathInfo).servletPath(pathInfo).param("var", vars)
+          .param("north", Double.valueOf(north).toString()).param("south", Double.valueOf(south).toString())
+          .param("east", Double.valueOf(east).toString()).param("west", Double.valueOf(west).toString());
     else
-      requestBuilder = MockMvcRequestBuilders.get(pathInfo).servletPath(pathInfo)
-              .param("var", vars)
-              .param("maxy", Double.valueOf(north).toString())
-              .param("miny", Double.valueOf(south).toString())
-              .param("maxx", Double.valueOf(east).toString())
-              .param("minx", Double.valueOf(west).toString());
+      requestBuilder = MockMvcRequestBuilders.get(pathInfo).servletPath(pathInfo).param("var", vars)
+          .param("maxy", Double.valueOf(north).toString()).param("miny", Double.valueOf(south).toString())
+          .param("maxx", Double.valueOf(east).toString()).param("minx", Double.valueOf(west).toString());
 
     System.out.printf("%n%s vars=%s%n", pathInfo, vars);
 
@@ -190,7 +190,7 @@ public class GridCoverageSubsettingTest {
 
     int nx = (int) x.getSize();
     int ny = (int) y.getSize();
-    ProjectionRect prect = new ProjectionRect(x.getDouble(0), y.getDouble(0), x.getDouble(nx - 1), y.getDouble(ny-1));
+    ProjectionRect prect = new ProjectionRect(x.getDouble(0), y.getDouble(0), x.getDouble(nx - 1), y.getDouble(ny - 1));
 
     if (expect != null) {
       v = nf.findVariable(null, vars);
@@ -202,14 +202,16 @@ public class GridCoverageSubsettingTest {
       assertTrue(expect.rect.nearlyEquals(prect));
     }
 
-    //ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
-    //assertTrue( gdsDataset.getCalendarDateRange().isPoint());
+    // ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
+    // assertTrue( gdsDataset.getCalendarDateRange().isPoint());
 
-    /* int[][] shapes = new int[vars.size()][];
-    int count = 0;
-      GeoGrid grid = gdsDataset.findGridByShortName(varName);
-      shapes[count++] = grid.getShape();
-    assertArrayEquals(expectedShapes, shapes);  */
+    /*
+     * int[][] shapes = new int[vars.size()][];
+     * int count = 0;
+     * GeoGrid grid = gdsDataset.findGridByShortName(varName);
+     * shapes[count++] = grid.getShape();
+     * assertArrayEquals(expectedShapes, shapes);
+     */
   }
 
 

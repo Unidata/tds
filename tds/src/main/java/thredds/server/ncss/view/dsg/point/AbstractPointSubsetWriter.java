@@ -8,7 +8,6 @@ import thredds.server.ncss.exception.NcssException;
 import thredds.server.ncss.view.dsg.DsgSubsetWriter;
 import ucar.nc2.ft.*;
 import ucar.nc2.ft2.coverage.SubsetParams;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -19,13 +18,12 @@ public abstract class AbstractPointSubsetWriter extends DsgSubsetWriter {
   protected final PointFeatureCollection pointFeatureCollection;
 
   public AbstractPointSubsetWriter(FeatureDatasetPoint fdPoint, SubsetParams ncssParams)
-          throws NcssException, IOException {
+      throws NcssException, IOException {
     super(fdPoint, ncssParams);
 
     List<DsgFeatureCollection> featColList = fdPoint.getPointFeatureCollectionList();
     assert featColList.size() == 1 : "Is there ever a case when this is NOT 1?";
-    assert featColList.get(0) instanceof PointFeatureCollection :
-            "This class only deals with PointFeatureCollections.";
+    assert featColList.get(0) instanceof PointFeatureCollection : "This class only deals with PointFeatureCollections.";
 
     this.pointFeatureCollection = (PointFeatureCollection) featColList.get(0);
   }
@@ -41,7 +39,7 @@ public abstract class AbstractPointSubsetWriter extends DsgSubsetWriter {
 
     // Perform spatial and temporal subset.
     PointFeatureCollection subsettedPointFeatColl =
-            pointFeatureCollection.subset(ncssParams.getLatLonBoundingBox(), wantedRange);
+        pointFeatureCollection.subset(ncssParams.getLatLonBoundingBox(), wantedRange);
     if (subsettedPointFeatColl == null) // means theres nothing in the subset
       return;
 

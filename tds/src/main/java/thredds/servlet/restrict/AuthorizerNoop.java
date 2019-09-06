@@ -20,15 +20,14 @@ import java.io.IOException;
 public class AuthorizerNoop implements Authorizer {
 
   @Override
-  public void setRoleSource(RoleSource roleSource) {
-  }
+  public void setRoleSource(RoleSource roleSource) {}
 
   @Override
-  public boolean authorize(HttpServletRequest req, HttpServletResponse res, String role) throws IOException, ServletException {
+  public boolean authorize(HttpServletRequest req, HttpServletResponse res, String role)
+      throws IOException, ServletException {
     return true;
   }
 
   @Override
-  public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-  }
+  public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {}
 }

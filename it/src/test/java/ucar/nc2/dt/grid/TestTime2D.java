@@ -15,7 +15,6 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.lang.invoke.MethodHandles;
 
 /**
@@ -30,16 +29,16 @@ public class TestTime2D {
   @Test
   @Category(NeedsCdmUnitTest.class)
   public void testTime2D() throws Exception {
-    try (NetcdfFile dataset = NetcdfDataset.openDataset(TestOnLocalServer.withDodsPath(
-            "dodsC/gribCollection.v5/GFS_GLOBAL_2p5/TwoD"))) {
+    try (NetcdfFile dataset =
+        NetcdfDataset.openDataset(TestOnLocalServer.withDodsPath("dodsC/gribCollection.v5/GFS_GLOBAL_2p5/TwoD"))) {
       Variable v = dataset.findVariable(null, "Pressure_surface");
       assert null != v;
       assert v.getRank() == 4;
 
       // bug is that
-      //    Float32 Pressure_surface[reftime = 4][time = 4][lat = 73][lon = 144];
+      // Float32 Pressure_surface[reftime = 4][time = 4][lat = 73][lon = 144];
       // should be
-      //   Float32 Pressure_surface[reftime = 4][time = 93][lat = 73][lon = 144];
+      // Float32 Pressure_surface[reftime = 4][time = 93][lat = 73][lon = 144];
 
       // dont rely on exact lengths - assert times are not equal.
       Dimension reftime = v.getDimension(0);

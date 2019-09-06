@@ -5,7 +5,6 @@
 package thredds.server.viewer;
 
 import thredds.client.catalog.Dataset;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -21,9 +20,10 @@ public interface ViewerLinkProvider extends Viewer {
   /**
    * Get an HTML fragment link to the viewer JNLP file, for this dataset.
    * Example:
-   * return "<a href='" + req.getContextPath() + "/view/idv.jnlp?url="+dataURI.toString()+"'>Integrated Data Viewer (IDV) (webstart)</a>";
+   * return "<a href='" + req.getContextPath() + "/view/idv.jnlp?url="+dataURI.toString()+"'>Integrated Data Viewer
+   * (IDV) (webstart)</a>";
    *
-   * @param ds  the dataset to view
+   * @param ds the dataset to view
    * @param req the request
    * @return HTML fragment string
    */

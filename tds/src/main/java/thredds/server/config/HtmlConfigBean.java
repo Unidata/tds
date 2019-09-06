@@ -5,7 +5,6 @@
 package thredds.server.config;
 
 import org.springframework.stereotype.Component;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -48,13 +47,9 @@ public class HtmlConfigBean {
 
   private boolean generateDatasetJsonLD;
 
-  public HtmlConfigBean() {
-  }
+  public HtmlConfigBean() {}
 
-  public void init(String webappName,
-                   String webappVersion,
-                   String webappVersionBuildDate,
-                   String webappContextPath) {
+  public void init(String webappName, String webappVersion, String webappVersionBuildDate, String webappContextPath) {
     this.webappName = webappName;
     this.webappVersion = webappVersion;
     this.webappVersionBuildDate = webappVersionBuildDate;
@@ -80,7 +75,8 @@ public class HtmlConfigBean {
   /**
    * Return the URL to the main web page for the webapp.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the URL to the main web page for the webapp.
@@ -96,7 +92,8 @@ public class HtmlConfigBean {
   /**
    * Return the URL to the webapp documentation page.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the URL to the webapp documentation page.
@@ -112,7 +109,8 @@ public class HtmlConfigBean {
   /**
    * Return the Url to the logo file for the webapp.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the path to the logo file for the webapp.
@@ -141,7 +139,8 @@ public class HtmlConfigBean {
   /**
    * Return the URL to the CSS file used for all non-catalog HTML pages.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the Url to the CSS file used for all non-catalog HTML pages.
@@ -157,7 +156,8 @@ public class HtmlConfigBean {
   /**
    * Return the URL to the CSS file used for the OPeNDAP access pages.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the URL to the CSS file used for the OPeNDAP access pages.
@@ -173,7 +173,8 @@ public class HtmlConfigBean {
   /**
    * Return the URL to the CSS file used for catalog HTML pages.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the URL to the CSS file used for catalog HTML pages.
@@ -189,7 +190,8 @@ public class HtmlConfigBean {
   /**
    * Return the URL to the CSS file used for catalog HTML pages.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the URL to the CSS file used for catalog HTML pages.
@@ -219,7 +221,8 @@ public class HtmlConfigBean {
   /**
    * Return the URL to the icon document used for folders in HTML catalog views.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the URL to the icon document used for folders in HTML catalog views.
@@ -243,7 +246,8 @@ public class HtmlConfigBean {
   /**
    * Return the URL to the icon document used for datasets in HTML catalog views.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the URL to the icon document used for datasets in HTML catalog views.
@@ -280,7 +284,8 @@ public class HtmlConfigBean {
   /**
    * Return the URL to the top level of this TDS installation.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the URL to the top level of this installation.
@@ -296,7 +301,8 @@ public class HtmlConfigBean {
   /**
    * Return the path to the logo file for this TDS installation.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the path to the logo file for this installation of the webapp.
@@ -338,7 +344,8 @@ public class HtmlConfigBean {
   /**
    * Return the URL to a web page for the institution hosting this installation.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the URL to a web page for the institution hosting this installation.
@@ -354,7 +361,8 @@ public class HtmlConfigBean {
   /**
    * Return the path to the logo file for the institution hosting this installation.
    * <p/>
-   * <p>Note: A relative URL is considered relative to the webapp context path.
+   * <p>
+   * Note: A relative URL is considered relative to the webapp context path.
    * That is, it is relative to "http://server:port/thredds/".
    *
    * @return the path to the logo file for the institution hosting this installation.
@@ -385,7 +393,7 @@ public class HtmlConfigBean {
    * for html representation of catalogRef's in client catalogs.
    *
    * @return true: use remoteCatalogService, false: assume catalogRef's point to a TDS, so simply link
-   * the html url of the remote catalog.
+   *         the html url of the remote catalog.
    */
   public Boolean getUseRemoteCatalogService() {
     return useRemoteCatalogService;
@@ -401,7 +409,9 @@ public class HtmlConfigBean {
    *
    * @return true: generate json-ld, false: do not generate json-ld.
    */
-  public Boolean getGenerateDatasetJsonLD() { return generateDatasetJsonLD; }
+  public Boolean getGenerateDatasetJsonLD() {
+    return generateDatasetJsonLD;
+  }
 
   public void setGenerateDatasetJsonLD(Boolean generateDatasetJsonLD) {
     this.generateDatasetJsonLD = generateDatasetJsonLD;
@@ -412,7 +422,8 @@ public class HtmlConfigBean {
    * is either absolute or relative to the webapp context path. That is,
    * if relative, it is relative to "http://server:port/thredds/".
    * <p/>
-   * <p>For simplicity, all relative URLs are converted to URLs that are
+   * <p>
+   * For simplicity, all relative URLs are converted to URLs that are
    * absolute paths. For instance, "catalog.xml" becomes "/thredds/catalog.xml".
    *
    * @param url the URL to prepare for use in HTML.

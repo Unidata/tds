@@ -17,13 +17,7 @@ import java.util.List;
  */
 public class WcsException extends Exception {
   public enum Code {
-    UNKNOWN,
-    InvalidFormat,
-    CoverageNotDefined,
-    CurrentUpdateSequence,
-    InvalidUpdateSequence,
-    MissingParameterValue,
-    InvalidParameterValue
+    UNKNOWN, InvalidFormat, CoverageNotDefined, CurrentUpdateSequence, InvalidUpdateSequence, MissingParameterValue, InvalidParameterValue
   }
 
   private WcsException.Code code;

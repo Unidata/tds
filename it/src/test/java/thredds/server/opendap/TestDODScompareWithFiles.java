@@ -21,7 +21,6 @@ import ucar.nc2.util.CompareNetcdf2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.StringUtil2;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -37,30 +36,30 @@ import java.util.List;
 public class TestDODScompareWithFiles {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  static boolean showCompare = false, showEach = false, compareData  = false;
+  static boolean showCompare = false, showEach = false, compareData = false;
   static String contentRoot = TestDir.cdmUnitTestDir;
 
-   @Parameterized.Parameters(name="{0}")
-   public static List<Object[]> getTestParameters() {
+  @Parameterized.Parameters(name = "{0}")
+  public static List<Object[]> getTestParameters() {
 
-    List<Object[]>  result = new ArrayList<Object[]>(20);
+    List<Object[]> result = new ArrayList<Object[]>(20);
 
-    result.add( new Object[]{"conventions/zebra/SPOL_3Volumes.nc"});
-    result.add( new Object[]{"conventions/coards/inittest24.QRIDV07200.ncml"}); //
-    result.add( new Object[]{"conventions/atd/rgg.20020411.000000.lel.ll.nc"}); //
-    result.add( new Object[]{"conventions/cf/ipcc/cl_A1.nc"}); //
-    result.add( new Object[]{"conventions/csm/o3monthly.nc"}); //
-    result.add( new Object[]{"conventions/gdv/OceanDJF.nc"}); //
-    result.add( new Object[]{"conventions/gief/coamps.wind_uv.nc"}); //
-    result.add( new Object[]{"conventions/mars/temp_air_01082000.nc"}); //
-    result.add( new Object[]{"conventions/mm5/n040.nc"}); //
-    result.add( new Object[]{"conventions/nuwg/eta.nc"}); //
-    result.add( new Object[]{"conventions/nuwg/ruc.nc"}); //
-    result.add( new Object[]{"conventions/wrf/wrfout_v2_Lambert.nc"}); //
-    result.add( new Object[]{"conventions/mm5/n040.nc"}); //
+    result.add(new Object[] {"conventions/zebra/SPOL_3Volumes.nc"});
+    result.add(new Object[] {"conventions/coards/inittest24.QRIDV07200.ncml"}); //
+    result.add(new Object[] {"conventions/atd/rgg.20020411.000000.lel.ll.nc"}); //
+    result.add(new Object[] {"conventions/cf/ipcc/cl_A1.nc"}); //
+    result.add(new Object[] {"conventions/csm/o3monthly.nc"}); //
+    result.add(new Object[] {"conventions/gdv/OceanDJF.nc"}); //
+    result.add(new Object[] {"conventions/gief/coamps.wind_uv.nc"}); //
+    result.add(new Object[] {"conventions/mars/temp_air_01082000.nc"}); //
+    result.add(new Object[] {"conventions/mm5/n040.nc"}); //
+    result.add(new Object[] {"conventions/nuwg/eta.nc"}); //
+    result.add(new Object[] {"conventions/nuwg/ruc.nc"}); //
+    result.add(new Object[] {"conventions/wrf/wrfout_v2_Lambert.nc"}); //
+    result.add(new Object[] {"conventions/mm5/n040.nc"}); //
 
     return result;
-   }
+  }
 
 
   public TestDODScompareWithFiles(String filename) {
@@ -73,31 +72,33 @@ public class TestDODScompareWithFiles {
 
   String path = "dodsC/scanCdmUnitTests/";
 
-  /* public void testCompareAll() throws IOException {
-    readAllDir(contentRoot + "ncml", ".ncml");
-  }
-
-  void readAllDir(String dirName, String suffix) throws IOException {
-    System.out.println("---------------Reading directory " + dirName);
-    File allDir = new File(dirName);
-    File[] allFiles = allDir.listFiles();
-    if (allFiles == null) return;
-
-    for (File f : allFiles) {
-      if (f.isDirectory()) continue;
-
-      String name = f.getAbsolutePath();
-      if (!name.endsWith(suffix)) continue;
-
-      compare(name);
-    }
-
-    for (File f : allFiles) {
-      if (f.isDirectory())
-        readAllDir(f.getAbsolutePath(), suffix);
-    }
-
-  } */
+  /*
+   * public void testCompareAll() throws IOException {
+   * readAllDir(contentRoot + "ncml", ".ncml");
+   * }
+   * 
+   * void readAllDir(String dirName, String suffix) throws IOException {
+   * System.out.println("---------------Reading directory " + dirName);
+   * File allDir = new File(dirName);
+   * File[] allFiles = allDir.listFiles();
+   * if (allFiles == null) return;
+   * 
+   * for (File f : allFiles) {
+   * if (f.isDirectory()) continue;
+   * 
+   * String name = f.getAbsolutePath();
+   * if (!name.endsWith(suffix)) continue;
+   * 
+   * compare(name);
+   * }
+   * 
+   * for (File f : allFiles) {
+   * if (f.isDirectory())
+   * readAllDir(f.getAbsolutePath(), suffix);
+   * }
+   * 
+   * }
+   */
 
   @Test
   public void problem() throws IOException {
@@ -132,11 +133,13 @@ public class TestDODScompareWithFiles {
       } else {
         success++;
       }
-      Assert.assertTrue( localPath+ " != "+dodsUrl, ok);
+      Assert.assertTrue(localPath + " != " + dodsUrl, ok);
 
     } finally {
-      if (ncfile != null) ncfile.close();
-      if (ncremote != null) ncremote.close();
+      if (ncfile != null)
+        ncfile.close();
+      if (ncremote != null)
+        ncremote.close();
     }
   }
 
@@ -147,13 +150,18 @@ public class TestDODScompareWithFiles {
       // if (v != null && v.isMemberOfStructure()) return false;
       String name = att.getShortName();
 
-      if (name.equals(_Coordinate.Axes)) return false;
-      if (name.equals(CDM.UNSIGNED)) return false;
+      if (name.equals(_Coordinate.Axes))
+        return false;
+      if (name.equals(CDM.UNSIGNED))
+        return false;
 
       return true;
     }
 
-    @Override public boolean varDataTypeCheckOk(Variable v) { return true; }
+    @Override
+    public boolean varDataTypeCheckOk(Variable v) {
+      return true;
+    }
   }
 
 

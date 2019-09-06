@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import opendap.dap.*;
 import opendap.servers.*;
 import opendap.dap.parsers.ParseException;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +18,6 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DeflaterOutputStream;
 import java.net.URI;
-
 import opendap.servlet.*;
 import opendap.servlet.AbstractServlet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,14 +73,13 @@ public class OpendapServlet extends AbstractServlet {
 
     logServerStartup.info(getClass().getName() + " initialization start");
 
-    this.ascLimit = ThreddsConfig.getInt("Opendap.ascLimit",
-        ascLimit);  // LOOK how the hell can OpendapServlet call something in the tds module ??
+    this.ascLimit = ThreddsConfig.getInt("Opendap.ascLimit", ascLimit); // LOOK how the hell can OpendapServlet call
+                                                                        // something in the tds module ??
     this.binLimit = ThreddsConfig.getInt("Opendap.binLimit", binLimit);
 
     this.odapVersionString = ThreddsConfig.get("Opendap.serverVersion", odapVersionString);
-    logServerStartup.info(
-        getClass().getName() + " version= " + odapVersionString + " ascLimit = " + ascLimit + " binLimit = "
-            + binLimit);
+    logServerStartup.info(getClass().getName() + " version= " + odapVersionString + " ascLimit = " + ascLimit
+        + " binLimit = " + binLimit);
 
     if (tdsContext != null) // LOOK not set in mock testing enviro ?
     {
@@ -179,11 +176,11 @@ public class OpendapServlet extends AbstractServlet {
         doGetINFO(rs);
       } else if (requestSuffix.equalsIgnoreCase("html") || requestSuffix.equalsIgnoreCase("htm")) {
         doGetHTML(rs);
-      } else if (requestSuffix.equalsIgnoreCase("ver") || requestSuffix.equalsIgnoreCase("version") ||
-          dataSet.equalsIgnoreCase("/version") || dataSet.equalsIgnoreCase("/version/")) {
+      } else if (requestSuffix.equalsIgnoreCase("ver") || requestSuffix.equalsIgnoreCase("version")
+          || dataSet.equalsIgnoreCase("/version") || dataSet.equalsIgnoreCase("/version/")) {
         doGetVER(rs);
-      } else if (dataSet.equalsIgnoreCase("/help") || dataSet.equalsIgnoreCase("/help/") ||
-          dataSet.equalsIgnoreCase("/" + requestSuffix) || requestSuffix.equalsIgnoreCase("help")) {
+      } else if (dataSet.equalsIgnoreCase("/help") || dataSet.equalsIgnoreCase("/help/")
+          || dataSet.equalsIgnoreCase("/" + requestSuffix) || requestSuffix.equalsIgnoreCase("help")) {
         doGetHELP(rs);
       } else {
         sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Unrecognized request");
@@ -206,8 +203,8 @@ public class OpendapServlet extends AbstractServlet {
     } catch (DAP2Exception de) {
       int status = (de.getErrorCode() == DAP2Exception.NO_SUCH_FILE) ? HttpServletResponse.SC_NOT_FOUND
           : HttpServletResponse.SC_BAD_REQUEST;
-      if ((de.getErrorCode() == DAP2Exception.UNKNOWN_ERROR) || ((de.getErrorCode() == DAP2Exception.UNDEFINED_ERROR))
-          && (de.getErrorMessage() != null)) {
+      if ((de.getErrorCode() == DAP2Exception.UNKNOWN_ERROR)
+          || ((de.getErrorCode() == DAP2Exception.UNDEFINED_ERROR)) && (de.getErrorMessage() != null)) {
         log.info(de.getErrorMessage());
       }
       response.setStatus(status);
@@ -238,7 +235,7 @@ public class OpendapServlet extends AbstractServlet {
       // everything else
     } catch (Throwable t) {
       log.error("request= " + rs, t);
-      // t.printStackTrace();     // LOOK, logger not showing stack trace
+      // t.printStackTrace(); // LOOK, logger not showing stack trace
       sendErrorResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, t.getMessage());
     }
 
@@ -438,7 +435,7 @@ public class OpendapServlet extends AbstractServlet {
       }
       bOut.flush();
 
-    } finally {  // release lock if needed
+    } finally { // release lock if needed
       if (ds != null) {
         ds.release();
       }
@@ -455,14 +452,16 @@ public class OpendapServlet extends AbstractServlet {
 
     response.setHeader("XDODS-Server", getServerVersion()); // needed by client
 
-    /* if (path.endsWith(".close")) {
-      closeSession(request, response);
-      response.setContentLength(0);
-      return;
-    }
-
-    // so we need to worry about deleting sessions?
-    session.invalidate();  */
+    /*
+     * if (path.endsWith(".close")) {
+     * closeSession(request, response);
+     * response.setContentLength(0);
+     * return;
+     * }
+     * 
+     * // so we need to worry about deleting sessions?
+     * session.invalidate();
+     */
   }
 
   public void doGetDAP2Data(ReqState rs) throws Exception {
@@ -517,7 +516,7 @@ public class OpendapServlet extends AbstractServlet {
       }
       bOut.flush();
 
-    } finally {  // release lock if needed
+    } finally { // release lock if needed
       if (ds != null) {
         ds.release();
       }
@@ -551,7 +550,7 @@ public class OpendapServlet extends AbstractServlet {
 
   public void doGetDIR(ReqState rs) throws Exception {
     // rather dangerous here, since you can go into an infinite loop
-    // so we're going to insist that there's  no suffix
+    // so we're going to insist that there's no suffix
     HttpServletResponse response = rs.getResponse();
     HttpServletRequest request = rs.getRequest();
     if ((rs.getRequestSuffix() == null) || (rs.getRequestSuffix().length() == 0)) {
@@ -579,7 +578,7 @@ public class OpendapServlet extends AbstractServlet {
       GetInfoHandler di = new GetInfoHandler();
       di.sendINFO(pw, ds, rs);
 
-    } finally {  // release lock if needed
+    } finally { // release lock if needed
       if (ds != null) {
         ds.release();
       }
@@ -600,14 +599,14 @@ public class OpendapServlet extends AbstractServlet {
       response.setContentType("text/html");
       response.setHeader("Content-Description", "dods-form");
 
-      // Utilize the getDDS() method to get  a parsed and populated DDS
+      // Utilize the getDDS() method to get a parsed and populated DDS
       // for this server.
       ServerDDS myDDS = ds.getDDS();
       DAS das = ds.getDAS();
       GetHTMLInterfaceHandler2 di = new GetHTMLInterfaceHandler2();
       di.sendDataRequestForm(request, response, rs.getDataSet(), myDDS, das);
 
-    } finally {  // release lock if needed
+    } finally { // release lock if needed
       if (ds != null) {
         ds.release();
       }
@@ -616,56 +615,60 @@ public class OpendapServlet extends AbstractServlet {
   }
 
   ///////////////////////////////////////////////////////////////////////////////////////////////
-  /* debugging
-  private void makeDebugActions() {
-    DebugCommands.Category debugHandler = debugCommands.findCategory("OPeNDAP");
-    DebugCommands.Action act;
-
-    act = new DebugCommands.Action("help", "Show help page") {
-      public void doAction(DebugCommands.Event e) {
-        try {
-          doGetHELP(getRequestState(e.req, e.res));
-        } catch (Exception ioe) {
-          log.error("ShowHelp", ioe);
-        }
-      }
-    };
-    debugHandler.addAction(act);
-
-    act = new DebugCommands.Action("version", "Show server version") {
-      public void doAction(DebugCommands.Event e) {
-        e.pw.println("  version= " + getServerVersion());
-      }
-    };
-    debugHandler.addAction(act);
-  }  */
+  /*
+   * debugging
+   * private void makeDebugActions() {
+   * DebugCommands.Category debugHandler = debugCommands.findCategory("OPeNDAP");
+   * DebugCommands.Action act;
+   * 
+   * act = new DebugCommands.Action("help", "Show help page") {
+   * public void doAction(DebugCommands.Event e) {
+   * try {
+   * doGetHELP(getRequestState(e.req, e.res));
+   * } catch (Exception ioe) {
+   * log.error("ShowHelp", ioe);
+   * }
+   * }
+   * };
+   * debugHandler.addAction(act);
+   * 
+   * act = new DebugCommands.Action("version", "Show server version") {
+   * public void doAction(DebugCommands.Event e) {
+   * e.pw.println("  version= " + getServerVersion());
+   * }
+   * };
+   * debugHandler.addAction(act);
+   * }
+   */
 
   public String getServerName() {
     return this.getClass().getName();
   }
 
 
-  /*protected ReqState getRequestState(HttpServletRequest request, HttpServletResponse response) {
-
-    ReqState rs = null;
-    // The url and query strings will come to us in encoded form
-    // (see HTTPmethod.newMethod())
-    String baseurl = request.getRequestURL().toString();
-    baseurl = EscapeStrings.escapeURL(baseurl);
-    log.debug("doGet baseurl={}", baseurl);
-
-    String query = request.getQueryString();
-    query = EscapeStrings.unescapeURLQuery(query);
-    log.debug("doGet query={}", query);
-
-    try {
-      rs = new ReqState(request, response, getServletConfig(), getServerName(), baseurl, query);
-    } catch (BadURLException bue) {
-      rs = null;
-    }
-
-    return rs;
-  }*/
+  /*
+   * protected ReqState getRequestState(HttpServletRequest request, HttpServletResponse response) {
+   * 
+   * ReqState rs = null;
+   * // The url and query strings will come to us in encoded form
+   * // (see HTTPmethod.newMethod())
+   * String baseurl = request.getRequestURL().toString();
+   * baseurl = EscapeStrings.escapeURL(baseurl);
+   * log.debug("doGet baseurl={}", baseurl);
+   * 
+   * String query = request.getQueryString();
+   * query = EscapeStrings.unescapeURLQuery(query);
+   * log.debug("doGet query={}", query);
+   * 
+   * try {
+   * rs = new ReqState(request, response, getServletConfig(), getServerName(), baseurl, query);
+   * } catch (BadURLException bue) {
+   * rs = null;
+   * }
+   * 
+   * return rs;
+   * }
+   */
 
   /**
    * ************************************************************************ Prints the OPeNDAP Server help page to the
@@ -684,8 +687,8 @@ public class OpendapServlet extends AbstractServlet {
     pw.println("<dt> dds  </dt> <dd> Dataset Descriptor Structure (DDS)</dd>");
     pw.println("<dt> dods </dt> <dd> DataDDS object (A constrained DDS populated with data)</dd>");
     pw.println("<dt> ddx  </dt> <dd> XML version of the DDS/DAS</dd>");
-    pw.println("<dt> blob </dt> <dd> Serialized binary data content for requested data set, " +
-        "with the constraint expression applied.</dd>");
+    pw.println("<dt> blob </dt> <dd> Serialized binary data content for requested data set, "
+        + "with the constraint expression applied.</dd>");
     pw.println("<dt> info </dt> <dd> info object (attributes, types and other information)</dd>");
     pw.println("<dt> html </dt> <dd> html form for this dataset</dd>");
     pw.println("<dt> ver  </dt> <dd> return the version number of the server</dd>");
@@ -711,7 +714,7 @@ public class OpendapServlet extends AbstractServlet {
     pw.println("query using the customized form.");
 
   }
-  //**************************************************************************
+  // **************************************************************************
 
 
   /**
@@ -763,11 +766,9 @@ public class OpendapServlet extends AbstractServlet {
     return rs;
   }
 
-  private void
-  checkSize(ServerDDS dds, boolean isAscii)
-      throws Exception {
+  private void checkSize(ServerDDS dds, boolean isAscii) throws Exception {
     long size = computeSize(dds, isAscii);
-    //System.err.printf("total (constrained) size=%s\n", size);
+    // System.err.printf("total (constrained) size=%s\n", size);
     log.debug("total (constrained) size={}", size);
     double dsize = size / (1000.0 * 1000.0);
     double maxSize = isAscii ? ascLimit : binLimit; // Mbytes
@@ -783,7 +784,7 @@ public class OpendapServlet extends AbstractServlet {
   // Note that the dds may be empty (e-support ZTH-269982)
   private long computeSize(DConstructor ctor, boolean isAscii) throws Exception {
     long projectsize = 0; // accumulate size of projected variables
-    long othersize = 0;  // accumulate size of non-projected variables
+    long othersize = 0; // accumulate size of non-projected variables
     long fieldsize = 0;
     int projectedcount = 0;
     int fieldcount = 0;
@@ -806,11 +807,11 @@ public class OpendapServlet extends AbstractServlet {
     }
     // Cases to consider:
     // 1. If all of the fields of this ctor are projected,
-    //    then return projectsize
+    // then return projectsize
     // 2. If none of the fields of this ctor are projected,
-    //    then return othersize
+    // then return othersize
     // 3. otherwise, at least one field, but not all, is projected,
-    //    => return projectsize;
+    // => return projectsize;
     long result;
     if (projectedcount == fieldcount) {
       result = projectsize;
@@ -827,8 +828,7 @@ public class OpendapServlet extends AbstractServlet {
     return result;
   }
 
-  long computeFieldSize(BaseType bt, boolean isAscii)
-      throws Exception {
+  long computeFieldSize(BaseType bt, boolean isAscii) throws Exception {
     long fieldsize = 0;
     // Figure out what this field is (e.g. primitive or not)
     // Somewhat convoluted.
@@ -860,9 +860,7 @@ public class OpendapServlet extends AbstractServlet {
     return fieldsize;
   }
 
-  long
-  computeArraySize(SDArray da)
-      throws Exception {
+  long computeArraySize(SDArray da) throws Exception {
     assert (da.getContainerVar() instanceof DPrimitive);
     BaseType base = da.getPrimitiveVector().getTemplate();
     DataType dtype = DODSNetcdfFile.convertToNCType(base, false);
@@ -914,26 +912,30 @@ public class OpendapServlet extends AbstractServlet {
       }
     }
 
-    /* test debug
-    for (int i = 0; i < 2; i++) {
-      NetcdfFile ncfile = DatasetHandler.getNetcdfFile(req, preq.getResponse(), reqPath);
-      if (null == ncfile) return null;
-      NetcdfDataset ncd = new NetcdfDataset(ncfile);
-
-      Formatter out = new Formatter();
-      CompareNetcdf2.compareFiles(ncfile, ncd, out, false, false, false);
-      System.out.printf("%s%n", out);
-
-      FeatureDataset featureDataset = ucar.nc2.ft.FeatureDatasetFactoryManager.wrap(ucar.nc2.constants.FeatureType.STATION, ncd, null, new Formatter(System.err));
-      System.out.printf("%s%n", featureDataset);
-      ncd.close();
-    } */
+    /*
+     * test debug
+     * for (int i = 0; i < 2; i++) {
+     * NetcdfFile ncfile = DatasetHandler.getNetcdfFile(req, preq.getResponse(), reqPath);
+     * if (null == ncfile) return null;
+     * NetcdfDataset ncd = new NetcdfDataset(ncfile);
+     * 
+     * Formatter out = new Formatter();
+     * CompareNetcdf2.compareFiles(ncfile, ncd, out, false, false, false);
+     * System.out.printf("%s%n", out);
+     * 
+     * FeatureDataset featureDataset =
+     * ucar.nc2.ft.FeatureDatasetFactoryManager.wrap(ucar.nc2.constants.FeatureType.STATION, ncd, null, new
+     * Formatter(System.err));
+     * System.out.printf("%s%n", featureDataset);
+     * ncd.close();
+     * }
+     */
 
     NetcdfFile ncd = TdsRequestedDataset.getNetcdfFile(req, preq.getResponse(), reqPath);
     if (null == ncd) {
       return null; // error message already sent
     }
-    //   throw new FileNotFoundException("Cant find "+ reqPath);
+    // throw new FileNotFoundException("Cant find "+ reqPath);
 
     GuardedDataset gdataset = new GuardedDatasetCacheAndClone(reqPath, ncd, acceptSession);
 

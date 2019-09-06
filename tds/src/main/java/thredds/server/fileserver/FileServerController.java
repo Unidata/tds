@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import thredds.core.TdsRequestedDataset;
 import thredds.servlet.ServletUtil;
 import thredds.util.TdsPathUtils;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,18 +29,21 @@ public class FileServerController {
   @RequestMapping("**")
   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
     String reqPath = TdsPathUtils.extractPath(req, "fileServer/");
-    if (reqPath == null) return;
+    if (reqPath == null)
+      return;
 
-    if (!TdsRequestedDataset.resourceControlOk(req, res, reqPath)) {  // LOOK or process in TdsRequestedDataset.getFile ??
+    if (!TdsRequestedDataset.resourceControlOk(req, res, reqPath)) { // LOOK or process in TdsRequestedDataset.getFile
+                                                                     // ??
       return;
     }
 
-    File file = getFile( reqPath);
+    File file = getFile(reqPath);
     ServletUtil.returnFile(null, req, res, file, null);
   }
 
   private File getFile(String reqPath) {
-    if (reqPath == null) return null;
+    if (reqPath == null)
+      return null;
 
     File file = TdsRequestedDataset.getFile(reqPath);
     if (file == null)

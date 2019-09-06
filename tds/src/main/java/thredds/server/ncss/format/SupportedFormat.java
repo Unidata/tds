@@ -6,7 +6,6 @@
 package thredds.server.ncss.format;
 
 import thredds.util.ContentType;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,18 +15,18 @@ import java.util.List;
  */
 public enum SupportedFormat {
 
-  CSV_STREAM("csv", true, false, ".csv", ContentType.csv, "text/csv"),
-  CSV_FILE("csv_file", false, false, ".csv", ContentType.csv, "csv_file"),
+  CSV_STREAM("csv", true, false, ".csv", ContentType.csv, "text/csv"), CSV_FILE("csv_file", false, false, ".csv",
+      ContentType.csv, "csv_file"),
 
-  XML_STREAM("xml", true, false, ".xml", ContentType.xml, "xml"),
-  XML_FILE("xml_file", false, false, ".xml", ContentType.xml, "xml_file"),
+  XML_STREAM("xml", true, false, ".xml", ContentType.xml, "xml"), XML_FILE("xml_file", false, false, ".xml",
+      ContentType.xml, "xml_file"),
 
-  NETCDF3("netcdf3", false, true, ".nc", ContentType.netcdf, "netcdf", "netcdf3"),
-  NETCDF4("netcdf4-classic", false, true, ".nc4", ContentType.netcdf, "netcdf4-classic"),
-  NETCDF4EXT("netcdf4", false, true, ".nc4", ContentType.netcdf, "netcdf4"),
+  NETCDF3("netcdf3", false, true, ".nc", ContentType.netcdf, "netcdf", "netcdf3"), NETCDF4("netcdf4-classic", false,
+      true, ".nc4", ContentType.netcdf,
+      "netcdf4-classic"), NETCDF4EXT("netcdf4", false, true, ".nc4", ContentType.netcdf, "netcdf4"),
 
-  JSON("json", false, false, ".json", ContentType.json, "json", "geojson"),
-  WKT("wkt", false, false, ".txt", ContentType.text, "wkt"),
+  JSON("json", false, false, ".json", ContentType.json, "json", "geojson"), WKT("wkt", false, false, ".txt",
+      ContentType.text, "wkt"),
 
   WATERML2("waterml2", true, false, ".xml", ContentType.xml, "waterml2");
 
@@ -41,7 +40,8 @@ public enum SupportedFormat {
   private final boolean isStream;
   private final boolean isBinary;
 
-  SupportedFormat(String formatName, boolean isStream, boolean isBinary, String fileSuffix, ContentType contentType, String... aliases) {
+  SupportedFormat(String formatName, boolean isStream, boolean isBinary, String fileSuffix, ContentType contentType,
+      String... aliases) {
     this.formatName = formatName;
     this.isStream = isStream;
     this.isBinary = isBinary;
@@ -66,10 +66,12 @@ public enum SupportedFormat {
   }
 
   public boolean isAlias(String want) {
-    if (want.equalsIgnoreCase(formatName)) return true;
+    if (want.equalsIgnoreCase(formatName))
+      return true;
     // if (want.equalsIgnoreCase(mimeType)) return true;
     for (String have : aliases)
-      if (have.equalsIgnoreCase(want)) return true;
+      if (have.equalsIgnoreCase(want))
+        return true;
     return false;
   }
 

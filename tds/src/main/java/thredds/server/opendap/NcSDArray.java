@@ -8,12 +8,10 @@ package thredds.server.opendap;
 import opendap.dap.InvalidDimensionException;
 import ucar.ma2.*;
 import ucar.nc2.*;
-
 import opendap.servers.*;
 import opendap.dap.BaseType;
 import opendap.dap.DArrayDimension;
 import opendap.dap.PrimitiveVector;
-
 import java.io.IOException;
 import java.io.EOFException;
 import java.io.DataOutputStream;
@@ -32,12 +30,12 @@ public class NcSDArray extends SDArray implements HasNetcdfVariable {
 
   private static final boolean debug = false, debugRead = false;
   private Variable ncVar = null;
-  //ignore protected BaseType elemType;
+  // ignore protected BaseType elemType;
 
   /**
    * Constructor: Wraps a netcdf variable in a DODS SDArray.
    *
-   * @param v  : netcdf Variable
+   * @param v : netcdf Variable
    * @param bt : DODS element type
    */
   NcSDArray(Variable v, BaseType bt) {
@@ -64,7 +62,7 @@ public class NcSDArray extends SDArray implements HasNetcdfVariable {
    * Use the start, stop and stride values, typically set by the constraint evaluator.
    *
    * @param datasetName not used
-   * @param specialO    not used
+   * @param specialO not used
    * @return false (no more data to be read)
    * @throws IOException
    * @throws EOFException
@@ -88,13 +86,15 @@ public class NcSDArray extends SDArray implements HasNetcdfVariable {
 
       } catch (java.lang.ArrayIndexOutOfBoundsException t) {
         log.error(getRequestedRange(), t);
-        throw new RuntimeException("NcSDArray java.lang.ArrayIndexOutOfBoundsException=" + t.getMessage()+
-            " for request= "+ getRequestedRange()+" dataset= "+ datasetName, t);
+        throw new RuntimeException("NcSDArray java.lang.ArrayIndexOutOfBoundsException=" + t.getMessage()
+            + " for request= " + getRequestedRange() + " dataset= " + datasetName, t);
       }
 
       if (debug)
-        System.out.println("  NcSDArray Read " + getEncodedName() + " " + a.getSize() + " elems of type = " + a.getElementType());
-      if (debugRead) System.out.println("  Read = " + a.getSize() + " elems of type = " + a.getElementType());
+        System.out.println(
+            "  NcSDArray Read " + getEncodedName() + " " + a.getSize() + " elems of type = " + a.getElementType());
+      if (debugRead)
+        System.out.println("  Read = " + a.getSize() + " elems of type = " + a.getElementType());
       if (log.isDebugEnabled()) {
         long tookTime = System.currentTimeMillis() - tstart;
         log.debug("NcSDArray read array: " + tookTime * .001 + " seconds");
@@ -110,8 +110,9 @@ public class NcSDArray extends SDArray implements HasNetcdfVariable {
     }
     setData(a);
 
-    if (debugRead) System.out.println(" PrimitiveVector len = " + getPrimitiveVector().getLength() +
-            " type = " + getPrimitiveVector().getTemplate());
+    if (debugRead)
+      System.out.println(" PrimitiveVector len = " + getPrimitiveVector().getLength() + " type = "
+          + getPrimitiveVector().getTemplate());
 
     return (false);
   }
@@ -135,8 +136,7 @@ public class NcSDArray extends SDArray implements HasNetcdfVariable {
   public void setData(Array data) {
     PrimitiveVector pv = getPrimitiveVector();
     if (debugRead)
-      System.out.println(" PrimitiveVector type = " + pv.getTemplate() +
-              " pv type = " + pv.getClass().getName());
+      System.out.println(" PrimitiveVector type = " + pv.getTemplate() + " pv type = " + pv.getClass().getName());
 
     if (ncVar.getDataType() == DataType.STRING) {
       int size = (int) data.getSize();

@@ -22,7 +22,7 @@ import java.lang.invoke.MethodHandles;
 public class TestDLwriter extends TestCase {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  public TestDLwriter( String name) {
+  public TestDLwriter(String name) {
     super(name);
   }
 
@@ -30,7 +30,7 @@ public class TestDLwriter extends TestCase {
   public void testDLwriter() throws IOException {
     String url = "/DLwriter?type=ADN&catalog=/thredds/catalog/testEnhanced/catalog.xml";
 
-    System.out.println("Response from "+ TestOnLocalServer.withHttpPath(url));
+    System.out.println("Response from " + TestOnLocalServer.withHttpPath(url));
     String result = IO.readURLcontents(TestOnLocalServer.withHttpPath(url));
     assert result != null;
     System.out.println(result);

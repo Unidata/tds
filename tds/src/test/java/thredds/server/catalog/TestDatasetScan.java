@@ -21,12 +21,10 @@ import ucar.nc2.units.TimeDuration;
 import ucar.nc2.util.AliasTranslator;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.TestDir;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.text.ParseException;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -35,17 +33,17 @@ import static org.junit.Assert.assertEquals;
  * @author caron
  * @since 1/21/2015
  * 
- * Excution notes:
- * If you plan to run this under Intellij IDE,
- * you will need to modify the 'Before Launch' window
- * in the Edit Configuration window and add the following
- * two gradle tasks in the thredds:tds project
- * 1. processResources
- * 2. processTestResources
- * For both of them, you will need to ensure that the following
- * VM arguments are defined.
- * 1. -Dunidata.testdata.path=...
- * 2. -Dtds.content.root.path=.../tds/src/test/content
+ *        Excution notes:
+ *        If you plan to run this under Intellij IDE,
+ *        you will need to modify the 'Before Launch' window
+ *        in the Edit Configuration window and add the following
+ *        two gradle tasks in the thredds:tds project
+ *        1. processResources
+ *        2. processTestResources
+ *        For both of them, you will need to ensure that the following
+ *        VM arguments are defined.
+ *        1. -Dunidata.testdata.path=...
+ *        2. -Dtds.content.root.path=.../tds/src/test/content
  */
 
 @Category(NeedsCdmUnitTest.class)
@@ -58,11 +56,11 @@ public class TestDatasetScan {
   public void setup() {
     AliasTranslator.addAlias("${cdmUnitTest}", TestDir.cdmUnitTestDir);
     StandardService ss = StandardService.resolver;
-    Service latest = new Service(ss.getType().toString(), ss.getBase(), ss.getType().toString(), ss.getType().getDescription(),
-            null, null, null, ss.getType().getAccessType());
+    Service latest = new Service(ss.getType().toString(), ss.getBase(), ss.getType().toString(),
+        ss.getType().getDescription(), null, null, null, ss.getType().getAccessType());
     StandardService ss2 = StandardService.httpServer;
-    Service httpServer = new Service(ss2.getType().toString(), ss2.getBase(), ss2.getType().toString(), ss2.getType().getDescription(),
-            null, null, null, ss2.getType().getAccessType());
+    Service httpServer = new Service(ss2.getType().toString(), ss2.getBase(), ss2.getType().toString(),
+        ss2.getType().getDescription(), null, null, null, ss2.getType().getAccessType());
 
     DatasetScan.setSpecialServices(latest, httpServer);
   }
@@ -72,19 +70,19 @@ public class TestDatasetScan {
     String filePath = "../tds/src/test/content/thredds/catalog.xml";
     ConfigCatalog cat = TestConfigCatalogBuilder.open("file:" + filePath);
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    // System.out.printf("%s%n",  writer.writeXML( cat ));
+    // System.out.printf("%s%n", writer.writeXML( cat ));
 
     List<DatasetRootConfig> roots = cat.getDatasetRoots();
     for (DatasetRootConfig root : roots)
       System.out.printf("DatasetRoot %s -> %s%n", root.path, root.location);
-    Assert.assertTrue("Incorrect # of catalog roots: expect 5 found "+roots.size(),roots.size() == 5);
+    Assert.assertTrue("Incorrect # of catalog roots: expect 5 found " + roots.size(), roots.size() == 5);
 
     Dataset ds = cat.findDatasetByID("scanCdmUnitTests");
     Assert.assertTrue("Null dataset", ds != null);
     Assert.assertTrue("dataset not DatasetScan", ds instanceof DatasetScan);
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
-    Assert.assertTrue("Servicename default is not 'all'",serviceName.equals("all"));
+    Assert.assertTrue("Servicename default is not 'all'", serviceName.equals("all"));
     Assert.assertTrue("has DatasetScan property", ds.hasProperty("DatasetScan"));
 
     DatasetScanConfig config = dss.getConfig();
@@ -92,10 +90,10 @@ public class TestDatasetScan {
 
     Catalog scanCat = dss.makeCatalogForDirectory("scanCdmUnitTests", cat.getBaseURI()).makeCatalog();
     assert scanCat != null;
-    System.out.printf("%n%s%n",  writer.writeXML( scanCat ));
+    System.out.printf("%n%s%n", writer.writeXML(scanCat));
 
     scanCat = dss.makeCatalogForDirectory("scanCdmUnitTests/ncss/test", cat.getBaseURI()).makeCatalog();
-    System.out.printf("%s%n",  writer.writeXML( scanCat ));
+    System.out.printf("%s%n", writer.writeXML(scanCat));
   }
 
   @Test
@@ -116,7 +114,8 @@ public class TestDatasetScan {
     assert scanCat != null;
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    if (showCats) System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    if (showCats)
+      System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assertEquals(1, scanCat.getDatasets().size());
     Dataset root = scanCat.getDatasets().get(0);
     assertEquals(3, root.getDatasets().size());
@@ -129,7 +128,8 @@ public class TestDatasetScan {
 
     scanCat = dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
     assert scanCat != null;
-    if (showCats) System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    if (showCats)
+      System.out.printf("%n%s%n", writer.writeXML(scanCat));
 
     assert scanCat.getDatasets().size() == 1;
     root = scanCat.getDatasets().get(0);
@@ -156,28 +156,32 @@ public class TestDatasetScan {
     DatasetScanConfig config = dss.getConfig();
     System.out.printf("%s%n", config);
 
-    Catalog scanCat = dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
+    Catalog scanCat =
+        dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
     assert scanCat != null;
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    if (showCats) System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    if (showCats)
+      System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assertEquals(1, scanCat.getDatasets().size());
     Dataset root = scanCat.getDatasets().get(0);
     assertEquals(3, root.getDatasets().size());
 
     List<Dataset> list = root.getDatasets();
-    Dataset ds0 = list.get(1);  // first one is latest
+    Dataset ds0 = list.get(1); // first one is latest
     Dataset ds1 = list.get(2);
 
     DateRange dr0 = ds0.getTimeCoverage();
     assert dr0 != null;
-    assert dr0.getStart().getCalendarDate().equals(CalendarDateFormatter.isoStringToCalendarDate(null, "2013-11-02T23:54:00"));
-    assert dr0.getDuration().equals( new TimeDuration("1 hour"));
+    assert dr0.getStart().getCalendarDate()
+        .equals(CalendarDateFormatter.isoStringToCalendarDate(null, "2013-11-02T23:54:00"));
+    assert dr0.getDuration().equals(new TimeDuration("1 hour"));
 
     DateRange dr1 = ds1.getTimeCoverage();
     assert dr1 != null;
-    assert dr1.getStart().getCalendarDate().equals(CalendarDateFormatter.isoStringToCalendarDate(null, "2013-11-02T23:48:00"));
-    assert dr1.getDuration().equals( new TimeDuration("1 hour"));
+    assert dr1.getStart().getCalendarDate()
+        .equals(CalendarDateFormatter.isoStringToCalendarDate(null, "2013-11-02T23:48:00"));
+    assert dr1.getDuration().equals(new TimeDuration("1 hour"));
   }
 
   @Test
@@ -194,17 +198,20 @@ public class TestDatasetScan {
     DatasetScanConfig config = dss.getConfig();
     System.out.printf("%s%n", config);
 
-    Catalog scanCat = dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
+    Catalog scanCat =
+        dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
     assert scanCat != null;
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    if (showCats) System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    if (showCats)
+      System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assert scanCat.getDatasets().size() == 1;
     Dataset root = scanCat.getDatasets().get(0);
 
     Service latestService = null;
     for (Service s : scanCat.getServices()) {
-      if (s.getName().equalsIgnoreCase("Resolver")) latestService = s;
+      if (s.getName().equalsIgnoreCase("Resolver"))
+        latestService = s;
     }
     assert latestService != null;
 
@@ -212,7 +219,8 @@ public class TestDatasetScan {
     for (Dataset nds : root.getDatasets()) {
       Service s = nds.getServiceDefault();
       assert s != null;
-      if (s.equals(latestService)) latestDataset = nds;
+      if (s.equals(latestService))
+        latestDataset = nds;
     }
     assert latestDataset != null;
   }
@@ -237,7 +245,8 @@ public class TestDatasetScan {
     assert scanCat != null;
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    if (showCats) System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    if (showCats)
+      System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assert scanCat.getDatasets().size() == 1;
     Dataset root = scanCat.getDatasets().get(0);
     String sn = root.getServiceNameDefault();
@@ -245,7 +254,8 @@ public class TestDatasetScan {
     assert sn.equals("fileservice");
 
     for (Dataset nds : root.getDatasets()) {
-      if (nds.getName().equals("latest.xml")) continue;
+      if (nds.getName().equals("latest.xml"))
+        continue;
       Service s = nds.getServiceDefault();
       assert s != null;
       assert s.getName().equals("fileservice");

@@ -6,13 +6,11 @@
 package thredds.server.ncss.format;
 
 import thredds.server.ncss.exception.UnsupportedResponseFormatException;
-
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import static thredds.server.ncss.format.SupportedFormat.*;
 
 /**
@@ -20,12 +18,12 @@ import static thredds.server.ncss.format.SupportedFormat.*;
  */
 @SuppressWarnings("ProblematicWhitespace")
 public enum SupportedOperation {
-  DATASET_INFO_REQUEST("Dataset info request", XML_FILE),
-  DATASET_BOUNDARIES_REQUEST("Dataset grid boundaries request", WKT, JSON),
-  GRID_REQUEST("Grid data request", NETCDF3, NETCDF4, NETCDF4EXT),
-  GRID_AS_POINT_REQUEST("Grid as point request", CSV_STREAM, CSV_FILE, XML_STREAM, XML_FILE, NETCDF3, NETCDF4, NETCDF4EXT),
-  POINT_REQUEST("Point data request", CSV_STREAM, CSV_FILE, XML_STREAM, XML_FILE, NETCDF3, NETCDF4, NETCDF4EXT),
-  STATION_REQUEST("Station data request", CSV_STREAM, CSV_FILE, XML_STREAM, XML_FILE, NETCDF3, NETCDF4, NETCDF4EXT, WATERML2);
+  DATASET_INFO_REQUEST("Dataset info request", XML_FILE), DATASET_BOUNDARIES_REQUEST("Dataset grid boundaries request",
+      WKT, JSON), GRID_REQUEST("Grid data request", NETCDF3, NETCDF4, NETCDF4EXT), GRID_AS_POINT_REQUEST(
+          "Grid as point request", CSV_STREAM, CSV_FILE, XML_STREAM, XML_FILE, NETCDF3, NETCDF4,
+          NETCDF4EXT), POINT_REQUEST("Point data request", CSV_STREAM, CSV_FILE, XML_STREAM, XML_FILE, NETCDF3, NETCDF4,
+              NETCDF4EXT), STATION_REQUEST("Station data request", CSV_STREAM, CSV_FILE, XML_STREAM, XML_FILE, NETCDF3,
+                  NETCDF4, NETCDF4EXT, WATERML2);
 
   private final String operationName;
   private final List<SupportedFormat> supportedFormats;
@@ -57,11 +55,11 @@ public enum SupportedOperation {
     return null;
   }
 
-  public @Nonnull
-  SupportedFormat getSupportedFormat(String want) throws UnsupportedResponseFormatException {
+  public @Nonnull SupportedFormat getSupportedFormat(String want) throws UnsupportedResponseFormatException {
     if (want == null || want.equals("")) {
       SupportedFormat sf = getDefaultFormat();
-      if (sf != null) return sf;
+      if (sf != null)
+        return sf;
       throw new UnsupportedResponseFormatException("No default Format available");
     }
 

@@ -25,7 +25,6 @@ import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit4.statements.*;
 import org.springframework.util.ReflectionUtils;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -51,10 +50,7 @@ import java.util.List;
  * public class FibonacciTest {
  *   &#064;Parameters
  *   public static List&lt;Object[]&gt; data() {
- *     return Arrays.asList(new Object[][] {
- *         Fibonacci,
- *         { { 0, 0 }, { 1, 1 }, { 2, 1 }, { 3, 2 }, { 4, 3 }, { 5, 5 },
- *             { 6, 8 } } });
+ *     return Arrays.asList(new Object[][] {Fibonacci, {{0, 0}, {1, 1}, {2, 1}, {3, 2}, {4, 3}, {5, 5}, {6, 8}}});
  *   }
  * 
  *   private int fInput;
@@ -62,8 +58,8 @@ import java.util.List;
  *   private int fExpected;
  * 
  *   public FibonacciTest(int input, int expected) {
- *     fInput= input;
- *     fExpected= expected;
+ *     fInput = input;
+ *     fExpected = expected;
  *   }
  * 
  *   &#064;Test
@@ -93,8 +89,7 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
   public static @interface Parameters {
   }
 
-  private class TestClassRunnerForParameters extends
-      BlockJUnit4ClassRunner {
+  private class TestClassRunnerForParameters extends BlockJUnit4ClassRunner {
     private final int fParameterSetNumber;
 
     private final List<Object[]> fParameterList;
@@ -109,14 +104,13 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
      * @param type the test class to be run
      * @see #createTestContextManager(Class)
      */
-    TestClassRunnerForParameters(Class<?> type,
-        List<Object[]> parameterList, int i) throws InitializationError {
+    TestClassRunnerForParameters(Class<?> type, List<Object[]> parameterList, int i) throws InitializationError {
       super(type);
       if (logger.isDebugEnabled()) {
         logger.debug("SpringJUnit4ClassRunner constructor called with [" + type + "].");
       }
-      fParameterList= parameterList;
-      fParameterSetNumber= i;
+      fParameterList = parameterList;
+      fParameterSetNumber = i;
       this.testContextManager = createTestContextManager(type);
     }
 
@@ -129,8 +123,7 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
      */
     @Override
     public Object createTest() throws Exception {
-      Object testInstance = getTestClass().getOnlyConstructor().newInstance(
-          computeParams());
+      Object testInstance = getTestClass().getOnlyConstructor().newInstance(computeParams());
       getTestContextManager().prepareTestInstance(testInstance);
       return testInstance;
     }
@@ -139,10 +132,8 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
       try {
         return fParameterList.get(fParameterSetNumber);
       } catch (ClassCastException e) {
-        throw new Exception(String.format(
-            "%s.%s() must return a Collection of arrays.",
-            getTestClass().getName(), getParametersMethod(
-                getTestClass()).getName()));
+        throw new Exception(String.format("%s.%s() must return a Collection of arrays.", getTestClass().getName(),
+            getParametersMethod(getTestClass()).getName()));
       }
     }
 
@@ -153,8 +144,7 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
 
     @Override
     protected String testName(final FrameworkMethod method) {
-      return String.format("%s[%s]", method.getName(),
-          fParameterSetNumber);
+      return String.format("%s[%s]", method.getName(), fParameterSetNumber);
     }
 
     @Override
@@ -168,7 +158,7 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
     }
 
 
-    /*SPRING*/
+    /* SPRING */
 
     /**
      * Constructs a new <code>SpringJUnit4ClassRunner</code> and initializes a
@@ -178,13 +168,13 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
      * @param clazz the test class to be run
      * @see #createTestContextManager(Class)
      */
-//    public TestClassRunnerForParameters(Class<?> clazz) throws InitializationError {
-//      super(clazz);
-//      if (logger.isDebugEnabled()) {
-//        logger.debug("SpringJUnit4ClassRunner constructor called with [" + clazz + "].");
-//      }
-//      this.testContextManager = createTestContextManager(clazz);
-//    }
+    // public TestClassRunnerForParameters(Class<?> clazz) throws InitializationError {
+    // super(clazz);
+    // if (logger.isDebugEnabled()) {
+    // logger.debug("SpringJUnit4ClassRunner constructor called with [" + clazz + "].");
+    // }
+    // this.testContextManager = createTestContextManager(clazz);
+    // }
 
     /**
      * Creates a new {@link TestContextManager} for the supplied test class and
@@ -302,14 +292,11 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
       eachNotifier.fireTestStarted();
       try {
         methodBlock(frameworkMethod).evaluate();
-      }
-      catch (AssumptionViolatedException e) {
+      } catch (AssumptionViolatedException e) {
         eachNotifier.addFailedAssumption(e);
-      }
-      catch (Throwable e) {
+      } catch (Throwable e) {
         eachNotifier.addFailure(e);
-      }
-      finally {
+      } finally {
         eachNotifier.fireTestFinished();
       }
     }
@@ -365,8 +352,7 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
             return createTest();
           }
         }.run();
-      }
-      catch (Throwable e) {
+      } catch (Throwable e) {
         return new Fail(e);
       }
 
@@ -387,14 +373,14 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
      * 4.5 and 4.6 implementations of {@link BlockJUnit4ClassRunner}.
      */
     private Statement withRulesReflectively(FrameworkMethod frameworkMethod, Object testInstance, Statement statement) {
-      Method withRulesMethod = ReflectionUtils.findMethod(getClass(), "withRules", FrameworkMethod.class,
-        Object.class, Statement.class);
+      Method withRulesMethod =
+          ReflectionUtils.findMethod(getClass(), "withRules", FrameworkMethod.class, Object.class, Statement.class);
       if (withRulesMethod != null) {
         // Original JUnit 4.7 code:
         // statement = withRules(frameworkMethod, testInstance, statement);
         ReflectionUtils.makeAccessible(withRulesMethod);
-        statement = (Statement) ReflectionUtils.invokeMethod(withRulesMethod, this, frameworkMethod, testInstance,
-          statement);
+        statement =
+            (Statement) ReflectionUtils.invokeMethod(withRulesMethod, this, frameworkMethod, testInstance, statement);
       }
       return statement;
     }
@@ -408,8 +394,8 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
      */
     protected boolean isTestMethodIgnored(FrameworkMethod frameworkMethod) {
       Method method = frameworkMethod.getMethod();
-      return (method.isAnnotationPresent(Ignore.class) || !ProfileValueUtils.isTestEnabledInThisEnvironment(method,
-        getTestClass().getJavaClass()));
+      return (method.isAnnotationPresent(Ignore.class)
+          || !ProfileValueUtils.isTestEnabledInThisEnvironment(method, getTestClass().getJavaClass()));
     }
 
     /**
@@ -418,11 +404,12 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
      * except that the <em>expected exception</em> is retrieved using
      * {@link #getExpectedException(FrameworkMethod)}.
      */
-//    @Override
-//    protected Statement possiblyExpectingExceptions(FrameworkMethod frameworkMethod, Object testInstance, Statement next) {
-//      Class<? extends Throwable> expectedException = getExpectedException(frameworkMethod);
-//      return expectedException != null ? new ExpectException(next, expectedException) : next;
-//    }
+    // @Override
+    // protected Statement possiblyExpectingExceptions(FrameworkMethod frameworkMethod, Object testInstance, Statement
+    // next) {
+    // Class<? extends Throwable> expectedException = getExpectedException(frameworkMethod);
+    // return expectedException != null ? new ExpectException(next, expectedException) : next;
+    // }
 
     /**
      * Get the <code>exception</code> that the supplied {@link FrameworkMethod
@@ -434,28 +421,28 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
      * </p>
      *
      * @return the expected exception, or <code>null</code> if none was
-     * specified
+     *         specified
      */
-//    protected Class<? extends Throwable> getExpectedException(FrameworkMethod frameworkMethod) {
-//      Test testAnnotation = frameworkMethod.getAnnotation(Test.class);
-//      Class<? extends Throwable> junitExpectedException = testAnnotation != null
-//          && testAnnotation.expected() != Test.None.class ? testAnnotation.expected() : null;
-//
-//      ExpectedException expectedExAnn = frameworkMethod.getAnnotation(ExpectedException.class);
-//      Class<? extends Throwable> springExpectedException = (expectedExAnn != null ? expectedExAnn.value() : null);
-//
-//      if (springExpectedException != null && junitExpectedException != null) {
-//        String msg = "Test method [" + frameworkMethod.getMethod()
-//            + "] has been configured with Spring's @ExpectedException(" + springExpectedException.getName()
-//            + ".class) and JUnit's @Test(expected=" + junitExpectedException.getName()
-//            + ".class) annotations. "
-//            + "Only one declaration of an 'expected exception' is permitted per test method.";
-//        logger.error(msg);
-//        throw new IllegalStateException(msg);
-//      }
-//
-//      return springExpectedException != null ? springExpectedException : junitExpectedException;
-//    }
+    // protected Class<? extends Throwable> getExpectedException(FrameworkMethod frameworkMethod) {
+    // Test testAnnotation = frameworkMethod.getAnnotation(Test.class);
+    // Class<? extends Throwable> junitExpectedException = testAnnotation != null
+    // && testAnnotation.expected() != Test.None.class ? testAnnotation.expected() : null;
+    //
+    // ExpectedException expectedExAnn = frameworkMethod.getAnnotation(ExpectedException.class);
+    // Class<? extends Throwable> springExpectedException = (expectedExAnn != null ? expectedExAnn.value() : null);
+    //
+    // if (springExpectedException != null && junitExpectedException != null) {
+    // String msg = "Test method [" + frameworkMethod.getMethod()
+    // + "] has been configured with Spring's @ExpectedException(" + springExpectedException.getName()
+    // + ".class) and JUnit's @Test(expected=" + junitExpectedException.getName()
+    // + ".class) annotations. "
+    // + "Only one declaration of an 'expected exception' is permitted per test method.";
+    // logger.error(msg);
+    // throw new IllegalStateException(msg);
+    // }
+    //
+    // return springExpectedException != null ? springExpectedException : junitExpectedException;
+    // }
 
     /**
      * Supports both Spring's {@link Timed &#064;Timed} and JUnit's
@@ -474,19 +461,15 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
       long junitTimeout = getJUnitTimeout(frameworkMethod);
       if (springTimeout > 0 && junitTimeout > 0) {
         String msg = "Test method [" + frameworkMethod.getMethod()
-            + "] has been configured with Spring's @Timed(millis=" + springTimeout
-            + ") and JUnit's @Test(timeout=" + junitTimeout
-            + ") annotations. Only one declaration of a 'timeout' is permitted per test method.";
+            + "] has been configured with Spring's @Timed(millis=" + springTimeout + ") and JUnit's @Test(timeout="
+            + junitTimeout + ") annotations. Only one declaration of a 'timeout' is permitted per test method.";
         logger.error(msg);
         throw new IllegalStateException(msg);
-      }
-      else if (springTimeout > 0) {
+      } else if (springTimeout > 0) {
         statement = new SpringFailOnTimeout(next, springTimeout);
-      }
-      else if (junitTimeout > 0) {
+      } else if (junitTimeout > 0) {
         statement = new FailOnTimeout(next, junitTimeout);
-      }
-      else {
+      } else {
         statement = next;
       }
 
@@ -529,7 +512,7 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
     protected Statement withBefores(FrameworkMethod frameworkMethod, Object testInstance, Statement statement) {
       Statement junitBefores = super.withBefores(frameworkMethod, testInstance, statement);
       return new RunBeforeTestMethodCallbacks(junitBefores, testInstance, frameworkMethod.getMethod(),
-        getTestContextManager());
+          getTestContextManager());
     }
 
     /**
@@ -544,7 +527,7 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
     protected Statement withAfters(FrameworkMethod frameworkMethod, Object testInstance, Statement statement) {
       Statement junitAfters = super.withAfters(frameworkMethod, testInstance, statement);
       return new RunAfterTestMethodCallbacks(junitAfters, testInstance, frameworkMethod.getMethod(),
-        getTestContextManager());
+          getTestContextManager());
     }
 
     /**
@@ -562,17 +545,16 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
 
   }
 
-  private final ArrayList<Runner> runners= new ArrayList<Runner>();
+  private final ArrayList<Runner> runners = new ArrayList<Runner>();
 
   /**
    * Only called reflectively. Do not use programmatically.
    */
   public SpringJUnit4ParameterizedClassRunner(Class<?> klass) throws Throwable {
     super(klass, Collections.<Runner>emptyList());
-    List<Object[]> parametersList= getParametersList(getTestClass());
-    for (int i= 0; i < parametersList.size(); i++)
-      runners.add(new TestClassRunnerForParameters(getTestClass().getJavaClass(),
-          parametersList, i));
+    List<Object[]> parametersList = getParametersList(getTestClass());
+    for (int i = 0; i < parametersList.size(); i++)
+      runners.add(new TestClassRunnerForParameters(getTestClass().getJavaClass(), parametersList, i));
   }
 
   @Override
@@ -581,24 +563,19 @@ public class SpringJUnit4ParameterizedClassRunner extends Suite {
   }
 
   @SuppressWarnings("unchecked")
-  private List<Object[]> getParametersList(TestClass klass)
-      throws Throwable {
-    return (List<Object[]>) getParametersMethod(klass).invokeExplosively(
-        null);
+  private List<Object[]> getParametersList(TestClass klass) throws Throwable {
+    return (List<Object[]>) getParametersMethod(klass).invokeExplosively(null);
   }
 
-  private FrameworkMethod getParametersMethod(TestClass testClass)
-      throws Exception {
-    List<FrameworkMethod> methods= testClass
-        .getAnnotatedMethods(Parameters.class);
+  private FrameworkMethod getParametersMethod(TestClass testClass) throws Exception {
+    List<FrameworkMethod> methods = testClass.getAnnotatedMethods(Parameters.class);
     for (FrameworkMethod each : methods) {
-      int modifiers= each.getMethod().getModifiers();
+      int modifiers = each.getMethod().getModifiers();
       if (Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers))
         return each;
     }
 
-    throw new Exception("No public static parameters method on class "
-        + testClass.getName());
+    throw new Exception("No public static parameters method on class " + testClass.getName());
   }
 
 }

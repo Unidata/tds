@@ -14,7 +14,6 @@ import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
-
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
@@ -55,7 +54,8 @@ public class CatalogWatcher implements Closeable {
    * Register the given directory with the WatchService
    */
   public void register(Path dir) throws IOException {
-    if (!enable) return;
+    if (!enable)
+      return;
 
     WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
     if (trace) {
@@ -76,13 +76,13 @@ public class CatalogWatcher implements Closeable {
    * WatchService.
    */
   public void registerAll(final Path start) throws IOException {
-    if (!enable) return;
+    if (!enable)
+      return;
 
     // register directory and sub-directories
     Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
       @Override
-      public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-              throws IOException {
+      public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
         register(dir);
         return FileVisitResult.CONTINUE;
       }
@@ -93,9 +93,10 @@ public class CatalogWatcher implements Closeable {
    * Process all events for keys queued to the watcher
    */
   public void processEvents() {
-    if (!enable) return;
+    if (!enable)
+      return;
 
-    for (; ; ) {
+    for (;;) {
 
       // wait for key to be signalled
       WatchKey key;

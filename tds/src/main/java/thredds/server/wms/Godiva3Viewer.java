@@ -6,13 +6,13 @@
  * modification, are permitted provided that the following conditions
  * are met:
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
  * 3. Neither the name of the University of Reading, nor the names of the
- *    authors or contributors may be used to endorse or promote products
- *    derived from this software without specific prior written permission.
+ * authors or contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -31,7 +31,6 @@ package thredds.server.wms;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.client.catalog.Access;
@@ -42,9 +41,11 @@ import thredds.server.viewer.Viewer;
 import thredds.server.viewer.ViewerLinkProvider;
 
 /**
- * A Viewer for viewing datasets using the built-in Godiva3 client.  The viewer
+ * A Viewer for viewing datasets using the built-in Godiva3 client. The viewer
  * must be configured in {@code ${tomcat_home}/content/thredds/threddsConfig.xml}, as per
- * instructions <a href="http://www.unidata.ucar.edu/projects/THREDDS/tech/tds4.2/reference/Viewers.html">here</a>(needs updated). *
+ * instructions <a href="http://www.unidata.ucar.edu/projects/THREDDS/tech/tds4.2/reference/Viewers.html">here</a>(needs
+ * updated). *
+ * 
  * @author Jon
  */
 public class Godiva3Viewer implements Viewer {
@@ -70,7 +71,8 @@ public class Godiva3Viewer implements Viewer {
   @Override
   public ViewerLinkProvider.ViewerLink getViewerLink(Dataset ds, HttpServletRequest req) {
     Access access = ds.getAccess(ServiceType.WMS);
-    if (access == null) return null;
+    if (access == null)
+      return null;
 
     URI dataURI = access.getStandardUri();
     if (dataURI == null) {

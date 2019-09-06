@@ -15,5 +15,6 @@ import ucar.nc2.constants.FeatureType;
  */
 public interface AllowedServicesIF {
   Service getStandardServices(FeatureType featType);
+
   boolean isAThreddsDataset(String filename);
 }

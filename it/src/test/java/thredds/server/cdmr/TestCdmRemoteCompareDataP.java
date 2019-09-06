@@ -24,7 +24,6 @@ import ucar.nc2.util.CompareNetcdf2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.StringUtil2;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -82,7 +81,7 @@ public class TestCdmRemoteCompareDataP {
         public int doAct(String filename) throws IOException {
           File file = new File(filename);
           if (file.length() < 100 * 1000) { // 100K
-            list.add(new Object[]{filename});
+            list.add(new Object[] {filename});
             return 1;
           } else {
             return 0;
@@ -112,8 +111,7 @@ public class TestCdmRemoteCompareDataP {
 
   static int compareDatasets(String local, String remote, boolean readData) throws IOException {
     System.out.printf("--Compare %s to %s%n", local, remote);
-    try (NetcdfFile ncfile = NetcdfDataset.openFile(local, null);
-         NetcdfFile ncremote = new CdmRemote(remote)) {
+    try (NetcdfFile ncfile = NetcdfDataset.openFile(local, null); NetcdfFile ncremote = new CdmRemote(remote)) {
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, false);
@@ -131,7 +129,8 @@ public class TestCdmRemoteCompareDataP {
     @Override
     public boolean attCheckOk(Variable v, Attribute att) {
       String name = att.getShortName();
-      if (name.equals(_Coordinate.Axes)) return false;
+      if (name.equals(_Coordinate.Axes))
+        return false;
       return true;
     }
 

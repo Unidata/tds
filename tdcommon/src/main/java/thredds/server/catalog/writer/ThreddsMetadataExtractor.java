@@ -9,7 +9,7 @@
  * this software, and any derivative works thereof, and its supporting
  * documentation for any purpose whatsoever, provided that this entire
  * notice appears in all copies of the software, derivative works and
- * supporting documentation.  Further, UCAR requests that the user credit
+ * supporting documentation. Further, UCAR requests that the user credit
  * UCAR/Unidata in any publications that result from the use of this
  * software or in any product that includes this software. The names UCAR
  * and/or Unidata, however, may not be used in any advertising or publicity
@@ -49,7 +49,6 @@ import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.nc2.time.CalendarDateUnit;
 import ucar.unidata.geoloc.LatLonRect;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -64,7 +63,8 @@ public class ThreddsMetadataExtractor {
 
   /**
    * extract info from underlying feature dataset
-   * @param threddsDataset  call DataFactory().openFeatureDataset() to open it
+   * 
+   * @param threddsDataset call DataFactory().openFeatureDataset() to open it
    * @return results in ThreddsMetadata object
    * @throws IOException
    */
@@ -72,7 +72,7 @@ public class ThreddsMetadataExtractor {
     ThreddsMetadata metadata = new ThreddsMetadata();
     Map<String, Object> flds = metadata.getFlds();
 
-    try ( DataFactory.Result result = new DataFactory().openFeatureDataset(threddsDataset, null)) {
+    try (DataFactory.Result result = new DataFactory().openFeatureDataset(threddsDataset, null)) {
       if (result.fatalError) {
         logger.warn(" openFeatureDataset failed, errs=%s%n", result.errLog);
         return null;
@@ -171,7 +171,7 @@ public class ThreddsMetadataExtractor {
     }
 
     Collections.sort(vars);
-                                             // String vocab, String vocabHref, URI vocabUri, URI mapUri, List<Variable> variables
+    // String vocab, String vocabHref, URI vocabUri, URI mapUri, List<Variable> variables
     return new ThreddsMetadata.VariableGroup(vocab, null, null, vars);
   }
 
@@ -207,44 +207,46 @@ public class ThreddsMetadataExtractor {
     }
 
     Collections.sort(vars);
-                                             // String vocab, String vocabHref, URI vocabUri, URI mapUri, List<Variable> variables
+    // String vocab, String vocabHref, URI vocabUri, URI mapUri, List<Variable> variables
     return new ThreddsMetadata.VariableGroup("CF-1.0", null, null, vars);
   }
 
-  /* public DateRange extractDateRange(GridDataset gridDataset) {
-    DateRange maxDateRange = null;
-
-    for (GridDataset.Gridset gridset : gridDataset.getGridsets()) {
-      GridCoordSystem gsys = gridset.getGeoCoordSystem();
-      DateRange dateRange;
-
-      CoordinateAxis1DTime time1D = gsys.getTimeAxis1D();
-      if (time1D != null) {
-        dateRange = time1D.getDateRange();
-      } else {
-        CoordinateAxis time = gsys.getTimeAxis();
-        if (time == null)
-          continue;
-
-        try {
-          DateUnit du = new DateUnit(time.getUnitsString());
-          Date minDate = du.makeDate(time.getMinValue());
-          Date maxDate = du.makeDate(time.getMaxValue());
-          dateRange = new DateRange(minDate, maxDate);
-        } catch (Exception e) {
-          logger.warn("Illegal Date Unit " + time.getUnitsString());
-          continue;
-        }
-      }
-
-      if (maxDateRange == null)
-        maxDateRange = dateRange;
-      else
-        maxDateRange.extend(dateRange);
-    }
-
-    return maxDateRange;
-  } */
+  /*
+   * public DateRange extractDateRange(GridDataset gridDataset) {
+   * DateRange maxDateRange = null;
+   * 
+   * for (GridDataset.Gridset gridset : gridDataset.getGridsets()) {
+   * GridCoordSystem gsys = gridset.getGeoCoordSystem();
+   * DateRange dateRange;
+   * 
+   * CoordinateAxis1DTime time1D = gsys.getTimeAxis1D();
+   * if (time1D != null) {
+   * dateRange = time1D.getDateRange();
+   * } else {
+   * CoordinateAxis time = gsys.getTimeAxis();
+   * if (time == null)
+   * continue;
+   * 
+   * try {
+   * DateUnit du = new DateUnit(time.getUnitsString());
+   * Date minDate = du.makeDate(time.getMinValue());
+   * Date maxDate = du.makeDate(time.getMaxValue());
+   * dateRange = new DateRange(minDate, maxDate);
+   * } catch (Exception e) {
+   * logger.warn("Illegal Date Unit " + time.getUnitsString());
+   * continue;
+   * }
+   * }
+   * 
+   * if (maxDateRange == null)
+   * maxDateRange = dateRange;
+   * else
+   * maxDateRange.extend(dateRange);
+   * }
+   * 
+   * return maxDateRange;
+   * }
+   */
 
   public CalendarDateRange extractCalendarDateRange(FeatureDatasetPoint fd) {
     return fd.getCalendarDateRange();

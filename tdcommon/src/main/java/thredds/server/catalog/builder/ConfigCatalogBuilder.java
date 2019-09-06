@@ -14,7 +14,6 @@ import thredds.featurecollection.FeatureCollectionConfig;
 import thredds.server.catalog.ConfigCatalog;
 import thredds.server.catalog.DatasetRootConfig;
 import thredds.server.catalog.DatasetScanConfig;
-
 import java.util.*;
 
 /**
@@ -30,7 +29,8 @@ public class ConfigCatalogBuilder extends CatalogBuilder {
     // this finds datasetRoot in catalogs (unwanted side effect in regular dataset elements)
     if (elem.getName().equals("datasetRoot")) {
       DatasetRootConfig root = readDatasetRoot(elem);
-      if (roots == null) roots = new ArrayList<>();
+      if (roots == null)
+        roots = new ArrayList<>();
       roots.add(root);
       return null;
     }
@@ -90,10 +90,10 @@ public class ConfigCatalogBuilder extends CatalogBuilder {
     DatasetScanConfigBuilder configBuilder = new DatasetScanConfigBuilder(errlog);
     DatasetScanConfig config = configBuilder.readDatasetScanConfig(dsElem);
     if (configBuilder.fatalError) {
-       // this.fatalError = true;
-       return null;
+      // this.fatalError = true;
+      return null;
 
-     } else {
+    } else {
       DatasetScanBuilder dataset = new DatasetScanBuilder(parent, config);
       readDatasetInfo(dataset, dsElem);
       for (Element elem : dsElem.getChildren("netcdf", Catalog.ncmlNS)) {
@@ -104,7 +104,8 @@ public class ConfigCatalogBuilder extends CatalogBuilder {
   }
 
   private DatasetBuilder readFeatureCollection(DatasetBuilder parent, Element fcElem) {
-    thredds.featurecollection.FeatureCollectionConfigBuilder configBuilder = new thredds.featurecollection.FeatureCollectionConfigBuilder(errlog);
+    thredds.featurecollection.FeatureCollectionConfigBuilder configBuilder =
+        new thredds.featurecollection.FeatureCollectionConfigBuilder(errlog);
     FeatureCollectionConfig config = configBuilder.readConfig(fcElem);
     if (configBuilder.fatalError) {
       // this.fatalError = true;
@@ -113,7 +114,7 @@ public class ConfigCatalogBuilder extends CatalogBuilder {
     } else {
       FeatureCollectionRefBuilder dataset = new FeatureCollectionRefBuilder(parent, config);
       readDatasetInfo(dataset, fcElem);
-      for (Element elem : fcElem.getChildren("netcdf", Catalog.ncmlNS)) {   // ??
+      for (Element elem : fcElem.getChildren("netcdf", Catalog.ncmlNS)) { // ??
         dataset.put(Dataset.Ncml, elem.detach());
       }
       return dataset;
@@ -123,7 +124,8 @@ public class ConfigCatalogBuilder extends CatalogBuilder {
 
   public ConfigCatalog makeCatalog() {
     Map<String, Object> flds = setFields();
-    if (roots != null) flds.put(Catalog.DatasetRoots, roots);
+    if (roots != null)
+      flds.put(Catalog.DatasetRoots, roots);
     // if (catScans != null) flds.put(Catalog.CatalogScan, catScans);
     return new ConfigCatalog(baseURI, name, flds, datasetBuilders);
   }

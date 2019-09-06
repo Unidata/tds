@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import thredds.server.config.TdsContext;
 import thredds.server.config.ThreddsConfig;
 import thredds.servlet.*;
-
 import java.io.*;
 import javax.annotation.PostConstruct;
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 import ucar.nc2.util.DiskCache2;
 
 /**
@@ -58,17 +56,16 @@ public class WCSController {
 
     int scourSecs = ThreddsConfig.getSeconds("WCS.scour", 60 * 10);
     int maxAgeSecs = ThreddsConfig.getSeconds("WCS.maxAge", -1);
-    maxAgeSecs = Math.max(maxAgeSecs, 60 * 5);  // give at least 5 minutes to download before scouring kicks in.
-    scourSecs = Math.max(scourSecs, 60 * 5);  // always need to scour, in case user doesnt get the file, we need to clean it up
+    maxAgeSecs = Math.max(maxAgeSecs, 60 * 5); // give at least 5 minutes to download before scouring kicks in.
+    scourSecs = Math.max(scourSecs, 60 * 5); // always need to scour, in case user doesnt get the file, we need to clean
+                                             // it up
 
     // LOOK: what happens if we are still downloading when the disk scour starts?
     diskCache = new DiskCache2(cache, false, maxAgeSecs / 60, scourSecs / 60);
 
     // Version Handlers
     // - Latest non-experimental version supported is "1.0.0"
-    this.wcsHandler = new WcsHandler("1.0.0")
-            .setDeleteImmediately(deleteImmediately)
-            .setDiskCache(diskCache);
+    this.wcsHandler = new WcsHandler("1.0.0").setDeleteImmediately(deleteImmediately).setDiskCache(diskCache);
 
     logServerStartup.info("WCS service - init done - ");
   }
@@ -78,7 +75,8 @@ public class WCSController {
 
     // Check whether TDS is configured to support WCS.
     if (!allow) {
-      // ToDo - Server not configured to support WCS. Should response code be 404 (Not Found) instead of 403 (Forbidden)?
+      // ToDo - Server not configured to support WCS. Should response code be 404 (Not Found) instead of 403
+      // (Forbidden)?
       res.sendError(HttpServletResponse.SC_FORBIDDEN, "WCS service not supported");
       return;
     }
@@ -99,7 +97,8 @@ public class WCSController {
 
     // Make sure this is a WCS KVP request.
     if (serviceParam == null || !serviceParam.equalsIgnoreCase("WCS")) {
-      res.sendError(HttpServletResponse.SC_BAD_REQUEST, "GET request not a WCS KVP requestParam (missing or bad SERVICE parameter).");
+      res.sendError(HttpServletResponse.SC_BAD_REQUEST,
+          "GET request not a WCS KVP requestParam (missing or bad SERVICE parameter).");
       return;
     }
 

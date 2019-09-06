@@ -13,7 +13,6 @@ import thredds.core.TdsRequestedDataset;
 import thredds.server.config.TdsContext;
 import thredds.server.exception.ServiceNotAllowed;
 import thredds.util.Constants;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -44,7 +43,7 @@ public class NotebookController {
 
   @RequestMapping("**")
   public void getNotebookForDataset(HttpServletRequest req, HttpServletResponse res, @Valid NotebookParamsBean params,
-                                    BindingResult validationResult) throws Exception {
+      BindingResult validationResult) throws Exception {
 
     if (!allowedServices.isAllowed(StandardService.jupyterNotebook))
       throw new ServiceNotAllowed(StandardService.jupyterNotebook.toString());
@@ -72,7 +71,8 @@ public class NotebookController {
 
     // Build catalog URL
     String catUrlString = req.getRequestURL().toString();
-    catUrlString = catUrlString.substring(0, catUrlString.indexOf(getBase())) + StandardService.catalogRemote.getBase() + catalogName;
+    catUrlString = catUrlString.substring(0, catUrlString.indexOf(getBase())) + StandardService.catalogRemote.getBase()
+        + catalogName;
 
     fileContents = fileContents.replace(DS_REPLACE_TEXT, dataset.getName()).replace(CAT_REPLACE_TEXT, catUrlString);
 
@@ -81,7 +81,7 @@ public class NotebookController {
     res.setHeader(Constants.Content_Length, Integer.toString(fileContents.length()));
 
     // Set content...
-    String mimeType =  "application/x-ipynb+json";
+    String mimeType = "application/x-ipynb+json";
     res.setContentType(mimeType);
     res.getOutputStream().write(fileContents.getBytes());
     res.flushBuffer();
@@ -120,7 +120,8 @@ public class NotebookController {
   private File getNotebookFile(Dataset ds, Catalog cat) {
 
     String filename = jupyterNotbooks.getNotebookFilename(ds);
-    if (filename == null) return null;
+    if (filename == null)
+      return null;
 
     File notebooksDir = new File(tdsContext.getThreddsDirectory(), "notebooks");
 

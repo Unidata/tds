@@ -2,7 +2,6 @@ package thredds.server.wfs;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -22,7 +21,7 @@ public class WFSExceptionWriter {
    * @param hsr the Servlet Response to write to
    * @throws IOException
    */
-  public void write(HttpServletResponse hsr) throws IOException{
+  public void write(HttpServletResponse hsr) throws IOException {
     PrintWriter xmlResponse = hsr.getWriter();
 
     xmlResponse.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -30,7 +29,8 @@ public class WFSExceptionWriter {
         + " http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\" version=\"2.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\""
         + " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
     xmlResponse.append("<ows:Exception ");
-    if(locator != null) xmlResponse.append("locator=\"" + locator + "\" ");
+    if (locator != null)
+      xmlResponse.append("locator=\"" + locator + "\" ");
     xmlResponse.append("exceptionCode=\"" + ExceptionCode + "\">");
     xmlResponse.append("<ows:ExceptionText>" + text + "</ows:ExceptionText>");
     xmlResponse.append("</ows:Exception>");

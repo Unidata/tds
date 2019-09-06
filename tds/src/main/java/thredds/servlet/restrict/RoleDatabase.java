@@ -8,7 +8,6 @@ package thredds.servlet.restrict;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.JDOMException;
 import org.jdom2.Element;
-
 import java.io.*;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -17,16 +16,16 @@ import java.util.HashMap;
 
 /**
  * Implements RoleSource by reading XML in format of tomcat-users.xml.
- * see PluggableRestrictedAccess.html 
+ * see PluggableRestrictedAccess.html
  *
  * @author caron
  */
 public class RoleDatabase implements RoleSource {
   private HashMap<String, User> users = new HashMap<>();
 
-  RoleDatabase( String filename) throws IOException {
+  RoleDatabase(String filename) throws IOException {
 
-    InputStream is = new BufferedInputStream( new FileInputStream( filename));
+    InputStream is = new BufferedInputStream(new FileInputStream(filename));
     org.jdom2.Document doc;
     try {
       SAXBuilder builder = new SAXBuilder();
@@ -35,7 +34,7 @@ public class RoleDatabase implements RoleSource {
       throw new IOException(e.getMessage());
     }
 
-    //   <user username="ccsmData" roles="ccsmData, restrictedDatasetUser"/>
+    // <user username="ccsmData" roles="ccsmData, restrictedDatasetUser"/>
 
     Element rootElem = doc.getRootElement();
     List<Element> elems = rootElem.getChildren("user");
@@ -56,17 +55,20 @@ public class RoleDatabase implements RoleSource {
   static private class User {
     String name;
     ArrayList<String> roles = new ArrayList<>();
-    User( String name) {
+
+    User(String name) {
       this.name = name;
     }
-    void add( String role) {
+
+    void add(String role) {
       roles.add(role);
     }
   }
 
-  public boolean hasRole( String username, String role)  {
-    User user = users.get( username);
-    if (user == null) return false;
+  public boolean hasRole(String username, String role) {
+    User user = users.get(username);
+    if (user == null)
+      return false;
     for (String role1 : user.roles) {
       if (role.equals(role1))
         return true;

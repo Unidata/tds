@@ -39,14 +39,18 @@ public class WFSFeature {
    *
    * @return
    */
-  public String getType() { return type; }
+  public String getType() {
+    return type;
+  }
 
   /**
    * gets the list of attributes of this WFS Feature
    *
    * @return
    */
-  public ArrayList<WFSFeatureAttribute> getAttributes() {return attributes;}
+  public ArrayList<WFSFeatureAttribute> getAttributes() {
+    return attributes;
+  }
 
   /**
    * Gets the file / dataset name from which the WFS feature was retrieved.

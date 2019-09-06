@@ -19,7 +19,6 @@ import ucar.nc2.NetcdfFileWriter.Version;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft2.coverage.SubsetParams;
-
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,8 +27,9 @@ import java.io.OutputStream;
  * Created by cwardgar on 2014/05/21.
  */
 public abstract class DsgSubsetWriterFactory {
-  public static DsgSubsetWriter newInstance(FeatureDatasetPoint fdPoint, SubsetParams ncssParams, NcssDiskCache ncssDiskCache,
-                                            OutputStream out, SupportedFormat format) throws NcssException, XMLStreamException, IOException {
+  public static DsgSubsetWriter newInstance(FeatureDatasetPoint fdPoint, SubsetParams ncssParams,
+      NcssDiskCache ncssDiskCache, OutputStream out, SupportedFormat format)
+      throws NcssException, XMLStreamException, IOException {
     FeatureType featureType = fdPoint.getFeatureType();
 
     if (!featureType.isPointFeatureType()) {
@@ -42,14 +42,13 @@ public abstract class DsgSubsetWriterFactory {
       case STATION:
         return newStationInstance(fdPoint, ncssParams, ncssDiskCache, out, format);
       default:
-        throw new UnsupportedOperationException(
-                String.format("%s feature type is not yet supported.", featureType));
+        throw new UnsupportedOperationException(String.format("%s feature type is not yet supported.", featureType));
     }
   }
 
   public static DsgSubsetWriter newPointInstance(FeatureDatasetPoint fdPoint, SubsetParams ncssParams,
-                                                 NcssDiskCache ncssDiskCache, OutputStream out, SupportedFormat format)
-          throws XMLStreamException, NcssException, IOException {
+      NcssDiskCache ncssDiskCache, OutputStream out, SupportedFormat format)
+      throws XMLStreamException, NcssException, IOException {
     switch (format) {
       case XML_STREAM:
       case XML_FILE:
@@ -64,16 +63,16 @@ public abstract class DsgSubsetWriterFactory {
       case NETCDF4EXT:
         return new PointSubsetWriterNetcdf(fdPoint, ncssParams, ncssDiskCache, out, Version.netcdf4);
       case WATERML2:
-        throw new UnsupportedResponseFormatException(String.format(
-                "%s format not supported for %s feature type.", format, fdPoint.getFeatureType()));
+        throw new UnsupportedResponseFormatException(
+            String.format("%s format not supported for %s feature type.", format, fdPoint.getFeatureType()));
       default:
         throw new UnsupportedResponseFormatException("Unknown result type = " + format.getFormatName());
     }
   }
 
   public static DsgSubsetWriter newStationInstance(FeatureDatasetPoint fdPoint, SubsetParams ncssParams,
-                                                   NcssDiskCache ncssDiskCache, OutputStream out, SupportedFormat format)
-          throws XMLStreamException, NcssException, IOException {
+      NcssDiskCache ncssDiskCache, OutputStream out, SupportedFormat format)
+      throws XMLStreamException, NcssException, IOException {
     switch (format) {
       case XML_STREAM:
       case XML_FILE:
@@ -94,6 +93,5 @@ public abstract class DsgSubsetWriterFactory {
     }
   }
 
-  private DsgSubsetWriterFactory() {
-  }
+  private DsgSubsetWriterFactory() {}
 }

@@ -22,7 +22,6 @@ import ucar.nc2.units.DateRange;
 import ucar.nc2.units.TimeDuration;
 import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.text.ParseException;
@@ -46,11 +45,11 @@ public class TestWaveModel {
 
     String id = "hioos/model/wav/swan/oahu/SWAN_Oahu_Regional_Wave_Model_(500m)_best.ncd";
     Dataset ds = cat.findDatasetByID(id);
-    assert (ds != null) : "cant find dataset id="+id;
+    assert (ds != null) : "cant find dataset id=" + id;
     assert ds.getFeatureType() == FeatureType.GRID;
 
     DataFactory fac = new DataFactory();
-    try (DataFactory.Result dataResult = fac.openFeatureDataset( ds, null)) {
+    try (DataFactory.Result dataResult = fac.openFeatureDataset(ds, null)) {
       assert !dataResult.fatalError;
       assert dataResult.featureDataset != null;
 
@@ -84,7 +83,7 @@ public class TestWaveModel {
 
     String id = "hioos/model/wav/swan/oahu/offset/SWAN_Oahu_Regional_Wave_Model_(500m)_Offset_21.0hr";
     Dataset ds = cat.findDatasetByID(id);
-    assert (ds != null) : "cant find dataset id="+id;
+    assert (ds != null) : "cant find dataset id=" + id;
     assert ds.getFeatureType() == FeatureType.GRID;
 
     DateRange dr = ds.getTimeCoverage();
@@ -94,7 +93,7 @@ public class TestWaveModel {
     assert dr.getDuration().equals(new TimeDuration("24 hours")) : dr.getDuration();
 
     DataFactory fac = new DataFactory();
-    try (DataFactory.Result dataResult = fac.openFeatureDataset( ds, null)) {
+    try (DataFactory.Result dataResult = fac.openFeatureDataset(ds, null)) {
       assert !dataResult.fatalError;
       assert dataResult.featureDataset != null;
 
@@ -111,14 +110,14 @@ public class TestWaveModel {
       CoverageCoordSys gcs = grid.getCoordSys();
       Assert.assertNotNull(gcs);
 
-      int[] expectShape = new int[]{2, 30, 194, 294};
+      int[] expectShape = new int[] {2, 30, 194, 294};
       Assert.assertArrayEquals(expectShape, grid.getShape());
 
       CoverageCoordAxis time = gcs.getTimeAxis();
       Assert.assertNotNull("time axis", time);
       Assert.assertEquals(2, time.getNcoords());
 
-      double[] expect = new double[]{21., 45.};
+      double[] expect = new double[] {21., 45.};
       Array data = time.getCoordsAsArray();
       for (int i = 0; i < expect.length; i++)
         Assert2.assertNearlyEquals(expect[i], data.getDouble(i));
@@ -127,7 +126,7 @@ public class TestWaveModel {
       Assert.assertNotNull("runtime axis", runtime);
       Assert.assertEquals(2, runtime.getNcoords());
 
-      expect = new double[]{0, 24};
+      expect = new double[] {0, 24};
       data = runtime.getCoordsAsArray();
       for (int i = 0; i < expect.length; i++)
         Assert2.assertNearlyEquals(expect[i], data.getDouble(i));

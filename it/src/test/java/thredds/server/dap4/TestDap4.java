@@ -17,7 +17,6 @@ import ucar.nc2.dt.GridDataset;
 import ucar.nc2.dt.GridDatatype;
 import ucar.nc2.util.Misc;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
@@ -27,14 +26,14 @@ public class TestDap4 {
 
   @Test
   public void testSimpleDap4GridDataset() throws IOException {
-    Catalog cat = TdsLocalCatalog.open(null);  // default catalog
+    Catalog cat = TdsLocalCatalog.open(null); // default catalog
 
     Dataset ds = cat.findDatasetByID("testDap4Dataset");
     assert (ds != null) : "cant find dataset 'testDap4Dataset'";
     assert ds.getFeatureType() == FeatureType.GRID;
 
     DataFactory fac = new DataFactory();
-    try (DataFactory.Result dataResult = fac.openFeatureDataset( ds, null)) {
+    try (DataFactory.Result dataResult = fac.openFeatureDataset(ds, null)) {
       Assert.assertNotNull("dataResult", dataResult);
       if (dataResult.fatalError) {
         System.out.printf("fatalError= %s%n", dataResult.errLog);
@@ -56,7 +55,7 @@ public class TestDap4 {
 
       CoordinateAxis1D time = gcs.getTimeAxis1D();
       Assert.assertNotNull("time axis", time);
-      double[] expect = new double[]{0., 6.0, 12.0, 18.0};
+      double[] expect = new double[] {0., 6.0, 12.0, 18.0};
       double[] have = time.getCoordValues();
       Assert.assertArrayEquals(expect, have, Misc.defaultMaxRelativeDiffDouble);
     }

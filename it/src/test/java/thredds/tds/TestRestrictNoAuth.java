@@ -10,7 +10,6 @@ import thredds.TestOnLocalServer;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
-
 import java.lang.invoke.MethodHandles;
 
 /**
@@ -32,7 +31,7 @@ public class TestRestrictNoAuth {
       int statusCode = method.execute();
 
       Assert.assertTrue("Expected HttpStatus.SC_UNAUTHORIZED|HttpStatus.SC_FORBIDDEN",
-      statusCode== HttpStatus.SC_UNAUTHORIZED || statusCode == HttpStatus.SC_FORBIDDEN);
+          statusCode == HttpStatus.SC_UNAUTHORIZED || statusCode == HttpStatus.SC_FORBIDDEN);
 
     } catch (ucar.httpservices.HTTPException e) {
       Assert.fail(e.getMessage());

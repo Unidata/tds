@@ -25,7 +25,6 @@ import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Formatter;
@@ -48,14 +47,14 @@ public class TestTdsNcml {
     DataFactory fac = new DataFactory();
     Formatter log = new Formatter();
 
-    NetcdfDataset ncd = fac.openDataset( ds, false, null, log);
+    NetcdfDataset ncd = fac.openDataset(ds, false, null, log);
 
     assert ncd != null : log.toString();
 
     Variable v = ncd.findVariable("record");
     assert v != null;
 
-    assert ncd.findAttValueIgnoreCase(null,  "name", "").equals("value");
+    assert ncd.findAttValueIgnoreCase(null, "name", "").equals("value");
 
     assert ncd.findVariable("Temperature") != null;
     assert ncd.findVariable("T") == null;
@@ -88,14 +87,14 @@ public class TestTdsNcml {
     DataFactory fac = new DataFactory();
     Formatter log = new Formatter();
 
-    NetcdfDataset ncd = fac.openDataset( ds, false, null, log);
+    NetcdfDataset ncd = fac.openDataset(ds, false, null, log);
 
     assert ncd != null : log.toString();
 
     Variable v = ncd.findVariable("record");
     assert v != null;
 
-    assert ncd.findAttValueIgnoreCase(null,  "name", "").equals("value");
+    assert ncd.findAttValueIgnoreCase(null, "name", "").equals("value");
 
     assert ncd.findVariable("Temperature") != null;
     assert ncd.findVariable("T") == null;
@@ -134,7 +133,7 @@ public class TestTdsNcml {
       count++;
     }
 
-     // test attributes added in NcML
+    // test attributes added in NcML
     String testAtt = ncfile.findAttValueIgnoreCase(null, "ncmlAdded", null);
     assert testAtt != null;
     assert testAtt.equals("stuff");

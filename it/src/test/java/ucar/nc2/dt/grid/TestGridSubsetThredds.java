@@ -23,7 +23,6 @@ import ucar.unidata.geoloc.LatLonRect;
 import ucar.unidata.geoloc.ProjectionRect;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.category.NeedsExternalResource;
-
 import java.lang.invoke.MethodHandles;
 
 public class TestGridSubsetThredds {
@@ -64,15 +63,16 @@ public class TestGridSubsetThredds {
 
       logger.debug(NCdumpW.toString(data, "grid_section", null));
     } finally {
-      if (dataset != null) dataset.close();
+      if (dataset != null)
+        dataset.close();
     }
   }
 
   @Test
   @Category(NeedsCdmUnitTest.class)
   public void test3D() throws Exception {
-    try (GridDataset dataset = GridDataset.open(TestOnLocalServer.withDodsPath(
-            "dodsC/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc"))) {
+    try (GridDataset dataset = GridDataset
+        .open(TestOnLocalServer.withDodsPath("dodsC/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc"))) {
       logger.debug("{}", dataset.getLocation());
 
       GeoGrid grid = dataset.findGridByName("Relative_humidity");
@@ -83,9 +83,9 @@ public class TestGridSubsetThredds {
 
       // x and y stride 10
       GeoGrid grid_section = grid.subset(null, null, null, 1, 10, 10);
-      Array data = grid_section.readDataSlice(0, -1, -1, -1);      // get first time slice
+      Array data = grid_section.readDataSlice(0, -1, -1, -1); // get first time slice
       assert data.getRank() == 3;
-      assert data.getShape()[1] == 7  : data.getShape()[1];
+      assert data.getShape()[1] == 7 : data.getShape()[1];
       assert data.getShape()[2] == 10 : data.getShape()[2];
 
       IndexIterator ii = data.getIndexIterator();
@@ -108,14 +108,14 @@ public class TestGridSubsetThredds {
   @Test
   @Category(NeedsCdmUnitTest.class)
   public void testBBSubset() throws Exception {
-    try (GridDataset dataset = GridDataset.open(
-            "dods://localhost:8081/thredds/dodsC/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc")) {
+    try (GridDataset dataset = GridDataset
+        .open("dods://localhost:8081/thredds/dodsC/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc")) {
       GeoGrid grid = dataset.findGridByName("Pressure");
       assert null != grid;
       GridCoordSystem gcs = grid.getCoordinateSystem();
       assert null != gcs;
 
-      logger.debug("original bbox = {}",  gcs.getBoundingBox());
+      logger.debug("original bbox = {}", gcs.getBoundingBox());
       logger.debug("lat/lon bbox = {}", gcs.getLatLonBoundingBox());
 
       LatLonRect llbb = gcs.getLatLonBoundingBox();
@@ -138,8 +138,8 @@ public class TestGridSubsetThredds {
   @Test
   @Category(NeedsCdmUnitTest.class)
   public void testBBSubset2() throws Exception {
-    try (GridDataset dataset = GridDataset.open(TestOnLocalServer.withDodsPath(
-            "dodsC/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc"))) {
+    try (GridDataset dataset = GridDataset
+        .open(TestOnLocalServer.withDodsPath("dodsC/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc"))) {
       GeoGrid grid = dataset.findGridByName("Pressure");
       assert null != grid;
       GridCoordSystem gcs = grid.getCoordinateSystem();
@@ -168,7 +168,8 @@ public class TestGridSubsetThredds {
   @Test
   @Ignore("Does this dataset exist on a public server?")
   public void testFMRCSubset() throws Exception {
-    try (GridDataset dataset = GridDataset.open("dods://localhost:8080/thredds/dodsC/data/cip/fmrcCase1/CIPFMRCCase1_best.ncd")) {
+    try (GridDataset dataset =
+        GridDataset.open("dods://localhost:8080/thredds/dodsC/data/cip/fmrcCase1/CIPFMRCCase1_best.ncd")) {
       GeoGrid grid = dataset.findGridByName("Latitude__90_to_+90");
       assert null != grid;
       GridCoordSystem gcs = grid.getCoordinateSystem();
@@ -187,8 +188,8 @@ public class TestGridSubsetThredds {
   @Test
   @Category(NeedsCdmUnitTest.class)
   public void testFindVerticalCoordinate() throws Exception {
-    try (GridDataset dataset = GridDataset.open(
-            "dods://localhost:8081/thredds/dodsC/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc")) {
+    try (GridDataset dataset = GridDataset
+        .open("dods://localhost:8081/thredds/dodsC/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc")) {
       GeoGrid grid = dataset.findGridByName("Relative_humidity");
       assert null != grid;
 
@@ -211,7 +212,8 @@ public class TestGridSubsetThredds {
   @Test
   @Category(NeedsExternalResource.class)
   public void testScaleOffset() throws Exception {
-    try (GridDataset dataset = GridDataset.open("http://esrl.noaa.gov/psd/thredds/dodsC/Datasets/noaa.oisst.v2/sst.wkmean.1990-present.nc")) {
+    try (GridDataset dataset =
+        GridDataset.open("http://esrl.noaa.gov/psd/thredds/dodsC/Datasets/noaa.oisst.v2/sst.wkmean.1990-present.nc")) {
       GeoGrid grid = dataset.findGridByName("sst");
       assert null != grid;
       GridCoordSystem gcs = grid.getCoordinateSystem();

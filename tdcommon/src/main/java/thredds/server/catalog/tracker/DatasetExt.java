@@ -29,8 +29,7 @@ public class DatasetExt implements Externalizable {
     return restrictedAccess;
   }
 
-  public DatasetExt() {
-  }
+  public DatasetExt() {}
 
   public DatasetExt(long catId, String restrictedAccess, String ncml) {
     this.catId = catId;
@@ -65,7 +64,7 @@ public class DatasetExt implements Externalizable {
 
     total_count++;
     total_nbytes += b.length + 4;
-    //System.out.printf(" write  size = %d%n", b.length);
+    // System.out.printf(" write size = %d%n", b.length);
   }
 
   @Override
@@ -86,33 +85,36 @@ public class DatasetExt implements Externalizable {
       ncml = pDataset.getNcml();
   }
 
-  /* private ConfigCatalogExtProto.Property buildProperty(Property p) {
-    ConfigCatalogExtProto.Property.Builder builder = ConfigCatalogExtProto.Property.newBuilder();
-    builder.setName(p.getName());
-    builder.setValue(p.getValue());
-    return builder.build();
-  }
-
-  private List<Property> parseProperty(List<ConfigCatalogExtProto.Property> ps) {
-    List<Property> result = new ArrayList<>();
-    for (ConfigCatalogExtProto.Property p : ps)
-      result.add(new Property(p.getName(), p.getValue()));
-    return result;
-  }
-
-  private ConfigCatalogExtProto.Access buildAccess(Access a) {
-    ConfigCatalogExtProto.Access.Builder builder = ConfigCatalogExtProto.Access.newBuilder();
-    builder.setServiceName(a.getService().getName());
-    builder.setUrlPath(a.getUrlPath());
-    builder.setDataSize(a.getDataSize());
-    if (a.getDataFormatName() != null)
-      builder.setDataFormatS(a.getDataFormatName());
-    return builder.build();
-  }
-
-  private AccessBuilder parseAccess(DatasetBuilder dsb, ConfigCatalogExtProto.Access ap) {
-    return new AccessBuilder(dsb, ap.getUrlPath(), null, /* ap.getServiceName(),  ap.getDataFormatS(), ap.getDataSize());
-  }   */
+  /*
+   * private ConfigCatalogExtProto.Property buildProperty(Property p) {
+   * ConfigCatalogExtProto.Property.Builder builder = ConfigCatalogExtProto.Property.newBuilder();
+   * builder.setName(p.getName());
+   * builder.setValue(p.getValue());
+   * return builder.build();
+   * }
+   * 
+   * private List<Property> parseProperty(List<ConfigCatalogExtProto.Property> ps) {
+   * List<Property> result = new ArrayList<>();
+   * for (ConfigCatalogExtProto.Property p : ps)
+   * result.add(new Property(p.getName(), p.getValue()));
+   * return result;
+   * }
+   * 
+   * private ConfigCatalogExtProto.Access buildAccess(Access a) {
+   * ConfigCatalogExtProto.Access.Builder builder = ConfigCatalogExtProto.Access.newBuilder();
+   * builder.setServiceName(a.getService().getName());
+   * builder.setUrlPath(a.getUrlPath());
+   * builder.setDataSize(a.getDataSize());
+   * if (a.getDataFormatName() != null)
+   * builder.setDataFormatS(a.getDataFormatName());
+   * return builder.build();
+   * }
+   * 
+   * private AccessBuilder parseAccess(DatasetBuilder dsb, ConfigCatalogExtProto.Access ap) {
+   * return new AccessBuilder(dsb, ap.getUrlPath(), null, /* ap.getServiceName(), ap.getDataFormatS(),
+   * ap.getDataSize());
+   * }
+   */
 
 
 }

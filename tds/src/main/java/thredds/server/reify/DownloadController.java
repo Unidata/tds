@@ -1,6 +1,7 @@
-/* Copyright 2016, University Corporation for Atmospheric Research
-   See the LICENSE.txt file for more information.
-*/
+/*
+ * Copyright 2016, University Corporation for Atmospheric Research
+ * See the LICENSE.txt file for more information.
+ */
 
 package thredds.server.reify;
 
@@ -21,7 +22,6 @@ import ucar.nc2.util.CancelTaskImpl;
 import ucar.nc2.write.Nc4Chunking;
 import ucar.nc2.write.Nc4ChunkingDefault;
 import ucar.unidata.io.RandomAccessFile;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,8 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-
-import static  ucar.nc2.iosp.NCheader.*;
+import static ucar.nc2.iosp.NCheader.*;
 
 /**
  * Local File Materialization
@@ -116,383 +115,355 @@ import static  ucar.nc2.iosp.NCheader.*;
 
 @Controller
 @RequestMapping(value = {"/download", "/restrictedAccess/download"})
-public class DownloadController extends LoadCommon
-{
-    //////////////////////////////////////////////////
-    // Constants
+public class DownloadController extends LoadCommon {
+  //////////////////////////////////////////////////
+  // Constants
 
-    static final protected boolean DEBUG = true;
+  static final protected boolean DEBUG = true;
 
-    static final protected String DEFAULTREQUESTNAME = "download";
+  static final protected String DEFAULTREQUESTNAME = "download";
 
-    static final protected String DEFAULTDOWNLOADDIR = "download";
+  static final protected String DEFAULTDOWNLOADDIR = "download";
 
-    static final protected String FILESERVERSERVLET = "/fileServer/";
+  static final protected String FILESERVERSERVLET = "/fileServer/";
 
-    //////////////////////////////////////////////////
-    // Instance variables
+  //////////////////////////////////////////////////
+  // Instance variables
 
-    protected Nc4Chunking.Strategy strategy = Nc4Chunking.Strategy.standard;
-    protected Nc4Chunking chunking = new Nc4ChunkingDefault();
-    protected DownloadParameters params = null;
-    protected String downloadform = null;
+  protected Nc4Chunking.Strategy strategy = Nc4Chunking.Strategy.standard;
+  protected Nc4Chunking chunking = new Nc4ChunkingDefault();
+  protected DownloadParameters params = null;
+  protected String downloadform = null;
 
-    //////////////////////////////////////////////////
-    // Constructor(s)
+  //////////////////////////////////////////////////
+  // Constructor(s)
 
-    public DownloadController()
-            throws ServletException
-    {
-        super();
+  public DownloadController() throws ServletException {
+    super();
+  }
+
+  //////////////////////////////////////////////////
+
+  /**
+   * Invoked once on first request so that everything is available,
+   * especially Spring stuff.
+   */
+  public void doonce(HttpServletRequest req) throws SendError {
+    if (once)
+      return;
+    super.initOnce(req);
+    if (this.downloaddir == null)
+      throw new SendError(HttpStatus.SC_PRECONDITION_FAILED, "Download disabled");
+    this.downloaddirname = new File(this.downloaddir).getName();
+
+    // Get the download form
+    File downform = null;
+    downform = tdsContext.getDownloadForm();
+    if (downform == null) { // Look in WEB-INF directory
+      File root = tdsContext.getServletRootDirectory();
+      downform = new File(root, DEFAULTDOWNLOADFORM);
     }
-
-    //////////////////////////////////////////////////
-
-    /**
-     * Invoked once on first request so that everything is available,
-     * especially Spring stuff.
-     */
-    public void doonce(HttpServletRequest req)
-            throws SendError
-    {
-        if(once)
-            return;
-        super.initOnce(req);
-        if(this.downloaddir == null)
-            throw new SendError(HttpStatus.SC_PRECONDITION_FAILED, "Download disabled");
-        this.downloaddirname = new File(this.downloaddir).getName();
-
-        // Get the download form
-        File downform = null;
-        downform = tdsContext.getDownloadForm();
-        if(downform == null) {   // Look in WEB-INF directory
-            File root = tdsContext.getServletRootDirectory();
-            downform = new File(root, DEFAULTDOWNLOADFORM);
-        }
-        try {
-            this.downloadform = loadForm(downform);
-        } catch (IOException ioe) {
-            throw new SendError(HttpStatus.SC_PRECONDITION_FAILED, ioe);
-        }
+    try {
+      this.downloadform = loadForm(downform);
+    } catch (IOException ioe) {
+      throw new SendError(HttpStatus.SC_PRECONDITION_FAILED, ioe);
     }
+  }
 
-    // Setup for each request
-    public void setup(HttpServletRequest req, HttpServletResponse resp)
-            throws SendError
-    {
-        this.req = req;
-        this.res = resp;
-        if(!once)
-            doonce(req);
+  // Setup for each request
+  public void setup(HttpServletRequest req, HttpServletResponse resp) throws SendError {
+    this.req = req;
+    this.res = resp;
+    if (!once)
+      doonce(req);
 
-        // Parse any query parameters
-        try {
-            this.params = new DownloadParameters(req);
-        } catch (IOException ioe) {
-            throw new SendError(res.SC_BAD_REQUEST, ioe);
-        }
+    // Parse any query parameters
+    try {
+      this.params = new DownloadParameters(req);
+    } catch (IOException ioe) {
+      throw new SendError(res.SC_BAD_REQUEST, ioe);
     }
+  }
 
-    //////////////////////////////////////////////////
-    // Controller entry point(s)
+  //////////////////////////////////////////////////
+  // Controller entry point(s)
 
-    @RequestMapping(value = "**", method = RequestMethod.GET)
-    public void
-    doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException
-    {
-        try {
-            setup(req, res);
-            String sresult = null;
-            switch (this.params.command) {
-            case DOWNLOAD:
-                try {
-                    String fulltargetpath = download();
-                    if(this.params.fromform) {
-                        sendForm("Download succeeded: result file: " + fulltargetpath);
-                    } else {
-                        Map<String, String> result = new HashMap<>();
-                        result.put("download", fulltargetpath);
-                        sresult = mapToString(result, true, "download");
-                        sendOK(sresult);
-                    }
-                } catch (SendError se) {
-                    if(this.params.fromform) {
-                        // Send back the download form with error msg
-                        sendForm("Download failed: " + se.getMessage());
-                    } else
-                        throw se;
-                }
-                break;
-            case INQUIRE:
-                sresult = inquire();
-                // Send back the inquiry answers
-                sendOK(sresult);
-                break;
-            case NONE: // Use form-based download
-                // Send back the download form
-                sendForm("No files downloaded");
-                break;
+  @RequestMapping(value = "**", method = RequestMethod.GET)
+  public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException {
+    try {
+      setup(req, res);
+      String sresult = null;
+      switch (this.params.command) {
+        case DOWNLOAD:
+          try {
+            String fulltargetpath = download();
+            if (this.params.fromform) {
+              sendForm("Download succeeded: result file: " + fulltargetpath);
+            } else {
+              Map<String, String> result = new HashMap<>();
+              result.put("download", fulltargetpath);
+              sresult = mapToString(result, true, "download");
+              sendOK(sresult);
             }
-        } catch (SendError se) {
-            sendError(se);
-        } catch (Exception e) {
-            String msg = getStackTrace(e);
-            sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, msg, e);
-        }
+          } catch (SendError se) {
+            if (this.params.fromform) {
+              // Send back the download form with error msg
+              sendForm("Download failed: " + se.getMessage());
+            } else
+              throw se;
+          }
+          break;
+        case INQUIRE:
+          sresult = inquire();
+          // Send back the inquiry answers
+          sendOK(sresult);
+          break;
+        case NONE: // Use form-based download
+          // Send back the download form
+          sendForm("No files downloaded");
+          break;
+      }
+    } catch (SendError se) {
+      sendError(se);
+    } catch (Exception e) {
+      String msg = getStackTrace(e);
+      sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, msg, e);
+    }
+  }
+
+  //////////////////////////////////////////////////
+
+  /**
+   * @return absolute path to the downloaded file
+   * @throws SendError if bad request
+   */
+  protected String download() {
+    String target = this.params.target;
+
+    if (target == null)
+      throw new SendError(HttpServletResponse.SC_BAD_REQUEST, "No target specified");
+
+    // Make sure target path does not contain '..'
+    if (target.indexOf("..") >= 0)
+      throw new SendError(HttpServletResponse.SC_BAD_REQUEST, "Target parameter contains '..': " + target);
+
+    // See if the target is relative or absolute
+    File ftarget = new File(target);
+    if (ftarget.isAbsolute())
+      throw new SendError(HttpServletResponse.SC_BAD_REQUEST, "Target parameter must be a relative path: " + target);
+
+    // See if we have a download dir
+    if (this.downloaddir == null)
+      throw new SendError(HttpServletResponse.SC_BAD_REQUEST,
+          "No download directory specified for relative target: " + target);
+
+    // Make target relative to download dir and convert to absolute path
+    StringBuilder b = new StringBuilder();
+    b.append(this.downloaddir);
+    b.append('/');
+    b.append(target);
+    ftarget = new File(b.toString());
+    String fulltarget = HTTPUtil.canonicalpath(ftarget.getAbsolutePath());
+
+    // Make sure that all intermediate directories exist
+    File parent = ftarget.getParentFile();
+    if (!parent.exists() && !ftarget.getParentFile().mkdirs())
+      throw new SendError(HttpServletResponse.SC_FORBIDDEN,
+          "Target file parent directory cannot be created: " + fulltarget);
+
+    // If file exists, delete it if requested
+    if (!this.params.overwrite && ftarget.exists())
+      throw new SendError(HttpServletResponse.SC_FORBIDDEN, "Target file exists and overwrite is not set");
+    else if (this.params.overwrite && ftarget.exists()) {
+      if (!ftarget.delete())
+        throw new SendError(HttpServletResponse.SC_FORBIDDEN, "Target file exists and cannot be deleted");
     }
 
-    //////////////////////////////////////////////////
+    String surl = this.params.url;
+    URL url;
+    try {
+      url = new URL(surl);
+    } catch (MalformedURLException mue) {
+      throw new SendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed URL: " + surl);
+    }
 
-    /**
-     * @return absolute path to the downloaded file
-     * @throws SendError if bad request
-     */
-    protected String
-    download()
-    {
-        String target = this.params.target;
+    // Make sure we are not recursing
+    String path = url.getPath();
+    if (path.toLowerCase().indexOf(this.requestname) >= 0)
+      throw new SendError(HttpServletResponse.SC_FORBIDDEN,
+          String.format("URL is recursive on /%s: %s", this.requestname, path));
 
-        if(target == null)
-            throw new SendError(HttpServletResponse.SC_BAD_REQUEST, "No target specified");
+    // Make sure that path starts with "/thredds"
+    if (!path.startsWith("/" + this.threddsname))
+      throw new SendError(HttpServletResponse.SC_FORBIDDEN,
+          String.format("URL does not reference %s: %s", this.threddsname, path));
 
-        // Make sure target path does not contain '..'
-        if(target.indexOf("..") >= 0)
-            throw new SendError(HttpServletResponse.SC_BAD_REQUEST, "Target parameter contains '..': " + target);
+    // Rebuild the url to keep it under our control
+    b.setLength(0); // reuse
+    b.append(url.getProtocol());
+    b.append("://");
+    b.append(this.server);
+    b.append(path);
+    String trueurl = b.toString();
 
-        // See if the target is relative or absolute
-        File ftarget = new File(target);
-        if(ftarget.isAbsolute())
-            throw new SendError(HttpServletResponse.SC_BAD_REQUEST, "Target parameter must be a relative path: " + target);
-
-        // See if we have a download dir
-        if(this.downloaddir == null)
-            throw new SendError(HttpServletResponse.SC_BAD_REQUEST, "No download directory specified for relative target: " + target);
-
-        // Make target relative to download dir and convert to absolute path
-        StringBuilder b = new StringBuilder();
-        b.append(this.downloaddir);
-        b.append('/');
-        b.append(target);
-        ftarget = new File(b.toString());
-        String fulltarget = HTTPUtil.canonicalpath(ftarget.getAbsolutePath());
-
-        // Make sure that all intermediate directories exist
-        File parent = ftarget.getParentFile();
-        if(!parent.exists() && !ftarget.getParentFile().mkdirs())
-            throw new SendError(HttpServletResponse.SC_FORBIDDEN, "Target file parent directory cannot be created: " + fulltarget);
-
-        // If file exists, delete it if requested
-        if(!this.params.overwrite && ftarget.exists())
-            throw new SendError(HttpServletResponse.SC_FORBIDDEN, "Target file exists and overwrite is not set");
-        else if(this.params.overwrite && ftarget.exists()) {
-            if(!ftarget.delete())
-                throw new SendError(HttpServletResponse.SC_FORBIDDEN, "Target file exists and cannot be deleted");
-        }
-
-        String surl = this.params.url;
-        URL url;
+    // Get NetcdfFile object
+    // Now, shortcircuit requests for fileServer case
+    boolean directcopy = false;
+    if (path.indexOf(FILESERVERSERVLET) >= 0) {
+      String truepath = directAccess(path, this.req, this.res);
+      directcopy = canCopy(truepath, this.params.format);
+      if (directcopy)
         try {
-            url = new URL(surl);
-        } catch (MalformedURLException mue) {
-            throw new SendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed URL: " + surl);
-        }
-
-        // Make sure we are not recursing
-        String path = url.getPath();
-        if(path.toLowerCase().indexOf(this.requestname) >= 0)
-            throw new SendError(HttpServletResponse.SC_FORBIDDEN,
-                    String.format("URL is recursive on /%s: %s", this.requestname, path));
-
-        // Make sure that path starts with "/thredds"
-        if(!path.startsWith("/" + this.threddsname))
-            throw new SendError(HttpServletResponse.SC_FORBIDDEN,
-                    String.format("URL does not reference %s: %s",
-                            this.threddsname, path));
-
-        // Rebuild the url to keep it under our control
-        b.setLength(0); // reuse
-        b.append(url.getProtocol());
-        b.append("://");
-        b.append(this.server);
-        b.append(path);
-        String trueurl = b.toString();
-
-        // Get NetcdfFile object
-        // Now, shortcircuit requests for fileServer case
-        boolean directcopy = false;
-        if(path.indexOf(FILESERVERSERVLET) >= 0) {
-            String truepath = directAccess(path, this.req, this.res);
-            directcopy = canCopy(truepath, this.params.format);
-            if(directcopy) try {
-                Path src = new File(truepath).toPath();
-                Path dst = new File(fulltarget).toPath();
-                Files.deleteIfExists(dst);
-                Files.copy(src, dst);
-            } catch (IOException e) {
-                throw new SendError(HttpServletResponse.SC_FORBIDDEN, truepath);
-            }
-        }
-        if(!directcopy) {
-            NetcdfFile ncfile = null;
-            try {
-                CancelTaskImpl cancel = new CancelTaskImpl();
-                ncfile = NetcdfDataset.openFile(trueurl, cancel);
-                switch (this.params.format) {
-                case NETCDF3:
-                    makeNetcdf3(ncfile, fulltarget);
-                    break;
-                case NETCDF4:
-                    makeNetcdf4(ncfile, fulltarget);
-                    break;
-                default:
-                    throw new SendError(HttpServletResponse.SC_NOT_IMPLEMENTED,
-                            String.format("%s: return format %s not implemented",
-                                    path, params.format.getName()));
-                }
-            } catch (IOException ioe) {
-                throw new SendError(res.SC_BAD_REQUEST, ioe);
-            }
-        }
-        // Return the absolute path of the target as the content
-        return (fulltarget);
-    }
-
-    //////////////////////////////////////////////////
-    // Reifiers
-
-    protected void
-    makeNetcdf4(NetcdfFile ncfile, String target)
-            throws IOException
-    {
-        try {
-            CancelTaskImpl cancel = new CancelTaskImpl();
-            FileWriter2 writer = new FileWriter2(ncfile, target,
-                    NetcdfFileWriter.Version.netcdf4,
-                    chunking);
-            writer.getNetcdfFileWriter().setLargeFile(true);
-            NetcdfFile ncfileOut = writer.write(cancel);
-            if(ncfileOut != null) ncfileOut.close();
-            cancel.setDone(true);
-        } catch (IOException ioe) {
-            throw ioe; // temporary
-        }
-    }
-
-    protected void
-    makeNetcdf3(NetcdfFile ncfile, String target)
-            throws IOException
-    {
-        try {
-            CancelTaskImpl cancel = new CancelTaskImpl();
-            FileWriter2 writer = new FileWriter2(ncfile, target,
-                    NetcdfFileWriter.Version.netcdf3,
-                    chunking);
-            writer.getNetcdfFileWriter().setLargeFile(true);
-            NetcdfFile ncfileOut = writer.write(cancel);
-            if(ncfileOut != null) ncfileOut.close();
-            cancel.setDone(true);
-        } catch (IOException ioe) {
-            throw ioe; // temporary
-        }
-    }
-
-    //////////////////////////////////////////////////
-
-    /**
-     * Given a typical string, insert backslashes
-     * before '"' and '\\' characters and control characters.
-     */
-    static protected String escapeString(String s)
-    {
-        StringBuilder buf = new StringBuilder();
-        for(int i = 0; i < s.length(); i++) {
-            int c = s.charAt(i);
-            switch (c) {
-            case '"':
-                buf.append("\\\"");
-                break;
-            case '\\':
-                buf.append("\\\\");
-                break;
-            case '\n':
-                buf.append('\n');
-                break;
-            case '\r':
-                buf.append('\r');
-                break;
-            case '\t':
-                buf.append('\r');
-                break;
-            case '\f':
-                buf.append('\f');
-                break;
-            default:
-                if(c < ' ')
-                    buf.append(String.format("\\x%02x", (c & 0xff)));
-                else
-                    buf.append((char) c);
-                break;
-            }
-        }
-        return buf.toString();
-    }
-
-    protected String
-    directAccess(String relpath, HttpServletRequest req, HttpServletResponse res)
-    {
-        // Strip off /fileServer and everythihg before it
-        int index = relpath.indexOf(FILESERVERSERVLET);
-        assert index >= 0;
-        relpath = relpath.substring(index + FILESERVERSERVLET.length(), relpath.length());
-        relpath = HTTPUtil.abspath(HTTPUtil.canonicalpath(relpath));
-        String realpath = TdsRequestedDataset.getLocationFromRequestPath(relpath);
-        File f = new File(realpath);
-        if(!f.exists() || !f.canRead())
-            throw new SendError(res.SC_NOT_FOUND, "Not found: " + realpath);
-        if(!TdsRequestedDataset.resourceControlOk(req, res, realpath))
-            throw new SendError(res.SC_FORBIDDEN, "Permissions failure: " + realpath);
-        return realpath;
-    }
-
-
-    protected boolean
-    canCopy(String truepath, FileFormat targetformat)
-    {
-        try {
-            RandomAccessFile raf = new RandomAccessFile(truepath, "r");
-            int format = NCheader.checkFileType(raf);
-            switch (format) {
-            case NC_FORMAT_CLASSIC:
-            case NC_FORMAT_64BIT_OFFSET:
-                return targetformat == FileFormat.NETCDF3;
-            case NC_FORMAT_NETCDF4:
-            case NC_FORMAT_64BIT_DATA:
-            case NC_FORMAT_HDF4:
-                return targetformat == FileFormat.NETCDF4;
-            default: break;
-            }
+          Path src = new File(truepath).toPath();
+          Path dst = new File(fulltarget).toPath();
+          Files.deleteIfExists(dst);
+          Files.copy(src, dst);
         } catch (IOException e) {
-            return false;
+          throw new SendError(HttpServletResponse.SC_FORBIDDEN, truepath);
         }
-        return false;
     }
-
-    //////////////////////////////////////////////////
-
-    @Override
-    protected String
-    buildForm(String msg)
-    {
-        StringBuilder svc = new StringBuilder();
-        svc.append(this.server);
-        svc.append("/");
-        svc.append(this.threddsname);
-        String form = String.format(this.downloadform,
-                svc.toString(),
-                msg
-        );
-        return form;
+    if (!directcopy) {
+      NetcdfFile ncfile = null;
+      try {
+        CancelTaskImpl cancel = new CancelTaskImpl();
+        ncfile = NetcdfDataset.openFile(trueurl, cancel);
+        switch (this.params.format) {
+          case NETCDF3:
+            makeNetcdf3(ncfile, fulltarget);
+            break;
+          case NETCDF4:
+            makeNetcdf4(ncfile, fulltarget);
+            break;
+          default:
+            throw new SendError(HttpServletResponse.SC_NOT_IMPLEMENTED,
+                String.format("%s: return format %s not implemented", path, params.format.getName()));
+        }
+      } catch (IOException ioe) {
+        throw new SendError(res.SC_BAD_REQUEST, ioe);
+      }
     }
+    // Return the absolute path of the target as the content
+    return (fulltarget);
+  }
+
+  //////////////////////////////////////////////////
+  // Reifiers
+
+  protected void makeNetcdf4(NetcdfFile ncfile, String target) throws IOException {
+    try {
+      CancelTaskImpl cancel = new CancelTaskImpl();
+      FileWriter2 writer = new FileWriter2(ncfile, target, NetcdfFileWriter.Version.netcdf4, chunking);
+      writer.getNetcdfFileWriter().setLargeFile(true);
+      NetcdfFile ncfileOut = writer.write(cancel);
+      if (ncfileOut != null)
+        ncfileOut.close();
+      cancel.setDone(true);
+    } catch (IOException ioe) {
+      throw ioe; // temporary
+    }
+  }
+
+  protected void makeNetcdf3(NetcdfFile ncfile, String target) throws IOException {
+    try {
+      CancelTaskImpl cancel = new CancelTaskImpl();
+      FileWriter2 writer = new FileWriter2(ncfile, target, NetcdfFileWriter.Version.netcdf3, chunking);
+      writer.getNetcdfFileWriter().setLargeFile(true);
+      NetcdfFile ncfileOut = writer.write(cancel);
+      if (ncfileOut != null)
+        ncfileOut.close();
+      cancel.setDone(true);
+    } catch (IOException ioe) {
+      throw ioe; // temporary
+    }
+  }
+
+  //////////////////////////////////////////////////
+
+  /**
+   * Given a typical string, insert backslashes
+   * before '"' and '\\' characters and control characters.
+   */
+  static protected String escapeString(String s) {
+    StringBuilder buf = new StringBuilder();
+    for (int i = 0; i < s.length(); i++) {
+      int c = s.charAt(i);
+      switch (c) {
+        case '"':
+          buf.append("\\\"");
+          break;
+        case '\\':
+          buf.append("\\\\");
+          break;
+        case '\n':
+          buf.append('\n');
+          break;
+        case '\r':
+          buf.append('\r');
+          break;
+        case '\t':
+          buf.append('\r');
+          break;
+        case '\f':
+          buf.append('\f');
+          break;
+        default:
+          if (c < ' ')
+            buf.append(String.format("\\x%02x", (c & 0xff)));
+          else
+            buf.append((char) c);
+          break;
+      }
+    }
+    return buf.toString();
+  }
+
+  protected String directAccess(String relpath, HttpServletRequest req, HttpServletResponse res) {
+    // Strip off /fileServer and everythihg before it
+    int index = relpath.indexOf(FILESERVERSERVLET);
+    assert index >= 0;
+    relpath = relpath.substring(index + FILESERVERSERVLET.length(), relpath.length());
+    relpath = HTTPUtil.abspath(HTTPUtil.canonicalpath(relpath));
+    String realpath = TdsRequestedDataset.getLocationFromRequestPath(relpath);
+    File f = new File(realpath);
+    if (!f.exists() || !f.canRead())
+      throw new SendError(res.SC_NOT_FOUND, "Not found: " + realpath);
+    if (!TdsRequestedDataset.resourceControlOk(req, res, realpath))
+      throw new SendError(res.SC_FORBIDDEN, "Permissions failure: " + realpath);
+    return realpath;
+  }
+
+
+  protected boolean canCopy(String truepath, FileFormat targetformat) {
+    try {
+      RandomAccessFile raf = new RandomAccessFile(truepath, "r");
+      int format = NCheader.checkFileType(raf);
+      switch (format) {
+        case NC_FORMAT_CLASSIC:
+        case NC_FORMAT_64BIT_OFFSET:
+          return targetformat == FileFormat.NETCDF3;
+        case NC_FORMAT_NETCDF4:
+        case NC_FORMAT_64BIT_DATA:
+        case NC_FORMAT_HDF4:
+          return targetformat == FileFormat.NETCDF4;
+        default:
+          break;
+      }
+    } catch (IOException e) {
+      return false;
+    }
+    return false;
+  }
+
+  //////////////////////////////////////////////////
+
+  @Override
+  protected String buildForm(String msg) {
+    StringBuilder svc = new StringBuilder();
+    svc.append(this.server);
+    svc.append("/");
+    svc.append(this.threddsname);
+    String form = String.format(this.downloadform, svc.toString(), msg);
+    return form;
+  }
 
 }

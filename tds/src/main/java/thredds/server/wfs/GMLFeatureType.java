@@ -13,9 +13,6 @@ public enum GMLFeatureType {
 
 
 
-
-
-
   private String stringRepresent;
 
   public String toString() {

@@ -18,7 +18,6 @@ import ucar.nc2.Variable;
 import ucar.nc2.ft2.coverage.*;
 import ucar.nc2.stream.CdmRemote;
 import ucar.unidata.util.test.category.NeedsRdaData;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
@@ -33,7 +32,8 @@ public class TestCdmrTiming {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   String local = TestOnLocalServer.withHttpPath("cdmremote/rdavmWork/yt.oper.an.sfc.regn400sc.10v_166.200805");
-  String rdavm = "http://rdavm.ucar.edu:8080/thredds/cdmremote/files/e/ds629.1/yt.oper.an.sfc/2008/yt.oper.an.sfc.regn400sc.10v_166.200805";
+  String rdavm =
+      "http://rdavm.ucar.edu:8080/thredds/cdmremote/files/e/ds629.1/yt.oper.an.sfc/2008/yt.oper.an.sfc.regn400sc.10v_166.200805";
   String cdmUrl = local;
 
   @Test
@@ -43,7 +43,7 @@ public class TestCdmrTiming {
     timeDataRead(cdmUrl, 10);
   }
 
-  static int timeDataRead(String remote, int  stride) throws IOException, InvalidRangeException {
+  static int timeDataRead(String remote, int stride) throws IOException, InvalidRangeException {
     logger.debug("--CdmRemote Read {} stride={}", remote, stride);
 
     try (NetcdfFile ncremote = new CdmRemote(remote)) {
@@ -72,11 +72,11 @@ public class TestCdmrTiming {
   @Test
   public void readCoordSpace() throws IOException, InvalidRangeException {
     timeDataRead2(cdmUrl, 1);
-    //timeDataRead2(cdmUrl, 2);
-    //timeDataRead2(cdmUrl, 10);
+    // timeDataRead2(cdmUrl, 2);
+    // timeDataRead2(cdmUrl, 10);
   }
 
-  static int timeDataRead2(String remote, int  stride) throws IOException, InvalidRangeException {
+  static int timeDataRead2(String remote, int stride) throws IOException, InvalidRangeException {
     logger.debug("--Coverage Read {} stride={} ", remote, stride);
 
     try (FeatureDatasetCoverage cc = CoverageDatasetFactory.open(remote)) {
@@ -86,7 +86,7 @@ public class TestCdmrTiming {
       Coverage grid = gcs.findCoverage(gridName);
       Assert.assertNotNull(gridName, grid);
 
-      SubsetParams params  = new SubsetParams().setTimePresent().setHorizStride(stride);
+      SubsetParams params = new SubsetParams().setTimePresent().setHorizStride(stride);
 
       long start = System.currentTimeMillis();
       GeoReferencedArray geo = grid.readData(params);

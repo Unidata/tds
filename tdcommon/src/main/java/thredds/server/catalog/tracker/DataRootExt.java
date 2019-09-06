@@ -2,7 +2,6 @@
 package thredds.server.catalog.tracker;
 
 import thredds.server.catalog.DataRoot;
-
 import java.io.*;
 import java.util.Formatter;
 
@@ -26,8 +25,7 @@ public class DataRootExt implements Comparable<DataRootExt> {
 
   private DataRoot dataRoot;
 
-  public DataRootExt() {
-  }
+  public DataRootExt() {}
 
   public DataRootExt(DataRoot dataRoot, String catLocation) {
     this.path = dataRoot.getPath();
@@ -44,7 +42,8 @@ public class DataRootExt implements Comparable<DataRootExt> {
   }
 
   public DataRoot getDataRoot() {
-    if (dataRoot != null) return dataRoot;
+    if (dataRoot != null)
+      return dataRoot;
     if (type == DataRoot.Type.datasetRoot) {
       dataRoot = new DataRoot(path, dirLocation, restrict);
     }
@@ -76,12 +75,14 @@ public class DataRootExt implements Comparable<DataRootExt> {
     return restrict;
   }
 
-  /* message DataRoot {
-        required string urlPath = 1;
-        required string dirLocation = 2;
-        required DataRootType type = 3;
-        optional string catLocation = 4;    // omit for simple dataset root
-      } */
+  /*
+   * message DataRoot {
+   * required string urlPath = 1;
+   * required string dirLocation = 2;
+   * required DataRootType type = 3;
+   * optional string catLocation = 4; // omit for simple dataset root
+   * }
+   */
   public void writeExternal(DataOutputStream out) throws IOException {
     ConfigCatalogExtProto.DataRoot.Builder builder = ConfigCatalogExtProto.DataRoot.newBuilder();
     builder.setUrlPath(path);
@@ -101,7 +102,8 @@ public class DataRootExt implements Comparable<DataRootExt> {
 
     total_count++;
     total_nbytes += b.length + 4;
-    if (debug) System.out.printf(" %d: DataRootExt.writeExternal len=%d total=%d%n", total_count, b.length, total_nbytes);
+    if (debug)
+      System.out.printf(" %d: DataRootExt.writeExternal len=%d total=%d%n", total_count, b.length, total_nbytes);
   }
 
   private static int nrecordsRead = 0;
@@ -109,20 +111,21 @@ public class DataRootExt implements Comparable<DataRootExt> {
   public void readExternal(DataInputStream in) throws IOException {
     int avail = in.available();
     int len = in.readInt();
-    if (debug) System.out.printf(" %d: DataRootExt.readExternal len=%d%n", nrecordsRead++, len);
+    if (debug)
+      System.out.printf(" %d: DataRootExt.readExternal len=%d%n", nrecordsRead++, len);
 
     byte[] b = new byte[len];
     int n = in.read(b);
-    //System.out.printf(" read size = %d%n", b.length);
+    // System.out.printf(" read size = %d%n", b.length);
 
-    //try {
+    // try {
     if (n != len)
       throw new RuntimeException("DataRootExt.readExternal failed read size=" + len + " in.available=" + avail);
 
     ConfigCatalogExtProto.DataRoot dsp = ConfigCatalogExtProto.DataRoot.parseFrom(b);
     this.path = dsp.getUrlPath();
     this.dirLocation = dsp.getDirLocation();
-    this.type = convertDataRootType( dsp.getType());
+    this.type = convertDataRootType(dsp.getType());
     if (dsp.getCatLocation().length() > 0)
       catLocation = dsp.getCatLocation();
     if (dsp.getName().length() > 0)
@@ -132,7 +135,7 @@ public class DataRootExt implements Comparable<DataRootExt> {
   }
 
   ////////////////////////////
-    //  Type {datasetRoot, datasetScan, catalogScan, featureCollection}
+  // Type {datasetRoot, datasetScan, catalogScan, featureCollection}
 
   static public DataRoot.Type convertDataRootType(ConfigCatalogExtProto.DataRootType type) {
     switch (type) {
@@ -149,23 +152,23 @@ public class DataRootExt implements Comparable<DataRootExt> {
   }
 
   static public ConfigCatalogExtProto.DataRootType convertDataRootType(DataRoot.Type type) {
-     switch (type) {
-       case datasetRoot:
-         return ConfigCatalogExtProto.DataRootType.datasetRoot;
-       case datasetScan:
-         return ConfigCatalogExtProto.DataRootType.datasetScan;
-       case catalogScan:
-         return ConfigCatalogExtProto.DataRootType.catalogScan;
-       case featureCollection:
-         return ConfigCatalogExtProto.DataRootType.featureCollection;
-     }
-     throw new IllegalStateException("illegal DataRootType " + type);
-   }
+    switch (type) {
+      case datasetRoot:
+        return ConfigCatalogExtProto.DataRootType.datasetRoot;
+      case datasetScan:
+        return ConfigCatalogExtProto.DataRootType.datasetScan;
+      case catalogScan:
+        return ConfigCatalogExtProto.DataRootType.catalogScan;
+      case featureCollection:
+        return ConfigCatalogExtProto.DataRootType.featureCollection;
+    }
+    throw new IllegalStateException("illegal DataRootType " + type);
+  }
 
 
   @Override
   public int compareTo(DataRootExt o) {
-    return path.compareTo( o.getPath());
+    return path.compareTo(o.getPath());
   }
 
   @Override

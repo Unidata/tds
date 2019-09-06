@@ -9,7 +9,7 @@
  * this software, and any derivative works thereof, and its supporting
  * documentation for any purpose whatsoever, provided that this entire
  * notice appears in all copies of the software, derivative works and
- * supporting documentation.  Further, UCAR requests that the user credit
+ * supporting documentation. Further, UCAR requests that the user credit
  * UCAR/Unidata in any publications that result from the use of this
  * software or in any product that includes this software. The names UCAR
  * and/or Unidata, however, may not be used in any advertising or publicity
@@ -47,10 +47,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
-
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -62,70 +60,62 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = { "/WEB-INF/applicationContext.xml" }, loader = MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class GridRequestsExceptionTest {
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   @Autowired
-   private WebApplicationContext wac;
+  private WebApplicationContext wac;
 
-   private MockMvc mockMvc;
-  private String path="/ncss/grid/gribCollection/GFS_CONUS_80km/best";
+  private MockMvc mockMvc;
+  private String path = "/ncss/grid/gribCollection/GFS_CONUS_80km/best";
 
   @Before
-   public void setUp() throws IOException{
+  public void setUp() throws IOException {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-   }
+  }
 
   @Test
-   public void checkBadGridRequestWhenNoParams() throws Exception{
+  public void checkBadGridRequestWhenNoParams() throws Exception {
     System.out.printf("path= %s%n", path);
-    MvcResult result = this.mockMvc.perform(get(path).servletPath(path)) // note make it both the request an the servlet path (!)
-            .andExpect(status().is(400))
-            .andExpect(content().string(containsString("No variables requested")))
-            .andReturn();
+    MvcResult result = this.mockMvc.perform(get(path).servletPath(path)) // note make it both the request an the servlet
+                                                                         // path (!)
+        .andExpect(status().is(400)).andExpect(content().string(containsString("No variables requested"))).andReturn();
 
     System.out.printf("content= %s%n", result.getResponse().getContentAsString());
-   }
+  }
 
   @Test
-   public void checkBadGridRequestWhenEmptyVarParams() throws Exception{
+  public void checkBadGridRequestWhenEmptyVarParams() throws Exception {
     System.out.printf("path= %s%n", path);
-    MvcResult result = this.mockMvc.perform(get(path).servletPath(path)
-            .param("var", ""))
-            .andExpect(status().is(400))
-            .andExpect(content().string(containsString("No variables requested")))
-            .andReturn();
+    MvcResult result = this.mockMvc.perform(get(path).servletPath(path).param("var", "")).andExpect(status().is(400))
+        .andExpect(content().string(containsString("No variables requested"))).andReturn();
 
     System.out.printf("content= %s%n", result.getResponse().getContentAsString());
-   }
+  }
 
   @Test
-   public void testMultipleVerticalCoordinates() throws Exception{
+  public void testMultipleVerticalCoordinates() throws Exception {
     System.out.printf("path= %s%n", path);
-    MvcResult result = this.mockMvc.perform(get(path).servletPath(path)
-            .param("var", "all")
-            .param("vertCoord", "200.0"))
-            .andExpect(status().is(400))
-            .andExpect(content().string(containsString("must have variables with same vertical levels")))
-            .andReturn();
+    MvcResult result = this.mockMvc.perform(get(path).servletPath(path).param("var", "all").param("vertCoord", "200.0"))
+        .andExpect(status().is(400))
+        .andExpect(content().string(containsString("must have variables with same vertical levels"))).andReturn();
 
     System.out.printf("content= %s%n", result.getResponse().getContentAsString());
-   }
+  }
 
   @Test
-   public void testTimeDoesNotIntersect() throws Exception{
+  public void testTimeDoesNotIntersect() throws Exception {
     System.out.printf("path= %s%n", path);
-    MvcResult result = this.mockMvc.perform(get(path).servletPath(path)
-            .param("var", "Pressure_reduced_to_MSL_msl")
-            .param("time", "2012-04-18T15:00:00Z"))
-            // .param("time_window", "PT1H"))
-            .andExpect(status().is(400))
-            .andExpect(content().string(containsString("does not intersect actual time range")))
-            .andReturn();
+    MvcResult result = this.mockMvc
+        .perform(get(path).servletPath(path).param("var", "Pressure_reduced_to_MSL_msl").param("time",
+            "2012-04-18T15:00:00Z"))
+        // .param("time_window", "PT1H"))
+        .andExpect(status().is(400)).andExpect(content().string(containsString("does not intersect actual time range")))
+        .andReturn();
 
     System.out.printf("content= %s%n", result.getResponse().getContentAsString());
-   }
+  }
 
 }

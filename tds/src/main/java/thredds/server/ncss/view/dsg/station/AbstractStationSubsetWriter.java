@@ -20,7 +20,6 @@ import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonPointImpl;
 import ucar.unidata.geoloc.LatLonRect;
 import ucar.unidata.geoloc.Station;
-
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,13 +34,13 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
   protected boolean headerDone = false;
 
   public AbstractStationSubsetWriter(FeatureDatasetPoint fdPoint, SubsetParams ncssParams)
-          throws NcssException, IOException {
+      throws NcssException, IOException {
     super(fdPoint, ncssParams);
 
     List<DsgFeatureCollection> featColList = fdPoint.getPointFeatureCollectionList();
     assert featColList.size() == 1 : "Is there ever a case when this is NOT 1?";
-    assert featColList.get(0) instanceof StationTimeSeriesFeatureCollection :
-            "This class only deals with StationTimeSeriesFeatureCollections.";
+    assert featColList.get(
+        0) instanceof StationTimeSeriesFeatureCollection : "This class only deals with StationTimeSeriesFeatureCollections.";
 
     this.stationFeatureCollection = (StationTimeSeriesFeatureCollection) featColList.get(0);
     this.wantedStations = getStationsInSubset(stationFeatureCollection, ncssParams);
@@ -61,7 +60,8 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
   public void write() throws Exception {
 
     // Perform spatial subset.
-    StationTimeSeriesFeatureCollection subsettedStationFeatCol = stationFeatureCollection.subsetFeatures(wantedStations);
+    StationTimeSeriesFeatureCollection subsettedStationFeatCol =
+        stationFeatureCollection.subsetFeatures(wantedStations);
     int count = 0;
 
     for (StationTimeSeriesFeature stationFeat : subsettedStationFeatCol) {
@@ -73,8 +73,8 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
 
       if (ncssParams.getTime() != null) {
         CalendarDate wantedTime = ncssParams.getTime();
-        subsettedStationFeat = new ClosestTimeStationFeatureSubset(
-                (StationTimeSeriesFeatureImpl) subsettedStationFeat, wantedTime);
+        subsettedStationFeat =
+            new ClosestTimeStationFeatureSubset((StationTimeSeriesFeatureImpl) subsettedStationFeat, wantedTime);
       }
 
       count += writeStationTimeSeriesFeature(subsettedStationFeat);
@@ -86,12 +86,11 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
     writeFooter();
   }
 
-  protected int writeStationTimeSeriesFeature(StationTimeSeriesFeature stationFeat)
-          throws Exception {
+  protected int writeStationTimeSeriesFeature(StationTimeSeriesFeature stationFeat) throws Exception {
     int count = 0;
     for (PointFeature pointFeat : stationFeat) {
-      assert pointFeat instanceof StationPointFeature :
-              "Expected pointFeat to be a StationPointFeature, not a " + pointFeat.getClass().getSimpleName();
+      assert pointFeat instanceof StationPointFeature : "Expected pointFeat to be a StationPointFeature, not a "
+          + pointFeat.getClass().getSimpleName();
 
       if (!headerDone) {
         writeHeader((StationPointFeature) pointFeat);
@@ -107,8 +106,8 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
     private final StationTimeSeriesFeature stationFeat;
     private CalendarDate closestTime;
 
-    protected ClosestTimeStationFeatureSubset(
-            StationTimeSeriesFeatureImpl stationFeat, CalendarDate wantedTime) throws IOException {
+    protected ClosestTimeStationFeatureSubset(StationTimeSeriesFeatureImpl stationFeat, CalendarDate wantedTime)
+        throws IOException {
       super(stationFeat, stationFeat.getTimeUnit(), stationFeat.getAltUnits(), -1);
       this.stationFeat = stationFeat;
       CalendarDateRange cdr = stationFeat.getCalendarDateRange();
@@ -160,16 +159,15 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
       if (closestTime == null) {
         return stationFeat.getPointFeatureIterator();
       } else {
-        return new PointIteratorFiltered(
-                stationFeat.getPointFeatureIterator(), new TimeFilter(closestTime));
+        return new PointIteratorFiltered(stationFeat.getPointFeatureIterator(), new TimeFilter(closestTime));
       }
     }
   }
 
 
   // LOOK could do better : "all", and maybe HashSet<Name>
-  public static List<StationFeature> getStationsInSubset(
-          StationTimeSeriesFeatureCollection stationFeatCol, SubsetParams ncssParams) throws IOException {
+  public static List<StationFeature> getStationsInSubset(StationTimeSeriesFeatureCollection stationFeatCol,
+      SubsetParams ncssParams) throws IOException {
 
     List<StationFeature> wantedStations;
 
@@ -204,12 +202,15 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
    * The metric is (lat-lat0)**2 + (cos(lat0)*(lon-lon0))**2
    *
    * @param lat latitude value
+   * 
    * @param lon longitude value
+   * 
    * @return name of station closest to the specified point
+   * 
    * @throws IOException if read error
    */
   public static Station findClosestStation(StationTimeSeriesFeatureCollection stationFeatCol, LatLonPoint pt)
-          throws IOException {
+      throws IOException {
     double lat = pt.getLatitude();
     double lon = pt.getLongitude();
     double cos = Math.cos(Math.toRadians(lat));

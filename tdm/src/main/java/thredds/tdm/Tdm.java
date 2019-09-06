@@ -31,7 +31,6 @@ import ucar.nc2.time.CalendarDate;
 import ucar.nc2.util.AliasTranslator;
 import ucar.nc2.util.DiskCache2;
 import ucar.unidata.io.RandomAccessFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
@@ -167,7 +166,7 @@ public class Tdm {
       catalogRoots.add(r);
     }
 
-    /* 4.3.15: grib index file placement, using DiskCache2  */
+    /* 4.3.15: grib index file placement, using DiskCache2 */
     String gribIndexDir = reader.get("GribIndex.dir", new File(contentThreddsDir.toString(), "cache/grib/").getPath());
     Boolean gribIndexAlwaysUse = reader.getBoolean("GribIndex.alwaysUse", false);
     Boolean gribIndexNeverUse = reader.getBoolean("GribIndex.neverUse", false);
@@ -218,7 +217,8 @@ public class Tdm {
     }
 
     for (FeatureCollectionConfig config : fcList) {
-      if (config.type != FeatureCollectionType.GRIB1 && config.type != FeatureCollectionType.GRIB2) continue;
+      if (config.type != FeatureCollectionType.GRIB1 && config.type != FeatureCollectionType.GRIB2)
+        continue;
       System.out.printf("FeatureCollection %s scheduled %n", config.collectionName);
 
       if (forceOnStartup) // on startup, force rewrite of indexes
@@ -231,14 +231,16 @@ public class Tdm {
       collectionUpdater.scheduleTasks(config, null);
     }
 
-     /* show whats up
-     Formatter f = new Formatter();
-     f.format("Feature Collections found:%n");
-     for (FeatureCollectionConfig fc : fcList) {
-       CollectionManager dcm = fc.getDatasetCollectionManager();
-       f.format("  %s == %s%n%s%n%n", fc, fc.getClass().getName(), dcm);
-     }
-     System.out.printf("%s%n", f.toString()); */
+    /*
+     * show whats up
+     * Formatter f = new Formatter();
+     * f.format("Feature Collections found:%n");
+     * for (FeatureCollectionConfig fc : fcList) {
+     * CollectionManager dcm = fc.getDatasetCollectionManager();
+     * f.format("  %s == %s%n%s%n%n", fc, fc.getClass().getName(), dcm);
+     * }
+     * System.out.printf("%s%n", f.toString());
+     */
   }
 
   // called by eventBus
@@ -307,7 +309,8 @@ public class Tdm {
 
         long took = System.currentTimeMillis() - start;
         tdmLogger.debug("{} done {}: changed {} took {} ms", taskNo, config.collectionName, changed, took);
-        System.out.printf("%s: %s changed %s took %d msecs%n", CalendarDate.present(), config.collectionName, changed, took);
+        System.out.printf("%s: %s changed %s took %d msecs%n", CalendarDate.present(), config.collectionName, changed,
+            took);
 
         if (debugTasks) {
           System.out.printf("executor=%s%n", executor);
@@ -368,37 +371,39 @@ public class Tdm {
       }
     }
 
-    /* private void doManage(String deleteAfterS) throws IOException {
-      TimeDuration deleteAfter = null;
-      if (deleteAfterS != null) {
-        try {
-          deleteAfter = new TimeDuration(deleteAfterS);
-        } catch (Exception e) {
-          logger.error(dcm.getCollectionName() + ": Invalid time unit for deleteAfter = {}", deleteAfter);
-          return;
-        }
-      }
-
-      // awkward
-      double val = deleteAfter.getValue();
-      CalendarPeriod.Field unit = CalendarPeriod.fromUnitString(deleteAfter.getTimeUnit().getUnitString());
-      CalendarPeriod period = CalendarPeriod.of(1, unit);
-      CalendarDate now = CalendarDate.of(new Date());
-      CalendarDate last = now.add(-val, unit);
-
-      try (CloseableIterator<MFile> iter = dcm.getFileIterator()) {
-        while (iter.hasNext()) {
-          MFile mfile = iter.next();
-          CalendarDate cd = dcm.extractDate(mfile);
-          int n = period.subtract(cd, now);
-          if (cd.isBefore(last)) {
-            logger.info("delete={} age = {}", mfile.getPath(), n + " " + unit);
-          } else {
-            logger.debug("dont delete={} age = {}", mfile.getPath(), n + " " + unit);
-          }
-        }
-      }
-    } */
+    /*
+     * private void doManage(String deleteAfterS) throws IOException {
+     * TimeDuration deleteAfter = null;
+     * if (deleteAfterS != null) {
+     * try {
+     * deleteAfter = new TimeDuration(deleteAfterS);
+     * } catch (Exception e) {
+     * logger.error(dcm.getCollectionName() + ": Invalid time unit for deleteAfter = {}", deleteAfter);
+     * return;
+     * }
+     * }
+     * 
+     * // awkward
+     * double val = deleteAfter.getValue();
+     * CalendarPeriod.Field unit = CalendarPeriod.fromUnitString(deleteAfter.getTimeUnit().getUnitString());
+     * CalendarPeriod period = CalendarPeriod.of(1, unit);
+     * CalendarDate now = CalendarDate.of(new Date());
+     * CalendarDate last = now.add(-val, unit);
+     * 
+     * try (CloseableIterator<MFile> iter = dcm.getFileIterator()) {
+     * while (iter.hasNext()) {
+     * MFile mfile = iter.next();
+     * CalendarDate cd = dcm.extractDate(mfile);
+     * int n = period.subtract(cd, now);
+     * if (cd.isBefore(last)) {
+     * logger.info("delete={} age = {}", mfile.getPath(), n + " " + unit);
+     * } else {
+     * logger.debug("dont delete={} age = {}", mfile.getPath(), n + " " + unit);
+     * }
+     * }
+     * }
+     * }
+     */
 
   }
 
@@ -406,20 +411,26 @@ public class Tdm {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /*
-    System.out.printf("usage: <Java> <Java_OPTS> -Dtds.content.root.path=<contentDir> [-catalog <cat>] [-tds <tdsServer>]
-    [-cred <user:passwd>] [-showOnly] [-forceOnStartup]%n");
-    System.out.printf("example: /opt/jdk/bin/java -Xmx3g -Dtds.content.root.path=/my/content -jar tdm-4.5.jar -tds http://thredds-dev.unidata.ucar.edu/%n");
-      // /opt/jdk/bin/java -d64 -Xmx3g -jar -Dtds.content.root.path=/opt/tds-dev/content tdm-4.5.jar -cred tdm:trigger -tds "http://thredds-dev.unidata.ucar.edu/"
-
+   * System.out.printf("usage: <Java> <Java_OPTS> -Dtds.content.root.path=<contentDir> [-catalog <cat>] [-tds
+   * <tdsServer>]
+   * [-cred <user:passwd>] [-showOnly] [-forceOnStartup]%n");
+   * System.out.
+   * printf("example: /opt/jdk/bin/java -Xmx3g -Dtds.content.root.path=/my/content -jar tdm-4.5.jar -tds http://thredds-dev.unidata.ucar.edu/%n"
+   * );
+   * // /opt/jdk/bin/java -d64 -Xmx3g -jar -Dtds.content.root.path=/opt/tds-dev/content tdm-4.5.jar -cred tdm:trigger
+   * -tds "http://thredds-dev.unidata.ucar.edu/"
+   * 
    */
   private static class CommandLine {
-    @Parameter(names = {"-catalog"}, description = "name a specific catalog (reletive to content dir)", required = false)
+    @Parameter(names = {"-catalog"}, description = "name a specific catalog (reletive to content dir)",
+        required = false)
     public String catalog;
 
     @Parameter(names = {"-cred"}, description = "tds credentials (user:password)", required = false)
     public String cred;
 
-    @Parameter(names = {"-forceOnStartup"}, description = "force read all collections on startup (override config)", required = false)
+    @Parameter(names = {"-forceOnStartup"}, description = "force read all collections on startup (override config)",
+        required = false)
     public boolean forceOnStartup;
 
     @Parameter(names = {"-nthreads"}, description = "number of threads", required = false)
@@ -437,19 +448,21 @@ public class Tdm {
     private final JCommander jc;
 
     public CommandLine(String progName, String[] args) throws ParameterException {
-      this.jc = new JCommander(this, args);  // Parses args and uses them to initialize *this*.
-      jc.setProgramName(progName);           // Displayed in the usage information.
+      this.jc = new JCommander(this, args); // Parses args and uses them to initialize *this*.
+      jc.setProgramName(progName); // Displayed in the usage information.
     }
 
     public void printUsage() {
       jc.usage();
-      System.out.printf("example: /opt/jdk/bin/java -Xmx3g -Dtds.content.root.path=/my/content -jar tdm-5.0.jar -tds http://thredds-dev.unidata.ucar.edu/ -cred tdm:trigger %n");
+      System.out.printf(
+          "example: /opt/jdk/bin/java -Xmx3g -Dtds.content.root.path=/my/content -jar tdm-5.0.jar -tds http://thredds-dev.unidata.ucar.edu/ -cred tdm:trigger %n");
     }
 
   }
 
   public static void main(String args[]) throws IOException, InterruptedException {
-    try (FileSystemXmlApplicationContext springContext = new FileSystemXmlApplicationContext("classpath:resources/application-config.xml")) {
+    try (FileSystemXmlApplicationContext springContext =
+        new FileSystemXmlApplicationContext("classpath:resources/application-config.xml")) {
       Tdm app = (Tdm) springContext.getBean("TDM");
 
       Map<String, String> aliases = (Map<String, String>) springContext.getBean("dataRootLocationAliasExpanders");
@@ -458,11 +471,12 @@ public class Tdm {
 
       EventBus eventBus = (EventBus) springContext.getBean("fcTriggerEventBus");
       CollectionUpdater collectionUpdater = (CollectionUpdater) springContext.getBean("collectionUpdater");
-      collectionUpdater.setEventBus(eventBus);   // Autowiring not working
+      collectionUpdater.setEventBus(eventBus); // Autowiring not working
       app.setUpdater(collectionUpdater, eventBus);
 
       String contentDir = System.getProperty("tds.content.root.path");
-      if (contentDir == null) contentDir = "../content";
+      if (contentDir == null)
+        contentDir = "../content";
       app.setContentDir(contentDir);
 
       // RandomAccessFile.setDebugLeaks(true);
@@ -482,7 +496,7 @@ public class Tdm {
           app.setCatalog(cmdLine.catalog);
         }
 
-        if (cmdLine.cred != null) {  // LOOK could be http://user:password@server
+        if (cmdLine.cred != null) { // LOOK could be http://user:password@server
           String[] split = cmdLine.cred.split(":");
           app.user = split[0];
           app.pass = split[1];
@@ -523,7 +537,8 @@ public class Tdm {
           passw = scanner.nextLine();
           System.out.printf("%nPassword = '%s' OK (Y/N)?", passw);
           String ok = scanner.nextLine();
-          if (ok.equalsIgnoreCase("Y")) break;
+          if (ok.equalsIgnoreCase("Y"))
+            break;
         }
         if (passw != null) {
           app.pass = passw;

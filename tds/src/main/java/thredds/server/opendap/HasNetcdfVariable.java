@@ -12,7 +12,6 @@ import ucar.nc2.Variable;
 import ucar.ma2.Array;
 import ucar.ma2.StructureData;
 import ucar.ma2.StructureMembers;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -24,7 +23,7 @@ import java.io.IOException;
  */
 public interface HasNetcdfVariable {
 
-    /** reset the underlying proxy */
+  /** reset the underlying proxy */
   public void setData(Array data);
 
   /** get the underlying proxy */

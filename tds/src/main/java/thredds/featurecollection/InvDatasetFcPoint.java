@@ -20,7 +20,6 @@ import ucar.nc2.ft.point.PointDatasetImpl;
 import ucar.nc2.ft.point.collection.CompositeDatasetFactory;
 import ucar.nc2.ft.point.collection.UpdateableCollection;
 import ucar.unidata.util.StringUtil2;
-
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
@@ -36,7 +35,7 @@ public class InvDatasetFcPoint extends InvDatasetFeatureCollection {
   static private final Logger logger = org.slf4j.LoggerFactory.getLogger(InvDatasetFcPoint.class);
   static private final String FC = "fc.cdmr";
 
-  private final FeatureDatasetPoint fd;  // LOOK this stays open
+  private final FeatureDatasetPoint fd; // LOOK this stays open
   private final Set<FeatureCollectionConfig.PointDatasetType> wantDatasets;
 
   InvDatasetFcPoint(FeatureCollectionRef parent, FeatureCollectionConfig config) {
@@ -45,7 +44,8 @@ public class InvDatasetFcPoint extends InvDatasetFeatureCollection {
 
     Formatter errlog = new Formatter();
     try {
-      fd = (FeatureDatasetPoint) CompositeDatasetFactory.factory(name, fcType.getFeatureType(), datasetCollection, errlog);
+      fd = (FeatureDatasetPoint) CompositeDatasetFactory.factory(name, fcType.getFeatureType(), datasetCollection,
+          errlog);
 
     } catch (Exception e) {
 
@@ -120,9 +120,12 @@ public class InvDatasetFcPoint extends InvDatasetFeatureCollection {
     ThreddsMetadata tmi = top.getInheritableMetadata();
     tmi.set(Dataset.FeatureType, FeatureType.GRID.toString()); // override GRIB
     tmi.set(Dataset.ServiceName, topService.getName());
-    if (localState.coverage != null) tmi.set(Dataset.GeospatialCoverage, localState.coverage);
-    if (localState.dateRange != null) tmi.set(Dataset.TimeCoverage, localState.dateRange);
-    if (localState.vars != null) tmi.set(Dataset.VariableGroups, localState.vars);
+    if (localState.coverage != null)
+      tmi.set(Dataset.GeospatialCoverage, localState.coverage);
+    if (localState.dateRange != null)
+      tmi.set(Dataset.TimeCoverage, localState.dateRange);
+    if (localState.vars != null)
+      tmi.set(Dataset.VariableGroups, localState.vars);
 
     if (wantDatasets.contains(FeatureCollectionConfig.PointDatasetType.cdmrFeature)) {
       DatasetBuilder ds = new DatasetBuilder(top);
@@ -149,12 +152,13 @@ public class InvDatasetFcPoint extends InvDatasetFeatureCollection {
 
     // spatial coverage
     ThreddsMetadataExtractor extractor = new ThreddsMetadataExtractor();
-    ThreddsMetadata.GeospatialCoverage coverage = (ThreddsMetadata.GeospatialCoverage) top.get(Dataset.GeospatialCoverage);
-    if (fd.getBoundingBox() == null) {   // pull out catalog BB, put into the feature collection. this will override ACDD
+    ThreddsMetadata.GeospatialCoverage coverage =
+        (ThreddsMetadata.GeospatialCoverage) top.get(Dataset.GeospatialCoverage);
+    if (fd.getBoundingBox() == null) { // pull out catalog BB, put into the feature collection. this will override ACDD
       if (coverage != null)
         ((PointDatasetImpl) fd).setBoundingBox(coverage.getBoundingBox()); // override in fd
 
-    } else if (coverage == null) {  // otherwise extract bb from featureDataset and add to the catalog metadata
+    } else if (coverage == null) { // otherwise extract bb from featureDataset and add to the catalog metadata
       coverage = extractor.extractGeospatial(fd);
       if (coverage != null)
         tmi.set(Dataset.GeospatialCoverage, coverage);

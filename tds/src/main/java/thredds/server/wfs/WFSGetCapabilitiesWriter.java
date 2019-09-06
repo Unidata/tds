@@ -24,20 +24,16 @@ public class WFSGetCapabilitiesWriter {
    * Writes the two service sections
    */
   private void writeServiceInfo() {
-    fileOutput += "<ows:ServiceIdentification> "
-        + "<ows:Title>WFS Server on THREDDS</ows:Title> "
+    fileOutput += "<ows:ServiceIdentification> " + "<ows:Title>WFS Server on THREDDS</ows:Title> "
         + "<ows:Abstract>ncWFS uses the NetCDF Java Library to handle WFS requests</ows:Abstract> "
         + "<ows:ServiceType codeSpace=\"OGC\">WFS</ows:ServiceType> "
-        + "<ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion> "
-        + "<ows:Fees/> "
-        + "<ows:AccessConstraints/> "
-    + "</ows:ServiceIdentification> ";
+        + "<ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion> " + "<ows:Fees/> " + "<ows:AccessConstraints/> "
+        + "</ows:ServiceIdentification> ";
 
-    fileOutput += "<ows:ServiceProvider> "
-        + "<ows:ProviderName>" + ThreddsConfig.get("serverInformation.hostInstitution.name", "hostInstitution") + "</ows:ProviderName> "
-        + "<ows:ProviderSite xlink:href=\"" + ThreddsConfig.get("serverInformation.hostInstitution.webSite", "") +  "\" xlink:type=\"simple\"/> "
-        + "<ows:ServiceContact/> "
-        + "</ows:ServiceProvider> ";
+    fileOutput += "<ows:ServiceProvider> " + "<ows:ProviderName>"
+        + ThreddsConfig.get("serverInformation.hostInstitution.name", "hostInstitution") + "</ows:ProviderName> "
+        + "<ows:ProviderSite xlink:href=\"" + ThreddsConfig.get("serverInformation.hostInstitution.webSite", "")
+        + "\" xlink:type=\"simple\"/> " + "<ows:ServiceContact/> " + "</ows:ServiceProvider> ";
   }
 
   /**
@@ -46,13 +42,9 @@ public class WFSGetCapabilitiesWriter {
    */
   private void writeAOperation(WFSRequestType rt) {
 
-    fileOutput += "<ows:Operation name=\"" + rt.toString() + "\"> "
-        + "<ows:DCP> "
-        + "<ows:HTTP> "
-        + "<ows:Get xlink:href=\"" + server + "?\"/> "
-        + "<ows:Post xlink:href=\"" + server + "\"/> "
-        + "</ows:HTTP> "
-        + "</ows:DCP>";
+    fileOutput +=
+        "<ows:Operation name=\"" + rt.toString() + "\"> " + "<ows:DCP> " + "<ows:HTTP> " + "<ows:Get xlink:href=\""
+            + server + "?\"/> " + "<ows:Post xlink:href=\"" + server + "\"/> " + "</ows:HTTP> " + "</ows:DCP>";
     fileOutput += "</ows:Operation> ";
   }
 
@@ -66,12 +58,13 @@ public class WFSGetCapabilitiesWriter {
 
     String defValue;
 
-    if(isImplemented) defValue = "TRUE"; else defValue = "FALSE";
+    if (isImplemented)
+      defValue = "TRUE";
+    else
+      defValue = "FALSE";
 
-    fileOutput += "<ows:Constraint name=\"" + name + "\"> "
-        + "<ows:NoValues/> "
-        + "<ows:DefaultValue>" + defValue +"</ows:DefaultValue> "
-            + "</ows:Constraint>";
+    fileOutput += "<ows:Constraint name=\"" + name + "\"> " + "<ows:NoValues/> " + "<ows:DefaultValue>" + defValue
+        + "</ows:DefaultValue> " + "</ows:Constraint>";
   }
 
   /**
@@ -80,14 +73,13 @@ public class WFSGetCapabilitiesWriter {
   private void writeHeadersAndSS() {
     fileOutput += "<wfs:WFS_Capabilities xsi:schemaLocation="
         + WFSXMLHelper.encQuotes("http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd ")
-        + " xmlns:xsi=" + WFSXMLHelper.encQuotes("http://www.w3.org/2001/XMLSchema-instance")
-        + " xmlns:xlink=" + WFSXMLHelper.encQuotes("http://www.w3.org/1999/xlink")
-        + " xmlns:gml=" + WFSXMLHelper.encQuotes("http://opengis.net/gml")
-        + " xmlns:fes=" + WFSXMLHelper.encQuotes("http://www.opengis.net/fes/2.0")
-        + " xmlns:ogc=" + WFSXMLHelper.encQuotes("http://www.opengis.net/ogc")
-        + " xmlns:ows=" + WFSXMLHelper.encQuotes("http://www.opengis.net/ows/1.1\" xmlns:wfs=\"http://opengis.net/wfs/2.0")
-        + " xmlns=" + WFSXMLHelper.encQuotes("http://www.opengis.net/wfs/2.0")
-        + " version=\"2.0.0\">";
+        + " xmlns:xsi=" + WFSXMLHelper.encQuotes("http://www.w3.org/2001/XMLSchema-instance") + " xmlns:xlink="
+        + WFSXMLHelper.encQuotes("http://www.w3.org/1999/xlink") + " xmlns:gml="
+        + WFSXMLHelper.encQuotes("http://opengis.net/gml") + " xmlns:fes="
+        + WFSXMLHelper.encQuotes("http://www.opengis.net/fes/2.0") + " xmlns:ogc="
+        + WFSXMLHelper.encQuotes("http://www.opengis.net/ogc") + " xmlns:ows="
+        + WFSXMLHelper.encQuotes("http://www.opengis.net/ows/1.1\" xmlns:wfs=\"http://opengis.net/wfs/2.0") + " xmlns="
+        + WFSXMLHelper.encQuotes("http://www.opengis.net/wfs/2.0") + " version=\"2.0.0\">";
     writeServiceInfo();
   }
 
@@ -125,37 +117,24 @@ public class WFSGetCapabilitiesWriter {
    */
   public void writeOperations() {
     fileOutput += "<ows:OperationsMetadata> ";
-    for(WFSRequestType rt : operationList) {
+    for (WFSRequestType rt : operationList) {
       writeAOperation(rt);
     }
 
     // Write parameters
-    fileOutput += "<ows:Parameter name=\"AcceptVersions\"> "
-        + "<ows:AllowedValues> "
-        + "<ows:Value>2.0.0</ows:Value>"
-        + "</ows:AllowedValues>"
-        + "</ows:Parameter>";
+    fileOutput += "<ows:Parameter name=\"AcceptVersions\"> " + "<ows:AllowedValues> " + "<ows:Value>2.0.0</ows:Value>"
+        + "</ows:AllowedValues>" + "</ows:Parameter>";
 
-    fileOutput += "<ows:Parameter name=\"AcceptFormats\">"
-        + "<ows:AllowedValues> "
-        + "<ows:Value>text/xml</ows:Value>"
-        + "</ows:AllowedValues>"
-        + "</ows:Parameter>";
+    fileOutput += "<ows:Parameter name=\"AcceptFormats\">" + "<ows:AllowedValues> " + "<ows:Value>text/xml</ows:Value>"
+        + "</ows:AllowedValues>" + "</ows:Parameter>";
 
-    fileOutput += "<ows:Parameter name=\"Sections\"> "
-        + "<ows:AllowedValues> "
-        + "<ows:Value>ServiceIdentification</ows:Value> "
-        + "<ows:Value>ServiceProvider</ows:Value> "
-        + "<ows:Value>OperationsMetadata</ows:Value> "
-        + "<ows:Value>FeatureTypeList</ows:Value> "
-        + "</ows:AllowedValues>"
-        + "</ows:Parameter>";
+    fileOutput +=
+        "<ows:Parameter name=\"Sections\"> " + "<ows:AllowedValues> " + "<ows:Value>ServiceIdentification</ows:Value> "
+            + "<ows:Value>ServiceProvider</ows:Value> " + "<ows:Value>OperationsMetadata</ows:Value> "
+            + "<ows:Value>FeatureTypeList</ows:Value> " + "</ows:AllowedValues>" + "</ows:Parameter>";
 
-    fileOutput += "<ows:Parameter name=\"version\"> "
-        + "<ows:AllowedValues> "
-        + "<ows:Value>2.0.0</ows:Value>"
-        + "</ows:AllowedValues>"
-        + "</ows:Parameter>";
+    fileOutput += "<ows:Parameter name=\"version\"> " + "<ows:AllowedValues> " + "<ows:Value>2.0.0</ows:Value>"
+        + "</ows:AllowedValues>" + "</ows:Parameter>";
 
     // Write constraints
     writeAConstraint("ImplementsBasicWFS", true);
@@ -184,20 +163,14 @@ public class WFSGetCapabilitiesWriter {
   public void writeFeatureTypes() {
     fileOutput += "<FeatureTypeList> ";
 
-      for(WFSFeature wf : featureList) {
-        fileOutput +=
-            "<FeatureType> "
-          +   "<Name>" + wf.getName() + "</Name> "
-          +   "<Title>" + wf.getTitle() + "</Title> "
-          +   "<DefaultCRS>" + "urn:ogc:def:crs:EPSG::4326" + "</DefaultCRS>"
-          +   "<OutputFormats> "
-          +   "<Format>text/xml; subtype=gml/3.2.1</Format> "
-          +   "</OutputFormats> "
-          +   "<ows:WGS84BoundingBox dimensions=\"2\"> "
-          +   "<ows:LowerCorner>-180 -90</ows:LowerCorner> <ows:UpperCorner>180 90</ows:UpperCorner>"
-          +   "</ows:WGS84BoundingBox>"
-          +  "</FeatureType> ";
-      }
+    for (WFSFeature wf : featureList) {
+      fileOutput += "<FeatureType> " + "<Name>" + wf.getName() + "</Name> " + "<Title>" + wf.getTitle() + "</Title> "
+          + "<DefaultCRS>" + "urn:ogc:def:crs:EPSG::4326" + "</DefaultCRS>" + "<OutputFormats> "
+          + "<Format>text/xml; subtype=gml/3.2.1</Format> " + "</OutputFormats> "
+          + "<ows:WGS84BoundingBox dimensions=\"2\"> "
+          + "<ows:LowerCorner>-180 -90</ows:LowerCorner> <ows:UpperCorner>180 90</ows:UpperCorner>"
+          + "</ows:WGS84BoundingBox>" + "</FeatureType> ";
+    }
 
     fileOutput += "</FeatureTypeList> ";
   }
@@ -217,7 +190,7 @@ public class WFSGetCapabilitiesWriter {
    * @param response to write to
    * @param server URI
    */
-  public WFSGetCapabilitiesWriter(PrintWriter response, String server){
+  public WFSGetCapabilitiesWriter(PrintWriter response, String server) {
     this.response = response;
     this.fileOutput = "";
     this.server = server;

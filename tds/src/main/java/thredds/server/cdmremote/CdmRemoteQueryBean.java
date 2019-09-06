@@ -5,7 +5,6 @@
 package thredds.server.cdmremote;
 
 import com.google.common.base.MoreObjects;
-
 import ucar.nc2.stream.NcStreamCompression;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,18 +70,19 @@ public class CdmRemoteQueryBean {
   }
 
   private List<String> errs;
+
   public void addError(String mess) {
-    if (errs == null) errs = new ArrayList<>();
+    if (errs == null)
+      errs = new ArrayList<>();
     errs.add(mess);
   }
+
   public boolean hasErrors() {
     return errs != null;
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-            .add("errs", errs)
-            .toString();
+    return MoreObjects.toStringHelper(this).add("errs", errs).toString();
   }
 }

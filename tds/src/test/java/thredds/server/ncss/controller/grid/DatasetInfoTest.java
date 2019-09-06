@@ -25,7 +25,6 @@ import org.springframework.web.context.WebApplicationContext;
 import thredds.mock.web.MockTdsContextLoader;
 import thredds.util.ContentType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.lang.invoke.MethodHandles;
 
 /**
@@ -36,7 +35,8 @@ import java.lang.invoke.MethodHandles;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"}, loader = MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"},
+    loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class DatasetInfoTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -56,10 +56,9 @@ public class DatasetInfoTest {
   @Test
   public void getDatasetXml() throws Exception {
     RequestBuilder rb = MockMvcRequestBuilders.get(xmlpath).servletPath(xmlpath);
-    MvcResult result = this.mockMvc.perform(rb)
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.header().string(ContentType.HEADER, ContentType.xml.getContentHeader()))
-            .andReturn();
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.header().string(ContentType.HEADER, ContentType.xml.getContentHeader()))
+        .andReturn();
 
     System.out.printf("%s%n", result.getResponse().getContentAsString());
   }
@@ -67,10 +66,9 @@ public class DatasetInfoTest {
   @Test
   public void getDatasetHtml() throws Exception {
     RequestBuilder rb = MockMvcRequestBuilders.get(htmlpath).servletPath(htmlpath);
-    MvcResult result = this.mockMvc.perform(rb)
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.header().string(ContentType.HEADER, ContentType.html.getContentHeader()))
-            .andReturn();
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.header().string(ContentType.HEADER, ContentType.html.getContentHeader()))
+        .andReturn();
 
     System.out.printf("%s%n", result.getResponse().getContentAsString());
   }

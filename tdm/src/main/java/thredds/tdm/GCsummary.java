@@ -17,7 +17,6 @@ import ucar.nc2.grib.GribIndexCache;
 import ucar.nc2.util.AliasTranslator;
 import ucar.nc2.util.Counters;
 import ucar.nc2.util.DiskCache2;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -100,7 +99,7 @@ public class GCsummary {
     }
 
     // LOOK check TdsInit
-     /* 4.3.15: grib index file placement, using DiskCache2  */
+    /* 4.3.15: grib index file placement, using DiskCache2 */
     String gribIndexDir = reader.get("GribIndex.dir", new File(contentThreddsDir.toString(), "cache/grib/").getPath());
     Boolean gribIndexAlwaysUse = reader.getBoolean("GribIndex.alwaysUse", false);
     Boolean gribIndexNeverUse = reader.getBoolean("GribIndex.neverUse", false);
@@ -144,7 +143,8 @@ public class GCsummary {
     }
 
     for (FeatureCollectionConfig config : fcList) {
-      if (config.type != FeatureCollectionType.GRIB1 && config.type != FeatureCollectionType.GRIB2) continue;
+      if (config.type != FeatureCollectionType.GRIB1 && config.type != FeatureCollectionType.GRIB2)
+        continue;
       System.out.printf(" FeatureCollection scheduled %s == %s %n", config.collectionName, config.spec);
 
       // schedule execution of the GCsummary task
@@ -169,7 +169,9 @@ public class GCsummary {
     long tookAll = 0;
 
     Formatter f = new Formatter();
-    f.format("%40s,  type, ptype,    took,  nfiles, nrecords,  idx(MB), data(GB), data/idx, bytes/rec, variables, runtimes, gds %n", "Collection");
+    f.format(
+        "%40s,  type, ptype,    took,  nfiles, nrecords,  idx(MB), data(GB), data/idx, bytes/rec, variables, runtimes, gds %n",
+        "Collection");
     for (GCsummaryTask task : fcMap.values()) {
       f.format("%40s, %5s, %5s, %8d,", task.config.collectionName, task.config.type, task.config.ptype, task.took);
       GCpass1.Accum acc = task.pass1.accumAll;
@@ -241,10 +243,15 @@ public class GCsummary {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /*
-        // /opt/jdk/bin/java -d64 -Xmx3g -jar -Dtds.content.root.path=/opt/tds-dev/content tdm-4.5.jar -cred tdm:trigger -tds "http://thredds-dev.unidata.ucar.edu/"
-           System.out.printf("usage: <Java> <Java_OPTS> -Dtds.content.root.path=<contentDir> [-catalog <cat>] [-tds <tdsServer>] [-cred <user:passwd>] [-showOnly] [-forceOnStartup]%n");
-            System.out.printf("example: /opt/jdk/bin/java -Xmx3g -Dtds.content.root.path=/my/content -jar tdm-4.5.jar -tds http://thredds-dev.unidata.ucar.edu/%n");
- */
+   * // /opt/jdk/bin/java -d64 -Xmx3g -jar -Dtds.content.root.path=/opt/tds-dev/content tdm-4.5.jar -cred tdm:trigger
+   * -tds "http://thredds-dev.unidata.ucar.edu/"
+   * System.out.
+   * printf("usage: <Java> <Java_OPTS> -Dtds.content.root.path=<contentDir> [-catalog <cat>] [-tds <tdsServer>] [-cred <user:passwd>] [-showOnly] [-forceOnStartup]%n"
+   * );
+   * System.out.
+   * printf("example: /opt/jdk/bin/java -Xmx3g -Dtds.content.root.path=/my/content -jar tdm-4.5.jar -tds http://thredds-dev.unidata.ucar.edu/%n"
+   * );
+   */
 
   private static class CommandLine {
     @Parameter(names = {"-catalog"}, description = "specific catalog", required = false)
@@ -262,8 +269,8 @@ public class GCsummary {
     private final JCommander jc;
 
     public CommandLine(String progName, String[] args) throws ParameterException {
-      this.jc = new JCommander(this, args);  // Parses args and uses them to initialize *this*.
-      jc.setProgramName(progName);           // Displayed in the usage information.
+      this.jc = new JCommander(this, args); // Parses args and uses them to initialize *this*.
+      jc.setProgramName(progName); // Displayed in the usage information.
     }
 
     public void printUsage() {
@@ -273,7 +280,8 @@ public class GCsummary {
   }
 
   public static void main(String args[]) throws IOException, InterruptedException {
-    try (FileSystemXmlApplicationContext springContext = new FileSystemXmlApplicationContext("classpath:resources/application-config.xml")) {
+    try (FileSystemXmlApplicationContext springContext =
+        new FileSystemXmlApplicationContext("classpath:resources/application-config.xml")) {
       GCsummary app = (GCsummary) springContext.getBean("GCsummary");
 
       Map<String, String> aliases = (Map<String, String>) springContext.getBean("dataRootLocationAliasExpanders");
@@ -290,7 +298,8 @@ public class GCsummary {
         }
 
         String contentDir = System.getProperty("tds.content.root.path");
-        if (contentDir == null) contentDir = "../content";
+        if (contentDir == null)
+          contentDir = "../content";
         app.setContentDir(contentDir);
 
         if (cmdLine.catalog != null)

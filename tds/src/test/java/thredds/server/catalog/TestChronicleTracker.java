@@ -10,7 +10,6 @@ import thredds.client.catalog.CatalogRef;
 import thredds.client.catalog.Dataset;
 import thredds.client.catalog.tools.CatalogCrawler;
 import thredds.server.catalog.tracker.DatasetExt;
-
 import java.io.Externalizable;
 import java.io.File;
 import java.io.IOException;
@@ -34,8 +33,8 @@ public class TestChronicleTracker {
 
       File file = new File(pathname);
 
-      ChronicleMapBuilder<Long, CharSequence> builder = ChronicleMapBuilder.of(Long.class, CharSequence.class)
-              .averageValueSize(500).entries(1100 * 1000);
+      ChronicleMapBuilder<Long, CharSequence> builder =
+          ChronicleMapBuilder.of(Long.class, CharSequence.class).averageValueSize(500).entries(1100 * 1000);
 
       ChronicleMap<Long, CharSequence> map = builder.createPersistedTo(file);
 
@@ -66,8 +65,8 @@ public class TestChronicleTracker {
 
       File file = new File(pathname);
 
-      ChronicleMapBuilder<String, Externalizable> builder = ChronicleMapBuilder.of(String.class, Externalizable.class)
-              .averageValueSize(1000).entries(1000 * 1000);
+      ChronicleMapBuilder<String, Externalizable> builder =
+          ChronicleMapBuilder.of(String.class, Externalizable.class).averageValueSize(1000).entries(1000 * 1000);
 
       final ChronicleMap<String, Externalizable> map = builder.createPersistedTo(file);
 
@@ -76,8 +75,10 @@ public class TestChronicleTracker {
       CatalogCrawler crawler = new CatalogCrawler(CatalogCrawler.Type.all, -1, null, new CatalogCrawler.Listener() {
         public void getDataset(Dataset dd, Object context) {
           countDs[0]++;
-          if (countDs[0] % chunk == 0) System.out.printf("%d ", countDs[0]);
-          if (countDs[0] % chunk10 == 0) System.out.printf("%n");
+          if (countDs[0] % chunk == 0)
+            System.out.printf("%d ", countDs[0]);
+          if (countDs[0] % chunk10 == 0)
+            System.out.printf("%n");
           String key = dd.getId();
           if (key != null) {
             String ncml = null;
@@ -101,15 +102,17 @@ public class TestChronicleTracker {
       PrintWriter pw = new PrintWriter(System.out);
       int count = 0;
 
-      //Path top = FileSystems.getDefault().getPath("B:/esgf/ncar/esgcet/1/");
-      //count += crawler.crawlAllInDirectory(top, false, null, null, null);
+      // Path top = FileSystems.getDefault().getPath("B:/esgf/ncar/esgcet/1/");
+      // count += crawler.crawlAllInDirectory(top, false, null, null, null);
 
       // count += crawler.crawl("file:B:/esgf/ncar/esgcet/catalog.xml", null, null, null);
-      // count += crawler.crawl("file:B://esgf/ncar/esgcet/56/ucar.cgd.ccsm4.CESM_CAM5_BGC_LE_COMPROJ.ice.proc.monthly_ave.fswthru.v1.xml", null, null, null);
+      // count +=
+      // crawler.crawl("file:B://esgf/ncar/esgcet/56/ucar.cgd.ccsm4.CESM_CAM5_BGC_LE_COMPROJ.ice.proc.monthly_ave.fswthru.v1.xml",
+      // null, null, null);
 
 
-      //Path top = FileSystems.getDefault().getPath("B:/esgf/ncar/esgcet/1/");
-      //count += crawler.crawlAllInDirectory(top, false, null, null, null);
+      // Path top = FileSystems.getDefault().getPath("B:/esgf/ncar/esgcet/1/");
+      // count += crawler.crawlAllInDirectory(top, false, null, null, null);
       count += crawler.crawl("file:B:/esgf/gfdl/esgcet/catalog.xml");
 
       pw.flush();
@@ -126,7 +129,7 @@ public class TestChronicleTracker {
       float avg = DatasetExt.total_count == 0 ? 0 : ((float) DatasetExt.total_nbytes) / DatasetExt.total_count;
       System.out.printf("DatasetExt.avg_nbytes %5.0f%n", avg);
 
-      float avg_time = ((float)took) / DatasetExt.total_count;
+      float avg_time = ((float) took) / DatasetExt.total_count;
       System.out.printf(" msecs / record %8.3f%n", avg_time);
 
       map.close();

@@ -21,20 +21,19 @@ import thredds.inventory.MFile;
 import ucar.nc2.util.AliasTranslator;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.TestFileDirUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static org.junit.Assert.*;
 
 public class TestDatasetScanFilter {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  @ClassRule public static final TemporaryFolder tempFolder = new TemporaryFolder();
+  @ClassRule
+  public static final TemporaryFolder tempFolder = new TemporaryFolder();
 
   private static File tmpTestDataDir;
   private static MFile tmpTestDataCrDs;
@@ -69,48 +68,50 @@ public class TestDatasetScanFilter {
     TestFileDirUtils.addFile(secondDayDir, "PROFILER_wind_06min_20131108_0016.nc");
 
     StandardService ss = StandardService.resolver;
-    Service latest = new Service(ss.getType().toString(), ss.getBase(), ss.getType().toString(), ss.getType().getDescription(),
-            null, null, null, ss.getType().getAccessType());
+    Service latest = new Service(ss.getType().toString(), ss.getBase(), ss.getType().toString(),
+        ss.getType().getDescription(), null, null, null, ss.getType().getAccessType());
     StandardService ss2 = StandardService.httpServer;
-    Service httpServer = new Service(ss2.getType().toString(), ss2.getBase(), ss2.getType().toString(), ss.getType().getDescription(),
-            null, null, null, ss.getType().getAccessType());
+    Service httpServer = new Service(ss2.getType().toString(), ss2.getBase(), ss2.getType().toString(),
+        ss.getType().getDescription(), null, null, null, ss.getType().getAccessType());
 
     DatasetScan.setSpecialServices(latest, httpServer);
   }
 
-  /* public void createEtaDirWithCvsAndDotGitDirs( File targetDir) {
-
-    tmpTestDataCrDs = createMFile( targetDir.getPath(), targetDir.getName());
-
-    List<String> dirNamesToIgnore = new ArrayList<String>();
-    dirNamesToIgnore.add("CVS");
-    dirNamesToIgnore.add(".git");
-
-    List<String> dataFileNames = new ArrayList<String>();
-    dataFileNames.add("2004050300_eta_211.nc");
-    dataFileNames.add("2004050312_eta_211.nc");
-    dataFileNames.add("2004050400_eta_211.nc");
-    dataFileNames.add("2004050412_eta_211.nc");
-
-    for ( String dirName : dirNamesToIgnore )
-      TestFileDirUtils.addDirectory( targetDir, dirName);
-
-    for ( String fileName : dataFileNames )
-      TestFileDirUtils.addFile( targetDir, fileName );
-
-    allFiles_FullPathNames = new ArrayList<String>();
-    dataFiles_FullPathNames = new ArrayList<String>();
-
-    for ( String fileName : dirNamesToIgnore )
-      allFiles_FullPathNames.add( String.format( "%s/%s", tmpTestDataCrDs.getPath(), fileName));
-
-    for ( String fileName : dataFileNames ) {
-      String path = String.format("%s/%s", tmpTestDataCrDs.getPath(), fileName);
-      allFiles_FullPathNames.add( path);
-      dataFiles_FullPathNames.add( path);
-    }
-
-  } */
+  /*
+   * public void createEtaDirWithCvsAndDotGitDirs( File targetDir) {
+   * 
+   * tmpTestDataCrDs = createMFile( targetDir.getPath(), targetDir.getName());
+   * 
+   * List<String> dirNamesToIgnore = new ArrayList<String>();
+   * dirNamesToIgnore.add("CVS");
+   * dirNamesToIgnore.add(".git");
+   * 
+   * List<String> dataFileNames = new ArrayList<String>();
+   * dataFileNames.add("2004050300_eta_211.nc");
+   * dataFileNames.add("2004050312_eta_211.nc");
+   * dataFileNames.add("2004050400_eta_211.nc");
+   * dataFileNames.add("2004050412_eta_211.nc");
+   * 
+   * for ( String dirName : dirNamesToIgnore )
+   * TestFileDirUtils.addDirectory( targetDir, dirName);
+   * 
+   * for ( String fileName : dataFileNames )
+   * TestFileDirUtils.addFile( targetDir, fileName );
+   * 
+   * allFiles_FullPathNames = new ArrayList<String>();
+   * dataFiles_FullPathNames = new ArrayList<String>();
+   * 
+   * for ( String fileName : dirNamesToIgnore )
+   * allFiles_FullPathNames.add( String.format( "%s/%s", tmpTestDataCrDs.getPath(), fileName));
+   * 
+   * for ( String fileName : dataFileNames ) {
+   * String path = String.format("%s/%s", tmpTestDataCrDs.getPath(), fileName);
+   * allFiles_FullPathNames.add( path);
+   * dataFiles_FullPathNames.add( path);
+   * }
+   * 
+   * }
+   */
 
   @Test
   public void testWildcardFilter() throws IOException {
@@ -135,19 +136,24 @@ public class TestDatasetScanFilter {
     Dataset root = scanCat.getDatasets().get(0);
     assert root.getDatasets().size() == 1;
 
-    scanCat = dss.makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI()).makeCatalog();
+    scanCat = dss.makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI())
+        .makeCatalog();
     System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assert scanCat.getDatasets().size() == 1;
     root = scanCat.getDatasets().get(0);
     assert root.getDatasets().size() == 2;
 
-    scanCat = dss.makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles/20131106", cat.getBaseURI()).makeCatalog();
+    scanCat = dss
+        .makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles/20131106", cat.getBaseURI())
+        .makeCatalog();
     System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assert scanCat.getDatasets().size() == 1;
     root = scanCat.getDatasets().get(0);
     Assert.assertEquals(3, root.getDatasets().size());
 
-    scanCat = dss.makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles/20131107", cat.getBaseURI()).makeCatalog();
+    scanCat = dss
+        .makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles/20131107", cat.getBaseURI())
+        .makeCatalog();
     System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assert scanCat.getDatasets().size() == 1;
     root = scanCat.getDatasets().get(0);
@@ -174,19 +180,23 @@ public class TestDatasetScanFilter {
     Dataset root = scanCat.getDatasets().get(0);
     assert root.getDatasets().size() == 1;
 
-    scanCat = dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI()).makeCatalog();
+    scanCat =
+        dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI())
+            .makeCatalog();
     System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assert scanCat.getDatasets().size() == 1;
     root = scanCat.getDatasets().get(0);
     assert root.getDatasets().size() == 2;
 
-    scanCat = dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131106", cat.getBaseURI()).makeCatalog();
+    scanCat = dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131106",
+        cat.getBaseURI()).makeCatalog();
     System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assert scanCat.getDatasets().size() == 1;
     root = scanCat.getDatasets().get(0);
     Assert.assertEquals(3, root.getDatasets().size());
 
-    scanCat = dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131107", cat.getBaseURI()).makeCatalog();
+    scanCat = dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131107",
+        cat.getBaseURI()).makeCatalog();
     System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assert scanCat.getDatasets().size() == 1;
     root = scanCat.getDatasets().get(0);
@@ -214,13 +224,16 @@ public class TestDatasetScanFilter {
     Dataset root = scanCat.getDatasets().get(0);
     assert root.getDatasets().size() == 1;
 
-    scanCat = dss.makeCatalogForDirectory("testExclude/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI()).makeCatalog();
+    scanCat = dss.makeCatalogForDirectory("testExclude/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI())
+        .makeCatalog();
     System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assert scanCat.getDatasets().size() == 1;
     root = scanCat.getDatasets().get(0);
     assert root.getDatasets().size() == 1;
 
-    scanCat = dss.makeCatalogForDirectory("testExclude/testDatafilesInDateTimeNestedDirs/profiles/20131106", cat.getBaseURI()).makeCatalog();
+    scanCat =
+        dss.makeCatalogForDirectory("testExclude/testDatafilesInDateTimeNestedDirs/profiles/20131106", cat.getBaseURI())
+            .makeCatalog();
     System.out.printf("%n%s%n", writer.writeXML(scanCat));
     assert scanCat.getDatasets().size() == 1;
     root = scanCat.getDatasets().get(0);
@@ -236,7 +249,8 @@ public class TestDatasetScanFilter {
     assert ds != null;
     assert (ds instanceof DatasetScan);
     DatasetScan dss = (DatasetScan) ds;
-    CatalogBuilder catb = dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131107", cat.getBaseURI());
+    CatalogBuilder catb = dss.makeCatalogForDirectory(
+        "testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131107", cat.getBaseURI());
     assert catb == null;
   }
 
@@ -250,6 +264,6 @@ public class TestDatasetScanFilter {
   public static void testOne(String ps, String match, boolean expect) {
     Pattern pattern = Pattern.compile(ps);
     Matcher matcher = pattern.matcher(match);
-    assertEquals("match " + ps + " against: " + match, expect, matcher.matches() );
+    assertEquals("match " + ps + " against: " + match, expect, matcher.matches());
   }
 }

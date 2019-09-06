@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,20 +29,17 @@ public class TestTdsFCcatalogs {
 
   @Parameterized.Parameters(name = "{0}{1}")
   public static Collection<Object[]> getTestParameters() {
-    return Arrays.asList(new Object[][]{
-            {"catalogGrib", ""},
-            {"grib/NDFD/CONUS_5km/catalog", ""},
-            {"grib/NDFD/CONUS_5km/latest", ""},
+    return Arrays.asList(new Object[][] {{"catalogGrib", ""}, {"grib/NDFD/CONUS_5km/catalog", ""},
+        {"grib/NDFD/CONUS_5km/latest", ""},
 
-            {"catalogFmrc", ""},
-            {"testGFSfmrc/catalog", ""},
-            {"testGFSfmrc/catalog", "?dataset=testGFSfmrc/GFS_CONUS_80km_nc_best.ncd"},
-            {"testNAMfmrc/runs/catalog", ""},
-            {"testNAMfmrc/runs/catalog", "?dataset=testNAMfmrc/runs/NAM_FMRC_RUN_2006-09-26T00:00:00Z"},
+        {"catalogFmrc", ""}, {"testGFSfmrc/catalog", ""},
+        {"testGFSfmrc/catalog", "?dataset=testGFSfmrc/GFS_CONUS_80km_nc_best.ncd"}, {"testNAMfmrc/runs/catalog", ""},
+        {"testNAMfmrc/runs/catalog", "?dataset=testNAMfmrc/runs/NAM_FMRC_RUN_2006-09-26T00:00:00Z"},
 
-            {"catalogs5/pointCatalog5", ""},
-            {"testStationScan.v5/catalog", "?dataset=testStationScan.v5/Surface_METAR_20130823_0000.nc"},       // datasetScan
-            {"testStationFeatureCollection.v5/files/catalog", "?dataset=testStationFeatureCollection.v5/files/Surface_METAR_20060328_0000.nc"}, // point fc
+        {"catalogs5/pointCatalog5", ""},
+        {"testStationScan.v5/catalog", "?dataset=testStationScan.v5/Surface_METAR_20130823_0000.nc"}, // datasetScan
+        {"testStationFeatureCollection.v5/files/catalog",
+            "?dataset=testStationFeatureCollection.v5/files/Surface_METAR_20060328_0000.nc"}, // point fc
     });
   }
 
@@ -55,7 +51,7 @@ public class TestTdsFCcatalogs {
 
   @Test
   public void testOpenXml() {
-    String endpoint = TestOnLocalServer.withHttpPath("catalog/"+path+".xml"+query);
+    String endpoint = TestOnLocalServer.withHttpPath("catalog/" + path + ".xml" + query);
     byte[] response = TestOnLocalServer.getContent(endpoint, 200, ContentType.xml);
     Assert.assertNotNull(response);
     logger.debug(new String(response, StandardCharsets.UTF_8));
@@ -63,7 +59,7 @@ public class TestTdsFCcatalogs {
 
   @Test
   public void testOpenHtml() {
-    String endpoint = TestOnLocalServer.withHttpPath("catalog/"+path+".html"+query);
+    String endpoint = TestOnLocalServer.withHttpPath("catalog/" + path + ".html" + query);
     byte[] response = TestOnLocalServer.getContent(endpoint, 200, ContentType.html);
     Assert.assertNotNull(response);
     logger.debug(new String(response, StandardCharsets.UTF_8));

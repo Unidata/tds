@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 import thredds.server.config.TdsContext;
 import thredds.util.RequestForwardUtils;
 import thredds.util.TdsPathUtils;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,11 +40,14 @@ public class RootController {
   }
 
   @RequestMapping(value = {"*.css", "*.gif", "*.jpg", "*.png", "*.jsp", "sitemap.xml"}, method = RequestMethod.GET)
-  public ModelAndView serveFromPublicDirectory(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+  public ModelAndView serveFromPublicDirectory(HttpServletRequest req, HttpServletResponse res)
+      throws IOException, ServletException {
     String path = TdsPathUtils.extractPath(req, null);
     File file = tdsContext.getPublicContentDirSource().getFile(path);
     if (file == null) {
-      RequestForwardUtils.forwardRequest(path, tdsContext.getDefaultRequestDispatcher(), req, res);   // tomcat default servlet, not spring
+      RequestForwardUtils.forwardRequest(path, tdsContext.getDefaultRequestDispatcher(), req, res); // tomcat default
+                                                                                                    // servlet, not
+                                                                                                    // spring
       return null;
     }
     return new ModelAndView("threddsFileView", "file", file);

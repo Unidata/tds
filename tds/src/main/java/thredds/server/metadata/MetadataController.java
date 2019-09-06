@@ -26,7 +26,6 @@ import thredds.util.ContentType;
 import thredds.util.TdsPathUtils;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.dt.GridDataset;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -43,7 +42,8 @@ import java.util.List;
 public class MetadataController {
 
   @RequestMapping(value = "**")
-  public ResponseEntity<String> getMetadata(@Valid MetadataRequestParameterBean params, BindingResult result, HttpServletResponse res, HttpServletRequest req) throws Exception {
+  public ResponseEntity<String> getMetadata(@Valid MetadataRequestParameterBean params, BindingResult result,
+      HttpServletResponse res, HttpServletRequest req) throws Exception {
 
     if (result.hasErrors())
       throw new BindException(result);
@@ -53,10 +53,11 @@ public class MetadataController {
       if (gridDataset == null)
         return null;
 
-      NetcdfFile ncfile = gridDataset.getNetcdfFile();   // LOOK maybe gridDataset.getFileTypeId ??
+      NetcdfFile ncfile = gridDataset.getNetcdfFile(); // LOOK maybe gridDataset.getFileTypeId ??
       String fileTypeS = ncfile.getFileTypeId();
       ucar.nc2.constants.DataFormatType fileFormat = ucar.nc2.constants.DataFormatType.getType(fileTypeS);
-      if (fileFormat != null) fileTypeS = fileFormat.toString(); // canonicalize
+      if (fileFormat != null)
+        fileTypeS = fileFormat.toString(); // canonicalize
 
       ThreddsMetadata.VariableGroup vars = new ThreddsMetadataExtractor().extractVariables(fileTypeS, gridDataset);
 
@@ -67,7 +68,8 @@ public class MetadataController {
       if (wantXML) {
         strResponse = writeXML(vars);
         responseHeaders.set(ContentType.HEADER, ContentType.xml.getContentHeader());
-       //responseHeaders.set(Constants.Content_Disposition, Constants.setContentDispositionValue(datasetPath, ".xml"));
+        // responseHeaders.set(Constants.Content_Disposition, Constants.setContentDispositionValue(datasetPath,
+        // ".xml"));
       } else {
         strResponse = writeHTML(vars);
         responseHeaders.set(ContentType.HEADER, ContentType.html.getContentHeader());

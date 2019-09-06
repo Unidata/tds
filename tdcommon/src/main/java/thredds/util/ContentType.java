@@ -12,18 +12,11 @@ package thredds.util;
  * @since 10/20/13
  */
 public enum ContentType {
-  binary("application/octet-stream", null),
-  csv("text/plain", "UTF-8"),
-  html("text/html", "UTF-8"),
-  jnlp("application/x-java-jnlp-file", null),
-  json("application/json", null),
-  ncstream("application/octet-stream", null),
-  netcdf("application/x-netcdf", null),
-  ogc_exception("application/vnd.ogc.se_xml", "UTF-8"),
-  png("image/png", null),
-  text("text/plain", "UTF-8"),
-  xml("application/xml", "UTF-8"),
-  xmlwms("text/xml", "iso-8859-1");
+  binary("application/octet-stream", null), csv("text/plain", "UTF-8"), html("text/html", "UTF-8"), jnlp(
+      "application/x-java-jnlp-file",
+      null), json("application/json", null), ncstream("application/octet-stream", null), netcdf("application/x-netcdf",
+          null), ogc_exception("application/vnd.ogc.se_xml", "UTF-8"), png("image/png",
+              null), text("text/plain", "UTF-8"), xml("application/xml", "UTF-8"), xmlwms("text/xml", "iso-8859-1");
 
   public final static String HEADER = "Content-Type";
 
@@ -41,7 +34,7 @@ public enum ContentType {
     else if (filename.indexOf(".log.") > 0)
       return ContentType.text;
 
-    return  null;
+    return null;
   }
 
   private final String name;

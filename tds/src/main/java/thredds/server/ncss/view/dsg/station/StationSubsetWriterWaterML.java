@@ -18,7 +18,6 @@ import ucar.nc2.ft2.coverage.SubsetParams;
 import ucar.nc2.ogc.MarshallingUtil;
 import ucar.nc2.ogc.om.NcOMObservationPropertyType;
 import ucar.nc2.ogc.waterml.NcDocumentMetadataPropertyType;
-
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -32,7 +31,7 @@ public class StationSubsetWriterWaterML extends AbstractStationSubsetWriter {
   private final CollectionType collection;
 
   public StationSubsetWriterWaterML(FeatureDatasetPoint fdPoint, SubsetParams ncssParams, OutputStream out)
-          throws XMLStreamException, NcssException, IOException {
+      throws XMLStreamException, NcssException, IOException {
     super(fdPoint, ncssParams);
 
     this.out = out;
@@ -75,8 +74,7 @@ public class StationSubsetWriterWaterML extends AbstractStationSubsetWriter {
 
     for (VariableSimpleIF wantedVar : wantedVariables) {
       // wml2:observationMember
-      NcOMObservationPropertyType.initObservationMember(
-              collection.addNewObservationMember(), stationFeat, wantedVar);
+      NcOMObservationPropertyType.initObservationMember(collection.addNewObservationMember(), stationFeat, wantedVar);
     }
 
     return 1; // ??

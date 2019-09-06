@@ -26,7 +26,6 @@ import ucar.nc2.dt.GridDatatype;
 import ucar.nc2.ft2.coverage.*;
 import ucar.nc2.util.CompareNetcdf2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
@@ -41,12 +40,13 @@ import java.lang.invoke.MethodHandles;
 public class TestGribFmrcRegularTime {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  /* Relies on:
-  <featureCollection name="NDFD-CONUS-5km.v5" featureType="GRIB2" harvest="true" path="grib.v5/NDFD/CONUS_5km">
-    <collection spec="${cdmUnitTest}/datasets/NDFD-CONUS-5km/.*grib2$" timePartition="file" />
-    ..
-  </featureCollection>
-  in tds/src/test/content/thredds/catalogs5/catalogGrib5.xml
+  /*
+   * Relies on:
+   * <featureCollection name="NDFD-CONUS-5km.v5" featureType="GRIB2" harvest="true" path="grib.v5/NDFD/CONUS_5km">
+   * <collection spec="${cdmUnitTest}/datasets/NDFD-CONUS-5km/.*grib2$" timePartition="file" />
+   * ..
+   * </featureCollection>
+   * in tds/src/test/content/thredds/catalogs5/catalogGrib5.xml
    */
   @Test
   public void testCoverageDataset2D() throws IOException {
@@ -55,7 +55,7 @@ public class TestGribFmrcRegularTime {
 
     String id = "grib.v5/NDFD/CONUS_5km/TwoD";
     Dataset ds = cat.findDatasetByID(id);
-    assert (ds != null) : "cant find dataset id="+id;
+    assert (ds != null) : "cant find dataset id=" + id;
     assert ds.getFeatureType() == FeatureType.GRID;
 
     DataFactory fac = new DataFactory();
@@ -74,7 +74,7 @@ public class TestGribFmrcRegularTime {
       Coverage grid = cc.findCoverage(gridName);
       Assert.assertNotNull(gridName, grid);
 
-      int[] expectShape = new int[] {4,4,1,689,1073};
+      int[] expectShape = new int[] {4, 4, 1, 689, 1073};
       Assert.assertArrayEquals(expectShape, grid.getShape());
 
       CoverageCoordSys gcs = grid.getCoordSys();
@@ -83,7 +83,7 @@ public class TestGribFmrcRegularTime {
       CoverageCoordAxis reftime = gcs.getAxis(AxisType.RunTime);
       Assert.assertNotNull(reftime);
       Assert.assertEquals(4, reftime.getNcoords());
-      double[] want = new double[]{0., 12., 24., 36.};
+      double[] want = new double[] {0., 12., 24., 36.};
       CompareNetcdf2 cn = new CompareNetcdf2();
       assert cn.compareData("time", reftime.getCoordsAsArray(), Array.makeFromJavaArray(want), false);
 
@@ -92,17 +92,18 @@ public class TestGribFmrcRegularTime {
       Assert.assertTrue(time instanceof TimeAxis2DFmrc);
       Assert.assertEquals(16, time.getNcoords());
 
-      //double[] want = new double[]{108.000000, 132.000000, 156.000000, 180.000000};
-      //assert cn.compareData("time", time.getCoordsAsArray(), Array.makeFromJavaArray(want), false);
+      // double[] want = new double[]{108.000000, 132.000000, 156.000000, 180.000000};
+      // assert cn.compareData("time", time.getCoordsAsArray(), Array.makeFromJavaArray(want), false);
     }
   }
 
-  /* Relies on:
-  <featureCollection name="NDFD-CONUS-5km.v5" featureType="GRIB2" harvest="true" path="grib.v5/NDFD/CONUS_5km">
-    <collection spec="${cdmUnitTest}/datasets/NDFD-CONUS-5km/.*grib2$" timePartition="file" />
-    ..
-  </featureCollection>
-  in tds/src/test/content/thredds/catalogs5/catalogGrib5.xml
+  /*
+   * Relies on:
+   * <featureCollection name="NDFD-CONUS-5km.v5" featureType="GRIB2" harvest="true" path="grib.v5/NDFD/CONUS_5km">
+   * <collection spec="${cdmUnitTest}/datasets/NDFD-CONUS-5km/.*grib2$" timePartition="file" />
+   * ..
+   * </featureCollection>
+   * in tds/src/test/content/thredds/catalogs5/catalogGrib5.xml
    */
   @Test
   public void testCoverageLatest() throws IOException {
@@ -129,7 +130,7 @@ public class TestGribFmrcRegularTime {
       Coverage grid = cc.findCoverage(gridName);
       Assert.assertNotNull(gridName, grid);
 
-      int[] expectShape = new int[] {4,1,689,1073};
+      int[] expectShape = new int[] {4, 1, 689, 1073};
       Assert.assertArrayEquals(expectShape, grid.getShape());
 
       CoverageCoordSys gcs = grid.getCoordSys();
@@ -138,27 +139,28 @@ public class TestGribFmrcRegularTime {
       CoverageCoordAxis reftime = gcs.getAxis(AxisType.RunTime);
       Assert.assertNotNull(reftime);
       Assert.assertEquals(1, reftime.getNcoords());
-      double[] runtimeValues = new double[]{0.};
+      double[] runtimeValues = new double[] {0.};
       CompareNetcdf2 cn = new CompareNetcdf2();
       assert cn.compareData("time", reftime.getCoordsAsArray(), Array.makeFromJavaArray(runtimeValues), false);
 
       CoverageCoordAxis time = gcs.getTimeAxis();
       Assert.assertNotNull(time);
       Assert.assertEquals(4, time.getNcoords());
-      double[] timeValues = new double[]{102.,126.,150,174};  // midpoints
+      double[] timeValues = new double[] {102., 126., 150, 174}; // midpoints
       assert cn.compareData("time", time.getCoordsAsArray(), Array.makeFromJavaArray(timeValues), false);
     }
   }
 
   // this is the same dataset, seem through cdmremote / gridDataset
 
-  /* Relies on:
-  <featureCollection name="NDFD-CONUS-5km" featureType="GRIB2" harvest="true" path="grib/NDFD/CONUS_5km">
-    ...
-    <collection spec="${cdmUnitTest}/datasets/NDFD-CONUS-5km/.*grib2$"
-    ...
-  </featureCollection>
-  in tds/src/test/content/thredds/catalogGrib.xml
+  /*
+   * Relies on:
+   * <featureCollection name="NDFD-CONUS-5km" featureType="GRIB2" harvest="true" path="grib/NDFD/CONUS_5km">
+   * ...
+   * <collection spec="${cdmUnitTest}/datasets/NDFD-CONUS-5km/.*grib2$"
+   * ...
+   * </featureCollection>
+   * in tds/src/test/content/thredds/catalogGrib.xml
    */
   @Test
   public void testGribDataset2D() throws IOException {
@@ -183,7 +185,7 @@ public class TestGribFmrcRegularTime {
       GridDatatype grid = gds.findGridByShortName(gridName);
       Assert.assertNotNull(gridName, grid);
 
-      int[] expectShape = new int[] {4,4,1,689,1073};
+      int[] expectShape = new int[] {4, 4, 1, 689, 1073};
       Assert.assertArrayEquals(expectShape, grid.getShape());
 
       GridCoordSystem gcs = grid.getCoordinateSystem();
@@ -192,7 +194,7 @@ public class TestGribFmrcRegularTime {
       CoordinateAxis1DTime reftime = gcs.getRunTimeAxis();
       Assert.assertNotNull(reftime);
       Assert.assertEquals(4, reftime.getSize());
-      double[] want = new double[]{0., 12., 24., 36.};
+      double[] want = new double[] {0., 12., 24., 36.};
       CompareNetcdf2 cn = new CompareNetcdf2();
       assert cn.compareData("reftime", reftime.read(), Array.makeFromJavaArray(want), false);
 
@@ -201,18 +203,19 @@ public class TestGribFmrcRegularTime {
       Assert.assertEquals(CoordinateAxis2D.class, time.getClass());
       Assert.assertEquals(16, time.getSize());
 
-      //double[] want = new double[]{108.000000, 132.000000, 156.000000, 180.000000};
-      //assert cn.compareData("time", time.getCoordsAsArray(), Array.makeFromJavaArray(want), false);
+      // double[] want = new double[]{108.000000, 132.000000, 156.000000, 180.000000};
+      // assert cn.compareData("time", time.getCoordsAsArray(), Array.makeFromJavaArray(want), false);
     }
   }
 
-  /* Relies on:
-  <featureCollection name="NDFD-CONUS-5km" featureType="GRIB2" harvest="true" path="grib/NDFD/CONUS_5km">
-    ...
-    <collection spec="${cdmUnitTest}/datasets/NDFD-CONUS-5km/.*grib2$"
-    ...
-  </featureCollection>
-  in tds/src/test/content/thredds/catalogGrib.xml
+  /*
+   * Relies on:
+   * <featureCollection name="NDFD-CONUS-5km" featureType="GRIB2" harvest="true" path="grib/NDFD/CONUS_5km">
+   * ...
+   * <collection spec="${cdmUnitTest}/datasets/NDFD-CONUS-5km/.*grib2$"
+   * ...
+   * </featureCollection>
+   * in tds/src/test/content/thredds/catalogGrib.xml
    */
   @Test
   public void testGribLatest() throws IOException {
@@ -237,7 +240,7 @@ public class TestGribFmrcRegularTime {
       GridDatatype grid = gds.findGridByShortName(gridName);
       Assert.assertNotNull(gridName, grid);
 
-      int[] expectShape = new int[] {4,1,689,1073};
+      int[] expectShape = new int[] {4, 1, 689, 1073};
       Assert.assertArrayEquals(expectShape, grid.getShape());
 
       GridCoordSystem gcs = grid.getCoordinateSystem();
@@ -246,7 +249,7 @@ public class TestGribFmrcRegularTime {
       CoordinateAxis1DTime reftime = gcs.getRunTimeAxis();
       Assert.assertNotNull(reftime);
       Assert.assertEquals(1, reftime.getSize());
-      double[] runtimeValues = new double[]{0.};
+      double[] runtimeValues = new double[] {0.};
       CompareNetcdf2 cn = new CompareNetcdf2();
       assert cn.compareData("reftime", reftime.read(), Array.makeFromJavaArray(runtimeValues), false);
 
@@ -254,7 +257,7 @@ public class TestGribFmrcRegularTime {
       Assert.assertNotNull(time);
       Assert.assertTrue(time instanceof CoordinateAxis1DTime);
       Assert.assertEquals(4, time.getSize());
-      double[] timeValues = new double[]{108.,132.,156,180};  // endpoints
+      double[] timeValues = new double[] {108., 132., 156, 180}; // endpoints
       assert cn.compareData("time", time.read(), Array.makeFromJavaArray(timeValues), false);
     }
   }

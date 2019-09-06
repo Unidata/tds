@@ -21,7 +21,6 @@ import ucar.nc2.dt.GridDatatype;
 import ucar.nc2.ft2.coverage.*;
 import ucar.nc2.util.CompareNetcdf2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
@@ -58,7 +57,7 @@ public class TestTdsFmrc {
       CoverageCollection cc = gds.getCoverageCollections().get(0);
       Coverage grid = cc.findCoverage(gridName);
       Assert.assertNotNull(gridName, grid);
-      Assert.assertArrayEquals(new int[]{8, 103, 108}, grid.getShape());
+      Assert.assertArrayEquals(new int[] {8, 103, 108}, grid.getShape());
 
       CoverageCoordSys gcs = grid.getCoordSys();
       Assert.assertNotNull(gcs);
@@ -68,7 +67,7 @@ public class TestTdsFmrc {
       assert time != null;
       Assert.assertNotNull("time axis", time);
       Assert.assertEquals(8, time.getNcoords());
-      double[] want = new double[]{3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0};
+      double[] want = new double[] {3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0};
       CompareNetcdf2 cn = new CompareNetcdf2();
       assert cn.compareData("time", time.getCoordsAsArray(), Array.makeFromJavaArray(want), false);
 
@@ -123,11 +122,11 @@ public class TestTdsFmrc {
       Assert.assertNotNull(time);
       Assert.assertNotNull("time axis", time);
       Assert.assertEquals(8, time.getNcoords());
-      double[] want = new double[]{3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0};
+      double[] want = new double[] {3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0};
       CompareNetcdf2 cn = new CompareNetcdf2();
       assert cn.compareData("time", time.getCoordsAsArray(), Array.makeFromJavaArray(want), false);
 
-      Assert.assertArrayEquals(new int[]{4, 2, 103, 108}, grid.getShape());
+      Assert.assertArrayEquals(new int[] {4, 2, 103, 108}, grid.getShape());
     }
   }
 
@@ -140,7 +139,7 @@ public class TestTdsFmrc {
     for (Dataset ds : top.getDatasetsLocal()) {
       if (ds instanceof CatalogRef) {
         CatalogRef catref = (CatalogRef) ds;
-        String name =  catref.getName();
+        String name = catref.getName();
         assert name != null : "name is null";
         assert name.length() > 0 : "name is empty";
       }

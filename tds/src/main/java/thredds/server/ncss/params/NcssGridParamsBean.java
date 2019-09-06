@@ -168,8 +168,10 @@ public class NcssGridParamsBean extends NcssParamsBean {
   }
 
   public CalendarDate getRuntimeDate(Calendar cal) {
-    if (runtimeDate == null) return null;
-    if (cal.equals(Calendar.getDefault())) return runtimeDate;
+    if (runtimeDate == null)
+      return null;
+    if (cal.equals(Calendar.getDefault()))
+      return runtimeDate;
 
     // otherwise must reparse
     if (getTime().equalsIgnoreCase("present")) {
@@ -236,10 +238,10 @@ public class NcssGridParamsBean extends NcssParamsBean {
           if (timeStride != null && timeStride != 1)
             subset.set(SubsetParams.timeStride, timeStride);
 
-        } else if (date != null) {              // for allRuntimes, only a date is allowed
+        } else if (date != null) { // for allRuntimes, only a date is allowed
           subset.set(SubsetParams.time, date);
 
-        } else if (dateRange != null  && !allRuntime) {
+        } else if (dateRange != null && !allRuntime) {
           subset.set(SubsetParams.timeRange, dateRange);
           if (timeStride != null && timeStride != 1)
             subset.set(SubsetParams.timeStride, timeStride);

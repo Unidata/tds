@@ -10,7 +10,6 @@ import ucar.nc2.units.TimeDuration;
 import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonPointImpl;
 import ucar.unidata.geoloc.LatLonRect;
-
 import java.util.Arrays;
 import java.util.Formatter;
 
@@ -105,15 +104,24 @@ public class CdmrfBeanOld {
 
   public RequestType getRequestType() {
     if (reqType == null) {
-      if (req.equalsIgnoreCase("capabilities")) reqType = RequestType.capabilities;
-      else if (req.equalsIgnoreCase("cdl")) reqType = RequestType.cdl;
-      else if (req.equalsIgnoreCase("data")) reqType = RequestType.data;
-      else if (req.equalsIgnoreCase("dataForm")) reqType = RequestType.dataForm;
-      else if (req.equalsIgnoreCase("form")) reqType = RequestType.form;
-      else if (req.equalsIgnoreCase("header")) reqType = RequestType.header;
-      else if (req.equalsIgnoreCase("ncml")) reqType = RequestType.ncml;
-      else if (req.equalsIgnoreCase("stations")) reqType = RequestType.stations;
-      else reqType = RequestType.data; // default
+      if (req.equalsIgnoreCase("capabilities"))
+        reqType = RequestType.capabilities;
+      else if (req.equalsIgnoreCase("cdl"))
+        reqType = RequestType.cdl;
+      else if (req.equalsIgnoreCase("data"))
+        reqType = RequestType.data;
+      else if (req.equalsIgnoreCase("dataForm"))
+        reqType = RequestType.dataForm;
+      else if (req.equalsIgnoreCase("form"))
+        reqType = RequestType.form;
+      else if (req.equalsIgnoreCase("header"))
+        reqType = RequestType.header;
+      else if (req.equalsIgnoreCase("ncml"))
+        reqType = RequestType.ncml;
+      else if (req.equalsIgnoreCase("stations"))
+        reqType = RequestType.stations;
+      else
+        reqType = RequestType.data; // default
     }
     return reqType;
   }
@@ -121,16 +129,23 @@ public class CdmrfBeanOld {
   ResponseType getResponseType() {
     if (resType == null) {
       RequestType req = getRequestType();
-      if (req == RequestType.capabilities) resType = ResponseType.xml;
-      else if (req == RequestType.form) resType = ResponseType.html;
+      if (req == RequestType.capabilities)
+        resType = ResponseType.xml;
+      else if (req == RequestType.form)
+        resType = ResponseType.html;
     }
 
     if (resType == null) {
-      if (accept.equalsIgnoreCase("csv")) resType = ResponseType.csv;
-      else if (accept.equalsIgnoreCase("ncstream")) resType = ResponseType.ncstream;
-      else if (accept.equalsIgnoreCase("netcdf")) resType = ResponseType.netcdf;
-      else if (accept.equalsIgnoreCase("xml")) resType = ResponseType.xml;
-      else resType = ResponseType.ncstream; // default
+      if (accept.equalsIgnoreCase("csv"))
+        resType = ResponseType.csv;
+      else if (accept.equalsIgnoreCase("ncstream"))
+        resType = ResponseType.ncstream;
+      else if (accept.equalsIgnoreCase("netcdf"))
+        resType = ResponseType.netcdf;
+      else if (accept.equalsIgnoreCase("xml"))
+        resType = ResponseType.xml;
+      else
+        resType = ResponseType.ncstream; // default
     }
 
     return resType;
@@ -173,7 +188,7 @@ public class CdmrfBeanOld {
     return !fatal;
   }
 
-  private void parseVariablesForm() {  // from the form
+  private void parseVariablesForm() { // from the form
     if (variables == null) {
       errs.format("data request must have var=(all|some)%n");
       fatal = true;
@@ -192,10 +207,14 @@ public class CdmrfBeanOld {
       return;
     }
 
-    if (spatial.equalsIgnoreCase("all")) spatialSelection = SpatialSelection.all;
-    else if (spatial.equalsIgnoreCase("bb")) spatialSelection = SpatialSelection.bb;
-    else if (spatial.equalsIgnoreCase("point")) spatialSelection = SpatialSelection.point;
-    else if (spatial.equalsIgnoreCase("stns")) spatialSelection = SpatialSelection.stns;
+    if (spatial.equalsIgnoreCase("all"))
+      spatialSelection = SpatialSelection.all;
+    else if (spatial.equalsIgnoreCase("bb"))
+      spatialSelection = SpatialSelection.bb;
+    else if (spatial.equalsIgnoreCase("point"))
+      spatialSelection = SpatialSelection.point;
+    else if (spatial.equalsIgnoreCase("stns"))
+      spatialSelection = SpatialSelection.stns;
 
     if (spatialSelection == SpatialSelection.bb) {
       parseSpatialExtent();
@@ -224,7 +243,8 @@ public class CdmrfBeanOld {
 
     if ((west != null) || (east != null) || (south != null) || (north != null)) {
       if ((west == null) || (east == null) || (south == null) || (north == null)) {
-        errs.format("All edges (west,east,south,north) must be specified; found west=%s east=%s south=%s north=%s %n", west, east, south, north);
+        errs.format("All edges (west,east,south,north) must be specified; found west=%s east=%s south=%s north=%s %n",
+            west, east, south, north);
         fatal = true;
         return;
       }
@@ -276,9 +296,12 @@ public class CdmrfBeanOld {
       return;
     }
 
-    if (temporal.equalsIgnoreCase("all")) temporalSelection = TemporalSelection.all;
-    else if (temporal.equalsIgnoreCase("range")) temporalSelection = TemporalSelection.range;
-    else if (temporal.equalsIgnoreCase("point")) temporalSelection = TemporalSelection.point;
+    if (temporal.equalsIgnoreCase("all"))
+      temporalSelection = TemporalSelection.all;
+    else if (temporal.equalsIgnoreCase("range"))
+      temporalSelection = TemporalSelection.range;
+    else if (temporal.equalsIgnoreCase("point"))
+      temporalSelection = TemporalSelection.point;
 
     if (temporal.equalsIgnoreCase("range")) {
       try {
@@ -376,7 +399,8 @@ public class CdmrfBeanOld {
   }
 
   public String[] getStnNames() {
-    if (!(spatialSelection == SpatialSelection.stns)) return null;
+    if (!(spatialSelection == SpatialSelection.stns))
+      return null;
     return (stn == null) ? null : stn.split(",");
   }
 

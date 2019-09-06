@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import thredds.client.catalog.*;
 import ucar.nc2.constants.FeatureType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
@@ -45,7 +44,7 @@ public class TestServiceDefaults {
 
   // Relies on:
   // <datasetScan name="Test Scan Grid Dataset" location="${cdmUnitTest}/ncss/CONUS_80km_nc/"
-  //     path="datasetScan/ncss/CONUS_80km_nc/" dataType="Grid"/>
+  // path="datasetScan/ncss/CONUS_80km_nc/" dataType="Grid"/>
   // In tds/src/test/content/thredds/catalogs5/testServices.xml
   @Test
   @Category(NeedsCdmUnitTest.class)
@@ -105,7 +104,6 @@ public class TestServiceDefaults {
       Assert.assertEquals(count, allServices.getNestedServices().size());
     }
   }
-
 
 
 

@@ -7,18 +7,16 @@ package thredds.server.serverinfo;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import thredds.server.config.TdsContext;
 import thredds.server.config.TdsServerInfoBean;
 
 @Controller
-@RequestMapping(value ="/info", method= RequestMethod.GET)
+@RequestMapping(value = "/info", method = RequestMethod.GET)
 public class ServerInfoController {
 
   @Autowired

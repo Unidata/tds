@@ -9,7 +9,7 @@
  * this software, and any derivative works thereof, and its supporting
  * documentation for any purpose whatsoever, provided that this entire
  * notice appears in all copies of the software, derivative works and
- * supporting documentation.  Further, UCAR requests that the user credit
+ * supporting documentation. Further, UCAR requests that the user credit
  * UCAR/Unidata in any publications that result from the use of this
  * software or in any product that includes this software. The names UCAR
  * and/or Unidata, however, may not be used in any advertising or publicity
@@ -50,7 +50,6 @@ import thredds.server.ncss.controller.NcssGridController;
 import thredds.server.exception.RequestTooLargeException;
 import thredds.server.ncss.params.NcssGridParamsBean;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ import java.util.List;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/WEB-INF/applicationContext.xml" }, loader = MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class GridRequestTooLargeTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -69,14 +68,14 @@ public class GridRequestTooLargeTest {
   @Autowired
   private NcssGridController featureDatasetController;
 
-  private MockHttpServletResponse response ;
+  private MockHttpServletResponse response;
   private MockHttpServletRequest request;
 
-  //   <featureCollection featureType="GRIB" name="GFS_CONUS_80km" path="gribCollection/GFS_CONUS_80km">
-  private String pathInfo="/ncss/grid/gribCollection/GFS_CONUS_80km/best";
+  // <featureCollection featureType="GRIB" name="GFS_CONUS_80km" path="gribCollection/GFS_CONUS_80km">
+  private String pathInfo = "/ncss/grid/gribCollection/GFS_CONUS_80km/best";
 
   @Before
-  public void setUp() throws IOException{
+  public void setUp() throws IOException {
 
     response = new MockHttpServletResponse();
     request = new MockHttpServletRequest();
@@ -85,8 +84,8 @@ public class GridRequestTooLargeTest {
 
   }
 
-  @Test(expected=RequestTooLargeException.class)
-  public void testRequestTooLargeException() throws Exception{
+  @Test(expected = RequestTooLargeException.class)
+  public void testRequestTooLargeException() throws Exception {
     BindingResult validationResult;
     NcssGridParamsBean params = new NcssGridParamsBean();
     params.setTemporal("all");

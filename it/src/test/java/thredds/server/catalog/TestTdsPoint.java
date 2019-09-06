@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.client.catalog.*;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
@@ -25,12 +24,13 @@ import java.util.List;
 public class TestTdsPoint {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-   ///////////////////////////////////////////////////
+  ///////////////////////////////////////////////////
   // work with catalogs with service elements removed
 
   @Test
   public void testDefaultPointCollectionServices() throws IOException {
-    String catalog = "/catalog/testStationFeatureCollection.v5/catalog.xml";  // no service name, should use PointCollection default
+    String catalog = "/catalog/testStationFeatureCollection.v5/catalog.xml"; // no service name, should use
+                                                                             // PointCollection default
     Catalog cat = TdsLocalCatalog.open(catalog);
     List<Service> services = cat.getServices();
     Assert.assertEquals(1, services.size());
@@ -61,7 +61,8 @@ public class TestTdsPoint {
 
   @Test
   public void testGlobalServices() throws IOException {
-    String catalog = "/catalog/testSurfaceSynopticFeatureCollection.v5/files/catalog.xml"; // serviceName ="opendapOnly" from root catalog
+    String catalog = "/catalog/testSurfaceSynopticFeatureCollection.v5/files/catalog.xml"; // serviceName ="opendapOnly"
+                                                                                           // from root catalog
     Catalog cat = TdsLocalCatalog.open(catalog);
     testCat(cat, 0, true, "opendapOnly", 1);
 
@@ -83,7 +84,8 @@ public class TestTdsPoint {
 
   @Test
   public void testUserDefinedServices() throws IOException {
-    String catalog = "/catalog/testBuoyFeatureCollection.v5/files/catalog.xml"; // serviceName ="cdmremoteOnly" from local catalog
+    String catalog = "/catalog/testBuoyFeatureCollection.v5/files/catalog.xml"; // serviceName ="cdmremoteOnly" from
+                                                                                // local catalog
     Catalog cat = TdsLocalCatalog.open(catalog);
     Service localServices = cat.findService("cdmremoteOnly");
     Assert.assertNotNull(localServices);
@@ -105,9 +107,10 @@ public class TestTdsPoint {
         break;
       }
     }
-   }
+  }
 
-  private void testCat(Catalog cat, int virtCount, boolean hasResolver, String orgName, int orgCount) throws IOException {
+  private void testCat(Catalog cat, int virtCount, boolean hasResolver, String orgName, int orgCount)
+      throws IOException {
     if (virtCount > 0) {
       Service virtualServices = cat.findService("VirtualServices");
       Assert.assertNotNull(virtualServices);
@@ -135,7 +138,8 @@ public class TestTdsPoint {
         Assert.assertEquals(orgCount, orgServices.getNestedServices().size());
         boolean hasFileServer = false;
         for (Service sn : orgServices.getNestedServices())
-          if (ServiceType.HTTPServer == sn.getType()) hasFileServer = true;
+          if (ServiceType.HTTPServer == sn.getType())
+            hasFileServer = true;
         Assert.assertTrue(hasFileServer);
       }
     }

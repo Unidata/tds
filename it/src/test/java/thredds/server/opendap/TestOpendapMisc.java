@@ -23,7 +23,6 @@ import ucar.nc2.dt.GridCoordSystem;
 import ucar.nc2.dt.grid.GeoGrid;
 import ucar.nc2.dt.grid.GridDataset;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
@@ -102,7 +101,7 @@ public class TestOpendapMisc {
 
       // x and y stride 10
       GeoGrid grid_section = grid.subset(null, null, null, 1, 2, 2);
-      Array data = grid_section.readDataSlice(0, -1, -1, -1);      // get first time slice
+      Array data = grid_section.readDataSlice(0, -1, -1, -1); // get first time slice
       assert data.getRank() == 3;
       // assert data.getShape()[0] == 6 : data.getShape()[0];
       assert data.getShape()[1] == 33 : data.getShape()[1];
@@ -127,7 +126,8 @@ public class TestOpendapMisc {
 
   @Test
   public void testByteAttribute() throws IOException {
-    String filename = TestOnLocalServer.withHttpPath("dodsC/scanCdmUnitTests/ft/stationProfile/PROFILER_wind_06min_20091030_2330.nc");
+    String filename =
+        TestOnLocalServer.withHttpPath("dodsC/scanCdmUnitTests/ft/stationProfile/PROFILER_wind_06min_20091030_2330.nc");
     NetcdfDataset ncd = NetcdfDataset.openDataset(filename, true, null);
     assert ncd != null;
     VariableDS v = (VariableDS) ncd.findVariable("uvQualityCode");
@@ -139,10 +139,11 @@ public class TestOpendapMisc {
     IndexIterator ii = data.getIndexIterator();
     while (ii.hasNext()) {
       byte val = ii.getByteNext();
-      if (v.isMissing(val)) count++;
-      if (val == (byte)-1)
+      if (v.isMissing(val))
+        count++;
+      if (val == (byte) -1)
         assert v.isMissing(val);
     }
-    System.out.println("size = "+v.getSize()+" missing= "+count);
+    System.out.println("size = " + v.getSize() + " missing= " + count);
   }
 }

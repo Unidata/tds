@@ -16,15 +16,15 @@ package opendap.dts;
 // that the following conditions are met:
 //
 // - Redistributions of source code must retain the above copyright
-//   notice, this list of conditions and the following disclaimer.
+// notice, this list of conditions and the following disclaimer.
 //
 // - Redistributions in binary form must reproduce the above copyright
-//   notice, this list of conditions and the following disclaimer in the
-//   documentation and/or other materials provided with the distribution.
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
 //
 // - Neither the name of the OPeNDAP nor the names of its contributors may
-//   be used to endorse or promote products derived from this software
-//   without specific prior written permission.
+// be used to endorse or promote products derived from this software
+// without specific prior written permission.
 //
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 // IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -41,9 +41,9 @@ package opendap.dts;
 
 
 /**
- * OptSwitch  - class definition for Switches
+ * OptSwitch - class definition for Switches
  * <p/>
- * Description:  this class defines a switch element.
+ * Description: this class defines a switch element.
  * a switch is considered to be used (having been set or assigned
  * a value if the 'set' field is false AND the 'val' field is null.
  * <p/>
@@ -51,14 +51,14 @@ package opendap.dts;
  * <p/>
  * Permitted values for 'type' field:
  * <p/>
- * protected static final int NONE   uninitialized
- * protected static final int BOOL   boolean type switch
- * protected static final int VAL    value type switch
+ * protected static final int NONE uninitialized
+ * protected static final int BOOL boolean type switch
+ * protected static final int VAL value type switch
  * <p/>
- * Fields:  sw  the switch name
- * type  boolean/value
- * set  value is set/clear
- * val  switch value (not applicable to boolean type switch)
+ * Fields: sw the switch name
+ * type boolean/value
+ * set value is set/clear
+ * val switch value (not applicable to boolean type switch)
  *
  * @author Arieh Markel
  * @version 1.0
@@ -68,10 +68,10 @@ public class OptSwitch extends Object {
   protected static final int BOOL = 1;
   protected static final int VAL = 2;
 
-  int sw;        // switch name
-  int type;        // boolean/value
-  public boolean set;    // switch is set/unset
-  public String val;        // value of switch
+  int sw; // switch name
+  int type; // boolean/value
+  public boolean set; // switch is set/unset
+  public String val; // value of switch
   boolean debug = false;
 
   public OptSwitch() {
@@ -93,8 +93,7 @@ public class OptSwitch extends Object {
     set = false;
     val = null;
     if (debug) {
-      System.out.println("sw = " + (char) sw + "; type = " + type +
-          "; set = " + set + "; val = " + val);
+      System.out.println("sw = " + (char) sw + "; type = " + type + "; set = " + set + "; val = " + val);
     }
   }
 
@@ -110,21 +109,19 @@ public class OptSwitch extends Object {
     set = false;
     val = null;
     if (debug) {
-      System.out.println("sw = " + (char) sw + "; type = " + type +
-          "; set = " + set + "; val = " + val);
+      System.out.println("sw = " + (char) sw + "; type = " + type + "; set = " + set + "; val = " + val);
     }
   }
 
   /**
    * Set the value type of the option switch to the type passed
    *
-   * @param    type    type of value that switch may accept or be
+   * @param type type of value that switch may accept or be
    */
   public void SetHasValue(int type) {
     this.type = type;
     if (debug) {
-      System.out.println("sw = " + (char) sw + "; type = " + type +
-          "; set = " + set + "; val = " + val);
+      System.out.println("sw = " + (char) sw + "; type = " + type + "; set = " + set + "; val = " + val);
     }
   }
 

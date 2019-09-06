@@ -21,7 +21,6 @@ import ucar.nc2.units.TimeDuration;
 import ucar.unidata.geoloc.LatLonRect;
 import ucar.unidata.util.Format;
 import ucar.unidata.util.StringUtil2;
-
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.*;
@@ -54,7 +53,7 @@ public class CatalogViewContextParser {
       if (Pattern.matches(CatalogViewContextParser.ROOT_CAT_PATTERN, cat.getBaseURI().getPath())) {
         model.put("rootCatalog", true);
       }
-    } catch(Exception e) {
+    } catch (Exception e) {
       model.put("rootCatalog", false);
     }
 
@@ -65,8 +64,7 @@ public class CatalogViewContextParser {
     return model;
   }
 
-  public  Map<String, Object> getDatasetViewContext(Dataset ds, HttpServletRequest req, boolean isLocalCatalog)
-  {
+  public Map<String, Object> getDatasetViewContext(Dataset ds, HttpServletRequest req, boolean isLocalCatalog) {
     Map<String, Object> model = new HashMap<>();
     addBaseContext(model);
 
@@ -89,7 +87,8 @@ public class CatalogViewContextParser {
   private void addBaseContext(Map<String, Object> model) {
 
     String googleTrackingCode = htmlConfig.getGoogleTrackingCode();
-    if (googleTrackingCode.isEmpty()) googleTrackingCode = null;
+    if (googleTrackingCode.isEmpty())
+      googleTrackingCode = null;
     model.put("googleTracking", googleTrackingCode);
 
     model.put("serverName", serverInfo.getName());
@@ -114,14 +113,15 @@ public class CatalogViewContextParser {
     model.put("datasetCSS", htmlConfig.getDatasetCssUrl());
   }
 
-  protected void addCatalogItems(DatasetNode cat, List<CatalogItemContext> catalogItems, boolean isLocalCatalog, int level)
-  {
+  protected void addCatalogItems(DatasetNode cat, List<CatalogItemContext> catalogItems, boolean isLocalCatalog,
+      int level) {
     for (Dataset ds : cat.getDatasets()) {
       populateItemContext(ds, catalogItems, isLocalCatalog, level);
     }
   }
 
-  protected void populateItemContext(Dataset ds, List<CatalogItemContext> catalogItems, boolean isLocalCatalog, int level) {
+  protected void populateItemContext(Dataset ds, List<CatalogItemContext> catalogItems, boolean isLocalCatalog,
+      int level) {
     CatalogItemContext context = new CatalogItemContext(ds, level);
 
     // add item href
@@ -139,17 +139,18 @@ public class CatalogViewContextParser {
     }
   }
 
-  protected void populateDatasetContext(Dataset ds, DatasetContext context, HttpServletRequest req, boolean isLocalCatalog) {
+  protected void populateDatasetContext(Dataset ds, DatasetContext context, HttpServletRequest req,
+      boolean isLocalCatalog) {
     if (ds instanceof CatalogRef) {
       CatalogRef catref = (CatalogRef) ds;
       context.addContextItem("href", getCatalogRefHref(catref, isLocalCatalog));
     }
 
-    if (isLocalCatalog) context.setViewers(ds, viewerService.getViewerLinks(ds, req));
+    if (isLocalCatalog)
+      context.setViewers(ds, viewerService.getViewerLinks(ds, req));
   }
 
-  private String getCatalogItemHref(Dataset ds, boolean isLocalCatalog)
-  {
+  private String getCatalogItemHref(Dataset ds, boolean isLocalCatalog) {
     if (ds instanceof CatalogRef) {
       CatalogRef catref = (CatalogRef) ds;
       String href = catref.getXlinkHref();
@@ -160,11 +161,17 @@ public class CatalogViewContextParser {
       try {
         URI uri = new URI(href);
         if (uri.isAbsolute()) {
-          boolean defaultUseRemoteCatalogService = htmlConfig.getUseRemoteCatalogService(); // read default as set in threddsConfig.xml
-          Boolean dsUseRemoteCatalogService = ((CatalogRef) ds).useRemoteCatalogService();  // check to see if catalogRef contains tag that overrides default
-          boolean useRemoteCatalogService = defaultUseRemoteCatalogService; // by default, use the option found in threddsConfig.xml
+          boolean defaultUseRemoteCatalogService = htmlConfig.getUseRemoteCatalogService(); // read default as set in
+                                                                                            // threddsConfig.xml
+          Boolean dsUseRemoteCatalogService = ((CatalogRef) ds).useRemoteCatalogService(); // check to see if catalogRef
+                                                                                           // contains tag that
+                                                                                           // overrides default
+          boolean useRemoteCatalogService = defaultUseRemoteCatalogService; // by default, use the option found in
+                                                                            // threddsConfig.xml
           if (dsUseRemoteCatalogService == null)
-            dsUseRemoteCatalogService = defaultUseRemoteCatalogService; // if the dataset does not have the useRemoteDataset option set, opt for the default behavior
+            dsUseRemoteCatalogService = defaultUseRemoteCatalogService; // if the dataset does not have the
+                                                                        // useRemoteDataset option set, opt for the
+                                                                        // default behavior
 
           // if the default is not the same as what is defined in the catalog, go with the catalog option
           // as the user has explicitly overridden the default
@@ -184,8 +191,8 @@ public class CatalogViewContextParser {
           href = href.substring(0, pos) + ".html";
         }
 
-      } catch (Exception e) {//(URISyntaxException e) {
-        //log.error(href, e);
+      } catch (Exception e) {// (URISyntaxException e) {
+        // log.error(href, e);
       }
 
       return href;
@@ -204,7 +211,8 @@ public class CatalogViewContextParser {
           if (pos != -1) {
             catBaseUriPath = catBaseUri.substring(0, pos);
           }
-          accessUrlName = tdsContext.getContextPath() + "/remoteCatalogService?catalog=" + catBaseUriPath + accessUrlName;
+          accessUrlName =
+              tdsContext.getContextPath() + "/remoteCatalogService?catalog=" + catBaseUriPath + accessUrlName;
         } else if (pos != -1) {
           accessUrlName = accessUrlName.substring(0, pos) + ".html";
         }
@@ -214,20 +222,23 @@ public class CatalogViewContextParser {
         // Write link to HTML dataset page.
         return makeFileServerUrl(ds);
 
-      } else if (ds.getID() != null) { // Dataset with an ID.    //URI catURI = cat.getBaseURI();
+      } else if (ds.getID() != null) { // Dataset with an ID. //URI catURI = cat.getBaseURI();
         Catalog cat = ds.getParentCatalog();
         String catHtml;
         if (!isLocalCatalog) {
           // Setup HREF url to link to HTML dataset page (more below).
-          catHtml = tdsContext.getContextPath() + "/remoteCatalogService?command=" + RemoteCatalogRequest.Command.SUBSET +  "&catalog=" + cat.getUriString() + "&";
+          catHtml = tdsContext.getContextPath() + "/remoteCatalogService?command=" + RemoteCatalogRequest.Command.SUBSET
+              + "&catalog=" + cat.getUriString() + "&";
           // Can't be "/catalogServices?..." because subset decides on xml or html by trailing ".html" on URL path
         } else { // replace xml with html
           URI catURI = cat.getBaseURI();
           // Get the catalog name - we want a relative URL
           catHtml = catURI.getPath();
-          if (catHtml == null) catHtml = cat.getUriString();  // if URI is a file
+          if (catHtml == null)
+            catHtml = cat.getUriString(); // if URI is a file
           int pos = catHtml.lastIndexOf("/");
-          if (pos != -1) catHtml = catHtml.substring(pos + 1);
+          if (pos != -1)
+            catHtml = catHtml.substring(pos + 1);
           // change the ending to "catalog.html?"
           pos = catHtml.lastIndexOf('.');
           if (pos < 0)
@@ -282,7 +293,8 @@ public class CatalogViewContextParser {
         iconSrc = "folder.png";
     }
 
-    if (iconSrc != null) iconSrc = htmlConfig.prepareUrlStringForHtml(iconSrc);
+    if (iconSrc != null)
+      iconSrc = htmlConfig.prepareUrlStringForHtml(iconSrc);
     return iconSrc;
   }
 
@@ -293,9 +305,10 @@ public class CatalogViewContextParser {
   }
 }
 
+
 class CatalogItemContext {
 
-  //static private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(CatalogItemContext.class);
+  // static private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(CatalogItemContext.class);
 
   private String displayName;
   private int level;
@@ -304,8 +317,7 @@ class CatalogItemContext {
   private String iconSrc;
   private String itemhref;
 
-  public CatalogItemContext(Dataset ds, int level)
-  {
+  public CatalogItemContext(Dataset ds, int level) {
     // Get display name
     this.displayName = ds.getName();
 
@@ -324,23 +336,40 @@ class CatalogItemContext {
     this.level = level;
   }
 
-  public String getDisplayName() { return this.displayName; }
+  public String getDisplayName() {
+    return this.displayName;
+  }
 
-  public int getLevel() { return this.level; }
+  public int getLevel() {
+    return this.level;
+  }
 
-  public String getDataSize() { return this.dataSize; }
+  public String getDataSize() {
+    return this.dataSize;
+  }
 
-  public String getLastModified() { return this.lastModified; }
+  public String getLastModified() {
+    return this.lastModified;
+  }
 
-  public String getIconSrc() { return  this.iconSrc; }
+  public String getIconSrc() {
+    return this.iconSrc;
+  }
 
-  protected void setIconSrc(String iconSrc) { this.iconSrc = iconSrc; }
+  protected void setIconSrc(String iconSrc) {
+    this.iconSrc = iconSrc;
+  }
 
-  public String getHref() { return this.itemhref; }
+  public String getHref() {
+    return this.itemhref;
+  }
 
-  protected void setHref(String href) { this.itemhref = href; }
+  protected void setHref(String href) {
+    this.itemhref = href;
+  }
 
 }
+
 
 class DatasetContext {
 
@@ -360,15 +389,15 @@ class DatasetContext {
 
   private List<Map<String, String>> contributors;
 
-  private List<Map<String,String>> keywords;
+  private List<Map<String, String>> keywords;
 
-  private List<Map<String,String>> dates;
+  private List<Map<String, String>> dates;
 
   private List<Map<String, String>> projects;
 
   private List<Map<String, String>> creators;
 
-  private List<Map<String,String>> publishers;
+  private List<Map<String, String>> publishers;
 
   private List<Map<String, Object>> variables;
 
@@ -384,7 +413,7 @@ class DatasetContext {
 
   private List<Map<String, String>> viewerLinks;
 
-  public DatasetContext (Dataset ds, boolean isLocalCatalog, TdsContext tdsContext, HttpServletRequest req) {
+  public DatasetContext(Dataset ds, boolean isLocalCatalog, TdsContext tdsContext, HttpServletRequest req) {
     this.contentDir = tdsContext.getContentRootPathProperty();
     // Get display name and catalog url
     this.name = ds.getName();
@@ -402,7 +431,7 @@ class DatasetContext {
       }
     }
 
-    this.catUrl =  catUrl;
+    this.catUrl = catUrl;
     this.catName = ds.getParentCatalog().getName();
 
     setContext(ds);
@@ -427,28 +456,36 @@ class DatasetContext {
     this.context = new HashMap<>();
 
     String dataFormat = ds.getDataFormatName();
-    if (dataFormat != null) context.put("dataFormat", dataFormat);
+    if (dataFormat != null)
+      context.put("dataFormat", dataFormat);
 
     long dataSize = ds.getDataSize();
-    if (dataSize > 0) context.put("dataSize", dataSize);
+    if (dataSize > 0)
+      context.put("dataSize", dataSize);
 
     String featureType = ds.getFeatureTypeName();
-    if (featureType != null) context.put("featureType", featureType);
+    if (featureType != null)
+      context.put("featureType", featureType);
 
     String collectionType = ds.getCollectionType();
-    if (collectionType != null) context.put("collectionType", collectionType);
+    if (collectionType != null)
+      context.put("collectionType", collectionType);
 
     boolean isHarvest = ds.isHarvest();
-    if (isHarvest) context.put("isHarvest", true);
+    if (isHarvest)
+      context.put("isHarvest", true);
 
     String authority = ds.getAuthority();
-    if (authority != null) context.put("authority", authority);
+    if (authority != null)
+      context.put("authority", authority);
 
     String id = ds.getId();
-    if (id != null) context.put("id", id);
+    if (id != null)
+      context.put("id", id);
 
     String restrictAccess = ds.getRestrictAccess();
-    if (restrictAccess != null) context.put("restrictAccess", restrictAccess);
+    if (restrictAccess != null)
+      context.put("restrictAccess", restrictAccess);
   }
 
   private void setDocumentation(Dataset ds) {
@@ -458,10 +495,12 @@ class DatasetContext {
     for (Documentation doc : docs) {
       Map<String, String> docMap = new HashMap<>();
       String inlineContent = doc.getInlineContent();
-      if (inlineContent.isEmpty()) inlineContent = null;
+      if (inlineContent.isEmpty())
+        inlineContent = null;
       docMap.put("inlineContent", inlineContent);
       String type = doc.getType();
-      if (type == null) type = "";
+      if (type == null)
+        type = "";
       docMap.put("type", type);
       if (doc.hasXlink()) {
         docMap.put("href", doc.getXlinkHref());
@@ -503,8 +542,8 @@ class DatasetContext {
             break;
 
           case WFS:
-          queryString = "service=WFS&version=2.0.0&request=GetCapabilities";
-          break;
+            queryString = "service=WFS&version=2.0.0&request=GetCapabilities";
+            break;
 
           case NCML:
           case UDDC:
@@ -526,8 +565,8 @@ class DatasetContext {
             if (catalogUrl.indexOf(contentDir) > -1) {
               catalogUrl = catalogUrl.substring(catalogUrl.indexOf(contentDir) + contentDir.length());
             }
-            catalogUrl = catalogUrl.substring(catalogUrl.indexOf("/catalog/") + ("/catalog/").length())
-                    .replace("html", "xml");
+            catalogUrl =
+                catalogUrl.substring(catalogUrl.indexOf("/catalog/") + ("/catalog/").length()).replace("html", "xml");
             queryString = "catalog=" + catalogUrl;
             urlString = urlString.substring(0, urlString.indexOf(s.getBase()) + s.getBase().length()) + datasetId;
             break;
@@ -551,6 +590,7 @@ class DatasetContext {
       this.access.add(accessMap);
     }
   }
+
   private void setContributors(Dataset ds) {
     java.util.List<ThreddsMetadata.Contributor> contributors = ds.getContributors();
     this.contributors = new ArrayList<>(contributors.size());
@@ -608,7 +648,8 @@ class DatasetContext {
       creatorMap.put("name", t.getName());
       creatorMap.put("email", t.getEmail());
       String href = t.getUrl();
-      if (!isLocalCatalog) href = CatalogViewContextParser.makeHrefResolve(ds, href);
+      if (!isLocalCatalog)
+        href = CatalogViewContextParser.makeHrefResolve(ds, href);
       creatorMap.put("href", href);
       this.creators.add(creatorMap);
     }
@@ -623,7 +664,8 @@ class DatasetContext {
       pubMap.put("name", t.getName());
       pubMap.put("email", t.getEmail());
       String href = t.getUrl();
-      if (!isLocalCatalog) href = CatalogViewContextParser.makeHrefResolve(ds, href);
+      if (!isLocalCatalog)
+        href = CatalogViewContextParser.makeHrefResolve(ds, href);
       pubMap.put("href", href);
       this.publishers.add(pubMap);
     }
@@ -645,7 +687,7 @@ class DatasetContext {
       List<Map<String, String>> varList = new ArrayList<>();
       List<ThreddsMetadata.Variable> vlist = t.getVariableList();
       for (ThreddsMetadata.Variable v : vlist) {
-        Map<String, String> var= new HashMap<>();
+        Map<String, String> var = new HashMap<>();
         String units = (v.getUnits() == null || v.getUnits().length() == 0) ? "" : " (" + v.getUnits() + ") ";
         var.put("nameAndUnits", v.getName() + units);
         var.put("description", v.getDescription());
@@ -690,13 +732,17 @@ class DatasetContext {
     this.timeCoverage = new HashMap<>();
     if (tc != null) {
       DateType start = tc.getStart();
-      if (start != null) this.timeCoverage.put("start", start.toString());
+      if (start != null)
+        this.timeCoverage.put("start", start.toString());
       DateType end = tc.getEnd();
-      if (end != null) this.timeCoverage.put("end", end.toString());
+      if (end != null)
+        this.timeCoverage.put("end", end.toString());
       TimeDuration duration = tc.getDuration();
-      if (duration != null) this.timeCoverage.put("duration", duration.toString());
+      if (duration != null)
+        this.timeCoverage.put("duration", duration.toString());
       TimeDuration resolution = tc.getResolution();
-      if (resolution != null) this.timeCoverage.put("resolution", resolution.toString());
+      if (resolution != null)
+        this.timeCoverage.put("resolution", resolution.toString());
     }
   }
 
@@ -710,7 +756,8 @@ class DatasetContext {
         String type = (m.getType() == null) ? "" : m.getType();
         metadataMap.put("title", (m.getTitle() == null) ? "Type " + type : m.getTitle());
         String mdLink = m.getXlinkHref();
-        if (!isLocalCatalog) mdLink = CatalogViewContextParser.makeHrefResolve(ds, mdLink);
+        if (!isLocalCatalog)
+          mdLink = CatalogViewContextParser.makeHrefResolve(ds, mdLink);
         metadataMap.put("href", mdLink);
       }
     }
@@ -720,7 +767,7 @@ class DatasetContext {
     java.util.List<Property> propsOrg = ds.getProperties();
     java.util.List<Property> props = new ArrayList<>(ds.getProperties().size());
     for (Property p : propsOrg) {
-      if (!p.getName().startsWith("viewer"))  // eliminate the viewer properties from the html view
+      if (!p.getName().startsWith("viewer")) // eliminate the viewer properties from the html view
         props.add(p);
     }
 
@@ -728,7 +775,8 @@ class DatasetContext {
     for (Property p : props) {
       Map<String, String> propsMap = new HashMap<>();
       if (p.getName().equals("attachments")) { // LOOK whats this ?
-        propsMap.put("href", !isLocalCatalog ? CatalogViewContextParser.makeHrefResolve(ds, p.getValue()) : p.getValue());
+        propsMap.put("href",
+            !isLocalCatalog ? CatalogViewContextParser.makeHrefResolve(ds, p.getValue()) : p.getValue());
       }
       propsMap.put("name", p.getName());
       propsMap.put("value", p.getValue());
@@ -737,7 +785,8 @@ class DatasetContext {
   }
 
   private String rangeString(ThreddsMetadata.GeospatialRange r) {
-    if (r == null) return "";
+    if (r == null)
+      return "";
     String units = (r.getUnits() == null) ? "" : " " + r.getUnits();
     String resolution = r.hasResolution() ? " Resolution=" + r.getResolution() : "";
     return r.getStart() + " to " + (r.getStart() + r.getSize()) + resolution + units;
@@ -756,47 +805,89 @@ class DatasetContext {
     return href;
   }
 
-  public String getName() { return this.name; }
+  public String getName() {
+    return this.name;
+  }
 
-  public String getCatUrl() { return this.catUrl; }
+  public String getCatUrl() {
+    return this.catUrl;
+  }
 
-  public String getCatName() { return this.catName; }
+  public String getCatName() {
+    return this.catName;
+  }
 
-  public List<Map<String, String>> getDocumentation() { return this.documentation; }
+  public List<Map<String, String>> getDocumentation() {
+    return this.documentation;
+  }
 
-  public List<Map<String, String>> getAccess() { return this.access; }
+  public List<Map<String, String>> getAccess() {
+    return this.access;
+  }
 
-  public List<Map<String, String>> getContributors() { return this.contributors; }
+  public List<Map<String, String>> getContributors() {
+    return this.contributors;
+  }
 
-  public List<Map<String, String>> getKeywords() { return this.keywords; }
+  public List<Map<String, String>> getKeywords() {
+    return this.keywords;
+  }
 
-  public List<Map<String, String>> getDates() { return this.dates; }
+  public List<Map<String, String>> getDates() {
+    return this.dates;
+  }
 
-  public List<Map<String, String>> getProjects() { return this.projects; }
+  public List<Map<String, String>> getProjects() {
+    return this.projects;
+  }
 
-  public List<Map<String, String>> getCreators() { return this.creators; }
+  public List<Map<String, String>> getCreators() {
+    return this.creators;
+  }
 
-  public List<Map<String, String>> getPublishers() { return this.publishers; }
+  public List<Map<String, String>> getPublishers() {
+    return this.publishers;
+  }
 
-  public List<Map<String, Object>> getVariables() { return this.variables; }
+  public List<Map<String, Object>> getVariables() {
+    return this.variables;
+  }
 
-  public String getVariableMapLink() { return this.variableMapLink; }
+  public String getVariableMapLink() {
+    return this.variableMapLink;
+  }
 
-  public Map<String, Object> getGeospatialCoverage() { return this.geospatialCoverage;}
+  public Map<String, Object> getGeospatialCoverage() {
+    return this.geospatialCoverage;
+  }
 
-  public Map<String, Object> getTimeCoverage() { return this.timeCoverage; }
+  public Map<String, Object> getTimeCoverage() {
+    return this.timeCoverage;
+  }
 
-  public List<Map<String, String>> getMetadata() { return this.metadata; }
+  public List<Map<String, String>> getMetadata() {
+    return this.metadata;
+  }
 
-  public List<Map<String, String>> getProperties() { return this.properties; }
+  public List<Map<String, String>> getProperties() {
+    return this.properties;
+  }
 
-  public Map<String, Object> getAllContext() { return this.context; }
+  public Map<String, Object> getAllContext() {
+    return this.context;
+  }
 
-  public Object getContextItem(String key) { return this.context.get(key); }
+  public Object getContextItem(String key) {
+    return this.context.get(key);
+  }
 
-  protected void addContextItem(String key, Object value) { this.context.put(key, value); }
+  protected void addContextItem(String key, Object value) {
+    this.context.put(key, value);
+  }
 
-  public List<Map<String, String>> getViewerLinks() { return this.viewerLinks; }
+  public List<Map<String, String>> getViewerLinks() {
+    return this.viewerLinks;
+  }
 
   protected void setViewers(Dataset ds, List<ViewerLinkProvider.ViewerLink> viewerLinks) {
     for (ViewerLinkProvider.ViewerLink viewer : viewerLinks) {
@@ -809,9 +900,10 @@ class DatasetContext {
 
 }
 
+
 class JsonLD {
 
-    static String makeDatasetJsonLD(Dataset ds, DatasetContext dsContext, TdsContext tdsContext) {
+  static String makeDatasetJsonLD(Dataset ds, DatasetContext dsContext, TdsContext tdsContext) {
 
     JSONObject jo = new JSONObject();
 
@@ -819,19 +911,15 @@ class JsonLD {
     jo.put("@type", "Dataset");
 
     // for the name attribute, try to find a title. If not, use the dataset name.
-    Optional<String> name = dsContext.getDocumentation().stream()
-            .filter(doc -> doc.containsValue("title"))
-            .findFirst()
-            .map(found -> found.get("inlineContent"));
+    Optional<String> name = dsContext.getDocumentation().stream().filter(doc -> doc.containsValue("title")).findFirst()
+        .map(found -> found.get("inlineContent"));
 
     jo.put("name", name.orElse(dsContext.getName()));
 
     // for the description, find all "summary" attributes and concatenate them.
     List<Map<String, String>> docs = dsContext.getDocumentation();
-    List<String> summary = dsContext.getDocumentation().stream()
-            .filter(doc -> doc.containsValue("summary"))
-            .map(found -> found.get("inlineContent"))
-            .collect(Collectors.toList());
+    List<String> summary = dsContext.getDocumentation().stream().filter(doc -> doc.containsValue("summary"))
+        .map(found -> found.get("inlineContent")).collect(Collectors.toList());
 
     if (!summary.isEmpty()) {
       jo.put("description", StringUtils.join(summary, " "));
@@ -847,8 +935,8 @@ class JsonLD {
     List<Map<String, String>> kws = dsContext.getKeywords();
     if (kws.size() > 0) {
       JSONArray ja = new JSONArray();
-      for (Map<String,String> kw : kws) {
-        if(kw.containsKey("text")) {
+      for (Map<String, String> kw : kws) {
+        if (kw.containsKey("text")) {
           ja.put(kw.get("text"));
         }
       }
@@ -870,17 +958,16 @@ class JsonLD {
     }
 
     if (temporalCoverage.length() > 0) {
-        jo.put("temporalCoverage", temporalCoverage);
+      jo.put("temporalCoverage", temporalCoverage);
     }
 
     // set the spatial coverage
     ThreddsMetadata.GeospatialCoverage gc = ds.getGeospatialCoverage();
     if (gc != null) {
       LatLonRect bbox = gc.getBoundingBox();
-      String box = String.format("%s %s %s %s", bbox.getLowerLeftPoint().getLatitude(),
-              bbox.getLowerLeftPoint().getLongitude(),
-              bbox.getUpperRightPoint().getLatitude(),
-              bbox.getUpperRightPoint().getLongitude());
+      String box =
+          String.format("%s %s %s %s", bbox.getLowerLeftPoint().getLatitude(), bbox.getLowerLeftPoint().getLongitude(),
+              bbox.getUpperRightPoint().getLatitude(), bbox.getUpperRightPoint().getLongitude());
       JSONObject spatialCoverage = new JSONObject();
       spatialCoverage.put("@type", "Place");
       JSONObject geo = new JSONObject();

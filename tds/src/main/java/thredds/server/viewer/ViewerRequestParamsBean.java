@@ -21,27 +21,32 @@ public class ViewerRequestParamsBean {
   public String getViewer() {
     return viewer;
   }
+
   public void setViewer(String viewer) {
     this.viewer = viewer;
   }
+
   public String getDataset() {
     return dataset;
   }
+
   public void setDataset(String dataset) {
     this.dataset = dataset;
   }
+
   public String getCatalog() {
     return catalog;
   }
+
   public void setCatalog(String catalog) {
     this.catalog = catalog;
   }
 
-  public void setUrl(String url){
+  public void setUrl(String url) {
     this.url = url;
   }
 
-  public String getUrl(){
+  public String getUrl() {
     return this.url;
   }
 

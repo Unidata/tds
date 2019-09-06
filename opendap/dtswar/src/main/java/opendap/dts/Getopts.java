@@ -16,15 +16,15 @@ package opendap.dts;
 // that the following conditions are met:
 //
 // - Redistributions of source code must retain the above copyright
-//   notice, this list of conditions and the following disclaimer.
+// notice, this list of conditions and the following disclaimer.
 //
 // - Redistributions in binary form must reproduce the above copyright
-//   notice, this list of conditions and the following disclaimer in the
-//   documentation and/or other materials provided with the distribution.
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
 //
 // - Neither the name of the OPeNDAP nor the names of its contributors may
-//   be used to endorse or promote products derived from this software
-//   without specific prior written permission.
+// be used to endorse or promote products derived from this software
+// without specific prior written permission.
 //
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 // IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -51,10 +51,12 @@ import java.util.Enumeration;
  * composed of the set of switches allowed to be passed, and the
  * 'args' String array that has to be parsed opposite the 'flags'
  * string.
+ * 
  * <PRE>
  * new Getopts("oif:", args)  -o, -i are boolean flags,
  * -f takes an argument
  * </PRE>
+ * 
  * The class processes single-character switches with switch
  * clustering.
  * <p/>
@@ -69,15 +71,15 @@ import java.util.Enumeration;
  * 'OptSwitch' class.
  * <p/>
  *
- * @author Arieh Markel  (arieh@selectjobs.com)
+ * @author Arieh Markel (arieh@selectjobs.com)
  *         thanks to Mark Skipper (mcs@dmu.ac.uk) for bug fix
- * @version 1.1  6/14/98  Updated evaluation following Mark's remarks.
- * @version 1.2  4/10/10  Added some code to provide a gnu style
- *                        getopts.
+ * @version 1.1 6/14/98 Updated evaluation following Mark's remarks.
+ * @version 1.2 4/10/10 Added some code to provide a gnu style
+ *          getopts.
  * @see OptSwitch
  * @see java.util.Enumeration
  */
-/*  $Id: Getopts.java 22593 2010-04-27 20:14:59Z dmh $ */
+/* $Id: Getopts.java 22593 2010-04-27 20:14:59Z dmh $ */
 
 public class Getopts {
 
@@ -96,7 +98,7 @@ public class Getopts {
    * <p/>
    *
    * @param sw switch whose class is requested
-   *           <p/>
+   *        <p/>
    */
   public OptSwitch getSwitch(Character sw) {
     return (OptSwitch) switchtab.get(sw);
@@ -108,7 +110,7 @@ public class Getopts {
    * @param sw Character switch whose option is requested
    */
   public String getOption(Character sw) {
-    return getOption( (int) sw.charValue());
+    return getOption((int) sw.charValue());
   }
 
   /**
@@ -148,20 +150,19 @@ public class Getopts {
 
   /**
    * Wrapper Constructor
+   * 
    * @param flags a string with the valid switch names
-   * @param args  array of strings (usually args)
-   *              <p/>
+   * @param args array of strings (usually args)
+   *        <p/>
    * @throws InvalidSwitch thrown when invalid options are found
-   *                       <p/>
+   *         <p/>
    */
-  public Getopts(String flags, String args[])
-      throws InvalidSwitch
-  {
-    this((String)null,flags,args);
+  public Getopts(String flags, String args[]) throws InvalidSwitch {
+    this((String) null, flags, args);
   }
 
   /**
-   * Basic class constructor.  Gets the flags passed, in a
+   * Basic class constructor. Gets the flags passed, in a
    * notation similar to the one used by the sh, ksh, bash,
    * and perl getopts.
    * <p/>
@@ -171,21 +172,17 @@ public class Getopts {
    *
    * @param progname program name for producing error messages
    * @param flags a string with the valid switch names
-   * @param args  array of strings (usually args)
-   *              <p/>
+   * @param args array of strings (usually args)
+   *        <p/>
    * @throws InvalidSwitch thrown when invalid options are found
-   *                       <p/>
+   *         <p/>
    */
-  public Getopts(String progname, String flags, String args[])
-      throws InvalidSwitch {
-    initialize(progname,flags,args);
+  public Getopts(String progname, String flags, String args[]) throws InvalidSwitch {
+    initialize(progname, flags, args);
   }
 
-  protected void initialize(String progname, String flags, String args[])
-      throws InvalidSwitch {
-    String throwstring =
-        progname == null?"Invalid Getopts switch(s): "
-            : progname+": Invalid Getopts switch(s): ";
+  protected void initialize(String progname, String flags, String args[]) throws InvalidSwitch {
+    String throwstring = progname == null ? "Invalid Getopts switch(s): " : progname + ": Invalid Getopts switch(s): ";
     String usage = "Usage: Getopts(String flags, String args[])"
         + "or Usage: Getopts(String progname, String flags, String args[])";
     this.progname = progname;
@@ -196,16 +193,14 @@ public class Getopts {
       boolean found;
       int cc = flags.charAt(i);
       Character c = new Character((char) cc);
-      char alpha[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-          'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-          's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+      char alpha[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+          't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
-      //  space characters or punctuation marks are not allowed
-      //  as switch values
+      // space characters or punctuation marks are not allowed
+      // as switch values
       //
       if (cc == ' ' || cc == '\t' || cc == '\n' || cc == '\r') {
-        throw new InvalidSwitch(throwstring + "Spaces not allowed\n" +
-            usage + "\n");
+        throw new InvalidSwitch(throwstring + "Spaces not allowed\n" + usage + "\n");
       }
 
       found = false;
@@ -218,22 +213,20 @@ public class Getopts {
         }
       }
 
-      //  if the character was not found on the set, throw the exception
+      // if the character was not found on the set, throw the exception
       //
-      if (! found && cc != ':') {
+      if (!found && cc != ':') {
         throw new InvalidSwitch(throwstring + "Invalid Flag Character " + c + "\n");
       }
 
-      //  ':' appears when the preceding character accepts a value
+      // ':' appears when the preceding character accepts a value
       //
       if (cc == ':') {
         if (i > 0) {
           int prv = flags.charAt(i - 1);
 
           if (prv == ':') {
-            throw new InvalidSwitch(throwstring +
-                "Can't have consecutive ':'\n" +
-                usage + "\n");
+            throw new InvalidSwitch(throwstring + "Can't have consecutive ':'\n" + usage + "\n");
           } else {
             Character cp = new Character((char) prv);
             OptSwitch sw = (OptSwitch) switchtab.get(cp);
@@ -247,18 +240,18 @@ public class Getopts {
     }
 
     //
-    //  Now, step through the arguments in the argument list
-    //  and identify the options and values
+    // Now, step through the arguments in the argument list
+    // and identify the options and values
     //
     int i;
     for (i = 0; i < args.length; i++) {
-      char cc = args[i].charAt(0);    // first character
+      char cc = args[i].charAt(0); // first character
 
       // check end of options
-      if(args[i].equals("--")) {
-        optind = i+1;
+      if (args[i].equals("--")) {
+        optind = i + 1;
         break;
-      } else if( cc != '-') {
+      } else if (cc != '-') {
         optind = i;
         break;
       }
@@ -270,32 +263,28 @@ public class Getopts {
         OptSwitch cs = (OptSwitch) switchtab.get(fc);
         if (cs == null) {
           // The supplied switch wasn't recognised.
-          if(opterr)
-            throw new InvalidSwitch(throwstring + "invalid switch " +
-                cc + "\n2 Valid switches are: " + flags + "\n" + usage + "\n");
+          if (opterr)
+            throw new InvalidSwitch(
+                throwstring + "invalid switch " + cc + "\n2 Valid switches are: " + flags + "\n" + usage + "\n");
           else
-            illegals.append((char)cc);
+            illegals.append((char) cc);
         } else if (!cs.acceptVal()) {
           // the option is a switch and takes no value
           cs.SetVal(true);
         } else if (j + 1 < args[i].length()) {
-          //  the value may follow immediately after the switch
+          // the value may follow immediately after the switch
           // (not as a separate token) set value to remainder of string...
           cs.SetVal(args[i].substring(j + 1));
           // ... and move pointer to end, thus consuming the string
           j = args[i].length();
         } else if (++i >= args.length) {
           // there wasn't another token
-          throw new InvalidSwitch(throwstring +
-              "missing value from switch " + cc +
-              "\n1 Valid switches are: " + flags +
-              "\n" + usage + "\n");
+          throw new InvalidSwitch(throwstring + "missing value from switch " + cc + "\n1 Valid switches are: " + flags
+              + "\n" + usage + "\n");
         } else if (args[i].charAt(0) == '-') {
           // there was no value, next token starts with flags
-          throw new InvalidSwitch(
-              throwstring + "missing value from switch " + cc +
-                  "\n0 Valid switches are: " + flags + "\n" +
-                  usage + "\n");
+          throw new InvalidSwitch(throwstring + "missing value from switch " + cc + "\n0 Valid switches are: " + flags
+              + "\n" + usage + "\n");
         } else {
           // the next token is the value
           cs.SetVal(args[i]);
@@ -306,7 +295,7 @@ public class Getopts {
       optind = i;
     } // end for i
 
-    //  Now insert the array of arguments into the object
+    // Now insert the array of arguments into the object
     //
     arglist = new String[args.length - i];
     System.arraycopy(args, i, arglist, 0, args.length - i);
@@ -316,6 +305,7 @@ public class Getopts {
    * method for class testing.
    * <p/>
    * Invocation:
+   * 
    * <PRE>
    * java Getopts "option set" arg0 arg1 ... argn
    * </PRE>
@@ -338,9 +328,7 @@ public class Getopts {
       i = 0;
       while (names.hasMoreElements()) {
         OptSwitch cs = opts.getSwitch((Character) names.nextElement());
-        System.out.println("args[" + i + "] : " +
-            (char) cs.sw + " " + cs.type + " " +
-            cs.set + " " + cs.val);
+        System.out.println("args[" + i + "] : " + (char) cs.sw + " " + cs.type + " " + cs.set + " " + cs.val);
         i++;
       }
 
@@ -348,8 +336,7 @@ public class Getopts {
       for (i = 0; i < argp.length; i++) {
         System.out.println("argv[" + i + "] : " + argp[i]);
       }
-    }
-    catch (InvalidSwitch e) {
+    } catch (InvalidSwitch e) {
       System.out.print(e);
     }
   }
@@ -368,54 +355,64 @@ public class Getopts {
 
   /**
    * Wrapper Constructor
+   * 
    * @param progname program name for producing error messages
    * @param flags a string with the valid switch names
-   * @param args  array of strings (usually args)
-   *              <p/>
+   * @param args array of strings (usually args)
+   *        <p/>
    */
-  public Getopts(String progname, String args[], String flags)
-  {
+  public Getopts(String progname, String args[], String flags) {
     this.progname = progname;
     optargv = args;
     optflags = flags;
   }
 
-  public int getopt()
-  {
+  public int getopt() {
     optarg = null;
     optopt = '\0';
-    if(optenum == null) {
+    if (optenum == null) {
       /* Process the arguments */
       try {
-        initialize(progname,optflags,optargv);
+        initialize(progname, optflags, optargv);
       } catch (InvalidSwitch ise) {
-        System.err.println("new Getopts: "+ise.getMessage());
+        System.err.println("new Getopts: " + ise.getMessage());
       }
       optenum = swList();
     }
-    if(optenum.hasMoreElements()) {
-      while(optenum.hasMoreElements()) {
-        Character c = (Character)optenum.nextElement();
+    if (optenum.hasMoreElements()) {
+      while (optenum.hasMoreElements()) {
+        Character c = (Character) optenum.nextElement();
         OptSwitch sw = getSwitch(c);
-        if(sw.set) {
-          if(sw.acceptVal()) {
+        if (sw.set) {
+          if (sw.acceptVal()) {
             optarg = sw.val;
           }
-          return (int)c;
+          return (int) c;
         }
       }
-    } else if(!opterr && illegals.length() > 0) {// Generate illegals */
+    } else if (!opterr && illegals.length() > 0) {// Generate illegals */
       optopt = illegals.charAt(0);
       illegals.deleteCharAt(0);
-      return (int)'?';
+      return (int) '?';
     }
     return -1;
   }
 
-  public String getOptarg() {return optarg;}
-  public void setOpterr(boolean b) {opterr = b;}
-  public int getOptind() {return optind;}
-  public int getOptopt() {return optopt;}
+  public String getOptarg() {
+    return optarg;
+  }
+
+  public void setOpterr(boolean b) {
+    opterr = b;
+  }
+
+  public int getOptind() {
+    return optind;
+  }
+
+  public int getOptopt() {
+    return optopt;
+  }
 
 }
 

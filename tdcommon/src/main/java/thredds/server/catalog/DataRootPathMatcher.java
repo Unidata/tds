@@ -9,7 +9,6 @@ import thredds.server.catalog.tracker.DataRootExt;
 import thredds.server.catalog.tracker.DataRootTracker;
 import ucar.nc2.util.AliasTranslator;
 import ucar.unidata.util.StringUtil2;
-
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +31,9 @@ public class DataRootPathMatcher {
 
   private static class PathComparator implements Comparator<String> {
     public int compare(String s1, String s2) {
-      int compare = s2.compareTo( s1); // reverse sort
-      if (debug) System.out.println(" compare "+s1+" to "+s2+" = "+compare);
+      int compare = s2.compareTo(s1); // reverse sort
+      if (debug)
+        System.out.println(" compare " + s1 + " to " + s2 + " = " + compare);
       return compare;
     }
   }
@@ -43,8 +43,9 @@ public class DataRootPathMatcher {
   private ConfigCatalogCache ccc;
   private DataRootTracker tracker;
 
-  private final TreeSet<String> treeSet = new TreeSet<>( new PathComparator());    // this should be in-memory for speed
-  private final Map<String, DataRootExt> map = new HashMap<>();         // this could be turned into an off-heap cache if needed, with persistence.
+  private final TreeSet<String> treeSet = new TreeSet<>(new PathComparator()); // this should be in-memory for speed
+  private final Map<String, DataRootExt> map = new HashMap<>(); // this could be turned into an off-heap cache if
+                                                                // needed, with persistence.
 
   public DataRootPathMatcher(ConfigCatalogCache ccc, DataRootTracker tracker) {
     this.ccc = ccc;
@@ -57,6 +58,7 @@ public class DataRootPathMatcher {
 
   /**
    * Add a dataRootExt to in-memory tree.
+   * 
    * @return true if not already exist
    */
   private boolean put(DataRootExt dateRootExt) {
@@ -66,19 +68,21 @@ public class DataRootPathMatcher {
 
   /**
    * See if this object already exists in the collection
+   * 
    * @param path find object that has this key
    * @return true if already contains the key
    */
-  public boolean contains(String  path) {
+  public boolean contains(String path) {
     return treeSet.contains(path);
   }
 
-  public DataRootExt get(String  path) {
+  public DataRootExt get(String path) {
     return map.get(path);
   }
 
   /**
    * Get an iterator over the dataRoot keys and values. debug
+   * 
    * @return iterator
    */
   public Set<Map.Entry<String, DataRootExt>> getValues() {
@@ -87,14 +91,16 @@ public class DataRootPathMatcher {
 
   /**
    * Find the longest path match.
+   * 
    * @param reqPath find object with longest match where reqPath.startsWith( key)
    * @return the value whose key is the longest that matches path, or null if none
    */
-  public String findLongestPathMatch( String reqPath) {
+  public String findLongestPathMatch(String reqPath) {
     SortedSet<String> tail = treeSet.tailSet(reqPath);
-    if (tail.isEmpty()) return null;
+    if (tail.isEmpty())
+      return null;
     String after = tail.first();
-    if (reqPath.startsWith( after)) // common case
+    if (reqPath.startsWith(after)) // common case
       return tail.first();
 
     // have to check more, until no common starting chars
@@ -112,12 +118,14 @@ public class DataRootPathMatcher {
 
   /**
    * Find the longest DataRoot match.
+   * 
    * @param reqPath find object with longest match where reqPath.startsWith( key)
    * @return the value whose key is the longest that matches path, or null if none
    */
-  public DataRoot findDataRoot( String reqPath) {
-    String path =  findLongestPathMatch(reqPath);
-    if (path == null) return null;
+  public DataRoot findDataRoot(String reqPath) {
+    String path = findLongestPathMatch(reqPath);
+    if (path == null)
+      return null;
     DataRootExt dataRootExt = map.get(path);
     if (dataRootExt == null) {
       logger.error("DataRootPathMatcher found path {} but not in map", path);
@@ -129,7 +137,8 @@ public class DataRootPathMatcher {
   // convert a dataRootExt to a dataRoot
   public @Nonnull DataRoot convert2DataRoot(DataRootExt dataRootExt) {
     DataRoot dataRoot = dataRootExt.getDataRoot();
-    if (dataRoot != null) return dataRoot;
+    if (dataRoot != null)
+      return dataRoot;
 
     // otherwise must read the catalog that its in
     dataRoot = readDataRootFromCatalog(dataRootExt);
@@ -137,14 +146,18 @@ public class DataRootPathMatcher {
     return dataRoot;
   }
 
-  private @Nonnull DataRoot readDataRootFromCatalog( DataRootExt dataRootExt) {
+  private @Nonnull DataRoot readDataRootFromCatalog(DataRootExt dataRootExt) {
     try {
       ConfigCatalog cat = ccc.get(dataRootExt.getCatLocation());
-      extractDataRoots(dataRootExt.getCatLocation(), cat.getDatasetsLocal(), false, null);  // will create a new DataRootExt and replace this one in the map
+      extractDataRoots(dataRootExt.getCatLocation(), cat.getDatasetsLocal(), false, null); // will create a new
+                                                                                           // DataRootExt and replace
+                                                                                           // this one in the map
       DataRootExt dataRootExtNew = map.get(dataRootExt.getPath());
       if (null == dataRootExtNew) {
-        logger.error("Reading catalog " + dataRootExt.getCatLocation() + " failed to find dataRoot path=" + dataRootExt.getPath());
-        throw new IllegalStateException("Reading catalog " + dataRootExt.getCatLocation() + " failed to find dataRoot path=" + dataRootExt.getPath());
+        logger.error("Reading catalog " + dataRootExt.getCatLocation() + " failed to find dataRoot path="
+            + dataRootExt.getPath());
+        throw new IllegalStateException("Reading catalog " + dataRootExt.getCatLocation()
+            + " failed to find dataRoot path=" + dataRootExt.getPath());
       }
       return dataRootExtNew.getDataRoot();
 
@@ -163,7 +176,8 @@ public class DataRootPathMatcher {
    *
    * @param dsList the list of Dataset
    */
-  public void extractDataRoots(String catalogRelPath, List<Dataset> dsList, boolean checkDups, Map<String, String> idMap) {
+  public void extractDataRoots(String catalogRelPath, List<Dataset> dsList, boolean checkDups,
+      Map<String, String> idMap) {
 
     for (Dataset dataset : dsList) {
       if (dataset instanceof DatasetScan) {
@@ -177,7 +191,8 @@ public class DataRootPathMatcher {
         if (idMap != null) {
           String catWithSameFc = idMap.get(fc.getCollectionName());
           if (catWithSameFc != null)
-            logCatalogInit.warn("*** ERROR: Duplicate featureCollection name {} in catalogs '{}' and '{}'", fc.getCollectionName(), catalogRelPath, catWithSameFc);
+            logCatalogInit.warn("*** ERROR: Duplicate featureCollection name {} in catalogs '{}' and '{}'",
+                fc.getCollectionName(), catalogRelPath, catWithSameFc);
           else
             idMap.put(fc.getCollectionName(), catalogRelPath);
         }
@@ -205,8 +220,9 @@ public class DataRootPathMatcher {
     if (checkDups) {
       DataRootExt dre = get(path); // check for duplicates
       if (dre != null) {
-        logCatalogInit.error(ERROR + "DatasetScan trying to add duplicate dataRoot =<" + path + ">  already mapped to directory= <" + dre.getDirLocation() + ">" +
-                " wanted to map to =<" + dscan.getScanLocation() + "> in catalog " + catalogRelPath);
+        logCatalogInit.error(ERROR + "DatasetScan trying to add duplicate dataRoot =<" + path
+            + ">  already mapped to directory= <" + dre.getDirLocation() + ">" + " wanted to map to =<"
+            + dscan.getScanLocation() + "> in catalog " + catalogRelPath);
         return false;
       }
     }
@@ -214,7 +230,8 @@ public class DataRootPathMatcher {
     // check for existence
     File file = new File(dscan.getScanLocation());
     if (!skipTestDataDir && !file.exists()) {
-      logCatalogInit.error(ERROR + "DatasetScan path ='" + path + "' directory= <" + dscan.getScanLocation() + "> does not exist");
+      logCatalogInit.error(
+          ERROR + "DatasetScan path ='" + path + "' directory= <" + dscan.getScanLocation() + "> does not exist");
       return false;
     }
 
@@ -235,8 +252,9 @@ public class DataRootPathMatcher {
     if (checkDups) {
       DataRootExt dre = get(path); // check for duplicates
       if (dre != null) {
-        logCatalogInit.error(ERROR + "FeatureCollection trying to add duplicate dataRoot =<" + path + ">  already mapped to directory= <" + dre.getDirLocation() + ">" +
-                " wanted to map to =<" + fc.getTopDirectoryLocation() + "> in catalog " + catalogRelPath);
+        logCatalogInit.error(ERROR + "FeatureCollection trying to add duplicate dataRoot =<" + path
+            + ">  already mapped to directory= <" + dre.getDirLocation() + ">" + " wanted to map to =<"
+            + fc.getTopDirectoryLocation() + "> in catalog " + catalogRelPath);
         return false;
       }
     }
@@ -244,7 +262,8 @@ public class DataRootPathMatcher {
     // check for existence
     File file = new File(fc.getTopDirectoryLocation());
     if (!skipTestDataDir && !file.exists()) {
-      logCatalogInit.error(ERROR + "FeatureCollection path ='" + path + "' directory= <" + fc.getTopDirectoryLocation() + "> does not exist");
+      logCatalogInit.error(ERROR + "FeatureCollection path ='" + path + "' directory= <" + fc.getTopDirectoryLocation()
+          + "> does not exist");
       return false;
     }
 
@@ -265,8 +284,9 @@ public class DataRootPathMatcher {
     if (checkDups) {
       DataRootExt dre = get(path); // check for duplicates
       if (dre != null) {
-        logCatalogInit.error(ERROR + "DatasetRoot trying to add duplicate dataRoot =<" + path + ">  already mapped to directory= <" + dre.getDirLocation() + ">" +
-                " wanted to map to =<" + config.getLocation() + "> in catalog " + catalogRelPath);
+        logCatalogInit.error(ERROR + "DatasetRoot trying to add duplicate dataRoot =<" + path
+            + ">  already mapped to directory= <" + dre.getDirLocation() + ">" + " wanted to map to =<"
+            + config.getLocation() + "> in catalog " + catalogRelPath);
         return false;
       }
     }
@@ -275,12 +295,14 @@ public class DataRootPathMatcher {
     String location = AliasTranslator.translateAlias(config.getLocation());
     File file = new File(location);
     if (!skipTestDataDir && !file.exists()) {
-      logCatalogInit.error(ERROR + "DatasetRootConfig path ='" + path + "' directory= <" + location + "> does not exist");
+      logCatalogInit
+          .error(ERROR + "DatasetRootConfig path ='" + path + "' directory= <" + location + "> does not exist");
       return false;
     }
 
     // add it
-    putRoot(new DataRoot(config.getPath(), location, null), catalogRelPath); // LOOK would be easy to add a restrict here
+    putRoot(new DataRoot(config.getPath(), location, null), catalogRelPath); // LOOK would be easy to add a restrict
+                                                                             // here
     logCatalogInit.debug(" added rootPath=<" + path + ">  for DatasetRootConfig location= <" + location + ">");
     return true;
   }
@@ -296,8 +318,9 @@ public class DataRootPathMatcher {
     if (checkDups) {
       DataRootExt dre = get(path); // check for duplicates
       if (dre != null) {
-        logCatalogInit.error(ERROR + "CatalogScan trying to add duplicate dataRoot =<" + path + ">  already mapped to directory= <" + dre.getDirLocation() + ">" +
-                " wanted to map to =<" + catScan.getLocation() + "> in catalog " + catalogRelPath);
+        logCatalogInit.error(ERROR + "CatalogScan trying to add duplicate dataRoot =<" + path
+            + ">  already mapped to directory= <" + dre.getDirLocation() + ">" + " wanted to map to =<"
+            + catScan.getLocation() + "> in catalog " + catalogRelPath);
         return false;
       }
     }

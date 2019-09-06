@@ -27,13 +27,18 @@ public class CdmrFeatureQueryBeanValidator implements Validator {
     ValidationUtils.rejectIfEmpty(errors, "var", "var.empty", "data request must have a var paramater");
 
     CdmrFeatureQueryBean bean = (CdmrFeatureQueryBean) target;
-    if (bean.getReq() == null) bean.addError("must have a req parameter");
-    if (bean.getVar() == null) bean.addError("data request must have a var parameter");
+    if (bean.getReq() == null)
+      bean.addError("must have a req parameter");
+    if (bean.getVar() == null)
+      bean.addError("data request must have a var parameter");
 
     CdmrFeatureQueryBean.RequestType reqType;
-    if (bean.getReq().equalsIgnoreCase("data")) reqType = CdmrFeatureQueryBean.RequestType.data;
-    else if (bean.getReq().equalsIgnoreCase("header")) reqType = CdmrFeatureQueryBean.RequestType.header;
-    else reqType = CdmrFeatureQueryBean.RequestType.data; // default
+    if (bean.getReq().equalsIgnoreCase("data"))
+      reqType = CdmrFeatureQueryBean.RequestType.data;
+    else if (bean.getReq().equalsIgnoreCase("header"))
+      reqType = CdmrFeatureQueryBean.RequestType.header;
+    else
+      reqType = CdmrFeatureQueryBean.RequestType.data; // default
 
     bean.setReqType(reqType);
   }

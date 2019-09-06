@@ -12,7 +12,6 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.UnitTestCommon;
-
 import java.lang.invoke.MethodHandles;
 
 /**
@@ -32,90 +31,66 @@ import java.lang.invoke.MethodHandles;
  * } testgrid1
  */
 
-public class TestGrid1 extends UnitTestCommon
-{
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    static final protected String URLPATH = "/thredds/dodsC/scanLocal/testgrid1.nc";
+public class TestGrid1 extends UnitTestCommon {
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  static final protected String URLPATH = "/thredds/dodsC/scanLocal/testgrid1.nc";
 
-    public TestGrid1()
-    {
-        setTitle("Simple DAP Grid");
-        setSystemProperties();
+  public TestGrid1() {
+    setTitle("Simple DAP Grid");
+    setSystemProperties();
+  }
+
+  @Test
+  public void testGrid1() throws Exception {
+    System.out.println("TestGrid1:");
+    String url = "dods://" + TestDir.remoteTestServer + URLPATH;
+    boolean pass = true;
+    NetcdfDataset ncfile = null;
+
+    try {
+      ncfile = NetcdfDataset.openDataset(url);
+      pass = true;
+    } catch (Exception e) {
+      pass = false;
     }
 
-    @Test
-    public void testGrid1()
-            throws Exception
-    {
-        System.out.println("TestGrid1:");
-        String url = "dods://" + TestDir.remoteTestServer + URLPATH;
-        boolean pass = true;
-        NetcdfDataset ncfile = null;
+    Assert.assertTrue("TestGrid1: cannot find dataset", pass);
 
-        try {
-            ncfile = NetcdfDataset.openDataset(url);
-            pass = true;
-        } catch (Exception e) {
-            pass = false;
-        }
+    System.out.println("url: " + url);
 
-        Assert.assertTrue("TestGrid1: cannot find dataset", pass);
+    String metadata = null;
+    String data = null;
 
-        System.out.println("url: " + url);
+    metadata = ncdumpmetadata(ncfile, null);
 
-        String metadata = null;
-        String data = null;
+    if (prop_visual)
+      visual(getTitle() + ".dds", metadata);
+    if (true) {
+      data = ncdumpdata(ncfile, null);
+      if (prop_visual)
+        visual(getTitle() + ".dods", data);
 
-        metadata = ncdumpmetadata(ncfile,null);
-
-        if(prop_visual)
-            visual(getTitle() + ".dds", metadata);
-        if(true) {
-            data = ncdumpdata(ncfile,null);
-            if(prop_visual)
-                visual(getTitle() + ".dods", data);
-
-            if(prop_diff) { //compare with baseline
-                // Compare to the baseline file(s)
-                String ncurl = NetcdfFile.makeValidCDLName(url);
-                // strip trailing .nc
-                if(ncurl.endsWith(".nc"))
-                    ncurl = ncurl.substring(0,ncurl.length()-3);
-                String diffs = compare("TestGrid1", "netcdf " + ncurl + BASELINE,
-                        data);
-                if(diffs != null)
-                    pass = false;
-                System.err.println(diffs);
-            }
-        }Assert.assertTrue("Testing TestGrid1" + getTitle(), pass
-
-        );
+      if (prop_diff) { // compare with baseline
+        // Compare to the baseline file(s)
+        String ncurl = NetcdfFile.makeValidCDLName(url);
+        // strip trailing .nc
+        if (ncurl.endsWith(".nc"))
+          ncurl = ncurl.substring(0, ncurl.length() - 3);
+        String diffs = compare("TestGrid1", "netcdf " + ncurl + BASELINE, data);
+        if (diffs != null)
+          pass = false;
+        System.err.println(diffs);
+      }
     }
+    Assert.assertTrue("Testing TestGrid1" + getTitle(), pass
 
-    static protected final String BASELINE =
-            " {\n"
-                    +"dimensions:\n"
-                    +"lat = 2;\n"
-                    +"lon = 2;\n"
-                    +"variables:\n"
-                    +"double var(lat, lon);\n"
-                    +"String var:_CoordinateAxes = \"lat lon \";\n"
-                    +"float lat(lat);\n"
-                    +"String lat:_CoordinateAxisType = \"Lat\";\n"
-                    +"float lon(lon);\n"
-                    +"String lon:_CoordinateAxisType = \"Lon\";\n"
-                    +"// global attributes:\n"
-                    +"String :_CoordSysBuilder = \"ucar.nc2.dataset.conv.DefaultConvention\";\n"
-        +"data:\n"
-        +"var =\n"
-        +"{\n"
-        +"{0.0, 1.0},\n"
-        +"{2.0, 3.0}\n"
-        +"}\n"
-        +"lat =\n"
-        +"{17.0, 23.0}\n"
-        +"lon =\n"
-        +"{-15.0, -1.0}\n"
-        +"}\n"
-    ;
+    );
+  }
+
+  static protected final String BASELINE = " {\n" + "dimensions:\n" + "lat = 2;\n" + "lon = 2;\n" + "variables:\n"
+      + "double var(lat, lon);\n" + "String var:_CoordinateAxes = \"lat lon \";\n" + "float lat(lat);\n"
+      + "String lat:_CoordinateAxisType = \"Lat\";\n" + "float lon(lon);\n"
+      + "String lon:_CoordinateAxisType = \"Lon\";\n" + "// global attributes:\n"
+      + "String :_CoordSysBuilder = \"ucar.nc2.dataset.conv.DefaultConvention\";\n" + "data:\n" + "var =\n" + "{\n"
+      + "{0.0, 1.0},\n" + "{2.0, 3.0}\n" + "}\n" + "lat =\n" + "{17.0, 23.0}\n" + "lon =\n" + "{-15.0, -1.0}\n" + "}\n";
 }

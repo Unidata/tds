@@ -7,7 +7,6 @@ import thredds.client.catalog.*;
 import thredds.client.catalog.builder.CatalogBuilder;
 import thredds.client.catalog.builder.CatalogRefBuilder;
 import thredds.client.catalog.builder.DatasetBuilder;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,16 +41,18 @@ public class CatalogScan extends CatalogRef {
     return watch;
   }
 
-  public CatalogScan(DatasetNode parent, String name, String xlink, Map<String, Object> flds, String path, String location, String watch) {
+  public CatalogScan(DatasetNode parent, String name, String xlink, Map<String, Object> flds, String path,
+      String location, String watch) {
     super(parent, name, xlink, flds, null, null);
 
-    this.path = path;           // could use flds
+    this.path = path; // could use flds
     this.location = location;
     this.watch = watch;
   }
 
-  // when we have a real catalog  (filename != CATSCAN)
-  public ConfigCatalog getCatalog(File baseDir, String matchRemaining, String filename, CatalogReader reader) throws IOException {
+  // when we have a real catalog (filename != CATSCAN)
+  public ConfigCatalog getCatalog(File baseDir, String matchRemaining, String filename, CatalogReader reader)
+      throws IOException {
     String relLocation = (matchRemaining.length() >= 1) ? location + "/" + matchRemaining : location;
     File absLocation = new File(baseDir, relLocation);
     ConfigCatalog cc = reader.getFromAbsolutePath(absLocation + "/" + filename);
@@ -64,12 +65,14 @@ public class CatalogScan extends CatalogRef {
   public CatalogBuilder makeCatalogFromDirectory(File baseDir, String matchRemaining, URI baseURI) throws IOException {
     String relLocation = (matchRemaining.length() >= 1) ? location + "/" + matchRemaining : location;
     String name = (matchRemaining.length() >= 1) ? getName() + "/" + matchRemaining : getName();
-    File absLocation = new File( baseDir, relLocation);
+    File absLocation = new File(baseDir, relLocation);
 
     // it must be a directory
     Path wantDir = absLocation.toPath();
-    if (!Files.exists(wantDir)) throw new FileNotFoundException("Requested catalog does not exist =" + absLocation);
-    if (!Files.isDirectory(wantDir)) throw new FileNotFoundException("Not a directory =" + absLocation);
+    if (!Files.exists(wantDir))
+      throw new FileNotFoundException("Requested catalog does not exist =" + absLocation);
+    if (!Files.isDirectory(wantDir))
+      throw new FileNotFoundException("Not a directory =" + absLocation);
 
     // Setup and create catalog builder.
     CatalogBuilder catBuilder = new CatalogBuilder();
@@ -89,7 +92,8 @@ public class CatalogScan extends CatalogRef {
           String pfilename = p.getFileName().toString();
           String urlPath = pfilename;
 
-          //String path = dataDirComplete.length() == 0 ? filename : dataDirComplete + "/" + filename;  // reletive starting from current directory
+          // String path = dataDirComplete.length() == 0 ? filename : dataDirComplete + "/" + filename; // reletive
+          // starting from current directory
           CatalogRefBuilder catref = new CatalogRefBuilder(top);
           catref.setTitle(urlPath);
           catref.setHref(urlPath);
@@ -107,7 +111,7 @@ public class CatalogScan extends CatalogRef {
 
           CatalogRefBuilder catref = new CatalogRefBuilder(top);
           catref.setTitle(urlPath);
-          catref.setHref(urlPath + "/"+ CATSCAN);
+          catref.setHref(urlPath + "/" + CATSCAN);
           catref.addToList(Dataset.Properties, new Property("CatalogScan", "true"));
           top.addDataset(catref);
         }

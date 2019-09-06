@@ -8,7 +8,6 @@ import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.test.context.support.AbstractContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
-
 import thredds.server.config.TdsContext;
 
 /**
@@ -23,7 +22,7 @@ public class MockTdsContextLoader extends AbstractContextLoader {
   private TdsContentRootPath tdsContentRootPath;
 
   public ApplicationContext loadContext(MergedContextConfiguration mcc) throws Exception {
-    return loadContext( mcc.getLocations() );
+    return loadContext(mcc.getLocations());
   }
 
   @Override
@@ -32,7 +31,7 @@ public class MockTdsContextLoader extends AbstractContextLoader {
     final MockServletConfig servletConfig = new MockServletConfig(servletContext);
     final XmlWebApplicationContext webApplicationContext = new XmlWebApplicationContext();
 
-    servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,  webApplicationContext);
+    servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
     webApplicationContext.setServletConfig(servletConfig);
     webApplicationContext.setConfigLocations(locations);
     webApplicationContext.refresh();
@@ -54,8 +53,8 @@ public class MockTdsContextLoader extends AbstractContextLoader {
   /**
    * If the test is annotated with TdsContentPath, override the contentRootPath with the provided path
    */
-  private void checkContentRootPath(XmlWebApplicationContext webApplicationContext, TdsContext tdsContext){
-    if(tdsContentRootPath != null )
+  private void checkContentRootPath(XmlWebApplicationContext webApplicationContext, TdsContext tdsContext) {
+    if (tdsContentRootPath != null)
       tdsContext.setContentRootPathProperty(tdsContentRootPath.path());
   }
 
@@ -79,7 +78,7 @@ public class MockTdsContextLoader extends AbstractContextLoader {
     return super.modifyLocations(clazz, locations);
   }
 
-  private void extractConfiguration(Class<?> clazz){
+  private void extractConfiguration(Class<?> clazz) {
     tdsContentRootPath = AnnotationUtils.findAnnotation(clazz, TdsContentRootPath.class);
   }
 }

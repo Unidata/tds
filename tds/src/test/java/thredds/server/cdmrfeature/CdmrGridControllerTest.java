@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import thredds.util.ContentType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.lang.invoke.MethodHandles;
 
 /**
@@ -28,52 +27,46 @@ import java.lang.invoke.MethodHandles;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations={"/WEB-INF/applicationContext.xml"})
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"})
 @Category(NeedsCdmUnitTest.class)
 public class CdmrGridControllerTest {
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Autowired
-    private WebApplicationContext wac;
+  @Autowired
+  private WebApplicationContext wac;
 
-    private MockMvc mockMvc;
-    private String datasetPath;
+  private MockMvc mockMvc;
+  private String datasetPath;
 
-    @Before
-    public void setup(){
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-        this.datasetPath = "/cdmrfeature/grid/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc";
-    }
+  @Before
+  public void setup() {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    this.datasetPath = "/cdmrfeature/grid/cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc";
+  }
 
-    @Test
-    public void testHeader() throws Exception {
-        RequestBuilder rb = MockMvcRequestBuilders.get(datasetPath).servletPath(datasetPath)
-                .param("req", "header");
+  @Test
+  public void testHeader() throws Exception {
+    RequestBuilder rb = MockMvcRequestBuilders.get(datasetPath).servletPath(datasetPath).param("req", "header");
 
-        MvcResult result = this.mockMvc.perform( rb )
-                .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.content().contentType(ContentType.binary.getContentHeader()))
-                .andReturn();
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(ContentType.binary.getContentHeader())).andReturn();
 
-        // We want this statement to succeed without exception.
-        // Throws NullPointerException if header doesn't exist
-        // Throws IllegalArgumentException if header value is not a valid date.
-        result.getResponse().getDateHeader("Last-Modified");
-    }
+    // We want this statement to succeed without exception.
+    // Throws NullPointerException if header doesn't exist
+    // Throws IllegalArgumentException if header value is not a valid date.
+    result.getResponse().getDateHeader("Last-Modified");
+  }
 
-    @Test
-    public void testForm() throws Exception {
-        RequestBuilder rb = MockMvcRequestBuilders.get(datasetPath).servletPath(datasetPath)
-                .param("req", "form");
+  @Test
+  public void testForm() throws Exception {
+    RequestBuilder rb = MockMvcRequestBuilders.get(datasetPath).servletPath(datasetPath).param("req", "form");
 
-        MvcResult result = this.mockMvc.perform( rb )
-                .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.content().contentType(ContentType.text.getContentHeader()))
-                .andReturn();
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(ContentType.text.getContentHeader())).andReturn();
 
-        // We want this statement to succeed without exception.
-        // Throws NullPointerException if header doesn't exist
-        // Throws IllegalArgumentException if header value is not a valid date.
-        result.getResponse().getDateHeader("Last-Modified");
-    }
+    // We want this statement to succeed without exception.
+    // Throws NullPointerException if header doesn't exist
+    // Throws IllegalArgumentException if header value is not a valid date.
+    result.getResponse().getDateHeader("Last-Modified");
+  }
 }

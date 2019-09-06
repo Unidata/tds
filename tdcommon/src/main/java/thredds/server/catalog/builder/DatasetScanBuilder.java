@@ -32,11 +32,12 @@ public class DatasetScanBuilder extends DatasetBuilder {
   public DatasetScan makeDataset(DatasetNode parent) {
     addToList(Dataset.Properties, new Property("DatasetScan", "true"));
 
-    String xlink = "/thredds/catalog/"+config.path+"/catalog.xml";   // LOOK hardcoded thredds, need context, or make it reletive ??
+    String xlink = "/thredds/catalog/" + config.path + "/catalog.xml"; // LOOK hardcoded thredds, need context, or make
+                                                                       // it reletive ??
     DatasetScan dscan = new DatasetScan(parent, name, xlink, flds, accessBuilders, datasetBuilders, config);
 
     if (null == dscan.getServiceNameDefault() && null == dscan.getFeatureType())
-      logger.error("DatasetScan "+name+" does not have a default serviceName or dataType/featureType");
+      logger.error("DatasetScan " + name + " does not have a default serviceName or dataType/featureType");
 
     return dscan;
   }

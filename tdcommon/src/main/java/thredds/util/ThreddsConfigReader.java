@@ -11,7 +11,6 @@ import org.jdom2.input.SAXBuilder;
 import org.springframework.util.StringUtils;
 import ucar.nc2.units.TimeDuration;
 import ucar.nc2.util.xml.RuntimeConfigParser;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,12 +30,13 @@ public class ThreddsConfigReader {
   private org.slf4j.Logger log;
   private Element rootElem;
 
-  public ThreddsConfigReader( String filename, org.slf4j.Logger log) {
+  public ThreddsConfigReader(String filename, org.slf4j.Logger log) {
     this.log = log;
 
     File file = new File(filename);
-    if (!file.exists()) return;
-    log.info( "ThreddsConfigReader reading xml file = " + filename);
+    if (!file.exists())
+      return;
+    log.info("ThreddsConfigReader reading xml file = " + filename);
 
     org.jdom2.Document doc;
     try {
@@ -44,7 +44,7 @@ public class ThreddsConfigReader {
       SAXBuilder builder = new SAXBuilder();
       doc = builder.build(is);
     } catch (IOException | JDOMException e) {
-      log.error( "ThreddsConfigReader: incorrectly formed xml file [" + filename + "]: " + e.getMessage());
+      log.error("ThreddsConfigReader: incorrectly formed xml file [" + filename + "]: " + e.getMessage());
       return;
     }
     rootElem = doc.getRootElement();
@@ -55,8 +55,8 @@ public class ThreddsConfigReader {
       StringBuilder errlog = new StringBuilder();
       RuntimeConfigParser.read(elem, errlog);
       if (errlog.length() > 0)
-        //System.out.println( "ThreddsConfig:WARN: " + errlog.toString());
-        log.warn( "ThreddsConfigReader nj22Config: {}", errlog.toString());
+        // System.out.println( "ThreddsConfig:WARN: " + errlog.toString());
+        log.warn("ThreddsConfigReader nj22Config: {}", errlog.toString());
     }
   }
 
@@ -73,8 +73,9 @@ public class ThreddsConfigReader {
 
   public List<String> getElementList(String elementName, String subElementName) {
     List<String> result = new ArrayList<>();
-    Element elem = rootElem.getChild( elementName );
-    if (elem == null) return result;
+    Element elem = rootElem.getChild(elementName);
+    if (elem == null)
+      return result;
     List<Element> rootList = elem.getChildren(subElementName);
     for (Element elem2 : rootList) {
       String location = StringUtils.cleanPath(elem2.getTextNormalize());
@@ -91,7 +92,8 @@ public class ThreddsConfigReader {
 
   public boolean hasElement(String paramName) {
     Element elem = rootElem;
-    if (elem == null) return false;
+    if (elem == null)
+      return false;
     StringTokenizer stoke = new StringTokenizer(paramName, ".");
     while (stoke.hasMoreTokens()) {
       String toke = stoke.nextToken();
@@ -103,32 +105,35 @@ public class ThreddsConfigReader {
   }
 
   public boolean getBoolean(String paramName, boolean defValue) {
-    String s = getParam( paramName);
-    if (s == null) return defValue;
+    String s = getParam(paramName);
+    if (s == null)
+      return defValue;
 
     try {
       return Boolean.parseBoolean(s);
     } catch (Exception e) {
-      log.error("ThreddsConfig: param "+paramName+" not a boolean: " + e.getMessage());
+      log.error("ThreddsConfig: param " + paramName + " not a boolean: " + e.getMessage());
     }
     return defValue;
   }
 
   public Boolean getBoolean(String paramName) {
-    String s = getParam( paramName);
-    if (s == null) return null;
+    String s = getParam(paramName);
+    if (s == null)
+      return null;
 
     try {
       return Boolean.parseBoolean(s);
     } catch (Exception e) {
-      log.error("ThreddsConfig: param "+paramName+" not a boolean: " + e.getMessage());
+      log.error("ThreddsConfig: param " + paramName + " not a boolean: " + e.getMessage());
     }
     return null;
   }
 
   public long getBytes(String paramName, long defValue) {
     String s = getParam(paramName);
-    if (s == null) return defValue;
+    if (s == null)
+      return defValue;
 
     String num = s;
     try {
@@ -139,60 +144,69 @@ public class ThreddsConfigReader {
         String units = s.substring(pos + 1).trim();
 
         char c = Character.toUpperCase(units.charAt(0));
-        if (c == 'K') factor = 1000;
-        else if (c == 'M') factor = 1000 * 1000;
-        else if (c == 'G') factor = 1000 * 1000 * 1000;
-        else if (c == 'T') factor = ((long)1000) * 1000 * 1000 * 1000;
-        else if (c == 'P') factor = ((long)1000) * 1000 * 1000 * 1000 * 1000;
+        if (c == 'K')
+          factor = 1000;
+        else if (c == 'M')
+          factor = 1000 * 1000;
+        else if (c == 'G')
+          factor = 1000 * 1000 * 1000;
+        else if (c == 'T')
+          factor = ((long) 1000) * 1000 * 1000 * 1000;
+        else if (c == 'P')
+          factor = ((long) 1000) * 1000 * 1000 * 1000 * 1000;
       }
 
       return factor * Long.parseLong(num);
 
     } catch (Exception e) {
-      log.error("ThreddsConfig: param " + paramName + " not a byte count: " + s+" "+e.getMessage());
+      log.error("ThreddsConfig: param " + paramName + " not a byte count: " + s + " " + e.getMessage());
     }
     return defValue;
   }
 
   public int getInt(String paramName, int defValue) {
-      String s = getParam( paramName);
-      if (s == null) return defValue;
-
-      try {
-        return Integer.parseInt(s);
-      } catch (Exception e) {
-        log.error("ThreddsConfig: param "+paramName+" not an integer " + e.getMessage());
-      }
+    String s = getParam(paramName);
+    if (s == null)
       return defValue;
+
+    try {
+      return Integer.parseInt(s);
+    } catch (Exception e) {
+      log.error("ThreddsConfig: param " + paramName + " not an integer " + e.getMessage());
     }
-
-    public long getLong(String paramName, long defValue) {
-          String s = getParam( paramName);
-          if (s == null) return defValue;
-          try {
-            return Long.parseLong(s);
-          } catch (Exception e) {
-            log.error("ThreddsConfig: param "+paramName+" not a long " + e.getMessage());
-          }
-          return defValue;
-    }
-
-    public int getSeconds(String paramName, int defValue) {
-        String s = getParam( paramName);
-        if (s == null) return defValue;
-
-        try {
-          TimeDuration tu = new TimeDuration(s);
-          return (int) tu.getValueInSeconds();
-        } catch (Exception e) {
-          log.error("ThreddsConfig: param "+paramName+" not udunit time " + e.getMessage());
-        }
-        return defValue;
+    return defValue;
   }
 
-  private String getParam( String name) {
+  public long getLong(String paramName, long defValue) {
+    String s = getParam(paramName);
+    if (s == null)
+      return defValue;
+    try {
+      return Long.parseLong(s);
+    } catch (Exception e) {
+      log.error("ThreddsConfig: param " + paramName + " not a long " + e.getMessage());
+    }
+    return defValue;
+  }
+
+  public int getSeconds(String paramName, int defValue) {
+    String s = getParam(paramName);
+    if (s == null)
+      return defValue;
+
+    try {
+      TimeDuration tu = new TimeDuration(s);
+      return (int) tu.getValueInSeconds();
+    } catch (Exception e) {
+      log.error("ThreddsConfig: param " + paramName + " not udunit time " + e.getMessage());
+    }
+    return defValue;
+  }
+
+  private String getParam(String name) {
     Element elem = rootElem;
-    if (elem == null) return null;
+    if (elem == null)
+      return null;
     StringTokenizer stoke = new StringTokenizer(name, ".");
     while (stoke.hasMoreTokens()) {
       String toke = stoke.nextToken();
@@ -200,7 +214,7 @@ public class ThreddsConfigReader {
       if (null == elem)
         return null;
     }
-    String text =  elem.getText();
+    String text = elem.getText();
     return (text == null) ? null : text.trim();
   }
 

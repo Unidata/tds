@@ -8,7 +8,6 @@ import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 
@@ -23,15 +22,16 @@ public class DatasetTrackerTest implements Externalizable {
 
   public static void main(String[] args) throws IOException {
 
-    ChronicleMapBuilder<String, Externalizable> builder = ChronicleMapBuilder.of(String.class, Externalizable.class)
-            .averageValueSize(200).entries(100);
+    ChronicleMapBuilder<String, Externalizable> builder =
+        ChronicleMapBuilder.of(String.class, Externalizable.class).averageValueSize(200).entries(100);
 
     File dbFile = new File("C:/Temp/cdb.tmp");
 
     ChronicleMap<String, Externalizable> datasetMap = builder.createPersistedTo(dbFile);
     System.out.printf("%s%n", datasetMap);
 
-    String key = "esg_dataroot/obs4MIPs/observations/atmos/husNobs/mon/grid/NASA-JPL/AIRS/v20110608/husNobs_AIRS_L3_RetStd-v5_200209-201105.nc";
+    String key =
+        "esg_dataroot/obs4MIPs/observations/atmos/husNobs/mon/grid/NASA-JPL/AIRS/v20110608/husNobs_AIRS_L3_RetStd-v5_200209-201105.nc";
     datasetMap.put(key, new DatasetTrackerTest("value"));
 
     DatasetTrackerTest saved = (DatasetTrackerTest) datasetMap.get(key);
@@ -44,8 +44,7 @@ public class DatasetTrackerTest implements Externalizable {
   String value;
 
   // Externalizable needs void constructor
-  public DatasetTrackerTest() {
-  }
+  public DatasetTrackerTest() {}
 
   public DatasetTrackerTest(String value) {
     this.value = value;

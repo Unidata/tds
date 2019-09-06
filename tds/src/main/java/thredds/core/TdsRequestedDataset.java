@@ -13,7 +13,6 @@ import ucar.nc2.dt.GridDataset;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft2.coverage.CoverageCollection;
 import ucar.nc2.ft2.simpgeometry.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -25,7 +24,7 @@ import java.io.IOException;
  *
  * Open the requested dataset as a FeatureDataset/GridDataset/NetcdfFile.
  * If the request requires an authentication challenge, a challenge will be sent back to the client using
- * the response object, and this method will return null.  (This is the only
+ * the response object, and this method will return null. (This is the only
  * circumstance in which this method will return null.)
  * The client will then repeat the request.
  *
@@ -46,34 +45,46 @@ public class TdsRequestedDataset {
   static private DatasetManager datasetManager;
 
   // return null means request has been handled, and calling routine should exit without further processing
-  public static FeatureDatasetPoint getPointDataset(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+  public static FeatureDatasetPoint getPointDataset(HttpServletRequest request, HttpServletResponse response,
+      String path) throws IOException {
     TdsRequestedDataset trd = new TdsRequestedDataset(request, null);
-    if (path != null) trd.path = path;
+    if (path != null)
+      trd.path = path;
     return trd.openAsPointDataset(request, response);
   }
 
   // return null means request has been handled, and calling routine should exit without further processing
-  public static GridDataset getGridDataset(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+  public static GridDataset getGridDataset(HttpServletRequest request, HttpServletResponse response, String path)
+      throws IOException {
     TdsRequestedDataset trd = new TdsRequestedDataset(request, null);
-    if (path != null) trd.path = path;
+    if (path != null)
+      trd.path = path;
     return trd.openAsGridDataset(request, response);
   }
 
   // return null means request has been handled, and calling routine should exit without further processing
-  public static CoverageCollection getCoverageCollection(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+  public static CoverageCollection getCoverageCollection(HttpServletRequest request, HttpServletResponse response,
+      String path) throws IOException {
     TdsRequestedDataset trd = new TdsRequestedDataset(request, null);
-    if (path != null) trd.path = path;
+    if (path != null)
+      trd.path = path;
     return trd.openAsCoverageDataset(request, response);
   }
-  public static SimpleGeometryFeatureDataset getSimpleGeometryFeatureDataset(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+
+  public static SimpleGeometryFeatureDataset getSimpleGeometryFeatureDataset(HttpServletRequest request,
+      HttpServletResponse response, String path) throws IOException {
     TdsRequestedDataset trd = new TdsRequestedDataset(request, null);
-    if (path != null) trd.path = path;
+    if (path != null)
+      trd.path = path;
     return trd.openAsSimpleGeometryDataset(request, response);
   }
+
   // return null means request has been handled, and calling routine should exit without further processing
-  public static NetcdfFile getNetcdfFile(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+  public static NetcdfFile getNetcdfFile(HttpServletRequest request, HttpServletResponse response, String path)
+      throws IOException {
     TdsRequestedDataset trd = new TdsRequestedDataset(request, null);
-    if (path != null) trd.path = path;
+    if (path != null)
+      trd.path = path;
     return trd.openAsNetcdfFile(request, response);
   }
 
@@ -111,17 +122,23 @@ public class TdsRequestedDataset {
   }
 
   // return null means request has been handled, and calling routine should exit without further processing
-  public FeatureDatasetPoint openAsPointDataset(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public FeatureDatasetPoint openAsPointDataset(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
     return datasetManager.openPointDataset(request, response, path);
   }
 
   // return null means request has been handled, and calling routine should exit without further processing
-  public CoverageCollection openAsCoverageDataset(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public CoverageCollection openAsCoverageDataset(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
     return datasetManager.openCoverageDataset(request, response, path);
   }
-  public SimpleGeometryFeatureDataset openAsSimpleGeometryDataset(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    return isRemote? SimpleGeometryFeatureDataset.open(path) : datasetManager.openSimpleGeometryDataset(request, response, path);
+
+  public SimpleGeometryFeatureDataset openAsSimpleGeometryDataset(HttpServletRequest request,
+      HttpServletResponse response) throws IOException {
+    return isRemote ? SimpleGeometryFeatureDataset.open(path)
+        : datasetManager.openSimpleGeometryDataset(request, response, path);
   }
+
   // return null means request has been handled, and calling routine should exit without further processing
   public GridDataset openAsGridDataset(HttpServletRequest request, HttpServletResponse response) throws IOException {
     return isRemote ? ucar.nc2.dt.grid.GridDataset.open(path) : datasetManager.openGridDataset(request, response, path);

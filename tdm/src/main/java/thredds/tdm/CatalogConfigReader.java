@@ -4,13 +4,11 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-
 import thredds.client.catalog.Catalog;
 import thredds.featurecollection.FeatureCollectionConfig;
 import thredds.inventory.CollectionSpecParser;
 import thredds.featurecollection.FeatureCollectionConfigBuilder;
 import ucar.nc2.util.AliasTranslator;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -47,12 +45,12 @@ public class CatalogConfigReader {
   }
 
   private boolean readCatalog(Resource catR) throws IOException {
-    //String catFilename = catR.getURI().toString();
-    //if (catFilename.startsWith("file:/")) catFilename = catFilename.substring("file:/".length());
+    // String catFilename = catR.getURI().toString();
+    // if (catFilename.startsWith("file:/")) catFilename = catFilename.substring("file:/".length());
     File catFile = catR.getFile();
-    //String fcName = null;
+    // String fcName = null;
 
-    //File cat = new File(catFilename);
+    // File cat = new File(catFilename);
     org.jdom2.Document doc;
     try {
       SAXBuilder builder = new SAXBuilder();
@@ -81,18 +79,21 @@ public class CatalogConfigReader {
             CollectionSpecParser specp = config.getCollectionSpecParser(errlog);
             Path rootPath = Paths.get(specp.getRootDir());
             if (!Files.exists(rootPath)) {
-              System.out.printf("Root path '%s' does not exist fc='%s' from catalog=%s %n", rootPath.toString(), config.collectionName, catFile.getPath());
-              log.error("Root path '{}' does not exist fc='{}' from catalog={}", rootPath.toString(), config.collectionName, catFile.getPath());
+              System.out.printf("Root path '%s' does not exist fc='%s' from catalog=%s %n", rootPath.toString(),
+                  config.collectionName, catFile.getPath());
+              log.error("Root path '{}' does not exist fc='{}' from catalog={}", rootPath.toString(),
+                  config.collectionName, catFile.getPath());
               continue;
             }
 
             fcList.add(config);
-            if (debug) System.out.printf("Added  fc='%s' from catalog=%s%n", config.collectionName, catFile.getPath());
+            if (debug)
+              System.out.printf("Added  fc='%s' from catalog=%s%n", config.collectionName, catFile.getPath());
           }
 
         } catch (Throwable e) {
           e.printStackTrace();
-          log.error("Error reading collection "+name+" skipping collection ", e);
+          log.error("Error reading collection " + name + " skipping collection ", e);
         }
       }
 
@@ -117,7 +118,7 @@ public class CatalogConfigReader {
       }
     } catch (IllegalStateException e) {
       e.printStackTrace();
-      log.error("Error follow catrefs in "+catFile.getPath()+" skipping ", e);
+      log.error("Error follow catrefs in " + catFile.getPath() + " skipping ", e);
     }
 
     // follow catscans
@@ -126,7 +127,7 @@ public class CatalogConfigReader {
       findNestedElems(root, "catalogScan", catscanElems);
       for (Element catscanElem : catscanElems) {
         String location = catscanElem.getAttributeValue("location");
-        File catDir = new File(rootDir, location);      // LOOK location reletive to rootDir, could be to current dir
+        File catDir = new File(rootDir, location); // LOOK location reletive to rootDir, could be to current dir
         if (!catDir.exists()) {
           log.error("Catalog scan directory {} does not exist", catDir);
           continue;
@@ -135,7 +136,7 @@ public class CatalogConfigReader {
       }
     } catch (IllegalStateException e) {
       e.printStackTrace();
-      log.error("Error follow catrefs in "+catFile.getPath()+" skipping ", e);
+      log.error("Error follow catrefs in " + catFile.getPath() + " skipping ", e);
     }
 
     return true;
@@ -162,7 +163,7 @@ public class CatalogConfigReader {
 
   private void readCatsInDirectory(Path catDir) throws IOException {
 
-     // do any catalogs first
+    // do any catalogs first
     try (DirectoryStream<Path> ds = Files.newDirectoryStream(catDir, "*.xml")) {
       for (Path p : ds) {
         if (!Files.isDirectory(p)) {
@@ -174,12 +175,12 @@ public class CatalogConfigReader {
 
     // now recurse into the directories
     try (DirectoryStream<Path> ds = Files.newDirectoryStream(catDir)) {
-       for (Path dir : ds) {
-         if (Files.isDirectory(dir)) {
-           readCatsInDirectory(dir);
-         }
-       }
-     }
-   }
+      for (Path dir : ds) {
+        if (Files.isDirectory(dir)) {
+          readCatsInDirectory(dir);
+        }
+      }
+    }
+  }
 
 }

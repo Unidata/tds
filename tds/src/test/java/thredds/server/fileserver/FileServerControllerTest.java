@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.lang.invoke.MethodHandles;
 
 /**
@@ -25,29 +24,29 @@ import java.lang.invoke.MethodHandles;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations={"/WEB-INF/applicationContext.xml"})
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"})
 @Category(NeedsCdmUnitTest.class)
 public class FileServerControllerTest {
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new FileServerController()).build();
-    }
+  @Before
+  public void setup() {
+    this.mockMvc = MockMvcBuilders.standaloneSetup(new FileServerController()).build();
+  }
 
-    @Test
-    public void testLastModified() throws Exception {
-        String path = "/fileServer/testNAMfmrc/files/20060925_0600.nc";
-        RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
+  @Test
+  public void testLastModified() throws Exception {
+    String path = "/fileServer/testNAMfmrc/files/20060925_0600.nc";
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
 
-        MvcResult result = mockMvc.perform(rb).andReturn();
-        Assert.assertEquals(200, result.getResponse().getStatus());
+    MvcResult result = mockMvc.perform(rb).andReturn();
+    Assert.assertEquals(200, result.getResponse().getStatus());
 
-        // We want this statement to succeed without exception.
-        // Throws NullPointerException if header doesn't exist
-        // Throws IllegalArgumentException if header value is not a valid date.
-        result.getResponse().getDateHeader("Last-Modified");
-    }
+    // We want this statement to succeed without exception.
+    // Throws NullPointerException if header doesn't exist
+    // Throws IllegalArgumentException if header value is not a valid date.
+    result.getResponse().getDateHeader("Last-Modified");
+  }
 }

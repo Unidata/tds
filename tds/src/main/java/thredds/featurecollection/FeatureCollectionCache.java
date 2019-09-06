@@ -40,44 +40,40 @@ public class FeatureCollectionCache implements InitializingBean {
 
   private Cache<String, InvDatasetFeatureCollection> cache; // key is the collectionName
 
-  public FeatureCollectionCache() {
-  }
+  public FeatureCollectionCache() {}
 
   public FeatureCollectionCache(int maxSize) {
 
-    RemovalListener<String, InvDatasetFeatureCollection> removalListener = new RemovalListener<String, InvDatasetFeatureCollection>() {
-      public void onRemoval(RemovalNotification<String, InvDatasetFeatureCollection> removal) {
-        InvDatasetFeatureCollection fc = removal.getValue();
-        if (fc != null) fc.close();
-      }
-    };
+    RemovalListener<String, InvDatasetFeatureCollection> removalListener =
+        new RemovalListener<String, InvDatasetFeatureCollection>() {
+          public void onRemoval(RemovalNotification<String, InvDatasetFeatureCollection> removal) {
+            InvDatasetFeatureCollection fc = removal.getValue();
+            if (fc != null)
+              fc.close();
+          }
+        };
 
-    this.cache = CacheBuilder.newBuilder()
-            .maximumSize(maxSize)
-            .recordStats()
-            .removalListener(removalListener)
-            .build();
+    this.cache = CacheBuilder.newBuilder().maximumSize(maxSize).recordStats().removalListener(removalListener).build();
   }
 
   @Override
   public void afterPropertiesSet() {
-    this.cache = CacheBuilder.newBuilder()
-            .maximumSize(1000)
-            .recordStats()
-            .build();
+    this.cache = CacheBuilder.newBuilder().maximumSize(1000).recordStats().build();
   }
 
- /* public void put(String collectionName, InvDatasetFeatureCollection fc) throws IOException {
-    cache.put(collectionName, fc);
-  }
-
-  public void invalidate(String collectionName) throws IOException {
-    cache.invalidate(collectionName);
-  }
-
-  public InvDatasetFeatureCollection getIfPresent(String collectionName) throws IOException {
-    return cache.getIfPresent(collectionName);
-  } */
+  /*
+   * public void put(String collectionName, InvDatasetFeatureCollection fc) throws IOException {
+   * cache.put(collectionName, fc);
+   * }
+   * 
+   * public void invalidate(String collectionName) throws IOException {
+   * cache.invalidate(collectionName);
+   * }
+   * 
+   * public InvDatasetFeatureCollection getIfPresent(String collectionName) throws IOException {
+   * return cache.getIfPresent(collectionName);
+   * }
+   */
 
   public void invalidateAll() { // LOOK may need to call close on anything in the cache
     cache.invalidateAll();
@@ -94,7 +90,8 @@ public class FeatureCollectionCache implements InitializingBean {
 
     } catch (ExecutionException e) {
       Throwable c = e.getCause();
-      if (c instanceof IOException) throw (IOException) c;
+      if (c instanceof IOException)
+        throw (IOException) c;
       throw new RuntimeException(e.getCause());
     }
   }
@@ -102,9 +99,9 @@ public class FeatureCollectionCache implements InitializingBean {
   private InvDatasetFeatureCollection makeFeatureCollection(FeatureCollectionRef fcr) throws IOException {
     try {
       InvDatasetFeatureCollection result = InvDatasetFeatureCollection.factory(fcr, fcr.getConfig());
-      eventBus.register(result);                               // LOOK on reread, do we want updating?
-      collectionUpdater.scheduleTasks(fcr.getConfig(), null);  // schedule any updating specified in the <update> element
-                                                               // null means use default logger
+      eventBus.register(result); // LOOK on reread, do we want updating?
+      collectionUpdater.scheduleTasks(fcr.getConfig(), null); // schedule any updating specified in the <update> element
+                                                              // null means use default logger
       return result;
 
     } catch (Throwable t) {

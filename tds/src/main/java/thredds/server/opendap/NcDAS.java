@@ -13,11 +13,9 @@ import ucar.nc2.*;
 import ucar.nc2.constants.CDM;
 import ucar.nc2.dods.*;
 import ucar.ma2.DataType;
-
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
-
 import opendap.dap.AttributeExistsException;
 
 /**
@@ -53,7 +51,7 @@ public class NcDAS extends opendap.dap.DAS {
         log.error("Cant add NC_GLOBAL", e);
       }
 
-    // unlimited  dimension
+    // unlimited dimension
     iter = ncfile.getDimensions().iterator();
     while (iter.hasNext()) {
       Dimension d = (Dimension) iter.next();
@@ -75,7 +73,8 @@ public class NcDAS extends opendap.dap.DAS {
     while (iter.hasNext()) {
       Dimension d = (Dimension) iter.next();
       if (null == usedDims.get(d.getShortName())) {
-        if (dimTable == null) dimTable = new opendap.dap.AttributeTable("EXTRA_DIMENSION");
+        if (dimTable == null)
+          dimTable = new opendap.dap.AttributeTable("EXTRA_DIMENSION");
         try {
           dimTable.appendAttribute(d.getShortName(), opendap.dap.Attribute.INT32, Integer.toString(d.getLength()));
         } catch (Exception e) {
@@ -94,12 +93,12 @@ public class NcDAS extends opendap.dap.DAS {
 
   private void doVariable(Variable v, opendap.dap.AttributeTable parentTable) {
 
-    for (Dimension dim :  v.getDimensions()) {
+    for (Dimension dim : v.getDimensions()) {
       if (dim.isShared())
         usedDims.put(dim.getShortName(), dim);
     }
 
-    //if (v.getAttributes().size() == 0) return; // LOOK DAP 2 say must have empty
+    // if (v.getAttributes().size() == 0) return; // LOOK DAP 2 say must have empty
 
     // The variable names as taken from the variable,
     // are not dap escaped, so we need to make sure that happens.
@@ -135,7 +134,8 @@ public class NcDAS extends opendap.dap.DAS {
     // always indicate if byte is signed or not ; see JIRA issue TDS-334
     if (isVbyte)
       try {
-        table.appendAttribute(CDM.UNSIGNED, opendap.dap.Attribute.STRING, v.getDataType().isUnsigned() ? "true" : "false");
+        table.appendAttribute(CDM.UNSIGNED, opendap.dap.Attribute.STRING,
+            v.getDataType().isUnsigned() ? "true" : "false");
       } catch (DASException e) {
         log.error("Error appending unsigned attribute ", e);
       }
@@ -143,7 +143,8 @@ public class NcDAS extends opendap.dap.DAS {
     // add attribute table for this variable
     while (iter.hasNext()) {
       Attribute att = (Attribute) iter.next();
-      if (isVbyte && att.getShortName().equalsIgnoreCase(CDM.UNSIGNED)) continue; // got this covered
+      if (isVbyte && att.getShortName().equalsIgnoreCase(CDM.UNSIGNED))
+        continue; // got this covered
 
       int dods_type = DODSNetcdfFile.convertToDODSType(att.getDataType());
 
@@ -151,10 +152,11 @@ public class NcDAS extends opendap.dap.DAS {
         // The attribute names as taken from the variable are not escaped, so we need to make sure that happens.
         String attName = att.getShortName();
         if (att.isString()) {
-          /* do in Attribute.print()
-          String value = EscapeStrings.backslashEscape(att.getStringValue(),"\"\\");
-          table.appendAttribute(attName, dods_type, value);
-          */
+          /*
+           * do in Attribute.print()
+           * String value = EscapeStrings.backslashEscape(att.getStringValue(),"\"\\");
+           * table.appendAttribute(attName, dods_type, value);
+           */
           table.appendAttribute(attName, dods_type, att.getStringValue());
 
         } else {

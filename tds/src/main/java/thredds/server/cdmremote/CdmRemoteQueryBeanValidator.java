@@ -27,17 +27,26 @@ public class CdmRemoteQueryBeanValidator implements Validator {
     ValidationUtils.rejectIfEmpty(errors, "var", "var.empty", "data request must have a var paramater");
 
     CdmRemoteQueryBean bean = (CdmRemoteQueryBean) target;
-    if (bean.getReq() == null) bean.addError("must have a req parameter");
-    if (bean.getVar() == null) bean.addError("data request must have a var parameter");
+    if (bean.getReq() == null)
+      bean.addError("must have a req parameter");
+    if (bean.getVar() == null)
+      bean.addError("data request must have a var parameter");
 
     CdmRemoteQueryBean.RequestType reqType;
-    if (bean.getReq().equalsIgnoreCase("capabilities")) reqType = CdmRemoteQueryBean.RequestType.capabilities;
-    else if (bean.getReq().equalsIgnoreCase("cdl")) reqType = CdmRemoteQueryBean.RequestType.cdl;
-    else if (bean.getReq().equalsIgnoreCase("form")) reqType = CdmRemoteQueryBean.RequestType.cdl;
-    else if (bean.getReq().equalsIgnoreCase("data")) reqType = CdmRemoteQueryBean.RequestType.data;
-    else if (bean.getReq().equalsIgnoreCase("header")) reqType = CdmRemoteQueryBean.RequestType.header;
-    else if (bean.getReq().equalsIgnoreCase("ncml")) reqType = CdmRemoteQueryBean.RequestType.ncml;
-    else reqType = CdmRemoteQueryBean.RequestType.data; // default
+    if (bean.getReq().equalsIgnoreCase("capabilities"))
+      reqType = CdmRemoteQueryBean.RequestType.capabilities;
+    else if (bean.getReq().equalsIgnoreCase("cdl"))
+      reqType = CdmRemoteQueryBean.RequestType.cdl;
+    else if (bean.getReq().equalsIgnoreCase("form"))
+      reqType = CdmRemoteQueryBean.RequestType.cdl;
+    else if (bean.getReq().equalsIgnoreCase("data"))
+      reqType = CdmRemoteQueryBean.RequestType.data;
+    else if (bean.getReq().equalsIgnoreCase("header"))
+      reqType = CdmRemoteQueryBean.RequestType.header;
+    else if (bean.getReq().equalsIgnoreCase("ncml"))
+      reqType = CdmRemoteQueryBean.RequestType.ncml;
+    else
+      reqType = CdmRemoteQueryBean.RequestType.data; // default
     bean.setReqType(reqType);
 
     int deflateLevel = bean.getDeflate();

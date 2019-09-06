@@ -10,7 +10,6 @@ import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.nc2.time.CalendarPeriod;
 import ucar.unidata.geoloc.LatLonPointImpl;
-
 import java.util.List;
 
 /**

@@ -20,16 +20,14 @@ import org.springframework.web.servlet.ModelAndView;
 import thredds.mock.web.MockTdsContextLoader;
 import thredds.server.config.TdsServerInfoBean;
 import ucar.unidata.util.test.category.NeedsContentRoot;
-
 import java.lang.invoke.MethodHandles;
-
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.ModelAndViewAssert.assertAndReturnModelAttributeOfType;
 import static org.springframework.test.web.ModelAndViewAssert.assertViewName;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/WEB-INF/applicationContext.xml"},loader=MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
 @Category(NeedsContentRoot.class)
 public class ServerInfoControllerTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

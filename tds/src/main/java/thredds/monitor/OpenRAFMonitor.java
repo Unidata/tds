@@ -8,14 +8,19 @@ import java.util.List;
 
 /**
  * interface for monitoring RAF files, used by JMX.
+ * 
  * @author caron
  * @since Mar 15, 2008
  */
 public interface OpenRAFMonitor {
   boolean getDebugLeaks();
+
   void setDebugLeaks(boolean b);
+
   List<String> getOpenFiles();
+
   int getNseeks();
+
   long getNbytes();
 }
 

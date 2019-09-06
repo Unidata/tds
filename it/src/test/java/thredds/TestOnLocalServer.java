@@ -17,7 +17,6 @@ import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
 import ucar.nc2.util.IO;
-
 import java.io.File;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
@@ -41,16 +40,16 @@ public class TestOnLocalServer {
   /**
    * Construct a URL using the specified protocol and path. Its format will be: {@code <protocol>://<server>/<path>}.
    *
-   * @param protocol  the protocol to prepend to {@link #server}. Any trailing slashes or colons will be removed.
-   * @param path      the path to append to {@link #server}. Any leading slashes will be removed.
-   * @return  a URL using the specified protocol and path.
+   * @param protocol the protocol to prepend to {@link #server}. Any trailing slashes or colons will be removed.
+   * @param path the path to append to {@link #server}. Any leading slashes will be removed.
+   * @return a URL using the specified protocol and path.
    */
   public static String withProtocolAndPath(String protocol, String path) {
     StringBuilder sb = new StringBuilder();
-    sb.append(StringUtils.stripEnd(protocol, "/\\:"));  // Remove trailing slashes and colon from protocol.
+    sb.append(StringUtils.stripEnd(protocol, "/\\:")); // Remove trailing slashes and colon from protocol.
     sb.append("://");
     sb.append(server);
-    sb.append(StringUtils.stripStart(path, "/\\"));     // Remove leading slashes from path.
+    sb.append(StringUtils.stripStart(path, "/\\")); // Remove leading slashes from path.
 
     return sb.toString();
   }
@@ -58,8 +57,8 @@ public class TestOnLocalServer {
   /**
    * Construct an HTTP URL using the specified path. Its format will be: {@code http://<server>/<path>}.
    *
-   * @param path  the path to append to {@link #server}. Any leading slashes will be removed.
-   * @return  an HTTP URL using the specified path.
+   * @param path the path to append to {@link #server}. Any leading slashes will be removed.
+   * @return an HTTP URL using the specified path.
    */
   public static String withHttpPath(String path) {
     return withProtocolAndPath("http", path);
@@ -68,8 +67,8 @@ public class TestOnLocalServer {
   /**
    * Construct a DODS URL using the specified path. Its format will be: {@code dods://<server>/<path>}.
    *
-   * @param path  the path to append to {@link #server}. Any leading slashes will be removed.
-   * @return  a DODS URL using the specified path.
+   * @param path the path to append to {@link #server}. Any leading slashes will be removed.
+   * @return a DODS URL using the specified path.
    */
   public static String withDodsPath(String path) {
     return withProtocolAndPath("dods", path);
@@ -101,9 +100,10 @@ public class TestOnLocalServer {
       } else {
         boolean ok = false;
         for (int expectCode : expectCodes)
-          if (expectCode == statusCode) ok = true;
-        Assert.assertTrue(String.format(
-                "Expected one of %s, but got %s.", Arrays.toString(expectCodes), statusCode), ok);
+          if (expectCode == statusCode)
+            ok = true;
+        Assert.assertTrue(String.format("Expected one of %s, but got %s.", Arrays.toString(expectCodes), statusCode),
+            ok);
       }
 
       if (statusCode != 200) {

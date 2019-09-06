@@ -18,8 +18,7 @@ public class CatalogExt {
   private String catRelLocation;
   private long lastRead;
 
-  public CatalogExt() {
-  }
+  public CatalogExt() {}
 
   public CatalogExt(long catId, String catRelLocation, boolean isRoot, long lastRead) {
     this.isRoot = isRoot;
@@ -37,7 +36,7 @@ public class CatalogExt {
   }
 
   public boolean setCatId(long catId) {
-    if (this.catId == 0) //only assign to new catalogs
+    if (this.catId == 0) // only assign to new catalogs
       this.catId = catId;
     return this.catId == catId;
   }
@@ -51,13 +50,13 @@ public class CatalogExt {
   }
 
   /*
-  message Catalog {
-    uint64 catId = 1;    // sequence no
-    string catLocation = 2;
-    bool isRoot = 3;
-    uint64 lastRead = 4;
-  }
-  */
+   * message Catalog {
+   * uint64 catId = 1; // sequence no
+   * string catLocation = 2;
+   * bool isRoot = 3;
+   * uint64 lastRead = 4;
+   * }
+   */
 
   public void writeExternal(DataOutputStream out) throws IOException {
     ConfigCatalogExtProto.Catalog.Builder builder = ConfigCatalogExtProto.Catalog.newBuilder();
@@ -80,9 +79,9 @@ public class CatalogExt {
     int len = in.readInt();
     byte[] b = new byte[len];
     int n = in.read(b);
-    //System.out.printf(" read size = %d%n", b.length);
+    // System.out.printf(" read size = %d%n", b.length);
 
-    //try {
+    // try {
     if (n != len)
       throw new RuntimeException("barf with read size=" + len + " in.available=" + avail);
 
@@ -95,8 +94,10 @@ public class CatalogExt {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
     CatalogExt that = (CatalogExt) o;
 

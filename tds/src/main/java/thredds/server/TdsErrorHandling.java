@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import thredds.server.exception.RequestTooLargeException;
 import thredds.server.exception.ServiceNotAllowed;
 import thredds.server.ncss.exception.NcssException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
@@ -28,18 +27,17 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Formatter;
 import java.util.List;
-
 import static org.springframework.web.util.HtmlUtils.htmlEscape;
 
 /**
  * Global Exception handling
- *   ServiceNotAllowed                      FORBIDDEN
- *   FileNotFoundException                  NOT_FOUND
- *   IOException                            INTERNAL_SERVER_ERROR
- *   UnsupportedOperationException          BAD_REQUEST
- *   IllegalArgumentException               BAD_REQUEST
- *   BindException                          BAD_REQUEST
- *   Throwable                              INTERNAL_SERVER_ERROR
+ * ServiceNotAllowed FORBIDDEN
+ * FileNotFoundException NOT_FOUND
+ * IOException INTERNAL_SERVER_ERROR
+ * UnsupportedOperationException BAD_REQUEST
+ * IllegalArgumentException BAD_REQUEST
+ * BindException BAD_REQUEST
+ * Throwable INTERNAL_SERVER_ERROR
  *
  * @author caron
  * @see "https://spring.io/blog/2013/11/01/exception-handling-in-spring-mvc"
@@ -56,7 +54,8 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-    return new ResponseEntity<>("Service Not Allowed: " + htmlEscape(ex.getMessage()), responseHeaders, HttpStatus.FORBIDDEN);
+    return new ResponseEntity<>("Service Not Allowed: " + htmlEscape(ex.getMessage()), responseHeaders,
+        HttpStatus.FORBIDDEN);
   }
 
   @ExceptionHandler(RequestTooLargeException.class)
@@ -65,7 +64,8 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-    return new ResponseEntity<>("Request Too Large: " + htmlEscape(ex.getMessage()), responseHeaders, HttpStatus.FORBIDDEN);
+    return new ResponseEntity<>("Request Too Large: " + htmlEscape(ex.getMessage()), responseHeaders,
+        HttpStatus.FORBIDDEN);
   }
 
   @ExceptionHandler(FileNotFoundException.class)
@@ -89,8 +89,8 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-    return new ResponseEntity<>(
-            "IOException sending File " + htmlEscape(ex.getMessage()), responseHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>("IOException sending File " + htmlEscape(ex.getMessage()), responseHeaders,
+        HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
@@ -104,7 +104,8 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
     if (mess != null && mess.startsWith("RequestTooLarge")) // RequestTooLargeException only avail in tds module
       return new ResponseEntity<>("Request Too Large: " + htmlEscape(mess), responseHeaders, HttpStatus.FORBIDDEN);
     else
-      return new ResponseEntity<>("IllegalArgumentException: " + htmlEscape(mess), responseHeaders, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("IllegalArgumentException: " + htmlEscape(mess), responseHeaders,
+          HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(NcssException.class)
@@ -113,7 +114,8 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-    return new ResponseEntity<>("Invalid Request: " + htmlEscape(ex.getMessage()), responseHeaders, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>("Invalid Request: " + htmlEscape(ex.getMessage()), responseHeaders,
+        HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(org.springframework.web.bind.ServletRequestBindingException.class)
@@ -122,7 +124,8 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-    return new ResponseEntity<>("Invalid Request: " + htmlEscape(ex.getMessage()), responseHeaders, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>("Invalid Request: " + htmlEscape(ex.getMessage()), responseHeaders,
+        HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(BindException.class)
@@ -159,54 +162,58 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
     String msg = ex.getMessage();
-      StringWriter sw = new StringWriter();
-      PrintWriter p = new PrintWriter(sw);
-      ex.printStackTrace(p);
-      p.close();
-      sw.close();
-      msg = sw.toString();
-    return new ResponseEntity<>("Throwable exception handled : " + htmlEscape(msg), responseHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+    StringWriter sw = new StringWriter();
+    PrintWriter p = new PrintWriter(sw);
+    ex.printStackTrace(p);
+    p.close();
+    sw.close();
+    msg = sw.toString();
+    return new ResponseEntity<>("Throwable exception handled : " + htmlEscape(msg), responseHeaders,
+        HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   /////////////////////////////////////////////
   /// this catches exception from everything else, eg views
 
   @Override
-  public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+  public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
+      Exception ex) {
     logger.error("uncaught exception 2", ex);
     return null;
   }
 
 
   /*
-  see http://www.mytechnotes.biz/2012/08/spring-mvc-with-annotations-example.html
-
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.handler.HandlerExceptionResolverComposite;
-import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver;
-import org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver;
-import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
-
-import java.util.ArrayList;
-import java.util.List;
-    @Bean
-    HandlerExceptionResolverComposite getHandlerExceptionResolverComposite() {
-
-      HandlerExceptionResolverComposite result = new HandlerExceptionResolverComposite();
-
-      List<HandlerExceptionResolver> l = new ArrayList<>();
-
-        l.add(new AnnotationMethodHandlerExceptionResolver());
-        l.add(new ResponseStatusExceptionResolver());
-        l.add(getSimpleMappingExceptionResolver());
-        l.add(new DefaultHandlerExceptionResolver());
-
-      result.setExceptionResolvers(l);
-
-      return result;
-    }      */
+   * see http://www.mytechnotes.biz/2012/08/spring-mvc-with-annotations-example.html
+   * 
+   * 
+   * import org.springframework.context.annotation.Bean;
+   * import org.springframework.context.annotation.Configuration;
+   * import org.springframework.web.servlet.HandlerExceptionResolver;
+   * import org.springframework.web.servlet.handler.HandlerExceptionResolverComposite;
+   * import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver;
+   * import org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver;
+   * import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
+   * 
+   * import java.util.ArrayList;
+   * import java.util.List;
+   * 
+   * @Bean
+   * HandlerExceptionResolverComposite getHandlerExceptionResolverComposite() {
+   * 
+   * HandlerExceptionResolverComposite result = new HandlerExceptionResolverComposite();
+   * 
+   * List<HandlerExceptionResolver> l = new ArrayList<>();
+   * 
+   * l.add(new AnnotationMethodHandlerExceptionResolver());
+   * l.add(new ResponseStatusExceptionResolver());
+   * l.add(getSimpleMappingExceptionResolver());
+   * l.add(new DefaultHandlerExceptionResolver());
+   * 
+   * result.setExceptionResolvers(l);
+   * 
+   * return result;
+   * }
+   */
 
 }

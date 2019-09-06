@@ -18,7 +18,6 @@ import ucar.nc2.util.Optional;
 import ucar.unidata.geoloc.LatLonRect;
 import ucar.unidata.geoloc.ProjectionImpl;
 import ucar.unidata.geoloc.ogc.EPSG_OGC_CF_Helper;
-
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +53,7 @@ public class WcsCoverage {
     this.defaultRequestCrs = "OGC:CRS84";
 
     this.supportedCoverageFormatList = new ArrayList<>();
-    //this.supportedCoverageFormatList.add("application/x-netcdf");
+    // this.supportedCoverageFormatList.add("application/x-netcdf");
     this.supportedCoverageFormatList.add(Request.Format.GeoTIFF);
     this.supportedCoverageFormatList.add(Request.Format.GeoTIFF_Float);
     this.supportedCoverageFormatList.add(Request.Format.NetCDF3);
@@ -69,8 +68,7 @@ public class WcsCoverage {
     } else
       vertAxis = null;
 
-    range = new WcsRangeField(this.getName(), this.getLabel(),
-            this.getDescription(), vertAxis);
+    range = new WcsRangeField(this.getName(), this.getLabel(), this.getDescription(), vertAxis);
   }
 
 
@@ -114,27 +112,29 @@ public class WcsCoverage {
     return range;
   }
 
-  /* public Range getRangeSetAxisRange(double minValue, double maxValue) {
-    if (minValue > maxValue) {
-      log.error("getRangeSetAxisRange(): Min is greater than max <" + minValue + ", " + maxValue + ">.");
-      throw new IllegalArgumentException("Min is greater than max <" + minValue + ", " + maxValue + ">.");
-    }
-    GridCoordAxis zaxis = dataset.getZAxis(coordSys);
-    if (zaxis != null) {
-      int minIndex = zaxis.findCoordElement(minValue);
-      int maxIndex = zaxis.findCoordElement(maxValue);
-
-      if (minIndex == -1 || maxIndex == -1)
-        return null;
-
-      try {
-        return new Range(minIndex, maxIndex);
-      } catch (InvalidRangeException e) {
-        return null;
-      }
-    } else
-      return null;
-  } */
+  /*
+   * public Range getRangeSetAxisRange(double minValue, double maxValue) {
+   * if (minValue > maxValue) {
+   * log.error("getRangeSetAxisRange(): Min is greater than max <" + minValue + ", " + maxValue + ">.");
+   * throw new IllegalArgumentException("Min is greater than max <" + minValue + ", " + maxValue + ">.");
+   * }
+   * GridCoordAxis zaxis = dataset.getZAxis(coordSys);
+   * if (zaxis != null) {
+   * int minIndex = zaxis.findCoordElement(minValue);
+   * int maxIndex = zaxis.findCoordElement(maxValue);
+   * 
+   * if (minIndex == -1 || maxIndex == -1)
+   * return null;
+   * 
+   * try {
+   * return new Range(minIndex, maxIndex);
+   * } catch (InvalidRangeException e) {
+   * return null;
+   * }
+   * } else
+   * return null;
+   * }
+   */
 
   static private DiskCache2 diskCache = null;
 
@@ -150,7 +150,8 @@ public class WcsCoverage {
     return diskCache;
   }
 
-  public File writeCoverageDataToFile(Request.Format format, LatLonRect bboxLatLonRect, VerticalRange verticalRange, CalendarDateRange timeRange) throws WcsException {
+  public File writeCoverageDataToFile(Request.Format format, LatLonRect bboxLatLonRect, VerticalRange verticalRange,
+      CalendarDateRange timeRange) throws WcsException {
 
     SubsetParams params = new SubsetParams();
     if (bboxLatLonRect != null)
@@ -170,15 +171,18 @@ public class WcsCoverage {
         if (log.isDebugEnabled())
           log.debug("writeCoverageDataToFile(): tifFile=" + tifFile.getPath());
 
-        //GridCoverage subset = this.coverage.makeSubset(tRange, zRange, bboxLatLonRect, 1, 1, 1);  // LOOK do you need to subset it?
+        // GridCoverage subset = this.coverage.makeSubset(tRange, zRange, bboxLatLonRect, 1, 1, 1); // LOOK do you need
+        // to subset it?
         GeoReferencedArray array = coverage.readData(params);
 
         try (GeotiffWriter writer = new GeotiffWriter(tifFile.getPath())) {
           writer.writeGrid(array, format == Request.Format.GeoTIFF);
 
         } catch (Throwable e) {
-          log.error("writeCoverageDataToFile(): Failed to write file for requested coverage <" + this.coverage.getName() + ">: ", e);
-          throw new WcsException(WcsException.Code.UNKNOWN, "", "Problem creating coverage [" + this.coverage.getName() + "].");
+          log.error("writeCoverageDataToFile(): Failed to write file for requested coverage <" + this.coverage.getName()
+              + ">: ", e);
+          throw new WcsException(WcsException.Code.UNKNOWN, "",
+              "Problem creating coverage [" + this.coverage.getName() + "].");
         }
 
         return tifFile;
@@ -192,39 +196,44 @@ public class WcsCoverage {
         // netCDF File Checks
         // this will estimate the size of a single coverage.
         Optional<Long> estimatedSize = CFGridCoverageWriter2.getSizeOfOutput(this.wcsDataset.getDataset(),
-                Collections.singletonList(this.coverage.getName()),
-                params, true);
+            Collections.singletonList(this.coverage.getName()), params, true);
 
         if (estimatedSize.isPresent()) {
           // check to make sure estimated size isn't greater than the netCDf-3 limit, otherwise
           // we will unhelpfully bomb and return a 400 with no helpful message to the user
           long estimatedSizeValue = estimatedSize.get();
           if (estimatedSizeValue > N3iosp.MAX_VARSIZE) {
-            throw new IllegalArgumentException("Variable size in bytes " + estimatedSizeValue + " may not exceed " + N3iosp.MAX_VARSIZE);
+            throw new IllegalArgumentException(
+                "Variable size in bytes " + estimatedSizeValue + " may not exceed " + N3iosp.MAX_VARSIZE);
           }
         } else {
           throw new InvalidRangeException("Request contains no data: " + estimatedSize.getErrorMessage());
         }
 
-        try (NetcdfFileWriter writer = NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, outFile.getAbsolutePath())) {
+        try (NetcdfFileWriter writer =
+            NetcdfFileWriter.createNew(NetcdfFileWriter.Version.netcdf3, outFile.getAbsolutePath())) {
           estimatedSize = CFGridCoverageWriter2.write(this.wcsDataset.getDataset(),
-                  Collections.singletonList(this.coverage.getName()),
-                  params, true, writer);
+              Collections.singletonList(this.coverage.getName()), params, true, writer);
         }
 
         return outFile;
 
       } else {
         log.error("writeCoverageDataToFile(): Unsupported response encoding format [" + format + "].");
-        throw new WcsException(WcsException.Code.InvalidFormat, "Format", "Unsupported response encoding format [" + format + "].");
+        throw new WcsException(WcsException.Code.InvalidFormat, "Format",
+            "Unsupported response encoding format [" + format + "].");
       }
 
     } catch (InvalidRangeException e) {
-      log.error("writeCoverageDataToFile(): Failed to subset coverage <" + this.coverage.getName() + ">: " + e.getMessage());
-      throw new WcsException(WcsException.Code.CoverageNotDefined, "", "Failed to subset coverage [" + this.coverage.getName() + "].");
+      log.error(
+          "writeCoverageDataToFile(): Failed to subset coverage <" + this.coverage.getName() + ">: " + e.getMessage());
+      throw new WcsException(WcsException.Code.CoverageNotDefined, "",
+          "Failed to subset coverage [" + this.coverage.getName() + "].");
     } catch (IOException e) {
-      log.error("writeCoverageDataToFile(): Failed to create or write temporary file for requested coverage <" + this.coverage.getName() + ">: " + e.getMessage());
-      throw new WcsException(WcsException.Code.UNKNOWN, "", "Problem creating coverage [" + this.coverage.getName() + "].");
+      log.error("writeCoverageDataToFile(): Failed to create or write temporary file for requested coverage <"
+          + this.coverage.getName() + ">: " + e.getMessage());
+      throw new WcsException(WcsException.Code.UNKNOWN, "",
+          "Problem creating coverage [" + this.coverage.getName() + "].");
     }
   }
 
@@ -242,7 +251,8 @@ public class WcsCoverage {
     public VerticalRange(double minimum, double maximum, int stride) {
       if (minimum > maximum) {
         log.error("VerticalRange(): Minimum <" + minimum + "> is greater than maximum <" + maximum + ">.");
-        throw new IllegalArgumentException("VerticalRange minimum <" + minimum + "> greater than maximum <" + maximum + ">.");
+        throw new IllegalArgumentException(
+            "VerticalRange minimum <" + minimum + "> greater than maximum <" + maximum + ">.");
       }
       if (stride < 1) {
         log.error("VerticalRange(): stride <" + stride + "> less than one (1 means all points).");
@@ -273,31 +283,33 @@ public class WcsCoverage {
       return "[min=" + min + ",max=" + max + ",stride=" + stride + "]";
     }
 
-    /* public Range getRange(GridCoordSys gcs) throws InvalidRangeException {
-      if (gcs == null) {
-        log.error("getRange(): GridCoordSystem must be non-null.");
-        throw new IllegalArgumentException("GridCoordSystem must be non-null.");
-      }
-      CoordinateAxis1D vertAxis = gcs.getVerticalAxis();
-      if (vertAxis == null) {
-        log.error("getRange(): GridCoordSystem must have vertical axis.");
-        throw new IllegalArgumentException("GridCoordSystem must have vertical axis.");
-      }
-      if (!vertAxis.isNumeric()) {
-        log.error("getRange(): GridCoordSystem must have numeric vertical axis to support min/max range.");
-        throw new IllegalArgumentException("GridCoordSystem must have numeric vertical axis to support min/max range.");
-      }
-      int minIndex = vertAxis.findCoordElement(min);
-      int maxIndex = vertAxis.findCoordElement(max);
-      if (minIndex == -1 || maxIndex == -1) {
-        log.error("getRange(): GridCoordSystem vertical axis does not contain min/max points.");
-        throw new IllegalArgumentException("GridCoordSystem vertical axis does not contain min/max points.");
-      }
-
-      if (vertAxis.getPositive().equalsIgnoreCase(ucar.nc2.constants.CF.POSITIVE_DOWN))
-        return new Range(maxIndex, minIndex, stride);
-      else
-        return new Range(minIndex, maxIndex, stride);
-    } */
+    /*
+     * public Range getRange(GridCoordSys gcs) throws InvalidRangeException {
+     * if (gcs == null) {
+     * log.error("getRange(): GridCoordSystem must be non-null.");
+     * throw new IllegalArgumentException("GridCoordSystem must be non-null.");
+     * }
+     * CoordinateAxis1D vertAxis = gcs.getVerticalAxis();
+     * if (vertAxis == null) {
+     * log.error("getRange(): GridCoordSystem must have vertical axis.");
+     * throw new IllegalArgumentException("GridCoordSystem must have vertical axis.");
+     * }
+     * if (!vertAxis.isNumeric()) {
+     * log.error("getRange(): GridCoordSystem must have numeric vertical axis to support min/max range.");
+     * throw new IllegalArgumentException("GridCoordSystem must have numeric vertical axis to support min/max range.");
+     * }
+     * int minIndex = vertAxis.findCoordElement(min);
+     * int maxIndex = vertAxis.findCoordElement(max);
+     * if (minIndex == -1 || maxIndex == -1) {
+     * log.error("getRange(): GridCoordSystem vertical axis does not contain min/max points.");
+     * throw new IllegalArgumentException("GridCoordSystem vertical axis does not contain min/max points.");
+     * }
+     * 
+     * if (vertAxis.getPositive().equalsIgnoreCase(ucar.nc2.constants.CF.POSITIVE_DOWN))
+     * return new Range(maxIndex, minIndex, stride);
+     * else
+     * return new Range(minIndex, maxIndex, stride);
+     * }
+     */
   }
 }

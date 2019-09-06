@@ -12,10 +12,10 @@ import javax.annotation.concurrent.Immutable;
  * A DataRootPathMatcher manages a hash tree of path -> DataRoot
  * <p/>
  * Possible design:
- * catKey : which catalog defined this?   not present at the moment
+ * catKey : which catalog defined this? not present at the moment
  * directory : if its a simple DataRoot
- * fc        : prob is this drags in entire configCat
- * dscan     : ditto
+ * fc : prob is this drags in entire configCat
+ * dscan : ditto
  *
  * @author caron
  * @since 1/23/2015
@@ -23,14 +23,17 @@ import javax.annotation.concurrent.Immutable;
 @Immutable
 public class DataRoot {
   private static final boolean show = false;
-  public enum Type {datasetRoot, datasetScan, catalogScan, featureCollection}
 
-  private final String path;          // match this path to 1 of the following:
-  private final String dirLocation;   // 1) this directory  (not null)
-  private final String name;   // 1) this directory  (not null)
-  private final DatasetScan datasetScan;     // 2) the DatasetScan that created this (may be null)
+  public enum Type {
+    datasetRoot, datasetScan, catalogScan, featureCollection
+  }
+
+  private final String path; // match this path to 1 of the following:
+  private final String dirLocation; // 1) this directory (not null)
+  private final String name; // 1) this directory (not null)
+  private final DatasetScan datasetScan; // 2) the DatasetScan that created this (may be null)
   private final FeatureCollectionRef featCollection; // 3) the FeatureCollection that created this (may be null)
-  private final CatalogScan catScan;  // 4) the CatalogScan that created this (may be null)
+  private final CatalogScan catScan; // 4) the CatalogScan that created this (may be null)
   private final Type type;
   private final String restrict;
 
@@ -83,7 +86,8 @@ public class DataRoot {
   }
 
   private void show() {
-    if (show) System.out.printf(" DataRoot %s==%s%n", path, dirLocation);
+    if (show)
+      System.out.printf(" DataRoot %s==%s%n", path, dirLocation);
   }
 
   public String getPath() {
@@ -127,8 +131,10 @@ public class DataRoot {
    * Instances which have same path are equal.
    */
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
     DataRoot root = (DataRoot) o;
     return path.equals(root.path);
   }
@@ -151,18 +157,22 @@ public class DataRoot {
 
     } else if (featCollection != null) {
       // LOOK should check to see if its allowed in fc
-      return getFileLocationFromRequestPath(reqPath, featCollection.getPath(), featCollection.getTopDirectoryLocation(), true);
+      return getFileLocationFromRequestPath(reqPath, featCollection.getPath(), featCollection.getTopDirectoryLocation(),
+          true);
 
-    } else {  // must be a datasetRoot
+    } else { // must be a datasetRoot
       // LOOK should check to see if it exists ??
       return getFileLocationFromRequestPath(reqPath, getPath(), getDirLocation(), false);
     }
 
   }
 
-  private String getFileLocationFromRequestPath(String reqPath, String rootPath, String rootLocation, boolean isFeatureCollection) {
-    if (reqPath == null) return null;
-    if (reqPath.length() == 0) return null;
+  private String getFileLocationFromRequestPath(String reqPath, String rootPath, String rootLocation,
+      boolean isFeatureCollection) {
+    if (reqPath == null)
+      return null;
+    if (reqPath.length() == 0)
+      return null;
 
     if (reqPath.startsWith("/"))
       reqPath = reqPath.substring(1);

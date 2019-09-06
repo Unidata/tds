@@ -11,7 +11,8 @@ import java.io.IOException;
 
 /**
  * This class will modify the session cookie path, if a session attribute named SESSION_PATH exists.
- * Appears to be part of an early (2009) attempt to use sessions in opendap to ensure that datasets dont change during a session.
+ * Appears to be part of an early (2009) attempt to use sessions in opendap to ensure that datasets dont change during a
+ * session.
  * That functionality is turned off, so assume we dont need this.
  *
  * @author caron
@@ -22,10 +23,10 @@ public class CookieFilter implements Filter {
   public static final String JSESSIONID = "JSESSIONID";
   public static final String SESSION_PATH = "SESSION_PATH";
 
-  public void init(FilterConfig config) throws ServletException {
-  }
+  public void init(FilterConfig config) throws ServletException {}
 
-  public void doFilter(ServletRequest _request, ServletResponse _response, FilterChain chain) throws IOException, ServletException {
+  public void doFilter(ServletRequest _request, ServletResponse _response, FilterChain chain)
+      throws IOException, ServletException {
     chain.doFilter(_request, _response);
 
     // examine response after the request is processed
@@ -42,6 +43,5 @@ public class CookieFilter implements Filter {
     }
   }
 
-  public void destroy() {
-  }
+  public void destroy() {}
 }
