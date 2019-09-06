@@ -70,6 +70,8 @@ libraries["license-gradle-plugin"] = "gradle.plugin.nl.javadude.gradle.plugins:l
 
 libraries["jruby-gradle-plugin"] = "com.github.jruby-gradle:jruby-gradle-plugin:1.5.0"
 
+libraries["spotless"] = "com.diffplug.spotless:spotless-plugin-gradle:3.22.0"
+
 /////////////////////////////////////// netCDF-Java ////////////////////////////////////////
 
 versions["ncj"] = "5.1.0-SNAPSHOT"

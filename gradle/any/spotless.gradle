@@ -1,0 +1,11 @@
+apply plugin: "java"
+apply plugin: "com.diffplug.gradle.spotless"
+
+spotless {
+  java {
+    target '**/*.java'
+    eclipse().configFile 'eclipse-style-guide.xml'
+    encoding 'UTF-8'
+  }
+}
+
