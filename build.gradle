@@ -45,8 +45,7 @@ allprojects {
 }
 
 // Matches Maven's "project.description".
-description = "The Unidata THREDDS project includes the netCDF-Java library (aka CDM) " +
-        "and the THREDDS Data Server (TDS)."
+description = "The Unidata THREDDS Data Server (TDS)."
 
 import java.text.SimpleDateFormat
 

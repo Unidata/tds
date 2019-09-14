@@ -11,6 +11,7 @@ apply plugin: 'war'
 dependencies {
     compile libraries["cdm"]
     compile libraries["opendap"]
+    compile project(":opendap:server")
 
     compileOnly libraries["javax.servlet-api"]
     runtime libraries["taglibs-standard-spec"]
