@@ -3,6 +3,7 @@ ext.title = "OpenDAP server code"
 
 apply from: "$rootDir/gradle/any/dependencies.gradle"
 apply from: "$rootDir/gradle/any/java.gradle"
+apply from: "$rootDir/gradle/any/testing.gradle"
 apply from: "$rootDir/gradle/any/publishing.gradle"
 
 dependencies {
