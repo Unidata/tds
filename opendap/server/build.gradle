@@ -1,0 +1,14 @@
+description = "OpenDAP server code."
+ext.title = "OpenDAP server code"
+
+apply from: "$rootDir/gradle/any/dependencies.gradle"
+apply from: "$rootDir/gradle/any/java.gradle"
+apply from: "$rootDir/gradle/any/publishing.gradle"
+
+dependencies {
+    compile libraries["cdm"]
+    compile libraries["opendap"]
+    compile libraries["slf4j-api"]
+
+    compileOnly libraries["javax.servlet-api"]
+}

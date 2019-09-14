@@ -24,6 +24,7 @@ dependencies {
     compile libraries["httpservices"]
     compile libraries["netcdf4"]
     compile libraries["opendap"]
+    compile project(":opendap:server")
     compile project(":tdcommon")
     runtime libraries["visadCdm"]
     compile libraries["waterml"]
