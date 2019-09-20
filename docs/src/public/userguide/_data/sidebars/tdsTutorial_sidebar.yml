@@ -218,7 +218,7 @@ entries:
       output: web, pdf
 
     - title: Enable TLS/SSL Encryption
-      url: /enable_TLS_encryption.html
+      url: /enable_tls_encryption.html
       output: web, pdf
 
     - title: Secure Tomcat Manager App
