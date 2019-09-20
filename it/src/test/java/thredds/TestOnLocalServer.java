@@ -7,7 +7,9 @@ package thredds;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
+import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +89,9 @@ public class TestOnLocalServer {
 
     try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
       if (cred != null) {
-        session.setCredentials(cred);
+        BasicCredentialsProvider bcp = new BasicCredentialsProvider();
+        bcp.setCredentials(AuthScope.ANY, cred);
+        session.setCredentialsProvider(bcp);
       }
 
       HTTPMethod method = HTTPFactory.Get(session);
