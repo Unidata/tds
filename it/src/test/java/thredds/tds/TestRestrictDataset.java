@@ -5,7 +5,10 @@
 package thredds.tds;
 
 import org.apache.http.HttpStatus;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -87,7 +90,10 @@ public class TestRestrictDataset {
     logger.info(String.format("testRestriction req = '%s'", endpoint));
 
     try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
-      session.setCredentials(new UsernamePasswordCredentials("baadss", "changeme"));
+      Credentials bp = new UsernamePasswordCredentials("baadss", "changeme");
+      BasicCredentialsProvider bcp = new BasicCredentialsProvider();
+      bcp.setCredentials(AuthScope.ANY, bp);
+      session.setCredentialsProvider(bcp);
 
       HTTPMethod method = HTTPFactory.Get(session);
       int statusCode = method.execute();
@@ -107,7 +113,10 @@ public class TestRestrictDataset {
     logger.info(String.format("testRestriction req = '%s'", endpoint));
 
     try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
-      session.setCredentials(new UsernamePasswordCredentials("tiggeUser", "changeme"));
+      Credentials bp = new UsernamePasswordCredentials("tiggeUser", "changeme");
+      BasicCredentialsProvider bcp = new BasicCredentialsProvider();
+      bcp.setCredentials(AuthScope.ANY, bp);
+      session.setCredentialsProvider(bcp);
 
       HTTPMethod method = HTTPFactory.Get(session);
       int statusCode = method.execute();
@@ -130,7 +139,10 @@ public class TestRestrictDataset {
     logger.info(String.format("testRestriction req = '%s'", endpoint));
 
     try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
-      session.setCredentials(new UsernamePasswordCredentials("tds", "secret666"));
+      Credentials bp = new UsernamePasswordCredentials("tds", "secret666");
+      BasicCredentialsProvider bcp = new BasicCredentialsProvider();
+      bcp.setCredentials(AuthScope.ANY, bp);
+      session.setCredentialsProvider(bcp);
 
       HTTPMethod method = HTTPFactory.Get(session);
       int statusCode = method.execute();

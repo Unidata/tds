@@ -10,6 +10,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -233,7 +234,7 @@ public class TestTomcatAuth extends UnitTestCommon {
           report(result, provider.counter);
         }
       } finally {
-        HTTPSession.clearGlobalCredentials();
+        provider.clear();
       }
 
       Assert.assertTrue("Incorrect return code: " + result.status, check(result.status));
@@ -279,18 +280,17 @@ public class TestTomcatAuth extends UnitTestCommon {
     for (AuthDataBasic data : basictests) {
       Result result = null;
       Credentials creds = new UsernamePasswordCredentials(data.user, data.password);
+      BasicCredentialsProvider bcp = new BasicCredentialsProvider();
+      bcp.setCredentials(AuthScope.ANY, creds);
       logger.info("Test global credentials");
       logger.info("*** URL: " + data.url);
 
-      try {
-        // Test global credentials provider
-        HTTPSession.setGlobalCredentials(creds);
-        try (HTTPSession session = HTTPFactory.newSession(data.url)) {
-          result = invoke(session, data.url);
-          report(result);
-        }
-      } finally {
-        HTTPSession.clearGlobalCredentials();
+
+      // Test global credentials provider
+      HTTPSession.setGlobalCredentialsProvider(bcp);
+      try (HTTPSession session = HTTPFactory.newSession(data.url)) {
+        result = invoke(session, data.url);
+        report(result);
       }
 
       Assert.assertTrue("Incorrect return code: " + result.status, check(result.status)); // non-existence is ok
@@ -304,7 +304,9 @@ public class TestTomcatAuth extends UnitTestCommon {
       logger.info("*** URL: " + data.url);
 
       try (HTTPSession session = HTTPFactory.newSession(data.url)) {
-        session.setCredentials(creds);
+        BasicCredentialsProvider bcp = new BasicCredentialsProvider();
+        bcp.setCredentials(AuthScope.ANY, creds);
+        session.setCredentialsProvider(bcp);
         result = invoke(session, data.url);
         report(result);
       }

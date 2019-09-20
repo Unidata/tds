@@ -10,7 +10,10 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -142,8 +145,12 @@ public class Tdm {
     this.servers = new ArrayList<>(this.serverNames.length);
     for (String name : this.serverNames) {
       HTTPSession session = HTTPFactory.newSession(name);
-      if (user != null && pass != null)
-        session.setCredentials(new UsernamePasswordCredentials(user, pass));
+      if (user != null && pass != null) {
+        Credentials bp = new UsernamePasswordCredentials(user, pass);
+        BasicCredentialsProvider bcp = new BasicCredentialsProvider();
+        bcp.setCredentials(AuthScope.ANY, bp);
+        session.setCredentialsProvider(bcp);
+      }
       session.setUserAgent("TDM");
       servers.add(new Server(name, session));
     }
