@@ -8,7 +8,7 @@ apply from: "$rootDir/gradle/any/publishing.gradle"
 
 dependencies {
     compile libraries["httpservices"]
-    compile libraries["cdm"]
+    compile libraries["cdm-core"]
     compile libraries["grib"]
     compile project(':tdcommon')
 

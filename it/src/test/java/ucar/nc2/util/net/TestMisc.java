@@ -32,7 +32,6 @@
 
 package ucar.nc2.util.net;
 
-import HTTPClient.HTTPResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.junit.Assert;

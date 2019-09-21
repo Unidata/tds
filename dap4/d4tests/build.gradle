@@ -13,7 +13,7 @@ dependencies {
     testCompile project(':dap4:d4servlet')
     testCompile project(':dap4:d4ts')
     testCompile libraries["d4cdm"]
-    testCompile libraries["cdm"]
+    testCompile libraries["cdm-core"]
     testCompile libraries["httpservices"]
     
     testCompile(project(":tds")) {
