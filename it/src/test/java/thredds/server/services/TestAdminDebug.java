@@ -5,6 +5,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import thredds.util.ContentType;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
+import ucar.unidata.util.test.category.NotTravis;
 
 /**
  * Test Admin services, needs authentication
@@ -21,6 +23,7 @@ import java.util.List;
  * @author caron
  * @since 7/6/2015
  */
+@Category(NotTravis.class)
 @RunWith(Parameterized.class)
 public class TestAdminDebug {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
