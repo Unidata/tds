@@ -13,6 +13,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ucar.httpservices.HTTPFactory;
@@ -25,6 +26,7 @@ import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
+import ucar.unidata.util.test.category.NotTravis;
 
 /**
  * This test is to check non-ssh related authorization: Basic primarily.
@@ -69,6 +71,7 @@ import java.util.List;
  * restrictAccess="containerauth"/>
  *
  */
+@Category(NotTravis.class)
 public class TestTomcatAuth extends UnitTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

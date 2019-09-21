@@ -12,6 +12,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ucar.httpservices.HTTPFactory;
@@ -21,12 +22,14 @@ import ucar.unidata.util.test.UnitTestCommon;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import ucar.unidata.util.test.category.NotTravis;
 
 /**
  * This test is to check ssh authorization.
  * As a rule, this needs to run against localhost:8443
  * using a pure tomcat server.
  */
+@Category(NotTravis.class)
 public class TestSSH extends UnitTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
