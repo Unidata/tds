@@ -7,7 +7,7 @@ apply from: "$rootDir/gradle/any/testing.gradle"
 apply from: "$rootDir/gradle/any/publishing.gradle"
 
 dependencies {
-    compile libraries["cdm"]
+    compile libraries["cdm-core"]
     compile libraries["opendap"]
     compile libraries["slf4j-api"]
 

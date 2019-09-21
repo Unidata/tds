@@ -18,15 +18,17 @@ apply plugin: 'war'
 
 dependencies {
     compile libraries["bufr"]
-    compile libraries["cdm"]
-    compile libraries["clcommon"]
+    compile libraries["cdm-core"]
+    compile libraries["cdm-radial"]
+    compile libraries["cdm-misc"]
+    compile libraries["cdm-image"]
     compile libraries["grib"]
     compile libraries["httpservices"]
     compile libraries["netcdf4"]
     compile libraries["opendap"]
     compile project(":opendap:server")
     compile project(":tdcommon")
-    runtime libraries["visadCdm"]
+    compile libraries["cdm-mcidas"]
     compile libraries["waterml"]
 
     // DAP4 Dependencies (technically forward)

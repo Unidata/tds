@@ -77,15 +77,16 @@ libraries["spotless"] = "com.diffplug.spotless:spotless-plugin-gradle:3.22.0"
 versions["ncj"] = "5.2.0-SNAPSHOT"
 
 libraries["bufr"] = "edu.ucar:bufr:${versions["ncj"]}"
-libraries["cdm"] = "edu.ucar:cdm:${versions["ncj"]}"
-libraries["clcommon"] = "edu.ucar:clcommon:${versions["ncj"]}"
+libraries["cdm-core"] = "edu.ucar:cdm-core:${versions["ncj"]}"
+libraries["cdm-radial"] = "edu.ucar:cdm-radial:${versions["ncj"]}"
+libraries["cdm-misc"] = "edu.ucar:cdm-misc:${versions["ncj"]}"
+libraries["cdm-image"] = "edu.ucar:cdm-image:${versions["ncj"]}"
+libraries["cdm-mcidas"] = "edu.ucar:cdm-mcidas:${versions["ncj"]}"
 libraries["grib"] = "edu.ucar:grib:${versions["ncj"]}"
 libraries["httpservices"] = "edu.ucar:httpservices:${versions["ncj"]}"
 libraries["netcdf4"] = "edu.ucar:netcdf4:${versions["ncj"]}"
 libraries["opendap"] = "edu.ucar:opendap:${versions["ncj"]}"
-libraries["visadCdm"] = "edu.ucar:visadCdm:${versions["ncj"]}"
 libraries["waterml"] = "edu.ucar:waterml:${versions["ncj"]}"
-
 libraries["d4cdm"] = "edu.ucar:d4cdm:${versions["ncj"]}"
 libraries["d4servlet"] = "edu.ucar:d4servlet:${versions["ncj"]}"
 libraries["d4core"] = "edu.ucar:d4core:${versions["ncj"]}"
@@ -207,8 +208,6 @@ libraries["jsoup"] = "org.jsoup:jsoup:1.11.2"
 libraries["jsr305"] = "com.google.code.findbugs:jsr305:3.0.2"
 
 libraries["protobuf-java"] = "com.google.protobuf:protobuf-java:3.9.1"
-
-libraries["visad"] = "edu.wisc.ssec:visad:2.0-20130124"
 
 // replace ??
 libraries["commons-lang3"] = "org.apache.commons:commons-lang3:3.4"

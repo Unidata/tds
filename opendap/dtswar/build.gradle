@@ -9,7 +9,7 @@ apply from: "$rootDir/gradle/any/publishing.gradle"
 apply plugin: 'war'
 
 dependencies {
-    compile libraries["cdm"]
+    compile libraries["cdm-core"]
     compile libraries["opendap"]
     compile project(":opendap:server")
 
