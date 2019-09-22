@@ -5,8 +5,8 @@
 
 package thredds;
 
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -116,8 +116,8 @@ public class TestOnLocalServer {
       }
 
       if (expectContentType != null) {
-        Header header = method.getResponseHeader(ContentType.HEADER);
-        Assert.assertEquals(expectContentType.getContentHeader().toLowerCase(), header.getValue().toLowerCase());
+        Optional<String> header = method.getResponseHeaderValue(ContentType.HEADER);
+        Assert.assertEquals(expectContentType.getContentHeader().toLowerCase(), header.get().toLowerCase());
       }
 
       return method.getResponseAsBytes();
@@ -144,8 +144,8 @@ public class TestOnLocalServer {
       Assert.assertEquals(expectCode, statusCode);
 
       if (expectContentType != null) {
-        Header header = method.getResponseHeader(ContentType.HEADER);
-        Assert.assertEquals(expectContentType.getContentHeader(), header.getValue());
+        Optional<String> header = method.getResponseHeaderValue(ContentType.HEADER);
+        Assert.assertEquals(expectContentType.getContentHeader(), header.get());
       }
 
       InputStream content = method.getResponseAsStream(); // closing method may close stream ??

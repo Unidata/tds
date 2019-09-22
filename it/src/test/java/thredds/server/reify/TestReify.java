@@ -193,9 +193,9 @@ abstract public class TestReify extends UnitTestCommon {
       reportRequest(rc, hrb);
     }
     code = method.getStatusCode();
-    org.apache.http.Header h = method.getResponseHeader(STATUSCODEHEADER);
-    if (h != null) {
-      String scode = h.getValue();
+    Optional<String> h = method.getResponseHeaderValue(STATUSCODEHEADER);
+    if (h.isPresent()) {
+      String scode = h.get();
       try {
         int tmpcode = Integer.parseInt(scode);
         if (tmpcode > 0)
