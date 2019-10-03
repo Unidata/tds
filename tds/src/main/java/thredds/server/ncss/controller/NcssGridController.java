@@ -356,6 +356,7 @@ public class NcssGridController extends AbstractNcssController {
     }
     return true;
   }
+
   private HashMap<String,HashMap<String,ArrayList<String>>> readVarsets(){
 
     HashMap<String,HashMap<String,ArrayList<String>>> theMap = new HashMap<>();

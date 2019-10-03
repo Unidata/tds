@@ -102,6 +102,7 @@ function clickAllButtonsWithClass(className) {
 // hvandam
 // added for WRF project, model passes variable sets, or lists, which can
 // allows users to "select" a group of variables for subsetting.
+// Called when a selection is made
 //
 function selectVariablesFromVarset() {
 

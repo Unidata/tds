@@ -111,7 +111,6 @@
     <label for="varsets">Available Varsets:</label>
 
     <select id="varsetId" size="1"  onchange="selectVariablesFromVarset()">
-        <!-- option th:each="Select" th:value="Select" th: text="Select" / -->
         <option value=""> Select </option>
         <option th:each="item: ${varsets}"
                 th:value="${item['value']}"
