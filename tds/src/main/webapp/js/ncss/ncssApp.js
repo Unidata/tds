@@ -99,7 +99,51 @@ function clickAllButtonsWithClass(className) {
     }
 }
 
-//////////////////////////////////////////////////////////////////////
+// hvandam
+// added for WRF project, model passes variable sets, or lists, which can
+// allows users to "select" a group of variables for subsetting.
+//
+function selectVariablesFromVarset() {
+
+    var abc = document.getElementById("varsetId");
+    var selectedOption = abc.options[abc.selectedIndex].text;
+
+    clearAllSelectedVariables();
+
+    if ( selectedOption == "Select"){
+        clearAllSelectedVariables();
+    }
+    else {
+        var x = document.getElementById("varsetId").value;
+        // prepare the passed in list of variables
+        var regexPattern = /[\[\]\{}|&;\s]/g;
+
+        var l1 = x.substring(x.indexOf("["), x.length);
+        var l2 = l1.replace(regexPattern, "");
+
+        var varList = l2.split(",");
+
+        for (let varName of document.getElementsByName("var")) {
+            for (const vitem of varList) {
+             //   var t = vitem;
+             //   var u = varName.value;
+                if (varName.value === vitem) {
+                    varName.checked = true;
+                    break;
+                }
+            }
+        }
+    }  // end else clearAllSelected
+}
+
+// hvandam
+// added for WRF project, clears any previously selected variables
+function clearAllSelectedVariables() {
+
+    for (let varName of document.getElementsByName("var")) {
+        varName.checked = false;
+    }
+}
 
 function buildAccessUrl() {
     // Exclude the NCSS page (usually named something like "/dataset.html") from the end of the URL, leaving only
