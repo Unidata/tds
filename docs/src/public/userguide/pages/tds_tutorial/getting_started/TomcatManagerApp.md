@@ -37,6 +37,32 @@ Based on what we know about Tomcat configuration, which file in the `$TOMCAT_HOM
 
 ## Granting Access To The Manager Application
 
+**By default, the Tomcat Manager application is disabled** in an effort to prevent unintended exploitation.  In order to use the Manager application you must change Tomcat configurations to enable it.
+
+This will be done in the following 2 steps:
+
+#### I. Create a context configuration file for the manager application
+
+   Use your favorite text editor to create a new file called `manager.xml` in the `$TOMCAT_HOME/conf/Catalina/localhost`: 
+
+   ~~~bash
+   # cd $TOMCAT_HOME/conf/Catalina/localhost
+   # vi manager.xml
+   ~~~
+
+   Add the following information to you `manager.xml` file and save it:
+
+   ~~~bash
+   <Context privileged="true" antiResourceLocking="false" docBase="${catalina.home}/webapps/manager"/>
+   ~~~
+
+   {%include note.html content="  
+   For more information about web application context configuration files and their security options, please review the <a href="http://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html#Introduction" target="_blank">Tomcat Manager App How-To</a> documentation.
+   " %} 
+
+
+#### II. Modify `tomcat-users.xml`
+
 {%include ahead.html content="
 To gain access to restricted parts of the TDS, you will perform the same steps you used to grant yourself access to the Tomcat Manager application.
 " %}
@@ -104,7 +130,6 @@ To gain access to restricted parts of the TDS, you will perform the same steps y
    Think of the security implications of enabling this web application and making it available to anyone to access/use if he knows the URL. Someone with less than good intentions could learn about server environment and undeploy/deploy any application using the Manager application.   
    " %} 
    
-   **By default, the Tomcat Manager application is disabled** in an effort to prevent unintended exploitation.  In order to use the Manager application you must change Tomcat configurations to enable it.
 
 2. Between the `<tomcat-users>` tags, un-comment the `role` and `user` tags.  
    Add a `role` element and specify the `rolename` attribute as `manager-gui` and delete any un-used roles: 

@@ -14,23 +14,23 @@ Users of OS-provided packages via package management systems for Java and/or Tom
 
 ## System Requirements
 
-* Oracle Java 8 (latest version)
+* OpenJDK Java 8 (latest version)
 * Apache Tomcat 8.x
 
-While there are different distributors of Java and servlet containers, Unidata develops, uses and tests the THREDDS Data Server using _Oracle Java_ and the _Apache Tomcat_ servlet container.
+While there are different distributors of Java and servlet containers, Unidata develops, uses and tests the THREDDS Data Server using _OpenJDK Java_ and the _Apache Tomcat_ servlet container.
 
 
-## Installing Java JDK
+## Installing OpenJDK Java JDK
 
 The following example shows the JDK installation on a linux system.  The installation is being performed as the `root` user.
 
 {% include note.html content="
-For installation of the JDK on Windows or Mac OS, see the <a href=\"https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html\" target=\"_blank\">JDK Installation Guide</a>.
+For installation of the JDK on Windows or Mac OS, see the <a href=\"https://adoptopenjdk.net/installation.html\" target=\"_blank\">JDK Installation Guide</a>.
 " %}
 
-1.  [Download](http://www.oracle.com/technetwork/java/javase/downloads/){:target="_blank"} current Java SE Developer Kit (JDK) from Oracle. Use the latest 1.8 version of the JDK.
+1.  [Download](https://adoptopenjdk.net/){:target="_blank"} current OpenJDK 8 (LTS) JDK version from the AdoptOpenJDK site. 
 
-2.  Install the JDK as per the Oracle [installation instructions](http://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html){:target="_blank"}.
+2.  Install the JDK.
 
     Copy the binary `tar.gz` file into the installation directory (`/usr/local` in this example):
 
