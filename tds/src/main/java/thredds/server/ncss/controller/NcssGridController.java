@@ -249,8 +249,6 @@ public class NcssGridController extends AbstractNcssController {
       model.put("horizExtentWKT", gcd.getHorizCoordSys().getLatLonBoundaryAsWKT(50, 100));
       model.put("accept", makeAcceptList(op));
 
-      model.put("varsets", readVarsets());
-
       switch (op) {
         case GRID_REQUEST:
           return new ModelAndView("templates/ncssGrid", model);
@@ -355,30 +353,5 @@ public class NcssGridController extends AbstractNcssController {
       }
     }
     return true;
-  }
-
-  private HashMap<String, HashMap<String, ArrayList<String>>> readVarsets() {
-
-    HashMap<String, HashMap<String, ArrayList<String>>> theMap = new HashMap<>();
-    ArrayList<String> variables = new ArrayList<>();
-    variables.add("Relative_humidity_height_above_ground");
-    variables.add("Temperature_height_above_ground");
-    variables.add("Relative_humidity");
-    variables.add("Pressure");
-
-    ArrayList<String> v2 = new ArrayList<>();
-    v2.add("Total_precipitation");
-    v2.add("Presssure_reduced_to_MSL");
-
-    HashMap<String, ArrayList<String>> m1 = new HashMap<>();
-    m1.put("varset1", variables);
-
-    HashMap<String, ArrayList<String>> m2 = new HashMap<>();
-    m2.put("varset2", v2);
-
-    theMap.put("varseta", m1);
-    theMap.put("varsetb", m2);
-
-    return theMap;
   }
 }
