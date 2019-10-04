@@ -57,7 +57,7 @@ This will be done in the following 2 steps:
    ~~~
 
    {%include note.html content="  
-   For more information about web application context configuration files and their security options, please review the <a href="http://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html#Introduction" target="_blank">Tomcat Manager App How-To</a> documentation.
+   For more information about web application context configuration files and their security options, please review the <a href=\"http://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html#Introduction\" target=\"_blank\">Tomcat Manager App How-To</a> documentation.
    " %} 
 
 
