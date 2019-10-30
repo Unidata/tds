@@ -25,7 +25,7 @@ topnav_dropdowns:
         - title: THREDDS Data Server Tutorial
           url: index.html
         - title: netCDF-Java Tutorial
-          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.0/userguide/index.html
+          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.2/userguide/index.html
     - title: Workshops
       folderitems:
         - title: 2018 Unidata Workshop
@@ -33,7 +33,7 @@ topnav_dropdowns:
     - title: External Docs
       folderitems:
         - title: netCDF-Java public javadocs
-          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.0/javadoc/
+          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.2/javadoc/
         - title: Rosetta
           external_url: https://www.unidata.ucar.edu/software/rosetta/docs/
         - title: Siphon
