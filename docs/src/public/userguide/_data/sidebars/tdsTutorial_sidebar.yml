@@ -178,14 +178,6 @@ entries:
       url: /grib_feature_collections.html
       output: web, pdf
 
-    - title: GRIB Files in CDM
-      url: /grib_files_cdm.html
-      output: web, pdf
-
-    - title: GRIB Tables in CDM
-      url: /grib_tables_cdm.html
-      output: web, pdf
-
     - title: Forecast Model Run Collections (FMRC)
       url: /fmrc_ref.html
       output: web, pdf
