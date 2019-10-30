@@ -296,7 +296,7 @@ entries:
       output: web, pdf
 
     - title: netCDF-Java and TDS Doc Guide
-      external_url: https://docs.unidata.ucar.edu/netcdf-java/5.2/userguide/doc_guide.html
+      external_url: https://docs.unidata.ucar.edu/netcdf-java/5.3/userguide/doc_guide.html
       output: web, pdf
 
     - title: Server-side Catalog Specification
