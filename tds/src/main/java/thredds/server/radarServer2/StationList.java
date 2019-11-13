@@ -146,11 +146,10 @@ public class StationList {
 
   public Station getNearest(double longitude, double latitude) {
     LatLonPointImmutable pt = new LatLonPointImmutable(latitude, longitude);
-    Bearing b = new Bearing();
     Station nearest = null;
     double minDist = Double.POSITIVE_INFINITY;
     for (Station s : stations.values()) {
-      Bearing.calculateBearing(pt, s.location, b);
+      Bearing b = Bearing.calculateBearing(pt, s.location);
       if (b.getDistance() < minDist) {
         minDist = b.getDistance();
         nearest = s;
