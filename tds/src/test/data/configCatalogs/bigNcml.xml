@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="TDS Test Big NcML"
+         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:ncml="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" version="1.2">
+
+  <dataset name="Big NcML test 1 - opendap" ID="bigNcmlTest1" urlPath="ExampleNcML/bigNcml1.nc">
+    <serviceName>opendap</serviceName>
+    <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <!-- when NcML blocks get too large, DatasetExt.readExternal barfs, so let's trigger that here -->
+      <attribute name="name" value="value"/>
+      <!-- I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be
+      I want to be bigger than a block and I shall be -->
+    </ncml:netcdf>
+  </dataset>
+</catalog>
