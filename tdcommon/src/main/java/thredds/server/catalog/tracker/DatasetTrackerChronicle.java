@@ -3,6 +3,7 @@ package thredds.server.catalog.tracker;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
 import org.jdom2.Element;
+import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import thredds.client.catalog.Access;
 import thredds.client.catalog.Dataset;
@@ -176,8 +177,8 @@ public class DatasetTrackerChronicle implements DatasetTracker {
     if (hasNcml) {
       // want the ncml string representation
       Element ncmlElem = dataset.getNcmlElement();
-      XMLOutputter xmlOut = new XMLOutputter();
-      ncml = xmlOut.outputString(ncmlElem);
+      // make string representation of ncml "compact"
+      ncml = ncmlToCompactString(ncmlElem);
     }
 
     // changed = true;
@@ -185,6 +186,22 @@ public class DatasetTrackerChronicle implements DatasetTracker {
     datasetMap.put(path, dsext);
     changed = true;
     return true;
+  }
+
+  /**
+   * Make a block of NcML compact and remove comments to minimize size stored in chronicle database
+   *
+   * @param ncmlElem
+   * @return compact ncml string
+   */
+  static String ncmlToCompactString(Element ncmlElem) {
+    // set the string output to be "compact"
+    XMLOutputter xmlOut = new XMLOutputter(Format.getCompactFormat());
+    String ncml = xmlOut.outputString(ncmlElem);
+    // strip out xml comments
+    // pattern from https://superuser.com/a/1153242
+    ncml = ncml.replaceAll("<!--[\\s\\S\\n]*?-->", "");
+    return ncml;
   }
 
   public String findResourceControl(String path) {

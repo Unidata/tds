@@ -130,8 +130,12 @@ public class TestChronicleTrackerBigNcml {
       String ncmlFromDb = datasetTrackerDb.findNcml("ExampleNcML/bigNcml1.nc");
 
       // compare actual ncml from catalog and ncml from dataset tracker
-      Assert.assertEquals(ncmlFromCatalog, ncmlFromDb);
+      // the ncml from the catalog should have comments, etc. Should not match
+      Assert.assertNotEquals(ncmlFromCatalog, ncmlFromDb);
 
+      // make the NcML from the catalog compact
+      String compactNcmlFromCatalog = DatasetTrackerChronicle.ncmlToCompactString(ncml);
+      Assert.assertEquals(compactNcmlFromCatalog, ncmlFromDb);
     }
   }
 }
