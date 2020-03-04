@@ -22,6 +22,7 @@ dependencies {
     compile libraries["cdm-radial"]
     compile libraries["cdm-misc"]
     compile libraries["cdm-image"]
+    compile libraries["cdm-s3"]
     compile libraries["grib"]
     compile libraries["httpservices"]
     compile libraries["netcdf4"]

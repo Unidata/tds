@@ -74,7 +74,7 @@ libraries["spotless"] = "com.diffplug.spotless:spotless-plugin-gradle:3.22.0"
 
 /////////////////////////////////////// netCDF-Java ////////////////////////////////////////
 
-versions["ncj"] = "5.3.0-SNAPSHOT"
+versions["ncj"] = "5.4.0-SNAPSHOT"
 
 libraries["bufr"] = "edu.ucar:bufr:${versions["ncj"]}"
 libraries["cdm-core"] = "edu.ucar:cdm-core:${versions["ncj"]}"
@@ -82,6 +82,7 @@ libraries["cdm-radial"] = "edu.ucar:cdm-radial:${versions["ncj"]}"
 libraries["cdm-misc"] = "edu.ucar:cdm-misc:${versions["ncj"]}"
 libraries["cdm-image"] = "edu.ucar:cdm-image:${versions["ncj"]}"
 libraries["cdm-mcidas"] = "edu.ucar:cdm-mcidas:${versions["ncj"]}"
+libraries["cdm-s3"] = "edu.ucar:cdm-s3:${versions["ncj"]}"
 libraries["grib"] = "edu.ucar:grib:${versions["ncj"]}"
 libraries["httpservices"] = "edu.ucar:httpservices:${versions["ncj"]}"
 libraries["netcdf4"] = "edu.ucar:netcdf4:${versions["ncj"]}"
