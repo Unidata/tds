@@ -29,6 +29,7 @@ import thredds.server.ncss.format.SupportedFormat;
 import thredds.server.notebook.JupyterNotebookServiceCache;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.grib.GribIndexCache;
 import ucar.nc2.grib.collection.GribCdmIndex;
 import ucar.nc2.jni.netcdf.Nc4Iosp;
@@ -387,8 +388,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     max = ThreddsConfig.getInt("NetcdfFileCache.maxFiles", 150);
     secs = ThreddsConfig.getSeconds("NetcdfFileCache.scour", 12 * 60);
     if (max > 0) {
-      NetcdfDataset.initNetcdfFileCache(min, max, secs);
-      startupLog.info("TdsInit: NetcdfDataset.initNetcdfFileCache= [" + min + "," + max + "] scour = " + secs);
+      NetcdfDatasets.initNetcdfFileCache(min, max, secs);
+      startupLog.info("TdsInit: NetcdfDatasets.initNetcdfFileCache= [" + min + "," + max + "] scour = " + secs);
     }
 
     // GribCollection partitions: default is allow 100 - 150 objects, cleanup every 13 minutes
@@ -478,7 +479,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
 
     // open file caches
     RandomAccessFile.shutdown();
-    NetcdfDataset.shutdown();
+    NetcdfDatasets.shutdown();
 
     // memory caches
     GribCdmIndex.shutdown();

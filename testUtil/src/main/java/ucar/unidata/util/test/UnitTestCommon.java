@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 abstract public class UnitTestCommon {
   //////////////////////////////////////////////////
@@ -431,7 +432,7 @@ abstract public class UnitTestCommon {
   // Properly access a dataset
   static public NetcdfDataset openDataset(String url) throws IOException {
     DatasetUrl durl = DatasetUrl.findDatasetUrl(url);
-    return NetcdfDataset.acquireDataset(null, durl, ENHANCEMENT, -1, null, null);
+    return NetcdfDatasets.acquireDataset(null, durl, ENHANCEMENT, -1, null, null);
   }
 
   // Fix up a filename reference in a string

@@ -16,6 +16,7 @@ import java.util.*;
 import java.io.PrintStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.grib.collection.GribCdmIndex;
 import ucar.nc2.util.cache.FileCacheIF;
 import ucar.unidata.io.RandomAccessFile;
@@ -120,7 +121,7 @@ public class DebugCommands {
           fc.showCache(f);
         }
 
-        fc = NetcdfDataset.getNetcdfFileCache();
+        fc = NetcdfDatasets.getNetcdfFileCache();
         if (fc == null)
           f.format("NetcdfDatasetFileCache : turned off%n");
         else {
@@ -143,7 +144,7 @@ public class DebugCommands {
 
     act = new Action("clearCaches", "Clear All File Object Caches") {
       public void doAction(Event e) {
-        NetcdfDataset.getNetcdfFileCache().clearCache(false);
+        NetcdfDatasets.getNetcdfFileCache().clearCache(false);
         RandomAccessFile.getGlobalFileCache().clearCache(false);
         FileCacheIF fc = GribCdmIndex.gribCollectionCache;
         if (fc != null)
@@ -172,7 +173,7 @@ public class DebugCommands {
 
     act = new Action("disableNetcdfCache", "Disable NetcdfDatasetFile Cache") {
       public void doAction(Event e) {
-        NetcdfDataset.disableNetcdfFileCache();
+        NetcdfDatasets.disableNetcdfFileCache();
         e.pw.println("  Disable NetcdfFile Cache ok");
       }
     };
@@ -180,7 +181,7 @@ public class DebugCommands {
 
     act = new Action("forceNCCache", "Force clear NetcdfDatasetFile Cache") {
       public void doAction(Event e) {
-        NetcdfDataset.getNetcdfFileCache().clearCache(true);
+        NetcdfDatasets.getNetcdfFileCache().clearCache(true);
         e.pw.println("  NetcdfFileCache force clearCache done");
       }
     };

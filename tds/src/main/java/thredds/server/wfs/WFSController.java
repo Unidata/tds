@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import thredds.core.TdsRequestedDataset;
 import ucar.nc2.dataset.CoordinateSystem;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.ft2.simpgeometry.*;
 import ucar.nc2.ft2.simpgeometry.adapter.SimpleGeometryCSBuilder;
 import java.io.IOException;
@@ -314,7 +315,7 @@ public class WFSController extends HttpServlet {
       actualPath = TdsRequestedDataset.getLocationFromRequestPath(datasetReqPath);
 
       if (actualPath != null)
-        dataset = NetcdfDataset.openDataset(actualPath);
+        dataset = NetcdfDatasets.openDataset(actualPath);
       else
         return;
 

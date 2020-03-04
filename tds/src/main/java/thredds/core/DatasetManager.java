@@ -24,6 +24,7 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.DatasetUrl;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.grid.GridDataset;
 import ucar.nc2.ft.FeatureDatasetFactoryManager;
 import ucar.nc2.ft.FeatureDatasetPoint;
@@ -138,8 +139,8 @@ public class DatasetManager implements InitializingBean {
     // look for a dataset (non scan, non fmrc) that has an ncml element
     String ncml = datasetTracker.findNcml(reqPath);
     if (ncml != null) {
-      NetcdfFile ncfile = NetcdfDataset.acquireFile(new NcmlFileFactory(ncml), null, DatasetUrl.findDatasetUrl(reqPath),
-          -1, null, null);
+      NetcdfFile ncfile = NetcdfDatasets.acquireFile(new NcmlFileFactory(ncml), null,
+          DatasetUrl.findDatasetUrl(reqPath), -1, null, null);
       if (ncfile == null)
         throw new FileNotFoundException(reqPath);
       return ncfile;
@@ -195,7 +196,7 @@ public class DatasetManager implements InitializingBean {
       }
 
       DatasetUrl durl = DatasetUrl.findDatasetUrl(location);
-      ncfile = NetcdfDataset.acquireFile(durl, null);
+      ncfile = NetcdfDatasets.acquireFile(durl, null);
     }
 
     if (ncfile == null)
@@ -235,7 +236,7 @@ public class DatasetManager implements InitializingBean {
     NetcdfDataset ncd = null;
     try {
       // Convert to NetcdfDataset
-      ncd = NetcdfDataset.wrap(ncfile, NetcdfDataset.getDefaultEnhanceMode());
+      ncd = NetcdfDatasets.enhance(ncfile, NetcdfDataset.getDefaultEnhanceMode(), null);
       return new ucar.nc2.dt.grid.GridDataset(ncd);
 
 
@@ -284,7 +285,7 @@ public class DatasetManager implements InitializingBean {
     Formatter errlog = new Formatter();
     NetcdfDataset ncd = null;
     try {
-      ncd = NetcdfDataset.wrap(ncfile, NetcdfDataset.getDefaultEnhanceMode());
+      ncd = NetcdfDatasets.enhance(ncfile, NetcdfDataset.getDefaultEnhanceMode(), null);
       return (FeatureDatasetPoint) FeatureDatasetFactoryManager.wrap(FeatureType.ANY_POINT, ncd, null, errlog);
 
     } catch (Throwable t) {
@@ -392,7 +393,7 @@ public class DatasetManager implements InitializingBean {
     Formatter errlog = new Formatter();
     NetcdfDataset ncd = null;
     try {
-      ncd = NetcdfDataset.wrap(ncfile, NetcdfDataset.getDefaultEnhanceMode());
+      ncd = NetcdfDatasets.enhance(ncfile, NetcdfDataset.getDefaultEnhanceMode(), null);
       return (SimpleGeometryFeatureDataset) FeatureDatasetFactoryManager.wrap(FeatureType.SIMPLE_GEOMETRY, ncd, null,
           errlog);
 

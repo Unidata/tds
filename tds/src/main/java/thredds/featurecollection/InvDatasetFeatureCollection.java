@@ -16,6 +16,7 @@ import thredds.inventory.*;
 import thredds.server.catalog.FeatureCollectionRef;
 import ucar.nc2.dataset.DatasetUrl;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.GridDataset;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft2.coverage.CoverageCollection;
@@ -574,7 +575,7 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
           new StringBuilder(topDirectory).append(topDirectory.endsWith("/") ? "" : "/").append(name).toString();
       DatasetUrl durl = new DatasetUrl(null, filename);
 
-      return NetcdfDataset.acquireDataset(null, durl, null, -1, null, null); // no enhancement
+      return NetcdfDatasets.acquireDataset(null, durl, null, -1, null, null); // no enhancement
     }
 
     GridDataset gds = getGridDataset(matchPath); // LOOK cant be right
