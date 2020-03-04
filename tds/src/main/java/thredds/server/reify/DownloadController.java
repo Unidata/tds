@@ -15,6 +15,7 @@ import ucar.nc2.FileWriter2;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFileWriter;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.iosp.NCheader;
 import ucar.nc2.iosp.hdf5.H5header;
 import ucar.nc2.iosp.netcdf3.N3header;
@@ -326,7 +327,7 @@ public class DownloadController extends LoadCommon {
       NetcdfFile ncfile = null;
       try {
         CancelTaskImpl cancel = new CancelTaskImpl();
-        ncfile = NetcdfDataset.openFile(trueurl, cancel);
+        ncfile = NetcdfDatasets.openFile(trueurl, cancel);
         switch (this.params.format) {
           case NETCDF3:
             makeNetcdf3(ncfile, fulltarget);

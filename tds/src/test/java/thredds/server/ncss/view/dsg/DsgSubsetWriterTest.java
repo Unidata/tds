@@ -16,6 +16,7 @@ import ucar.nc2.Variable;
 import ucar.nc2.constants.CDM;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.ft.FeatureDataset;
 import ucar.nc2.ft.FeatureDatasetFactoryManager;
 import ucar.nc2.ft.FeatureDatasetPoint;
@@ -210,8 +211,8 @@ public class DsgSubsetWriterTest {
   }
 
   public static boolean compareNetCDF(File expectedResultFile, File actualResultFile) throws IOException {
-    try (NetcdfFile expectedNcFile = NetcdfDataset.openDataset(expectedResultFile.getAbsolutePath());
-        NetcdfFile actualNcFile = NetcdfDataset.openDataset(actualResultFile.getAbsolutePath())) {
+    try (NetcdfFile expectedNcFile = NetcdfDatasets.openDataset(expectedResultFile.getAbsolutePath());
+        NetcdfFile actualNcFile = NetcdfDatasets.openDataset(actualResultFile.getAbsolutePath())) {
       Formatter formatter = new Formatter();
       boolean contentsAreEqual = new CompareNetcdf2(formatter).compare(expectedNcFile, actualNcFile,
           new NcssNetcdfObjFilter(), false, false, true);

@@ -8,7 +8,7 @@ package thredds.core;
 import thredds.servlet.ServletUtil;
 import thredds.util.TdsPathUtils;
 import ucar.nc2.NetcdfFile;
-import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.GridDataset;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft2.coverage.CoverageCollection;
@@ -146,7 +146,7 @@ public class TdsRequestedDataset {
 
   // return null means request has been handled, and calling routine should exit without further processing
   public NetcdfFile openAsNetcdfFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    return isRemote ? NetcdfDataset.openDataset(path) : datasetManager.openNetcdfFile(request, response, path);
+    return isRemote ? NetcdfDatasets.openDataset(path) : datasetManager.openNetcdfFile(request, response, path);
   }
 
   public boolean isRemote() {

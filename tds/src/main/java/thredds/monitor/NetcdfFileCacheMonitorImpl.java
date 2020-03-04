@@ -5,9 +5,9 @@
 
 package thredds.monitor;
 
-import ucar.nc2.dataset.NetcdfDataset;
 import java.util.List;
 import java.util.ArrayList;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 /**
  * Class Description.
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class NetcdfFileCacheMonitorImpl implements NetcdfFileCacheMonitor {
 
   public List<String> getCachedFiles() {
-    ucar.nc2.util.cache.FileCacheIF fc = NetcdfDataset.getNetcdfFileCache();
+    ucar.nc2.util.cache.FileCacheIF fc = NetcdfDatasets.getNetcdfFileCache();
     if (fc == null)
       return new ArrayList<>();
 
