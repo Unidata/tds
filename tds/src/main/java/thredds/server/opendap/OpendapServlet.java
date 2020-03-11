@@ -187,6 +187,7 @@ public class OpendapServlet extends AbstractServlet {
       }
 
       // LOOK - should allow exceptions to be caught by TdsErrorHandling
+      // like we do for RequestTooLarge
 
       // plain ol' 404
     } catch (FileNotFoundException e) {
@@ -216,8 +217,9 @@ public class OpendapServlet extends AbstractServlet {
 
       // 403 - request too big
     } catch (RequestTooLargeException e) {
-      sendErrorResponse(response, HttpServletResponse.SC_FORBIDDEN, e.getMessage());
-
+      // handled at the Spring level by TdsErrorHandling, so
+      // pass it on up the stack
+      throw e;
     } catch (java.net.SocketException e) {
       log.info("SocketException: " + e.getMessage(), e);
 

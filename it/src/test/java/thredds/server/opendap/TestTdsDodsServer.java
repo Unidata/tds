@@ -4,12 +4,24 @@
  */
 package thredds.server.opendap;
 
+import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
+import java.util.Formatter;
+import java.util.List;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import thredds.TestOnLocalServer;
 import thredds.client.catalog.Catalog;
 import thredds.client.catalog.Dataset;
@@ -25,14 +37,10 @@ import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dt.GridCoordSystem;
 import ucar.nc2.dt.grid.GeoGrid;
 import ucar.nc2.util.CompareNetcdf2;
-import ucar.unidata.util.test.Assert2;
-import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.StringUtil2;
-import java.io.IOException;
-import java.lang.invoke.MethodHandles;
-import java.util.Formatter;
-import java.util.List;
+import ucar.unidata.util.test.Assert2;
+import ucar.unidata.util.test.TestDir;
+import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 @Category(NeedsCdmUnitTest.class)
 public class TestTdsDodsServer {
@@ -54,6 +62,38 @@ public class TestTdsDodsServer {
     String results = new String(result, StandardCharsets.UTF_8);
     assert results.contains("scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2");
     assert results.contains("15636.879");
+  }
+
+  @Test
+  public void testTooBigDods() throws IOException {
+    String endpoint = TestOnLocalServer.withHttpPath(
+        "dodsC/HRRR/analysis/TP.dods?u-component_of_wind_isobaric&Temperature_isobaric&v-component_of_wind_isobaric");
+    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+      HttpGet httpGet = new HttpGet(endpoint);
+      HttpResponse response = httpClient.execute(httpGet);
+      StatusLine status = response.getStatusLine();
+      Assert.assertEquals(status.getStatusCode(), 403);
+      HttpEntity entity = response.getEntity();
+      Assert.assertEquals(entity.getContentType().getValue(), MediaType.TEXT_PLAIN.toString());
+      String responseString = EntityUtils.toString(entity, "UTF-8");
+      Assert.assertTrue(responseString.toLowerCase().contains("request too large"));
+    }
+  }
+
+  @Test
+  public void testTooBigAscii() throws IOException {
+    String endpoint = TestOnLocalServer.withHttpPath(
+        "dodsC/HRRR/analysis/TP.ascii?u-component_of_wind_isobaric&Temperature_isobaric&v-component_of_wind_isobaric");
+    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+      HttpGet httpGet = new HttpGet(endpoint);
+      HttpResponse response = httpClient.execute(httpGet);
+      StatusLine status = response.getStatusLine();
+      Assert.assertEquals(status.getStatusCode(), 403);
+      HttpEntity entity = response.getEntity();
+      Assert.assertEquals(entity.getContentType().getValue(), MediaType.TEXT_PLAIN.toString());
+      String responseString = EntityUtils.toString(entity, "UTF-8");
+      Assert.assertTrue(responseString.toLowerCase().contains("request too large"));
+    }
   }
 
   @Test
