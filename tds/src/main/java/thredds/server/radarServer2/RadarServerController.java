@@ -53,9 +53,9 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/radarServer")
 public class RadarServerController {
   Map<String, RadarDataInventory> data;
-  static final String appName = "/thredds/";
+
   static final String entryPoint = "radarServer/";
-  static final String URLbase = appName + entryPoint;
+
   static Map<String, List<RadarServerConfig.RadarConfigEntry.VarInfo>> vars;
   boolean enabled = false;
 
@@ -169,6 +169,8 @@ public class RadarServerController {
     if (!enabled)
       return null;
 
+    String URLbase = tdsContext.getContextPath() + "/" + entryPoint;
+
     CatalogBuilder cb = new CatalogBuilder();
     cb.addService(new Service("radarServer", URLbase, "QueryCapability", null, null, new ArrayList<Service>(),
         new ArrayList<Property>(), null));
@@ -236,6 +238,8 @@ public class RadarServerController {
   public HttpEntity<byte[]> datasetCatalog(final HttpServletRequest request) throws IOException {
     if (!enabled)
       return null;
+
+    String URLbase = tdsContext.getContextPath() + "/" + entryPoint;
 
     // Check the user-agent to try to guess if this request is coming from
     // the IDV--if so, we'll need to tweak the returned catalog XML.

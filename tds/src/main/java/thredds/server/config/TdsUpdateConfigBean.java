@@ -61,7 +61,7 @@ public class TdsUpdateConfigBean {
     int connectionTimeout = 3; // http connection timeout in seconds
     Map<String, String> latestVersionInfo = new HashMap<>();
 
-    String versionUrl = "https://www.unidata.ucar.edu/software/thredds/latest.xml";
+    String versionUrl = "https://www.unidata.ucar.edu/software/tds/latest.xml";
     try {
       try (HTTPMethod method = HTTPFactory.Get(versionUrl)) {
         HTTPSession httpClient = method.getSession();

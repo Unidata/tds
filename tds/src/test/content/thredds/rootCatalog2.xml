@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="TDS Unit Test Server - Root Catalog 2"
+         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         version="1.2">
+
+  <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/"/>
+
+  <datasetScan name="Test Scan Local (no ID) from second catalog root"
+    path="scanLocal2" location="content/testdata/">
+    <metadata inherited="true">
+      <serviceName>http</serviceName>
+    </metadata>
+  </datasetScan>
+
+</catalog>

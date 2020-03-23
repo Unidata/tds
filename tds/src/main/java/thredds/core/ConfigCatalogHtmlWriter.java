@@ -493,7 +493,7 @@ public class ConfigCatalogHtmlWriter {
       sb.append(this.htmlConfig.getHostInstName());
       if (hostInstUrl != null)
         sb.append("</a>");
-      sb.append(" see <a href='/thredds/info/serverInfo.html'> Info </a>");
+      sb.append(" see <a href='" + tdsContext.getContextPath() + "/info/serverInfo.html'> Info </a>");
       sb.append("<br>\n");
     }
 
