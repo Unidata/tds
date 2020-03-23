@@ -95,7 +95,7 @@ libraries["d4lib"] = "edu.ucar:d4lib:${versions["ncj"]}"
 
 ////////////////////////////////////////// Spring //////////////////////////////////////////
 
-versions["spring"] = "4.3.20.RELEASE"
+versions["spring"] = "4.3.26.RELEASE"
 
 libraries["spring-core"] = "org.springframework:spring-core:${versions["spring"]}"
 
