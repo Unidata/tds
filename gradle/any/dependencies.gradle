@@ -245,6 +245,12 @@ libraries["chronicle-map"] = dependencies.create("net.openhft:chronicle-map:3.17
     // netcdf4 uses
     exclude group: 'net.java.dev.jna', module: 'jna'
     exclude group: 'net.java.dev.jna', module: 'jna-platform'
+    // We do not need XStream for our use of chronicle-map.
+    // Nuke it. [SEC]
+    exclude group: 'com.thoughtworks.xstream', module: 'xstream'
+    // We do not need pax-url-aether
+    // Nuke it. [SEC]
+    exclude group: 'org.ops4j.pax.url', module: 'pax-url-aether'
 }
 
 // replaces the one that we exclude from chronicle-map
