@@ -308,7 +308,7 @@ libraries["threddsIso"] = "EDS:threddsIso:2.3.0-SNAPSHOT"
 
 libraries["Saxon-HE"] = "net.sf.saxon:Saxon-HE:9.7.0-8"
 
-libraries["quartz"] = "org.quartz-scheduler:quartz:2.3.1"
+libraries["quartz"] = "org.quartz-scheduler:quartz:2.3.2"
 
 // Version update note:
 // spring-context 4.x is limited to hibernate-validator 4.3.2.Final. We can't update to hibernate-validator 5.x
