@@ -328,11 +328,14 @@ public class DatasetScan extends CatalogRef {
 
         try {
           Path nextPath = dirStreamIterator.next();
-          BasicFileAttributes attr = Files.readAttributes(nextPath, BasicFileAttributes.class);
-          nextMFile = new MFileOS7(nextPath, attr);
-          if (accept(nextMFile))
-            return true;
-
+          if (Files.exists(nextPath)) {
+            BasicFileAttributes attr = Files.readAttributes(nextPath, BasicFileAttributes.class);
+            nextMFile = new MFileOS7(nextPath, attr);
+            if (accept(nextMFile))
+              return true;
+          } else {
+            log.debug(String.format("%s does not exist. Possible broken symlink.", nextPath));
+          }
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
