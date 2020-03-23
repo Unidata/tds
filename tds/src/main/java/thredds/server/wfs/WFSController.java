@@ -3,6 +3,7 @@ package thredds.server.wfs;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import thredds.core.TdsRequestedDataset;
+import thredds.servlet.ServletUtil;
 import ucar.nc2.dataset.CoordinateSystem;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
@@ -47,7 +48,7 @@ public class WFSController extends HttpServlet {
    * @return The URI of the server corresponding to the request
    */
   public static String constructServerPath(HttpServletRequest hsreq) {
-    return hsreq.getScheme() + "://" + hsreq.getServerName() + ":" + hsreq.getServerPort() + "/thredds/wfs/";
+    return ServletUtil.getRequestServer(hsreq) + hsreq.getContextPath() + "/wfs/";
   }
 
   /**

@@ -28,7 +28,7 @@
     <generateDatasetJsonLD>true</generateDatasetJsonLD>
   </htmlSetup>
 
-
+  <catalogRoot>rootCatalog2.xml</catalogRoot>
   <!--
    The <CatalogServices> element:
    -->

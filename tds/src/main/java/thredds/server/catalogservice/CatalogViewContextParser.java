@@ -43,14 +43,12 @@ public class CatalogViewContextParser {
   @Autowired
   private TdsServerInfoBean serverInfo;
 
-  private static final String ROOT_CAT_PATTERN = "/thredds/catalog/catalog.(html|xml)";
-
   public Map<String, Object> getCatalogViewContext(Catalog cat, HttpServletRequest req, boolean isLocalCatalog) {
     Map<String, Object> model = new HashMap<>();
     addBaseContext(model);
 
     try {
-      if (Pattern.matches(CatalogViewContextParser.ROOT_CAT_PATTERN, cat.getBaseURI().getPath())) {
+      if (cat.getParent() == null) {
         model.put("rootCatalog", true);
       }
     } catch (Exception e) {

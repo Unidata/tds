@@ -21,6 +21,7 @@ import thredds.client.catalog.builder.CatalogBuilder;
 import thredds.core.AllowedServices;
 import thredds.core.StandardService;
 import thredds.server.config.HtmlConfigBean;
+import thredds.server.config.TdsContext;
 import thredds.server.exception.ServiceNotAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,6 +51,9 @@ public class RemoteCatalogServiceController {
 
   @Autowired
   private CatalogViewContextParser parser;
+
+  @Autowired
+  TdsContext tdsContext;
 
   @InitBinder("remoteCatalogRequest")
   protected void initRemoteCatalogRequestBinder(WebDataBinder binder) {
