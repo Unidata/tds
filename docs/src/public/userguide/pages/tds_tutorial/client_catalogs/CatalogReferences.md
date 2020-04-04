@@ -1,6 +1,6 @@
 ---
 title: Catalog References
-last_updated: 2018-04-02
+last_updated: 2020-04-01
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: client_catalog_references.html
@@ -30,7 +30,7 @@ One way to do this is to build each piece as a separate and logically-complete c
 3. Here are several `catalogRef` elements, each with a link to an external catalog, using the xlink:href attribute. 
    The `xlink:title` is used as the name of the dataset.
    We need a `name` attribute (in order to validate, for obscure reasons), but it is ignored.
-   The `xlink:href` attributes are [relative URLs](http://www.webreference.com/html/tutorial2/3.html){:target="_blank"} and are resolved against the catalog URL. 
+   The `xlink:href` attributes are [relative URLs](https://www.w3.org/TR/WD-html40-970917/htmlweb.html#h-5.1.2){:target="_blank"} and are resolved against the catalog URL. 
    For example, if the URL of the client catalog, as shown above, is:
 
    <http://thredds.ucar.edu/thredds/catalog.xml>{:target="_blank"}

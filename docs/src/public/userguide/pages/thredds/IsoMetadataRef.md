@@ -6,7 +6,7 @@ toc: false
 permalink: iso_metadata.html
 ---
 
-The TDS distribution includes the [ncISO](https://geo-ide.noaa.gov/wiki/index.php?title=NcISO){:target="_blank"} package from NOAA/Environmental Data Management (many thanks to Dave Neufeld and Ted Habermann).
+The TDS distribution includes the [ncISO](https://www.ngdc.noaa.gov/wiki/index.php/NcISO){:target="_blank"} package from NOAA/Environmental Data Management (many thanks to Dave Neufeld and Ted Habermann).
 
 ## ncISO Services
 ncISO supports three new services for datasets:

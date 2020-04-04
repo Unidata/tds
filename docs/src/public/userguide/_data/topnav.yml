@@ -26,10 +26,6 @@ topnav_dropdowns:
           url: index.html
         - title: netCDF-Java Tutorial
           external_url: https://docs.unidata.ucar.edu/netcdf-java/5.3/userguide/index.html
-    - title: Workshops
-      folderitems:
-        - title: 2018 Unidata Workshop
-          url: workshop2018.html
     - title: External Docs
       folderitems:
         - title: netCDF-Java public javadocs

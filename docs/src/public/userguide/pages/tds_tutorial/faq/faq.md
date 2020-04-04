@@ -1,6 +1,6 @@
 ---
 title: FAQ
-last_updated: 2018-04-02
+last_updated: 2020-04-01
 sidebar: tdsTutorial_sidebar
 toc: true
 permalink: tds_faq.html
@@ -215,7 +215,7 @@ There are only a few places where it is necessary to generate absolute URLs.
 In those cases, the TDS uses information from the incoming HTTP request to construct the generated URLs.
 It is up to the proxy to send the correct information to the proxied server so the request information will be correct.
 
-For more information, see our web page on [running Tomcat behind a proxy server](updateme).
+For more information, see our web page on [running Tomcat behind a proxy server](tds_behind_proxy.html).
 It contains links to Tomcat documentation on both `mod_proxy` and `mod_jk` as well as some user contributed documentation on setting up `mod_proxy`.
 
 ### I have modified my configuration of a `JoinExisting` Aggregation dataset, but nothing has changed.
@@ -398,7 +398,7 @@ Lots of redeploys only happen on our test server.
 
 Resources:
 
-["Classloader leaks"](http://blogs.sun.com/fkieviet/entry/classloader_leaks_the_dreaded_java){:target="_blank"} (sun blog) (2006-10-16)
+["Classloader leaks"](http://frankkieviet.blogspot.com/2006/10/classloader-leaks-dreaded-permgen-space.html){:target="_blank"} (Frank Kieviet's Engineering Notebook) (2016-02-26)
 ["Return of the PermGen"](http://my.opera.com/karmazilla/blog/2007/09/29/return-of-the-permgen){:target="_blank"} (2007-09-29)
 ["PermGen Strikes Back"](http://my.opera.com/karmazilla/blog/2007/03/15/permgen-strikes-back){:target="_blank"} (2007-03-15)
 ["Good Riddance PermGen OutOfMemoryError"](http://my.opera.com/karmazilla/blog/2007/03/13/good-riddance-permgen-outofmemoryerror){:target="_blank"} (2007-03-13)

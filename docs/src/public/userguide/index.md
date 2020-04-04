@@ -1,6 +1,6 @@
 ---
 title: TDS Online Tutorial
-last_updated: 2019-07-24
+last_updated: 2020-04-01
 sidebar: tdsTutorial_sidebar 
 permalink: index.html
 toc: false
@@ -17,11 +17,11 @@ The TDS is developed and supported by Unidata, a division of the University Corp
 
 Some of the technology in the TDS:
 
-* THREDDS [Dataset Inventory Catalogs](updateme) are used to provide virtual directories of available data and their associated metadata. 
+* THREDDS [Dataset Inventory Catalogs](basic_config_catalog.html) are used to provide virtual directories of available data and their associated metadata. 
   These catalogs can be generated dynamically or statically.
-* The [Netcdf-Java/CDM library](updateme) reads NetCDF, OpenDAP, and HDF5 datasets, as well as other binary formats such as GRIB and NEXRAD into a Common Data Model (CDM), essentially an (extended) netCDF view of the data.
+* The [Netcdf-Java/CDM library](https://www.unidata.ucar.edu/software/netcdf-java/){:target="_blank"} reads NetCDF, OpenDAP, and HDF5 datasets, as well as other binary formats such as GRIB and NEXRAD into a Common Data Model (CDM), essentially an (extended) netCDF view of the data.
   Datasets that can be read through the Netcdf-Java library are called CDM datasets.
-* TDS can use the [NetCDF Markup Language](ncml_overview.html) (NcML) to modify and create virtual aggregations of CDM datasets.
+* TDS can use the [NetCDF Markup Language](using_ncml_in_the_tds.html) (NcML) to modify and create virtual aggregations of CDM datasets.
 * An integrated server provides [OPeNDAP](http://www.opendap.org/){:target="_blank"} access to any CDM dataset.
   OPeNDAP is a widely used, subsetting data access method extending the HTTP protocol.
 * An integrated server provides bulk file access through the HTTP protocol.

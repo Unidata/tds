@@ -1,6 +1,6 @@
 ---
 title: TDS Services
-last_updated: 2018-10-18
+last_updated: 2020-04-04
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: services_ref.html
@@ -142,10 +142,10 @@ You can still define your own services, either globally in the root catalog, or 
       served by the TDS can be subset and/or viewed as HTML. Remote catalogs, if allowed/enabled,
       can be validated, displayed as HTML, or subset.
       <ul>
-        <li>More details are available <a href="CatalogService.html">here</a>.
+        <li>More details are available <a href="config_catalog.html">here</a>.
         </li>
         <li>Services for remote catalogs can be enabled with the TDS Configuration
-          File (<a href="ThreddsConfigXMLFile.html#Remote">threddsConfig.xml</a>).
+          File (<a href="basic_tds_configuration.html">threddsConfig.xml</a>).
         </li>
       </ul>
     </td>
@@ -209,10 +209,10 @@ You can still define your own services, either globally in the root catalog, or 
     </td>
     <td>Provide ISO 19115 metadata representation of a dataset's structure and metadata
       <ul>
-        <li>More details are available <a href="ncISO.html">here</a>.
+        <li>More details are available <a href="https://www.ngdc.noaa.gov/wiki/index.php/NcISO" target="_blank">here</a>.
         </li>
         <li>Enable ncISO with the TDS Configuration File
-          (<a href="ThreddsConfigXMLFile.html#ncISO">threddsConfig.xml</a>).
+          (<a href="adding_ogc_iso_services.html">threddsConfig.xml</a>).
         </li>
       </ul>
     </td>
@@ -249,10 +249,7 @@ You can still define your own services, either globally in the root catalog, or 
     </td>
     <td>Provide NCML representation of a dataset
       <ul>
-        <li>More details are available <a href="ncISO.html">here</a>.
-        </li>
-        <li>Enable ncISO with the TDS Configuration File
-          (<a href="ThreddsConfigXMLFile.html#ncISO">threddsConfig.xml</a>).
+        <li>More details are available <a href="using_ncml_in_the_tds.html">here</a>.
         </li>
       </ul>
     </td>
@@ -288,15 +285,8 @@ You can still define your own services, either globally in the root catalog, or 
       </tbody></table>
     </td>
     <td>Provide an evaluation of how well the metadata contained in a dataset conforms
-      to the <a href="http://wiki.esipfed.org/index.php/Category:Attribute_Conventions_Dataset_Discovery">
+      to the <a href="http://wiki.esipfed.org/index.php/Category:Attribute_Conventions_Dataset_Discovery" target="_blank">
         NetCDF Attribute Convention for Data Discovery (NACDD)</a>
-      <ul>
-        <li>More details are available <a href="ncISO.html">here</a>.
-        </li>
-        <li>Enable ncISO with the TDS Configuration File
-          (<a href="ThreddsConfigXMLFile.html#ncISO">threddsConfig.xml</a>).
-        </li>
-      </ul>
     </td>
   </tr>
 </tbody></table>
@@ -341,7 +331,7 @@ You can still define your own services, either globally in the root catalog, or 
   <td>OPeNDAP DAP2 data access protocol.
     <ul>
       <li>Several configuration options are available
-        (<a href="../reference/ThreddsConfigXMLFile.html#opendap">details</a>).
+        (<a href="basic_config_catalog.html">details</a>).
       </li>
     </ul>
   </td>
@@ -378,13 +368,12 @@ You can still define your own services, either globally in the root catalog, or 
   </td>
   <td>NetCDF Subset Service: a data access protocol.
     <ul>
-      <li>More details are available <a href="NetcdfSubsetServiceReference.html">here</a>.
+      <li>More details are available <a href="netcdf_subset_service_ref.html">here</a>.
       </li>
       <li>Enable NCSS and set other configuration options with the TDS
-        Configuration File
-        (<a href="ThreddsConfigXMLFile.html#ncss">threddsConfig.xml</a>).
+        Configuration File (threddsConfig.xml).
         More setup and configuration details are available
-        <a href="NetcdfSubsetServiceConfigure.html">here</a>.
+        <a href="netcdf_subset_service_ref.html">here</a>.
       </li>
     </ul>
   </td>
@@ -424,7 +413,7 @@ You can still define your own services, either globally in the root catalog, or 
     FeatureCollection is used.
     <ul>
       <li>More details are available
-        <a href="https://docs.unidata.ucar.edu/netcdf-java/5.3/userguide/cdmremote.html">here</a>.
+        <a href="https://docs.unidata.ucar.edu/netcdf-java/5.3/userguide/cdmremote.html" target="_blank">here</a>.
       </li>
     </ul>
   </td>
@@ -462,13 +451,13 @@ You can still define your own services, either globally in the root catalog, or 
   <td>OGC WCS supports access to geospatial data as "coverages".
     <ul>
       <li>More details about the OGC WCS are available
-        <a href="http://www.opengeospatial.org/standards/wcs">here</a>.
+        <a href="http://www.opengeospatial.org/standards/wcs" target="_blank">here</a>.
       </li>
       <li>Enable OGC WCS and set other configuration options with the TDS
         Configuration File
-        (<a href="ThreddsConfigXMLFile.html#wcs">threddsConfig.xml</a>).
+        (<a href="config_catalog.html">threddsConfig.xml</a>).
         More setup, configuration, and implementation details for the TDS's
-        OGC WCS implementation are available <a href="WCS.html">here</a>.
+        OGC WCS implementation are available <a href="wcs_ref.html">here</a>.
       </li>
     </ul>
   </td>
@@ -506,15 +495,15 @@ You can still define your own services, either globally in the root catalog, or 
   <td>OGC WMS supports access to georegistered map images from geoscience datasets.
     <ul>
       <li>More details about the OGC WMS are available
-        <a href="http://www.opengeospatial.org/standards/wms">here</a>.
+        <a href="http://www.opengeospatial.org/standards/wms" target="_blank">here</a>.
       </li>
       <li>Enable OGC WMS and set other configuration options with the TDS
         Configuration File
-        (<a href="ThreddsConfigXMLFile.html#wms">threddsConfig.xml</a>).
+        (<a href="config_catalog.html">threddsConfig.xml</a>).
         More setup, configuration, and implementation details for the TDS's
-        OGC WMS implementation are available <a href="WMS.html">here</a>.
+        OGC WMS implementation are available <a href="wms_ref.html">here</a>.
         Including a link to configuration information for the underlying
-        WMS implementation (ncWMS: "<a href="WMS.html">Detailed ncWMS Configuration</a>")
+        WMS implementation (ncWMS: "<a href="wms_ref.html">Detailed ncWMS Configuration</a>")
       </li>
     </ul>
   </td>
@@ -554,7 +543,7 @@ You can still define your own services, either globally in the root catalog, or 
       <li>Files accessed through the HTTP file download have their file
         handles cached by default. Configuration settings for this caching
         can be set with the TDS Configuration File
-        (<a href="ThreddsConfigXMLFile.html#FileCache">threddsConfig.xml</a>).
+        (<a href="config_catalog.html">threddsConfig.xml</a>).
       </li>
     </ul>
   </td>
@@ -593,9 +582,9 @@ You can still define your own services, either globally in the root catalog, or 
       <ul>
         <li>The SOS standard is applicable to use cases in which sensor data
           needs to be managed in an interoperable way. For more information,
-          see the <a href="http://www.opengeospatial.org/standards/sos">OGC</a>
+          see the <a href="http://www.opengeospatial.org/standards/sos" target="_blank">OGC</a>
           SOS page, or the ncSOS
-          <a href="https://github.com/asascience-open/ncSOS/wiki">wiki</a>,
+          <a href="https://github.com/asascience-open/ncSOS/wiki" target="_blank">wiki</a>,
           maintained by the developers of the ncSOS plugin, Applied Science
           Associates.
         </li>

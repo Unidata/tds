@@ -1,6 +1,6 @@
 ---
 title: Performance Tips
-last_updated: 2018-10-15
+last_updated: 2020-04-04
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: performance_tips.html
@@ -92,7 +92,7 @@ Once `thredds.war` is expanded, manually copy everything in `${tomcat_home}/weba
 * The `favicon.ico` file is mostly a convenience to keep browsers from constantly asking for it (substitute your own icon if you like!).
 
 #### Resources
-[Tomcat Performance FAQ](https://wiki.apache.org/tomcat/FAQ/Performance_and_Monitoring){:target="_blank"}
+[Tomcat Performance FAQ](https://cwiki.apache.org/confluence/display/TOMCAT/Performance+and+Monitoring){:target="_blank"}
 [Tomcat Performance paper](https://tomcat.apache.org/articles/performance.pdf){:target="_blank"} by Peter Lin
 
 ## Thredds Data Server

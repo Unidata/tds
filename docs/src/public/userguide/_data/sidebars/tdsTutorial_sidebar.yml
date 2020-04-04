@@ -54,11 +54,6 @@ entries:
       url: /tomcat_manager_app.html
       output: web, pdf
 
-    - title: Where to go from here
-      url: /where_to_go_from_here.html
-      output: web, pdf
-
-
   - title: Client Catalogs
     output: web, pdf
     folderitems:
@@ -143,13 +138,6 @@ entries:
   - title: netCDF Markup Language (NcML)
     output: web, pdf
     folderitems:
-    - title: Basic NcML Tutorial
-      url: /tds_basic_ncml_tutorial.html
-      output: web, pdf
-
-    - title: NcML Aggregation
-      url: /tds_ncml_aggregation.html
-      output: web, pdf
 
     - title: Using NcML in the TDS
       url: /using_ncml_in_the_tds.html
