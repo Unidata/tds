@@ -8,7 +8,7 @@ permalink: feature_collections_ref.html
 
 ## Overview
 
-The `featureCollection` element is a way to tell the TDS to serve collections of [CDM Feature Datasets](https://docs.unidata.ucar.edu/netcdf-java/5.3/userguide/feature_datasets.html){:target="_blank"}.
+The `featureCollection` element is a way to tell the TDS to serve collections of [CDM Feature Datasets](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/feature_datasets.html){:target="_blank"}.
 Currently this is used for gridded and point datasets whose time and spatial coordinates are recognized by the CDM software stack.
 This allows the TDS to automatically create logical datasets composed of collections of files, and to allow subsetting in coordinate space on them, through the WMS, WCS, Netcdf Subset, and CDM Remote Feature services.
 
@@ -39,7 +39,7 @@ Specific topics covered here are:
 For Feature Type specific information, see:
 
 * [FMRC Collections](fmrc_ref.html)
-* [Point Collections](https://docs.unidata.ucar.edu/netcdf-java/5.3/userguide/pointfeature_ref.html){:target="_blank"}
+* [Point Collections](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/pointfeature_ref.html){:target="_blank"}
 * [GRIB Collections](grib_feature_collections_ref.html)
 * [GRIB specific configuration](grib_collection_config_ref.html)
 * [GRIB Collection FAQs](grib_collection_config_ref.html)

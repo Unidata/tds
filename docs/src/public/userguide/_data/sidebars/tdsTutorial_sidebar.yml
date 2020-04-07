@@ -138,6 +138,13 @@ entries:
   - title: netCDF Markup Language (NcML)
     output: web, pdf
     folderitems:
+    - title: Basic NcML Tutorial
+      external_url: https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/basic_ncml_tutorial.html
+      output: web, pdf
+
+    - title: NcML Aggregation
+      external_url: https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/ncml_aggregation.html
+      output: web, pdf
 
     - title: Using NcML in the TDS
       url: /using_ncml_in_the_tds.html
@@ -284,7 +291,7 @@ entries:
       output: web, pdf
 
     - title: netCDF-Java and TDS Doc Guide
-      external_url: https://docs.unidata.ucar.edu/netcdf-java/5.3/userguide/doc_guide.html
+      external_url: https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/doc_guide.html
       output: web, pdf
 
     - title: Server-side Catalog Specification
