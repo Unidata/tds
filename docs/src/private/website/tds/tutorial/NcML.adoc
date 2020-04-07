@@ -8,9 +8,9 @@
 
 === For more information
 
-* http://www.unidata.ucar.edu/software/netcdf/ncml/[NetCDF Markup
+* https://www.unidata.ucar.edu/software/netcdf/ncml/[NetCDF Markup
 Language]
-* http://www.unidata.ucar.edu/software/netcdf/ncml/Aggregation.html[NcML
+* https://www.unidata.ucar.edu/software/netcdf/ncml/Aggregation.html[NcML
 Aggregation]
 * <<../reference/DatasetScan#,DatasetScan>>
 * http://www.unidata.ucar.edu/software/netcdf/ncml/FmrcAggregation.html[FMRC

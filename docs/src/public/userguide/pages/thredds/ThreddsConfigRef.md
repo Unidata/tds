@@ -311,7 +311,7 @@ The ncISO services are described in more detail on the ncISO [reference page](up
 </Netcdf4Clibrary>
 ~~~
 
-In order to write netCDF-4 files, you must have the [netCDF-4 C library](http://www.unidata.ucar.edu/downloads/netcdf/index.jsp) version 4.3.1 or above—compiled and available on your system, along with all supporting libraries (HDF5, zlib, and curl).
+In order to write netCDF-4 files, you must have the [netCDF-4 C library](https://www.unidata.ucar.edu/downloads/netcdf/index.jsp) version 4.3.1 or above—compiled and available on your system, along with all supporting libraries (HDF5, zlib, and curl).
 The [details](updateme) (netcdf-java netcdf4Clibrary reference page) of this differ for each operating system.
 The elements above allow you to configure how the library is discovered and used.
 

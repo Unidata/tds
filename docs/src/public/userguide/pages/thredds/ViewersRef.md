@@ -43,16 +43,16 @@ For instance, the following example:
 ~~~xml
 <dataset name="Test Single Dataset" ID="testDataset" serviceName="odap" urlPath="test/testData.nc" dataType="Grid">
   
-  <property name="viewer" value="http://www.unidata.ucar.edu/staff/caron/,MyViewer"/>
-  <property name="viewer2" value="http://www.unidata.ucar.edu/,MyOtherViewer"/>
+  <property name="viewer" value="https://www.unidata.ucar.edu/staff/caron/,MyViewer"/>
+  <property name="viewer2" value="https://www.unidata.ucar.edu/,MyOtherViewer"/>
 </dataset>
 ~~~
 
 results in the following HTML fragment:
 
 ~~~xml
-<a href='http://www.unidata.ucar.edu/staff/caron/'>MyViewer</a>
-<a href='http://www.unidata.ucar.edu/'>MyOtherViewer</a>
+<a href='https://www.unidata.ucar.edu/staff/caron/'>MyViewer</a>
+<a href='https://www.unidata.ucar.edu/'>MyOtherViewer</a>
 ~~~
 
 which looks like this on the TDS page:
@@ -68,7 +68,7 @@ For instance, the following example will result in viewer links for all children
 <dataset name="Test inherited viewer" ID="tiv">
   <metadata inherited="true">
     <serviceName>all</serviceName>
-    <property name="viewer" value="http://www.unidata.ucar.edu/staff/caron/,MyViewer" />
+    <property name="viewer" value="https://www.unidata.ucar.edu/staff/caron/,MyViewer" />
   </metadata>
   <dataset name="test inherited viewer ds 1" ID="tiv/ds1" urlPath="tiv/ds1.nc">
   <dataset name="test inherited viewer ds 2" ID="tiv/ds2" urlPath="tiv/ds2.nc">
@@ -82,7 +82,7 @@ When added to a datasetScan elements, the `viewer` property results in a viewer 
   <metadata
   inherited="true">
     <serviceName>all</serviceName>
-    <property name="viewer" value="http://www.unidata.ucar.edu/staff/caron/,MyViewer" />
+    <property name="viewer" value="https://www.unidata.ucar.edu/staff/caron/,MyViewer" />
   </metadata>
 </datasetScan>
 ~~~
@@ -202,11 +202,11 @@ So, looking at an approximation of the IDV JNLP file:
 ~~~xml
 <?xml version="1.0" encoding="utf-8"?>
 <!-- JNLP File for Integrated Data Viewer -->
-<jnlp spec="1.0+" codebase="http://www.unidata.ucar.edu/software/idv/webstart/">
+<jnlp spec="1.0+" codebase="https://www.unidata.ucar.edu/software/idv/webstart/">
   <information>
     <title>Integrated Data Viewer</title>
     <vendor>Unidata</vendor>
-    <homepage href="http://www.unidata.ucar.edu/software/idv/index.html"/>
+    <homepage href="https://www.unidata.ucar.edu/software/idv/index.html"/>
     <description>Integrated Data Viewer(IDV)</description>
     <description kind="short">A tool for geoscientific analysis and visualization.
     </description>
@@ -333,12 +333,12 @@ To call the ToolsUI application webstart application from your webpage, return t
 
 ~~~xml
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0+" codebase="http://www.unidata.ucar.edu/software/netcdf-java/current/webstart">
+<jnlp spec="1.0+" codebase="https://www.unidata.ucar.edu/software/netcdf-java/current/webstart">
     
    <information>
      <title>NetCDF Tools UI</title>
      <vendor>Unidata</vendor>
-     <homepage href="http://www.unidata.ucar.edu/software/netcdf-java/"/>
+     <homepage href="https://www.unidata.ucar.edu/software/netcdf-java/"/>
      <description kind="short">GUI interface to netCDF-Java / Common Data Model</description>
      <icon href="nc.gif"/>
      <offline-allowed/>
@@ -384,7 +384,7 @@ http://oos.soest.hawaii.edu/thredds/view/ToolsUI.jnlp?catalog=http://oos.soest.h
 ~~~
 
 it creates a jnlp file which is sent back to your browser.
-If your browser has Java webstart installed as a helper application (which happens when you install Java on your computer), the jnlp file is handled by the "Java plugin" on your browser, which downloads ToolsUI from wherever the jnlp file specifies (currently http://www.unidata.ucar.edu/software/netcdf-java/v4.3/webstart)
+If your browser has Java webstart installed as a helper application (which happens when you install Java on your computer), the jnlp file is handled by the "Java plugin" on your browser, which downloads ToolsUI from wherever the jnlp file specifies (currently https://www.unidata.ucar.edu/software/netcdf-java/v4.3/webstart)
 
 The jnlp file has been customized to include the command line argument of the form `{catalog}#{dataset}`, and the ToolsUI application looks for this and uses it to open that catalog and display the named dataset in the `Catalog Chooser` tab.
 This UI component gives access to all the metadata and access protocols of that dataset.
