@@ -1,6 +1,6 @@
 ---
 title: TDS Content Directory
-last_updated: 2018-04-02
+last_updated: 2020-04-01
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tds_content_directory.html
@@ -39,4 +39,4 @@ For now, we will focus on the following subset of the content directory:
      * `ncss/`
      * `wcs/`
    * `templates/`
-     * `tdsTemplateFragments.html` - user-supplied Thymeleaf HTML templates (see [Customizing TDS](customizing_tds.html#thymeleaf-templates) for details).
+     * `tdsTemplateFragments.html` - user-supplied Thymeleaf HTML templates (see [Customizing TDS](customizing_tds_look_and_feel.html#thymeleaf-templates) for details).

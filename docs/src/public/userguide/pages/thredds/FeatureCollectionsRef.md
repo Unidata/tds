@@ -1,6 +1,6 @@
 ---
 title: Feature Collections
-last_updated: 2018-04-02
+last_updated: 2020-04-01
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: feature_collections_ref.html
@@ -8,7 +8,7 @@ permalink: feature_collections_ref.html
 
 ## Overview
 
-The `featureCollection` element is a way to tell the TDS to serve collections of [CDM Feature Datasets](feature_datasets_ref.html).
+The `featureCollection` element is a way to tell the TDS to serve collections of [CDM Feature Datasets](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/feature_datasets.html){:target="_blank"}.
 Currently this is used for gridded and point datasets whose time and spatial coordinates are recognized by the CDM software stack.
 This allows the TDS to automatically create logical datasets composed of collections of files, and to allow subsetting in coordinate space on them, through the WMS, WCS, Netcdf Subset, and CDM Remote Feature services.
 
@@ -39,7 +39,7 @@ Specific topics covered here are:
 For Feature Type specific information, see:
 
 * [FMRC Collections](fmrc_ref.html)
-* [Point Collections](pointfeature_ref.html)
+* [Point Collections](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/pointfeature_ref.html){:target="_blank"}
 * [GRIB Collections](grib_feature_collections_ref.html)
 * [GRIB specific configuration](grib_collection_config_ref.html)
 * [GRIB Collection FAQs](grib_collection_config_ref.html)
@@ -255,7 +255,7 @@ The XML Schema definition for the `protoDataset` element:
 2. `choice = [First | Random | Penultimate | Latest]`: select prototype from a time ordered list, using the first, a randomly selected one, the next to last, or the last dataset in the list. 
    The default is `Penultimate`.
 3. `change = "cron expr"` (optional): On rolling datsets, you need to change the prototype periodically, otherwise it will get deleted eventually. 
-   This attribute specifies when the `protoDataset` should be re-selected, using a [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.x/tutorials/tutorial-lesson-06.html){:target="_blank"}.
+   This attribute specifies when the `protoDataset` should be re-selected, using a [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html){:target="_blank"}.
 
 The choice of the protoDataset matters when the datasets are not homogenous:
 
@@ -307,7 +307,7 @@ The XML Schema definition for the update element:
 1. `recheckAfter`: This will cause a new scan whenever a request comes in and this much time has elapsed since the last scan. 
    The request will wait until the scan is finished and a new collection is built (if needed), and so is called synchronous updating.
    **This option will be ignored if you are using the rescan attribute or if you have a tdm element.**
-2. `rescan`: uses a [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.x/tutorials/tutorial-lesson-06.html){:target="_blank"} to specify when the collection should be re-scanned in a background task, and re-tested to see if it has changed. 
+2. `rescan`: uses a [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html){:target="_blank"} to specify when the collection should be re-scanned in a background task, and re-tested to see if it has changed. 
    This is called asynchronous updating.
 3. `trigger`: if set to `allow` (default), then external triggering will be allowed. 
    This allows collections to be updated by an external program (or person using a browser) sending an explicit \"trigger\" URL to the server.
@@ -388,7 +388,7 @@ The XML Schema definition for the tdm element:
 
 1. `rewrite`: one of the [collectionUpdateTypes](#collectionupdatetype), except for `never`.
    The most useful value is test.
-2. `rescan`: uses a  [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.x/tutorials/tutorial-lesson-06.html){:target="_blank"} to specify when the collection should be re-scanned.
+2. `rescan`: uses a  [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html){:target="_blank"} to specify when the collection should be re-scanned.
 
 ### fileSort element
 
@@ -531,7 +531,7 @@ When you want to ensure that requests are answered as quickly as possible, read 
 <update startup="test" rescan="0 20 * * * ? *" />
 ~~~
 
-This [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.x/tutorials/tutorial-lesson-06.html){:target="_blank"} says to rescan the collection files \"every hour at 20 past the hour\", and rebuild the dataset if needed.
+This [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html){:target="_blank"} says to rescan the collection files \"every hour at 20 past the hour\", and rebuild the dataset if needed.
 
 ### Sporadically changing Collection
 

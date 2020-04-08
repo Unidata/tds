@@ -54,11 +54,6 @@ entries:
       url: /tomcat_manager_app.html
       output: web, pdf
 
-    - title: Where to go from here
-      url: /where_to_go_from_here.html
-      output: web, pdf
-
-
   - title: Client Catalogs
     output: web, pdf
     folderitems:
@@ -144,11 +139,11 @@ entries:
     output: web, pdf
     folderitems:
     - title: Basic NcML Tutorial
-      url: /tds_basic_ncml_tutorial.html
+      external_url: https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/basic_ncml_tutorial.html
       output: web, pdf
 
     - title: NcML Aggregation
-      url: /tds_ncml_aggregation.html
+      external_url: https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/ncml_aggregation.html
       output: web, pdf
 
     - title: Using NcML in the TDS
@@ -296,7 +291,7 @@ entries:
       output: web, pdf
 
     - title: netCDF-Java and TDS Doc Guide
-      external_url: https://docs.unidata.ucar.edu/netcdf-java/5.3/userguide/doc_guide.html
+      external_url: https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/doc_guide.html
       output: web, pdf
 
     - title: Server-side Catalog Specification

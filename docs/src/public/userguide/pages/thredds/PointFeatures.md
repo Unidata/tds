@@ -1,6 +1,6 @@
 ---
 title: PointFeature Collections
-last_updated: 2018-10-15
+last_updated: 2020-04-01
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: pointfeature_collection_ref.html
@@ -8,7 +8,7 @@ permalink: pointfeature_collection_ref.html
 
 ## Overview
 
-A Point Feature Collection is a collection of files which the CDM can recognize as containing [Point Features](pointfeature_ref.html).
+A Point Feature Collection is a collection of files which the CDM can recognize as containing [Point Features](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/pointfeature_ref.html){:target="_blank"}.
 
 ### Constraints on Point Feature Collections
 

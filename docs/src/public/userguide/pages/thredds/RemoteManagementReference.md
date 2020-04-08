@@ -1,6 +1,6 @@
 ---
 title: Remote Management Reference
-last_updated: 2018-04-02
+last_updated: 2020-04-02
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: remote_management_ref.html
@@ -18,7 +18,7 @@ However, you must decide this yourself, based on your organization's security po
 In what follows we try to explain what risks the various options have, as well as we understand them.
 A good compromise may be to do all the work to enable remote management, then turn it on only while actively configuring the server, and turn it off when in production mode.
 
-In any case, we strongly recommend that you also read and follow the [Tomcat/TDS Security](production_server_overview.html) guidelines.
+In any case, we strongly recommend that you also read and follow the guidelines in the <b>Putting TDS Into Production</b> section of this tutorial.
 
 Follow the [checklist](installation_checklist.html) for more concise and up-to-date configuration instruction.
 

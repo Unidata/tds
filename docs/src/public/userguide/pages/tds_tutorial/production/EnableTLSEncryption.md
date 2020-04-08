@@ -1,12 +1,12 @@
 ---
 title: Enable TLS/SSL Encryption
-last_updated: 2018-11-02
+last_updated: 2020-04-04
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: enable_tls_encryption.html
 ---
 
-This section demonstrates how to enable tls/SSL Encryption for the TDS and Tomcat Servlet Container.
+This section demonstrates how to enable TLS/SSL Encryption for the TDS and Tomcat Servlet Container.
 
 {%include note.html content="
 This section assumes you have successfully performed the tasks as outlined in the <a href=\"install_java_tomcat.html\" target=\"_blank\">Getting Started With The TDS</a> section of this tutorial.
@@ -86,7 +86,7 @@ This section assumes you have already imported your CA-signed certificate into t
    ~~~~
    
    {%include note.html content="
-     Tomcat also offers a `SSL/TLS HTTP/1.1 Connector` which utilizes `APR/native implementation`. Consult the <a href=\"http://tomcat.apache.org/tomcat-8.5-doc/config/http.html\" target=\"_blank\">documentation</a> to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
+     Tomcat also offers a `SSL/TLS HTTP/1.1 Connector` which utilizes `APR/native implementation`. Consult the <a href=\"http://tomcat.apache.org/tomcat-8.5-doc/config/http.html\" target=\"_blank\">Documentation</a> to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
    " %}
    
    Specify the keystore file in the `certificateKeystoreFile` attribute of the `Certificate` element to tell Tomcat where to find your keystore (the path will be relative to `$TOMCAT_HOME` directory).  
