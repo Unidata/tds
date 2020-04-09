@@ -186,7 +186,7 @@ The second GRIB feature collection we will explore can be found in {% include li
       </creator>
       <publisher>
         <name vocabulary="ADN">University Corporation for Atmospheric Research (UCAR)/Unidata</name>
-        <contact url="http://www.unidata.ucar.edu/" email="support@unidata.ucar.edu"/>
+        <contact url="https://www.unidata.ucar.edu/" email="support@unidata.ucar.edu"/>
       </publisher>
     </metadata>
     <dataset name="Regional Deterministic Prediction System (RDPS)">
