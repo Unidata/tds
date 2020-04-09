@@ -43,7 +43,7 @@ If so, you can skip to step 4.
     - As long as we don't make it to the artifact publishing step, we can always fix any issues by squashing new commits and pushing to the branch on Unidata/tds
 
 1. Update Unidata download page
-    - check https://www.unidata.ucar.edu/downloads/tds/index.jsp
+    - check https://www.unidata.ucar.edu/downloads/tds/
       * modify `www:/content/downloads/tds/toc.xml` as needed
 
 1. Update latest.xml file
