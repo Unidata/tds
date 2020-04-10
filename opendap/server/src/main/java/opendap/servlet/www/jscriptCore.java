@@ -96,7 +96,7 @@ public class jscriptCore {
       + "\"OPeNDAP client page</a> for information about those clients. \" +\n" + "\"<p><hr><p> \" + \n"
       + "\"<center> \" +\n" + "\"<input type=\\\"button\\\" value=\\\"Close\\\" onclick=\\\"self.close()\\\"> \" +\n"
       + "\"</center></form></body></html>\");\n" + "}\n" + "\n" + "function open_dods_home() {\n"
-      + "    window.open(\"http://unidata.ucar.edu/packages/dods/\", \"DODS_HOME_PAGE\");\n" + "}\n" + "\n" + "\n"
+      + "    window.open(\"https://www.opendap.org/\", \"DODS_HOME_PAGE\");\n" + "}\n" + "\n" + "\n"
       + "// Helper functions for the form.\n" + "\n" + "function describe_index() {\n"
       + "   defaultStatus = \"Enter start, stride and stop for the array dimension.\";\n" + "}\n" + "\n"
       + "function describe_selection() {\n" + "   defaultStatus = \"Enter a relational expression (e.g., <20).\";\n"
