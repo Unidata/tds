@@ -43,7 +43,7 @@ import thredds.server.viewer.ViewerLinkProvider;
 /**
  * A Viewer for viewing datasets using the built-in Godiva3 client. The viewer
  * must be configured in {@code ${tomcat_home}/content/thredds/threddsConfig.xml}, as per
- * instructions <a href="http://www.unidata.ucar.edu/projects/THREDDS/tech/tds4.2/reference/Viewers.html">here</a>(needs
+ * instructions <a href="https://www.unidata.ucar.edu/projects/THREDDS/tech/tds4.2/reference/Viewers.html">here</a>(needs
  * updated). *
  * 
  * @author Jon
