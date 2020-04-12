@@ -36,7 +36,7 @@ public class NcssGridRequestValidator implements ConstraintValidator<NcssGridReq
   /*
    * since none of these are required, can only do consistency checks
    * 
-   * @see "http://www.unidata.ucar.edu/software/thredds/current/tds/reference/NetcdfSubsetServiceReference.html"
+   * @see "https://www.unidata.ucar.edu/software/thredds/current/tds/reference/NetcdfSubsetServiceReference.html"
    */
   @Override
   public boolean isValid(NcssGridParamsBean params, ConstraintValidatorContext constraintValidatorContext) {

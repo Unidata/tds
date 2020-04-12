@@ -37,8 +37,8 @@
   <dataset name="Test Container Authorization" ID="testcontainerauth" serviceName="all" urlPath="containerauth/testData2.nc" restrictAccess="containerauth"/>
 
   <dataset name="Test With Viewer" ID="testDataset2" serviceName="odap" urlPath="localContent/2004050412_eta_211.nc" dataType="Grid">
-    <property name="viewer" value="http://www.unidata.ucar.edu/staff/caron/,MyViewer"/>
-    <property name="viewer2" value="http://www.unidata.ucar.edu/,MyOtherViewer"/>
+    <property name="viewer" value="https://www.unidata.ucar.edu/staff/caron/,MyViewer"/>
+    <property name="viewer2" value="https://www.unidata.ucar.edu/,MyOtherViewer"/>
   </dataset>
   <dataset name="Test latlon crossing seam" ID="testCrossingSeam" serviceName="all" urlPath="localContent/GFS_Global_onedeg_20120515_1200.grib2.nc"
            dataType="Grid"/>
