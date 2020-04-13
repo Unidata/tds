@@ -272,7 +272,7 @@ libraries["oro"] = "oro:oro:2.0.8"
 
 libraries["thymeleaf-spring4"] = "org.thymeleaf:thymeleaf-spring4:3.0.11.RELEASE"
 
-versions["edal"] = "1.4.2-SNAPSHOT"
+versions["edal"] = "1.4.2"
 
 // needed for edal-common but this pulls in a newer version.
 libraries["ehcache"] = "net.sf.ehcache:ehcache:2.10.6"

@@ -76,16 +76,6 @@
     <url-pattern>/wms/*</url-pattern>
   </servlet-mapping>
 
-  <filter>
-    <filter-name>RequestQueryFilter</filter-name>
-    <filter-class>thredds.servlet.filter.RequestQueryFilter</filter-class>
-  </filter>
-
-  <filter-mapping>
-    <filter-name>RequestQueryFilter</filter-name>
-    <servlet-name>wms</servlet-name>
-  </filter-mapping>
-
   <!-- end edal-wms servlet -->
 
   <!-- edal-wms screenshot servlet -->
@@ -101,6 +91,10 @@
     <url-pattern>/screenshots/*</url-pattern>
   </servlet-mapping>
 
+  <filter>
+    <filter-name>RequestQueryFilter</filter-name>
+    <filter-class>thredds.servlet.filter.RequestQueryFilter</filter-class>
+  </filter>
 
   <filter-mapping>
     <filter-name>RequestQueryFilter</filter-name>

@@ -37,6 +37,11 @@
            requestQueryFilterAllowAngleBrackets,
            requestCORSFilter,
            requestBracketingLogMessageFilter"/>
+                <security:filter-chain pattern="/wms/**" filters="
+           httpHeadFilter,
+           requestQueryFilterAllowAngleBrackets,
+           requestCORSFilter,
+           requestBracketingLogMessageFilter"/>
                 <security:filter-chain pattern="/**" filters="
            httpHeadFilter,
            requestQueryFilter,
