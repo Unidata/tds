@@ -42,6 +42,17 @@ ext {
     }
     
     isRdaDataAvailable = false  // figure out how to set later
+
+    // for now, ignore dap4 tests when checking against netcdf-java pull requests
+    skipDap4 = false
+    ciWorkspace = System.getenv('GITHUB_WORKSPACE')
+    if (ciWorkspace != null) {
+        ciWorkspace = ciWorkspace.replace('/', '')
+        skipDap4 = ciWorkspace != null && ciWorkspace.endsWith('netcdf-java')
+    }
+    if (skipDap4) {
+        logger.warn "Skipping dap4 tests when running against netCDF-Java PRs."
+    }
 }
 
 import java.nio.file.*
