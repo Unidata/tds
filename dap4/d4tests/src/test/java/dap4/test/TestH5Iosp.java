@@ -147,7 +147,7 @@ public class TestH5Iosp extends DapTestCommon {
 
     System.out.println("Testcase: " + testcase.testinputpath);
 
-    NetcdfDataset ncfile = openDataset(testcase.testinputpath);
+    NetcdfDataset ncfile = openDatasetDap4Tests(testcase.testinputpath);
 
     String metadata = null;
     String data = null;

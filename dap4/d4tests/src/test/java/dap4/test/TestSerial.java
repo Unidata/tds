@@ -178,7 +178,7 @@ public class TestSerial extends DapTestCommon {
       String url = testcase.makeurl(constraints[i]);
       NetcdfDataset ncfile = null;
       try {
-        ncfile = openDataset(url);
+        ncfile = openDatasetDap4Tests(url);
       } catch (Exception e) {
         throw e;
       }

@@ -148,7 +148,7 @@ public class TestNc4Iosp extends DapTestCommon {
   void doOneTest(Nc4IospTest testcase) throws Exception {
     System.err.println("Testcase: " + testcase.testinputpath);
 
-    NetcdfDataset ncfile = openDataset(testcase.testinputpath);
+    NetcdfDataset ncfile = openDatasetDap4Tests(testcase.testinputpath);
 
     String metadata = null;
     String data = null;
