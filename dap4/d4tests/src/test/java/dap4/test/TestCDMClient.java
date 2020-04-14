@@ -233,7 +233,7 @@ public class TestCDMClient extends DapTestCommon {
 
     NetcdfDataset ncfile;
     try {
-      ncfile = openDataset(testcase.getURL());
+      ncfile = openDatasetDap4Tests(testcase.getURL());
     } catch (Exception e) {
       e.printStackTrace();
       throw new Exception("File open failed: " + testcase.getURL(), e);
