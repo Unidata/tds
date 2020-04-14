@@ -1,21 +1,16 @@
 package dap4.test;
 
-import dap4.dap4lib.XURI;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.unidata.util.test.TestDir;
-import ucar.unidata.util.test.category.NeedsExternalResource;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -181,7 +176,7 @@ public class TestConstraints extends DapTestCommon {
     String url = testcase.makeurl();
     NetcdfDataset ncfile = null;
     try {
-      ncfile = openDataset(url);
+      ncfile = openDatasetDap4Tests(url);
     } catch (Exception e) {
       throw e;
     }

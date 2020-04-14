@@ -430,9 +430,9 @@ abstract public class UnitTestCommon {
   }
 
   // Properly access a dataset
-  static public NetcdfDataset openDataset(String url) throws IOException {
+  static public NetcdfDataset openDatasetDap4Tests(String url) throws IOException {
     DatasetUrl durl = DatasetUrl.findDatasetUrl(url);
-    return NetcdfDatasets.acquireDataset(null, durl, ENHANCEMENT, -1, null, null);
+    return NetcdfDataset.acquireDataset(null, durl, ENHANCEMENT, -1, null, null);
   }
 
   // Fix up a filename reference in a string

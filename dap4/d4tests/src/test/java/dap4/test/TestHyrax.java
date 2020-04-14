@@ -272,7 +272,7 @@ public class TestHyrax extends DapTestCommon {
     String url = testcase.makeurl();
     NetcdfDataset ncfile = null;
     try {
-      ncfile = openDataset(url);
+      ncfile = openDatasetDap4Tests(url);
     } catch (Exception e) {
       System.err.println(testcase.xfail ? "XFail" : "Fail");
       e.printStackTrace();
