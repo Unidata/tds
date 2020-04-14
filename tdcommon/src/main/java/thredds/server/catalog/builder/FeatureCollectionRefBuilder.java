@@ -44,19 +44,23 @@ import thredds.server.catalog.FeatureCollectionRef;
  */
 public class FeatureCollectionRefBuilder extends DatasetBuilder {
   thredds.featurecollection.FeatureCollectionConfig config;
+  private String context;
 
-  public FeatureCollectionRefBuilder(DatasetBuilder parent, thredds.featurecollection.FeatureCollectionConfig config) {
+  public FeatureCollectionRefBuilder(DatasetBuilder parent, thredds.featurecollection.FeatureCollectionConfig config,
+      String context) {
     super(parent);
     this.config = config;
+    this.context = context;
   }
 
   public FeatureCollectionRefBuilder(DatasetBuilder parent, FeatureCollectionRef from) {
     super(parent, from);
     this.config = from.getConfig();
+    this.context = "thredds";
   }
 
   public FeatureCollectionRef makeDataset(DatasetNode parent) {
-    String xlink = "/thredds/catalog/" + config.path + "/catalog.xml"; // LOOK hardcoded thredds, need context ??
+    String xlink = "/" + context + "/catalog/" + config.path + "/catalog.xml";
     return new FeatureCollectionRef(parent, name, xlink, flds, accessBuilders, datasetBuilders, config);
   }
 }

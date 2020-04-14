@@ -25,6 +25,22 @@ import java.util.*;
 public class ConfigCatalogBuilder extends CatalogBuilder {
   protected List<DatasetRootConfig> roots;
 
+  private final String context;
+
+  public ConfigCatalogBuilder() {
+    super();
+    context = "thredds";
+  }
+
+  public ConfigCatalogBuilder(String context) {
+    super();
+    if (context.startsWith("/"))
+      context = context.substring(1);
+    if (context.endsWith("/"))
+      context = context.substring(0, context.length() - 1);
+    this.context = context;
+  }
+
   protected DatasetBuilder buildOtherDataset(DatasetBuilder parent, Element elem) {
     // this finds datasetRoot in catalogs (unwanted side effect in regular dataset elements)
     if (elem.getName().equals("datasetRoot")) {
@@ -68,7 +84,7 @@ public class ConfigCatalogBuilder extends CatalogBuilder {
     String path = s.getAttributeValue("path");
     String location = s.getAttributeValue("location");
     String watch = s.getAttributeValue("watch");
-    return new CatalogScanBuilder(parent, name, path, location, watch);
+    return new CatalogScanBuilder(parent, name, path, location, watch, context);
   }
 
   @Override
@@ -94,7 +110,7 @@ public class ConfigCatalogBuilder extends CatalogBuilder {
       return null;
 
     } else {
-      DatasetScanBuilder dataset = new DatasetScanBuilder(parent, config);
+      DatasetScanBuilder dataset = new DatasetScanBuilder(parent, config, context);
       readDatasetInfo(dataset, dsElem);
       for (Element elem : dsElem.getChildren("netcdf", Catalog.ncmlNS)) {
         dataset.put(Dataset.Ncml, elem.detach());
@@ -112,7 +128,7 @@ public class ConfigCatalogBuilder extends CatalogBuilder {
       return null;
 
     } else {
-      FeatureCollectionRefBuilder dataset = new FeatureCollectionRefBuilder(parent, config);
+      FeatureCollectionRefBuilder dataset = new FeatureCollectionRefBuilder(parent, config, context);
       readDatasetInfo(dataset, fcElem);
       for (Element elem : fcElem.getChildren("netcdf", Catalog.ncmlNS)) { // ??
         dataset.put(Dataset.Ncml, elem.detach());

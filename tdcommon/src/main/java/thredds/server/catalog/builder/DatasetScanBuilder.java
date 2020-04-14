@@ -23,17 +23,19 @@ public class DatasetScanBuilder extends DatasetBuilder {
   static private final Logger logger = LoggerFactory.getLogger(DatasetScanBuilder.class);
 
   DatasetScanConfig config;
+  String context = "thredds"; // default
 
-  public DatasetScanBuilder(DatasetBuilder parent, DatasetScanConfig config) {
+  public DatasetScanBuilder(DatasetBuilder parent, DatasetScanConfig config, String context) {
     super(parent);
     this.config = config;
+    this.context = context;
   }
 
   public DatasetScan makeDataset(DatasetNode parent) {
     addToList(Dataset.Properties, new Property("DatasetScan", "true"));
 
-    String xlink = "/thredds/catalog/" + config.path + "/catalog.xml"; // LOOK hardcoded thredds, need context, or make
-                                                                       // it reletive ??
+    String xlink = "/" + context + "/catalog/" + config.path + "/catalog.xml";
+
     DatasetScan dscan = new DatasetScan(parent, name, xlink, flds, accessBuilders, datasetBuilders, config);
 
     if (null == dscan.getServiceNameDefault() && null == dscan.getFeatureType())

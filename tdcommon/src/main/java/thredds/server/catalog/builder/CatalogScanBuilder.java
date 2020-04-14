@@ -13,13 +13,16 @@ import thredds.server.catalog.CatalogScan;
  */
 public class CatalogScanBuilder extends DatasetBuilder {
   String path, location, watch;
+  String context = "thredds"; // default servlet context
 
-  public CatalogScanBuilder(DatasetBuilder parent, String name, String path, String location, String watch) {
+  public CatalogScanBuilder(DatasetBuilder parent, String name, String path, String location, String watch,
+      String context) {
     super(parent);
     this.name = name;
     this.path = path;
     this.location = location;
     this.watch = watch;
+    this.context = context;
   }
 
   public CatalogScanBuilder(DatasetBuilder parent, CatalogScan from) {
@@ -30,8 +33,7 @@ public class CatalogScanBuilder extends DatasetBuilder {
   }
 
   public CatalogScan makeDataset(DatasetNode parent) {
-    String xlink = "/thredds/catalog/" + path + "/catalogScan.xml"; // LOOK hardcoded thredds, need context, or make it
-                                                                    // reletive ??
+    String xlink = "/" + context + "/catalog/" + path + "/catalogScan.xml";
     return new CatalogScan(parent, name, xlink, flds, path, location, watch);
   }
 }
