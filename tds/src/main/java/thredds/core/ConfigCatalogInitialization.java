@@ -376,7 +376,7 @@ public class ConfigCatalogInitialization {
       return null;
     }
 
-    ConfigCatalogBuilder builder = new ConfigCatalogBuilder();
+    ConfigCatalogBuilder builder = new ConfigCatalogBuilder(this.contextPath);
     try {
       // read the catalog
       logCatalogInit.info("-------readCatalog(): path=" + catalogRelPath);
