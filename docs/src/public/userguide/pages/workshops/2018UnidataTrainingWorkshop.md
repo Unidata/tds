@@ -1,6 +1,6 @@
 ---
 title: 2018 Training Workshop Schedule
-last_updated: 2018-10-27
+last_updated: 2020-04-22
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink:  workshop2018.html
@@ -93,10 +93,10 @@ permalink:  workshop2018.html
 ### 10:00 (15 minutes) Break
 
 ### 10:15 (15 minutes) NcML modifications (Sean)
-* [Basic NcML tutorial](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/basic_ncml_tutorial.html){:target="_blank"}
+* [Basic NcML tutorial](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html){:target="_blank"}
 
 ### 10:30 (30 minutes) NcML aggregation (Sean)
-* [NcML Aggregation](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/ncml_aggregation.html){:target="_blank"}
+* [NcML Aggregation](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/ncml_aggregation.html){:target="_blank"}
 * [NcML Aggregation Example Problems](ncml_aggregation_examples.html)
 * NcML Aggregations vs Feature Collections ([pdf](https://www.unidata.ucar.edu/software/thredds/current/tds/tutorial/files/NcMLvsFeatureCollections.pdf){:target="_blank"})
 

@@ -1,6 +1,6 @@
 ---
 title: TDS Services
-last_updated: 2020-04-04
+last_updated: 2020-04-22
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: services_ref.html
@@ -413,7 +413,7 @@ You can still define your own services, either globally in the root catalog, or 
     FeatureCollection is used.
     <ul>
       <li>More details are available
-        <a href="https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/cdmremote.html" target="_blank">here</a>.
+        <a href="https://docs.unidata.ucar.edu/netcdf-java/current/userguide/cdmremote.html" target="_blank">here</a>.
       </li>
     </ul>
   </td>
