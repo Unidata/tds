@@ -1,6 +1,6 @@
 ---
 title: Enable TLS/SSL Encryption
-last_updated: 2020-04-04
+last_updated: 2020-04-22
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: enable_tls_encryption.html
@@ -162,7 +162,7 @@ This section assumes you have already imported your CA-signed certificate into t
 * Did you specify the full path to the keystore file in `server.xml`?
 
 {%include ahead.html content="
-Other than the compelling security reasons, you will want to enable TLS/SSL to take advantage of a couple of monitoring and debugging tools: the <a href=\"http://localhost:8080/thredds/admin/debug\" target=\"_blank\">TDS Remote Management Tool</a>, and the <a href=\"/using_the_tdsmonitor_tool.html\" target=\"_blank\">TdsMonitor</a> Tool -- both of which (out-of-the-box) require TLS/SSL to access.
+Other than the compelling security reasons, you will want to enable TLS/SSL to take advantage of a couple of monitoring and debugging tools: the <a href=\"http://localhost:8080/thredds/admin/debug\" target=\"_blank\">TDS Remote Management Tool</a>, and the <a href=\"using_the_tdsmonitor_tool.html\" target=\"_blank\">TdsMonitor</a> Tool -- both of which (out-of-the-box) require TLS/SSL to access.
 " %}
 
 ## Configuring Web Applications for TLS/SSL
