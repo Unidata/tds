@@ -1,6 +1,6 @@
 ---
 title: Deploying the TDS 
-last_updated: 2018-11-02
+last_updated: 2020-04-23
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: deploying_the_tds.html
@@ -9,14 +9,14 @@ permalink: deploying_the_tds.html
 This section demonstrates how to obtain and deploy the TDS in the Tomcat Servlet Container.
 
 {%include note.html content="
-This section assumes you have successfully installed the JDK and Tomcat Servlet Container as outlined in the <a href=\"install_java_tomcat.html\" target=\"_blank\">Installation of Java and Tomcat</a> section.
+This section assumes you have successfully installed the JDK and Tomcat Servlet Container as outlined in the [Installation of Java and Tomcat](install_java_tomcat.html) section.
 " %}
 
 ## About WAR files
 
 * WAR is short for Web ARchive.
 * By default, Tomcat will automatically unpack the WAR distribution into directory of the same name upon deployment.
-* <i>The unpacked directory is overwritten each time a new WAR file is deployed.</i>
+* _The unpacked directory is overwritten each time a new WAR file is deployed._
 
 ## Downloading & Deploying thredds.war
 
@@ -38,7 +38,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
    ~~~~
    
    {%include note.html content="
-   Consult the Tomcat documentation about [web application context](http://tomcat.apache.org/tomcat-8.5-doc/config/context.html) for more information about the `META-INF/context.xml` file.
+   Consult the Tomcat documentation about [web application context](http://tomcat.apache.org/tomcat-8.5-doc/config/context.html){:target='_blank'} for more information about the `META-INF/context.xml` file.
    " %}
    
    The down-side of renaming the WAR file to merely `thredds.war` is that a quick glance at the WAR file will not tell you (the server administrator) which version of the TDS is deployed.
@@ -46,7 +46,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
    
    To solve this, we can make use of a feature in the Tomcat Servlet Container that ignores anything after **double** hashtag symbols in the name of the WAR file.  
    
-   If we rename the WAR file to `thredds##5.0.0-beta5.war`, Tomcat will see this matching the context information in the `META-INF/context.xml` file and make the TDS accessible via this URL structure: `http://localhost:8080/thredds` (And we have the added benefit of seeign which version of the TDS is deployed when viewing the raw WAR file). 
+   If we rename the WAR file to `thredds##5.0.0-beta5.war`, Tomcat will see this matching the context information in the `META-INF/context.xml` file and make the TDS accessible via this URL structure: `http://localhost:8080/thredds` (And we have the added benefit of seeing which version of the TDS is deployed when viewing the raw WAR file). 
 
    ~~~~bash
    # cd /tmp
@@ -117,7 +117,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 
 ## Creation Of TDS `$CONTENT_ROOT`
 
-Remember the `$CONTENT_ROOT` directory we specified in the JVM options in the custom  [`$TOMCAT_HOME/bin/setenv.sh`](running_tomcat.html#setting-java_home-java_opts-catalina_home-catalina_base-and-content_root) file?
+Remember the `$CONTENT_ROOT` directory we specified in the JVM options in the custom [`$TOMCAT_HOME/bin/setenv.sh`](running_tomcat.html#setting-java_home-java_opts-catalina_home-catalina_base-and-content_root) file?
 
 ~~~~bash
 # TDS specific ENVARS

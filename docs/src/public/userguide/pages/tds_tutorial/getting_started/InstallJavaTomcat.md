@@ -1,6 +1,6 @@
 ---
 title: Installation of Java and Tomcat
-last_updated: 2018-10-26
+last_updated: 2020-04-23
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: install_java_tomcat.html
@@ -9,7 +9,7 @@ permalink: install_java_tomcat.html
 This section demonstrates the installation of the Java JDK and the Tomcat Servlet Container binaries.  
 
 {% include note.html content="
-Users of OS-provided packages via package management systems for Java and/or Tomcat may want to reference the <a href=\"https://www.unidata.ucar.edu/mailing_lists/archives/thredds/\" target=\"_blank\">THREDDS mailing list</a> for installation help."
+Users of OS-provided packages via package management systems for Java and/or Tomcat may want to reference the [THREDDS mailing list](https://www.unidata.ucar.edu/mailing_lists/archives/thredds/){:target='_blank'} for installation help."
 %}
 
 ## System Requirements
@@ -25,7 +25,7 @@ While there are different distributors of Java and servlet containers, Unidata d
 The following example shows the JDK installation on a linux system.  The installation is being performed as the `root` user.
 
 {% include note.html content="
-For installation of the JDK on Windows or Mac OS, see the <a href=\"https://adoptopenjdk.net/installation.html\" target=\"_blank\">JDK Installation Guide</a>.
+For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guide](https://adoptopenjdk.net/installation.html){:target='_blank'}.
 " %}
 
 1.  [Download](https://adoptopenjdk.net/){:target="_blank"} current OpenJDK 8 (LTS) JDK version from the AdoptOpenJDK site. 
@@ -80,7 +80,7 @@ For installation of the JDK on Windows or Mac OS, see the <a href=\"https://adop
 The following example shows Tomcat installation on a linux system. (This type of installation will work on Mac OS systems as well.) The installation is being performed as the `root` user.
 
 {% include note.html content="
-For installation of Tomcat on Windows, see the <a href=\"http://tomcat.apache.org/tomcat-8.5-doc/setup.html#Windows\" target=\"_blank\">Tomcat Setup Guide</a>.
+For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-8.5-doc/setup.html#Windows){:target='_blank'}.
 " %}
 
 1.  [Download](http://tomcat.apache.org/download-80.cgi){:target="_blank"} current version of the Tomcat 8.5 servlet container.
@@ -134,7 +134,7 @@ Adding symbolic links for both the Tomcat and the JDK installations will allow f
 The following example shows creating symbolic links for the Tomcat and JDK installation on a linux system. (This type of installation will work on Mac OS systems as well.) The installation is being performed as the `root` user.
 
 {%include note.html content="
-Windows users can consult the <a href=\"https://docs.microsoft.com/en-us/windows/desktop/fileio/symbolic-links\" target=\"_blank\">Microsoft Documentation</a> for creating symbolic links on Windows systems.
+Windows users can consult the [Microsoft Documentation](https://docs.microsoft.com/en-us/windows/desktop/fileio/symbolic-links){:target='_blank'} for creating symbolic links on Windows systems.
 " %}
 
 1. Create symbolic links for the Tomcat and the JDK installations:
