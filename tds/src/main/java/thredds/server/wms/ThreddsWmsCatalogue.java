@@ -97,7 +97,7 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
    * DatasetFactory types, it may be better off being passed into this
    * catalogue.
    */
-  static TdsWmsDatasetFactory datasetFactory = new TdsWmsDatasetFactory();
+  TdsWmsDatasetFactory datasetFactory = new TdsWmsDatasetFactory();
 
   /*
    * The Dataset associated with this catalogue
