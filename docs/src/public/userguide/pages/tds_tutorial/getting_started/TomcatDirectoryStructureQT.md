@@ -1,6 +1,6 @@
 ---
 title: Tomcat Directory Structure - Quick Tour
-last_updated: 2018-10-26
+last_updated: 2020-04-23
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tomcat_dir_structure_qt.html
@@ -9,7 +9,7 @@ permalink: tomcat_dir_structure_qt.html
 This section examines the directory structure and files found in the Tomcat Servlet Container installation and how they relate to the TDS.
 
 {%include note.html content="
-This section assumes you have successfully installed the Tomcat Servlet Container as outlined in the <a href=\"install_java_tomcat.html\" target=\"_blank\">Installation of Java and Tomcat</a> section.
+This section assumes you have successfully installed the JDK and Tomcat Servlet Container as outlined in the [Installation of Java and Tomcat](install_java_tomcat.html) section.
 " %}
 
 ## Exploring The Tomcat Directory Structure

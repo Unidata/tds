@@ -1,6 +1,6 @@
 ---
 title: Running Tomcat
-last_updated: 2018-10-26
+last_updated: 2020-04-23
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: running_tomcat.html
@@ -10,7 +10,7 @@ This section examines starting/stopping the Tomcat Servlet Container as well as 
 
 
 {%include note.html content="
-This section assumes you have successfully installed the Tomcat Servlet Container as outlined in the <a href=\"install_java_tomcat.html\" target=\"_blank\">Installation of Java and Tomcat</a> section.
+This section assumes you have successfully installed the Tomcat Servlet Container as outlined in the [Installation of Java and Tomcat](install_java_tomcat.html) section.
 " %}
 
 ## Starting & Stopping Tomcat
@@ -148,7 +148,7 @@ If you’re running Tomcat on an instance of Windows OS, you will want to create
     * `-Djava.util.prefs.systemRoot=$CONTENT_ROOT/thredds/javaUtilPrefs -Djava.util.prefs.userRoot=$CONTENT_ROOT/thredds/javaUtilPrefs` allows the java.util.prefs of the TDS WMS to write system preferences to a location that is writable by the Tomcat user.
 
     {%include note.html content="
-    For more information about the possible options/arguments available for `$JAVA_OPTS`, please consult the <a href=\"https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABDJJFI\" target=\"_blank\">Oracle Documentation</a>.
+    For more information about the possible options/arguments available for `$JAVA_OPTS`, please consult the [Oracle Documentation](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABDJJFI){:target='_blank'}.
     " %}
 
 
