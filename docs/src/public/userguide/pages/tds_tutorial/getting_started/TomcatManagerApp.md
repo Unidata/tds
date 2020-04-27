@@ -1,6 +1,6 @@
 ---
 title: Tomcat Manager Application
-last_updated: 2018-11-02
+last_updated: 2020-04-23
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tomcat_manager_app.html
@@ -9,7 +9,7 @@ permalink: tomcat_manager_app.html
 This section examines the Tomcat Manager Application and demonstrates how to grant ourselves access to it in preparation for accessing restricted parts of the TDS.
 
 {%include note.html content="
-This section assumes you have successfully installed the JDK and Tomcat Servlet Container as outlined in the <a href=\"install_java_tomcat.html\" target=\"_blank\">Installation of Java and Tomcat</a> section.
+This section assumes you have successfully installed the JDK and Tomcat Servlet Container as outlined in the [Installation of Java and Tomcat](install_java_tomcat.html) section.
 " %}
 
 ## About The Manager Application
@@ -20,7 +20,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 * Provides server status statistics for the JVM and each connector you have configured in `$TOMCAT_HOME/conf/server.xml`.
 
 {%include note.html content=
-"For more information about the Tomcat manager application, see the <a href=\"https://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html\" target=\"_blank\">Tomcat Manager App HOW-TO</a> documentation.
+"For more information about the Tomcat manager application, see the [Tomcat Manager App HOW-TO](https://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html){:target='_blank'} documentation.
 " %}
 
 ## Accessing The Manager Application
@@ -57,7 +57,7 @@ This will be done in the following 2 steps:
    ~~~
 
    {%include note.html content="  
-   For more information about web application context configuration files and their security options, please review the <a href=\"http://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html#Introduction\" target=\"_blank\">Tomcat Manager App How-To</a> documentation.
+   For more information about web application context configuration files and their security options, please review the [Tomcat Manager App How-To](http://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html#Introduction){:target='_blank'} documentation.
    " %} 
 
 
@@ -250,16 +250,16 @@ Take the Manager application for a test-drive to undeploy and re-deploy the TDS.
 
 {%include note.html content="
 Running an older version of Tomcat?  The manager application URLs and roles have been re-structured.
-See the <a href=\"http://tomcat.apache.org/migration.html\" target=\"_blank\">Tomcat Migration guide</a> for more information.
+See the [Tomcat Migration Guide](http://tomcat.apache.org/migration.html){:target='_blank'} for more information.
 " %}
 
 
 ## Next Step
 
-If you plan to deploy the TDS in a production environment you will need to follow the best practices outlined in the [Putting TDS Into Production](tomcat_permissions.html){:target="_blank"} section of the tutorial to finish hardening your server environment.
+If you plan to deploy the TDS in a production environment you will need to follow the best practices outlined in the [Putting TDS Into Production](tomcat_permissions.html) section of the tutorial to finish hardening your server environment.
 
 {%include ahead.html content="
-<a href=\"enable_tls_encryption.html\" target=\"_blank\">TLS/SSL Encryption</a> will need to be enabled in order to access a couple of TDS monitoring and debugging tools.
+[TLS/SSL Encryption](enable_tls_encryption.html) will need to be enabled in order to access a couple of TDS monitoring and debugging tools.
 " %}
 
 The [Basic TDS Configuration](basic_config_catalog.html) and [TDS Configuration Catalogs](config_catalog.html) sections of this tutorial cover the TDS configuration files, configuration options and TDS catalog structure.

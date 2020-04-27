@@ -38,7 +38,7 @@ Some of the technology in the TDS:
 The THREDDS Data Server is implemented in 100% Java\*, and is contained in a single war file, which allows very easy installation into a servlet container such as the open-source Tomcat web server.
 Configuration is made as simple and as automatic as possible, and we have made the server as secure as possible.
 
-\*Writing to netCDF-4 files is supported through the netCDF C library only.
+\* Writing to netCDF-4 files is supported through the netCDF C library only.
 
 Much of the realtime data available over the Unidata Internet Data Distribution (IDD) is available through a demonstration THREDDS Data Server hosted at Unidata at [http://thredds.ucar.edu/](http://thredds.ucar.edu/thredds/catalog.html){:target="_blank"}.
 You are welcome to browse and access these meteorological datasets.

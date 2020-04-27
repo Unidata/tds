@@ -1,6 +1,6 @@
 ---
 title: GRIB Feature Collections
-last_updated: 2018-04-02
+last_updated: 2020-04-22
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: grib_feature_collections_ref.html
@@ -23,8 +23,8 @@ Also see:
 * [GRIB Collection FAQ](tds_grib_faq.html)
 * [GRIB Feature Collection Tutorial](grib_feature_collections.html)
 * [Partitions](partitions_ref.html)
-* [CDM GRIB Collection Processing](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/grib_files_cdm.html){:target="_blank"}
-* [CDM GRIB Tables](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/grib_tables.html){:target="_blank"}
+* [CDM GRIB Collection Processing](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/grib_files_cdm.html){:target="_blank"}
+* [CDM GRIB Tables](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/grib_tables.html){:target="_blank"}
 
 ### Multiple Dataset Collections
 

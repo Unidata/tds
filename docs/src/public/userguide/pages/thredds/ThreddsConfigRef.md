@@ -1,6 +1,6 @@
 ---
 title: TDS Configuration File Reference (threddsConfig.xml)
-last_updated: 2018-04-02
+last_updated: 2020-04-22
 sidebar: tdsTutorial_sidebar
 toc: true
 permalink: tds_config_ref.html
@@ -214,7 +214,7 @@ cache directory](#disk-caching-and-temporary-files)).
 
 ### WMS Service
 
-The OGC WMS service provided as part of the TDS is described in more detail [here](updateme) (TDS Web Map Service (WMS)).
+The OGC WMS service provided as part of the TDS is described in more detail [here](wms_ref.html) (TDS Web Map Service (WMS)).
 By default this service is enabled, and can be disabled by including the following in the `threddsConfig.xml` file:
 
 ~~~xml
