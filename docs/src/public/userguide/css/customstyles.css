@@ -183,7 +183,7 @@ table>caption+thead>tr:first-child>th, table>colgroup+thead>tr:first-child>th, t
 }
 
 table>tbody+tbody {
-  b
+  border-top: 0;
 }
 
 table>tbody>tr:nth-of-type(odd) {
@@ -260,7 +260,7 @@ ul#results-container a {
   background-color: transparent;
 }
 
-ul#results-container a: hover {
+ul#results-container a:hover {
   color: black;
 }
 
@@ -301,7 +301,7 @@ div#toc ul {
   background-color: whitesmoke;
   padding: 5px;
   border-radius: 5px;
-  max-width: 300px;
+  max-width: 900px;
   color: gray;
 }
 
@@ -858,7 +858,7 @@ pre, table code {
   /* css-3 */
   white-space: -moz-pre-wrap;
   /* Mozilla, since 1999 */
-  white-space: -pre-wrap;
+  white-space: pre-wrap;
   /* Opera 4-6 */
   white-space: -o-pre-wrap;
   /* Opera 7 */
@@ -995,7 +995,14 @@ span.soft {
   border: 1px solid #dedede;
 }
 
-@media only screen and (min-width: 900px), @media only screen and (min-device-width: 900px) {
+@media only screen and (min-device-width: 900px) {
+  .col-md-9 img {
+    max-width: 700px;
+    max-height: 700px;
+  }
+}
+
+@media only screen and (min-width: 900px),
   .col-md-9 img {
     max-width: 700px;
     max-height: 700px;
@@ -1230,7 +1237,7 @@ div.box.box1 {
   /* css-3 */
   white-space: -moz-pre-wrap;
   /* Mozilla, since 1999 */
-  white-space: -pre-wrap;
+  white-space: pre-wrap;
   /* Opera 4-6 */
   white-space: -o-pre-wrap;
   /* Opera 7 */
