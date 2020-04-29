@@ -1,6 +1,6 @@
 ---
 title: FAQ
-last_updated: 2020-04-01
+last_updated: 2020-04-29
 sidebar: tdsTutorial_sidebar
 toc: true
 permalink: tds_faq.html
@@ -424,7 +424,7 @@ When you examine the TDS access logs, you can see who is accessing the TDS by IP
 ### How can I control whether I want Web crawlers to access my server?
 
 Well-behaved web crawlers are supposed to look for a robots.txt file on the server and follow its instructions.
-To set up a robots.txt file that excludes web crawlers from crawling your server, [follow these directions](https://www.unidata.ucar.edu/software/thredds/current/tds/reference/Performance.html#robots){:target="_blank"}.
+To set up a robots.txt file that excludes web crawlers from crawling your server, [follow these directions](performance_tips.html#miscellaneous).
 
 ### How can I prevent someone from accessing my server?
 
