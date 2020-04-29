@@ -1,13 +1,13 @@
 ---
-title: Compound service elements
-last_updated: 2018-04-02
+title: Compound Service Elements
+last_updated: 2020-04-29
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: compound_service_elements.html
 ---
 
 {%include note.html content="
-Reference documentation - A complete listing of recognized service types can be found in the catalog specification.
+Reference documentation - A complete listing of recognized service types can be found in the [catalog specification](server_side_catalog_specification.html).
 " %}
 
 Datasets can be made available through more than one access method by defining and then referencing a _compound_ `service` element. The following:
