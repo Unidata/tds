@@ -1,6 +1,6 @@
 ---
 title: TDS Dataset Viewer Links
-last_updated: 2019-07-24
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: viewers_ref.html
@@ -153,7 +153,7 @@ and for the second dataset, the viewer link is:
 http://myhost:8080/wmsView/show?dataset=http://myhost:8080/thredds/wcs/tvss/ds2.nc
 ~~~
 
-If your server is publically accessible, this example calls the some.tds.edu validator service for your dataset, using opendap.
+If your server is publicly accessible, this example calls the some.tds.edu validator service for your dataset, using OPeNDAP.
 The dataset page now looks something like:
 
 {% include image.html file="tds/reference/viewers/validateViewer.png" alt="Viewer with Data Access" caption="" %}
@@ -292,7 +292,7 @@ public class IDV implements Viewer {
 * (6) Forms the HTML string to be placed on the dataset's TDS web page.
   Note that is has an `href` embedded in it, which will be displayed in this example as:
 
-Integrated Data Viewer (IDV) (webstart)
+Integrated Data Viewer (IDV) (WebStart)
 
 ### Referencing an external URL
 
@@ -321,7 +321,7 @@ A Viewer implementation can still use the TDS JNLP template service (see above).
 It just needs to return the appropriate HTML link referencing an existing JNLP template file and giving the appropriate replacment URL query parameters.
 The IDV implementation above does just that.
 
-One reason to write an implementation of Viewer and use is JNLP is if the viewer has requirements for the datsets it can handle.
+One reason to write an implementation of Viewer and use is JNLP is if the viewer has requirements for the datasets it can handle.
 Looking at the IDV implementation above, we see it enforces two requirements:
 
 * the dataset must have an `OPeNDAP` (aka DODS) access URL, and
@@ -384,7 +384,7 @@ http://oos.soest.hawaii.edu/thredds/view/ToolsUI.jnlp?catalog=http://oos.soest.h
 ~~~
 
 it creates a jnlp file which is sent back to your browser.
-If your browser has Java webstart installed as a helper application (which happens when you install Java on your computer), the jnlp file is handled by the "Java plugin" on your browser, which downloads ToolsUI from wherever the jnlp file specifies (currently https://www.unidata.ucar.edu/software/netcdf-java/v4.3/webstart)
+If your browser has Java WebStart installed as a helper application (which happens when you install Java on your computer), the JNLP file is handled by the "Java plugin" on your browser, which downloads ToolsUI from wherever the jnlp file specifies (currently https://www.unidata.ucar.edu/software/netcdf-java/v4.3/webstart/)
 
-The jnlp file has been customized to include the command line argument of the form `{catalog}#{dataset}`, and the ToolsUI application looks for this and uses it to open that catalog and display the named dataset in the `Catalog Chooser` tab.
+The JNLP file has been customized to include the command line argument of the form `{catalog}#{dataset}`, and the ToolsUI application looks for this and uses it to open that catalog and display the named dataset in the `Catalog Chooser` tab.
 This UI component gives access to all the metadata and access protocols of that dataset.

@@ -162,7 +162,7 @@ This section assumes you have already imported your CA-signed certificate into t
 * Did you specify the full path to the keystore file in `server.xml`?
 
 {%include ahead.html content="
-Other than the compelling security reasons, you will want to enable TLS/SSL to take advantage of a couple of monitoring and debugging tools: the [TDS Remote Management Tool](http://localhost:8080/thredds/admin/debug){:target='_blank'}, and the [TdsMonitor Tool](using_the_tdsmonitor_tool.html) -- both of which (out-of-the-box) require TLS/SSL to access.
+Other than the compelling security reasons, you will want to enable TLS/SSL to take advantage of a couple of monitoring and debugging tools: the [TDS Remote Management Tool](remote_management_ref.html), and the [TdsMonitor Tool](using_the_tdsmonitor_tool.html) -- both of which (out-of-the-box) require TLS/SSL to access.
 " %}
 
 ## Configuring Web Applications for TLS/SSL
@@ -170,7 +170,7 @@ Other than the compelling security reasons, you will want to enable TLS/SSL to t
 * The web application deployment descriptor, a.k.a. `web.xml`, specifies if all or parts of it need to be accessed via TLS/SSL.
 * Deployment descriptors are found in the `WEB-INF` directory of the web application: `$TOMCAT_HOME/webapps/application_name/WEB-INF/web.xml`.
 * By convention, Tomcat and other servlet containers will read the web application deployment descriptors for initialization parameters and container-managed security constraints upon application deployment.
-* The TDS has been pre-configured to require that TLS/SSL encryption is enabled in order to access the both the [TDS Remote Management Tool](http://localhost:8080/thredds/admin/debug){:target="_blank"}, and the [TdsMonitor Tool](using_the_tdsmonitor_tool.html).
+* The TDS has been pre-configured to require that TLS/SSL encryption is enabled in order to access the both the [TDS Remote Management Tool](remote_management_ref.html), and the [TdsMonitor Tool](using_the_tdsmonitor_tool.html).
 
 This is the entry in the TDS `web.xml` for the TDS Remote Management Tool:
 
@@ -202,7 +202,7 @@ This is the entry in the TDS `web.xml` for the TDS Remote Management Tool:
 " %}
 
 ## Accessing TDS Monitoring and Debugging Tools
-Other than the compelling security reasons, you will want to enable TLS/SSL to take advantage of the [TDS Remote Management Tool](http://localhost:8080/thredds/admin/debug){:target="_blank"} and the [TdsMonitor Tool](using_the_tdsmonitor_tool.html) monitoring and debugging tools.  
+Other than the compelling security reasons, you will want to enable TLS/SSL to take advantage of the [TDS Remote Management Tool](remote_management_ref.html)and the [TdsMonitor Tool](using_the_tdsmonitor_tool.html) monitoring and debugging tools.  
 
 1. Enable TLS/SSL in Tomcat
    If Tomcat has not already been configured to run via TLS/SSL, follow the tutorial in the previous section to Enable TLS/SSL in Tomcat.

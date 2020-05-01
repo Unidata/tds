@@ -1,6 +1,6 @@
 ---
 title: TDS Configuration File Reference (threddsConfig.xml)
-last_updated: 2020-04-22
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: true
 permalink: tds_config_ref.html
@@ -249,7 +249,7 @@ where they are contained.
 
 ### NetCDF Subset Service (NCSS)
 
-The NetCDF Subset Service provided as part of the TDS is described in more detail [here](updateme) (NetCDF Subset Service Reference).
+The NetCDF Subset Service provided as part of the TDS is described in more detail [here](netcdf_subset_service_ref.html) (NetCDF Subset Service Reference).
 By default this service is enabled, and can be disabled by including the following in the `threddsConfig.xml` file:
 
 ~~~xml
@@ -297,7 +297,7 @@ By default these services are enabled, and can be disabled by including the foll
 ~~~
 
 Each of the `allow` elements above enables the corresponding ncISO service (NCML, UDDC, and ISO).
-The ncISO services are described in more detail on the ncISO [reference page](updateme) (TDS and ncISO: Metadata Services).
+The ncISO services are described in more detail on the ncISO [reference page](iso_metadata.html) (TDS and ncISO: Metadata Services).
 
 ## CDM Configuration
 
@@ -312,7 +312,7 @@ The ncISO services are described in more detail on the ncISO [reference page](up
 ~~~
 
 In order to write netCDF-4 files, you must have the [netCDF-4 C library](https://www.unidata.ucar.edu/downloads/netcdf/) version 4.3.1 or above—compiled and available on your system, along with all supporting libraries (HDF5, zlib, and curl).
-The [details](updateme) (netcdf-java netcdf4Clibrary reference page) of this differ for each operating system.
+The [details](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/netcdf4_c_library.html){:target="_blank"} of this differ for each operating system.
 The elements above allow you to configure how the library is discovered and used.
 
 * `libraryPath`: The directory in which the native library is installed.
@@ -336,8 +336,8 @@ For TDS users, we recommend setting the library path and name in `threddsConfig.
 </nj22Config>
 ~~~
 
-These elements allow you to specify [runtime parameters](updateme) (netcdf-java RuntimeLoading reference page) for the Netcdf-Java library from the threddsConfig file.
-See the Netcdf-Java [tutorial](updateme) (netcdf-java turorial page) for an overview.
+These elements allow you to specify [runtime parameters](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/runtime_loading.html)  for the NetCDF-Java library from the threddsConfig file.
+See the NetCDF-Java [tutorial](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/) for an overview.
 
 ### Aggregation
 
@@ -424,7 +424,7 @@ If you have `joinExisting` Aggregations, coordinate information will be written 
 If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cache/agg/` directory.
 We recommend that you use this default, by not specifying a `AggregationCache`.`dir` element.
 
-Every `scour` amount of time, any item that hasnt been changed since `maxAge` time will be deleted.
+Every `scour` amount of time, any item that hasn\'t been changed since `maxAge` time will be deleted.
 If you have aggregations that never change, set `scour` to `-1` to disable the operation.
 Otherwise, make `maxAge` longer than the longest time between changes.
 Basically, you don’t want to remove active aggregations.
@@ -579,12 +579,12 @@ Windows may have problems with memory-mapped large files (> 4 GBytes, thus > 7M 
 
 ### User Triggering
 
-You must have [Remote Managenment(updateme) (RemoteManagement reference page) enabled (enable SSL in Tomcat, and login as a user with the `tdsConfig` user-role).
+You must have [Remote Managenment](remote_management_ref.html) enabled (enable SSL/TLS in Tomcat, and login as a user with the `tdsConfig` user-role).
 
 From Admin page `https://server/thredds/admin/debug`:
 
-* https://localhost:8443/thredds/admin/debug?Catalogs/reinit (Read all catalogs)
-* https://localhost:8443/thredds/admin/debug?Catalogs/recheck (Read changed catalogs)
+* `https://localhost:8443/thredds/admin/debug?Catalogs/reinit` (Read all catalogs)
+* `https://localhost:8443/thredds/admin/debug?Catalogs/recheck` (Read changed catalogs)
 
 From a program or script, an authenticated user can make a GET HTTP call to:
 

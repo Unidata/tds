@@ -1,6 +1,6 @@
 ---
 title: THREDDS Data Manager
-last_updated: 2018-10-15
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tdm_ref.html
@@ -264,15 +264,15 @@ thin (0)           # <14>
 4. Partitions - in this case these are directories because this is a _directory partition_. 
    * number of files in the partition 
    * number of records in the partition 
-   * number of seperate variables in the partition. 
-     _Inhomogenous partitions look more complex to the user._
+   * number of separate variables in the partition. 
+     _Inhomogeneous partitions look more complex to the user._
    * number of runtimes in the partition
    * number of horizontal (GDS), which are turned into groups 
    * the starting and ending runtime. _Look for overlapping partitions_
 5. Sum of subpartitions for this partition
 6. Grand sum over all partitions
 7. Summary (n, start/end) of run dates
-8. list of all table versions found, count of number of records for each. _Possibility that variables that should be seperated by table version._
+8. list of all table versions found, count of number of records for each. _Possibility that variables that should be separated by table version._
 9. list of all variables found, count of number of records for each. _Possibility that stray records are in the collection._
 10. list of all GDS hashes found, count of number of records for each. 
     **Possibility of spurious differences with GDS hashes**.

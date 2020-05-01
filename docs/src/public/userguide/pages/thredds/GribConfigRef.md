@@ -1,6 +1,6 @@
 ---
 title: GRIB Collection Config
-last_updated: 2020-04-22
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: grib_collection_config_ref.html
@@ -331,7 +331,7 @@ Note that this does not affect dataset `urlPath`.
 
 Sort the dataset listings under the Files dataset
 
-Sort the files [lexigraphically](https://en.wikipedia.org/wiki/Lexicographical_order){:target="_blank"}, either increasing or decreasing (default GRIB Feature Collection behavior is the same as `increasing = true`).
+Sort the files [lexicographically](https://en.wikipedia.org/wiki/Lexicographical_order){:target="_blank"}, either increasing or decreasing (default GRIB Feature Collection behavior is the same as `increasing = true`).
 
 ~~~xml
 <gribConfig>
