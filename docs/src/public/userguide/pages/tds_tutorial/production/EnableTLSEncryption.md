@@ -1,6 +1,6 @@
 ---
 title: Enable TLS/SSL Encryption
-last_updated: 2020-04-22
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: enable_tls_encryption.html
@@ -9,7 +9,7 @@ permalink: enable_tls_encryption.html
 This section demonstrates how to enable TLS/SSL Encryption for the TDS and Tomcat Servlet Container.
 
 {%include note.html content="
-This section assumes you have successfully performed the tasks as outlined in the <a href=\"install_java_tomcat.html\" target=\"_blank\">Getting Started With The TDS</a> section of this tutorial.
+This section assumes you have successfully performed the tasks as outlined in the [Getting Started With The TDS](install_java_tomcat.html) section of this tutorial.
 " %}
 
 ## Rationale
@@ -23,7 +23,7 @@ This section assumes you have successfully performed the tasks as outlined in th
 * By convention, URLs that require an TLS/SSL connection start with `https` instead of `http`.
 
 {%include note.html content="
-For more information on how TLS/SSL works, Wikipedia details the <a href=\"https://en.wikipedia.org/wiki/Transport_Layer_Security\" target=\"_blank\">steps involved</a> during an TLS/SSL transaction.
+For more information on how TLS/SSL works, Wikipedia details the [steps involved](https://en.wikipedia.org/wiki/Transport_Layer_Security){:target='_blank'} during an TLS/SSL transaction.
 " %}
 
 ## TLS/SSL Certificates
@@ -52,7 +52,7 @@ Tomcat uses the keystore file for TLS/SSL transactions.
 The following example demonstrates enabling TLS/SSL in the Tomcat Servlet Container on a linux system as the `root` user. 
 
 {%include note.html content="
-This section assumes you have already imported your CA-signed certificate into the <a href=\"https://tomcat.apache.org/tomcat-8.0-doc/ssl-howto.html#Prepare_the_Certificate_Keystore\" target=\"_blank\">keystore</a> file.
+This section assumes you have already imported your CA-signed certificate into the [keystore](https://tomcat.apache.org/tomcat-8.0-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target='_blank'} file.
 " %}
 
 1. Modify the Tomcat configuration to enable TLS/SSL:
@@ -86,7 +86,7 @@ This section assumes you have already imported your CA-signed certificate into t
    ~~~~
    
    {%include note.html content="
-     Tomcat also offers a `SSL/TLS HTTP/1.1 Connector` which utilizes `APR/native implementation`. Consult the <a href=\"http://tomcat.apache.org/tomcat-8.5-doc/config/http.html\" target=\"_blank\">Documentation</a> to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
+     Tomcat also offers a `SSL/TLS HTTP/1.1 Connector` which utilizes `APR/native implementation`. Consult the [Documentation](http://tomcat.apache.org/tomcat-8.5-doc/config/http.html){:target='_blank'} to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
    " %}
    
    Specify the keystore file in the `certificateKeystoreFile` attribute of the `Certificate` element to tell Tomcat where to find your keystore (the path will be relative to `$TOMCAT_HOME` directory).  
@@ -162,7 +162,7 @@ This section assumes you have already imported your CA-signed certificate into t
 * Did you specify the full path to the keystore file in `server.xml`?
 
 {%include ahead.html content="
-Other than the compelling security reasons, you will want to enable TLS/SSL to take advantage of a couple of monitoring and debugging tools: the <a href=\"http://localhost:8080/thredds/admin/debug\" target=\"_blank\">TDS Remote Management Tool</a>, and the <a href=\"using_the_tdsmonitor_tool.html\" target=\"_blank\">TdsMonitor</a> Tool -- both of which (out-of-the-box) require TLS/SSL to access.
+Other than the compelling security reasons, you will want to enable TLS/SSL to take advantage of a couple of monitoring and debugging tools: the [TDS Remote Management Tool](http://localhost:8080/thredds/admin/debug){:target='_blank'}, and the [TdsMonitor Tool](using_the_tdsmonitor_tool.html) -- both of which (out-of-the-box) require TLS/SSL to access.
 " %}
 
 ## Configuring Web Applications for TLS/SSL
@@ -198,7 +198,7 @@ This is the entry in the TDS `web.xml` for the TDS Remote Management Tool:
    3. Specify `NONE` to indicate that the container must accept the constrained requests on any connection, including an unprotected one.
 
 {%include note.html content=" 
-  For more information on how to configure security requirements for a web application in a deployment descriptor, see: <a href=\"https://javaee.github.io/tutorial/security-webtier.html#BNCAS\" target=\"_blank\">Defining Security Requirements for Web Applications</a>.
+  For more information on how to configure security requirements for a web application in a deployment descriptor, see: [Defining Security Requirements for Web Applications](https://javaee.github.io/tutorial/security-webtier.html#BNCAS){:target='_blank'}.
 " %}
 
 ## Accessing TDS Monitoring and Debugging Tools

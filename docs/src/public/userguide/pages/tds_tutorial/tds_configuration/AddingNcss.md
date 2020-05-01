@@ -1,6 +1,6 @@
 ---
 title: Adding the NetCDF Subset Service
-last_updated: 2018-04-02
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: adding_ncss.html
@@ -11,7 +11,7 @@ It is a experimental REST protocol for returning subsets of CDM datasets.
 We want to eventually serve all CDM-compatible datasets through NCSS, but right now there are some restrictions on the types of datasets that are supported.
 
 This documentation is for TDS administrators.
-If you are a client wanting to access data through the Netcdf Subset Service, look at NetCDF Subset Service Reference.
+If you are a client wanting to access data through the NetCDF Subset Service, look at NetCDF Subset Service Reference.
 
 ## Enabling the Netcdf Subset Service in the TDS
 

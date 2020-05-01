@@ -1,6 +1,6 @@
 ---
 title: Running The TDS Behind a Proxy Server
-last_updated: 2018-11-02
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tds_behind_proxy.html
@@ -9,7 +9,7 @@ permalink: tds_behind_proxy.html
 This section demonstrates how to run the TDS and Tomcat Servlet Container behind an Apache HTTP proxy server using the [`mod_jk`](https://tomcat.apache.org/connectors-doc/){:target="_blank"} connector.
 
 {%include note.html content="
-This section assumes you have successfully performed the tasks as outlined in the <a href=\"install_java_tomcat.html\" target=\"_blank\">Getting Started With The TDS</a> section of this tutorial, enabled <a href=\"digested_passwords.html\" target=\"_blank\">Enabled digested passwords</a> in Tomcat, and are familiar with maintaining the <a href=\"https://httpd.apache.org/\" target=\"_blank\">Apache HTTP</a> server in a production environment.
+This section assumes you have successfully performed the tasks as outlined in the [Getting Started With The TDS](install_java_tomcat.html)  section of this tutorial, enabled [Enabled digested passwords](digested_passwords.html) in Tomcat, and are familiar with maintaining the [Apache HTTP](https://httpd.apache.org/){:target='_blank'} server in a production environment.
 " %}
 
 ## About Reverse Proxies
@@ -41,7 +41,7 @@ The TDS reverse proxy using Apache has been tested and vetted by Unidata.  Other
   
   {%include warning.html content="
   It is important to carefully configure your proxy so that the existence of the proxy is transparent to the end-user/client.
-     For instance, when a web application (e.g., the TDS) on the backend server includes a <a href=\"#chgContextPath\">self-referential URL</a> in some response content, it should use the proxy server’s name and port rather than those of the backend server.                                                                                                                                                           
+     For instance, when a web application (e.g., the TDS) on the backend server includes a self-referential URL in some response content, it should use the proxy server's name and port rather than those of the backend server.                                                                                                                                                           
   " %}
 
 #### Tomcat-Apache proxy documentation
@@ -62,7 +62,7 @@ The TDS reverse proxy using Apache has been tested and vetted by Unidata.  Other
     Configurations and fine tuning of a reverse proxy set up using the mod_jk Apache module.
     
     {%include note.html content="
-    The use of the <a href=\"https://tomcat.apache.org/connectors-doc/\" target=\"_blank\">`mod_jk`</a> has been tested and vetted by Unidata.  Other modules used for creating a reverse proxy have not yet been explored.
+    The use of the [`mod_jk`](https://tomcat.apache.org/connectors-doc/){:target='_blank'} has been tested and vetted by Unidata.  Other modules used for creating a reverse proxy have not yet been explored.
     " %}
     
 ## Implementing The Tomcat-Apache Proxy Using AJP
@@ -163,12 +163,12 @@ The following example shows how to implement a proxy using the Apache HTTPD serv
     ~~~~
 
     {% include note.html content="
-     Consult the Tomcat documentation for more information about the <a href=\"https://tomcat.apache.org/connectors-doc/reference/workers.html\" target=\"_blank\">workers.properties</a> file syntax and options.
+     Consult the Tomcat documentation for more information about the [workers.properties](https://tomcat.apache.org/connectors-doc/reference/workers.html){:target='_blank'} file syntax and options.
     " %}
 
 3. Configure your Apache host to send the appropriate requests to TDS via `mod_jk` and Tomcat AJP.
     
-   You will use the `JkMount` directives that come with the `mod_jk` to specifiy/match which URL requests should be proxied to the TDS in the Tomcat Servlet Container.
+   You will use the `JkMount` directives that come with the `mod_jk` to specify/match which URL requests should be proxied to the TDS in the Tomcat Servlet Container.
    
    The following shows an example of configuring an Apache `VirtualHost` with the `JkMount` directives.  Note that these directives reference the `worker` configured in the `workers.properties` file in the previous step. 
    
@@ -189,7 +189,7 @@ The following example shows how to implement a proxy using the Apache HTTPD serv
    ~~~~
 
     {% include note.html content="
-     Consult the Tomcat documentation for more information about the <a href=\"https://tomcat.apache.org/connectors-doc/reference/apache.html\" target=\"_blank\">`JKMount`</a> directive.
+     Consult the Tomcat documentation for more information about the [`JKMount`](https://tomcat.apache.org/connectors-doc/reference/apache.html){:target='_blank'} directive.
     " %}
 
 
@@ -209,7 +209,7 @@ The following example shows how to implement a proxy using the Apache HTTPD serv
    ~~~~
 
    {% include note.html content="
-   Consult the Tomcat documentation for more information about the <a href=\"https://tomcat.apache.org/tomcat-8.5-doc/config/ajp.html\" target=\"_blank\">AJP Connector</a> configuration options.
+   Consult the Tomcat documentation for more information about the [AJP Connector](https://tomcat.apache.org/tomcat-8.5-doc/config/ajp.html){:target='_blank'} configuration options.
    " %}
   
 2. Disable any active `Java HTTP/1.1 Connector` and the `SSL HTTP/1.1 Connector` Tomcat connectors.

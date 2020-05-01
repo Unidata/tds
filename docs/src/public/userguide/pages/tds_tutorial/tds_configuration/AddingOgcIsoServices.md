@@ -1,6 +1,6 @@
 ---
 title: Adding OGC/ISO Services
-last_updated: 2020-04-01
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: adding_ogc_iso_services.html
@@ -242,6 +242,8 @@ The Godiva2 User Guide is available from the ncWMS site.
 
 {% include image.html file="tds/tutorial/tds_configuration/Godiva2_screenshot.png" alt="Godiva2" caption="" %}
 
+<!-- 
 ### OWSLib (python client) example:
 
 [tds-python-workshop `WMS` notebook](http://nbviewer.jupyter.org/github/Unidata/unidata-python-workshop/blob/master/notebooks/wms_sample.ipynb){:target="_blank"}
+-->

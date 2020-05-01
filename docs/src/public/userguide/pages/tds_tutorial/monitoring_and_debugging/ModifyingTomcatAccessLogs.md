@@ -1,6 +1,6 @@
 ---
 title: Modifying Tomcat Access Logs
-last_updated: 2018-04-02
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tomcat_access_log.html
@@ -11,7 +11,7 @@ permalink: tomcat_access_log.html
 ## Tomcat Access Logs
 
 {%include note.html content="
-This section assumes you are familiar with the <a href=\"install_java_tomcat.html\" target=\"_blank\">JDK and Tomcat Servlet Container</a>, have <a href=\"deploying_the_tds.html\" target=\"_blank\">deployed the TDS</a>, and are comfortable with basic and advanced TDS configuration.
+This section assumes you are familiar with the [JDK and Tomcat Servlet Container](install_java_tomcat.html), have [deployed the TDS](deploying_the_tds.html), and are comfortable with basic and advanced TDS configuration.
 " %}
 
 * The access log records all requests processed by the server.
