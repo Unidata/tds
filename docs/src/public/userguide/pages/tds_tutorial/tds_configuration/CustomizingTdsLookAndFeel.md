@@ -1,12 +1,12 @@
 ---
 title: Customizing the TDS Look and Feel
-last_updated: 2019-01-22
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: customizing_tds_look_and_feel.html
 ---
 
-TDS provides a extensible and customizable user interface using [Thymeleaf](https://www.thymeleaf.org/) Java template engine.
+TDS provides a extensible and customizable user interface using [Thymeleaf](https://www.thymeleaf.org/){:target="_blank"} Java template engine.
 The pages which currently support customization are:
  * Catalog
  * Dataset access
@@ -245,15 +245,15 @@ displays a table of all properties returned by `getAllContext()`.
 Don't see what you're looking for?
 If the properties exposed to the template parser do not meet your needs,
 you are encouraged to update the above data models by submitting a pull request to
-[https://github.com/Unidata/thredds](https://github.com/Unidata/thredds). The data models are defined and populated in
-[`CatalogViewContextParser.java'](https://github.com/Unidata/thredds/blob/5.0.0/tds/src/main/java/thredds/server/catalogservice/CatalogViewContextParser.java).
+[https://github.com/Unidata/thredds](https://github.com/Unidata/thredds){:target="_blank"}. The data models are defined and populated in
+[`CatalogViewContextParser.java`](https://github.com/Unidata/thredds/blob/5.0.0/tds/src/main/java/thredds/server/catalogservice/CatalogViewContextParser.java){:target="_blank"}.
 
 ## Jupyter Notebooks
 
 ### About
 The goal of the Jupyter Notebook service is to provide an method of interacting with and visualizing TDS datasets without
 large data transfers. When the Notebook service is enabled, requests to the service will return a Notebook (ipynb file)
-which demos accessing the requested dataset via [Siphon](https://unidata.github.io/siphon/latest/api/index.html). Notebook files
+which demos accessing the requested dataset via [Siphon](https://unidata.github.io/siphon/latest/api/){:target="_blank"}. Notebook files
 may be viewed in Jupyter Notebook or JupyterLab and edited by the end user to explore capabilities of the dataset and Siphon.
 
 ### Enable/Disable Notebook service
@@ -285,7 +285,7 @@ and `<maxFile>` defines the maximum number of mapping which can be stored at one
 ### Contribute Notebooks
   * To add a Notebook viewers to the TDS Notebook service, place `ipynb` files in the `notebooks` folder within the
   content directory (Note: To register new Notebook viewers, the server must be restarted with the new files in the
-  notebook firectory, TDS will not process new Notebooks while active.)
+  notebook directory, TDS will not process new Notebooks while active.)
   * To map a Notebook viewer to a subset of datasets, include the following in the Notebook's metadata:
 
 ~~~

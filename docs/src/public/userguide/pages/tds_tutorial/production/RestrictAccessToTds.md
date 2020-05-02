@@ -1,6 +1,6 @@
 ---
 title: Restrict Access To The TDS
-last_updated: 2018-11-02
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: restict_access_to_tds.html
@@ -9,7 +9,7 @@ permalink: restict_access_to_tds.html
 This section demonstrates how to restrict access to the TDS and other web applications using Tomcat Valves.
 
 {%include note.html content="
-This section assumes you have successfully performed the tasks as outlined in the <a href=\"install_java_tomcat.html\" target=\"_blank\">Getting Started With The TDS</a> section of this tutorial.
+This section assumes you have successfully performed the tasks as outlined in the [Getting Started With The TDS](install_java_tomcat.html) section of this tutorial.
 " %}
 
 ## Rationale
@@ -57,7 +57,7 @@ The `RemoteHostValve` compares the client hostname against one or more regular e
    ~~~~  
 
 {%include note.html content="
-Consult the Tomcat <a href=\"https://tomcat.apache.org/tomcat-8.5-doc/config/valve.html#Remote_Host_Valve\" target=\"_blank\">Remote Host Valve</a> documentation for more information about valve syntax and options.
+Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-8.5-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
 " %}
 
 

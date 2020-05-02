@@ -1,6 +1,6 @@
 ---
 title: Performance Tips
-last_updated: 2020-04-04
+last_updated: 2020-04-29
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: performance_tips.html
@@ -88,12 +88,12 @@ How to do this depends on what OS you are running. This [FAQ](https://wiki.apach
 
 Once `thredds.war` is expanded, manually copy everything in `${tomcat_home}/webapps/thredds/initialContent/root/` to `${tomcat_home}/webapps/ROOT/`.
 
-* This sets up a `robots.txt` file to keep crawlers from wasting bandwidth.
+* This sets up a [`robots.txt`](https://www.robotstxt.org/){:target="_blank"} file to keep crawlers from wasting bandwidth.
 * The `favicon.ico` file is mostly a convenience to keep browsers from constantly asking for it (substitute your own icon if you like!).
 
 #### Resources
-[Tomcat Performance FAQ](https://cwiki.apache.org/confluence/display/TOMCAT/Performance+and+Monitoring){:target="_blank"}
-[Tomcat Performance paper](https://tomcat.apache.org/articles/performance.pdf){:target="_blank"} by Peter Lin
+- [Tomcat Performance and Monitoring FAQ](https://cwiki.apache.org/confluence/display/TOMCAT/Performance+and+Monitoring){:target="_blank"}
+- [So You Want High Performance](https://tomcat.apache.org/articles/performance.pdf){:target="_blank"} by Peter Lin
 
 ## Thredds Data Server
 

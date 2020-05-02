@@ -73,7 +73,7 @@ entries:
       url: /client_catalog_references.html
       output: web, pdf
 
-    - title: Compound service elements
+    - title: Compound Service Elements
       url: /compound_service_elements.html
       output: web, pdf
 

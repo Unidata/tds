@@ -1,6 +1,6 @@
 ---
 title: PointFeature Collections
-last_updated: 2020-04-01
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: pointfeature_collection_ref.html
@@ -15,7 +15,7 @@ A Point Feature Collection is a collection of files which the CDM can recognize 
 * The component files of the collection must all be recognized as **Point** or **Station** Feature type by the CDM software.
 * The component files must be partitioned by time.
   The starting time must be part of the filename, in a way that can be extracted with a [DateExtractor](feature_collections_ref.html#date-extractor).
-* The component files are assumed to be homogenous, that is, they contain the same collection of variables and attributes, and they must be on the same horizontal and vertical grid.
+* The component files are assumed to be homogeneous, that is, they contain the same collection of variables and attributes, and they must be on the same horizontal and vertical grid.
   The component files can differ only in their time coordinates and the actual data values.
 
 ## Example Point Feature Collections

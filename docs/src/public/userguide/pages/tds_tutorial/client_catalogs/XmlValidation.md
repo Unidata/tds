@@ -1,6 +1,6 @@
 ---
 title: XML Validation
-last_updated: 2018-04-02
+last_updated: 2020-04-29
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: client_catalog_xml_validation.html
@@ -34,6 +34,6 @@ Or, you can simply use the [THREDDS Catalog Validation service](http://thredds.u
 This service already knows where the schemas are located, so it's not necessary to add that information to the catalog; you only need it if you want to do your own validation.
 
 {%include note.html content="
-Reference documentation - The schema referenced in the example can be found here.
-However, you'll probably want to study the catalog specification instead, as it is much more digestable.
+Reference documentation - The schema referenced in the example can be found [here](https://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.7.xsd){:target='_blank'}.
+However, you'll probably want to study the [catalog specification](server_side_catalog_specification.html) instead, as it is much more digestable.
 " %}

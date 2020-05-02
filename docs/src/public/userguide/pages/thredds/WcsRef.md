@@ -1,6 +1,6 @@
 ---
 title: THREDDS Web Coverage Service
-last_updated: 2018-04-02
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: wcs_ref.html
@@ -23,10 +23,10 @@ WCS is enabled by default.
 To disable the service, by add the following to the TDS config file, located at `${tds.content.root.path}/thredds/threddsConfig.xml`:
 
 <WCS>
-  <allow>fakse</allow>
+  <allow>false</allow>
 </WCS>
 
-If you are not using the dafault services of the TDS, the service element's `serviceType` and `base` attribute values must be as follows in the configuration catalog:
+If you are not using the default services of the TDS, the service element's `serviceType` and `base` attribute values must be as follows in the configuration catalog:
 
 ~~~xml
 <service name="wcs" serviceType="WCS" base="/thredds/wcs/" />
@@ -108,7 +108,7 @@ The current TDS implementation of WCS 1.0 has the following restrictions:
 Same as above (version=1.0.0) except:
 
 1. CRS/SRS
-  * Some improvment in CRS encoding (i.e., not all are listed as "WGS84(DD)")
+  * Some improvement in CRS encoding (i.e., not all are listed as "WGS84(DD)")
 2. Temporal selection: only min/max is supported. No resolution is allowed on the min/max and no lists are allowed.
 3. "Vertical" range axis selection: only min/max is supported. No resolution is allowed on the min/max and no lists are allowed.
 4. Supported GetCoverage response formats:

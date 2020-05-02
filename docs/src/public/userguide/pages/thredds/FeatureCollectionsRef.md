@@ -1,6 +1,6 @@
 ---
 title: Feature Collections
-last_updated: 2020-04-22
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: feature_collections_ref.html
@@ -33,7 +33,7 @@ Specific topics covered here are:
 * [Description of elements in TDS configuration catalogs](#description-of-elements-in-tds-configuration-catalogs)
 * [The Date Extractor](#date-extractor)
 * Using [external triggers](#external-triggers) for updating collections
-* Static vs Chaning Datasets ([non-GRIB](#static-vs-changing-datasets-not-grib), [GRIB](#static-vs-changing-grib-datasets))
+* Static vs Changing Datasets ([non-GRIB](#static-vs-changing-datasets-not-grib), [GRIB](#static-vs-changing-grib-datasets))
 * [NcML Modificatoins](#ncml-modifications) (non-GRIB)
 
 For Feature Type specific information, see:
@@ -94,7 +94,7 @@ All of the elements that can be used inside of a `dataset` element can be used i
 2. A `documention` element of type `summary` is added to the catalog for this dataset.
 3. The collection consists of all files ending with `grib2` in the directory `/data/ldm/pub/native/grid/NCEP/NAM/Alaska_11km/`.
 4. A date will be extracted from the filename, and the files will then be sorted by date. 
-   Important if the lexigraphic ordering is different that the date order.
+   Important if the lexicographic ordering is different that the date order.
 5. Partitioning will happen at the `file` level.
 6. Only include files whose `lastModified` date is more than 5 minutes old.
    This is to exclude files that are actively being created.
@@ -257,7 +257,7 @@ The XML Schema definition for the `protoDataset` element:
 3. `change = "cron expr"` (optional): On rolling datsets, you need to change the prototype periodically, otherwise it will get deleted eventually. 
    This attribute specifies when the `protoDataset` should be re-selected, using a [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html){:target="_blank"}.
 
-The choice of the protoDataset matters when the datasets are not homogenous:
+The choice of the protoDataset matters when the datasets are not homogeneous:
 
 * Global and variable attributes are taken from the prototype dataset.
 * If a variable appears in the prototype dataset, it will appear in the feature collection dataset. 
@@ -463,7 +463,7 @@ The URL for the trigger is
 where `name` is the collection name, and `type` is a [collectionUpdateType](#collectionupdatetype).
 
 * Typically the trigger is used by the TDM, but it can also be used manually or by another program.
-* Triggering is password protected and uses SSL (see [enabling Remote Management](remote_management_ref.html#enable-secure-sockets-layer-ssl) to enable SSL).
+* Triggering is password protected and uses SSL (see [Enable TLS/SSL Encryption](enable_tls_encryption.html) for more information).
 * You must give the role `tdsTrigger` to any [user](remote_management_ref.html#configuring-tomcat-users) you want to have the right to send a trigger.
 * To enable the TDM trigger, create a [user](remote_management_ref.html#configuring-tomcat-users) named `tdm` and give that user the `tdsTrigger` role.
 

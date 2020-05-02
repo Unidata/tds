@@ -1,6 +1,6 @@
 ---
 title: Basic TDS Configuration
-last_updated: 2018-04-02
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: basic_tds_configuration.html
@@ -70,7 +70,7 @@ Other Places the Server Information Will be Included
 
 Change the default server information in the TDS configuration file
 
-1. Look at the current server information by viewing the Server Info page in a browser: http://localhost:8080/thredds/serverInfo.html
+1. Look at the current server information by viewing the Server Info page in a browser: <http://localhost:8080/thredds/serverInfo.html>{:target="_blank"}
 
 2. Edit the main TDS configuration catalog:
 
@@ -89,7 +89,7 @@ Change the default server information in the TDS configuration file
 
 4. Check that the server information has changed in the Server Info page: <
 
-   http://localhost:8080/thredds/serverInfo.html>{:target="_blank"}
+   <http://localhost:8080/thredds/serverInfo.html>{:target="_blank"}
 
 ## Appearance of Generated HTML Pages
 
@@ -128,7 +128,7 @@ Please see the [customizing the tds look and feel](customizing_tds_look_and_feel
 
 ## Include Generated JSON-LD in Dataset HTML Pages
 
-This experimental feature has the overall goal of exposing TDS datasets to [Google's Dataset search](https://developers.google.com/search/docs/data-types/dataset).
+This experimental feature has the overall goal of exposing TDS datasets to [Google's Dataset search](https://developers.google.com/search/docs/data-types/dataset){:target="_blank"}.
 
 ~~~xml
 <htmlSetup>

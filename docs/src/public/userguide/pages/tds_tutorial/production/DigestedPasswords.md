@@ -1,6 +1,6 @@
 ---
 title: Use Digested Passwords
-last_updated: 2018-11-02
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: digested_passwords.html
@@ -9,7 +9,7 @@ permalink: digested_passwords.html
 This section demonstrates how to enable digested passwords for the TDS and Tomcat Servlet Container.
 
 {%include note.html content="
-This section assumes you have successfully performed the tasks as outlined in the <a href=\"install_java_tomcat.html\" target=\"_blank\">Getting Started With The TDS</a> section of this tutorial.
+This section assumes you have successfully performed the tasks as outlined in the [Getting Started With The TDS](install_java_tomcat.html) section of this tutorial.
 " %}
 
 ## Rationale
@@ -92,7 +92,7 @@ A Tomcat Realm represents a \"database\" of usernames, passwords, and roles assi
    ~~~~
 
     {% include note.html content="
-    To use a different algorithm, a salt, or to limit the length of the resulting password hash, consult the <a href=\"https://tomcat.apache.org/tomcat-8.5-doc/realm-howto.html#Digested_Passwords\" target=\"_blank\">syntax options</a> for the `tomcat_home/bin/digest.[bat|sh]` script.
+    To use a different algorithm, a salt, or to limit the length of the resulting password hash, consult the [syntax options](https://tomcat.apache.org/tomcat-8.5-doc/realm-howto.html#Digested_Passwords){:target='_blank'} for the `tomcat_home/bin/digest.[bat|sh]` script.
     " %}
   
 3. Update `$TOMCAT_HOME/conf/tomcat-users.xml` to replace your clear-text password with the encrypted version:

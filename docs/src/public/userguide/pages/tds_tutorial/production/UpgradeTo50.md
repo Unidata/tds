@@ -1,6 +1,6 @@
 ---
 title: Upgrading to TDS version 5
-last_updated: 2018-07-26
+last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: upgrade_to_5.html
@@ -74,7 +74,7 @@ The following is no longer used:
 
 ## Java Web Start
 
-Java Web Start has been [deprecated as of Java 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998), and has been removed in [Java 11](https://www.oracle.com/technetwork/java/javase/11-relnote-issues-5012449.html), which is the Long-term Release post-Java 8.
+Java Web Start has been [deprecated as of Java 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and has been removed in [Java 11](https://www.oracle.com/technetwork/java/javase/11-relnote-issues-5012449.html){:target="_blank"}, which is the Long-term Release post-Java 8.
 Due to these changes, the netCDF-Java project no longer provide Java Web Start files as of version 5.0.0.
 Following suite, the TDS no longer provide any Web Start based Viewers on Dataset pages out of the box.
 
@@ -129,7 +129,7 @@ Schema version is now `1.2`.
 ### FeatureCollections
 
 * The [update](feature_collections_ref.html#update) element default is now `startup="never"`, meaning do not update collection on startup, and use existing indices when the collection is accessed.
-* The [fileSort](tds_dataset_scan_ref.html#filesSort,filesSort) element is now inside the `featureCollection` itself, so it can be processed uniformly for all types of feature collections.
+* The [fileSort](tds_dataset_scan_ref.html#filesSort) element is now inside the `featureCollection` itself, so it can be processed uniformly for all types of feature collections.
   When a collection shows a list of files, the files will be sorted by increasing name.
   To use a decreasing sort, use the element `<filesSort increasing="false" />` inside the `featureCollection` element.
   This supersedes the old way of placing that element in the `<gribConfig>` element, or the older verbose `lexigraphicByName` element:
