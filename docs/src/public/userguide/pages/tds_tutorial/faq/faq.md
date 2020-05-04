@@ -204,7 +204,7 @@ Add the following to `JAVA_OPTS` in the `${tomcat_home}/bin/setenv.sh` file:
 If you are interested in more details of the problem, here are two useful links:
 
 Sun bug [#4751177](http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4751177){:target="_blank"} ("Preferences storage placed unavailable to non-root users")
-[Disabling Sun's Java 1.4.x Preferences Subsystem](http://allaboutbalance.com/articles/disableprefs/){:target="_blank"}
+[Disabling Sun's Java 1.4.x Preferences Subsystem](https://web.archive.org/web/20170305180118/http://allaboutbalance.com/articles/disableprefs/){:target="_blank"}
 
 We have this TDS issue in our bug tracking system and plan to address it.
 
@@ -398,10 +398,10 @@ Lots of redeploys only happen on our test server.
 
 Resources:
 
-["Classloader leaks"](http://frankkieviet.blogspot.com/2006/10/classloader-leaks-dreaded-permgen-space.html){:target="_blank"} (Frank Kieviet's Engineering Notebook) (2016-02-26)
-["Return of the PermGen"](https://web.archive.org/web/20130522112026/http://my.opera.com/karmazilla/blog/2007/09/29/return-of-the-permgen){:target="_blank"} (2007-09-29)
-["PermGen Strikes Back"](https://web.archive.org/web/20130315110359/http://my.opera.com/karmazilla/blog/2007/03/15/permgen-strikes-back){:target="_blank"} (2007-03-15)
-["Good Riddance PermGen OutOfMemoryError"](https://web.archive.org/web/20130318215355/http://my.opera.com/karmazilla/blog/2007/03/13/good-riddance-permgen-outofmemoryerror){:target="_blank"} (2007-03-13)
+* ["Classloader leaks"](http://frankkieviet.blogspot.com/2006/10/classloader-leaks-dreaded-permgen-space.html){:target="_blank"} (Frank Kieviet's Engineering Notebook) (2016-02-26)
+* ["Return of the PermGen"](https://web.archive.org/web/20130522112026/http://my.opera.com/karmazilla/blog/2007/09/29/return-of-the-permgen){:target="_blank"} (2007-09-29)
+* ["PermGen Strikes Back"](https://web.archive.org/web/20130315110359/http://my.opera.com/karmazilla/blog/2007/03/15/permgen-strikes-back){:target="_blank"} (2007-03-15)
+* ["Good Riddance PermGen OutOfMemoryError"](https://web.archive.org/web/20130318215355/http://my.opera.com/karmazilla/blog/2007/03/13/good-riddance-permgen-outofmemoryerror){:target="_blank"} (2007-03-13)
 
 ### During shutdown I'm getting messages about threads (ThreadLocal) having to be shut down to prevent memory leaks. Whats up?
 

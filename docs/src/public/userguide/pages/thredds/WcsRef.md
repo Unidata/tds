@@ -177,4 +177,4 @@ A few WCS clients we know of (though we haven't tried all of them):
 This one is not a general client.
 It is a server site with a web interface for accessing their served data:
 
- * [DATAFed](http://www.datafed.net/){:target="_blank"}
+ * [DATAFed](http://datafed.org/){:target="_blank"}
