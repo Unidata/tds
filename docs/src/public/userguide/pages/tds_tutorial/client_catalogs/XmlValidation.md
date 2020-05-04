@@ -30,7 +30,7 @@ If you also want to check _validity_ in those tools, you will need to declare th
 * The `xsi:schemaLocation` attribute tells your XML validation tool where to find the THREDDS XML schema document.
   Just copy it exactly as you see them here.
 
-Or, you can simply use the [THREDDS Catalog Validation service](http://thredds.ucar.edu/thredds/remoteCatalogValidation.html){:target="_blank"} to check all three components at once.
+Or, you can simply use the [THREDDS Catalog Validation service](https://thredds.ucar.edu/thredds/remoteCatalogValidation.html){:target="_blank"} to check all three components at once.
 This service already knows where the schemas are located, so it's not necessary to add that information to the catalog; you only need it if you want to do your own validation.
 
 {%include note.html content="

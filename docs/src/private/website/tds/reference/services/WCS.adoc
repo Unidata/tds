@@ -6,7 +6,7 @@
 
 The THREDDS WCS Server implements the
 http://www.opengeospatial.org/[OGC] Web Coverage Service
-(http://www.opengeospatial.org/standards/wcs[WCS]) 1.0.0
+(https://www.ogc.org/standards/wcs[WCS]) 1.0.0
 http://www.opengeospatial.org/docs/03-065r6.pdf[specification]. It
 serves gridded data in http://trac.osgeo.org/geotiff/[GeoTIFF] or NetCDF
 format allowing WCS clients to specify a subset of a gridded dataset and

@@ -164,7 +164,7 @@ The protobuf messages are defined by
 
 === Current notes on motherlode dev
 
-* List of cdm datasets: http://thredds.ucar.edu/thredds/idd/newPointObs.html
+* List of cdm datasets: https://thredds.ucar.edu/thredds/idd/newPointObs.html
 
 ==== Nov-11-2010
 

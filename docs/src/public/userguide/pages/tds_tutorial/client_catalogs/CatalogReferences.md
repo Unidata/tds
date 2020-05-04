@@ -33,11 +33,11 @@ One way to do this is to build each piece as a separate and logically-complete c
    The `xlink:href` attributes are [relative URLs](https://www.w3.org/TR/WD-html40-970917/htmlweb.html#h-5.1.2){:target="_blank"} and are resolved against the catalog URL. 
    For example, if the URL of the client catalog, as shown above, is:
 
-   <http://thredds.ucar.edu/thredds/catalog.xml>{:target="_blank"}
+   <https://thredds.ucar.edu/thredds/catalog.xml>{:target="_blank"}
 
    then the resolved URL of the first `catalogRef` will be:
 
-   <http://thredds.ucar.edu/thredds/idd/forecastModels.xml>{:target="_blank"}
+   <https://thredds.ucar.edu/thredds/idd/forecastModels.xml>{:target="_blank"}
 
 4. `catalogRefs` needn't point to local catalogs only; this one points to a remote one at Far Away University.
    * The `metadata` elements with `inherited="true"` are NOT not copied across `catalogRefs`.

@@ -82,7 +82,7 @@ See the Tomcat HTTP Connector [reference page](https://tomcat.apache.org/tomcat-
 ### Automatic Startup
 
 In a production environment, Tomcat should be automatically restarted when the machine starts.
-How to do this depends on what OS you are running. This [FAQ](https://wiki.apache.org/tomcat/HowTo){:target="_blank"} has a bit of info.
+How to do this depends on what OS you are running. This [FAQ](https://cwiki.apache.org/confluence/display/tomcat/HowTo#HowTo-HowdoIinstallTomcatasaserviceunderUnix?){:target="_blank"} has a bit of info.
 
 ### Miscellaneous
 

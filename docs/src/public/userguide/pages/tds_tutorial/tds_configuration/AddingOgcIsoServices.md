@@ -228,8 +228,8 @@ ncWMS provides several styling and displaying capabilities that are also availab
 * [IDV](https://www.unidata.ucar.edu/software/idv/){:target="_blank"} (WMS) [free]
 * [ToolsUI](https://www.unidata.ucar.edu/downloads/netcdf-java/){:target="_blank"} (WMS) [free]
 * [OWSlib](http://geopython.github.io/OWSLib/){:target="_blank"} (WMS and WCS) [free]
-* [Map Express](https://www.cadcorp.com/products/free-mapping-software/){:target="_blank"} (`WMS` and `WCS`) [commercial / free]
-* [IDL](http://www.harrisgeospatial.com/ProductsandSolutions/GeospatialProducts/IDL.aspx){:target="_blank"} (WMS) [commercial]
+* [Map Express](https://www.cadcorp.com/products/desktop/cadcorp-sis-desktop-express/){:target="_blank"} (`WMS` and `WCS`) [commercial / free]
+* [IDL](https://www.harrisgeospatial.com/Software-Technology/IDL){:target="_blank"} (WMS) [commercial]
 * [gvSIG](http://www.gvsig.org/web/){:target="_blank"} (WMS and WCS) [free]
 
 #### Godiva2 `WMS` Client

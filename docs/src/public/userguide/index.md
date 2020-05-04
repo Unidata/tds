@@ -25,7 +25,7 @@ Some of the technology in the TDS:
 * An integrated server provides [OPeNDAP](http://www.opendap.org/){:target="_blank"} access to any CDM dataset.
   OPeNDAP is a widely used, subsetting data access method extending the HTTP protocol.
 * An integrated server provides bulk file access through the HTTP protocol.
-* An integrated server provides data access through the [OpenGIS Consortium (OGC) Web Coverage Service (WCS)](http://www.opengeospatial.org/standards/wcs){:target="_blank"} protocol, for any gridded dataset whose coordinate system information is complete.
+* An integrated server provides data access through the [OpenGIS Consortium (OGC) Web Coverage Service (WCS)](https://www.ogc.org/standards/wcs){:target="_blank"} protocol, for any gridded dataset whose coordinate system information is complete.
 * An integrated server provides data access through the [OpenGIS Consortium (OGC) Web Map Service (WMS)](http://www.opengeospatial.org/standards/wms){:target="_blank"} protocol, for any gridded dataset whose coordinate system information is complete.
   This software was developed by Jon Blower (University of Reading (UK) E-Science Center) as part of the [ESSC Web Map Service for environmental data](https://github.com/Reading-eScience-Centre/edal-java){:target="_blank"} (aka Godiva3).
 * The integrated [ncISO server](iso_metadata.html) provides automated metadata analysis and ISO metadata generation.
@@ -40,7 +40,7 @@ Configuration is made as simple and as automatic as possible, and we have made t
 
 \* Writing to netCDF-4 files is supported through the netCDF C library only.
 
-Much of the realtime data available over the Unidata Internet Data Distribution (IDD) is available through a demonstration THREDDS Data Server hosted at Unidata at [http://thredds.ucar.edu/](http://thredds.ucar.edu/thredds/catalog.html){:target="_blank"}.
+Much of the realtime data available over the Unidata Internet Data Distribution (IDD) is available through a demonstration THREDDS Data Server hosted at Unidata at [https://thredds.ucar.edu/](https://thredds.ucar.edu/thredds/catalog.html){:target="_blank"}.
 You are welcome to browse and access these meteorological datasets.
 If you need regular access to large amounts of data, please contact <support-idd@unidata.ucar.edu>.
 

@@ -451,7 +451,7 @@ You can still define your own services, either globally in the root catalog, or 
   <td>OGC WCS supports access to geospatial data as "coverages".
     <ul>
       <li>More details about the OGC WCS are available
-        <a href="http://www.opengeospatial.org/standards/wcs" target="_blank">here</a>.
+        <a href="https://www.ogc.org/standards/wcs" target="_blank">here</a>.
       </li>
       <li>Enable OGC WCS and set other configuration options with the TDS
         Configuration File
@@ -582,7 +582,7 @@ You can still define your own services, either globally in the root catalog, or 
       <ul>
         <li>The SOS standard is applicable to use cases in which sensor data
           needs to be managed in an interoperable way. For more information,
-          see the <a href="http://www.opengeospatial.org/standards/sos" target="_blank">OGC</a>
+          see the <a href="https://www.ogc.org/standards/sos" target="_blank">OGC</a>
           SOS page, or the ncSOS
           <a href="https://github.com/asascience-open/ncSOS/wiki" target="_blank">wiki</a>,
           maintained by the developers of the ncSOS plugin, Applied Science
