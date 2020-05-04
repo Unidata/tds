@@ -23,8 +23,8 @@ Also see:
 * [GRIB Collection FAQ](tds_grib_faq.html)
 * [GRIB Feature Collection Tutorial](grib_feature_collections.html)
 * [Partitions](partitions_ref.html)
-* [CDM GRIB Collection Processing](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/grib_files_cdm.html){:target="_blank"}
-* [CDM GRIB Tables](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/grib_tables.html){:target="_blank"}
+* [CDM GRIB Collection Processing](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grib_files_cdm.html){:target="_blank"}
+* [CDM GRIB Tables](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grib_tables.html){:target="_blank"}
 
 ### Multiple Dataset Collections
 

@@ -336,8 +336,8 @@ For TDS users, we recommend setting the library path and name in `threddsConfig.
 </nj22Config>
 ~~~
 
-These elements allow you to specify [runtime parameters](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/runtime_loading.html)  for the NetCDF-Java library from the threddsConfig file.
-See the NetCDF-Java [tutorial](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/) for an overview.
+These elements allow you to specify [runtime parameters](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/runtime_loading.html)  for the NetCDF-Java library from the threddsConfig file.
+See the NetCDF-Java [tutorial](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/) for an overview.
 
 ### Aggregation
 
