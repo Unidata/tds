@@ -134,7 +134,7 @@ Adding symbolic links for both the Tomcat and the JDK installations will allow f
 The following example shows creating symbolic links for the Tomcat and JDK installation on a linux system. (This type of installation will work on Mac OS systems as well.) The installation is being performed as the `root` user.
 
 {%include note.html content="
-Windows users can consult the [Microsoft Documentation](https://docs.microsoft.com/en-us/windows/desktop/fileio/symbolic-links){:target='_blank'} for creating symbolic links on Windows systems.
+Windows users can consult the [Microsoft Documentation](https://docs.microsoft.com/en-us/windows/win32/fileio/symbolic-links){:target='_blank'} for creating symbolic links on Windows systems.
 " %}
 
 1. Create symbolic links for the Tomcat and the JDK installations:

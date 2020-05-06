@@ -111,7 +111,7 @@ NetcdfDataset can open *_THREDDS Resolver_* datasets, which have the form
 
 The *_resolverURL_* must return a catalog with a single top level dataset, which is the target dataset. For example:
 
-* _thredds:resolve:http://thredds.ucar.edu:8080/thredds/catalog/model/NCEP/NAM/CONUS_12km/latest.xml_
+* _thredds:resolve:https://thredds.ucar.edu:8080/thredds/catalog/model/NCEP/NAM/CONUS_12km/latest.xml_
 
 In this case, _\http://motherlode.ucar.edu:8080/thredds/catalog/model/NCEP/NAM/CONUS_12km/latest.xml_
 returns a catalog contining the latest dataset in the *NCEP/NAM/CONUS_12km* collection.

@@ -8,7 +8,7 @@ permalink: pointfeature_collection_ref.html
 
 ## Overview
 
-A Point Feature Collection is a collection of files which the CDM can recognize as containing [Point Features](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/pointfeature_ref.html){:target="_blank"}.
+A Point Feature Collection is a collection of files which the CDM can recognize as containing [Point Features](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/pointfeature_ref.html){:target="_blank"}.
 
 ### Constraints on Point Feature Collections
 

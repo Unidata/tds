@@ -27,7 +27,7 @@ It is important that you upgrade your software before an attacker uses the vulne
 * [Tomcat mailing lists](https://tomcat.apache.org/lists.html){:target="_blank"}
   Various tomcat-related mailing lists, including Tomcat-announce which is a low volume list for release announcements and security vulnerabilities.
 
-* [Java SE Security](https://www.oracle.com/technetwork/java/javase/tech/index-jsp-136007.html){:target="_blank"}
+* [Java SE Security](https://www.oracle.com/java/technologies/javase/javase-tech-security.html){:target="_blank"}
   Oracle’s Java security page which includes a chronology of Java security issues and user forums.
 
 * [thredds mailing list](https://www.unidata.ucar.edu/mailing_lists/archives/thredds/){:target="_blank"}

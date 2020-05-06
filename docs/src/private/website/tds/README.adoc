@@ -33,7 +33,7 @@ access method extending the HTTP protocol.
 5.  An integrated server provides bulk file access through the HTTP
 protocol.
 6.  An integrated server provides data access through the
-http://www.opengeospatial.org/standards/wcs[OpenGIS Consortium (OGC) Web
+https://www.ogc.org/standards/wcs[OpenGIS Consortium (OGC) Web
 Coverage Service (WCS]) protocol, for any ``gridded'' dataset whose
 coordinate system information is complete.
 7.  An integrated server provides data access through the
@@ -74,7 +74,7 @@ only.
 Much of the realtime data available over the Unidata
 https://www.unidata.ucar.edu/software/idd/index.html[Internet Data
 Distribution] (IDD) is available through a THREDDS Data Server hosted at
-Unidata on http://thredds.ucar.edu/thredds/[thredds.ucar.edu]. You are
+Unidata on https://thredds.ucar.edu/thredds/[thredds.ucar.edu]. You are
 welcome to browse and access these meteorological datasets. If you need
 regular access to large amounts of data, please contact
 support-idd@unidata.ucar.edu.

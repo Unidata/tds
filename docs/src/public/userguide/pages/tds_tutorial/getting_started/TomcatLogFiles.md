@@ -59,7 +59,7 @@ Is it only errors messages being reported to `catalina.out`?
 ## Things To Know About `catalina.out`
 
 {% include note.html content="
-The [Tomcat Users mailing list](http://marc.info/?l=tomcat-user&w=2&r=1&s=catalina.out+rotate&q=b){:target='_blank'} has seen a lot of traffic dedicated to `catalina.out` logging and rotation.
+The [Tomcat Users mailing list](https://marc.info/?l=tomcat-user&m=149200281514600&w=2){:target='_blank'} has seen a lot of traffic dedicated to `catalina.out` logging and rotation.
 " %}
 
 * Tomcat `System.out` and `System.err` gets appended to `catalina.out`. `catalina.out` can **quickly grow large** if the hosted web applications are not specifically catching and logging `System.out` and `System.err` to designated files.

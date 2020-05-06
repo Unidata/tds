@@ -6,8 +6,8 @@ toc: false
 permalink: fmrc_tutorial.html
 ---
 
-The `featureCollection` element is a way to tell the TDS to serve collections of [CDM Feature Datasets](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/feature_datasets.html){:target="_blank"}.
-Currently this is used mostly for [gridded data](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/grid_datasets.html){:target="_blank"} whose time and spatial coordinates are recognized by the CDM software stack.
+The `featureCollection` element is a way to tell the TDS to serve collections of [CDM Feature Datasets](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/feature_datasets.html){:target="_blank"}.
+Currently this is used mostly for [gridded data](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grid_datasets.html){:target="_blank"} whose time and spatial coordinates are recognized by the CDM software stack.
 This allows the TDS to automatically create logical datasets composed of collections of files, particularly gridded model data output, called **Forecast Model Run Collections (FMRC)**.
 
 A Forecast Model Run Collection is a collection of forecast model output.

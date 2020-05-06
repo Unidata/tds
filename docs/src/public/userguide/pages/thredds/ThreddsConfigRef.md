@@ -89,7 +89,7 @@ Default CSS files are provided, and should not be modified. Instead, these can b
 * <3> The CSS used in TDS Dataset catalogs pages
 * <4> The CSS used in the OPeNDAP form.
 * <5> Google Analytics Tracking Code (GATC) enables tracking catalog use.
-      Obtain the GATC from [Google](http://www.google.com/analytics/){:target="_blank"} and enter it here to enable this feature.
+      Obtain the GATC from [Google](https://marketingplatform.google.com/about/analytics/){:target="_blank"} and enter it here to enable this feature.
 * <6> If set to true, schema.org [`Dataset`](https://schema.org/Dataset){:target="_blank"} objects will be encoded using json-ld and embeded into the `<head>` element of the generated dataset HTML pages.
 
 ### Controlling THREDDS catalog output
@@ -336,8 +336,8 @@ For TDS users, we recommend setting the library path and name in `threddsConfig.
 </nj22Config>
 ~~~
 
-These elements allow you to specify [runtime parameters](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/runtime_loading.html)  for the NetCDF-Java library from the threddsConfig file.
-See the NetCDF-Java [tutorial](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/) for an overview.
+These elements allow you to specify [runtime parameters](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/runtime_loading.html)  for the NetCDF-Java library from the threddsConfig file.
+See the NetCDF-Java [tutorial](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/) for an overview.
 
 ### Aggregation
 
@@ -453,7 +453,7 @@ We recommend that you use the default settings, by not specifying this option.
 ~~~
 
 * `dir`: location of Feature Collection cache, currently implemented
-with [Berkeley DB](http://www.oracle.com/technetwork/database/berkeleydb/overview/index-093405.html){:target="_blank"}. 
+with [Berkeley DB](https://www.oracle.com/technetwork/database/berkeleydb/overview/index-093405.html){:target="_blank"}. 
   If not otherwise set, the TDS will use the`${tds.content.root.path}/thredds/cache/collection/` directory.
   We recommend that you use this default, by not specifying a `FeatureCollection.dir` element.
 * `maxSize`: maximum amount of memory to be used for this cache.

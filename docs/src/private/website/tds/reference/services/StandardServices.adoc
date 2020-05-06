@@ -381,7 +381,7 @@ Service Base URL
 OGC WCS supports access to geospatial data as ``coverages''.
 
 * More details about the OGC WCS are available
-http://www.opengeospatial.org/standards/wcs[here].
+https://www.ogc.org/standards/wcs[here].
 * Enable OGC WCS and set other configuration options with the TDS
 Configuration File
 (<<ThreddsConfigXMLFile.adoc#wcs,threddsConfig.xml>>). More setup,

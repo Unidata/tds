@@ -51,15 +51,15 @@ Here is what the default version of the serverInformation element looks like:
 The headers and footers of all TDS generated catalog HTML pages. Examples:
 
 * <http://localhost:8080/thredds/catalog.html>{:target="_blank"}
-* <http://thredds.ucar.edu/thredds/catalog.html>{:target="_blank"}
+* <https://thredds.ucar.edu/thredds/catalog.html>{:target="_blank"}
 
 Server element of the WMS GetCapabilities document:
- * <http://thredds.ucar.edu/thredds/wms/grib/NCEP/GFS/Pacific_40km/best?service=WMS&version=1.3.0&request=GetCapabilities>{:target="_blank"}
+ * <https://thredds.ucar.edu/thredds/wms/grib/NCEP/GFS/Pacific_40km/best?service=WMS&version=1.3.0&request=GetCapabilities>{:target="_blank"}
 
 The three supported server information documents:
- * An HTML document: <http://thredds.ucar.edu/thredds/serverInfo.html>{:target="_blank"}
- * An XML document: <http://thredds.ucar.edu/thredds/serverInfo.xml>{:target="_blank"}
- * A version only text document: <http://thredds.ucar.edu/thredds/serverVersion.txt>{:target="_blank"}
+ * An HTML document: <https://thredds.ucar.edu/thredds/serverInfo.html>{:target="_blank"}
+ * An XML document: <https://thredds.ucar.edu/thredds/serverInfo.xml>{:target="_blank"}
+ * A version only text document: <https://thredds.ucar.edu/thredds/serverVersion.txt>{:target="_blank"}
 
 Other Places the Server Information Will be Included
 

@@ -74,6 +74,8 @@ libraries["spotless"] = "com.diffplug.spotless:spotless-plugin-gradle:3.22.0"
 
 /////////////////////////////////////// netCDF-Java ////////////////////////////////////////
 
+// NOTE: If updating to a new major or minor version of netcdf-java, be sure to update
+// the netcdf-java_docset_version variable in docs/src/public/userguide/_config.yml."
 versions["ncj"] = "5.4.0-SNAPSHOT"
 
 libraries["bufr"] = "edu.ucar:bufr:${versions["ncj"]}"

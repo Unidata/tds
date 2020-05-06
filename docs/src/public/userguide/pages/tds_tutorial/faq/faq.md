@@ -204,7 +204,7 @@ Add the following to `JAVA_OPTS` in the `${tomcat_home}/bin/setenv.sh` file:
 If you are interested in more details of the problem, here are two useful links:
 
 Sun bug [#4751177](http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4751177){:target="_blank"} ("Preferences storage placed unavailable to non-root users")
-[Disabling Sun's Java 1.4.x Preferences Subsystem](http://allaboutbalance.com/articles/disableprefs/){:target="_blank"}
+[Disabling Sun's Java 1.4.x Preferences Subsystem](https://web.archive.org/web/20170305180118/http://allaboutbalance.com/articles/disableprefs/){:target="_blank"}
 
 We have this TDS issue in our bug tracking system and plan to address it.
 
@@ -398,21 +398,20 @@ Lots of redeploys only happen on our test server.
 
 Resources:
 
-["Classloader leaks"](http://frankkieviet.blogspot.com/2006/10/classloader-leaks-dreaded-permgen-space.html){:target="_blank"} (Frank Kieviet's Engineering Notebook) (2016-02-26)
-["Return of the PermGen"](http://my.opera.com/karmazilla/blog/2007/09/29/return-of-the-permgen){:target="_blank"} (2007-09-29)
-["PermGen Strikes Back"](http://my.opera.com/karmazilla/blog/2007/03/15/permgen-strikes-back){:target="_blank"} (2007-03-15)
-["Good Riddance PermGen OutOfMemoryError"](http://my.opera.com/karmazilla/blog/2007/03/13/good-riddance-permgen-outofmemoryerror){:target="_blank"} (2007-03-13)
+* ["Classloader leaks"](http://frankkieviet.blogspot.com/2006/10/classloader-leaks-dreaded-permgen-space.html){:target="_blank"} (Frank Kieviet's Engineering Notebook) (2016-02-26)
+* ["Return of the PermGen"](https://web.archive.org/web/20130522112026/http://my.opera.com/karmazilla/blog/2007/09/29/return-of-the-permgen){:target="_blank"} (2007-09-29)
+* ["PermGen Strikes Back"](https://web.archive.org/web/20130315110359/http://my.opera.com/karmazilla/blog/2007/03/15/permgen-strikes-back){:target="_blank"} (2007-03-15)
+* ["Good Riddance PermGen OutOfMemoryError"](https://web.archive.org/web/20130318215355/http://my.opera.com/karmazilla/blog/2007/03/13/good-riddance-permgen-outofmemoryerror){:target="_blank"} (2007-03-13)
 
 ### During shutdown I'm getting messages about threads (ThreadLocal) having to be shut down to prevent memory leaks. Whats up?
 
 Tomcat memory leak detection code started logging these messages as of Tomcat 6.0.24.
-From various posts (see Spring Forum: ["ThreadLocal forcefully removed"](http://forum.springsource.org/showpost.php?p=282738&postcount=3){:target="_blank"} comment #3) it appears that these messages are not a problem but instead a matter of Tomcat finding these objects before they get garbage collected.
+It appears that these messages are not a problem but instead a matter of Tomcat finding these objects before they get garbage collected.
 
 Here are a number of related links:
 
-* Spring Forum: ["ThreadLocal forcefully removed"](http://forum.springsource.org/showthread.php?p=282738#post282738){:target="_blank"}. Comment #3 provides an answer to the post.
-* [Tomcat Memory Leak Prevention](http://wiki.apache.org/tomcat/MemoryLeakProtection){:target="_blank"} page (in particular, see the ["Custom ThreadLocal"](http://wiki.apache.org/tomcat/MemoryLeakProtection#customThreadLocal){:target="_blank"} section)
-* A Tomcat 7 issue on ["Improving ThreadLocal memory leak clean-up"](https://issues.apache.org/bugzilla/show_bug.cgi?id=%2049159){:target="_blank"}
+* [Tomcat Memory Leak Prevention](https://cwiki.apache.org/confluence/display/tomcat/MemoryLeakProtection){:target="_blank"} page (in particular, see the ["Custom ThreadLocal"](https://cwiki.apache.org/confluence/display/tomcat/MemoryLeakProtection#customThreadLocal){:target="_blank"} section)
+* A Tomcat 7 issue on ["Improving ThreadLocal memory leak clean-up"](https://bz.apache.org/bugzilla/show_bug.cgi?id=%2049159){:target="_blank"}
 
 NOTE: We will monitor the status of this Tomcat issue.
 For now, we do not consider this a TDS bug and will not be working to fix this issue in TDS.
