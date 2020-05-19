@@ -27,14 +27,17 @@ import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.VariableSimpleIF;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.ft.FeatureDataset;
 import ucar.nc2.ft.FeatureDatasetFactoryManager;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.util.IO;
 import ucar.unidata.util.test.Assert2;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.File;
 import java.io.IOException;
@@ -166,11 +169,30 @@ public class TestGridAsPointP {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
     Assert.assertNotNull(content);
     logger.debug("return size = {}", content.length);
+    if (TestDir.cdmUseBuilders) {
+      checkGridAsPointNetcdfNew(content, varName);
+    } else {
+      checkGridAsPointNetcdfOld(content, varName);
+    }
+  }
 
+  private void checkGridAsPointNetcdfOld(byte[] content, String varName) throws JDOMException, IOException {
     // Open the binary response in memory
     Formatter errlog = new Formatter();
     try (NetcdfFile nf = NetcdfFile.openInMemory("checkGridAsPointNetcdf.nc", content)) {
       FeatureDataset fd = FeatureDatasetFactoryManager.wrap(FeatureType.STATION, new NetcdfDataset(nf), null, errlog);
+      assertNotNull(errlog.toString(), fd);
+      VariableSimpleIF v = fd.getDataVariable(varName);
+      assertNotNull(varName, v);
+    }
+  }
+
+  private void checkGridAsPointNetcdfNew(byte[] content, String varName) throws JDOMException, IOException {
+    // Open the binary response in memory
+    Formatter errlog = new Formatter();
+    try (NetcdfFile nf = NetcdfFiles.openInMemory("checkGridAsPointNetcdf.nc", content)) {
+      FeatureDataset fd = FeatureDatasetFactoryManager.wrap(FeatureType.STATION,
+          NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null), null, errlog);
       assertNotNull(errlog.toString(), fd);
       VariableSimpleIF v = fd.getDataVariable(varName);
       assertNotNull(varName, v);

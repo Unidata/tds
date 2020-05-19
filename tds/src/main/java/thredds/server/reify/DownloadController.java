@@ -327,7 +327,7 @@ public class DownloadController extends LoadCommon {
       NetcdfFile ncfile = null;
       try {
         CancelTaskImpl cancel = new CancelTaskImpl();
-        ncfile = NetcdfDatasets.openFile(trueurl, cancel);
+        ncfile = NetcdfDataset.openFile(trueurl, cancel);
         switch (this.params.format) {
           case NETCDF3:
             makeNetcdf3(ncfile, fulltarget);

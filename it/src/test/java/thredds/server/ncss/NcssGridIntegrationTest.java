@@ -1,5 +1,6 @@
 package thredds.server.ncss;
 
+import java.io.IOException;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
@@ -7,8 +8,11 @@ import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.grid.GridDataset;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.lang.invoke.MethodHandles;
 import static org.junit.Assert.assertNotNull;
@@ -16,6 +20,22 @@ import static org.junit.Assert.assertNotNull;
 @Category(NeedsCdmUnitTest.class)
 public class NcssGridIntegrationTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+  private void openBinaryNew(byte[] content, String gridName) throws IOException {
+    try (NetcdfFile nf = NetcdfFiles.openInMemory("test_data.nc", content)) {
+      GridDataset gdsDataset = new GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
+      assertNotNull(gdsDataset.findGridByName(gridName));
+      logger.debug("{}", nf);
+    }
+  }
+
+  private void openBinaryOld(byte[] content, String gridName) throws IOException {
+    try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.nc", content)) {
+      GridDataset gdsDataset = new GridDataset(new NetcdfDataset(nf));
+      assertNotNull(gdsDataset.findGridByName(gridName));
+      logger.debug("{}", nf);
+    }
+  }
 
   /*
    * @HttpTest(method = Method.GET, path =
@@ -41,11 +61,10 @@ public class NcssGridIntegrationTest {
         "/ncss/grid/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1?var=Temperature_isobaric");
 
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
-    // Open the binary response in memory
-    try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.nc", content)) {
-      GridDataset gdsDataset = new GridDataset(new NetcdfDataset(nf));
-      assertNotNull(gdsDataset.findGridByName("Temperature_isobaric"));
-      logger.debug("{}", nf);
+    if (TestDir.cdmUseBuilders) {
+      openBinaryNew(content, "Temperature_isobaric");
+    } else {
+      openBinaryOld(content, "Temperature_isobaric");
     }
   }
 
@@ -63,10 +82,10 @@ public class NcssGridIntegrationTest {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
 
     // Open the binary response in memory
-    try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.nc", content)) {
-      GridDataset gdsDataset = new GridDataset(new NetcdfDataset(nf));
-      assertNotNull(gdsDataset.findGridByName("Relative_humidity_height_above_ground"));
-      logger.debug("{}", nf);
+    if (TestDir.cdmUseBuilders) {
+      openBinaryNew(content, "Relative_humidity_height_above_ground");
+    } else {
+      openBinaryOld(content, "Relative_humidity_height_above_ground");
     }
   }
 
@@ -82,10 +101,10 @@ public class NcssGridIntegrationTest {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
 
     // Open the binary response in memory
-    try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.nc", content)) {
-      GridDataset gdsDataset = new GridDataset(new NetcdfDataset(nf));
-      assertNotNull(gdsDataset.findGridByName("eastward_ekman_current_velocity"));
-      logger.debug("{}", nf);
+    if (TestDir.cdmUseBuilders) {
+      openBinaryNew(content, "eastward_ekman_current_velocity");
+    } else {
+      openBinaryOld(content, "eastward_ekman_current_velocity");
     }
   }
 }

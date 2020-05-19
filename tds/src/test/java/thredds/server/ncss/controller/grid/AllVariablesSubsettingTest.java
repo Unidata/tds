@@ -51,10 +51,15 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import thredds.core.TdsRequestedDataset;
 import thredds.mock.params.GridPathParams;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
+import ucar.nc2.dt.grid.GridDataset;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 /**
@@ -89,9 +94,17 @@ public class AllVariablesSubsettingTest {
 
     // Open the binary response in memory
     // NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", response.getContentAsByteArray() );
-    NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
+    NetcdfFile nf;
+    GridDataset gdsDataset;
+    if (TestDir.cdmUseBuilders) {
+      nf = NetcdfFiles.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
+      gdsDataset =
+          new ucar.nc2.dt.grid.GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
+    } else {
+      nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
+      gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
+    }
 
-    ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
     assertTrue(gdsDataset.getCalendarDateRange().isPoint());
     assertEquals(7, gdsDataset.getDataVariables().size());
 

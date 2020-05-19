@@ -64,8 +64,11 @@ import thredds.server.ncss.format.SupportedFormat;
 import thredds.junit4.SpringJUnit4ParameterizedClassRunner;
 import thredds.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.grid.GeoGrid;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 /**
@@ -149,8 +152,17 @@ public class VariableSpaceSubsettingTest {
     mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(new ResultMatcher() {
       public void match(MvcResult result) throws Exception {
         // Open the binary response in memory
-        NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
-        ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
+        NetcdfFile nf;
+        ucar.nc2.dt.grid.GridDataset gdsDataset;
+        if (TestDir.cdmUseBuilders) {
+          nf = NetcdfFiles.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
+          gdsDataset =
+              new ucar.nc2.dt.grid.GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
+        } else {
+          nf = NetcdfFile.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
+          gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
+        }
+
         assertTrue(gdsDataset.getCalendarDateRange().isPoint());
 
         int[][] shapes = new int[vars.size()][];

@@ -32,6 +32,7 @@ import thredds.util.ContentType;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.ft2.coverage.Coverage;
 import ucar.nc2.ft2.coverage.CoverageCollection;
 import ucar.nc2.ft2.coverage.CoverageCoordAxis1D;
@@ -44,6 +45,7 @@ import ucar.nc2.time.Calendar;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.util.IO;
 import ucar.unidata.util.test.Assert2;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -132,6 +134,16 @@ public class TestWcsServer {
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, null);
   }
 
+  private DtCoverageDataset getDtCoverageDataset(NetcdfFile ncf) throws IOException {
+    DtCoverageDataset dtc;
+    if (TestDir.cdmUseBuilders) {
+      dtc = new DtCoverageDataset(NetcdfDatasets.enhance(ncf, NetcdfDataset.getDefaultEnhanceMode(), null));
+    } else {
+      dtc = new DtCoverageDataset(new NetcdfDataset(ncf), null);
+    }
+    return dtc;
+  }
+
   @Test
   public void testGetCoverageNetcdf() throws IOException {
     String endpoint = TestOnLocalServer.withHttpPath(
@@ -140,7 +152,7 @@ public class TestWcsServer {
 
     // Open the binary response in memory
     try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.nc", content)) {
-      DtCoverageDataset dt = new DtCoverageDataset(new NetcdfDataset(nf), null);
+      DtCoverageDataset dt = getDtCoverageDataset(nf);
       Formatter errlog = new Formatter();
       FeatureDatasetCoverage cdc = DtCoverageAdapter.factory(dt, errlog);
       Assert.assertNotNull(errlog.toString(), cdc);
@@ -224,7 +236,7 @@ public class TestWcsServer {
 
     // Open the binary response in memory
     try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.nc", content)) {
-      DtCoverageDataset dt = new DtCoverageDataset(new NetcdfDataset(nf), null);
+      DtCoverageDataset dt = getDtCoverageDataset(nf);
       Formatter errlog = new Formatter();
       FeatureDatasetCoverage cdc = DtCoverageAdapter.factory(dt, errlog);
       Assert.assertNotNull(errlog.toString(), cdc);

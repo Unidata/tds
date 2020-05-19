@@ -11,6 +11,7 @@ import thredds.client.catalog.*;
 import thredds.client.catalog.builder.CatalogBuilder;
 import thredds.client.catalog.builder.DatasetBuilder;
 import thredds.core.AllowedServices;
+import thredds.core.DatasetManager;
 import thredds.core.StandardService;
 import thredds.inventory.*;
 import thredds.server.catalog.FeatureCollectionRef;
@@ -56,10 +57,15 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
   // can be changed
   static protected AllowedServices allowedServices;
   static protected String contextName = "/thredds"; // set by TdsInit
+  static protected boolean useNetcdfJavaBuilders = false;
 
   // cant use spring wiring because InvDatasetFeatureCollection not a spring component because depends on catalog config
   static public void setContextName(String c) {
     contextName = c;
+  }
+
+  static public void setUseNetcdfJavaBuilders(boolean use) {
+    useNetcdfJavaBuilders = use;
   }
 
   static public void setAllowedServices(AllowedServices _allowedServices) {
@@ -574,8 +580,11 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
       String filename =
           new StringBuilder(topDirectory).append(topDirectory.endsWith("/") ? "" : "/").append(name).toString();
       DatasetUrl durl = new DatasetUrl(null, filename);
-
-      return NetcdfDatasets.acquireDataset(null, durl, null, -1, null, null); // no enhancement
+      if (useNetcdfJavaBuilders || DatasetManager.isLocationObjectStore(durl.getTrueurl())) {
+        return NetcdfDatasets.acquireDataset(null, durl, null, -1, null, null); // no enhancement
+      } else {
+        return NetcdfDataset.acquireDataset(null, durl, null, -1, null, null); // no enhancement
+      }
     }
 
     GridDataset gds = getGridDataset(matchPath); // LOOK cant be right

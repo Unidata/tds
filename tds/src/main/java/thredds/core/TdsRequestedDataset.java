@@ -8,6 +8,7 @@ package thredds.core;
 import thredds.servlet.ServletUtil;
 import thredds.util.TdsPathUtils;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.GridDataset;
 import ucar.nc2.ft.FeatureDatasetPoint;
@@ -102,6 +103,10 @@ public class TdsRequestedDataset {
     return datasetManager.getLocationFromRequestPath(reqPath);
   }
 
+  public static boolean useNetcdfJavaBuilders() {
+    return datasetManager.useNetcdfJavaBuilders();
+  }
+
   public static boolean resourceControlOk(HttpServletRequest request, HttpServletResponse response, String path) {
     return datasetManager.resourceControlOk(request, response, path);
   }
@@ -146,7 +151,17 @@ public class TdsRequestedDataset {
 
   // return null means request has been handled, and calling routine should exit without further processing
   public NetcdfFile openAsNetcdfFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    return isRemote ? NetcdfDatasets.openDataset(path) : datasetManager.openNetcdfFile(request, response, path);
+    NetcdfFile ncf = null;
+    if (isRemote) {
+      if (datasetManager.useNetcdfJavaBuilders() || DatasetManager.isLocationObjectStore(path)) {
+        ncf = NetcdfDatasets.openDataset(path);
+      } else {
+        ncf = NetcdfDataset.openDataset(path);
+      }
+    } else {
+      ncf = datasetManager.openNetcdfFile(request, response, path);
+    }
+    return ncf;
   }
 
   public boolean isRemote() {

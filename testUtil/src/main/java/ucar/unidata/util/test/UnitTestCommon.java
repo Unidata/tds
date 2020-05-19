@@ -1,11 +1,11 @@
 /*
+ * /*
  * Copyright 2012, UCAR/Unidata.
  * See the LICENSE file for more information.
  */
 
 package ucar.unidata.util.test;
 
-import org.junit.rules.TemporaryFolder;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.nc2.NetcdfFile;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import ucar.nc2.dataset.NetcdfDatasets;
+
 
 abstract public class UnitTestCommon {
   //////////////////////////////////////////////////

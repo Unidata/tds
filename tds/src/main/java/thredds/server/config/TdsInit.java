@@ -104,8 +104,16 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
   private XMLStore store;
   private PreferencesExt mainPrefs;
 
+  private boolean useBuilders;
+
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
+    String awsRegion = System.getProperty("aws.region");
+    // if aws.region system property already set, use it.
+    // otherwise, default to us-east-1
+    if (awsRegion == null) {
+      System.setProperty("aws.region", "us-east-1");
+    }
     if (event != null) { // startup
       synchronized (this) {
         if (!wasInitialized) {
@@ -208,6 +216,17 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     // initialize the tds configuration beans
     tdsConfigMapper.init(tdsContext);
 
+    // use new builders in netCDF-Java
+    useBuilders = ThreddsConfig.getBoolean("Experimental.useNetcdfJavaBuilders", false);
+
+    // if useBuilders is false, look at the Java system properties to see if there is a special flag set, used
+    // for testing only.
+    if (!useBuilders) {
+      useBuilders = Boolean.getBoolean("thredds.test.experimental.useNetcdfJavaBuilders");
+    }
+
+    datasetManager.setUseNetcdfJavaBuilders(useBuilders);
+
     // prefer cdmRemote when available
     DataFactory.setPreferCdm(true);
     // netcdf-3 files can only grow, not have metadata changes
@@ -246,6 +265,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
 
     allowedServices.finish(); // finish when we know everything is wired
     InvDatasetFeatureCollection.setAllowedServices(allowedServices);
+    InvDatasetFeatureCollection.setUseNetcdfJavaBuilders(useBuilders);
     DatasetScan.setSpecialServices(allowedServices.getStandardService(StandardService.resolver),
         allowedServices.getStandardService(StandardService.httpServer));
     DatasetScan.setAllowedServices(allowedServices);
@@ -390,6 +410,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     if (max > 0) {
       NetcdfDatasets.initNetcdfFileCache(min, max, secs);
       startupLog.info("TdsInit: NetcdfDatasets.initNetcdfFileCache= [" + min + "," + max + "] scour = " + secs);
+      NetcdfDataset.initNetcdfFileCache(min, max, secs);
+      startupLog.info("TdsInit: NetcdfDataset.initNetcdfFileCache= [" + min + "," + max + "] scour = " + secs);
     }
 
     // GribCollection partitions: default is allow 100 - 150 objects, cleanup every 13 minutes
@@ -479,6 +501,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
 
     // open file caches
     RandomAccessFile.shutdown();
+    NetcdfDataset.shutdown();
     NetcdfDatasets.shutdown();
 
     // memory caches

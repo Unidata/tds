@@ -188,9 +188,13 @@ public class DataRoot {
     if (locationReletive.startsWith("/"))
       locationReletive = locationReletive.substring(1);
 
-    if (!rootLocation.endsWith("/"))
-      rootLocation = rootLocation + "/";
-
+    if (!rootLocation.endsWith("/")) {
+      if (rootLocation.startsWith("cdms3") || rootLocation.startsWith("s3")) {
+        rootLocation = rootLocation + "?";
+      } else {
+        rootLocation = rootLocation + "/";
+      }
+    }
     // put it together
     return (locationReletive.length() > 1) ? rootLocation + locationReletive : rootLocation;
   }

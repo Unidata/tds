@@ -54,7 +54,10 @@ import thredds.mock.web.MockTdsContextLoader;
 import thredds.server.ncss.format.SupportedFormat;
 import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -158,8 +161,15 @@ public class TemporalSpaceSubsettingTest {
     // IO.writeToFile(is, "C:/temp/shouldGetTimeRange.nc");
 
     // Open the binary response in memory
-    NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
-    NetcdfDataset ds = new NetcdfDataset(nf);
+    NetcdfFile nf;
+    NetcdfDataset ds;
+    if (TestDir.cdmUseBuilders) {
+      nf = NetcdfFiles.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
+      ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
+    } else {
+      nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
+      ds = new NetcdfDataset(nf);
+    }
     Dimension time = ds.findDimension("time");
 
     assertEquals(lengthTimeDim, time.getLength());

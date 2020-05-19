@@ -23,11 +23,14 @@ import thredds.mock.params.GridPathParams;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.nc2.NCdumpW;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.grid.GeoGrid;
 import ucar.nc2.util.Misc;
 import ucar.unidata.geoloc.ProjectionRect;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -139,32 +142,28 @@ public class FmrcHorizSubsettingTest {
     assertEquals(200, mvc.getResponse().getStatus());
 
     // Open the binary response in memory
-    try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray())) {
-      /*
-       * System.out.printf("%s%n", nf);
-       * Variable v = nf.findVariable(null, "x");
-       * assert v != null;
-       * System.out.printf("x= ");
-       * NCdumpW.printArray(v.read());
-       * System.out.printf("%n");
-       * v = nf.findVariable(null, "y");
-       * assert v != null;
-       * System.out.printf("y= ");
-       * NCdumpW.printArray(v.read());
-       * System.out.printf("%n");
-       */
-
-      ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
-      assertTrue(gdsDataset.getCalendarDateRange().isPoint());
-
-      int count = 0;
-      for (String varName : vars) {
-        GeoGrid grid = gdsDataset.findGridByShortName(varName);
-        System.out.printf("%s grid.getShape()=%s%n", varName, Misc.showInts(grid.getShape()));
-        System.out.printf("%s        expected=%s%n", varName, Misc.showInts(expectedShapes[count]));
-        assertArrayEquals(expectedShapes[count], grid.getShape());
-        count++;
+    if (TestDir.cdmUseBuilders) {
+      try (NetcdfFile nf = NetcdfFiles.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray())) {
+        check(
+            new ucar.nc2.dt.grid.GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null)));
       }
+    } else {
+      try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray())) {
+        check(new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf)));
+      }
+    }
+  }
+
+  private void check(ucar.nc2.dt.grid.GridDataset gdsDataset) {
+    assertTrue(gdsDataset.getCalendarDateRange().isPoint());
+
+    int count = 0;
+    for (String varName : vars) {
+      GeoGrid grid = gdsDataset.findGridByShortName(varName);
+      System.out.printf("%s grid.getShape()=%s%n", varName, Misc.showInts(grid.getShape()));
+      System.out.printf("%s        expected=%s%n", varName, Misc.showInts(expectedShapes[count]));
+      assertArrayEquals(expectedShapes[count], grid.getShape());
+      count++;
     }
   }
 }

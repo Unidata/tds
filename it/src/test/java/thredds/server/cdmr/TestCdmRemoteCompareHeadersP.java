@@ -110,7 +110,30 @@ public class TestCdmRemoteCompareHeadersP {
   }
 
   static int compareDatasets(String local, String remote, boolean readData) throws IOException {
+    if (TestDir.cdmUseBuilders) {
+      return compareDatasetsNew(local, remote, readData);
+    } else {
+      return compareDatasetsOld(local, remote, readData);
+    }
+  }
+
+  private static int compareDatasetsNew(String local, String remote, boolean readData) throws IOException {
     try (NetcdfFile ncfile = NetcdfDatasets.openFile(local, null); NetcdfFile ncremote = new CdmRemote(remote)) {
+
+      Formatter f = new Formatter();
+      CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, false);
+      boolean ok = mind.compare(ncfile, ncremote, new NcstreamObjFilter(), false, false, readData);
+      if (!ok) {
+        System.out.printf("--Compare %s to %s%n", local, remote);
+        System.out.printf("  %s%n", f);
+      }
+      Assert.assertTrue(local + " != " + remote, ok);
+    }
+    return 1;
+  }
+
+  private static int compareDatasetsOld(String local, String remote, boolean readData) throws IOException {
+    try (NetcdfFile ncfile = NetcdfDataset.openFile(local, null); NetcdfFile ncremote = new CdmRemote(remote)) {
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, false);
