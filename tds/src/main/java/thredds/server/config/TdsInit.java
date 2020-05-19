@@ -218,6 +218,13 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
 
     // use new builders in netCDF-Java
     useBuilders = ThreddsConfig.getBoolean("Experimental.useNetcdfJavaBuilders", false);
+
+    // if useBuilders is false, look at the Java system properties to see if there is a special flag set, used
+    // for testing only.
+    if (!useBuilders) {
+      useBuilders = Boolean.getBoolean("thredds.test.experimental.useNetcdfJavaBuilders");
+    }
+
     datasetManager.setUseNetcdfJavaBuilders(useBuilders);
 
     // prefer cdmRemote when available
