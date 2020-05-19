@@ -2,6 +2,7 @@ package thredds.server.wfs;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import thredds.core.DatasetManager;
 import thredds.core.TdsRequestedDataset;
 import thredds.servlet.ServletUtil;
 import ucar.nc2.dataset.CoordinateSystem;
@@ -173,7 +174,7 @@ public class WFSController extends HttpServlet {
    * @param request parameter value
    * @param version parameter value
    * @param service parameter value
-   * @param actualFTName parameter value
+   * @param typeName parameter value
    * @return an ExceptionWriter if any errors occurred or null if none occurred
    */
   private WFSExceptionWriter checkParametersForError(String request, String version, String service, String typeName) {
@@ -316,7 +317,12 @@ public class WFSController extends HttpServlet {
       actualPath = TdsRequestedDataset.getLocationFromRequestPath(datasetReqPath);
 
       if (actualPath != null)
-        dataset = NetcdfDatasets.openDataset(actualPath);
+        if (TdsRequestedDataset.getDatasetManager().useNetcdfJavaBuilders()
+            || DatasetManager.isLocationObjectStore(actualPath)) {
+          dataset = NetcdfDatasets.openDataset(actualPath);
+        } else {
+          dataset = NetcdfDataset.openDataset(actualPath);
+        }
       else
         return;
 

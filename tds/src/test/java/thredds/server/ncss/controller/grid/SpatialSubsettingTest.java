@@ -62,10 +62,13 @@ import thredds.server.ncss.dataservice.DatasetHandlerAdapter;
 import thredds.junit4.SpringJUnit4ParameterizedClassRunner;
 import thredds.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.GridDataset;
 import ucar.unidata.geoloc.LatLonPointImpl;
 import ucar.unidata.geoloc.LatLonRect;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 /**
@@ -152,10 +155,17 @@ public class SpatialSubsettingTest {
     this.mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(new ResultMatcher() {
           public void match(MvcResult result) throws Exception {
-
-            // Open the binary response in memory
             NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
             ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
+            // Open the binary response in memory
+            if (TestDir.cdmUseBuilders) {
+              nf = NetcdfFiles.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
+              gdsDataset = new ucar.nc2.dt.grid.GridDataset(
+                  NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
+            } else {
+              nf = NetcdfFile.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
+              gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
+            }
             LatLonRect responseBBox = gdsDataset.getBoundingBox();
 
             assertTrue(

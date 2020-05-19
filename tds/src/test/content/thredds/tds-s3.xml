@@ -2,10 +2,11 @@
 <catalog name="S3 Test Catalog"
   xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0">
 
-  <datasetRoot path="s3-test" location="s3://noaa-goes16" />
+  <datasetRoot path="s3-test" location="cdms3:noaa-goes16" />
 
   <dataset name="Test GOES-16 S3" ID="testS3Grid"
     urlPath="s3-test/ABI-L1b-RadC/2019/363/21/OR_ABI-L1b-RadC-M6C16_G16_s20193632101189_e20193632103574_c20193632104070.nc"
-    dataType="Grid"/>
+    dataType="Grid"
+    serviceName="obstoreGrid"/>
 
 </catalog>

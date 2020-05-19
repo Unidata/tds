@@ -28,6 +28,7 @@
 
 package thredds.server.wms;
 
+import ucar.nc2.dataset.NetcdfDatasets;
 import uk.ac.rdg.resc.edal.graphics.exceptions.EdalLayerNotFoundException;
 import uk.ac.rdg.resc.edal.wms.RequestParams;
 import uk.ac.rdg.resc.edal.wms.WmsCatalogue;
@@ -77,8 +78,12 @@ public class ThreddsWmsServlet extends WmsServlet {
       catalogue = catalogueCache.get(tdsDataset.getPath());
     } else {
       NetcdfFile ncf = tdsDataset.getNetcdfFile(httpServletRequest, httpServletResponse, tdsDataset.getPath());
-
-      NetcdfDataset ncd = new NetcdfDataset(ncf, true);
+      NetcdfDataset ncd;
+      if (tdsDataset.useNetcdfJavaBuilders()) {
+        ncd = NetcdfDatasets.enhance(ncf, NetcdfDataset.getDefaultEnhanceMode(), null);
+      } else {
+        ncd = NetcdfDataset.wrap(ncf, NetcdfDataset.getDefaultEnhanceMode());
+      }
 
       String netcdfFilePath = ncf.getLocation();
 

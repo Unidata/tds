@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ucar.nc2.dataset.NetcdfDatasets;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.UnitTestCommon;
 import ucar.unidata.util.test.Diff;
 import ucar.nc2.NetcdfFile;
@@ -111,7 +112,11 @@ public class TestCEEvaluator extends UnitTestCommon {
 
         try {
           file = new File(path);
-          ncfile = NetcdfDatasets.openFile(file.getPath(), null);
+          if (TestDir.cdmUseBuilders) {
+            ncfile = NetcdfDatasets.openFile(file.getPath(), null);
+          } else {
+            ncfile = NetcdfDataset.openFile(file.getPath(), null);
+          }
           if (ncfile == null)
             throw new FileNotFoundException(path);
           if (DEBUG)
@@ -210,7 +215,11 @@ public class TestCEEvaluator extends UnitTestCommon {
 
       // generate the complete unconstrained data set
       file = new File(path);
-      ncfile = NetcdfDatasets.openFile(file.getPath(), null);
+      if (TestDir.cdmUseBuilders) {
+        ncfile = NetcdfDatasets.openFile(file.getPath(), null);
+      } else {
+        ncfile = NetcdfDataset.openFile(file.getPath(), null);
+      }
       if (ncfile == null)
         throw new FileNotFoundException(path);
       ds = new GuardedDatasetCacheAndClone(path, ncfile, false);

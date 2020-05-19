@@ -30,6 +30,8 @@ import ucar.nc2.ft.FeatureDatasetFactoryManager;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft2.coverage.CoverageDatasetFactory;
 import ucar.nc2.ft2.coverage.FeatureDatasetCoverage;
+import ucar.nc2.ft2.coverage.adapter.DtCoverageAdapter;
+import ucar.nc2.ft2.coverage.adapter.DtCoverageDataset;
 import ucar.nc2.ft2.simpgeometry.SimpleGeometryFeatureDataset;
 import ucar.nc2.ft2.coverage.CoverageCollection;
 import ucar.nc2.ncml.NcMLReader;
@@ -79,6 +81,10 @@ public class DatasetManager implements InitializingBean {
   // possible change to one global hash table request
   private ArrayList<DatasetSource> datasetSources = new ArrayList<>();
 
+  // controls whether or not we use the new builder api of netCDF-Java
+  // note: will always use new stuff when accessing object stores
+  private boolean useNetcdfJavaBuilders = false;
+
   @Override
   public void afterPropertiesSet() throws Exception {
     TdsRequestedDataset.setDatasetManager(this); // LOOK why not autowire this ? maybe because static ??
@@ -96,10 +102,22 @@ public class DatasetManager implements InitializingBean {
     this.datasetTracker = datasetTracker;
   }
 
+  public void setUseNetcdfJavaBuilders(boolean use) {
+    this.useNetcdfJavaBuilders = use;
+  }
+
+  public boolean useNetcdfJavaBuilders() {
+    return this.useNetcdfJavaBuilders;
+  }
+
   public DatasetManager() {}
 
   public String getLocationFromRequestPath(String reqPath) {
     return dataRootManager.getLocationFromRequestPath(reqPath);
+  }
+
+  public static boolean isLocationObjectStore(String location) {
+    return location != null ? (location.startsWith("cdms3:") || location.startsWith("s3:")) : false;
   }
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,8 +157,14 @@ public class DatasetManager implements InitializingBean {
     // look for a dataset (non scan, non fmrc) that has an ncml element
     String ncml = datasetTracker.findNcml(reqPath);
     if (ncml != null) {
-      NetcdfFile ncfile = NetcdfDatasets.acquireFile(new NcmlFileFactory(ncml), null,
-          DatasetUrl.findDatasetUrl(reqPath), -1, null, null);
+      NetcdfFile ncfile;
+      if (useNetcdfJavaBuilders) {
+        ncfile = NetcdfDatasets.acquireFile(new NcmlFileFactory(ncml), null, DatasetUrl.findDatasetUrl(reqPath), -1,
+            null, null);
+      } else {
+        ncfile = NetcdfDataset.acquireFile(new NcmlFileFactory(ncml), null, DatasetUrl.findDatasetUrl(reqPath), -1,
+            null, null);
+      }
       if (ncfile == null)
         throw new FileNotFoundException(reqPath);
       return ncfile;
@@ -196,7 +220,11 @@ public class DatasetManager implements InitializingBean {
       }
 
       DatasetUrl durl = DatasetUrl.findDatasetUrl(location);
-      ncfile = NetcdfDatasets.acquireFile(durl, null);
+      if (useNetcdfJavaBuilders || isLocationObjectStore(location)) {
+        ncfile = NetcdfDatasets.acquireFile(durl, null);
+      } else {
+        ncfile = NetcdfDataset.acquireFile(durl, null);
+      }
     }
 
     if (ncfile == null)
@@ -236,7 +264,11 @@ public class DatasetManager implements InitializingBean {
     NetcdfDataset ncd = null;
     try {
       // Convert to NetcdfDataset
-      ncd = NetcdfDatasets.enhance(ncfile, NetcdfDataset.getDefaultEnhanceMode(), null);
+      if (useNetcdfJavaBuilders || isLocationObjectStore(ncfile.getLocation())) {
+        ncd = NetcdfDatasets.enhance(ncfile, NetcdfDataset.getDefaultEnhanceMode(), null);
+      } else {
+        ncd = NetcdfDataset.wrap(ncfile, NetcdfDataset.getDefaultEnhanceMode());
+      }
       return new ucar.nc2.dt.grid.GridDataset(ncd);
 
 
@@ -285,7 +317,11 @@ public class DatasetManager implements InitializingBean {
     Formatter errlog = new Formatter();
     NetcdfDataset ncd = null;
     try {
-      ncd = NetcdfDatasets.enhance(ncfile, NetcdfDataset.getDefaultEnhanceMode(), null);
+      if (useNetcdfJavaBuilders || isLocationObjectStore(ncfile.getLocation())) {
+        ncd = NetcdfDatasets.enhance(ncfile, NetcdfDataset.getDefaultEnhanceMode(), null);
+      } else {
+        ncd = NetcdfDataset.wrap(ncfile, NetcdfDataset.getDefaultEnhanceMode());
+      }
       return (FeatureDatasetPoint) FeatureDatasetFactoryManager.wrap(FeatureType.ANY_POINT, ncd, null, errlog);
 
     } catch (Throwable t) {
@@ -339,13 +375,28 @@ public class DatasetManager implements InitializingBean {
     String location = getLocationFromRequestPath(reqPath);
     if (location != null) {
       Optional<FeatureDatasetCoverage> opt = CoverageDatasetFactory.openCoverageDataset(location);
+      // hack - CoverageDatasetFactory bombs out on an object store location string during the grib check,
+      // this is the code from CoverageDatasetFactory.openCoverageDataset that comes after the grib check.
+      if (!opt.isPresent() && isLocationObjectStore(location)) {
+        // hack 2 - DtCoverageDataset not ported, so need to open the NetcdfDataset object through NetcdfDatasets
+        // and pass that to CoverageDataset
+        DtCoverageDataset gds = new DtCoverageDataset(NetcdfDatasets.openDataset(location));
+        if (!gds.getGrids().isEmpty()) {
+          Formatter errlog = new Formatter();
+          FeatureDatasetCoverage result = DtCoverageAdapter.factory(gds, errlog);
+          if (result != null)
+            opt = Optional.of(result);
+          else
+            opt = Optional.empty(errlog.toString());
+        }
+      }
+
       if (!opt.isPresent())
         throw new FileNotFoundException("Not a Grid Dataset " + reqPath + " err=" + opt.getErrorMessage());
 
       if (log.isDebugEnabled())
         log.debug("  -- DatasetHandler found FeatureCollection from file= " + location);
       return opt.get().getSingleCoverageCollection(); // LOOK doesnt have to be single, then what is the URL?
-
     }
 
     // if ncml, must handle special, otherwise we're out of options for opening
@@ -393,7 +444,11 @@ public class DatasetManager implements InitializingBean {
     Formatter errlog = new Formatter();
     NetcdfDataset ncd = null;
     try {
-      ncd = NetcdfDatasets.enhance(ncfile, NetcdfDataset.getDefaultEnhanceMode(), null);
+      if (useNetcdfJavaBuilders || isLocationObjectStore(ncfile.getLocation())) {
+        ncd = NetcdfDatasets.enhance(ncfile, NetcdfDataset.getDefaultEnhanceMode(), null);
+      } else {
+        ncd = NetcdfDataset.wrap(ncfile, NetcdfDataset.getDefaultEnhanceMode());
+      }
       return (SimpleGeometryFeatureDataset) FeatureDatasetFactoryManager.wrap(FeatureType.SIMPLE_GEOMETRY, ncd, null,
           errlog);
 

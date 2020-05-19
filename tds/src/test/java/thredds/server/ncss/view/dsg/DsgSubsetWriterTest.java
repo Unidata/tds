@@ -37,6 +37,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Formatter;
 import java.util.List;
+import ucar.unidata.util.test.TestDir;
 
 /**
  * Created by cwardgar on 2014/05/27.
@@ -211,6 +212,29 @@ public class DsgSubsetWriterTest {
   }
 
   public static boolean compareNetCDF(File expectedResultFile, File actualResultFile) throws IOException {
+    if (TestDir.cdmUseBuilders) {
+      return compareNetCDFNew(expectedResultFile, actualResultFile);
+    } else {
+      return compareNetCDFOld(expectedResultFile, actualResultFile);
+    }
+  }
+
+  private static boolean compareNetCDFOld(File expectedResultFile, File actualResultFile) throws IOException {
+    try (NetcdfFile expectedNcFile = NetcdfDataset.openDataset(expectedResultFile.getAbsolutePath());
+        NetcdfFile actualNcFile = NetcdfDataset.openDataset(actualResultFile.getAbsolutePath())) {
+      Formatter formatter = new Formatter();
+      boolean contentsAreEqual = new CompareNetcdf2(formatter).compare(expectedNcFile, actualNcFile,
+          new NcssNetcdfObjFilter(), false, false, true);
+
+      if (!contentsAreEqual) {
+        System.err.println(formatter.toString());
+      }
+
+      return contentsAreEqual;
+    }
+  }
+
+  private static boolean compareNetCDFNew(File expectedResultFile, File actualResultFile) throws IOException {
     try (NetcdfFile expectedNcFile = NetcdfDatasets.openDataset(expectedResultFile.getAbsolutePath());
         NetcdfFile actualNcFile = NetcdfDatasets.openDataset(actualResultFile.getAbsolutePath())) {
       Formatter formatter = new Formatter();

@@ -95,6 +95,9 @@ public class TestDir {
    */
   public static String cdmTestDataDir = "../cdm-test/src/test/data/";
 
+  public static String cdmUseBuildersPropName = "thredds.test.experimental.useNetcdfJavaBuilders";
+  public static boolean cdmUseBuilders;
+
   //////////////////////////////////////////////////////////////////////
   // Various Test Server machines
   //////////////////////////////////////////////////////////////////////
@@ -155,11 +158,22 @@ public class TestDir {
       dap4TestServer = d4ts;
 
     AliasTranslator.addAlias("${cdmUnitTest}", cdmUnitTestDir);
+
+    cdmUseBuilders = Boolean.getBoolean(cdmUseBuildersPropName);
+  }
+
+  private static boolean isLocationObjectStore(String location) {
+    return location != null ? (location.startsWith("cdms3:") || location.startsWith("s3:")) : false;
   }
 
   public static NetcdfFile open(String filename) throws IOException {
     logger.debug("**** Open {}", filename);
-    NetcdfFile ncfile = NetcdfFiles.open(filename, null);
+    NetcdfFile ncfile;
+    if (cdmUseBuilders || isLocationObjectStore(filename)) {
+      ncfile = NetcdfFiles.open(filename, null);
+    } else {
+      ncfile = NetcdfFile.open(filename, null);
+    }
     logger.debug("open {}", ncfile);
 
     return ncfile;
@@ -313,8 +327,14 @@ public class TestDir {
   private static class ReadAllVariables implements Act {
     @Override
     public int doAct(String filename) throws IOException {
-      try (NetcdfFile ncfile = NetcdfFiles.open(filename)) {
-        return readAllData(ncfile);
+      if (cdmUseBuilders || isLocationObjectStore(filename)) {
+        try (NetcdfFile ncfile = NetcdfFiles.open(filename)) {
+          return readAllData(ncfile);
+        }
+      } else {
+        try (NetcdfFile ncfile = NetcdfFile.open(filename)) {
+          return readAllData(ncfile);
+        }
       }
     }
   }

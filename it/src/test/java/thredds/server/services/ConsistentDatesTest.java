@@ -24,15 +24,18 @@ import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.constants.CDM;
 import ucar.nc2.constants.CF;
 import ucar.nc2.dataset.CoordinateAxis1D;
 import ucar.nc2.dataset.CoordinateAxis1DTime;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.time.Calendar;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateUnit;
 import ucar.nc2.util.IO;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.*;
 import java.lang.invoke.MethodHandles;
@@ -150,8 +153,16 @@ public class ConsistentDatesTest {
     String endpoint = TestOnLocalServer.withHttpPath(
         "/ncss/grid/cdmUnitTest/ncss/climatology/PF5_SST_Climatology_Monthly_1985_2001.nc?var=sst&latitude=45&longitude=-20&temporal=all&accept=netcdf");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
-    NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", result);
-    NetcdfDataset ds = new NetcdfDataset(nf);
+    NetcdfFile nf;
+    NetcdfDataset ds;
+
+    if (TestDir.cdmUseBuilders) {
+      nf = NetcdfFiles.openInMemory("test_data.ncs", result);
+      ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
+    } else {
+      nf = NetcdfFile.openInMemory("test_data.ncs", result);
+      ds = new NetcdfDataset(nf);
+    }
 
     CoordinateAxis1D tAxis = (CoordinateAxis1D) ds.findCoordinateAxis("time");
     Attribute calendarAtt = tAxis.findAttribute(CF.CALENDAR);
@@ -214,8 +225,15 @@ public class ConsistentDatesTest {
     System.out.printf("Write file to %s%n", tmpFile.getAbsolutePath());
     IO.appendToFile(is, tmpFile.getAbsolutePath());
 
-    NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", result);
-    NetcdfDataset ds = new NetcdfDataset(nf);
+    NetcdfFile nf;
+    NetcdfDataset ds;
+    if (TestDir.cdmUseBuilders) {
+      nf = NetcdfFiles.openInMemory("test_data.ncs", result);
+      ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
+    } else {
+      nf = NetcdfFile.openInMemory("test_data.ncs", result);
+      ds = new NetcdfDataset(nf);
+    }
 
     CoordinateAxis1DTime tAxis = CoordinateAxis1DTime.factory(ds, ds.findCoordinateAxis("time"), null);
     List<CalendarDate> dates = tAxis.getCalendarDates();
