@@ -97,7 +97,7 @@ libraries["d4lib"] = "edu.ucar:d4lib:${versions["ncj"]}"
 
 ////////////////////////////////////////// Spring //////////////////////////////////////////
 
-versions["spring"] = "4.3.26.RELEASE"
+versions["spring"] = "4.3.27.RELEASE"
 
 libraries["spring-core"] = "org.springframework:spring-core:${versions["spring"]}"
 
@@ -111,7 +111,7 @@ libraries["spring-webmvc"] = "org.springframework:spring-webmvc:${versions["spri
 
 ////////////////////////////////////////// Spring security //////////////////////////////////////////
 
-versions["spring-security"] = "4.2.14.RELEASE"
+versions["spring-security"] = "4.2.16.RELEASE"
 
 libraries["spring-security-config"] = "org.springframework.security:spring-security-config:${versions["spring-security"]}"
 
