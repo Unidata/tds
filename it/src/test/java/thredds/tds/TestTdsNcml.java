@@ -18,11 +18,11 @@ import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
-import ucar.nc2.NCdumpW;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.write.Ncdump;
 import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.IOException;
@@ -126,7 +126,7 @@ public class TestTdsNcml {
 
     int count = 0;
     Array data = v.read();
-    logger.debug(NCdumpW.toString(data, "time", null));
+    logger.debug(Ncdump.printArray(data, "time", null));
 
     while (data.hasNext()) {
       Assert2.assertNearlyEquals(data.nextInt(), (count + 1) * 3);

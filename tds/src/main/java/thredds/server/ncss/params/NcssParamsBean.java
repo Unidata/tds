@@ -8,8 +8,6 @@ package thredds.server.ncss.params;
 import thredds.server.ncss.exception.NcssException;
 import thredds.server.ncss.validation.TimeParamsConstraint;
 import thredds.server.ncss.validation.VarParamConstraint;
-import ucar.nc2.ft.FeatureDataset;
-import ucar.nc2.ft.point.collection.UpdateableCollection;
 import ucar.nc2.time.Calendar;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateFormatter;
@@ -17,9 +15,8 @@ import ucar.nc2.time.CalendarDateRange;
 import ucar.nc2.units.DateRange;
 import ucar.nc2.units.DateType;
 import ucar.nc2.units.TimeDuration;
-import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonRect;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.Formatter;
 import java.util.List;
@@ -217,7 +214,7 @@ public class NcssParamsBean {
     } else {
       double width = getEast() - getWest();
       double height = getNorth() - getSouth();
-      return new LatLonRect(new LatLonPointImpl(getSouth(), getWest()), height, width);
+      return new LatLonRect(LatLonPoint.create(getSouth(), getWest()), height, width);
     }
   }
 

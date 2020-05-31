@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ucar.unidata.geoloc.LatLonPoint;
-import ucar.unidata.geoloc.LatLonPointImpl;
 
 public final class GridAsPointDataParameters {
 
@@ -66,10 +65,10 @@ public final class GridAsPointDataParameters {
 
     // Points must be within the dataset boundaries
     point = new ArrayList<LatLonPoint>();
-    point.add(new LatLonPointImpl(42.0, -105.2));
-    point.add(new LatLonPointImpl(50.0, -100.2));
-    point.add(new LatLonPointImpl(18.0, -102.25));
-    point.add(new LatLonPointImpl(40.019, -105.293));
+    point.add(LatLonPoint.create(42.0, -105.2));
+    point.add(LatLonPoint.create(50.0, -100.2));
+    point.add(LatLonPoint.create(18.0, -102.25));
+    point.add(LatLonPoint.create(40.019, -105.293));
 
     verticalLevels = Arrays.asList(-1.0, 10.0, -1.0);
   }

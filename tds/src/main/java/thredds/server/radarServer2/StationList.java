@@ -126,7 +126,7 @@ public class StationList {
       for (Element station : list.getChildren()) {
         Element loc = station.getChild("location3D");
         String stid = station.getAttributeValue("value");
-        Station newStation = addStation(stid, new LatLonPointImpl(Double.valueOf(loc.getAttributeValue("latitude")),
+        Station newStation = addStation(stid, LatLonPoint.create(Double.valueOf(loc.getAttributeValue("latitude")),
             Double.valueOf(loc.getAttributeValue("longitude"))));
         newStation.setElevation(Double.valueOf(loc.getAttributeValue("elevation")));
         newStation.setName(station.getAttributeValue("name"));

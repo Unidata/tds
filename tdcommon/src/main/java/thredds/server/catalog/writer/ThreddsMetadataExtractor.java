@@ -200,7 +200,7 @@ public class ThreddsMetadataExtractor {
       String vname = null;
       String id = null;
 
-      ucar.nc2.Attribute att = v.findAttributeIgnoreCase("standard_name");
+      ucar.nc2.Attribute att = v.attributes().findAttributeIgnoreCase("standard_name");
       if (att != null)
         vname = att.getStringValue();
       vars.add(new ThreddsMetadata.Variable(name, desc, vname, units, id));

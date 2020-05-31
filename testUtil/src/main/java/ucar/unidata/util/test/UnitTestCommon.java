@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import ucar.nc2.write.Ncdump;
 
 
 abstract public class UnitTestCommon {
@@ -552,8 +553,7 @@ abstract public class UnitTestCommon {
     }
     // Print the meta-databuffer using these args to NcdumpW
     try {
-      if (!ucar.nc2.NCdumpW.print(ncfile, args.toString(), sw, null))
-        throw new Exception("NcdumpW failed");
+      Ncdump.ncdump(ncfile, args.toString(), sw, null);
     } catch (IOException ioe) {
       throw new Exception("NcdumpW failed", ioe);
     }
@@ -570,8 +570,7 @@ abstract public class UnitTestCommon {
     // Dump the databuffer
     StringWriter sw = new StringWriter();
     try {
-      if (!ucar.nc2.NCdumpW.print(ncfile, args.toString(), sw, null))
-        throw new Exception("NCdumpW failed");
+      Ncdump.ncdump(ncfile, args.toString(), sw, null);
     } catch (IOException ioe) {
       ioe.printStackTrace();
       throw new Exception("NCdumpW failed", ioe);

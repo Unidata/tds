@@ -4,6 +4,7 @@
  */
 package thredds.server.cdmrf;
 
+import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -62,7 +63,7 @@ public class TestRdaProblems {
       SubsetParams subset = new SubsetParams().setTimePresent();
       GeoReferencedArray geo = cov.readData(subset);
       Array data = geo.getData();
-      System.out.printf(" read data from %s shape = %s%n", cov.getName(), Misc.showInts(data.getShape()));
+      System.out.printf(" read data from %s shape = %s%n", cov.getName(), Arrays.toString(data.getShape()));
     }
   }
 
@@ -111,7 +112,7 @@ public class TestRdaProblems {
       SubsetParams subset = new SubsetParams().setTimePresent();
       GeoReferencedArray geo = cov.readData(subset);
       Array data = geo.getData();
-      System.out.printf(" read data from %s shape = %s%n", cov.getName(), Misc.showInts(data.getShape()));
+      System.out.printf(" read data from %s shape = %s%n", cov.getName(), Arrays.toString(data.getShape()));
     }
   }
 }

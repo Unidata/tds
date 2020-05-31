@@ -332,7 +332,7 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
         throw new IllegalStateException(msg);
       }
     }
-    String loggingDirectory = StringUtil2.substitute(logDir.getPath(), "\\", "/");
+    String loggingDirectory = logDir.getPath().replace("\\", "/");
     System.setProperty("tds.log.dir", loggingDirectory); // variable substitution
 
     logServerStartup.info("TdsContext version= " + getVersionInfo());

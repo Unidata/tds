@@ -15,11 +15,8 @@ import ucar.nc2.FileWriter2;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFileWriter;
 import ucar.nc2.dataset.NetcdfDataset;
-import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.iosp.NCheader;
-import ucar.nc2.iosp.hdf5.H5header;
-import ucar.nc2.iosp.netcdf3.N3header;
-import ucar.nc2.util.CancelTaskImpl;
+import ucar.nc2.util.CancelTask;
 import ucar.nc2.write.Nc4Chunking;
 import ucar.nc2.write.Nc4ChunkingDefault;
 import ucar.unidata.io.RandomAccessFile;
@@ -326,7 +323,7 @@ public class DownloadController extends LoadCommon {
     if (!directcopy) {
       NetcdfFile ncfile = null;
       try {
-        CancelTaskImpl cancel = new CancelTaskImpl();
+        CancelTask cancel = CancelTask.create();
         ncfile = NetcdfDataset.openFile(trueurl, cancel);
         switch (this.params.format) {
           case NETCDF3:
@@ -352,7 +349,7 @@ public class DownloadController extends LoadCommon {
 
   protected void makeNetcdf4(NetcdfFile ncfile, String target) throws IOException {
     try {
-      CancelTaskImpl cancel = new CancelTaskImpl();
+      CancelTask cancel = CancelTask.create();
       FileWriter2 writer = new FileWriter2(ncfile, target, NetcdfFileWriter.Version.netcdf4, chunking);
       writer.getNetcdfFileWriter().setLargeFile(true);
       NetcdfFile ncfileOut = writer.write(cancel);
@@ -366,7 +363,7 @@ public class DownloadController extends LoadCommon {
 
   protected void makeNetcdf3(NetcdfFile ncfile, String target) throws IOException {
     try {
-      CancelTaskImpl cancel = new CancelTaskImpl();
+      CancelTask cancel = CancelTask.create();
       FileWriter2 writer = new FileWriter2(ncfile, target, NetcdfFileWriter.Version.netcdf3, chunking);
       writer.getNetcdfFileWriter().setLargeFile(true);
       NetcdfFile ncfileOut = writer.write(cancel);

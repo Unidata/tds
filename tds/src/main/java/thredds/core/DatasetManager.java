@@ -134,7 +134,7 @@ public class DatasetManager implements InitializingBean {
 
     public NetcdfFile open(DatasetUrl durl, int buffer_size, ucar.nc2.util.CancelTask cancelTask, Object spiObject)
         throws IOException {
-      return NcMLReader.readNcML(new StringReader(ncml), durl.trueurl, cancelTask);
+      return NcMLReader.readNcML(new StringReader(ncml), durl.getTrueurl(), cancelTask);
     }
   }
 

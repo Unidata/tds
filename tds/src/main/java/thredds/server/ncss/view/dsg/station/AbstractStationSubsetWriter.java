@@ -17,7 +17,7 @@ import ucar.nc2.ft2.coverage.SubsetParams;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.unidata.geoloc.LatLonPoint;
-import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.unidata.geoloc.LatLonPoints;
 import ucar.unidata.geoloc.LatLonRect;
 import ucar.unidata.geoloc.Station;
 import javax.annotation.Nonnull;
@@ -220,7 +220,7 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
 
     for (Station s : stations) {
       double lat1 = s.getLatitude();
-      double lon1 = LatLonPointImpl.lonNormal(s.getLongitude(), lon);
+      double lon1 = LatLonPoints.lonNormal(s.getLongitude(), lon);
       double dy = Math.toRadians(lat - lat1);
       double dx = cos * Math.toRadians(lon - lon1);
       double dist = dy * dy + dx * dx;

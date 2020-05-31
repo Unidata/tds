@@ -9,7 +9,7 @@ import ucar.nc2.time.Calendar;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.nc2.time.CalendarPeriod;
-import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.unidata.geoloc.LatLonPoint;
 import java.util.List;
 
 /**
@@ -56,7 +56,7 @@ public class NcssPointParamsBean extends NcssParamsBean {
     else if (hasLatLonBB())
       subset.set(SubsetParams.latlonBB, getLatLonBoundingBox());
     else if (hasLatLonPoint())
-      subset.set(SubsetParams.latlonPoint, new LatLonPointImpl(getLatitude(), getLongitude()));
+      subset.set(SubsetParams.latlonPoint, LatLonPoint.create(getLatitude(), getLongitude()));
 
     // time
     CalendarDate date = getRequestedDate(Calendar.getDefault());
