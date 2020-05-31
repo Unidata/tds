@@ -9,7 +9,7 @@ repositories {
     // the local maven repository and build the TDS with those. In the netCDF-java travis build script, 
     // we use sed to uncomment the following line so that the tds build uses those local snapshot artifacts in its
     // build.
-    mavenLocal()
+    // mavenLocal()
     
     // Prefer JCenter to Maven Central. See
     // https://blog.bintray.com/2015/02/09/android-studio-migration-from-maven-central-to-jcenter/
