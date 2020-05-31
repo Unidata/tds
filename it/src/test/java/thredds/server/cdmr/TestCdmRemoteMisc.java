@@ -52,8 +52,7 @@ public class TestCdmRemoteMisc {
   @Test
   public void problem() throws IOException {
     String problemFile = TestDir.cdmUnitTestDir + "formats/gempak/ndfd_20100913.gem";
-    String name =
-        StringUtil2.substitute(problemFile.substring(TestCdmRemoteCompareHeadersP.contentRoot.length()), "\\", "/");
+    String name = problemFile.substring(TestCdmRemoteCompareHeadersP.contentRoot.length()).replace("\\", "/");
     String remote = TestOnLocalServer.withHttpPath(TestCdmRemoteCompareHeadersP.urlPath + name);
     TestCdmRemoteCompareHeadersP.compareDatasets(problemFile, remote, false);
   }
@@ -61,7 +60,7 @@ public class TestCdmRemoteMisc {
   @Test
   public void zeroLenData() throws IOException {
     try (NetcdfFile ncremote = new CdmRemote(TestOnLocalServer.withHttpPath(urlPath + "/netcdf3/longOffset.nc"))) {
-      Variable v = ncremote.findVariable(null, "time_whole");
+      Variable v = ncremote.getRootGroup().findVariableLocal("time_whole");
       Array data = v.read();
       assert data.getSize() == 0;
     }

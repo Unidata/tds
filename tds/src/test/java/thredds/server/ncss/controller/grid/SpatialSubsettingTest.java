@@ -66,7 +66,7 @@ import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.GridDataset;
-import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonRect;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
@@ -141,8 +141,8 @@ public class SpatialSubsettingTest {
     GridDataset gds = DatasetHandlerAdapter.openGridDataset(datasetPath);
     assert (gds != null);
 
-    requestedBBOX = new LatLonRect(new LatLonPointImpl(latlonRectParams[1], latlonRectParams[0]),
-        new LatLonPointImpl(latlonRectParams[3], latlonRectParams[2]));
+    requestedBBOX = new LatLonRect(LatLonPoint.create(latlonRectParams[1], latlonRectParams[0]),
+        LatLonPoint.create(latlonRectParams[3], latlonRectParams[2]));
     datasetBBOX = gds.getBoundingBox();
     gds.close();
   }

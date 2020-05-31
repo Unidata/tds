@@ -27,7 +27,7 @@ import ucar.nc2.ft.point.writer.FeatureDatasetCapabilitiesWriter;
 import ucar.nc2.ft2.coverage.SubsetParams;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
-import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonRect;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -139,7 +139,7 @@ public class NcssPointController extends AbstractNcssController {
 
       LatLonRect boundingBox = dsgFeatCol.getBoundingBox();
       if (boundingBox == null) {
-        boundingBox = new LatLonRect(new LatLonPointImpl(-90, -180), new LatLonPointImpl(90, 180)); // Whole earth.
+        boundingBox = new LatLonRect(LatLonPoint.create(-90, -180), LatLonPoint.create(90, 180)); // Whole earth.
       }
       model.put("boundingBox", boundingBox);
 
@@ -189,8 +189,8 @@ public class NcssPointController extends AbstractNcssController {
       LatLonRect llrect = null;
       if (params.getNorth() != null && params.getSouth() != null && params.getEast() != null
           && params.getWest() != null)
-        llrect = new LatLonRect(new LatLonPointImpl(params.getSouth(), params.getWest()),
-            new LatLonPointImpl(params.getNorth(), params.getEast()));
+        llrect = new LatLonRect(LatLonPoint.create(params.getSouth(), params.getWest()),
+            LatLonPoint.create(params.getNorth(), params.getEast()));
 
       Document doc = xmlWriter.makeStationCollectionDocument(llrect, stnsList);
       return new ModelAndView("threddsXmlView", "Document", doc);

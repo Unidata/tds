@@ -52,11 +52,10 @@ import thredds.junit4.SpringJUnit4ParameterizedClassRunner;
 import thredds.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.ma2.Array;
-import ucar.nc2.NCdumpW;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 import ucar.nc2.util.IO;
-import ucar.nc2.util.Misc;
+import ucar.nc2.write.Ncdump;
 import ucar.unidata.geoloc.ProjectionRect;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.ByteArrayInputStream;
@@ -180,12 +179,12 @@ public class GridCoverageSubsettingTest {
     Variable v = nf.findVariable(null, "x");
     assert v != null;
     Array x = v.read();
-    logger.debug(NCdumpW.toString(x));
+    logger.debug(Ncdump.printArray(x));
     System.out.printf("%n");
     v = nf.findVariable(null, "y");
     assert v != null;
     Array y = v.read();
-    logger.debug(NCdumpW.toString(y));
+    logger.debug(Ncdump.printArray(y));
     System.out.printf("%n");
 
     int nx = (int) x.getSize();
@@ -194,7 +193,7 @@ public class GridCoverageSubsettingTest {
 
     if (expect != null) {
       v = nf.findVariable(null, vars);
-      System.out.printf("v.getShape()=%s%n", Misc.showInts(v.getShape()));
+      System.out.printf("v.getShape()=%s%n", Arrays.toString(v.getShape()));
       assertArrayEquals(expect.shape, v.getShape());
 
       System.out.printf("Expected ProjectionRect=%s%n", expect.rect.toString2(6));
