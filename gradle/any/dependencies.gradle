@@ -159,11 +159,11 @@ libraries["spring-test"] = "org.springframework:spring-test:${versions["spring"]
 
 libraries["hamcrest-core"] = "org.hamcrest:hamcrest-core:2.2"
 
-libraries["commons-io"] = "commons-io:commons-io:2.5"
+libraries["commons-io"] = "commons-io:commons-io:2.7"
 
-libraries["commons-compress"] = "org.apache.commons:commons-compress:1.12"
+libraries["commons-compress"] = "org.apache.commons:commons-compress:1.20"
 
-libraries["xmlunit-core"] = "org.xmlunit:xmlunit-core:2.3.0"
+libraries["xmlunit-core"] = "org.xmlunit:xmlunit-core:2.7.0"
 
 // These four are all for Spock.
 libraries["spock-core"] = "org.spockframework:spock-core:1.1-groovy-2.4"
@@ -171,16 +171,16 @@ libraries["spock-core"] = "org.spockframework:spock-core:1.1-groovy-2.4"
 libraries["groovy-all"] = "org.codehaus.groovy:groovy-all:2.4.7"
 
 // In Spock, allows mocking of classes (in addition to interfaces).
-libraries["cglib-nodep"] = "cglib:cglib-nodep:3.2.4"
+libraries["cglib-nodep"] = "cglib:cglib-nodep:3.3.0"
 
 // In Spock, allows mocking of classes without default constructor (together with CGLIB).
-libraries["objenesis"] = "org.objenesis:objenesis:2.4"
+libraries["objenesis"] = "org.objenesis:objenesis:3.0.1"
 
 //mockito
-libraries["mockito"] = "org.mockito:mockito-core:2.+"
+libraries["mockito"] = "org.mockito:mockito-core:3.3.3"
 
 // Fluent assertions for Java
-libraries["truth"] = "com.google.truth:truth:0.44"
+libraries["truth"] = "com.google.truth:truth:1.0.1"
 
 
 ////////////////////////////////////////// Other //////////////////////////////////////////
