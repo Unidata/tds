@@ -322,9 +322,9 @@ libraries["quartz"] = "org.quartz-scheduler:quartz:2.3.2"
 // spring-context 4.x is limited to hibernate-validator 4.3.2.Final. We can't update to hibernate-validator 5.x
 // hibernate-validator 4.3.2.Final is limited to validation-api 1.0.0.GA. We can't update to validation-api 1.1.0.Final
 
-libraries["hibernate-validator"] = "org.hibernate:hibernate-validator:4.3.2.Final"
+libraries["hibernate-validator"] = "org.hibernate:hibernate-validator:6.1.5.Final"
 
-libraries["validation-api"] = "javax.validation:validation-api:1.0.0.GA"
+libraries["validation-api"] = "javax.validation:validation-api:2.0.1.Final"
 
 // used for writing json-LD
 
