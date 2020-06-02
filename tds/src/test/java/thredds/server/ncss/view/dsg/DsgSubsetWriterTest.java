@@ -222,8 +222,8 @@ public class DsgSubsetWriterTest {
     try (NetcdfFile expectedNcFile = NetcdfDataset.openDataset(expectedResultFile.getAbsolutePath());
         NetcdfFile actualNcFile = NetcdfDataset.openDataset(actualResultFile.getAbsolutePath())) {
       Formatter formatter = new Formatter();
-      boolean contentsAreEqual = new CompareNetcdf2(formatter).compare(expectedNcFile, actualNcFile,
-          new NcssNetcdfObjFilter(), false, false, true);
+      boolean contentsAreEqual = new CompareNetcdf2(formatter, false, false, true).compare(expectedNcFile, actualNcFile,
+          new NcssNetcdfObjFilter());
 
       if (!contentsAreEqual) {
         System.err.println(formatter.toString());
@@ -237,8 +237,8 @@ public class DsgSubsetWriterTest {
     try (NetcdfFile expectedNcFile = NetcdfDatasets.openDataset(expectedResultFile.getAbsolutePath());
         NetcdfFile actualNcFile = NetcdfDatasets.openDataset(actualResultFile.getAbsolutePath())) {
       Formatter formatter = new Formatter();
-      boolean contentsAreEqual = new CompareNetcdf2(formatter).compare(expectedNcFile, actualNcFile,
-          new NcssNetcdfObjFilter(), false, false, true);
+      boolean contentsAreEqual = new CompareNetcdf2(formatter, false, false, true).compare(expectedNcFile, actualNcFile,
+          new NcssNetcdfObjFilter());
 
       if (!contentsAreEqual) {
         System.err.println(formatter.toString());

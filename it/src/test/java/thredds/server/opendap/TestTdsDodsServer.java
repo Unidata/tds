@@ -198,8 +198,7 @@ public class TestTdsDodsServer {
 
         Formatter f = new Formatter();
         CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, false);
-        boolean ok =
-            mind.compare(org_ncfile, dods_file, new TestDODScompareWithFiles.DodsObjFilter(), false, false, false);
+        boolean ok = mind.compare(org_ncfile, dods_file, new TestDODScompareWithFiles.DodsObjFilter());
         if (!ok) {
           logger.debug("--Compare {}", filename);
           logger.debug("  {}", f);

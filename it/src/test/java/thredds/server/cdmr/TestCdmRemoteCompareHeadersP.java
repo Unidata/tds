@@ -121,8 +121,8 @@ public class TestCdmRemoteCompareHeadersP {
     try (NetcdfFile ncfile = NetcdfDatasets.openFile(local, null); NetcdfFile ncremote = new CdmRemote(remote)) {
 
       Formatter f = new Formatter();
-      CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, false);
-      boolean ok = mind.compare(ncfile, ncremote, new NcstreamObjFilter(), false, false, readData);
+      CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, readData);
+      boolean ok = mind.compare(ncfile, ncremote, new NcstreamObjFilter());
       if (!ok) {
         System.out.printf("--Compare %s to %s%n", local, remote);
         System.out.printf("  %s%n", f);
@@ -136,8 +136,8 @@ public class TestCdmRemoteCompareHeadersP {
     try (NetcdfFile ncfile = NetcdfDataset.openFile(local, null); NetcdfFile ncremote = new CdmRemote(remote)) {
 
       Formatter f = new Formatter();
-      CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, false);
-      boolean ok = mind.compare(ncfile, ncremote, new NcstreamObjFilter(), false, false, readData);
+      CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, readData);
+      boolean ok = mind.compare(ncfile, ncremote, new NcstreamObjFilter());
       if (!ok) {
         System.out.printf("--Compare %s to %s%n", local, remote);
         System.out.printf("  %s%n", f);

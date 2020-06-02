@@ -88,8 +88,7 @@ public class TestCdmRemoteMisc {
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
-          true, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter());
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -116,9 +115,8 @@ public class TestCdmRemoteMisc {
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
-      CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
-          false, true);
+      CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter());
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -145,9 +143,8 @@ public class TestCdmRemoteMisc {
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
-      CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
-          false, true);
+      CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter());
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -174,9 +171,8 @@ public class TestCdmRemoteMisc {
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
-      CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
-          false, true);
+      CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter());
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -203,9 +199,8 @@ public class TestCdmRemoteMisc {
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
-      CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
-          false, true);
+      CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter());
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -232,9 +227,8 @@ public class TestCdmRemoteMisc {
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
-      CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), true,
-          false, true);
+      CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter());
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
@@ -261,9 +255,8 @@ public class TestCdmRemoteMisc {
       NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
 
       Formatter f = new Formatter();
-      CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
-      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter(), false,
-          false, true);
+      CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
+      boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter());
 
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);

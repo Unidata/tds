@@ -17,6 +17,7 @@ import ucar.ma2.MAMath;
 import ucar.ma2.Range;
 import ucar.nc2.dataset.CoordinateAxis1D;
 import ucar.nc2.dt.GridCoordSystem;
+import ucar.nc2.util.CompareNetcdf2;
 import ucar.nc2.write.Ncdump;
 import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonRect;
@@ -239,7 +240,7 @@ public class TestGridSubsetThredds {
       logger.debug(Ncdump.printArray(data, "org", null));
       logger.debug(Ncdump.printArray(data2, "subset", null));
 
-      ucar.unidata.util.test.CompareNetcdf.compareData(data, data2);
+      new CompareNetcdf2().compareData("testScaleOffset", data, data2);
     }
   }
 
