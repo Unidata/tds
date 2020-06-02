@@ -97,7 +97,7 @@ libraries["d4lib"] = "edu.ucar:d4lib:${versions["ncj"]}"
 
 ////////////////////////////////////////// Spring //////////////////////////////////////////
 
-versions["spring"] = "4.3.27.RELEASE"
+versions["spring"] = "5.2.6.RELEASE"
 
 libraries["spring-core"] = "org.springframework:spring-core:${versions["spring"]}"
 
@@ -111,7 +111,7 @@ libraries["spring-webmvc"] = "org.springframework:spring-webmvc:${versions["spri
 
 ////////////////////////////////////////// Spring security //////////////////////////////////////////
 
-versions["spring-security"] = "4.2.16.RELEASE"
+versions["spring-security"] = "5.3.2.RELEASE"
 
 libraries["spring-security-config"] = "org.springframework.security:spring-security-config:${versions["spring-security"]}"
 
@@ -166,7 +166,7 @@ libraries["commons-compress"] = "org.apache.commons:commons-compress:1.12"
 libraries["xmlunit-core"] = "org.xmlunit:xmlunit-core:2.3.0"
 
 // These four are all for Spock.
-libraries["spock-core"] = "org.spockframework:spock-core:1.0-groovy-2.4"
+libraries["spock-core"] = "org.spockframework:spock-core:1.1-groovy-2.4"
 
 libraries["groovy-all"] = "org.codehaus.groovy:groovy-all:2.4.7"
 
