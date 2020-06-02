@@ -8,7 +8,6 @@ import thredds.server.wcs.Request;
 import ucar.nc2.ft2.coverage.*;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.unidata.geoloc.LatLonPoint;
-import ucar.unidata.geoloc.LatLonPointImpl;
 import ucar.unidata.geoloc.LatLonRect;
 import java.io.File;
 

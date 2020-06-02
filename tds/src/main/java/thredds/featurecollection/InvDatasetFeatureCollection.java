@@ -579,7 +579,7 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
 
       String filename =
           new StringBuilder(topDirectory).append(topDirectory.endsWith("/") ? "" : "/").append(name).toString();
-      DatasetUrl durl = new DatasetUrl(null, filename);
+      DatasetUrl durl = DatasetUrl.create(null, filename);
       if (useNetcdfJavaBuilders || DatasetManager.isLocationObjectStore(durl.getTrueurl())) {
         return NetcdfDatasets.acquireDataset(null, durl, null, -1, null, null); // no enhancement
       } else {

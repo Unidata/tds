@@ -103,7 +103,7 @@ public class TestCdmRemoteCompareDataP {
 
   @Test
   public void doOne() throws IOException {
-    String name = StringUtil2.substitute(filename.substring(contentRoot.length()), "\\", "/");
+    String name = filename.substring(contentRoot.length()).replace("\\", "/");
     String remote = TestOnLocalServer.withHttpPath(urlPath + name);
     total++;
     success += compareDatasets(filename, remote, true);
