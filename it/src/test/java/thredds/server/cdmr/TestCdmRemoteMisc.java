@@ -15,12 +15,12 @@ import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.ma2.Array;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
 import ucar.nc2.stream.CdmRemote;
 import ucar.nc2.util.CompareNetcdf2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.TestDir;
-import ucar.unidata.util.StringUtil2;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Formatter;
@@ -35,9 +35,8 @@ import java.util.Formatter;
 public class TestCdmRemoteMisc {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  static String contentRoot = TestDir.cdmUnitTestDir + "formats";
-  static String urlPath = "cdmremote/scanCdmUnitTests/formats";
-
+  private static String contentRoot = TestDir.cdmUnitTestDir + "formats";
+  private static String urlPath = "cdmremote/scanCdmUnitTests/formats";
 
   @Test
   public void testBackslashEscaped() throws Exception {
@@ -246,24 +245,17 @@ public class TestCdmRemoteMisc {
 
   @Test
   public void testVariableNameWithDot() {
-    try {
-      String filename = "/hdf5/grid_1_3d_xyz_aug.h5";
-      String remoteFile = TestOnLocalServer.withHttpPath(urlPath + filename);
-      CdmRemote ncfileRemote = new CdmRemote(remoteFile);
+    String filename = "/hdf5/grid_1_3d_xyz_aug.h5";
+    String remoteFile = TestOnLocalServer.withHttpPath(urlPath + filename);
+    String localFile = contentRoot + filename;
 
-      String localFile = contentRoot + filename;
-      NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
-
+    try (CdmRemote ncfileRemote = new CdmRemote(remoteFile); NetcdfFile ncfileLocal = NetcdfFiles.open(localFile)) {
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
       boolean ok = mind.compare(ncfileLocal, ncfileRemote, new TestCdmRemoteCompareHeadersP.NcstreamObjFilter());
-
       System.out.printf("--Compare %s to %s%n", localFile, remoteFile);
       System.out.printf("  %s%n", f);
       Assert.assertTrue(ok);
-
-      ncfileLocal.close();
-      ncfileRemote.close();
 
     } catch (Exception e) {
       e.printStackTrace();

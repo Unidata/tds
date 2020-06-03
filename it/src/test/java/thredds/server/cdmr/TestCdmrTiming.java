@@ -31,10 +31,8 @@ import java.lang.invoke.MethodHandles;
 public class TestCdmrTiming {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  String local = TestOnLocalServer.withHttpPath("cdmremote/rdavmWork/yt.oper.an.sfc.regn400sc.10v_166.200805");
-  String rdavm =
-      "http://rdavm.ucar.edu:8080/thredds/cdmremote/files/e/ds629.1/yt.oper.an.sfc/2008/yt.oper.an.sfc.regn400sc.10v_166.200805";
-  String cdmUrl = local;
+  private String local = TestOnLocalServer.withHttpPath("cdmremote/rdavmWork/yt.oper.an.sfc.regn400sc.10v_166.200805");
+  private String cdmUrl = local;
 
   @Test
   public void readIndexSpace() throws IOException, InvalidRangeException {
@@ -54,9 +52,8 @@ public class TestCdmrTiming {
 
       Section section = vs.getShapeAsSection();
       Assert.assertEquals(3, section.getRank());
-      Section want = new Section().appendRange(1);
-      want.appendRange(section.getRange(1).setStride(stride));
-      want.appendRange(section.getRange(2).setStride(stride));
+      Section want = Section.builder().appendRange(1).appendRange(section.getRange(1).copyWithStride(stride))
+          .appendRange(section.getRange(2).copyWithStride(stride)).build();
 
       long start = System.currentTimeMillis();
 

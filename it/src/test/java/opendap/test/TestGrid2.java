@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.write.Ncdump;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.UnitTestCommon;
@@ -47,43 +48,27 @@ public class TestGrid2 extends UnitTestCommon {
     System.out.println("TestGrid2:");
     String url = "dods://" + TestDir.remoteTestServer + URLPATH;
     boolean pass = true;
-    NetcdfDataset ncfile = null;
+    try (NetcdfDataset ncfile = NetcdfDatasets.openDataset(url)) {
+      System.out.println("url: " + url);
+      String metadata = ncdumpMetadata(ncfile);
 
-    try {
-      ncfile = NetcdfDataset.openDataset(url);
-      pass = true;
-    } catch (Exception e) {
-      pass = false;
-    }
-
-    Assert.assertTrue("XFAIL : TestGrid2: cannot open dataset =" + url, true);
-    if (!pass)
-      return;
-
-    System.out.println("url: " + url);
-
-    String metadata = null;
-    String data = null;
-
-    metadata = ncdumpMetadata(ncfile);
-
-    if (prop_visual)
-      visual(getTitle() + ".dds", metadata);
-    if (true) {
-      data = ncdumpData(ncfile);
-      if (prop_visual)
+      if (prop_visual) {
+        visual(getTitle() + ".dds", metadata);
+      }
+      String data = ncdumpData(ncfile);
+      if (prop_visual) {
         visual(getTitle() + ".dods", data);
-
-      if (prop_diff) { // compare with baseline
         // Read the baseline file(s)
         String diffs = compare("TestGrid2", BASELINE, data);
         if (diffs != null) {
           System.err.println(diffs);
-          pass = false;
         }
       }
+    } catch (Exception e) {
+      pass = false;
     }
-    Assert.assertTrue("XFAIL : Testing TestGrid2" + getTitle(), true);
+
+    Assert.assertTrue("XFAIL : Testing TestGrid2" + getTitle(), pass);
   }
 
   private String ncdumpMetadata(NetcdfDataset ncfile) throws Exception {

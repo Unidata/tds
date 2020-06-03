@@ -1,14 +1,14 @@
 package thredds.servlet;
 
-import thredds.core.DataRootManager;
-import thredds.util.TdsPathUtils;
-import ucar.nc2.Attribute;
-import ucar.nc2.NetcdfFile;
-import ucar.nc2.dataset.NetcdfDataset;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import thredds.core.DataRootManager;
+import thredds.util.TdsPathUtils;
+import ucar.nc2.Attribute;
+import ucar.nc2.NetcdfFile;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 /**
  * DatasetSource test LOOK this doesnt work
@@ -47,7 +47,7 @@ public class DatasetSourceExample implements thredds.servlet.DatasetSource {
       return null;
     }
 
-    NetcdfFile ncfile = NetcdfDataset.openFile(file.getPath(), null);
+    NetcdfFile ncfile = NetcdfDatasets.openFile(file.getPath(), null);
     ncfile.addAttribute(null, new Attribute("Special", req.getRequestURI()));
     ncfile.finish();
     return ncfile;

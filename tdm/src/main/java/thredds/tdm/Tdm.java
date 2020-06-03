@@ -341,7 +341,7 @@ public class Tdm {
         List<String> openFiles = RandomAccessFile.getOpenFiles();
         if (openFiles.size() > 0) {
           System.out.printf("Open Files%n");
-          for (String filename : RandomAccessFile.getOpenFiles()) {
+          for (String filename : openFiles) {
             System.out.printf("  %s%n", filename);
           }
           System.out.printf("End Open Files%n");
