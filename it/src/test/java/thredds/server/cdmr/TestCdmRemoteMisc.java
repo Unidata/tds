@@ -83,7 +83,7 @@ public class TestCdmRemoteMisc {
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
       String localFile = contentRoot + filename;
-      NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
+      NetcdfFile ncfileLocal = NetcdfFiles.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, true, true);
@@ -111,7 +111,7 @@ public class TestCdmRemoteMisc {
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
       String localFile = contentRoot + filename;
-      NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
+      NetcdfFile ncfileLocal = NetcdfFiles.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
@@ -139,7 +139,7 @@ public class TestCdmRemoteMisc {
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
       String localFile = contentRoot + filename;
-      NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
+      NetcdfFile ncfileLocal = NetcdfFiles.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
@@ -167,7 +167,7 @@ public class TestCdmRemoteMisc {
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
       String localFile = contentRoot + filename;
-      NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
+      NetcdfFile ncfileLocal = NetcdfFiles.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
@@ -195,7 +195,7 @@ public class TestCdmRemoteMisc {
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
       String localFile = contentRoot + filename;
-      NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
+      NetcdfFile ncfileLocal = NetcdfFiles.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);
@@ -223,7 +223,7 @@ public class TestCdmRemoteMisc {
       CdmRemote ncfileRemote = new CdmRemote(remoteFile);
 
       String localFile = contentRoot + filename;
-      NetcdfFile ncfileLocal = NetcdfFile.open(localFile);
+      NetcdfFile ncfileLocal = NetcdfFiles.open(localFile);
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, true, false, true);

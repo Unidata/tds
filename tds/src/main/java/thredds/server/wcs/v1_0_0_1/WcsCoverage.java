@@ -16,6 +16,7 @@ import ucar.nc2.util.DiskCache2;
 import ucar.nc2.util.NamedObject;
 import ucar.nc2.util.Optional;
 import ucar.unidata.geoloc.LatLonRect;
+import ucar.unidata.geoloc.Projection;
 import ucar.unidata.geoloc.ProjectionImpl;
 import ucar.unidata.geoloc.ogc.EPSG_OGC_CF_Helper;
 import javax.annotation.Nonnull;
@@ -47,7 +48,7 @@ public class WcsCoverage {
     this.coordSys = coordSys;
 
     dataset = wcsDataset.getDataset();
-    ProjectionImpl proj = coordSys.getProjection();
+    Projection proj = coordSys.getProjection();
     this.nativeCRS = EPSG_OGC_CF_Helper.getWcs1_0CrsId(proj);
 
     this.defaultRequestCrs = "OGC:CRS84";

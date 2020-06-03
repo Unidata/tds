@@ -50,7 +50,7 @@ public class TestHttpOpen {
   public void testOpenDataset() throws IOException {
     long start = System.currentTimeMillis();
 
-    try (NetcdfDataset ncd = ucar.nc2.dataset.NetcdfDataset.openDataset(url)) {
+    try (NetcdfDataset ncd = ucar.nc2.dataset.NetcdfDatasets.openDataset(url)) {
       System.out.printf("%s%n", ncd.getLocation());
     } finally {
       System.out.printf("**testOpenDataset took= %d msecs%n", (System.currentTimeMillis() - start));
