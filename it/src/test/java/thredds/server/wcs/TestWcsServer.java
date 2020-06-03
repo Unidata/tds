@@ -30,6 +30,7 @@ import java.util.List;
 import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
@@ -151,7 +152,7 @@ public class TestWcsServer {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, null);
 
     // Open the binary response in memory
-    try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.nc", content)) {
+    try (NetcdfFile nf = NetcdfFiles.openInMemory("test_data.nc", content)) {
       DtCoverageDataset dt = getDtCoverageDataset(nf);
       Formatter errlog = new Formatter();
       FeatureDatasetCoverage cdc = DtCoverageAdapter.factory(dt, errlog);
@@ -235,7 +236,7 @@ public class TestWcsServer {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, null);
 
     // Open the binary response in memory
-    try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.nc", content)) {
+    try (NetcdfFile nf = NetcdfFiles.openInMemory("test_data.nc", content)) {
       DtCoverageDataset dt = getDtCoverageDataset(nf);
       Formatter errlog = new Formatter();
       FeatureDatasetCoverage cdc = DtCoverageAdapter.factory(dt, errlog);
@@ -309,7 +310,7 @@ public class TestWcsServer {
 
     // Open the binary response in memory
     if (isNetcdf) {
-      try (NetcdfFile nf = NetcdfFile.openInMemory("WCS-return", content)) {
+      try (NetcdfFile nf = NetcdfFiles.openInMemory("WCS-return", content)) {
         assert nf != null;
         logger.debug("{}", nf);
       }

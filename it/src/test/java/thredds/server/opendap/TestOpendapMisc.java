@@ -18,6 +18,7 @@ import ucar.ma2.DataType;
 import ucar.ma2.Array;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dataset.VariableDS;
 import ucar.nc2.dt.GridCoordSystem;
 import ucar.nc2.dt.grid.GeoGrid;
@@ -37,7 +38,7 @@ public class TestOpendapMisc {
   @Test
   public void testAliasSubst() throws IOException {
     String url = TestOnLocalServer.withHttpPath("/dodsC/ExampleNcML/Modified.nc");
-    try (NetcdfDataset dodsfile = NetcdfDataset.openDataset(url)) {
+    try (NetcdfDataset dodsfile = NetcdfDatasets.openDataset(url)) {
       System.out.printf("OK %s%n", dodsfile.getLocation());
     }
   }
@@ -45,7 +46,7 @@ public class TestOpendapMisc {
   @Test
   public void testStrings() throws IOException, InvalidRangeException {
     String url = TestOnLocalServer.withHttpPath("/dodsC/scanLocal/testWrite.nc");
-    try (NetcdfDataset dodsfile = NetcdfDataset.openDataset(url)) {
+    try (NetcdfDataset dodsfile = NetcdfDatasets.openDataset(url)) {
       Variable v;
 
       // string
@@ -128,22 +129,23 @@ public class TestOpendapMisc {
   public void testByteAttribute() throws IOException {
     String filename =
         TestOnLocalServer.withHttpPath("dodsC/scanCdmUnitTests/ft/stationProfile/PROFILER_wind_06min_20091030_2330.nc");
-    NetcdfDataset ncd = NetcdfDataset.openDataset(filename, true, null);
-    assert ncd != null;
-    VariableDS v = (VariableDS) ncd.findVariable("uvQualityCode");
-    assert v != null;
-    assert v.hasMissing();
+    try (NetcdfDataset ncd = NetcdfDatasets.openDataset(filename, true, null)) {
+      assert ncd != null;
+      VariableDS v = (VariableDS) ncd.findVariable("uvQualityCode");
+      assert v != null;
+      assert v.hasMissing();
 
-    int count = 0;
-    Array data = v.read();
-    IndexIterator ii = data.getIndexIterator();
-    while (ii.hasNext()) {
-      byte val = ii.getByteNext();
-      if (v.isMissing(val))
-        count++;
-      if (val == (byte) -1)
-        assert v.isMissing(val);
+      int count = 0;
+      Array data = v.read();
+      IndexIterator ii = data.getIndexIterator();
+      while (ii.hasNext()) {
+        byte val = ii.getByteNext();
+        if (v.isMissing(val))
+          count++;
+        if (val == (byte) -1)
+          assert v.isMissing(val);
+      }
+      System.out.println("size = " + v.getSize() + " missing= " + count);
     }
-    System.out.println("size = " + v.getSize() + " missing= " + count);
   }
 }

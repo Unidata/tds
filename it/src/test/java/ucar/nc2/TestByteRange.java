@@ -32,14 +32,14 @@
 
 package ucar.nc2;
 
+import java.util.Formatter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
+import ucar.nc2.write.CDLWriter;
 import ucar.unidata.util.test.UnitTestCommon;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,15 +89,12 @@ public class TestByteRange extends UnitTestCommon {
   }
 
   void process1(Testcase testcase) throws Exception {
-    NetcdfFile ncfile = NetcdfFile.open(testcase.url);
+    NetcdfFile ncfile = NetcdfFiles.open(testcase.url);
     if (ncfile == null)
       throw new Exception("Cannot read: " + testcase.url);
-    StringWriter ow = new StringWriter();
-    PrintWriter pw = new PrintWriter(ow);
-    ncfile.writeCDL(pw, true);
-    pw.close();
-    ow.close();
-    String captured = ow.toString();
+    Formatter pw = new Formatter();
+    CDLWriter.writeCDL(ncfile, pw, true, null);
+    String captured = pw.toString();
     if (prop_visual)
       visual(testcase.title, captured);
     if (prop_diff) {

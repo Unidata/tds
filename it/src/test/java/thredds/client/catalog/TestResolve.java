@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
-import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -28,7 +28,7 @@ public class TestResolve {
     String remoteDataset = TestOnLocalServer.withProtocolAndPath("thredds:resolve:http",
         "catalog/gribCollection/GFS_CONUS_80km/latest.xml");
 
-    try (NetcdfFile ncd = NetcdfDataset.openFile(remoteDataset, null)) {
+    try (NetcdfFile ncd = NetcdfDatasets.openFile(remoteDataset, null)) {
       List<Attribute> globalAttrs = ncd.getGlobalAttributes();
       String testMessage = "";
 

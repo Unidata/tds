@@ -71,8 +71,8 @@ public class DefaultDateRangeTest {
   public static List<Object[]> getTestParameters() {
 
     CalendarDate now = CalendarDate.present();
-    CalendarDate dayAfter = now.add(1, CalendarPeriod.Field.Day);
-    CalendarDate dayBefore = now.add(-1, CalendarPeriod.Field.Day);
+    CalendarDate dayAfter = now.add(CalendarPeriod.of(1, CalendarPeriod.Field.Day));
+    CalendarDate dayBefore = now.add(CalendarPeriod.of(-1, CalendarPeriod.Field.Day));
 
     String nowStr = CalendarDateFormatter.toDateTimeStringISO(now);
     String dayAfterStr = CalendarDateFormatter.toDateTimeStringISO(dayAfter);

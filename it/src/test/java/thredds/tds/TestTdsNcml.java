@@ -22,6 +22,7 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.write.Ncdump;
 import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
@@ -47,26 +48,22 @@ public class TestTdsNcml {
     DataFactory fac = new DataFactory();
     Formatter log = new Formatter();
 
-    NetcdfDataset ncd = fac.openDataset(ds, false, null, log);
+    try (NetcdfDataset ncd = fac.openDataset(ds, false, null, log)) {
+      assert ncd != null : log.toString();
 
-    assert ncd != null : log.toString();
+      Variable v = ncd.findVariable("record");
+      assert v != null;
 
-    Variable v = ncd.findVariable("record");
-    assert v != null;
+      assert ncd.getRootGroup().findAttributeString("name", "").equals("value");
 
-    assert ncd.findAttValueIgnoreCase(null, "name", "").equals("value");
+      assert ncd.findVariable("Temperature") != null;
+      assert ncd.findVariable("T") == null;
 
-    assert ncd.findVariable("Temperature") != null;
-    assert ncd.findVariable("T") == null;
-
-    v = ncd.findVariable("ReletiveHumidity");
-    assert v != null;
-    Attribute att = v.findAttribute("long_name");
-    assert att != null;
-    assert att.getStringValue().equals("relatively humid");
-    assert null == v.findAttribute("description");
-
-    ncd.close();
+      v = ncd.findVariable("ReletiveHumidity");
+      assert v != null;
+      assert "relatively humid".equals(v.findAttributeString("long_name", null));
+      assert null == v.findAttribute("description");
+    }
   }
 
   @Test
@@ -87,26 +84,24 @@ public class TestTdsNcml {
     DataFactory fac = new DataFactory();
     Formatter log = new Formatter();
 
-    NetcdfDataset ncd = fac.openDataset(ds, false, null, log);
+    try (NetcdfDataset ncd = fac.openDataset(ds, false, null, log)) {
+      assert ncd != null : log.toString();
 
-    assert ncd != null : log.toString();
+      Variable v = ncd.findVariable("record");
+      assert v != null;
 
-    Variable v = ncd.findVariable("record");
-    assert v != null;
+      assert ncd.getRootGroup().findAttributeString("name", "").equals("value");
 
-    assert ncd.findAttValueIgnoreCase(null, "name", "").equals("value");
+      assert ncd.findVariable("Temperature") != null;
+      assert ncd.findVariable("T") == null;
 
-    assert ncd.findVariable("Temperature") != null;
-    assert ncd.findVariable("T") == null;
-
-    v = ncd.findVariable("ReletiveHumidity");
-    assert v != null;
-    Attribute att = v.findAttribute("long_name");
-    assert att != null;
-    assert att.getStringValue().equals("relatively humid");
-    assert null == v.findAttribute("description");
-
-    ncd.close();
+      v = ncd.findVariable("ReletiveHumidity");
+      assert v != null;
+      Attribute att = v.findAttribute("long_name");
+      assert att != null;
+      assert att.getStringValue().equals("relatively humid");
+      assert null == v.findAttribute("description");
+    }
   }
 
   @Test
@@ -114,37 +109,35 @@ public class TestTdsNcml {
     String endpoint = TestOnLocalServer.withHttpPath("dodsC/ExampleNcML/Agg.nc");
     logger.debug("{}", endpoint);
 
-    NetcdfFile ncfile = NetcdfDataset.openFile(endpoint, null);
+    try (NetcdfFile ncfile = NetcdfDatasets.openFile(endpoint, null)) {
+      Variable v = ncfile.findVariable("time");
+      assert v != null;
+      assert v.getDataType() == DataType.DOUBLE;
 
-    Variable v = ncfile.findVariable("time");
-    assert v != null;
-    assert v.getDataType() == DataType.DOUBLE;
+      String units = v.getUnitsString();
+      assert units != null;
+      assert units.equals("hours since 2006-09-25T06:00:00Z");
 
-    String units = v.getUnitsString();
-    assert units != null;
-    assert units.equals("hours since 2006-09-25T06:00:00Z");
+      int count = 0;
+      Array data = v.read();
+      logger.debug(Ncdump.printArray(data, "time", null));
 
-    int count = 0;
-    Array data = v.read();
-    logger.debug(Ncdump.printArray(data, "time", null));
+      while (data.hasNext()) {
+        Assert2.assertNearlyEquals(data.nextInt(), (count + 1) * 3);
+        count++;
+      }
 
-    while (data.hasNext()) {
-      Assert2.assertNearlyEquals(data.nextInt(), (count + 1) * 3);
-      count++;
+      // test attributes added in NcML
+      String testAtt = ncfile.getRootGroup().findAttributeString("ncmlAdded", null);
+      assert testAtt != null;
+      assert testAtt.equals("stuff");
+
+      v = ncfile.findVariable("lat");
+      assert v != null;
+      testAtt = v.findAttributeString("ncmlAdded", null);
+      assert testAtt != null;
+      assert testAtt.equals("lat_stuff");
     }
-
-    // test attributes added in NcML
-    String testAtt = ncfile.findAttValueIgnoreCase(null, "ncmlAdded", null);
-    assert testAtt != null;
-    assert testAtt.equals("stuff");
-
-    v = ncfile.findVariable("lat");
-    assert v != null;
-    testAtt = ncfile.findAttValueIgnoreCase(v, "ncmlAdded", null);
-    assert testAtt != null;
-    assert testAtt.equals("lat_stuff");
-
-    ncfile.close();
   }
 
   @Test
@@ -152,7 +145,7 @@ public class TestTdsNcml {
     String endpoint = TestOnLocalServer.withHttpPath("cdmremote/testGridScan/GFS_CONUS_80km_20120229_1200.grib1");
     logger.debug("{}", endpoint);
 
-    try (NetcdfFile ncd = NetcdfDataset.openFile(endpoint, null)) {
+    try (NetcdfFile ncd = NetcdfDatasets.openFile(endpoint, null)) {
       Assert.assertNotNull(ncd);
 
       Attribute att = ncd.findGlobalAttribute("ncmlAdded");

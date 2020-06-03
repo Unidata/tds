@@ -18,7 +18,7 @@ import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 import ucar.nc2.constants._Coordinate;
-import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.stream.CdmRemote;
 import ucar.nc2.util.CompareNetcdf2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
@@ -110,8 +110,7 @@ public class TestCdmRemoteCompareDataP {
 
   static int compareDatasets(String local, String remote, boolean readData) throws IOException {
     System.out.printf("--Compare %s to %s%n", local, remote);
-    try (NetcdfFile ncfile = NetcdfDataset.openFile(local, null); NetcdfFile ncremote = new CdmRemote(remote)) {
-
+    try (NetcdfFile ncfile = NetcdfDatasets.openFile(local, null); NetcdfFile ncremote = new CdmRemote(remote)) {
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, readData);
       boolean ok = mind.compare(ncfile, ncremote, new NcstreamObjFilter());

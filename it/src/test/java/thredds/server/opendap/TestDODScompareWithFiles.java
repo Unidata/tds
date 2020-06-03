@@ -17,6 +17,7 @@ import ucar.nc2.Variable;
 import ucar.nc2.constants.CDM;
 import ucar.nc2.constants._Coordinate;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.util.CompareNetcdf2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.TestDir;
@@ -118,10 +119,8 @@ public class TestDODScompareWithFiles {
 
   private void compareDatasets(String dodsUrl, String localPath) throws IOException {
     System.out.printf("--Compare %s to %s%n", localPath, dodsUrl);
-    NetcdfDataset ncfile = null, ncremote = null;
-    try {
-      ncfile = NetcdfDataset.openDataset(localPath);
-      ncremote = NetcdfDataset.openDataset(dodsUrl);
+    try (NetcdfDataset ncfile = NetcdfDatasets.openDataset(localPath);
+        NetcdfDataset ncremote = NetcdfDatasets.openDataset(dodsUrl)) {
 
       Formatter f = new Formatter();
       CompareNetcdf2 mind = new CompareNetcdf2(f, showCompare, showEach, compareData);
@@ -134,12 +133,6 @@ public class TestDODScompareWithFiles {
         success++;
       }
       Assert.assertTrue(localPath + " != " + dodsUrl, ok);
-
-    } finally {
-      if (ncfile != null)
-        ncfile.close();
-      if (ncremote != null)
-        ncremote.close();
     }
   }
 
