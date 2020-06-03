@@ -21,7 +21,6 @@ import ucar.nc2.ft.FeatureDataset;
 import ucar.nc2.ft.FeatureDatasetFactoryManager;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft2.coverage.SubsetParams;
-import ucar.nc2.iosp.netcdf4.Nc4;
 import ucar.nc2.jni.netcdf.Nc4Iosp;
 import ucar.nc2.ogc.MarshallingUtil;
 import ucar.nc2.time.Calendar;
@@ -29,7 +28,7 @@ import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.nc2.util.CompareNetcdf2;
 import ucar.nc2.util.DiskCache2;
-import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonRect;
 import java.io.*;
 import java.lang.invoke.MethodHandles;
@@ -78,7 +77,7 @@ public class DsgSubsetWriterTest {
     subsetParamsPoint.setVariables(Arrays.asList("pr"));
     subsetParamsPoint.setTime(CalendarDate.parseISOformat(null, "1970-01-01 02:00:00Z"));
     // Full extension is (40.0, -100.0) to (68.0, -58.0).
-    LatLonRect bbox = new LatLonRect(new LatLonPointImpl(40.0, -100.0), new LatLonPointImpl(53.0, -58.0));
+    LatLonRect bbox = new LatLonRect(LatLonPoint.create(40.0, -100.0), LatLonPoint.create(53.0, -58.0));
     subsetParamsPoint.setLatLonBoundingBox(bbox);
 
     subsetParamsStation1 = new SubsetParams();
@@ -223,8 +222,8 @@ public class DsgSubsetWriterTest {
     try (NetcdfFile expectedNcFile = NetcdfDataset.openDataset(expectedResultFile.getAbsolutePath());
         NetcdfFile actualNcFile = NetcdfDataset.openDataset(actualResultFile.getAbsolutePath())) {
       Formatter formatter = new Formatter();
-      boolean contentsAreEqual = new CompareNetcdf2(formatter).compare(expectedNcFile, actualNcFile,
-          new NcssNetcdfObjFilter(), false, false, true);
+      boolean contentsAreEqual = new CompareNetcdf2(formatter, false, false, true).compare(expectedNcFile, actualNcFile,
+          new NcssNetcdfObjFilter());
 
       if (!contentsAreEqual) {
         System.err.println(formatter.toString());
@@ -238,8 +237,8 @@ public class DsgSubsetWriterTest {
     try (NetcdfFile expectedNcFile = NetcdfDatasets.openDataset(expectedResultFile.getAbsolutePath());
         NetcdfFile actualNcFile = NetcdfDatasets.openDataset(actualResultFile.getAbsolutePath())) {
       Formatter formatter = new Formatter();
-      boolean contentsAreEqual = new CompareNetcdf2(formatter).compare(expectedNcFile, actualNcFile,
-          new NcssNetcdfObjFilter(), false, false, true);
+      boolean contentsAreEqual = new CompareNetcdf2(formatter, false, false, true).compare(expectedNcFile, actualNcFile,
+          new NcssNetcdfObjFilter());
 
       if (!contentsAreEqual) {
         System.err.println(formatter.toString());

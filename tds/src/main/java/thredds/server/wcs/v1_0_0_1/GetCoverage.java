@@ -7,7 +7,7 @@ package thredds.server.wcs.v1_0_0_1;
 import thredds.server.wcs.Request;
 import ucar.nc2.ft2.coverage.*;
 import ucar.nc2.time.CalendarDateRange;
-import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonRect;
 import java.io.File;
 
@@ -132,8 +132,8 @@ public class GetCoverage extends WcsRequest {
     if (bbox == null)
       return null;
 
-    LatLonPointImpl minll = new LatLonPointImpl(bbox.getMinPointValue(1), bbox.getMinPointValue(0));
-    LatLonPointImpl maxll = new LatLonPointImpl(bbox.getMaxPointValue(1), bbox.getMaxPointValue(0));
+    LatLonPoint minll = LatLonPoint.create(bbox.getMinPointValue(1), bbox.getMinPointValue(0));
+    LatLonPoint maxll = LatLonPoint.create(bbox.getMaxPointValue(1), bbox.getMaxPointValue(0));
 
     LatLonRect bboxLatLonRect = new LatLonRect(minll, maxll);
 

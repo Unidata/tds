@@ -124,8 +124,8 @@ public class TestDODScompareWithFiles {
       ncremote = NetcdfDataset.openDataset(dodsUrl);
 
       Formatter f = new Formatter();
-      CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, false);
-      boolean ok = mind.compare(ncfile, ncremote, new DodsObjFilter(), showCompare, showEach, compareData);
+      CompareNetcdf2 mind = new CompareNetcdf2(f, showCompare, showEach, compareData);
+      boolean ok = mind.compare(ncfile, ncremote, new DodsObjFilter());
       if (!ok) {
         System.out.printf("--Compare %s%n", filename);
         System.out.printf("  %s%n", f);

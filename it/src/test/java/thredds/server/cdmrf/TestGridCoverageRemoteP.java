@@ -5,6 +5,7 @@
 
 package thredds.server.cdmrf;
 
+import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -117,7 +118,7 @@ public class TestGridCoverageRemoteP {
     GeoReferencedArray geoArray = cover.readData(subset);
     CoverageCoordSys geoCs = geoArray.getCoordSysForData();
     logger.debug("{}", geoArray);
-    logger.debug("geoArray shape={}", Misc.showInts(geoArray.getData().getShape()));
+    logger.debug("geoArray shape={}", Arrays.toString(geoArray.getData().getShape()));
 
     if (rt_val != null) {
       CoverageCoordAxis1D runAxis = (CoverageCoordAxis1D) geoCs.getAxis(AxisType.RunTime);

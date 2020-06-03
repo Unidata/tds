@@ -23,7 +23,6 @@ import ucar.nc2.stream.CdmRemote;
 import ucar.nc2.util.CompareNetcdf2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.TestDir;
-import ucar.unidata.util.StringUtil2;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -103,7 +102,7 @@ public class TestCdmRemoteCompareDataP {
 
   @Test
   public void doOne() throws IOException {
-    String name = StringUtil2.substitute(filename.substring(contentRoot.length()), "\\", "/");
+    String name = filename.substring(contentRoot.length()).replace("\\", "/");
     String remote = TestOnLocalServer.withHttpPath(urlPath + name);
     total++;
     success += compareDatasets(filename, remote, true);
@@ -114,8 +113,8 @@ public class TestCdmRemoteCompareDataP {
     try (NetcdfFile ncfile = NetcdfDataset.openFile(local, null); NetcdfFile ncremote = new CdmRemote(remote)) {
 
       Formatter f = new Formatter();
-      CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, false);
-      boolean ok = mind.compare(ncfile, ncremote, new NcstreamObjFilter(), false, false, readData);
+      CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, readData);
+      boolean ok = mind.compare(ncfile, ncremote, new NcstreamObjFilter());
       if (!ok) {
         System.out.printf("  %s%n", f);
       }

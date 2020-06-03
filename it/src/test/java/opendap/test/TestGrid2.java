@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.write.Ncdump;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.UnitTestCommon;
 import java.io.IOException;
@@ -64,12 +65,12 @@ public class TestGrid2 extends UnitTestCommon {
     String metadata = null;
     String data = null;
 
-    metadata = ncdumpmetadata(ncfile);
+    metadata = ncdumpMetadata(ncfile);
 
     if (prop_visual)
       visual(getTitle() + ".dds", metadata);
     if (true) {
-      data = ncdumpdata(ncfile);
+      data = ncdumpData(ncfile);
       if (prop_visual)
         visual(getTitle() + ".dods", data);
 
@@ -85,32 +86,28 @@ public class TestGrid2 extends UnitTestCommon {
     Assert.assertTrue("XFAIL : Testing TestGrid2" + getTitle(), true);
   }
 
-  String ncdumpmetadata(NetcdfDataset ncfile) throws Exception {
-    StringWriter sw = new StringWriter();
-    // Print the meta-databuffer using these args to NcdumpW
-    try {
-      if (!ucar.nc2.NCdumpW.print(ncfile, null, sw, null))
-        throw new Exception("NcdumpW failed");
-    } catch (IOException ioe) {
-      throw new Exception("NcdumpW failed", ioe);
+  private String ncdumpMetadata(NetcdfDataset ncfile) throws Exception {
+    try (StringWriter sw = new StringWriter()) {
+      // Print the meta-databuffer using these args to NcdumpW
+      try {
+        Ncdump.ncdump(ncfile, null, sw, null);
+      } catch (IOException ioe) {
+        throw new Exception("NcdumpW failed", ioe);
+      }
+      return sw.toString();
     }
-    sw.close();
-    return sw.toString();
   }
 
-  String ncdumpdata(NetcdfDataset ncfile) throws Exception {
-    StringWriter sw = new StringWriter();
-    // Dump the databuffer
-    sw = new StringWriter();
-    try {
-      if (!ucar.nc2.NCdumpW.print(ncfile, "-vall", sw, null))
-        throw new Exception("NCdumpW failed");
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
-      throw new Exception("NCdumpW failed", ioe);
+  private String ncdumpData(NetcdfDataset ncfile) throws Exception {
+    try (StringWriter sw = new StringWriter()) {
+      try {
+        Ncdump.ncdump(ncfile, "-vall", sw, null);
+      } catch (IOException ioe) {
+        ioe.printStackTrace();
+        throw new Exception("NCdumpW failed", ioe);
+      }
+      return sw.toString();
     }
-    sw.close();
-    return sw.toString();
   }
 
 

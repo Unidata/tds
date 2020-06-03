@@ -15,10 +15,11 @@ import ucar.ma2.Array;
 import ucar.ma2.IndexIterator;
 import ucar.ma2.MAMath;
 import ucar.ma2.Range;
-import ucar.nc2.NCdumpW;
 import ucar.nc2.dataset.CoordinateAxis1D;
 import ucar.nc2.dt.GridCoordSystem;
-import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.nc2.util.CompareNetcdf2;
+import ucar.nc2.write.Ncdump;
+import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonRect;
 import ucar.unidata.geoloc.ProjectionRect;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
@@ -61,7 +62,7 @@ public class TestGridSubsetThredds {
       assert data.getShape()[2] == 65 : data.getShape()[2];
       assert data.getShape()[3] == 106 : data.getShape()[3];
 
-      logger.debug(NCdumpW.toString(data, "grid_section", null));
+      logger.debug(Ncdump.printArray(data, "grid_section", null));
     } finally {
       if (dataset != null)
         dataset.close();
@@ -149,7 +150,7 @@ public class TestGridSubsetThredds {
       logger.debug("lat/lon bbox = {}", gcs.getLatLonBoundingBox());
 
       LatLonRect llbb = gcs.getLatLonBoundingBox();
-      LatLonRect llbb_subset = new LatLonRect(new LatLonPointImpl(-15, -140), new LatLonPointImpl(55, 30));
+      LatLonRect llbb_subset = new LatLonRect(LatLonPoint.create(-15, -140), LatLonPoint.create(55, 30));
       logger.debug("subset lat/lon bbox = {}", llbb_subset);
 
       GeoGrid grid_section = grid.subset(null, null, llbb_subset, 1, 1, 1);
@@ -181,7 +182,7 @@ public class TestGridSubsetThredds {
       GeoGrid subset = grid.subset(timeRange, new Range(bestZIndex, bestZIndex), null, null);
       Array yxData = subset.readYXData(0, 0);
 
-      logger.debug(NCdumpW.toString(yxData, "xyData", null));
+      logger.debug(Ncdump.printArray(yxData, "xyData", null));
     }
   }
 
@@ -236,10 +237,10 @@ public class TestGridSubsetThredds {
       Array data = grid.readDataSlice(0, 0, 159, 0);
       Array data2 = grid2.readDataSlice(0, 0, 0, 0);
 
-      logger.debug(NCdumpW.toString(data, "org", null));
-      logger.debug(NCdumpW.toString(data2, "subset", null));
+      logger.debug(Ncdump.printArray(data, "org", null));
+      logger.debug(Ncdump.printArray(data2, "subset", null));
 
-      ucar.unidata.util.test.CompareNetcdf.compareData(data, data2);
+      new CompareNetcdf2().compareData("testScaleOffset", data, data2);
     }
   }
 

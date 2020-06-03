@@ -8,7 +8,6 @@ import ucar.nc2.units.DateRange;
 import ucar.nc2.units.DateType;
 import ucar.nc2.units.TimeDuration;
 import ucar.unidata.geoloc.LatLonPoint;
-import ucar.unidata.geoloc.LatLonPointImpl;
 import ucar.unidata.geoloc.LatLonRect;
 import java.util.Arrays;
 import java.util.Formatter;
@@ -222,7 +221,7 @@ public class CdmrfBeanOld {
     } else if (spatialSelection == SpatialSelection.point) {
       double lat = parseLat("latitude", latitude);
       double lon = parseLon("longitude", longitude);
-      latlonPoint = new LatLonPointImpl(lat, lon);
+      latlonPoint = LatLonPoint.create(lat, lon);
     }
 
   }
@@ -254,7 +253,7 @@ public class CdmrfBeanOld {
       double northd = parseLat("north", north);
 
       if (!fatal) {
-        llbb = new LatLonRect(new LatLonPointImpl(southd, westd), new LatLonPointImpl(northd, eastd));
+        llbb = new LatLonRect(LatLonPoint.create(southd, westd), LatLonPoint.create(northd, eastd));
         spatialSelection = SpatialSelection.bb;
       }
     }

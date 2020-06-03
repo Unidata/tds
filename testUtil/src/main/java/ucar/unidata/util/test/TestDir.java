@@ -300,7 +300,7 @@ public class TestDir {
       if (f.isDirectory())
         continue;
       if (((ff == null) || ff.accept(f)) && !name.endsWith(".exclude")) {
-        name = StringUtil2.substitute(name, "\\", "/");
+        name = name.replace("\\", "/");
         logger.debug("----acting on file {}", name);
         count += act.doAct(name);
       }

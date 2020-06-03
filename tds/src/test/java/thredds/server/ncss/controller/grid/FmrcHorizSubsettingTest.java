@@ -18,17 +18,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import thredds.junit4.SpringJUnit4ParameterizedClassRunner;
-import thredds.mock.params.GridDataParameters;
-import thredds.mock.params.GridPathParams;
 import thredds.mock.web.MockTdsContextLoader;
-import ucar.nc2.NCdumpW;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
-import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.grid.GeoGrid;
-import ucar.nc2.util.Misc;
 import ucar.unidata.geoloc.ProjectionRect;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
@@ -60,39 +55,30 @@ public class FmrcHorizSubsettingTest {
     return Arrays.asList(new Object[][] {
         {"/ncss/grid/testGFSfmrc/files/GFS_CONUS_80km_20120418_1200.nc",
             Lists.newArrayList("Pressure", "Pressure_reduced_to_MSL"), new int[][] {{1, 2, 2}, {1, 2, 2}},
-            new ProjectionRect(-4226.106971141345, -832.6983183345455, -4126.106971141345, -732.6983183345455)}, // No
-                                                                                                                 // vertical
-                                                                                                                 // levels
+            // No vertical levels
+            new ProjectionRect(-4226.106971141345, -832.6983183345455, -4126.106971141345, -732.6983183345455)},
 
         {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd",
             Lists.newArrayList("Relative_humidity_height_above_ground", "Temperature_height_above_ground"),
-            new int[][] {{1, 1, 16, 15}, {1, 1, 16, 15}}, new ProjectionRect(-600, -600, 600, 600)}, // Same vertical
-                                                                                                     // level (one
-                                                                                                     // level)
+            // Same vertical level (one level)
+            new int[][] {{1, 1, 16, 15}, {1, 1, 16, 15}}, new ProjectionRect(-600, -600, 600, 600)},
 
         {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd", Lists.newArrayList("Temperature", "Relative_humidity"),
             new int[][] {{1, 29, 2, 93}, {1, 29, 2, 93}},
-            new ProjectionRect(-4226.106971141345, 4268.6456816654545, 3250.825028858655, 4368.6456816654545)}, // Same
-                                                                                                                // vertical
-                                                                                                                // level
-                                                                                                                // (multiple
-                                                                                                                // level)
+            // Same vertical level (multiple level)
+            new ProjectionRect(-4226.106971141345, 4268.6456816654545, 3250.825028858655, 4368.6456816654545)},
 
         {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd",
             Lists.newArrayList("Pressure", "Temperature", "Relative_humidity_height_above_ground"),
             new int[][] {{1, 2, 93}, {1, 29, 2, 93}, {1, 1, 2, 93}},
-            new ProjectionRect(-4226.106971141345, 4268.6456816654545, 3250.825028858655, 4368.6456816654545)}, // No
-                                                                                                                // vertical
-                                                                                                                // levels
-                                                                                                                // and
-                                                                                                                // vertical
-                                                                                                                // levels
+            // No vertical levels and vertical levels
+            new ProjectionRect(-4226.106971141345, 4268.6456816654545, 3250.825028858655, 4368.6456816654545)},
 
         {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd",
             Lists.newArrayList("Relative_humidity_height_above_ground", "Temperature"),
             new int[][] {{1, 1, 65, 93}, {1, 29, 65, 93}},
-            new ProjectionRect(-4264.248291015625, -872.8428344726562, 3293.955078125, 4409.772216796875)}, // Full
-                                                                                                            // extension
+            // Full extension
+            new ProjectionRect(-4264.248291015625, -872.8428344726562, 3293.955078125, 4409.772216796875)},
 
         {"/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd",
             Lists.newArrayList("Relative_humidity_height_above_ground", "Temperature"),
@@ -160,8 +146,8 @@ public class FmrcHorizSubsettingTest {
     int count = 0;
     for (String varName : vars) {
       GeoGrid grid = gdsDataset.findGridByShortName(varName);
-      System.out.printf("%s grid.getShape()=%s%n", varName, Misc.showInts(grid.getShape()));
-      System.out.printf("%s        expected=%s%n", varName, Misc.showInts(expectedShapes[count]));
+      System.out.printf("%s grid.getShape()=%s%n", varName, Arrays.toString(grid.getShape()));
+      System.out.printf("%s        expected=%s%n", varName, Arrays.toString(expectedShapes[count]));
       assertArrayEquals(expectedShapes[count], grid.getShape());
       count++;
     }

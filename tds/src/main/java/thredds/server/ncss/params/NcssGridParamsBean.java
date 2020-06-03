@@ -6,14 +6,13 @@ package thredds.server.ncss.params;
 
 import thredds.server.ncss.validation.NcssGridRequestConstraint;
 import ucar.nc2.constants.FeatureType;
-import ucar.nc2.ft2.coverage.CoverageCoordSys;
 import ucar.nc2.ft2.coverage.CoverageCollection;
 import ucar.nc2.ft2.coverage.SubsetParams;
 import ucar.nc2.time.Calendar;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateFormatter;
 import ucar.nc2.time.CalendarDateRange;
-import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.ProjectionRect;
 
 /**
@@ -207,7 +206,7 @@ public class NcssGridParamsBean extends NcssParamsBean {
     if (horizStride != null && horizStride != 1)
       subset.set(SubsetParams.horizStride, horizStride);
     if (hasLatLonPoint())
-      subset.set(SubsetParams.latlonPoint, new LatLonPointImpl(getLatitude(), getLongitude()));
+      subset.set(SubsetParams.latlonPoint, LatLonPoint.create(getLatitude(), getLongitude()));
 
     if (isFmrc) { // 2D Time subsetting
 
