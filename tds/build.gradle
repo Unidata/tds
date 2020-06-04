@@ -97,7 +97,7 @@ dependencies {
     runtime libraries["javax-el"]
     runtime libraries["glassfish-javax-el"]
 
-    compile libraries["thymeleaf-spring4"]
+    compile libraries["thymeleaf-spring5"]
 
     // Testing
     testCompile libraries["javax.servlet-api"]
