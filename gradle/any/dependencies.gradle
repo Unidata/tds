@@ -318,12 +318,9 @@ libraries["Saxon-HE"] = "net.sf.saxon:Saxon-HE:9.7.0-8"
 
 libraries["quartz"] = "org.quartz-scheduler:quartz:2.3.2"
 
-
-libraries["hibernate-validator"] = "org.hibernate:hibernate-validator:6.1.5.Final"
-
 libraries["validation-api"] = "javax.validation:validation-api:2.0.1.Final"
 
-// javax-el & glassfish-javax-el are dependencies of hibernate-validator
+// javax-el & glassfish-javax-el are dependencies of hibernate-validator (which comes with spring security)
 
 libraries["javax-el"] = "javax.el:javax.el-api:3.0.0"
 
