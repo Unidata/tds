@@ -94,6 +94,8 @@ dependencies {
     // JSR 303 with Hibernate Validator, which is dragging in jboss logging
     compile libraries["validation-api"]
     runtime libraries["hibernate-validator"]
+    runtime libraries["javax-el"]
+    runtime libraries["glassfish-javax-el"]
 
     compile libraries["thymeleaf-spring4"]
 

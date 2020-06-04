@@ -318,13 +318,16 @@ libraries["Saxon-HE"] = "net.sf.saxon:Saxon-HE:9.7.0-8"
 
 libraries["quartz"] = "org.quartz-scheduler:quartz:2.3.2"
 
-// Version update note:
-// spring-context 4.x is limited to hibernate-validator 4.3.2.Final. We can't update to hibernate-validator 5.x
-// hibernate-validator 4.3.2.Final is limited to validation-api 1.0.0.GA. We can't update to validation-api 1.1.0.Final
 
 libraries["hibernate-validator"] = "org.hibernate:hibernate-validator:6.1.5.Final"
 
 libraries["validation-api"] = "javax.validation:validation-api:2.0.1.Final"
+
+// javax-el & glassfish-javax-el are dependencies of hibernate-validator
+
+libraries["javax-el"] = "javax.el:javax.el-api:3.0.0"
+
+libraries["glassfish-javax-el"] = "org.glassfish:javax.el:3.0.0"
 
 // used for writing json-LD
 
