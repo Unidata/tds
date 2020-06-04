@@ -91,8 +91,9 @@ dependencies {
     // json writing
     libraries["json"]
 
-    // Hibernate Validator come with spring security 
+    // JSR 303 with Hibernate Validator, which is dragging in jboss logging
     compile libraries["validation-api"]
+    runtime libraries["hibernate-validator"]
     runtime libraries["javax-el"]
     runtime libraries["glassfish-javax-el"]
 
@@ -186,8 +187,6 @@ gretty grettyConfig
 // First, it modifies the testRuntime configuration after project evaluation:
 // https://github.com/steffenschaefer/gwt-gradle-plugin/issues/89. In the case of TDS, this lead to an old version
 // of "validation-api" being present on the classpath, which caused hibernate-validator to fail.
-//
-// NOTE: hibernate validator comes with spring security 5.x
 //
 // Second, it adds gwt-dev and gwt-user to the "compile" config and gwt-servlet to the "runtime" config.
 // None of those are necessary at runtime: http://stackoverflow.com/a/5135151/3874643.
