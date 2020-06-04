@@ -8,8 +8,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.UnitTestCommon;
 import java.lang.invoke.MethodHandles;
@@ -48,7 +49,7 @@ public class TestGrid1 extends UnitTestCommon {
     NetcdfDataset ncfile = null;
 
     try {
-      ncfile = NetcdfDataset.openDataset(url);
+      ncfile = NetcdfDatasets.openDataset(url);
       pass = true;
     } catch (Exception e) {
       pass = false;
@@ -63,24 +64,22 @@ public class TestGrid1 extends UnitTestCommon {
 
     metadata = ncdumpmetadata(ncfile, null);
 
-    if (prop_visual)
+    if (prop_visual) {
       visual(getTitle() + ".dds", metadata);
-    if (true) {
-      data = ncdumpdata(ncfile, null);
-      if (prop_visual)
-        visual(getTitle() + ".dods", data);
+    }
 
-      if (prop_diff) { // compare with baseline
-        // Compare to the baseline file(s)
-        String ncurl = NetcdfFile.makeValidCDLName(url);
-        // strip trailing .nc
-        if (ncurl.endsWith(".nc"))
-          ncurl = ncurl.substring(0, ncurl.length() - 3);
-        String diffs = compare("TestGrid1", "netcdf " + ncurl + BASELINE, data);
-        if (diffs != null)
-          pass = false;
-        System.err.println(diffs);
-      }
+    data = ncdumpdata(ncfile, null);
+    if (prop_visual) {
+      visual(getTitle() + ".dods", data);
+      // Compare to the baseline file(s)
+      String ncurl = NetcdfFiles.makeValidCDLName(url);
+      // strip trailing .nc
+      if (ncurl.endsWith(".nc"))
+        ncurl = ncurl.substring(0, ncurl.length() - 3);
+      String diffs = compare("TestGrid1", "netcdf " + ncurl + BASELINE, data);
+      if (diffs != null)
+        pass = false;
+      System.err.println(diffs);
     }
     Assert.assertTrue("Testing TestGrid1" + getTitle(), pass
 
@@ -91,6 +90,7 @@ public class TestGrid1 extends UnitTestCommon {
       + "double var(lat, lon);\n" + "String var:_CoordinateAxes = \"lat lon \";\n" + "float lat(lat);\n"
       + "String lat:_CoordinateAxisType = \"Lat\";\n" + "float lon(lon);\n"
       + "String lon:_CoordinateAxisType = \"Lon\";\n" + "// global attributes:\n"
-      + "String :_CoordSysBuilder = \"ucar.nc2.dataset.conv.DefaultConvention\";\n" + "data:\n" + "var =\n" + "{\n"
-      + "{0.0, 1.0},\n" + "{2.0, 3.0}\n" + "}\n" + "lat =\n" + "{17.0, 23.0}\n" + "lon =\n" + "{-15.0, -1.0}\n" + "}\n";
+      + "String :_CoordSysBuilder = \"ucar.nc2.dataset.internal.conv.DefaultConvention\";\n" + "data:\n" + "var =\n"
+      + "{\n" + "{0.0, 1.0},\n" + "{2.0, 3.0}\n" + "}\n" + "lat =\n" + "{17.0, 23.0}\n" + "lon =\n" + "{-15.0, -1.0}\n"
+      + "}\n";
 }

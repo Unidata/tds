@@ -13,16 +13,11 @@ import thredds.TestOnLocalServer;
 import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
-import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.lang.invoke.MethodHandles;
 
-/**
- * Describe
- *
- * @author caron
- * @since 3/11/2015
- */
+/** Test bug in 2D dataset */
 public class TestTime2D {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -30,8 +25,8 @@ public class TestTime2D {
   @Category(NeedsCdmUnitTest.class)
   public void testTime2D() throws Exception {
     try (NetcdfFile dataset =
-        NetcdfDataset.openDataset(TestOnLocalServer.withDodsPath("dodsC/gribCollection.v5/GFS_GLOBAL_2p5/TwoD"))) {
-      Variable v = dataset.findVariable(null, "Pressure_surface");
+        NetcdfDatasets.openDataset(TestOnLocalServer.withDodsPath("dodsC/gribCollection.v5/GFS_GLOBAL_2p5/TwoD"))) {
+      Variable v = dataset.getRootGroup().findVariableLocal("Pressure_surface");
       assert null != v;
       assert v.getRank() == 4;
 

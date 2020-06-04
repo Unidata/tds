@@ -34,6 +34,7 @@ import ucar.nc2.VariableSimpleIF;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.GridCoordSystem;
 import ucar.nc2.dt.grid.GeoGrid;
 import ucar.nc2.util.CompareNetcdf2;
@@ -50,7 +51,7 @@ public class TestTdsDodsServer {
   public void checkBadRequest() {
     String endpoint = TestOnLocalServer.withHttpPath(
         "/dodsC/scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2.badascii?Visibility_surface[0:1:0][0:1:0][0:1:0]");
-    byte[] result = TestOnLocalServer.getContent(endpoint, 400, null);
+    TestOnLocalServer.getContent(endpoint, 400, null);
   }
 
   @Test
@@ -165,7 +166,7 @@ public class TestTdsDodsServer {
   private void doOne(String urlString) throws IOException {
     logger.debug("Open and read {}", urlString);
 
-    NetcdfFile ncd = NetcdfDataset.openFile(urlString, null);
+    NetcdfFile ncd = NetcdfDatasets.openFile(urlString, null);
     assert ncd != null;
 
     // pick a random variable to read
@@ -173,7 +174,7 @@ public class TestTdsDodsServer {
     int n = vlist.size();
     assert n > 0;
     Variable v = (Variable) vlist.get(n / 2);
-    logger.debug("Read all data from {}", v.getName());
+    logger.debug("Read all data from {}", v.getFullName());
     Array data = v.read();
     assert data.getSize() == v.getSize();
 
@@ -193,8 +194,8 @@ public class TestTdsDodsServer {
         String localPath = dirName + filename;
         logger.debug("--Compare {} to {}", localPath, dodsUrl);
 
-        NetcdfDataset org_ncfile = NetcdfDataset.openDataset(localPath);
-        NetcdfDataset dods_file = NetcdfDataset.openDataset(dodsUrl);
+        NetcdfDataset org_ncfile = NetcdfDatasets.openDataset(localPath);
+        NetcdfDataset dods_file = NetcdfDatasets.openDataset(dodsUrl);
 
         Formatter f = new Formatter();
         CompareNetcdf2 mind = new CompareNetcdf2(f, false, false, false);

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dt.grid.GridDataset;
@@ -49,7 +50,7 @@ public class TestHttpOpen {
   public void testOpenDataset() throws IOException {
     long start = System.currentTimeMillis();
 
-    try (NetcdfDataset ncd = ucar.nc2.dataset.NetcdfDataset.openDataset(url)) {
+    try (NetcdfDataset ncd = ucar.nc2.dataset.NetcdfDatasets.openDataset(url)) {
       System.out.printf("%s%n", ncd.getLocation());
     } finally {
       System.out.printf("**testOpenDataset took= %d msecs%n", (System.currentTimeMillis() - start));
@@ -72,7 +73,7 @@ public class TestHttpOpen {
     long start = System.currentTimeMillis();
     long totalBytes = 0;
 
-    try (NetcdfFile ncfile = NetcdfFile.open(url)) {
+    try (NetcdfFile ncfile = NetcdfFiles.open(url)) {
       Object mess = ncfile.sendIospMessage(NetcdfFile.IOSP_MESSAGE_RANDOM_ACCESS_FILE);
       assert mess != null;
       assert mess instanceof HTTPRandomAccessFile;

@@ -341,7 +341,7 @@ public class Tdm {
         List<String> openFiles = RandomAccessFile.getOpenFiles();
         if (openFiles.size() > 0) {
           System.out.printf("Open Files%n");
-          for (String filename : RandomAccessFile.getOpenFiles()) {
+          for (String filename : openFiles) {
             System.out.printf("  %s%n", filename);
           }
           System.out.printf("End Open Files%n");
@@ -455,8 +455,9 @@ public class Tdm {
     private final JCommander jc;
 
     public CommandLine(String progName, String[] args) throws ParameterException {
-      this.jc = new JCommander(this, args); // Parses args and uses them to initialize *this*.
-      jc.setProgramName(progName); // Displayed in the usage information.
+      this.jc = new JCommander(this);
+      this.jc.parse(args); // Parses args and uses them to initialize *this*.
+      this.jc.setProgramName(progName); // Displayed in the usage information.
     }
 
     public void printUsage() {

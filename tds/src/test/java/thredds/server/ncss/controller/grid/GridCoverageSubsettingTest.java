@@ -53,6 +53,7 @@ import thredds.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.ma2.Array;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
 import ucar.nc2.util.IO;
 import ucar.nc2.write.Ncdump;
@@ -174,14 +175,14 @@ public class GridCoverageSubsettingTest {
     }
 
     // Open the binary response in memory
-    NetcdfFile nf = NetcdfFile.open(fileOut);
+    NetcdfFile nf = NetcdfFiles.open(fileOut);
     System.out.printf("%s%n", nf);
-    Variable v = nf.findVariable(null, "x");
+    Variable v = nf.getRootGroup().findVariableLocal("x");
     assert v != null;
     Array x = v.read();
     logger.debug(Ncdump.printArray(x));
     System.out.printf("%n");
-    v = nf.findVariable(null, "y");
+    v = nf.getRootGroup().findVariableLocal("y");
     assert v != null;
     Array y = v.read();
     logger.debug(Ncdump.printArray(y));
@@ -192,7 +193,7 @@ public class GridCoverageSubsettingTest {
     ProjectionRect prect = new ProjectionRect(x.getDouble(0), y.getDouble(0), x.getDouble(nx - 1), y.getDouble(ny - 1));
 
     if (expect != null) {
-      v = nf.findVariable(null, vars);
+      v = nf.getRootGroup().findVariableLocal(vars);
       System.out.printf("v.getShape()=%s%n", Arrays.toString(v.getShape()));
       assertArrayEquals(expect.shape, v.getShape());
 

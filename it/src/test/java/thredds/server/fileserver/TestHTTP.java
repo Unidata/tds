@@ -14,9 +14,11 @@ import ucar.ma2.Array;
 import ucar.ma2.Index;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.DataFormatType;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.TestDir;
 import java.io.IOException;
@@ -31,7 +33,7 @@ public class TestHTTP {
 
   @Test
   public void testOpenNetcdfFile() throws IOException {
-    try (NetcdfFile ncfile = NetcdfFile.open(url)) {
+    try (NetcdfFile ncfile = NetcdfFiles.open(url)) {
       test(ncfile);
       logger.debug("*****************  Test testOpenNetcdfFile over HTTP done");
     }
@@ -39,7 +41,7 @@ public class TestHTTP {
 
   @Test
   public void testOpenNetcdfDataset() throws IOException {
-    try (NetcdfFile ncfile = NetcdfDataset.openDataset(url)) {
+    try (NetcdfFile ncfile = NetcdfDatasets.openDataset(url)) {
       test(ncfile);
       logger.debug("*****************  Test testOpenNetcdfDataset over HTTP done");
     }
@@ -62,11 +64,11 @@ public class TestHTTP {
     assert (null != ncfile.findDimension("lat"));
     assert (null != ncfile.findDimension("lon"));
 
-    assert ("face".equals(ncfile.findAttValueIgnoreCase(null, "yo", "barf")));
+    assert ("face".equals(ncfile.getRootGroup().findAttributeString("yo", "barf")));
 
     Variable temp = ncfile.findVariable("temperature");
     assert (null != temp);
-    assert ("K".equals(ncfile.findAttValueIgnoreCase(temp, "units", "barf")));
+    assert ("K".equals(temp.findAttributeString("units", "barf")));
 
     Attribute att = temp.findAttribute("scale");
     assert (null != att);
