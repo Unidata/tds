@@ -180,7 +180,7 @@ libraries["objenesis"] = "org.objenesis:objenesis:3.0.1"
 libraries["mockito"] = "org.mockito:mockito-core:3.3.3"
 
 // Fluent assertions for Java
-libraries["truth"] = "com.google.truth:truth:1.0.1"
+libraries["truth"] = "com.google.truth:truth:1.0"
 
 
 ////////////////////////////////////////// Other //////////////////////////////////////////
