@@ -105,6 +105,7 @@ dependencies {
     testCompile libraries["hamcrest-core"]
     testCompile libraries["commons-io"]
     testCompile libraries["JUnitParams"]
+    testCompile libraries["truth"]
 
     // Logging
     compile libraries["slf4j-api"]
