@@ -23,8 +23,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import thredds.mock.web.MockTdsContextLoader;
+import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.util.cache.FileCache;
 import ucar.unidata.io.RandomAccessFile;
+import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,8 +46,12 @@ public class TestStationFcOpenFiles {
   @Before
   public void setup() {
     mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    if (rafCache == null) {
-      rafCache = (FileCache) RandomAccessFile.getGlobalFileCache();
+    rafCache = (FileCache) RandomAccessFile.getGlobalFileCache();
+    rafCache.clearCache(true);
+    if (TestDir.cdmUseBuilders) {
+      NetcdfDatasets.getNetcdfFileCache().clearCache(true);
+    } else {
+      NetcdfDataset.getNetcdfFileCache().clearCache(true);
     }
   }
 
