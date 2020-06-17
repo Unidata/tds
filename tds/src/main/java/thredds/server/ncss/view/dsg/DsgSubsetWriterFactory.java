@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
+ * A factory for DsgSubsetWriter's. Used by NCSS.
  * Created by cwardgar on 2014/05/21.
  */
 public abstract class DsgSubsetWriterFactory {
