@@ -14,6 +14,7 @@ import thredds.client.catalog.Dataset;
 import thredds.client.catalog.tools.DataFactory;
 import thredds.server.catalog.TdsLocalCatalog;
 import ucar.ma2.Array;
+import ucar.ma2.DataType;
 import ucar.nc2.VariableSimpleIF;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.constants.FeatureType;
@@ -139,9 +140,11 @@ public class TestGribFmrcRegularTime {
       CoverageCoordAxis reftime = gcs.getAxis(AxisType.RunTime);
       Assert.assertNotNull(reftime);
       Assert.assertEquals(1, reftime.getNcoords());
-      double[] runtimeValues = new double[] {0.};
+
+      double[] expectedRuntimeValues = new double[] {0.};
+      Array expectedRefTime = Array.factory(DataType.DOUBLE, new int[] {}, expectedRuntimeValues);
       CompareNetcdf2 cn = new CompareNetcdf2();
-      assert cn.compareData("time", reftime.getCoordsAsArray(), Array.makeFromJavaArray(runtimeValues), false);
+      assert cn.compareData("time", reftime.getCoordsAsArray(), expectedRefTime, false);
 
       CoverageCoordAxis time = gcs.getTimeAxis();
       Assert.assertNotNull(time);
@@ -249,9 +252,11 @@ public class TestGribFmrcRegularTime {
       CoordinateAxis1DTime reftime = gcs.getRunTimeAxis();
       Assert.assertNotNull(reftime);
       Assert.assertEquals(1, reftime.getSize());
-      double[] runtimeValues = new double[] {0.};
+      double[] expectedRuntimeValues = new double[] {0.};
+      Array expectedRefTime = Array.factory(DataType.DOUBLE, new int[] {}, expectedRuntimeValues);
       CompareNetcdf2 cn = new CompareNetcdf2();
-      assert cn.compareData("reftime", reftime.read(), Array.makeFromJavaArray(runtimeValues), false);
+
+      assert cn.compareData("reftime", reftime.read(), expectedRefTime, false);
 
       CoordinateAxis time = gcs.getTimeAxis();
       Assert.assertNotNull(time);
