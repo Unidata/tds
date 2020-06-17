@@ -113,7 +113,8 @@ public class TestTomcatAuth extends UnitTestCommon {
     }
 
     public void clear() {
-      throw new UnsupportedOperationException();
+      this.username = null;
+      this.password = null;
     }
 
     // Serializable Interface
@@ -228,16 +229,12 @@ public class TestTomcatAuth extends UnitTestCommon {
 
       provider = new TestProvider(data.user, data.password);
 
-      try {
-        // Test global credentials provider
-        HTTPSession.setGlobalCredentialsProvider(provider);
+      // Test global credentials provider
+      HTTPSession.setGlobalCredentialsProvider(provider);
 
-        try (HTTPSession session = HTTPFactory.newSession(data.url)) {
-          result = invoke(session, data.url);
-          report(result, provider.counter);
-        }
-      } finally {
-        provider.clear();
+      try (HTTPSession session = HTTPFactory.newSession(data.url)) {
+        result = invoke(session, data.url);
+        report(result, provider.counter);
       }
 
       Assert.assertTrue("Incorrect return code: " + result.status, check(result.status));
