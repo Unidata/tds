@@ -23,6 +23,9 @@ import ucar.nc2.constants.FeatureType;
 import ucar.nc2.ft.DsgFeatureCollection;
 import ucar.nc2.ft.FeatureDataset;
 import ucar.nc2.ft.FeatureDatasetPoint;
+import ucar.nc2.ft.PointFeatureCollection;
+import ucar.nc2.ft.PointFeatureCollectionIterator;
+import ucar.nc2.ft.point.collection.CompositeStationCollection;
 import ucar.nc2.ft.point.writer.FeatureDatasetCapabilitiesWriter;
 import ucar.nc2.ft2.coverage.SubsetParams;
 import ucar.nc2.time.CalendarDate;
@@ -149,12 +152,20 @@ public class NcssPointController extends AbstractNcssController {
           boundingBox.getLatMax());
       model.put("horizExtentWKT", horizExtentWKT);
 
-      CalendarDateRange calendarDateRange = dsgFeatCol.getCalendarDateRange();
+      CalendarDateRange calendarDateRange;
+      if (dsgFeatCol instanceof CompositeStationCollection) {
+        // might be expensive...
+        calendarDateRange = ((CompositeStationCollection) dsgFeatCol).update();
+      } else {
+        calendarDateRange = dsgFeatCol.getCalendarDateRange();
+      }
+
       if (calendarDateRange == null) {
         CalendarDate start = CalendarDate.of(null, 0000, 1, 1, 0, 0, 0); // 0000-01-01T00:00:00.00Z
         CalendarDate end = CalendarDate.present();
         calendarDateRange = CalendarDateRange.of(start, end);
       }
+
       model.put("calendarDateRange", calendarDateRange);
 
       if (supportedOperation == SupportedOperation.POINT_REQUEST) {
