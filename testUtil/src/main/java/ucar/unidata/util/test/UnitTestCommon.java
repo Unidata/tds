@@ -6,6 +6,10 @@
 
 package ucar.unidata.util.test;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.nc2.NetcdfFile;
@@ -397,16 +401,16 @@ abstract public class UnitTestCommon {
 
   static public String readfile(String filename) throws IOException {
     StringBuilder buf = new StringBuilder();
-    File xx = new File(filename);
-    FileReader file = new FileReader(filename);
-    BufferedReader rdr = new BufferedReader(file);
-    String line;
-    while ((line = rdr.readLine()) != null) {
-      if (line.startsWith("#"))
-        continue;
-      buf.append(line + "\n");
+    Path file = Paths.get(filename);
+    try (BufferedReader rdr = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+      String line;
+      while ((line = rdr.readLine()) != null) {
+        if (line.startsWith("#"))
+          continue;
+        buf.append(line + "\n");
+      }
+      return buf.toString();
     }
-    return buf.toString();
   }
 
   static public byte[] readbinaryfile(String filename) throws IOException {

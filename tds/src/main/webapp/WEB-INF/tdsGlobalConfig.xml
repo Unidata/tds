@@ -30,7 +30,6 @@
         <value>opendap</value>
         <value>cdmRemote</value>
         <value>cdmrFeatureGrid</value>
-        <value>dap4</value>
         <value>httpServer</value>
         <value>jupyterNotebook</value>
         <value>netcdfSubsetGrid</value>
@@ -53,7 +52,6 @@
       <list>
         <value>opendap</value>
         <value>cdmRemote</value>
-        <value>dap4</value>
         <value>httpServer</value>
         <value>jupyterNotebook</value>
         <value>netcdfSubsetPoint</value>
@@ -67,7 +65,6 @@
       <list>
         <value>opendap</value>
         <value>cdmRemote</value>
-        <value>dap4</value>
         <value>httpServer</value>
         <value>jupyterNotebook</value>
         <value>iso</value>

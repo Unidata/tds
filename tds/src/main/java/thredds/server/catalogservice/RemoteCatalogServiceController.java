@@ -30,6 +30,7 @@ import java.net.URI;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
+import thredds.util.ContentType;
 
 /**
  * Remote CatalogService Controller using client/server catalogs
@@ -92,6 +93,7 @@ public class RemoteCatalogServiceController {
     // Otherwise, handle catalog as indicated by "command".
     switch (params.getCommand()) {
       case SHOW:
+        response.setContentType(ContentType.html.getContentHeader());
         return new ModelAndView("templates/catalog", parser.getCatalogViewContext(catalog, request, false));
 
       case SUBSET:
@@ -105,13 +107,16 @@ public class RemoteCatalogServiceController {
         }
 
         if (params.isHtmlView()) {
+          response.setContentType(ContentType.html.getContentHeader());
           return new ModelAndView("templates/dataset", parser.getDatasetViewContext(dataset, request, false));
         } else {
           Catalog subsetCat = catalog.subsetCatalogOnDataset(dataset);
+          response.setContentType(ContentType.xml.getContentHeader());
           return new ModelAndView("threddsInvCatXmlView", "catalog", subsetCat);
         }
 
       case VALIDATE:
+        response.setContentType(ContentType.html.getContentHeader());
         return constructValidationMessageModelAndView(uri, builder.getValidationMessage(), htmlConfig);
 
       default:
