@@ -116,7 +116,7 @@ public class TestTdsNcml {
 
       String units = v.getUnitsString();
       assert units != null;
-      assert units.equals("hours since 2006-09-25T06:00:00Z");
+      assert units.equals("Hour since 2006-09-25T06:00:00Z");
 
       int count = 0;
       Array data = v.read();

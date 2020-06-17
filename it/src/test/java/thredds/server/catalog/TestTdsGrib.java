@@ -89,7 +89,7 @@ public class TestTdsGrib {
 
     Dataset full = cat.findDatasetByID("HRRR/analysis/TP");
     Assert.assertNotNull(full);
-    Assert.assertEquals(11, full.getAccess().size());
+    Assert.assertEquals(10, full.getAccess().size());
     Assert.assertNull(full.getAccess(ServiceType.Resolver));
     Assert.assertNull(full.getAccess(ServiceType.HTTPServer));
     Assert.assertNotNull(full.getAccess(ServiceType.CdmRemote));
@@ -170,7 +170,7 @@ public class TestTdsGrib {
   public void testDefaultGribServices() throws IOException {
     String catalog = "/catalog/grib.v5/NDFD/CONUS_5km/catalog.xml"; // no service name, should use GRID default
     Catalog cat = TdsLocalCatalog.open(catalog);
-    testCat(cat, 11, true, null, 0);
+    testCat(cat, 10, true, null, 0);
 
     Dataset top = cat.getDatasetsLocal().get(0);
     Assert.assertTrue(!top.hasAccess());
@@ -181,7 +181,7 @@ public class TestTdsGrib {
       } else {
         CatalogRef catref = (CatalogRef) ds;
         Catalog cat2 = TdsLocalCatalog.openFromURI(catref.getURI());
-        testCat(cat2, 11, false, "GridServices", 12);
+        testCat(cat2, 10, false, "GridServices", 11);
         break;
       }
     }

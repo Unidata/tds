@@ -22,7 +22,6 @@ import thredds.core.StandardService;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.unidata.util.test.category.NeedsContentRoot;
 import ucar.unidata.util.test.category.NeedsExternalResource;
-import ucar.unidata.util.test.TestDir;
 import java.lang.invoke.MethodHandles;
 
 @RunWith(SpringJUnit4ClassRunner.class)
