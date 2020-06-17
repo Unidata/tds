@@ -11,6 +11,7 @@ import thredds.util.ContentType;
 import thredds.util.TdsPathUtils;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFileWriter;
+import ucar.nc2.NetcdfFileWriter.Version;
 import ucar.nc2.constants.CDM;
 import ucar.nc2.ft.DsgFeatureCollection;
 import ucar.nc2.ft.FeatureDatasetPoint;
@@ -32,13 +33,13 @@ import java.util.List;
 public class PointSubsetWriterNetcdf extends AbstractPointSubsetWriter {
   private final NcssDiskCache ncssDiskCache;
   private final OutputStream out;
-  private final NetcdfFileWriter.Version version;
+  private final Version version;
 
   private final File netcdfResult;
   private final WriterCFPointCollection cfWriter;
 
   public PointSubsetWriterNetcdf(FeatureDatasetPoint fdPoint, SubsetParams ncssParams, NcssDiskCache ncssDiskCache,
-      OutputStream out, NetcdfFileWriter.Version version) throws NcssException, IOException {
+      OutputStream out, Version version) throws NcssException, IOException {
     super(fdPoint, ncssParams);
 
     this.ncssDiskCache = ncssDiskCache;

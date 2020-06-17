@@ -35,10 +35,7 @@ jobs:
       - name: Print java version
         run: java -version
       - name: Install netCDF-C
-        shell: bash
-        run: |
-          sudo apt update
-          sudo apt install libnetcdf-dev
+        run: sudo apt update && sudo apt-get install libnetcdf-dev
       - name: Cache Gradle packages
         uses: actions/cache@v1
         with:
@@ -74,11 +71,8 @@ jobs:
       - name: Print java version
         run: java -version
       - name: Install netCDF-C
-        shell: bash
-        run: |
-          sudo apt update
-          sudo apt install libnetcdf-dev
-       - name: Cache Gradle packages
+        run: sudo apt update && sudo apt-get install libnetcdf-dev
+      - name: Cache Gradle packages
         uses: actions/cache@v1
         with:
           path: ~/.gradle/caches

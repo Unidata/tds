@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import thredds.core.TdsRequestedDataset;
 import ucar.httpservices.HTTPUtil;
-import ucar.nc2.FileWriter2;
 import ucar.nc2.NetcdfFile;
-import ucar.nc2.NetcdfFileWriter;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.iosp.NCheader;
 import ucar.nc2.util.CancelTask;
 import ucar.nc2.write.Nc4Chunking;
 import ucar.nc2.write.Nc4ChunkingDefault;
+import ucar.nc2.write.NetcdfCopier;
+import ucar.nc2.write.NetcdfFileFormat;
+import ucar.nc2.write.NetcdfFormatWriter;
 import ucar.unidata.io.RandomAccessFile;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -348,30 +349,21 @@ public class DownloadController extends LoadCommon {
   // Reifiers
 
   protected void makeNetcdf4(NetcdfFile ncfile, String target) throws IOException {
-    try {
-      CancelTask cancel = CancelTask.create();
-      FileWriter2 writer = new FileWriter2(ncfile, target, NetcdfFileWriter.Version.netcdf4, chunking);
-      writer.getNetcdfFileWriter().setLargeFile(true);
-      NetcdfFile ncfileOut = writer.write(cancel);
-      if (ncfileOut != null)
-        ncfileOut.close();
-      cancel.setDone(true);
-    } catch (IOException ioe) {
-      throw ioe; // temporary
+    NetcdfFormatWriter.Builder builder = NetcdfFormatWriter.builder().setNewFile(true)
+        .setFormat(NetcdfFileFormat.NETCDF4).setLocation(target).setChunker(chunking);
+
+    NetcdfCopier copier = NetcdfCopier.create(ncfile, builder);
+    try (NetcdfFile ncfileOut = copier.write(null)) {
+      // empty
     }
   }
 
   protected void makeNetcdf3(NetcdfFile ncfile, String target) throws IOException {
-    try {
-      CancelTask cancel = CancelTask.create();
-      FileWriter2 writer = new FileWriter2(ncfile, target, NetcdfFileWriter.Version.netcdf3, chunking);
-      writer.getNetcdfFileWriter().setLargeFile(true);
-      NetcdfFile ncfileOut = writer.write(cancel);
-      if (ncfileOut != null)
-        ncfileOut.close();
-      cancel.setDone(true);
-    } catch (IOException ioe) {
-      throw ioe; // temporary
+    NetcdfFormatWriter.Builder builder = NetcdfFormatWriter.builder().setNewFile(true)
+        .setFormat(NetcdfFileFormat.NETCDF3_64BIT_OFFSET).setLocation(target);
+
+    NetcdfCopier copier = NetcdfCopier.create(ncfile, builder);
+    try (NetcdfFile ncfileOut = copier.write(null)) {
     }
   }
 
