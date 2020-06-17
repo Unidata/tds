@@ -170,14 +170,11 @@ public class NcssGridController extends AbstractNcssController {
   }
 
   private String getResponseFileName(String requestPathInfo, NetcdfFileWriter.Version version) {
-    Random random = new Random(System.currentTimeMillis());
-    int randomInt = random.nextInt();
+    File ncFile = ncssDiskCache.getDiskCache().createUniqueFile("ncss-grid", ".nc");
 
-    String filename = TdsPathUtils.getFileNameForResponse(requestPathInfo, version);
-    String pathname = Integer.toString(randomInt) + "/" + filename;
-    File ncFile = ncssDiskCache.getDiskCache().getCacheFile(pathname);
     if (ncFile == null)
       throw new IllegalStateException("NCSS misconfigured cache");
+
     return ncFile.getPath();
   }
 
