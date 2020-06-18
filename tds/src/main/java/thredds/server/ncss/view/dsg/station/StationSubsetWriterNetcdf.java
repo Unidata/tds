@@ -46,7 +46,7 @@ public class StationSubsetWriterNetcdf extends AbstractStationSubsetWriter {
     this.out = out;
     this.version = version;
 
-    this.netcdfResult = ncssDiskCache.getDiskCache().createUniqueFile("ncssTemp", ".nc");
+    this.netcdfResult = ncssDiskCache.getDiskCache().createUniqueFile("ncss-station", ".nc");
     List<Attribute> attribs = new ArrayList<>();
     attribs.add(new Attribute(CDM.TITLE, "Extracted data from TDS Feature Collection " + fdPoint.getLocation()));
 
