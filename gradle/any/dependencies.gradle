@@ -241,18 +241,12 @@ libraries["jackson-core"] = "com.fasterxml.jackson.core:jackson-core:2.9.9"
 libraries["jackson-annotations"] = "com.fasterxml.jackson.core:jackson-annotations:2.9.9"
 libraries["jackson-databind"] = "com.fasterxml.jackson.core:jackson-databind:2.9.9.1"
 
-libraries["chronicle-map"] = dependencies.create("net.openhft:chronicle-map:3.17.4") {
+libraries["chronicle-map"] = dependencies.create("net.openhft:chronicle-map:3.19.40") {
     // The TDS pulls in jna via the netcdf4 module in netcdf-java, so let's exclude
     // the one pulled in by chronicle-map and make sure we use the same version
-    // netcdf4 uses
+    // netcdf4 uses (netCDF-Java uses 5.4, chronicle-map uses 5.5)
     exclude group: 'net.java.dev.jna', module: 'jna'
     exclude group: 'net.java.dev.jna', module: 'jna-platform'
-    // We do not need XStream for our use of chronicle-map.
-    // Nuke it. [SEC]
-    exclude group: 'com.thoughtworks.xstream', module: 'xstream'
-    // We do not need pax-url-aether
-    // Nuke it. [SEC]
-    exclude group: 'org.ops4j.pax.url', module: 'pax-url-aether'
 }
 
 // replaces the one that we exclude from chronicle-map
