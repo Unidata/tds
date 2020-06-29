@@ -4,6 +4,8 @@ apply plugin: "com.diffplug.gradle.spotless"
 spotless {
   java {
     target '**/*.java'
+    // do not apply to generated code
+    targetExclude 'tdcommon/src/main/java/thredds/server/catalog/tracker/ConfigCatalogExtProto.java'
     eclipse().configFile 'eclipse-style-guide.xml'
     encoding 'UTF-8'
   }

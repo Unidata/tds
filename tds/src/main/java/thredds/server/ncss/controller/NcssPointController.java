@@ -4,8 +4,15 @@
  */
 package thredds.server.ncss.controller;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -25,6 +32,8 @@ import ucar.nc2.ft.FeatureDataset;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft.PointFeatureCollection;
 import ucar.nc2.ft.PointFeatureCollectionIterator;
+import ucar.nc2.ft.point.CollectionInfo;
+import ucar.nc2.ft.point.DsgCollectionHelper;
 import ucar.nc2.ft.point.collection.CompositeStationCollection;
 import ucar.nc2.ft.point.writer.FeatureDatasetCapabilitiesWriter;
 import ucar.nc2.ft2.coverage.SubsetParams;
@@ -50,8 +59,29 @@ import java.util.Map;
 @Controller
 @RequestMapping("/ncss/point")
 public class NcssPointController extends AbstractNcssController {
+  private static final Logger logger = LoggerFactory.getLogger(AbstractNcssController.class);
+
   protected String getBase() {
     return StandardService.netcdfSubsetPoint.getBase();
+  }
+
+
+  static LoadingCache<DsgFeatureCollection, CollectionInfo> boundsCache = CacheBuilder.newBuilder()
+      .expireAfterAccess(12, TimeUnit.HOURS).build(new CacheLoader<DsgFeatureCollection, CollectionInfo>() {
+        @Override
+        public CollectionInfo load(final DsgFeatureCollection dsgFeatureCollection) throws Exception {
+          return new DsgCollectionHelper(dsgFeatureCollection).calcBounds();
+        }
+      });
+
+  private static CollectionInfo getCollectionInfo(DsgFeatureCollection dsgFeatureCollection) {
+    CollectionInfo ci = null;
+    try {
+      ci = boundsCache.get(dsgFeatureCollection);
+    } catch (ExecutionException e) {
+      logger.warn("Could not get info for featureCollection %s", dsgFeatureCollection, e);
+    }
+    return ci;
   }
 
   @RequestMapping("**")
@@ -140,7 +170,9 @@ public class NcssPointController extends AbstractNcssController {
 
       DsgFeatureCollection dsgFeatCol = dsgFeatCols.get(0);
 
-      LatLonRect boundingBox = dsgFeatCol.getBoundingBox();
+      CollectionInfo info = getCollectionInfo(dsgFeatCol);
+
+      LatLonRect boundingBox = info.bbox;
       if (boundingBox == null) {
         boundingBox = new LatLonRect(LatLonPoint.create(-90, -180), LatLonPoint.create(90, 180)); // Whole earth.
       }
@@ -152,12 +184,15 @@ public class NcssPointController extends AbstractNcssController {
           boundingBox.getLatMax());
       model.put("horizExtentWKT", horizExtentWKT);
 
-      CalendarDateRange calendarDateRange;
-      if (dsgFeatCol instanceof CompositeStationCollection) {
-        // might be expensive...
-        calendarDateRange = ((CompositeStationCollection) dsgFeatCol).update();
-      } else {
-        calendarDateRange = dsgFeatCol.getCalendarDateRange();
+
+      CalendarDateRange calendarDateRange = info.getCalendarDateRange(null);
+      if (calendarDateRange == null) {
+        if (dsgFeatCol instanceof CompositeStationCollection) {
+          // might be expensive...
+          calendarDateRange = ((CompositeStationCollection) dsgFeatCol).update();
+        } else {
+          calendarDateRange = dsgFeatCol.getCalendarDateRange();
+        }
       }
 
       if (calendarDateRange == null) {

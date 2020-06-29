@@ -69,13 +69,9 @@ public class DatasetExt implements Externalizable {
 
   @Override
   public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-    int avail = in.available();
     int len = in.readInt();
     byte[] b = new byte[len];
-    int n = in.read(b);
-
-    if (n != len)
-      throw new RuntimeException("barf with read size=" + len + " in.available=" + avail);
+    in.readFully(b);
 
     ConfigCatalogExtProto.Dataset pDataset = ConfigCatalogExtProto.Dataset.parseFrom(b);
     this.catId = pDataset.getCatId(); // LOOK not used
