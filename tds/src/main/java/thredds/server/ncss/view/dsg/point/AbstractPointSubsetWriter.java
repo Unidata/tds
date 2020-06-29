@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by cwardgar on 2014/06/02.
+ * TODO: investigate why this covers CFPointWriter, requiring the subclasses to be public
  */
 public abstract class AbstractPointSubsetWriter extends DsgSubsetWriter {
   protected final PointFeatureCollection pointFeatureCollection;

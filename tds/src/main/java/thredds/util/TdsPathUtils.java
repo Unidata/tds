@@ -7,6 +7,7 @@ package thredds.util;
 import com.google.common.base.Preconditions;
 import ucar.nc2.NetcdfFileWriter;
 import javax.servlet.http.HttpServletRequest;
+import ucar.nc2.write.NetcdfFileFormat;
 
 /**
  * Utilities for extracting path information from request.
@@ -65,9 +66,27 @@ public class TdsPathUtils {
 
   ///////////////////////////////////////////////////
 
+
   public static String getFileNameForResponse(String pathInfo, NetcdfFileWriter.Version version) {
     Preconditions.checkNotNull(version, "version == null");
     return getFileNameForResponse(pathInfo, version.getSuffix());
+  }
+
+  public static String getSuffix(NetcdfFileFormat format) {
+    Preconditions.checkNotNull(format, "format == null");
+    switch (format) {
+      case NETCDF4:
+        return ".nc4";
+      case NCSTREAM:
+        return ".ncs";
+      default:
+        return ".nc";
+    }
+  }
+
+  public static String getFileNameForResponse(String pathInfo, NetcdfFileFormat format) {
+    Preconditions.checkNotNull(format, "format == null");
+    return getFileNameForResponse(pathInfo, getSuffix(format));
   }
 
   public static String getFileNameForResponse(String pathInfo, String extension) {
