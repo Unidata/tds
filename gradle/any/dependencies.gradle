@@ -306,7 +306,11 @@ libraries["gwt-user"] =  "com.google.gwt:gwt-user:${versions["gwt"]}"
 
 libraries["gwt-dev"] = "com.google.gwt:gwt-dev:${versions["gwt"]}"
 
-libraries["threddsIso"] = "EDS:threddsIso:2.3.0-SNAPSHOT"
+libraries["threddsIso"] = dependencies.create("EDS:threddsIso:2.4.0-SNAPSHOT") {
+    // exclude servlet-api
+    exclude group: "javax.servlet", module: "javax.servlet-api"
+    exclude group: "com.google.guava", module: "guava"
+}
 
 libraries["Saxon-HE"] = "net.sf.saxon:Saxon-HE:9.7.0-8"
 
