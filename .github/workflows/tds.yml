@@ -35,6 +35,7 @@ jobs:
       - name: Print java version
         run: java -version
       - name: Install netCDF-C
+        shell: bash
         run: |
           sudo apt update
           sudo apt install libnetcdf-dev
@@ -73,6 +74,7 @@ jobs:
       - name: Print java version
         run: java -version
       - name: Install netCDF-C
+        shell: bash
         run: |
           sudo apt update
           sudo apt install libnetcdf-dev
