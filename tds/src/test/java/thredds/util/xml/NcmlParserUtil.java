@@ -14,7 +14,7 @@ public class NcmlParserUtil {
   private static final String NS_PREFIX = "nc";
   private static final String NS_PREFIX_ON_TAG = "nc:";
 
-  public static List getNcMLElements(String path, Document doc) {
+  public static List getNcmlElements(String path, Document doc) {
 
     // XPath doesn't support default namespaces, so we add nc as a prefix for the tags within the namespace!!!
     if (!path.startsWith(NS_PREFIX_ON_TAG) && !path.startsWith("/"))

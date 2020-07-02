@@ -35,7 +35,7 @@ public class TestTdsNcml {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   @Test
-  public void testNcMLinDataset() throws IOException {
+  public void testNcmlInDataset() throws IOException {
     Catalog cat = TdsLocalCatalog.open(null);
 
     Dataset ds = cat.findDatasetByID("ExampleNcMLModified");
@@ -67,7 +67,7 @@ public class TestTdsNcml {
   }
 
   @Test
-  public void testNcMLinDatasetScan() throws IOException {
+  public void testNcmlInDatasetScan() throws IOException {
     Catalog cat = TdsLocalCatalog.open(null);
 
     Dataset catref = cat.findDatasetByID("ModifyDatasetScan");

@@ -107,7 +107,7 @@ public class CdmRemoteController {
           return new ResponseEntity<>(cdl, responseHeaders, HttpStatus.OK);
 
         case "ncml":
-          String ncml = ncfile.toNcML(absPath);
+          String ncml = ncfile.toNcml(absPath);
           responseHeaders.set(ContentType.HEADER, ContentType.xml.getContentHeader());
           return new ResponseEntity<>(ncml, responseHeaders, HttpStatus.OK);
 

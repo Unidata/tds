@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -122,9 +121,9 @@ public class CdmrControllerTest {
 
     Document doc = XmlUtil.getStringResponseAsDoc(result.getResponse());
 
-    int hasDims = NcmlParserUtil.getNcMLElements("netcdf/dimension", doc).size();
-    int hasAtts = NcmlParserUtil.getNcMLElements("netcdf/attribute", doc).size();
-    int hasVars = NcmlParserUtil.getNcMLElements("//variable", doc).size();
+    int hasDims = NcmlParserUtil.getNcmlElements("netcdf/dimension", doc).size();
+    int hasAtts = NcmlParserUtil.getNcmlElements("netcdf/attribute", doc).size();
+    int hasVars = NcmlParserUtil.getNcmlElements("//variable", doc).size();
 
     // Not really checking the content just the number of elements
     assertEquals(this.ndims, hasDims);
