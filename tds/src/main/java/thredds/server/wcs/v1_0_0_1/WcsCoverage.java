@@ -170,7 +170,7 @@ public class WcsCoverage {
         // write the file
         // default chunking - let user control at some point
         NetcdfFormatWriter.Builder writerb = NetcdfFormatWriter.builder().setLocation(outFile.getAbsolutePath());
-        NetcdfFormatWriter.Result result = CFGridCoverageWriter.write(this.wcsDataset.getDataset(),
+        CFGridCoverageWriter.Result result = CFGridCoverageWriter.write(this.wcsDataset.getDataset(),
             ImmutableList.of(this.coverage.getName()), params, true, writerb, 0);
 
         if (!result.wasWritten()) {

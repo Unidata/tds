@@ -147,7 +147,7 @@ public class NcssGridController extends AbstractNcssController {
     // write the file
     // default chunking - let user control at some point
     NetcdfFormatWriter.Builder writerb = NetcdfFormatWriter.builder().setLocation(responseFilename).setFormat(version);
-    NetcdfFormatWriter.Result result =
+    CFGridCoverageWriter.Result result =
         CFGridCoverageWriter.write(gcd, params.getVar(), subset, params.isAddLatLon(), writerb, maxFileDownloadSize);
 
     if (!result.wasWritten()) {
