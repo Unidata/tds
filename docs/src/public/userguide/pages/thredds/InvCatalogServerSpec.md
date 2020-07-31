@@ -1,6 +1,6 @@
 ---
 title: Server-side Catalog Specification
-last_updated: 2020-07-30
+last_updated: 2020-07-31
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: server_side_catalog_specification.html
@@ -106,7 +106,7 @@ A `catalogScan` element indicates a top directory to scan for catalogs (files en
 
 #### `dataset` element
 
-The `[ncml:netcdf]`(https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the `restrictAccess` attribute:
+The `[ncml:netcdf]`(https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the [`restrictAccess`](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) attribute:
 
 ~~~xml
 <xsd:element name="dataset" type="DatasetType" />
@@ -132,7 +132,7 @@ The `[ncml:netcdf]`(https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/anno
 ~~~
 
 * The `ncml:netcdf` element [modifies the dataset with NcML](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/basic_ncml_tutorial.html){:target="_blank"}. For the [`datasetScan` element](server_side_catalog_specification.html#datasetscan-element), it modifies all contained datasets.
-* The `restrictAccess` attribute tells the TDS to restrict access to this dataset. It is always inherited by all contained datasets.
+* The `restrictAccess` attribute tells the TDS to [restrict access](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) to this dataset. It is always inherited by all contained datasets.
 
 #### `datasetScan` element 
 
