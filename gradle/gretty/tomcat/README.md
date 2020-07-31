@@ -1,5 +1,6 @@
 Keystore was generated with:
 
+~~~bash
 $ keytool -genkey -alias tds -keyalg RSA -validity 3650 -keystore keystore
 Enter keystore password: secret666
 Re-enter new password: secret666
@@ -20,13 +21,4 @@ Is CN=localhost, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown correct
 
 Enter key password for <tds>
 	(RETURN if same as keystore password): RETURN
-
-
-In tomcat-users.xml, we have:
-
-  <user username="tds"
-        password="secret666"
-        roles="tdsConfig,manager-gui,tdsMonitor"/>
-
-We're using the "tds" alias and its "secret666" password that we setup in the keystore. The "tds" user has
-"tdsConfig", "manager-gui", and "tdsMonitor" powers.
+~~~

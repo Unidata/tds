@@ -384,12 +384,12 @@ abstract public class DapController extends HttpServlet {
       case XML:
       case HTML:
         throw new IOException("Unsupported return format: " + drq.getFormat());
-        /*
-         * sw = new StringWriter();
-         * DAPPrint dp = new DAPPrint(sw);
-         * dp.print(dsp.getDataset(), ce);
-         * break;
-         */
+      /*
+       * sw = new StringWriter();
+       * DAPPrint dp = new DAPPrint(sw);
+       * dp.print(dsp.getDataset(), ce);
+       * break;
+       */
       case NONE:
       default:
         DapSerializer writer = new DapSerializer(dsp, ce, cw, order, drq.getChecksumMode());

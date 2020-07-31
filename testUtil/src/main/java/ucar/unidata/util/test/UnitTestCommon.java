@@ -515,7 +515,7 @@ abstract public class UnitTestCommon {
    * return true if this path appears to start with a windows drive letter
    *
    * @param path
-   * @return
+   * @return true, if path appears to start with a drive letter
    */
 
   static public boolean hasDriveLetter(String path) {

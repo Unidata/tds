@@ -20,19 +20,16 @@
 #####################
 
 gradle/** @lesserwhirls
-travis/* @lesserwhirls
 
 ###########################################
 # classpath / not module specific matches #
 ###########################################
 
-**/iosp/nids/** @dopplershift
 **/thredds/server/radarServer2/** @dopplershift
 
 **/opendap/** @DennisHeimbigner
 **/dap4/** @DennisHeimbigner
 
-**/webapp/godiva2/** @lesserwhirls
 **/webapp/godiva2/** @lesserwhirls
 
 ######################
@@ -47,8 +44,6 @@ gradle* @lesserwhirls
 ####################
 # individual files #
 ####################
-
-gradle/any/dependencies.gradle @lesserwhirls @DennisHeimbigner
 
 docs/internal/release.md @lesserwhirls
 

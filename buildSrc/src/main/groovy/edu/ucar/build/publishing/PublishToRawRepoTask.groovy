@@ -27,13 +27,13 @@ class PublishToRawRepoTask extends DefaultTask {
     @Input
     String host
     
-    /** The name of the raw repository to publish to, e.g. {@code tds-docs}. */
+    /** The name of the raw repository to publish to, e.g. {@code netcdf-java-docs}. */
     @Input
     String repoName
     
     /**
      * The local file that will be published. If it is a directory, all descendant files within will be published.
-     * The paths of those files, relative to {@code srcFile}, will be retained in the final artifact URL. For example:
+     * The paths of those files, relative to {@code publishSrc}, will be retained in the final artifact URL. For example:
      * <pre>
      *     [cwardgar@lenny ~/foo] $ tree
      *     .
@@ -42,14 +42,14 @@ class PublishToRawRepoTask extends DefaultTask {
      *         └── publishing
      *             └── PublishToRawRepoTask.groovy
      * </pre>
-     * If {@code srcFile == ~/foo}, then the URLs of the artifacts will be:
+     * If {@code publishSrc == ~/foo}, then the URLs of the artifacts will be:
      * <ul>
      *     <li>{@code $host/$repoName/$destPath/build/PublishingUtil.groovy}</li>
      *     <li>{@code $host/$repoName/$destPath/build/publishing/PublishToRawRepoTask.groovy}</li>
      * </ul>
      */
     @Input
-    File srcFile
+    String publishSrc
     
     /**
      * The destination, relative to {@code repoName}'s root, to which artifacts will be published, e.g.
@@ -74,7 +74,7 @@ class PublishToRawRepoTask extends DefaultTask {
      * stop adding additional files to the request. Submit it and start building the next one.
      */
     @Input @Optional
-    int endRequestThreshold = 5 * 1024 * 1024  // 5 MB
+    Integer endRequestThreshold = 5 * 1024 * 1024  // 5 MB
     
     // No @Output. The task will never be considered up-to-date.
     
@@ -86,7 +86,7 @@ class PublishToRawRepoTask extends DefaultTask {
     @TaskAction
     def publish() {
         LinkedList<File> srcFiles = new LinkedList<>()
-    
+        File srcFile = new File(publishSrc)
         if (srcFile.isFile()) {
             srcFiles << srcFile
         } else if (srcFile.isDirectory()) {
@@ -94,7 +94,7 @@ class PublishToRawRepoTask extends DefaultTask {
                 srcFiles << file
             }
         } else {
-            throw new GradleException("'$srcFile' isn't a normal file or directory. Most likely it doesn't exist.")
+            throw new GradleException("'$publishSrc' isn't a normal file or directory. Most likely it doesn't exist.")
         }
     
         HttpBuilder http = OkHttpBuilder.configure {

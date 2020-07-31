@@ -1,0 +1,30 @@
+apply from: "$rootDir/gradle/any/java-common.gradle"
+apply from: "$rootDir/gradle/any/publishing.gradle"
+
+apply plugin: 'war'
+
+publishing {
+  publications {
+    mavenSources(MavenPublication) {
+      from components.web
+      artifact tasks.sourceJar
+      artifact tasks.javadocJar
+      artifact tasks.jar
+      // yeah...
+      pom.withXml {
+        Node pomNode = asNode()
+        pomNode.dependencies.dependency.exclusions.'*'.findAll() {
+          it.artifactId.text() == 'spring-boot-starter-tomcat' | it.artifactId.text() == 'spring-boot-starter-jetty'
+        }.each() {
+          it.parent().remove(it)
+        }
+        pomNode = asNode()
+        pomNode.dependencies.dependency.exclusions.findAll() {
+          it.children().isEmpty()
+        }.each() {
+          it.parent().remove(it)
+        }
+      }
+    }
+  }
+}

@@ -6,7 +6,6 @@
 package thredds;
 
 import java.util.Optional;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -48,10 +47,14 @@ public class TestOnLocalServer {
    */
   public static String withProtocolAndPath(String protocol, String path) {
     StringBuilder sb = new StringBuilder();
-    sb.append(StringUtils.stripEnd(protocol, "/\\:")); // Remove trailing slashes and colon from protocol.
+    // Remove trailing slashes and colon from protocol.
+    sb.append(protocol.replaceFirst("[:/]*$", ""));
+    // add back ://, now knowing we have it correct
     sb.append("://");
+    // add the server
     sb.append(server);
-    sb.append(StringUtils.stripStart(path, "/\\")); // Remove leading slashes from path.
+    // remove leading slashes from the path and add it
+    sb.append(path.replaceFirst("^(/*)", ""));
 
     return sb.toString();
   }

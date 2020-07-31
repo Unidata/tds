@@ -1,15 +1,15 @@
-description = "OpenDAP server code."
-ext.title = "OpenDAP server code"
+description = 'OpenDAP server code.'
+ext.title = 'OpenDAP server code'
 
 apply from: "$rootDir/gradle/any/dependencies.gradle"
-apply from: "$rootDir/gradle/any/java.gradle"
-apply from: "$rootDir/gradle/any/testing.gradle"
-apply from: "$rootDir/gradle/any/publishing.gradle"
+apply from: "$rootDir/gradle/any/java-published.gradle"
 
 dependencies {
-    compile libraries["cdm-core"]
-    compile libraries["opendap"]
-    compile libraries["slf4j-api"]
+    implementation enforcedPlatform(project(':tds-platform'))
 
-    compileOnly libraries["javax.servlet-api"]
+    compile 'edu.ucar:cdm-core'
+    compile 'edu.ucar:opendap'
+    compile 'org.slf4j:slf4j-api'
+
+    compileOnly 'javax.servlet:javax.servlet-api'
 }

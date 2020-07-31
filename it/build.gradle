@@ -1,149 +1,70 @@
 import javax.xml.transform.TransformerFactory
 
-description = """
-    TDS - NetCDF-Java library integration Test module. This module contains all classes and settings
-    needed to test the NetCDF-Java library in a servlet container. Starts up a TDS server and then sends
-    requests to it. Relies on having access to cdmUnitTest directory, so can only be run at Unidata.
-""".replaceAll("\\s+", " ").trim()
+description = 'TDS - NetCDF-Java library integration Test module. Starts up a TDS server and then sends requests ' +
+    'to it. Relies on having access to cdmUnitTest directory - see https://github.com/unidata/thredds-test-data.'
 
-ext.title = "Test Integration"
-ext.url = "https://www.unidata.ucar.edu/software/thredds/current/tds/TDS.html"
+ext.title = 'Test Integration'
+ext.url = 'https://www.unidata.ucar.edu/software/tds/'
 
 apply from: "$rootDir/gradle/any/dependencies.gradle"
-apply from: "$rootDir/gradle/any/java.gradle"
-apply from: "$rootDir/gradle/any/testing.gradle"
-apply from: "$rootDir/gradle/any/coverage.gradle"
-// 'it' is not published
-apply from: "$rootDir/gradle/any/gretty.gradle"
-
+apply from: "$rootDir/gradle/any/java-test-only.gradle"
 apply plugin: 'groovy'  // For Spock tests.
 
 dependencies {
-    testCompile libraries["cdm-core"]
-    testCompile libraries["httpservices"]
-    testCompile project(":tdcommon")
-    testCompile(project(":tds")) {
-        exclude group: "org.apache.logging.log4j"  // We don't want TDS's log4j cruft.
-    }
+  compile enforcedPlatform(project(':tds-platform'))
+  compile enforcedPlatform(project(':tds-testing-platform'))
 
-    testRuntime libraries["cdm-image"]
-    testRuntime libraries["cdm-radial"]
-    testRuntime libraries["grib"]
-    testRuntime libraries["opendap"]
-    testRuntime libraries["cdm-mcidas"]
-    testRuntime libraries["d4cdm"]
+  testCompile 'edu.ucar:cdm-core'
+  testCompile 'edu.ucar:httpservices'
+  testCompile project(':tdcommon')
+  testCompile(project(':tds')) {
+    exclude group: 'org.apache.logging.log4j'  // We don't want TDS's log4j cruft.
+    exclude group: 'org.apache.taglibs', module: 'taglibs-standard-spec'
+    exclude group: 'org.apache.taglibs', module: 'taglibs-standard-impl'
+  }
+  testCompile project(':testUtil')
+  // tds needs threddsIso stuff at runtime
+  runtime 'EDS:threddsIso'
+  runtime 'net.sf.saxon:Saxon-HE'
 
-    testCompile libraries["jdom2"]
-    testCompile libraries["commons-io"]
-    testCompile libraries["joda-time"]
-    testCompile libraries["httpcore"]
-    testCompile libraries["httpclient"]
-    testCompile libraries["httpmime"]
-    testCompile libraries["commons-lang3"]
-    testCompile libraries["spring-context"]
-    testCompile libraries["slf4j-api"]
-    testCompile libraries["xmlunit-core"]  // For comparing catalog XML.
+  testRuntime 'edu.ucar:cdm-image'
+  testRuntime 'edu.ucar:cdm-radial'
+  testRuntime 'edu.ucar:grib'
+  testRuntime 'edu.ucar:opendap'
+  testRuntime 'edu.ucar:cdm-mcidas'
+  testRuntime 'edu.ucar:d4cdm'
 
-    testRuntime libraries["jaxen"]
-    testRuntime libraries["logback-classic"]
+  testCompile 'org.jdom:jdom2'
+  testCompile 'commons-io:commons-io'
+  testCompile 'joda-time:joda-time'
+  testCompile 'org.apache.httpcomponents:httpcore'
+  testCompile 'org.apache.httpcomponents:httpclient'
+  testCompile 'org.apache.httpcomponents:httpmime'
+  testCompile 'org.apache.commons:commons-lang3'// only used by this module - replace?
+  testCompile 'org.springframework:spring-context'
+  testCompile 'org.slf4j:slf4j-api'
+  testCompile 'org.xmlunit:xmlunit-core'  // For comparing catalog XML.
 
-    // These are for Spock.
-    testCompile libraries["groovy-all"]
-    testCompile libraries["spock-core"]
+  testRuntime 'jaxen:jaxen'
+  testRuntime 'ch.qos.logback:logback-classic'
+
+  // These are for Spock.
+  testCompile 'org.spockframework:spock-core'
+  testCompile 'org.codehaus.groovy:groovy-all'
 }
 
 // Gretty will start the webapp before this task and shut it down afterward.
 test {
-    // isContentRootAvailable, isJenkins, and contentRootKey are defined on the root project in testing.gradle.
-    if (!isContentRootAvailable && !isJenkins) {  // Don't skip tests on Jenkins, except NotJenkins ones.
-        logger.warn "Skipping all integration tests (task \'$path\'): " +
-                "\'$contentRootKey\' property not defined."
+  // isContentRootAvailable, isJenkins, and contentRootKey are defined on the root project in testing.gradle.
+  if (!isContentRootAvailable && !isJenkins) {  // Don't skip tests on Jenkins, except NotJenkins ones.
+    logger.warn "Skipping all integration tests (task \'$path\'): " + "\'$contentRootKey\' property not defined."
 
-        // We can't stand up a functioning TDS test instance without a valid content root,
-        // so disable the task altogether.
-        enabled = false
-    }
+    // We can't stand up a functioning TDS test instance without a valid content root,
+    // so disable the task altogether.
+    enabled = false
+  }
 }
 
-// Additional Gretty config specific to integration testing.
-gretty {
-    overlayAndApplyConfigOf ':tds'
-
-    // The normal 'test' task added by the Java plugin has nothing to do in this subproject, because every single
-    // test requires a running TDS. Therefore, we're repurposing the 'test' task for integration testing.
-    integrationTestTask = 'test'
-}
-
-////////////////////////////////////// Test fresh TDS installation //////////////////////////////////////
-
-// We use this variable in dynamic method and property names below. See https://goo.gl/NKg6tW.
-// It's deep, dark, Groovy magic to be sure. And while cool, it probably hurts readability here.
-// I did it to prove that we could create a custom Test task and its supporting sourceSets and setup/teardown tasks
-// in a generic, reusable way.
-String taskName = "freshInstallTest"
-
-sourceSets {
-    "$taskName" {
-        groovy.srcDir file("src/$taskName/groovy")
-        resources.srcDir file("src/$taskName/resources")
-
-        // Need 'sourceSets.test.output' because we use TestOnLocalServer in our test.
-        compileClasspath += sourceSets.test.output + configurations.testCompile
-        runtimeClasspath += output + sourceSets.test.output + configurations.testRuntime
-    }
-}
-
-task "before${taskName.capitalize()}"(type: org.akhikhl.gretty.AppBeforeIntegrationTestTask, group: "gretty") {
-    description = "Starts server before $taskName."
-    integrationTestTask taskName
-
-    gretty.afterEvaluate {
-        mustRunAfter tasks.appAfterIntegrationTest  // Make sure the server is shut down before we start it back up!
-    }
-
-    debug = false  // Start the embedded sever in debug mode.
-    ext.nonExistentContentDir = new File(temporaryDir, "content")
-
-    // AppBeforeIntegrationTestTask also has a 'systemProperties' field, but the content of 'gretty.systemProperties'
-    // will take precedence. 'gretty.systemProperties' has a 'tds.content.root.path' value that is appropriate for
-    // :it:test, but not for taskName. The only way to override it is with this closure.
-    // See http://akhikhl.github.io/gretty-doc/Gretty-task-classes.html#_property_inheritance_override
-    prepareServerConfig {
-        // The embedded TDS that this task launches will have a non-existent content root directory.
-        systemProperty "tds.content.root.path", nonExistentContentDir.absolutePath
-    }
-
-    doFirst {
-        // Before starting the server, delete the content directory if it exists, as it may have been created by a
-        // previous task run. This is safe to use on non-existent files; see GroovyDoc at https://goo.gl/dbxTVZ.
-        // Also, it's okay to put this statement in an assert, because asserts are always enabled in Groovy.
-        assert nonExistentContentDir.deleteDir() : "Couldn't delete $nonExistentContentDir."
-    }
-}
-
-task "$taskName"(type: Test, group: "verification") {
-    description = "Runs tests on a fresh installation of TDS (no existing catalog.xml)."
-    testClassesDir = sourceSets."$taskName".output.classesDir
-    classpath = sourceSets."$taskName".runtimeClasspath
-    mustRunAfter tasks.test
-
-    // Use built-in Xalan XSLT instead of Saxon-HE, which our 'project(":tds")' dependency drags in.
-    // This works around an error we were seeing in org.xmlunit.builder.DiffBuilder.build():
-    //    java.lang.ClassCastException: net.sf.saxon.value.ObjectValue cannot be cast to net.sf.saxon.om.NodeInfo
-    //        ...
-    //        at thredds.tds.FreshTdsInstallSpec.TDS returns expected client catalog(FreshTdsInstallSpec.groovy:58)
-    // See buildSrc/build.gradle for another example of working around JAXP weirdness.
-    systemProperty TransformerFactory.name,  // See javax.xml.transform.TransformerFactory.newInstance().
-                   "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl"
-
-    // Replace the system property that was propagated from the Gradle process in any/testing.gradle.
-    // It is meant for :it:test only.
-    systemProperty "tds.content.root.path", tasks."before${taskName.capitalize()}".nonExistentContentDir.absolutePath
-}
-
-check.dependsOn taskName
-
-task "after${taskName.capitalize()}"(type: org.akhikhl.gretty.AppAfterIntegrationTestTask, group: "gretty") {
-    description = "Stops server after $taskName."
-    integrationTestTask taskName
-}
+// spin up the tds for testing
+test.dependsOn(':tds:AppWarBeforeIntegrationTest')
+test.finalizedBy(':tds:AppWarAfterIntegrationTest')

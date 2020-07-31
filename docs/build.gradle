@@ -1,95 +1,31 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    
-    dependencies {
-        classpath libraries["jruby-gradle-plugin"]
-    }
-}
-
-// Adds 'assemble', 'check', 'build', and 'clean' tasks.
-// See: https://docs.gradle.org/current/userguide/standard_plugins.html#sec:base_plugins
-apply plugin: 'base'
-
-//////////////////////////////////////////////// Jekyll ////////////////////////////////////////////////
-
-apply plugin: 'com.github.jruby-gradle.base'
-
-dependencies {
-    jrubyExec 'rubygems:jekyll:3.4.0'
-    // Without this, we get: LoadError: no such file to load -- bundler
-    jrubyExec 'rubygems:bundler:1.14.4'
-}
-
-ext {
-    userGuideSrcDir = file("src/public/userguide/")
-    userGuideDestDir = file("$buildDir/userguide/")
-    
-    commonFlags = [ '--source', userGuideSrcDir.absolutePath, '--destination', userGuideDestDir.absolutePath ]
-}
-
-import com.github.jrubygradle.JRubyExec
-
-task buildUserGuide(type: JRubyExec) {
-    group = "Documentation"
-    description = 'Build user guide website.'
-    
-    inputs.files userGuideSrcDir
-    outputs.dir userGuideDestDir
-    
-    script "jekyll"
-    
-    scriptArgs "build"
-    scriptArgs commonFlags
-    
-    // Consider enabling this to help us determine when pages need to be pushed to Nexus.
-    // A copy of .jekyll-metadata could be stored in the repo and then compared to the local file.
-    // See https://jekyllrb.com/docs/configuration/#incremental-regeneration
-    // scriptArgs "--incremental"
-}
-
-task serveUserGuide(type: JRubyExec) {
-    group = "Documentation"
-    description = 'Serve user guide website locally.'
-    
-    // This task starts a server; it is never considered UP-TO-DATE.
-    outputs.upToDateWhen { false }
-    
-    script "jekyll"
-    
-    scriptArgs "serve"
-    scriptArgs commonFlags
-    
+plugins {
+    id 'base' // Adds 'assemble', 'check', 'build', and 'clean' tasks.
+    id 'jekyll' // comes from buildSrc/
 }
 
 //////////////////////////////////////////////// Javadoc ////////////////////////////////////////////////
 
 apply from: "$rootDir/gradle/any/javadoc.gradle"
 
-/**
-evaluationDependsOn(":cdm")  // Evaluate ":cdm" first so that SourceSets will have been added to the Project.
-
-task buildJavadocCdm(type: Javadoc) 
-**/
-
 gradle.projectsEvaluated {  // Evaluate all projects first so that SourceSets will have been created for each.
     task buildJavadocAll(type: Javadoc) {
-        description = "Generate Javadoc for all Java subprojects."
-        
-        title = "TDS Javadoc (not public) v${project.docVersion}"
+        description = "Generate Javadoc for all published Java subprojects in the thredds-data-server project."
+
+        title = "TDS Javadoc (not public) v${project.version}"
         destinationDir = file("$buildDir/javadocAll/")
-        
-        source publishedProjects.collect { project -> project.sourceSets.main.allJava }
-        classpath = files(publishedProjects.collect { project ->
-            [ project.sourceSets.main.compileClasspath, project.sourceSets.main.output ] })
+
+        source publicProjects.collect {project -> project.sourceSets.main.allJava}
+        classpath = files(publicProjects.collect {project ->
+            [project.sourceSets.main.compileClasspath, project.sourceSets.main.output]
+        })
     }
-    
+
     tasks.build {
         // Aggregates the individual "build*" tasks.
-        dependsOn buildUserGuide
+        dependsOn  buildJekyllSite, buildJavadocAll
     }
 }
+
 
 //////////////////////////////////////////////// Nexus ////////////////////////////////////////////////
 
@@ -98,11 +34,11 @@ apply from: "$rootDir/gradle/any/properties.gradle"  // For Nexus credential pro
 import edu.ucar.build.publishing.PublishToRawRepoTask
 
 tasks.withType(PublishToRawRepoTask).all {  // Common PublishToRawRepoTask config.
-    group = "Documentation"
-    
-    host = "https://artifacts.unidata.ucar.edu/"
-    repoName = "tds-docs"
-    
+    group = 'Documentation'
+
+    host = 'https://artifacts.unidata.ucar.edu/'
+    repoName = 'tds-docs'
+
     onlyIf {
         // Will be evaluated at task execution time, not during configuration.
         // Fails the build if the specified properties haven't been provided.
@@ -112,33 +48,55 @@ tasks.withType(PublishToRawRepoTask).all {  // Common PublishToRawRepoTask confi
     }
 }
 
-task publishUserGuide(type: PublishToRawRepoTask, dependsOn: buildUserGuide) {
-    description = "Publish user guide to Nexus."
+task publishAsVersionedUserGuide(type: PublishToRawRepoTask, dependsOn: buildJekyllSite) {
+    description = 'Publish user guide (versioned) to Nexus under /major.minor/.'
 
-    srcFile = userGuideDestDir
+    publishSrc = jekyllDestinationDir
     destPath = "tds/$project.docVersion/userguide/"
 }
 
+task publishAsCurrentUserGuide(type: PublishToRawRepoTask, dependsOn: buildJekyllSite) {
+    description = 'Publish the user guide to Nexus under /current/.'
+
+    publishSrc = jekyllDestinationDir
+    destPath = 'tds/current/userguide/'
+}
 
 gradle.projectsEvaluated {
     // These tasks must be in a "projectsEvaluated" block because they depend on tasks that are also in a
     // "projectsEvaluated" block.
-    
-    task publishJavadocAll(type: PublishToRawRepoTask, dependsOn: buildJavadocAll) {
-        description = "Publish Javadoc for all Java subprojects to Nexus."
-        
-        srcFile = tasks.buildJavadocAll.destinationDir
+
+    task publishAsVersionedJavadocAll(type: PublishToRawRepoTask, dependsOn: buildJavadocAll) {
+        description = 'Publish Javadoc for all published Java subprojects in the thredds-data-server project to ' +
+            'Nexus under /major.minor/.'
+
+        publishSrc = tasks.buildJavadocAll.destinationDir
         destPath = "tds/$project.docVersion/javadocAll/"
     }
-    
+
+    task publishAsCurrentJavadocAll(type: PublishToRawRepoTask, dependsOn: buildJavadocAll) {
+        description = 'Publish Javadoc for all published Java subprojects in the thredds-data-server project to ' +
+            'Nexus under /current/.'
+
+        publishSrc = tasks.buildJavadocAll.destinationDir
+        destPath = 'tds/current/javadocAll/'
+    }
+
     // We're deliberately NOT naming this task "publish", because we don't want it running when we do a:
     //     ./gradlew publish
     // from the root directory. It simply takes too long.
-    task publishDocs(group: "Documentation") {
-        description = "Publish user guide and both Javadoc sets to Nexus."
-        
+    task publishAllDocsAsVersioned(group: 'Documentation') {
+        description = 'Publish user guide and Javadoc to Nexus under /major.minor/.'
+
         // Aggregates the individual "publish*" tasks.
-        dependsOn publishUserGuide
+        dependsOn publishAsVersionedUserGuide, publishAsVersionedJavadocAll
+    }
+
+    task publishAllDocsAsCurrent(group: 'Documentation') {
+        description = 'Publish user guide and Javadoc to Nexus under /current/.'
+
+        // Aggregates the individual "publish*" tasks.
+        dependsOn publishAsCurrentUserGuide, publishAsCurrentJavadocAll
     }
 }
 
@@ -146,10 +104,26 @@ import edu.ucar.build.publishing.DeleteFromNexusTask
 
 // By default, this will perform a dry run, which simply prints the components that the query matched.
 // To actually delete those components, do:  ./gradlew :docs:deleteFromNexus --dryRun=false
-task deleteFromNexus(type: DeleteFromNexusTask) {
-    host = "https://artifacts.unidata.ucar.edu/"
+task deleteVersionedDocsFromNexus(group: 'Documentation', type: DeleteFromNexusTask) {
+    description = 'Remove user guide and Javadoc on Nexus under /major.minor/.'
+    host = 'https://artifacts.unidata.ucar.edu/'
     searchQueryParameters.repository = 'tds-docs'
     searchQueryParameters.group = "/tds/$project.docVersion/*"
+
+    onlyIf {
+        // Will be evaluated at task execution time, not during configuration.
+        // Fails the build if the specified properties haven't been provided.
+        username = getPropertyOrFailBuild NEXUS_USERNAME_KEY
+        password = getPropertyOrFailBuild NEXUS_PASSWORD_KEY
+        return true
+    }
+}
+
+task deleteCurrentDocsFromNexus(group: 'Documentation', type: DeleteFromNexusTask) {
+    description = 'Remove user guide and Javadoc on Nexus under /current/.'
+    host = 'https://artifacts.unidata.ucar.edu/'
+    searchQueryParameters.repository = 'tds-docs'
+    searchQueryParameters.group = '/tds/current/*'
 
     onlyIf {
         // Will be evaluated at task execution time, not during configuration.

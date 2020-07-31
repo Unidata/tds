@@ -1,0 +1,3 @@
+apply from: "$rootDir/gradle/any/java-internal.gradle"
+apply from: "$rootDir/gradle/any/testing.gradle"
+apply from: "$rootDir/gradle/any/coverage.gradle"

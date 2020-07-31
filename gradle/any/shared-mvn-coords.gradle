@@ -1,0 +1,28 @@
+ext {
+  // Extra properties must be declared in the "ext" namespace. After declaration, they can be used without prefix.
+  // These will be inherited by any project buildscript that needs to reference a dependency or plugin by its full
+  // maven coordinates.
+
+  // plugin version management
+  buildPlugins = [:]
+  buildPlugins.gretty = 'org.gretty:gretty:3.0.3'
+  buildPlugins.shadow = 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+  buildPlugins.coveralls = 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
+  buildPlugins.sonarqube = 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1'
+  buildPlugins.spotless = 'com.diffplug.spotless:spotless-plugin-gradle:4.5.1'
+  buildPlugins.grgit = 'org.ajoberstar.grgit:grgit-core:4.0.2'
+
+  // slf4j version is declared in a place where we cannot use the tds-platform project to handle resolving versions
+  // (e.g. gradle/any/dependencies.gradle, for transitive dependency replacement purposes)
+  // same for gwt (e.g. tds/build.gradle)
+  // best we can do is define the version here, which can then be applied in all of the places we need the full maven
+  // coords.
+  depVersion = [:]
+  depVersion.slf4j = '1.7.28'
+  depVersion.gwt = '2.7.0'
+  depVersion.log4jWeb = '2.13.3'
+  depVersion.jaxen = '1.1.6'
+  // gradle seems to have issues with the compileOnly configuration, so we need to provide the full maven
+  // coordinates for javax.servlet-api if the gradle plugin in applied. If we don't, we see errors like this:
+  depVersion.javaxServletApi = '3.1.0'
+}

@@ -1,33 +1,32 @@
-description = "A collection of utilities needed server-side, including THREDDS catalog handling."
-ext.title = "Server-side common library "
+description = 'A collection of utilities needed server-side, including THREDDS catalog handling.'
+ext.title = 'Server-side common library'
 
 apply from: "$rootDir/gradle/any/dependencies.gradle"
-apply from: "$rootDir/gradle/any/java.gradle"
-// tdcommon has no tests
-apply from: "$rootDir/gradle/any/archiving.gradle"
-apply from: "$rootDir/gradle/any/publishing.gradle"
+apply from: "$rootDir/gradle/any/java-published.gradle"
 
 dependencies {
-    compile libraries["cdm-core"]
-    compile libraries["grib"]
+  implementation enforcedPlatform(project(':tds-platform'))
+  compile 'edu.ucar:cdm-core'
+  compile 'edu.ucar:grib'
+  compile 'org.jdom:jdom2'
 
-    compile libraries["jdom2"]        // Required for reading THREDDS, NcML, BUFR, HDF-EOS, NEXRAD2, OPeNDAP files.
-    compile libraries["spring-core"]
-    compile libraries["quartz"]
-    compile libraries["chronicle-map"]
-    // because we exclude jna, jna-platfrom from chronicle-map, add
-    // our replacement libs here
-    compile libraries["jna"]
-    compile libraries["jna-platform"]
+  compile 'org.quartz-scheduler:quartz'
+  compile 'net.openhft:chronicle-map'
+  compile 'com.google.code.findbugs:jsr305'
+  compile 'com.google.guava:guava'
+  compile 'com.google.protobuf:protobuf-java'
 
-    compile libraries["jsr305"]
-    compile libraries["guava"]
-    compile libraries["protobuf-java"]
+  compile 'org.slf4j:slf4j-api'
 
-    compile libraries["slf4j-api"]
+  // Spring
+  compile 'org.springframework:spring-core'
+  compile 'org.springframework:spring-context'
+  compile 'org.springframework:spring-beans'
+}
 
-      // Spring
-    compile libraries["spring-core"]
-    compile libraries["spring-context"]
-    compile libraries["spring-beans"]
+spotless {
+  java {
+    // exclude proto generated files
+    targetExclude('src/main/java/thredds/server/catalog/tracker/ConfigCatalogExtProto.java')
+  }
 }
