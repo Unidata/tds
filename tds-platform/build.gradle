@@ -18,6 +18,7 @@ dependencies {
   api enforcedPlatform('edu.ucar:netcdf-java-bom:5.4.0-SNAPSHOT')
   api enforcedPlatform('org.springframework:spring-framework-bom:5.2.7.RELEASE')
   api enforcedPlatform('org.springframework.security:spring-security-bom:5.3.3.RELEASE')
+  api platform('net.openhft:chronicle-bom:2.19.364')
 
   constraints {
     // dependencies without explicit versions are getting their version set by one of the platforms above
@@ -44,7 +45,7 @@ dependencies {
     api 'joda-time:joda-time'
 
     api 'org.quartz-scheduler:quartz:2.3.2'
-    api 'net.openhft:chronicle-map:3.19.40'
+    api 'net.openhft:chronicle-map'
 
     // Annotations: Nullable
     api 'com.google.code.findbugs:jsr305'
