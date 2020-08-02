@@ -1,0 +1,12 @@
+apply from: "$rootDir/gradle/any/java-common.gradle"
+apply from: "$rootDir/gradle/any/publishing.gradle"
+
+publishing {
+  publications {
+    mavenSources(MavenPublication) {
+      from components.java
+      artifact tasks.sourceJar
+      artifact tasks.javadocJar
+    }
+  }
+}

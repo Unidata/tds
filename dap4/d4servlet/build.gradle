@@ -1,14 +1,13 @@
 apply from: "$rootDir/gradle/any/dependencies.gradle"
-apply from: "$rootDir/gradle/any/java.gradle"
-// d4servlet has no tests
-apply from: "$rootDir/gradle/any/archiving.gradle"
-apply from: "$rootDir/gradle/any/publishing.gradle"
+apply from: "$rootDir/gradle/any/java-published.gradle"
 
 dependencies {
-    compile libraries["d4core"]
-    compile libraries["d4lib"]
-    compile libraries["httpservices"]
+    implementation enforcedPlatform(project(':tds-platform'))
 
-    compileOnly libraries["javax.servlet-api"]
-    compile libraries["slf4j-api"]
+    compile 'edu.ucar:d4core'
+    compile 'edu.ucar:d4lib'
+    compile 'edu.ucar:httpservices'
+
+    compileOnly 'javax.servlet:javax.servlet-api'
+    compile 'org.slf4j:slf4j-api'
 }

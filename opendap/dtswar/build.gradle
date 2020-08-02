@@ -1,23 +1,24 @@
-description = "DAP server to serve up DAP test cases."
-ext.title = "DAP Test Server (DTS) webapp"
+description = 'DAP server to serve up DAP test cases.'
+ext.title = 'DAP Test Server (DTS) webapp'
 
 apply from: "$rootDir/gradle/any/dependencies.gradle"
-apply from: "$rootDir/gradle/any/java.gradle"
-// dtswar has no tests
-apply from: "$rootDir/gradle/any/publishing.gradle"
-
-apply plugin: 'war'
+apply from: "$rootDir/gradle/any/war-published.gradle"
 
 dependencies {
-    compile libraries["cdm-core"]
-    compile libraries["opendap"]
-    compile project(":opendap:server")
+    implementation enforcedPlatform(project(':tds-platform'))
 
-    compileOnly libraries["javax.servlet-api"]
-    runtime libraries["taglibs-standard-spec"]
-    runtime libraries["taglibs-standard-impl"]
+    compile project(':opendap:server')
 
-    compile libraries["slf4j-api"]
-    runtime libraries["log4j-slf4j-impl"]
-    runtime libraries["log4j-web"]
+    compile 'edu.ucar:cdm-core'
+    compile 'edu.ucar:opendap'
+    compile 'org.slf4j:slf4j-api'
+
+    compileOnly 'javax.servlet:javax.servlet-api'
+
+    runtime 'org.apache.taglibs:taglibs-standard-spec'
+    runtime 'org.apache.taglibs:taglibs-standard-impl'
+
+
+    runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
+    runtime 'org.apache.logging.log4j:log4j-web'
 }

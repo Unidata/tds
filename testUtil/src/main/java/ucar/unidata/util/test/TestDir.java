@@ -247,7 +247,7 @@ public class TestDir {
    * @param dirName
    * @param ff
    * @param act
-   * @return
+   * @return count
    * @throws IOException
    */
   public static int actOnAll(String dirName, FileFilter ff, Act act) throws IOException {

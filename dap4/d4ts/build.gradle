@@ -1,26 +1,26 @@
 apply from: "$rootDir/gradle/any/dependencies.gradle"
-apply from: "$rootDir/gradle/any/java.gradle"
-// d4ts has no tests
-apply from: "$rootDir/gradle/any/publishing.gradle"
+apply from: "$rootDir/gradle/any/war-published.gradle"
 apply from: "$rootDir/gradle/any/gretty.gradle"
 
-apply plugin: 'war'
-
 dependencies {
-    compile libraries["d4core"]
-    compile libraries["d4lib"]
-    compile project(":dap4:d4servlet")
-    compileOnly libraries["javax.servlet-api"]
+    compile enforcedPlatform(project(':tds-platform'))
 
-    compile libraries["slf4j-api"]
-    runtime libraries["log4j-slf4j-impl"]
-    runtime libraries["log4j-web"]
-    testRuntime libraries["logback-classic"]
+    compile 'edu.ucar:d4core'
+    compile 'edu.ucar:d4lib'
+    compile project(":dap4:d4servlet")
+    compileOnly "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"
+
+    compile 'org.slf4j:slf4j-api'
+
+    runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
+    runtime 'org.apache.logging.log4j:log4j-web'
+
+    testRuntime 'ch.qos.logback:logback-classic'
 }
 
 // This specifies the resources from ":dap4:d4tests" that we need to include in the d4ts war and inplaceWebapp.
 def d4testsResourcesCopySpec = copySpec {
-    File d4testsResourcesDir = project(":dap4:d4tests").file('src/test/data/resources')
+   File d4testsResourcesDir = project(":dap4:d4tests").file('src/test/data/resources')
 
     from (new File(d4testsResourcesDir, 'favicon.ico')) {
         into('WEB-INF/')
@@ -40,10 +40,25 @@ def d4testsResourcesCopySpec = copySpec {
     */
 }
 
-war.with d4testsResourcesCopySpec
 
-// This will be used by both :d4ts and :d4tests.
-ext.grettyConfig = {
+import org.akhikhl.gretty.AppBeforeIntegrationTestTask
+import org.akhikhl.gretty.AppAfterIntegrationTestTask
+
+task('AppWarBeforeIntegrationTest', type: AppBeforeIntegrationTestTask) {
+  dependsOn assemble
+  inplace false
+  integrationTestTask 'test'
+}
+
+task('AppWarAfterIntegrationTest', type: AppAfterIntegrationTestTask) {
+  integrationTestTask 'test'
+}
+
+war {
+  with d4testsResourcesCopySpec
+}
+
+gretty {
     httpPort = 8083
     contextPath = '/d4ts'
 
@@ -51,5 +66,3 @@ ext.grettyConfig = {
         prepareInplaceWebAppFolder.with d4testsResourcesCopySpec
     }
 }
-
-gretty grettyConfig

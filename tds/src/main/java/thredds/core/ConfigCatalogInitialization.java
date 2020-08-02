@@ -67,6 +67,7 @@ public class ConfigCatalogInitialization {
   ///////////////////////////////////////////////////////
   public enum ReadMode {
     always, check, triggerOnly;
+
     static public ReadMode get(String name) {
       for (ReadMode mode : values()) {
         if (mode.name().equalsIgnoreCase(name))
