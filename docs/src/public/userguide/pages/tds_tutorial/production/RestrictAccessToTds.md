@@ -23,7 +23,8 @@ There are three ways to restrict access to the TDS and datasets:
 * Configured in the Tomcat `$TOMCAT_HOME/conf/server.xml` or web application `META-INF/context.xml` files.
 * Valve declarations can be used to either allow or deny access to content.
 * Utilize the valves for adding an extra layer of security to the Manager application to limit accessed to it from within a specific IP address range.
-* Caveat: these valves rely on incoming IP addresses or hostnames which are vulnerable to spoofing. Also, not much help when dealing with DHCP.
+* Caveat: these valves rely on incoming IP addresses or hostnames which are vulnerable to spoofing. 
+Also, not much help when dealing with DHCP.
 
 #### `RemoteAddrValve`
 
@@ -61,15 +62,10 @@ For example:
               deny=".*\.bandwidthhogs\.com" />
    ~~~~  
 
-{%include note.html content="
-Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-8.5-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
-" %}
+    {%include note.html content="
+    Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-8.5-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
+    " %}
 
-
-#### Resources
-
-* [The Valve Component](https://tomcat.apache.org/tomcat-8.5-doc/config/valve.html){:target="_blank"}
-  Tomcat documentation about the various `valve` components available for use.
 
 ## Restrict Access Via Web Application Deployment Descriptor
 
@@ -85,7 +81,9 @@ You will need to configure the [user authentication credentials](/digested_passw
 
 #### Creating a `security-constraint` in `web.xml`
 
-You can restrict a pattern of URLs, by adding `<security-constraint>` elements into the deployment descriptor (`web.xml`) file. The following fragment will force **all** URL accesses that have the `urlPattern` to authorized users with the role `roleName`. The `<transport-guarantee>` elements forces a switch to communication over the TLS/SSL socket:
+You can restrict a pattern of URLs, by adding `<security-constraint>` elements into the deployment descriptor (`web.xml`) file. 
+The following fragment will force **all** URL accesses that have the `urlPattern` to authorized users with the role `roleName`. 
+The `<transport-guarantee>` elements forces a switch to communication over the TLS/SSL socket:
 
 ~~~xml
 <security-constraint>
@@ -121,7 +119,8 @@ Example:
 </security-constraint>
 ~~~
 
-You do **not** include `/thredds` in the `url-pattern` element. Also, note that if you are using multiple data services, you must include each service's URL pattern, for example:
+You do **not** include `/thredds` in the `url-pattern` element. 
+Also, note that if you are using multiple data services, you must include each service's URL pattern, for example:
 
 ~~~xml
 <web-resource-collection>
@@ -132,11 +131,10 @@ You do **not** include `/thredds` in the `url-pattern` element. Also, note that 
 </web-resource-collection>
 ~~~
 
-#### Resources
+{%include note.html content="
+Consult the [Using Deployment Descriptors to Secure Web Applications](https://docs.oracle.com/cd/E19226-01/820-7627/6nisfjn8c/){:target='_blank'} by Oracle for documentation outlining the role of the deployment descriptor in web application security.
+" %}
 
-* [Using Deployment Descriptors to Secure Web Applications](https://docs.oracle.com/cd/E19226-01/820-7627/6nisfjn8c/){:target="_blank"}
-  Oracle documentation outlining the role of the deployment descriptor in web application security.
-  
 ## Restrict Access By Dataset In TDS Catalogs
 
 #### Rationale
@@ -145,11 +143,17 @@ You do **not** include `/thredds` in the `url-pattern` element. Also, note that 
 
 #### How it works
 
-A more fine-grained approach is to modify the `dataset` elements in the [TDS configuration catalog](server_side_catalog_specification.html). To do this, you add an attribute on a `dataset` or `datasetScan` element in the TDS catalog: `restrictAccess="roleName"`. All services that use that dataset will be restricted to users with the named role.
+A more fine-grained approach is to modify the `dataset` elements in the [TDS configuration catalog](server_side_catalog_specification.html). 
+To do this, you add an attribute on a `dataset` or `datasetScan` element in the TDS catalog: `restrictAccess="roleName"`. 
+All services that use that dataset will be restricted to users with the named role.
     
-When a client tries to access a restricted dataset, it is redirected to a URL that triggers a security challenge. If the challenge is successful, the client is redirected back to the original dataset URL, except now it has an authenticated session, represented by a session cookie passed to the client. For subsequent requests by the same client, no authentication is needed as long as the session remains valid.
+When a client tries to access a restricted dataset, it is redirected to a URL that triggers a security challenge. 
+If the challenge is successful, the client is redirected back to the original dataset URL, except now it has an authenticated session, represented by a session cookie passed to the client. 
+For subsequent requests by the same client, no authentication is needed as long as the session remains valid.
 
-The default TDS configuration uses [Digest authentication](/digested_passwords.html). By modifying the TDS deployment descriptor (`web.xml`) file, the server administrator can require that authentication be done differently, for example require TLS/SSL. You can also plug in your own Authentication.
+The default TDS configuration uses [Digest authentication](/digested_passwords.html). 
+By modifying the TDS deployment descriptor (`web.xml`) file, the server administrator can require that authentication be done differently, for example require TLS/SSL. 
+You can also plug in your own Authentication.
 
 {%include warning.html content="
 Changes to the TDS `web.xml` must be **manually** propagated to new versions of the TDS when upgrading.
@@ -167,7 +171,9 @@ To access any restricted dataset that a TDS might serve, a client such as a brow
 
 #### How to configure restricted datasets
 
-1.  Decide on distinct sets of datasets that need to be restricted. For each set, choose a name called a `security role`. Avoid special characters in the role names, especially `/"><’` and space. 
+1.  Decide on distinct sets of datasets that need to be restricted. 
+For each set, choose a name called a `security role`. 
+Avoid special characters in the role names, especially `/"><’` and space. 
 
     For example, suppose you have three sets of restricted data that you call `ccsmData`, `fieldProject`, `tiggeData`.
 
@@ -180,9 +186,11 @@ To access any restricted dataset that a TDS might serve, a client such as a brow
     <role rolename="tiggeData"/>
     ~~~
 
-    If you only have one set of datasets that you want to restrict, you can use just the `restrictedDatasetUser`, i.e., you don't need to have multiple roles. However, you **must always** use the name `restrictedDatasetUser`.
+    If you only have one set of datasets that you want to restrict, you can use just the `restrictedDatasetUser`, i.e., you don't need to have multiple roles. 
+    However, you **must always** use the name `restrictedDatasetUser`.
 
-3.  [Add each user](/digested_passwords.html) who should have authorization to the `tomcat-users.xml` file. A user may have multiple roles, and must always have the `restrictedDatasetUser` role:
+3.  [Add each user](/digested_passwords.html) who should have authorization to the `tomcat-users.xml` file. 
+A user may have multiple roles, and must always have the `restrictedDatasetUser` role:
 
     ~~~xml
     <user username="john" 
@@ -201,7 +209,8 @@ To access any restricted dataset that a TDS might serve, a client such as a brow
     The `restrictedDatasetUser` usage can also use non-HTTPS URLs, and so is vulnerable to session hijacking. By keeping the roles separate, you make sure the worst that can happen is that someone can download some scientific data they shouldn't have access to.
     " %} 
     
-4.  In the [TDS configuration catalogs](/server_side_catalog_specification.html), add `restrictAccess={security role}` attributes to the `dataset` or `datasetScan` elements. This will also restrict access to all children of those datasets. 
+4.  In the [TDS configuration catalogs](/server_side_catalog_specification.html), add `restrictAccess={security role}` attributes to the `dataset` or `datasetScan` elements. 
+This will also restrict access to all children of those datasets. 
 
     Example:
 
@@ -223,13 +232,18 @@ To access any restricted dataset that a TDS might serve, a client such as a brow
     </catalog>
     ~~~
 
-    The `dataset` with `ID` `testDataset`, as well as its child dataset nested are restricted, as are all the datasets generated by the `datasetScan`. Users can see these datasets in the catalogs, but when they try to access the data, they will be challenged to authenticate.
+    The `dataset` with `ID` `testDataset`, as well as its child dataset nested are restricted, as are all the datasets generated by the `datasetScan`. 
+    Users can see these datasets in the catalogs, but when they try to access the data, they will be challenged to authenticate.
 
-5.  After restarting Tomcat, use a browser to navigate to a restricted dataset. You should be prompted for a username and password. This must match a user that has a `role` matching the `restrictAccess` attribute on the dataset.
+5.  After restarting Tomcat, use a browser to navigate to a restricted dataset. 
+You should be prompted for a username and password. This must match a user that has a `role` matching the `restrictAccess` attribute on the dataset.
 
     {%include troubleshooting.html content="
-     If your browser has cached credentials which are wrong, it will simply send them without giving you a chance to renter. Firefox, at least, doesn't seem to have a way to clear this cache. Try exiting all instances of the browser and restarting it.
+     If your browser has cached credentials which are wrong, it will simply send them without giving you a chance to renter. 
+     Firefox, at least, doesn't seem to have a way to clear this cache. 
+     Try exiting all instances of the browser and restarting it.
     " %} 
     {%include troubleshooting.html content="
-     If you are denied access when you enter in your username/password, but subsequent tests allow you to access the data. Make sure your user has both the `restrictedDatasetUser` and the particular security role needed for that dataset.
+     If you are denied access when you enter in your username/password, but subsequent tests allow you to access the data. 
+     Make sure your user has both the `restrictedDatasetUser` and the particular security role needed for that dataset.
      " %} 

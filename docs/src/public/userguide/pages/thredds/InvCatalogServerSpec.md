@@ -8,9 +8,11 @@ permalink: server_side_catalog_specification.html
 
 ## Overview
 
-The THREDDS Data Server (TDS) uses specialized catalogs to configure the server, called server-side catalogs or configuration catalogs. This document specifies the semantics and XML representation of the server-side specializations allowed in THREDDS catalogs. It should be used in conjunction with the [client-side catalog specification](client_side_catalog_specification.html).
+The THREDDS Data Server (TDS) uses specialized catalogs to configure the server, called server-side catalogs or configuration catalogs. 
+This document specifies the semantics and XML representation of the server-side specializations allowed in THREDDS catalogs. 
+It should be used in conjunction with the [client-side catalog specification](client_side_catalog_specification.html).
 
-Also see:
+Also, see:
 
 * [DatasetScan](tds_dataset_scan_ref.html) reference
 * [FeatureCollection](feature_collections_ref.html) reference
@@ -64,7 +66,9 @@ In addition to all the elements of a [client catalog](client_side_catalog_specif
 </xsd:element>
 ~~~
 
-The `datasetRoot` element associates a portion of the URL path with a directory on disk where the data files are stored. It must be contained directly in the `catalog` element. The `datasetRoot`s are *global* to a TDS, they only need to be declared once; put them in a catalog that is processed before they are used (by convention, put them in the top catalog).
+The `datasetRoot` element associates a portion of the URL path with a directory on disk where the data files are stored. 
+It must be contained directly in the `catalog` element. 
+The `datasetRoot`s are *global* to a TDS, they only need to be declared once; put them in a catalog that is processed before they are used (by convention, put them in the top catalog).
 
 Example:
 
@@ -98,7 +102,11 @@ The dataset roots are searched for the longest match, so `dataset3` with URL `ds
 </xsd:element>
 ~~~
 
-A `catalogScan` element indicates a top directory to scan for catalogs (files ending in xml). Subdirectories will also be scanned. Optionally, the directory can be watched, and changes will be detected while the TDS is running. The `catalogScan` must be at the top level of the catalog (not nested in a `dataset`). If using this element, do not name any of your catalogs "*catalogScan.xml*".
+A `catalogScan` element indicates a top directory to scan for catalogs (files ending in xml). 
+Subdirectories will also be scanned. 
+Optionally, the directory can be watched, and changes will be detected while the TDS is running. 
+The `catalogScan` must be at the top level of the catalog (not nested in a `dataset`). 
+If using this element, do not name any of your catalogs "*catalogScan.xml*".
 
 * `name`: the name to display in the catalog
 * `path`: the logical URL path
@@ -132,7 +140,8 @@ The `[ncml:netcdf]`(https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/anno
 ~~~
 
 * The `ncml:netcdf` element [modifies the dataset with NcML](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/basic_ncml_tutorial.html){:target="_blank"}. For the [`datasetScan` element](server_side_catalog_specification.html#datasetscan-element), it modifies all contained datasets.
-* The `restrictAccess` attribute tells the TDS to [restrict access](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) to this dataset. It is always inherited by all contained datasets.
+* The `restrictAccess` attribute tells the TDS to [restrict access](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) to this dataset. 
+It is always inherited by all contained datasets.
 
 #### `datasetScan` element 
 
@@ -161,11 +170,22 @@ A `datasetScan` can be used wherever a `dataset` element is allowed.
 </xsd:element>
 ~~~
 
-The `datasetScan` element generates nested THREDDS catalogs by scanning the directory named in the `location` attribute, and creating a `dataset` for each file found, and a `catalogRef` for each subdirectory. The location must be an absolute path. The `path` attribute is used to create the URL for these files and catalogs. The path must be globally unique over all paths for the TDS. Do not put leading or trailing slashes on the path. The `addLatest` attribute adds a *latest resolver service* to the `datasetScan`.
+The `datasetScan` element generates nested THREDDS catalogs by scanning the directory named in the `location` attribute, and creating a `dataset` for each file found, and a `catalogRef` for each subdirectory. 
+The location must be an absolute path. 
+The `path` attribute is used to create the URL for these files and catalogs. 
+The path must be globally unique over all paths for the TDS. 
+Do not put leading or trailing slashes on the path.
+The `addLatest` attribute adds a *latest resolver service* to the `datasetScan`.
 
-A `datasetScan` element is in the `dataset substitutionGroup`, so it can be used wherever a `dataset` element can be used. It is an extension of a `DatasetType`, so any of dataset’s nested elements and attributes can be used in it. This allows you to add enhanced metadata to a `datasetScan`. However you should not add nested datasets, as these will be ignored.
+A `datasetScan` element is in the `dataset substitutionGroup`, so it can be used wherever a `dataset` element can be used. 
+It is an extension of a `DatasetType`, so any of the `dataset` element nested elements and attributes can be used in it. 
+This allows you to add enhanced metadata to a `datasetScan`. 
+However, you should not add nested datasets, as these will be ignored.
 
-Each generated catalog will include all datasets at the requested level of the given dataset collection location. Each collection (directory) dataset will be included as a `catalogRef` element and each atomic (file) dataset will be included as a dataset element. The name of the resulting dataset or `catalogRef` will be the name of the corresponding dataset. Any inherited metadata from the `datasetScan` will be added to all nested datasets.
+Each generated catalog will include all datasets at the requested level of the given dataset collection location. 
+Each collection (directory) dataset will be included as a `catalogRef` element and each atomic (file) dataset will be included as a dataset element. 
+The name of the resulting dataset or `catalogRef` will be the name of the corresponding dataset. 
+Any inherited metadata from the `datasetScan` will be added to all nested datasets.
 
 Here is a very simple example:
 
@@ -220,9 +240,13 @@ If the `C:/data/grib2/` directory contained three files (`data1.wmo`, `data2.wmo
 </xsd:complexType>
 ~~~
 
-The `filter` element allows users to specify which datasets are to be included in the generated catalogs. A `filter` element can contain any number of `include` and `exclude` elements. Each `include` or `exclude` element may contain either a `wildcard` or a `regExp` attribute. If the given wildcard pattern or [regular expression](http://www.regular-expressions.info/){:target="_blank"} matches a dataset name, that dataset is included or excluded as specified. 
+The `filter` element allows users to specify which datasets are to be included in the generated catalogs. 
+A `filter` element can contain any number of `include` and `exclude` elements. 
+Each `include` or `exclude` element may contain either a `wildcard` or a `regExp` attribute. 
+If the given wildcard pattern or [regular expression](http://www.regular-expressions.info/){:target="_blank"} matches a dataset name, that dataset is included or excluded as specified. 
 
-By default, includes and excludes apply only to atomic datasets (regular files). You can specify that they apply to atomic and/or collection datasets (directories) by using the `atomic` and `collection` attributes.
+By default, includes and excludes apply only to atomic datasets (regular files). 
+You can specify that they apply to atomic and/or collection datasets (directories) by using the `atomic` and `collection` attributes.
 
 Expanding on the above example:
 
@@ -277,15 +301,25 @@ More examples are available in the [datasetScan](tds_dataset_scan_ref.html) docu
 </xsd:complexType>
 ~~~
 
-The `namer` element specifies one or more ways of creating names for the files in the scan. If multiple renamers are specified, the first one that matches the filename is used.
+The `namer` element specifies one or more ways of creating names for the files in the scan. 
+If multiple renamers are specified, the first one that matches the filename is used.
 
-Currently, two types of renaming are available. Both methods use [regular expression](http://www.regular-expressions.info/){:target="_blank"}  matching and [capturing group](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html){:target="_blank"} replacement to determine the new name. The first type, specified by the `regExpOnName` element, does regular expression matching on the dataset name. The second type, specified by the `regExpOnPath` element, does regular expression matching on the entire dataset path. In either type, the `regExp` attribute contains the regular expression used in matching on the name or path and the `replaceString` attribute contains the replacement string upon which capturing group replacement is performed.
+Currently, two types of renaming are available. 
+Both methods use [regular expression](http://www.regular-expressions.info/){:target="_blank"}  matching and [capturing group](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html){:target="_blank"} replacement to determine the new name. 
+The first type, specified by the `regExpOnName` element, does regular expression matching on the dataset name. 
+The second type, specified by the `regExpOnPath` element, does regular expression matching on the entire dataset path. 
+In either type, the `regExp` attribute contains the regular expression used in matching on the name or path and the `replaceString` attribute contains the replacement string upon which capturing group replacement is performed.
 
-A capturing group is a part of a regular expression enclosed in parenthesis. When a regular expression with a capturing group is applied to a string, the substring that matches the capturing group is saved for later use. The captured strings can then be substituted into another string in place of capturing group references, "`$n`", where "`n`" is an integer indicating a particular capturing group. (The capturing groups are numbered according to the order in which they appear in the match string.) For example, the regular expression
+A capturing group is a part of a regular expression enclosed in parentheses. 
+When a regular expression with a capturing group is applied to a string, the substring that matches the capturing group is saved for later use. 
+The captured strings can then be substituted into another string in place of capturing group references, "`$n`", where "`n`" is an integer indicating a particular capturing group. 
+(The capturing groups are numbered according to the order in which they appear in the match string.) 
+For example, the regular expression.
 
 `Hi (.*), how are (.*)?`
 
-when applied to the string "`Hi Fred, how are you?`" would capture the strings "`Fred`" and "`you`". Following with a capturing group replacement in the string "`$2 are $1`" would result in the string "`you are Fred`".
+when applied to the string "`Hi Fred, how are you?`" would capture the strings "`Fred`" and "`you`". 
+Following with a capturing group replacement in the string "`$2 are $1`" would result in the string "`you are Fred`".
 
 Here's an example `namer`:
 
@@ -304,7 +338,9 @@ the regular expression has five capturing groups
 4 The fourth capturing group, "`([0-9]{2})`", captures two digits, in this case the hour of the day.
 5 The fifth capturing group, "`([0-9]{2})`", captures two digits, in this case the minutes of the hour.
 
-When applied to the dataset name "`GFS_Alaska_191km_20051011_0000.grib1`",  the strings "`2005`", "`10`", "`11`", "`00`", and "`00`" are captured. After replacing the capturing group references in the `replaceString` attribute value, we get the name "`NCEP GFS 191km Alaska 2005-10-11 00:00:00 GMT`". So, when cataloged, this dataset would end up like this (note that only the `name` is affected, not the `urlPath` or `ID`) :
+When applied to the dataset name "`GFS_Alaska_191km_20051011_0000.grib1`", the strings "`2005`", "`10`", "`11`", "`00`", and "`00`" are captured. 
+After replacing the capturing group references in the `replaceString` attribute value, we get the name "`NCEP GFS 191km Alaska 2005-10-11 00:00:00 GMT`". 
+So, when cataloged, this dataset would end up like this (note that only the `name` is affected, not the `urlPath` or `ID`) :
 
 ~~~xml
 <dataset name="NCEP GFS 191km Alaska 2005-10-11 00:00:00 GMT"
@@ -349,7 +385,10 @@ By default, datasets at each collection level are listed in ascending order by f
 </xsd:complexType>
 ~~~
 
-This adds a latest proxy dataset (name is lexigraphically greatest in the scan). The `name` attribute will set the name of the proxy dataset, and the `top` attribute indicates if the proxy dataset should appear at the top or bottom of the list of dataset in this collection. Default behavior in the TDS if any these attributes are missing is to name the dataset "`latest.xml`", and place the dataset at the top of the collection. If `lastModifedLimit` attribute is set, the TDS will exclude any dataset that was last modified within the number of minutes specified by the `lastModifedLimit` attribute.
+This adds a latest proxy dataset (name is lexicographically greatest in the scan). 
+The `name` attribute will set the name of the proxy dataset, and the `top` attribute indicates if the proxy dataset should appear at the top or bottom of the list of dataset in this collection.
+Default behavior in the TDS if any these attributes are missing is to name the dataset "`latest.xml`", and place the dataset at the top of the collection. 
+If `lastModifedLimit` attribute is set, the TDS will exclude any dataset that was last modified within the number of minutes specified by the `lastModifedLimit` attribute.
 
 An example is available in the [datasetScan](tds_dataset_scan_ref.html) documentation.
 
@@ -368,9 +407,12 @@ An example is available in the [datasetScan](tds_dataset_scan_ref.html) document
 
 The `addTimeCoverage` element indicates that a THREDDS `timeCoverage` element should be added to each atomic dataset cataloged by the containing `datasetScan` element and describes how to determine the time coverage for each dataset in the collection.
 
-Currently, the `addTimeCoverage` element can only describe one method for determining the time coverage of a dataset. The  `datasetNameMatchPattern` attribute is used in a [regular expression](http://www.regular-expressions.info/){:target="_blank"} match on the dataset name. If the match succeeds, a [capturing group](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html){:target="_blank"}  replacement is performed on the `startTimeSubstitutionPattern` attribute and the result is the start time string (see the [`namer` element](server_side_catalog_specification.html#namer-element) description, above, for more on regular expressions and capturing groups). The time coverage duration is given by the `duration` attribute.
+Currently, the `addTimeCoverage` element can only describe one method for determining the time coverage of a dataset. 
+The  `datasetNameMatchPattern` attribute is used in a [regular expression](http://www.regular-expressions.info/){:target="_blank"} match on the dataset name. If the match succeeds, a [capturing group](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html){:target="_blank"}  replacement is performed on the `startTimeSubstitutionPattern` attribute, and the result is the start time string (see the [`namer` element](server_side_catalog_specification.html#namer-element) description, above, for more on regular expressions and capturing groups). 
+The time coverage duration is given by the `duration` attribute.
 
-The `datasetPathMatchPattern` attribute was added (2009-06-05, TDS 4.0) to allow matching on the entire dataset path instead of just the dataset name. The two match pattern attributes should not be used together; if they are both given the `datasetNameMatchPattern` will be used.
+The `datasetPathMatchPattern` attribute was added (2009-06-05, TDS 4.0) to allow matching on the entire dataset path instead of just the dataset name. 
+The two match pattern attributes should not be used together; if they are both given the `datasetNameMatchPattern` will be used.
 
 Example:
 
@@ -391,4 +433,3 @@ for the dataset named "`2005071812_gfs_211.nc`", results in the following `timeC
   <duration>60 hours</duration>
 </timeCoverage>
 ~~~
-
