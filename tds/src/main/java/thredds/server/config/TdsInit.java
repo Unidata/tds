@@ -50,6 +50,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
+import uk.ac.rdg.resc.edal.util.GISUtils;
+import uk.ac.rdg.resc.edal.util.GISUtils.EpsgDatabasePath;
 
 /**
  * A Singleton class to initialize and shutdown the CDM/TDS
@@ -142,6 +144,9 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
           if (readMode == null)
             readMode = ConfigCatalogInitialization.ReadMode.always;
           configCatalogInitializer.init(readMode, (PreferencesExt) mainPrefs.node("configCatalog"));
+
+          // set epsg database location for edal-java (comes from apache-sis)
+          EpsgDatabasePath.DB_PATH = new File(tdsContext.getThreddsDirectory(), "/cache/edal-java/epsg/").getPath();
           startupLog.info("TdsInit complete");
         }
       }
@@ -511,6 +516,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     collectionUpdater.shutdown();
     startupLog.info("TdsInit shutdown");
     MDC.clear();
-  }
 
+    // release epsg database setup by edal-java
+    GISUtils.releaseEpsgDatabase();
+  }
 }

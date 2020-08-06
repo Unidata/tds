@@ -4,8 +4,6 @@ apply from: "$rootDir/gradle/any/dependencies.gradle"
 // Testing related dependencies used by the tds are defined here
 // not published, used to keep tds parent bom "clean" (i.e. some things are set as api simply for testing)
 
-platformProjects.add(project)
-
 javaPlatform {
   allowDependencies()
 }

@@ -1,7 +1,11 @@
 ext.title = 'THREDDS Data Manager (TDM)'
 
 apply from: "$rootDir/gradle/any/dependencies.gradle"
+
+// Because of the shadow jar (tdmFat.jar), we won't use java-published.gradle
+// for this subproject.
 apply from: "$rootDir/gradle/any/java-published.gradle"
+//apply from: "$rootDir/gradle/any/publishing.gradle"
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
@@ -25,8 +29,6 @@ dependencies {
     runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
 }
 
-jar.manifest.attributes 'Main-Class': 'thredds.tdm.Tdm'
-
 shadowJar {
   baseName = 'tdmFat'
   setArchiveBaseName('tdmFat')
@@ -35,12 +37,14 @@ shadowJar {
   doFirst {
     manifest.attributes jar.manifest.attributes
   }
+  manifest.attributes 'Main-Class': 'thredds.tdm.Tdm'
   mergeServiceFiles()
 }
 
 publishing {
   publications {
-    shadow(MavenPublication) {publication ->
+    shadow(MavenPublication) { publication ->
+      artifactId = 'tdmFat'
       project.shadow.component(publication)
     }
   }

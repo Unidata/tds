@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,6 +32,7 @@ import java.math.BigInteger;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
+import ucar.unidata.util.test.category.NotTravis;
 
 /**
  * TestServlet has multiple purposes.
@@ -66,6 +68,8 @@ import java.util.List;
  * loader = MockTdsContextLoader.class)
  */
 
+// non-deterministic failure on GitHub Actions - no need to hold up PRs for now (and will still barf on Jenkins)
+@Category(NotTravis.class)
 public class TestServlet extends DapTestCommon {
   static final boolean USESPRING = false;
 

@@ -4,8 +4,6 @@ apply from: "$rootDir/gradle/any/publishing.gradle"
 
 // All dependencies used by the thredds-data-server project and subprojects are defined here
 
-platformProjects.add(project)
-
 javaPlatform {
   allowDependencies()
 }
