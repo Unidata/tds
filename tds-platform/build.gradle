@@ -86,8 +86,8 @@ dependencies {
     api 'com.coverity.security:coverity-escapers:1.1.1'
     api 'org.thymeleaf:thymeleaf-spring5:3.0.11.RELEASE'
     api 'javax.validation:validation-api:2.0.1.Final'
-    api 'org.hibernate.validator:hibernate-validator:6.1.5.Final'
-    // javax-el & glassfish-javax-el are dependencies of hibernate-validator
+    api "org.hibernate.validator:hibernate-validator:${depVersion.hibernateValidator}"
+    api "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
     api 'javax.el:javax.el-api:3.0.0'
     api 'org.glassfish:javax.el:3.0.0'
 
