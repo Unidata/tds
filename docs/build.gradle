@@ -14,8 +14,8 @@ gradle.projectsEvaluated {  // Evaluate all projects first so that SourceSets wi
         title = "TDS Javadoc (not public) v${project.version}"
         destinationDir = file("$buildDir/javadocAll/")
 
-        source publicProjects.collect {project -> project.sourceSets.main.allJava}
-        classpath = files(publicProjects.collect {project ->
+        source javaProjects.collect {project -> project.sourceSets.main.allJava}
+        classpath = files(javaProjects.collect {project ->
             [project.sourceSets.main.compileClasspath, project.sourceSets.main.output]
         })
     }

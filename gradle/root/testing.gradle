@@ -83,7 +83,7 @@ boolean isSystemPropertyAValidDirectory(String sysPropKey) {
   // start the embedded TDS server for :it:integrationTest, log4j will attempt to create the directory
   // "${sys:tds.content.root.path}/thredds/logs" (see TDS's log4j.xml). In the event that the user fails to define
   // that property, the responsible place to create this logs directory is under the project build directory.
-  String defaultSysPropVal = Paths.get(buildDir.path, "NO", sysPropKey, "FOUND").toAbsolutePath().toString()
+  String defaultSysPropVal = Paths.get(buildDir.path, 'NO', sysPropKey, 'FOUND').toAbsolutePath().toString()
 
   logger.info "Setting default system property: $sysPropKey=\"$defaultSysPropVal\""
   System.properties[sysPropKey] = defaultSysPropVal
@@ -99,6 +99,8 @@ gradle.projectsEvaluated {
   task testAll(group: 'Verification') {
     description = 'Runs all subproject Test tasks'
     dependsOn subprojectTestTasks
+    // If we run testAll, generate coverage report after all of the tests run
+    finalizedBy jacocoRootReport
   }
 
   task rootTestReport(type: TestReport, group: 'Reports') {
@@ -109,7 +111,7 @@ gradle.projectsEvaluated {
     subprojectTestTasks*.finalizedBy it
 
     // :buildSrc:test always runs and produces a binary results directory, no matter what.
-    //assert file('buildSrc/build/test-results/test/binary').exists() : "Can't find :buildSrc test result dir."
+    assert file('buildSrc/build/test-results/test/binary').exists() : "Can't find :buildSrc test result dir."
 
     // Add test results of the :buildSrc project. Note that by this time in the 'thredds' config,
     // :buildSrc has already run as a *separate* build (see http://stackoverflow.com/questions/26597147),

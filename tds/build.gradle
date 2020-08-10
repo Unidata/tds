@@ -72,7 +72,6 @@ dependencies {
     // edal ncwms related libs
     compile 'uk.ac.rdg.resc:edal-common'
     compile 'uk.ac.rdg.resc:edal-cdm'
-
     compile 'uk.ac.rdg.resc:edal-graphics'
     compile 'uk.ac.rdg.resc:edal-wms'
     compile 'uk.ac.rdg.resc:edal-godiva'
