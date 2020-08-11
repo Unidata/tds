@@ -28,6 +28,7 @@
     <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
   </listener>
 
+
   <filter>
     <filter-name>log4jServletFilter</filter-name>
     <filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
