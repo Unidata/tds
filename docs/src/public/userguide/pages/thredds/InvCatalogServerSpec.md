@@ -1,5 +1,5 @@
 ---
-title: Server-side Catalog Specification
+title: Server-Side Catalog Specification
 last_updated: 2020-07-31
 sidebar: tdsTutorial_sidebar
 toc: false
