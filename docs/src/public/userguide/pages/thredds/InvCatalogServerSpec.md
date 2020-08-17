@@ -1,6 +1,6 @@
 ---
 title: Server-Side Catalog Specification
-last_updated: 2020-07-31
+last_updated: 2020-08-17
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: server_side_catalog_specification.html
@@ -114,7 +114,7 @@ If using this element, do not name any of your catalogs "*catalogScan.xml*".
 
 #### `dataset` element
 
-The `[ncml:netcdf]`(https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the [`restrictAccess`](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) attribute:
+The [`ncml:netcdf`](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the [`restrictAccess`](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) attribute:
 
 ~~~xml
 <xsd:element name="dataset" type="DatasetType" />
