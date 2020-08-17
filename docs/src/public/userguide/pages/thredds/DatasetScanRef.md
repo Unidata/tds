@@ -301,7 +301,7 @@ results in the following `timeCoverage` element:
 <timeCoverage>
    <start>2005-07-18T12:00:00</start>
    <duration>60 hours</duration>
- </timeCoverage>
+</timeCoverage>
 ~~~
 
 A variation is the addition of the `datasetPathMatchPattern` attribute. 
@@ -332,4 +332,28 @@ The captured strings can then be substituted into another string in place of cap
 For example, the regular expression `Hi (.), how are (.)?` when applied to the string `Hi Fred, how are you?` would capture the strings `Fred` and `you`. 
 Following that with a capturing group replacement in the string `$2 are $1` would result in the string "you are Fred."
 
-Here's an example namer:
+Here's an example `namer`:
+
+~~~xml
+<namer>
+  <regExpOnName regExp="([0-9]{4})([0-9]{2})([0-9]{2})_([0-9]{2})([0-9]{2})"
+                replaceString="NCEP GFS 191km Alaska $1-$2-$3 $4:$5:00 GMT"/>
+</namer>
+~~~
+
+The regular expression has five capturing groups:
+
+1. The first capturing group, `([0-9]{4})`,  captures four digits, in this case the year.
+2. The second capturing group, `([0-9]{2})`, captures two digits, in this case the month.
+3. The third capturing group, `([0-9]{2})`, captures two digits, in this case the day of the month.
+4. The fourth capturing group, `([0-9]{2})`, captures two digits, in this case the hour of the day.
+5. The fifth capturing group, `([0-9]{2})`, captures two digits, in this case the minutes of the hour.
+
+When applied to the dataset name `GFS_Alaska_191km_20051011_0000.grib1`,  the strings `2005`, `10`, `11`, `00`, and `00` are captured.
+After replacing the capturing group references in the `replaceString` attribute value, we get the name `NCEP GFS 191km Alaska 2005-10-11 00:00:00 GMT`. 
+So, when cataloged, this dataset would end up as something like this:
+
+~~~xml
+<dataset name="NCEP GFS 191km Alaska 2005-10-11 00:00:00 GMT"
+         urlPath="models/NCEP/GFS/Alaska_191km/GFS_Alaska_191km_20051011_0000.grib1"/>
+~~~
