@@ -75,7 +75,7 @@ For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guid
     " %}
 
 <a name="tomcat"></a>
-## Installing the Tomcat Servlet Container
+## Installing The Tomcat Servlet Container
 
 The following example shows Tomcat installation on a linux system. (This type of installation will work on Mac OS systems as well.) The installation is being performed as the `root` user.
 

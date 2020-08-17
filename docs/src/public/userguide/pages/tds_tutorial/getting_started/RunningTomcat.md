@@ -64,7 +64,7 @@ Check the logs mostly recently generated in the `$TOMCAT_HOME/logs` directory fo
 Pay particular attention to what is being reported in Tomcat's main log file: `catalina.out`.
 " %}
 
-## Setting `$JAVA_HOME`, `$JAVA_OPTS`, `$CATALINA_HOME`, `$CATALINA_BASE`, and `$CONTENT_ROOT`
+## Setting `$JAVA_HOME`, `$JAVA_OPTS`, `$CATALINA_HOME`, `$CATALINA_BASE`, And `$CONTENT_ROOT`
 
 We are going to create a file called `setenv.sh` in the `$TOMCAT_HOME/bin` directory to:
 
