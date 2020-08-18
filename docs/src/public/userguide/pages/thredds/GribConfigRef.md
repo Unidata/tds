@@ -1,5 +1,5 @@
 ---
-title: GRIB Collection Config
+title: GRIB Collection Configuration Specification
 last_updated: 2020-04-30
 sidebar: tdsTutorial_sidebar
 toc: false
