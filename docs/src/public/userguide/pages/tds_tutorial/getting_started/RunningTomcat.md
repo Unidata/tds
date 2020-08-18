@@ -17,7 +17,7 @@ This section assumes you have successfully installed the Tomcat Servlet Containe
 
 The following example shows stopping/starting Tomcat on a linux system, as the `root` user. (This example will work on Mac OS systems as well. For a Windows installation, use the `.bat` files in place of the `.sh` scripts used in the provided examples.)
 
-1. Tomcat isn’t currently running so we need to start it up.
+1. Tomcat isn't currently running so we need to start it up.
 
    Run the `startup.sh` script in the `$TOMCAT_HOME/bin` directory (`$TOMCAT_HOME` is `/usr/local` in this example):
 

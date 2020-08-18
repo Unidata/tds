@@ -1,6 +1,6 @@
 ---
 title: Restrict Access To The TDS
-last_updated: 2020-07-31
+last_updated: 2020-08-17
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: restict_access_to_tds.html
@@ -173,7 +173,7 @@ To access any restricted dataset that a TDS might serve, a client such as a brow
 
 1.  Decide on distinct sets of datasets that need to be restricted. 
 For each set, choose a name called a `security role`. 
-Avoid special characters in the role names, especially `/"><’` and space. 
+Avoid special characters in the role names, especially `/"><'` and space. 
 
     For example, suppose you have three sets of restricted data that you call `ccsmData`, `fieldProject`, `tiggeData`.
 

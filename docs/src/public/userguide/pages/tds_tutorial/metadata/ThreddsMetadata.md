@@ -1,6 +1,6 @@
 ---
 title: THREDDS Metadata
-last_updated: 2020-08-02
+last_updated: 2020-08-17
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: thredds_metadata.html
@@ -115,8 +115,8 @@ The example enhanced catalog lives at `${tomcat_home}/content/thredds/enhancedCa
 1. This is the standard `catalog` element for version 1.0.1. The only thing you should change is the name.
 2. You need this service in order to use the `addProxies` child element of the `datasetScan` element.
 3. This is a compound service gives access to the datasets both through OpenDAP and through HTTP file transfer.
-4. This is a collection level dataset that we added in order to demonstrate factoring out information. It’s not particularly needed in this example, which only contains one nested dataset (the datasetScan at (6)), but for more complicated situations its very useful.
-5. The metadata element that’s part of the collection dataset at (4). Because it has `inherited=true`, everything in it will apply to the collection’s nested datasets. The specific fields are ones that often can be factored out in this way, but your catalog may be different.
+4. This is a collection level dataset that we added in order to demonstrate factoring out information. It's not particularly needed in this example, which only contains one nested dataset (the datasetScan at (6)), but for more complicated situations its very useful.
+5. The metadata element that's part of the collection dataset at (4). Because it has `inherited=true`, everything in it will apply to the collection's nested datasets. The specific fields are ones that often can be factored out in this way, but your catalog may be different.
    1. `serviceName`: indicates that all the nested datasets will use the compound service named *both*.
    2. `authority`: used to create globally unique dataset IDs. Note the use of *reverse DNS naming*, which guarantees global uniqueness.
    3. `dataType`: all datasets are of type *Grid*.

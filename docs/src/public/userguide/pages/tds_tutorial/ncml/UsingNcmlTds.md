@@ -1,6 +1,6 @@
 ---
 title: Using NcML in the TDS 
-last_updated: 2018-04-02
+last_updated: 2020-08-17
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: using_ncml_in_the_tds.html
@@ -156,7 +156,7 @@ The `scan` element in the NcML aggregation is similar in purpose to the `dataset
 The `datasetScan` element is more powerful, and has more options for filtering, etc.
 Its job is to create nested `dataset` elements inside the `datasetScan`, and so has various options to add information to those nested datasets.
 It has a generalized framework (CrawlableDataset) for crawling other things besides file directories.
-The `scan` element’s job is to easily specify what files go into an NcML aggregation, and those individual files are hidden inside the aggregation dataset.
+The `scan` element's job is to easily specify what files go into an NcML aggregation, and those individual files are hidden inside the aggregation dataset.
 It can only scan file directories.
 In the future, some of the capabilities of `datasetScan` will migrate into NcML scan.
 
@@ -258,7 +258,7 @@ Extract it out and put it in a file called `test.ncml`.
 
 1. Add the XML header to the top of it: `<?xml version="1.0"encoding="UTF-8"?>`
 2. Remove the recheckEvery attribute if present on the `<scan>` element.
-3. Make sure that the `<scan>` location is available on the machine you are running ToolsUI
+3. Make sure the `<scan>` location is available on the machine you are running ToolsUI
 
 Now start up ToolsUI, and in the viewer tab, navigate to `test.ncml` and try to open it.
 
@@ -271,6 +271,6 @@ See if OPeNDAP access works.
 Add the `recheckEvery` attribute (if needed) and test again.
 
 {%include troubleshooting.html content="
-Remember that you **can’t** use `HTTPServer` for NcML datasets, as they are virtual datasets.
+Remember that you **can't** use `HTTPServer` for NcML datasets, as they are virtual datasets.
 Use only the subsetting services, such as `OpenDAP`, `WCS`, `WMS`, and `NetcdfSubset`.
 " %}

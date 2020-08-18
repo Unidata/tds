@@ -1,6 +1,6 @@
 ---
 title: Restrict Tomcat Permissions
-last_updated: 2020-04-30
+last_updated: 2020-08-18
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tomcat_permissions.html
@@ -13,7 +13,7 @@ This section assumes you have successfully performed the tasks as outlined in th
 
 ## Rationale
 
-The JVM doesn’t fork at all, nor does it support `setuid()` calls.
+The JVM doesn't fork at all, nor does it support `setuid()` calls.
 The JVM, and therefore Tomcat, is _one_ process.
 The JVM is a virtual machine with many threads under the same process.
 
