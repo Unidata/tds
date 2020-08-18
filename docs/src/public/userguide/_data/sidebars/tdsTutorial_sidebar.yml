@@ -334,7 +334,7 @@ entries:
       url: /pointfeature_collection_ref.html
       output: web, pdf
 
-    - title: GRIB Collection Cofig
+    - title: GRIB Collection Config
       url: /grib_collection_config_ref.html
       output: web, pdf
        
