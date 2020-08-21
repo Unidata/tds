@@ -1,6 +1,6 @@
 ---
-title: Configuring TDS with DatasetScan
-last_updated: 2020-08-14
+title: Configuring TDS With DatasetScan
+last_updated: 2020-08-21
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tds_dataset_scan_ref.html
@@ -114,7 +114,7 @@ Note that:
    From that catalog, the `catalogRef GFS/catalog.xml` resolves to `http://server:8080/thredds/catalog/ncep/GFS/catalog.xml`.
 * The dataset access URLs are built from the service base and the dataset `urlPath` (see [THREDDS URL construction](client_side_catalog_specification.html#constructingURLs)). 
    So the dataset URLs from the above catalog would be `http://server:8080/thredds/dodsC/ncep/GFS/CONUS_191km/GFS_CONUS_191km_20061107_0000.grib1`. 
-   (You don’t have to worry about these URLs, as they are all generated automatically).
+   (You don't have to worry about these URLs, as they are all generated automatically).
 * Each `datasetScan` element must reference a `service` element (whether directly, as above, or inherited).
 * Because the TDS uses the set of all given path values to map URLs to datasets, **each `datasetScan` path MUST be unique across all config catalogs on a given TDS installation**.
 
@@ -330,7 +330,7 @@ The captured strings can then be substituted into another string in place of cap
 (The capturing groups are numbered according to the order in which they appear in the match string.) 
 
 For example, the regular expression `Hi (.), how are (.)?` when applied to the string `Hi Fred, how are you?` would capture the strings `Fred` and `you`. 
-Following that with a capturing group replacement in the string `$2 are $1` would result in the string "you are Fred."
+Following with a capturing group replacement in the string `$2 are $1` would result in the string "you are Fred."
 
 Here's an example `namer`:
 

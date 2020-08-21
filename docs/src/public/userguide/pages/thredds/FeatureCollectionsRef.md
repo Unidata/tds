@@ -284,7 +284,7 @@ Examples:
    <update recheckAfter="15 min" />
    ~~~
 
-   * Test if the dataset has been updated only when a request comes in for it, and the dataset hasn’t been checked for 15 minutes.
+   * Test if the dataset has been updated only when a request comes in for it, and the dataset hasn't been checked for 15 minutes.
 
 3. ~~~xml
    <update startup="never" trigger="allow" />
@@ -474,12 +474,12 @@ To have access to this page the user must have the role `tdsConfig` (see [enabli
 
 ### Static Collection - Small or Rarely Used
 
-If you have a collection that doesn’t change, do not include an `update` element.
+If you have a collection that doesn't change, do not include an `update` element.
 The first time that the dataset is accessed, it will be read in and then never changed.
 
 ### Static Collection - Fast response
 
-If you have a collection that doesn’t change, but you want to have it ready for requests, then use:
+If you have a collection that doesn't change, but you want to have it ready for requests, then use:
 
 ~~~xml
 <update startup ="always" />

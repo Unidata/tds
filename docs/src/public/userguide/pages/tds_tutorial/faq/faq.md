@@ -248,7 +248,7 @@ If you find these, the likely problem is that another webapp running in the same
 The above example shows that the Saxon parser has been set, but is not being found by the TDS.
 We saw this happening with the _OOSTethys_ webapp.
 
-The solution is to move the other webapp to its own Tomcat instance, or to move the required jar (eg saxon.jar) into Tomcat's lib directory, where it is available to all webapps.
+The solution is to move the other webapp to its own Tomcat instance, or to move the required jar (e.g.: saxon.jar) into Tomcat's lib directory, where it is available to all webapps.
 TDS does very simple XSLT to create its web forms, so its likely that it can work with any decent XSLT library.
 By default it uses the JDK's built-in XSLT library.
 
@@ -317,7 +317,7 @@ The `4.3` default was to put all cache files into a single directory, but `4.6` 
 If you need to, you can control that behavior in `threddsConfig.xml`, but better is to pay the price and redo the cache with nested directories.
 
 Note that to get everything in the `joinExisting` cache ahead of time, you just need to make a request for the aggregation coordinate (usually time) values.
-You could do it with an OPeNDAP request, or just open the file as a Grid (eg `WMS`, `WCS`, `NCSS`, from `ToolsUI`, `IDV`, etc) which will automatically request all coordinates.
+You could do it with an OPeNDAP request, or just open the file as a Grid (e.g.: `WMS`, `WCS`, `NCSS`, from `ToolsUI`, `IDV`, etc) which will automatically request all coordinates.
 A script to do so is also easy enough, using `wget` or `python` or whatever you like.
 
 Upgrading to a new version is a good time to clear out your caches, if you are installing on top of your old TDS.

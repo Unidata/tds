@@ -39,7 +39,7 @@ Defines options on feature collections with `featureType=FMRC`.
 
 where:
 
-1.  `regularize`: If true, then the runs for a given hour (from 0Z) are assumed to have the same forecast time coordinates. For example, if you have 4 model runs per day (eg 0, 6, 12, 18Z) and many days of model runs, then all the 6Z runs for all days will have the same time coordiantes, etc. This "regularizes" time coordinates, and is useful when there may be missing forecast times, which may result in creating a new time coordinate. **Leave this to false unless you really have a series of runs with uniform offsets**.
+1.  `regularize`: If true, then the runs for a given hour (from 0Z) are assumed to have the same forecast time coordinates. For example, if you have 4 model runs per day (e.g.: 0, 6, 12, 18Z) and many days of model runs, then all the 6Z runs for all days will have the same time coordiantes, etc. This "regularizes" time coordinates, and is useful when there may be missing forecast times, which may result in creating a new time coordinate. **Leave this to false unless you really have a series of runs with uniform offsets**.
 
 2. `datasetTypes`: list the dataset types that are exposed in the TDS catalog. The possible values are:
 

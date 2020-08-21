@@ -53,7 +53,7 @@ logos of the server and host institution)
 * the Server section of the WMS GetCapabilities response
 * the server information documents ([see below](#server-information-documents))
 * the Server section of the WCS GetCapabilities response
-* all generated THREDDS catalogs that don’t override this information
+* all generated THREDDS catalogs that don't override this information
 
 NOTE: The best way to use your own logo is to put it in the `${tds.content.root.path}/thredds/public/` directory, and specify it in `serverInformation` as `/thredds/<name>`, e.g.:
 
@@ -243,7 +243,7 @@ Here is the description of the various options:
 * `paletteLocationDir`: optionally specify the location of the directory containing your own palette files, by specifying the directory
 where they are contained.
   If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
-  If you don’t specify it, or specify it incorrectly, the default palettes will be used, which are in the war file under `WEB-INF/palettes`.
+  If you don't specify it, or specify it incorrectly, the default palettes will be used, which are in the war file under `WEB-INF/palettes`.
 * `maxImageWidth`: the maximum image width in pixels that this WMS service will return.
 * `maxImageHeight`: the maximum image height in pixels that this WMS service will return.
 
@@ -404,7 +404,7 @@ If `alwaysUse` is `false`, TDS wil first look for the temporary file in the same
 
 Every `scour` amount of time, the largest items in the cache will be deleted, until the directory has less than `maxSize` bytes.
 Note that the directory will sometimes exceed `maxSize`, and will only be knocked back to `maxSize` when the scour thread runs.
-To turn off scouring, set the scour time to 0 (eg `0 secs`).
+To turn off scouring, set the scour time to 0 (e.g.: `0 secs`).
 
 If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cache/cdm` directory.
 We recommend that you use this default, by not specifying the `DiskCache.dir` element.
@@ -427,7 +427,7 @@ We recommend that you use this default, by not specifying a `AggregationCache`.`
 Every `scour` amount of time, any item that hasn\'t been changed since `maxAge` time will be deleted.
 If you have aggregations that never change, set `scour` to `-1` to disable the operation.
 Otherwise, make `maxAge` longer than the longest time between changes.
-Basically, you don’t want to remove active aggregations.
+Basically, you don't want to remove active aggregations.
 
 `cachePathPolicy` controls how cache files are stored in `dir`.
 It must be set to one of `oneDirectory` or `nestedDirectory` (the default). 
@@ -485,7 +485,7 @@ These elements control where Grib index files are written.
 of the index files. 
   Use `nestedDirectory` for large collections of files, as some file systems struggle when a directory contains thousands of files.
 * Every `scour` amount of time, any files in the cache that are older than `maxAge` will be removed.
-  To turn off scouring, set the scour time to 0 (eg `0 hours`), or leave out the `<scour>` element.
+  To turn off scouring, set the scour time to 0 (e.g.: `0 hours`), or leave out the `<scour>` element.
   Typically you do `not` want to scour the indices.
 
 Managing the GRIB indices is an important task, and can be difficult if the files are changing, as in a rolling archive, or for very large collections.

@@ -80,7 +80,7 @@ When executed, the `catalina.sh` script will look for a `setenv.sh` in the `$TOM
 
 
 {%include note.html content="
-If you’re running Tomcat on an instance of Windows OS, you will want to create a `setenv.bat` file.
+If you're running Tomcat on an instance of Windows OS, you will want to create a `setenv.bat` file.
 " %}
 
 

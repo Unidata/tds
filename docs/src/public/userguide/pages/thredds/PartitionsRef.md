@@ -1,6 +1,6 @@
 ---
-title: Time Partitions
-last_updated: 2020-08-17
+title: GRIB Time Partitions
+last_updated: 2020-08-21
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: partitions_ref.html
@@ -68,20 +68,20 @@ The possible values of `timePartition` are:
     
 * [`none`](partitions_ref.html#none-partition): all files are scanned in, and one collection level index is built.    
 
-#### Directory Partition
+### Directory Partition
 
 In order to use a directory partition, the directory structure must partition the data by reference time. 
 That is, all of the data for any given reference time must be completely contained in the directory. 
 Directories can be nested to any level. 
 To use, add the attribute `timePartition="directory"`, *or simply omit, as this is the default*.
 
-#### File Partition
+### File Partition
 
 In order to use a file partition, all of the records for a reference time must be contained in a single file. 
 The common case is that each file contains all of the records for a single reference time. 
 To use, put `timePartition="file"`.
 
-#### Time Partition
+### Time Partition
 
 In order to use a time partition, the filenames must contain parsable time information than can be used to partition the data. 
 The directory layout, if any, is not used. 
@@ -93,7 +93,7 @@ A date extractor must be specified, and is used to group the files into partitio
 For example, if `timePartition = "1 year"`, all of the files for each calendar year are made into a collection. 
 The overall dataset is the collection of all of those yearly collections.
 
-#### None Partition
+### None Partition
 
 If a collection is configured with `timePartition="none"`, all of the records' metadata (excluding the data itself) will be read into memory at once. 
 A single top-level collection is written.
@@ -131,7 +131,7 @@ Assuming you have control over how GRIB records are stored in the files, here ar
    
 ## Examples
 
-#### `timePartition="none"` Example
+### `timePartition="none"` Example
 
 ~~~xml
 <featureCollection featureType="GRIB1" 
@@ -195,7 +195,7 @@ Under the hood:
 ~~~
 
 
-#### `timePartition="directory"` Example
+### `timePartition="directory"` Example
 
 ~~~xml
 <featureCollection featureType="GRIB1" name="rdavm partition directory" path="gribCollection/pofp">
@@ -210,7 +210,7 @@ In order to use this, you cannot have two GRIB records with the same reference t
 
 
 
-#### `timePartition="file"` Example
+### `timePartition="file"` Example
 
 ~~~xml
 <featureCollection featureType="GRIB1" name="rdavm partition directory" path="gribCollection/pofp">
@@ -284,11 +284,11 @@ So the datasets that are generated from a Time Partition with `name`, `path`, an
 | individual files | path/partitionName/*files/catalog.xml* | filename | path/*files/filename* |
 
 
-#### Multiple Groups Example
+### Multiple Groups Example
 
 When a Grib Collection contains multiple horizontal domains (i.e. distinct Grid Definition Sections (GDS)), each domain gets placed into a separate group. 
 As a rule, one can't tell if there are separate domains without reading the files. 
-If you open this collection through the CDM (e.g., using [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/toolsui_ref.html){:target="_blank"}) you would see a dataset that contains groups. 
+If you open this collection through the CDM (e.g., using [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"}) you would see a dataset that contains groups. 
 The TDS, however, separates groups into different datasets, so that each dataset has only a single (unnamed, aka `root`) group.
 
 ~~~xml
@@ -322,7 +322,7 @@ The TDS, however, separates groups into different datasets, so that each dataset
 
 1. This dataset has many different groups, and we are using a [`<gribConfig>`](grib_collection_config_ref.html) element to name them.
 
-Resulting Datasets:
+#### Resulting  Datasets:
 
 For each group, this generates one collection dataset, and one dataset for each individual file in the group:
 
@@ -374,7 +374,7 @@ So the datasets that are generated from a GRIB Collection with `groupName` and `
 | group collection |      |  groupName | path/groupName/*collection* |
 | individual files | path/groupName/files/catalog.xml | filename | path/*files*/filename |
 
-#### Time Partition with Multiple Groups Example
+### Time Partition with Multiple Groups Example
 
 Here is a time-partitioned dataset with multiple groups:
 
@@ -407,7 +407,7 @@ Here is a time-partitioned dataset with multiple groups:
 See the [GRIB Collection Configuration Specs](grib_collection_config_ref.html) for more information.
 " %}
 
-Resulting Datasets:
+#### Resulting  Datasets:
 
 A time partition with multiple groups generates an overall collection dataset for each group, a collection dataset for each group in each partition, and a dataset for each individual file:
 
