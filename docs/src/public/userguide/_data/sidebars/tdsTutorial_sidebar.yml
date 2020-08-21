@@ -334,11 +334,11 @@ entries:
       url: /pointfeature_collection_ref.html
       output: web, pdf
 
-    - title: GRIB Collection Config
+    - title: GRIB Collection Configuration
       url: /grib_collection_config_ref.html
       output: web, pdf
        
-    - title: Time Partitions
+    - title: GRIB Time Partitions
       url: /partitions_ref.html
       output: web, pdf
 
