@@ -1,6 +1,6 @@
 ---
 title: TDS Services
-last_updated: 2020-04-22
+last_updated: 2020-08-21
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: services_ref.html
@@ -10,7 +10,7 @@ permalink: services_ref.html
 
 ### Standard Data Services
 
-The TDS has a set of Standard Data Services that are always available (unless explicitly disabled) and can be referenced from any configuration catalog:
+The TDS has a set of **Standard Data Services** that are always available (unless explicitly disabled) and can be referenced from any configuration catalog:
 
 * cdmRemote
 * cdmrFeatureGrid
@@ -32,7 +32,7 @@ The TDS configures the appropriate set of standard data services for each dataTy
 You can configure the available data services globally, and they will be applied to all datasets of that dataType/featureType.
 If you do not specify a service for a dataset, but you do specify its dataType/featureType, then the datatype-appropriate services will be enabled for it.
 
-### User defined Services
+### User-Defined Services
 
 You can still define your own services, either globally in the root catalog, or locally in any configuration catalog.
 * Services placed in the root catalog are global and can be referenced in any other config catalog.
@@ -40,618 +40,252 @@ You can still define your own services, either globally in the root catalog, or 
 
 
 ## Server Information Services
-<table width="95%" border="2">
-  <tbody><tr>
-    <th width="15">Name</th>
-    <th width="50%">TDS Configuration</th>
-    <th width="35%">Description</th>
-  </tr>
-  <tr>
-    <td>Server Information (HTML)</td>
-    <td>
-      <table width="100%">
-        <tbody><tr>
-          <th colspan="2">Basic Configuration</th>
-        </tr>
-        <tr>
-          <td>Default&nbsp;Availability</td>
-          <td>Enabled</td>
-        </tr>
-        <tr>
-          <td>Access Point</td>
-          <td><code>/thredds/serverInfo.html</code></td>
-        </tr>
-      </tbody></table>
-    </td>
-    <td rowspan="3">
-      Provide human and machine readable access to information about the server
-      installation. E.g., an abstract and a list of keywords summarizing the
-      services and data available on the server, contact information and other
-      information about the group hosting the server, and the version of the
-      THREDDS Data Server (TDS) running.
-    </td>
-  </tr>
-  <tr>
-    <td>Server Information (XML)</td>
-    <td>
-      <table width="100%">
-        <tbody><tr>
-          <th colspan="2">Basic Configuration</th>
-        </tr>
-        <tr>
-          <td>Default&nbsp;Availability</td>
-          <td>Enabled</td>
-        </tr>
-        <tr>
-          <td>Access Point</td>
-          <td><code>/thredds/serverInfo.xml</code></td>
-        </tr>
-      </tbody></table>
-    </td>
-  </tr>
-  <tr>
-    <td>Server Version Information (Text)</td>
-    <td>
-      <table width="100%">
-        <tbody><tr>
-          <th colspan="2">Basic Configuration</th>
-        </tr>
-        <tr>
-          <td>Default&nbsp;Availability</td>
-          <td>Enabled</td>
-        </tr>
-        <tr>
-          <td>Access Point</td>
-          <td><code>/thredds/serverVersion.txt</code></td>
-        </tr>
-      </tbody></table>
-    </td>
-  </tr>
-</tbody></table>
 
-<h3><a name="catalogServices">Catalog Services</a></h3>
-<table width="95%" border="2">
-  <tbody><tr>
-    <th width="15">Name</th>
-    <th width="50%">TDS Configuration</th>
-    <th width="35%">Description</th>
-  </tr>
-  <tr>
-    <td>THREDDS&nbsp;Catalog Services</td>
-    <td>
-      <table width="100%">
-        <tbody><tr>
-          <th colspan="2">Basic Configuration</th>
-        </tr>
-        <tr>
-          <td>Default&nbsp;Availability</td>
-          <td>Enabled</td>
-        </tr>
-        <tr>
-          <td>Access Point</td>
-          <td>
-            <code>/thredds/catalog.{xml|html}</code><br>
-            <code>/thredds/catalog/*/catalog.{xml|html}</code><br>
-            <code>/thredds/*/*.{xml|html}</code>
-          </td>
-        </tr>
-      </tbody></table>
-    </td>
-    <td rowspan="2">
-      Provide subsetting and HTML conversion services for THREDDS catalogs. Catalogs
-      served by the TDS can be subset and/or viewed as HTML. Remote catalogs, if allowed/enabled,
-      can be validated, displayed as HTML, or subset.
-      <ul>
-        <li>More details are available <a href="config_catalog.html">here</a>.
-        </li>
-        <li>Services for remote catalogs can be enabled with the TDS Configuration
-          File (<a href="basic_tds_configuration.html">threddsConfig.xml</a>).
-        </li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td>Remote THREDDS Catalog Service</td>
-    <td>
-      <table width="100%">
-        <tbody><tr>
-          <th colspan="2">Basic Configuration</th>
-        </tr>
-        <tr>
-          <td>Default&nbsp;Availability</td>
-          <td>Disabled</td>
-        </tr>
-        <tr>
-          <td>Access&nbsp;Point</td>
-          <td><code>/thredds/remoteCatalogService</code></td>
-        </tr>
-      </tbody></table>
-    </td>
-  </tr>
-</tbody></table>
+*Server Information Services* provide human- and machine-readable access to information about the server installation. 
+E.g., an abstract and a list of keywords summarizing the services and data available on the server, contact information and other information about the group hosting the server, and the version of the THREDDS Data Server (TDS) running.
 
-<h3><a name="metadataServices">Metadata Services</a></h3>
-<table border="2">
-  <tbody><tr>
-    <th width="187">Name</th>
-    <th width="632">TDS Configuration</th>
-    <th width="450">Description</th>
-  </tr>
-  <tr>
-    <td><a name="ISO">ISO</a></td>
-    <td>
-      <table width="100%">
-        <tbody><tr>
-          <th colspan="2">Basic Configuration</th>
-        </tr>
-        <tr>
-          <td>Default&nbsp;Availability</td>
-          <td>Enabled</td>
-        </tr>
-        <tr>
-          <td>Access Point</td>
-          <td><code>/thredds/iso/*</code></td>
-        </tr>
-        <tr>
-          <th colspan="2">Catalog Service Configuration<br>
-            (exact values <a href="#tdsServiceElemRequirements">required</a>)
-          </th>
-        </tr>
-        <tr>
-          <td>Service Type</td>
-          <td><strong>ISO</strong></td>
-        </tr>
-        <tr>
-          <td>Service Base URL</td>
-          <td><strong>/thredds/iso/</strong></td>
-        </tr>
-      </tbody></table>
-    </td>
-    <td>Provide ISO 19115 metadata representation of a dataset's structure and metadata
-      <ul>
-        <li>More details are available <a href="https://www.ngdc.noaa.gov/wiki/index.php/NcISO" target="_blank">here</a>.
-        </li>
-        <li>Enable ncISO with the TDS Configuration File
-          (<a href="adding_ogc_iso_services.html">threddsConfig.xml</a>).
-        </li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td><a name="NCML">NCML</a></td>
-    <td>
-      <table width="100%">
-        <tbody><tr>
-          <th colspan="2">Basic Configuration</th>
-        </tr>
-        <tr>
-          <td>Default&nbsp;Availability</td>
-          <td>Enabled</td>
-        </tr>
-        <tr>
-          <td>Access Point</td>
-          <td><code>/thredds/ncml/*</code></td>
-        </tr>
-        <tr>
-          <th colspan="2">Catalog Service Configuration<br>
-            (exact values <a href="#tdsServiceElemRequirements">required</a>)
-          </th>
-        </tr>
-        <tr>
-          <td>Service Type</td>
-          <td><strong>NCML</strong></td>
-        </tr>
-        <tr>
-          <td>Service Base URL</td>
-          <td><strong>/thredds/ncml/</strong></td>
-        </tr>
-      </tbody></table>
-    </td>
-    <td>Provide NCML representation of a dataset
-      <ul>
-        <li>More details are available <a href="using_ncml_in_the_tds.html">here</a>.
-        </li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td><a name="UDDC">UDDC</a></td>
-    <td>
-      <table width="100%">
-        <tbody><tr>
-          <th colspan="2">Basic Configuration</th>
-        </tr>
-        <tr>
-          <td>Default&nbsp;Availability</td>
-          <td>Enabled</td>
-        </tr>
-        <tr>
-          <td>Access Point</td>
-          <td><code>/thredds/uddc/*</code></td>
-        </tr>
-        <tr>
-          <th colspan="2">Catalog Service Configuration<br>
-            (exact values <a href="#tdsServiceElemRequirements">required</a>)
-          </th>
-        </tr>
-        <tr>
-          <td>Service Type</td>
-          <td><strong>UDDC</strong></td>
-        </tr>
-        <tr>
-          <td>Service Base URL</td>
-          <td><strong>/thredds/uddc/</strong></td>
-        </tr>
-      </tbody></table>
-    </td>
-    <td>Provide an evaluation of how well the metadata contained in a dataset conforms
-      to the <a href="http://wiki.esipfed.org/index.php/Category:Attribute_Conventions_Dataset_Discovery" target="_blank">
-        NetCDF Attribute Convention for Data Discovery (NACDD)</a>
-    </td>
-  </tr>
-</tbody></table>
+#### Basic Configuration:
 
-<h3><a name="dataAccessServices">Data Access Services</a></h3>
-<table width="95%" border="2">
-<tbody><tr>
-  <th width="15">Name</th>
-  <th width="50%">TDS Configuration</th>
-  <th width="35%">Description</th>
-</tr>
-<tr>
-  <td><a name="DAP2">OPeNDAP DAP2</a></td>
-  <td>
-    <table width="100%">
-      <tbody><tr>
-        <th colspan="2">Basic Configuration</th>
-      </tr>
-      <tr>
-        <td>Default&nbsp;Availability</td>
-        <td>Enabled</td>
-      </tr>
-      <tr>
-        <td>Access Point</td>
-        <td><code>/thredds/dodsC/*</code></td>
-      </tr>
-      <tr>
-        <th colspan="2">Catalog Service Configuration<br>
-          (exact values <a href="#tdsServiceElemRequirements">required</a>)
-        </th>
-      </tr>
-      <tr>
-        <td>Service Type</td>
-        <td><strong>OPeNDAP</strong></td>
-      </tr>
-      <tr>
-        <td>Service Base URL</td>
-        <td><strong>/thredds/dodsC/</strong></td>
-      </tr>
-    </tbody></table>
-  </td>
-  <td>OPeNDAP DAP2 data access protocol.
-    <ul>
-      <li>Several configuration options are available
-        (<a href="basic_config_catalog.html">details</a>).
-      </li>
-    </ul>
-  </td>
-</tr>
-<tr>
-  <td><a name="NCSS">NetCDF Subset Service</a></td>
-  <td>
-    <table width="100%">
-      <tbody><tr>
-        <th colspan="2">Basic Configuration</th>
-      </tr>
-      <tr>
-        <td>Default&nbsp;Availability</td>
-        <td>Enabled</td>
-      </tr>
-      <tr>
-        <td>Access Point</td>
-        <td><code>/thredds/ncss/*</code></td>
-      </tr>
-      <tr>
-        <th colspan="2">Catalog Service Configuration<br>
-          (exact values <a href="#tdsServiceElemRequirements">required</a>)
-        </th>
-      </tr>
-      <tr>
-        <td>Service Type</td>
-        <td><strong>NetcdfSubset</strong></td>
-      </tr>
-      <tr>
-        <td>Service Base URL</td>
-        <td><strong>/thredds/ncss/</strong></td>
-      </tr>
-    </tbody></table>
-  </td>
-  <td>NetCDF Subset Service: a data access protocol.
-    <ul>
-      <li>More details are available <a href="netcdf_subset_service_ref.html">here</a>.
-      </li>
-      <li>Enable NCSS and set other configuration options with the TDS
-        Configuration File (threddsConfig.xml).
-        More setup and configuration details are available
-        <a href="netcdf_subset_service_ref.html">here</a>.
-      </li>
-    </ul>
-  </td>
-</tr>
-<tr>
-  <td><a name="cdmremote">CDM Remote</a></td>
-  <td>
-    <table width="100%">
-      <tbody><tr>
-        <th colspan="2">Basic Configuration</th>
-      </tr>
-      <tr>
-        <td>Default&nbsp;Availability</td>
-        <td>Enabled</td>
-      </tr>
-      <tr>
-        <td>Access Point</td>
-        <td><code>/thredds/cdmremote/*</code></td>
-      </tr>
-      <tr>
-        <th colspan="2">Catalog Service Configuration<br>
-          (exact values <a href="#tdsServiceElemRequirements">required</a>)
-        </th>
-      </tr>
-      <tr>
-        <td>Service Type</td>
-        <td><strong>cdmremote</strong></td>
-      </tr>
-      <tr>
-        <td>Service Base URL</td>
-        <td><strong>/thredds/cdmremote/</strong></td>
-      </tr>
-    </tbody></table>
-  </td>
-  <td>cdmremote/ncstream data access service. This service is enabled by
-    default. It is automatically enabled when an appropriate
-    FeatureCollection is used.
-    <ul>
-      <li>More details are available
-        <a href="https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/cdmremote.html" target="_blank">here</a>.
-      </li>
-    </ul>
-  </td>
-</tr>
-<tr>
-  <td><a name="WCS">OGC Web Coverage Service (WCS)</a></td>
-  <td>
-    <table width="100%">
-      <tbody><tr>
-        <th colspan="2">Basic Configuration</th>
-      </tr>
-      <tr>
-        <td>Default&nbsp;Availability</td>
-        <td>Enabled</td>
-      </tr>
-      <tr>
-        <td>Access Point</td>
-        <td><code>/thredds/wcs/*</code></td>
-      </tr>
-      <tr>
-        <th colspan="2">Catalog Service Configuration<br>
-          (exact values <a href="#tdsServiceElemRequirements">required</a>)
-        </th>
-      </tr>
-      <tr>
-        <td>Service Type</td>
-        <td><strong>WCS</strong></td>
-      </tr>
-      <tr>
-        <td>Service Base URL</td>
-        <td><strong>/thredds/wcs/</strong></td>
-      </tr>
-    </tbody></table>
-  </td>
-  <td>OGC WCS supports access to geospatial data as "coverages".
-    <ul>
-      <li>More details about the OGC WCS are available
-        <a href="https://www.ogc.org/standards/wcs" target="_blank">here</a>.
-      </li>
-      <li>Enable OGC WCS and set other configuration options with the TDS
-        Configuration File
-        (<a href="config_catalog.html">threddsConfig.xml</a>).
-        More setup, configuration, and implementation details for the TDS's
-        OGC WCS implementation are available <a href="wcs_ref.html">here</a>.
-      </li>
-    </ul>
-  </td>
-</tr>
-<tr>
-  <td><a name="WMS">OGC Web Map Service (WMS)</a></td>
-  <td>
-    <table width="100%">
-      <tbody><tr>
-        <th colspan="2">Basic Configuration</th>
-      </tr>
-      <tr>
-        <td>Default&nbsp;Availability</td>
-        <td>Enabled</td>
-      </tr>
-      <tr>
-        <td>Access Point</td>
-        <td><code>/thredds/wms/*</code></td>
-      </tr>
-      <tr>
-        <th colspan="2">Catalog Service Configuration<br>
-          (exact values <a href="#tdsServiceElemRequirements">required</a>)
-        </th>
-      </tr>
-      <tr>
-        <td>Service Type</td>
-        <td><strong>WMS</strong></td>
-      </tr>
-      <tr>
-        <td>Service Base URL</td>
-        <td><strong>/thredds/wms/</strong></td>
-      </tr>
-    </tbody></table>
-  </td>
-  <td>OGC WMS supports access to georegistered map images from geoscience datasets.
-    <ul>
-      <li>More details about the OGC WMS are available
-        <a href="http://www.opengeospatial.org/standards/wms" target="_blank">here</a>.
-      </li>
-      <li>Enable OGC WMS and set other configuration options with the TDS
-        Configuration File
-        (<a href="config_catalog.html">threddsConfig.xml</a>).
-        More setup, configuration, and implementation details for the TDS's
-        OGC WMS implementation are available <a href="wms_ref.html">here</a>.
-        Including a link to configuration information for the underlying
-        WMS implementation (ncWMS: "<a href="wms_ref.html">Detailed ncWMS Configuration</a>")
-      </li>
-    </ul>
-  </td>
-</tr>
-<tr>
-  <td><a name="HTTP">HTTP File Download</a></td>
-  <td>
-    <table width="100%">
-      <tbody><tr>
-        <th colspan="2">Basic Configuration</th>
-      </tr>
-      <tr>
-        <td>Default&nbsp;Availability</td>
-        <td>Enabled</td>
-      </tr>
-      <tr>
-        <td>Access Point</td>
-        <td><code>/thredds/fileServer/*</code></td>
-      </tr>
-      <tr>
-        <th colspan="2">Catalog Service Configuration<br>
-          (exact values <a href="#tdsServiceElemRequirements">required</a>)
-        </th>
-      </tr>
-      <tr>
-        <td>Service Type</td>
-        <td><strong>HTTPServer</strong></td>
-      </tr>
-      <tr>
-        <td>Service Base URL</td>
-        <td><strong>/thredds/fileServer/</strong></td>
-      </tr>
-    </tbody></table>
-  </td>
-  <td>HTTP File Download (HTTP byte ranges are supported)
-    <ul>
-      <li>Files accessed through the HTTP file download have their file
-        handles cached by default. Configuration settings for this caching
-        can be set with the TDS Configuration File
-        (<a href="config_catalog.html">threddsConfig.xml</a>).
-      </li>
-    </ul>
-  </td>
-</tr>
-  <tr>
-    <td><a name="SOS">OGC Sensor Observation Service (SOS)</a></td>
-    <td>
-      <table width="100%">
-        <tbody><tr>
-          <th colspan="2">Basic Configuration</th>
-        </tr>
-        <tr>
-          <td>Default&nbsp;Availability</td>
-          <td>Disabled</td>
-        </tr>
-        <tr>
-          <td>Access Point</td>
-          <td><code>/thredds/sos/*</code></td>
-        </tr>
-        <tr>
-          <th colspan="2">Catalog Service Configuration<br>
-            (exact values <a href="#tdsServiceElemRequirements">required</a>)
-          </th>
-        </tr>
-        <tr>
-          <td>Service Type</td>
-          <td><strong>Sensor Observation Service (SOS)</strong></td>
-        </tr>
-        <tr>
-          <td>Service Base URL</td>
-          <td><strong>/thredds/sos/</strong></td>
-        </tr>
-      </tbody></table>
-    </td>
-    <td>Sensor Observation Service
-      <ul>
-        <li>The SOS standard is applicable to use cases in which sensor data
-          needs to be managed in an interoperable way. For more information,
-          see the <a href="https://www.ogc.org/standards/sos" target="_blank">OGC</a>
-          SOS page, or the ncSOS
-          <a href="https://github.com/asascience-open/ncSOS/wiki" target="_blank">wiki</a>,
-          maintained by the developers of the ncSOS plugin, Applied Science
-          Associates.
-        </li>
-      </ul>
-    </td>
-  </tr>
-</tbody></table>
+|-----------------|-------------------|-------------------------------|-------------------------------|
+| Service Name         | Default Availability | Access Point   |
+|:----------------|:------------------|:------------------------------|:-------------------------------|
+| Server Information (HTML) | Enabled | `/thredds/serverInfo.html` |
+| Server Information (XML) | Enabled | `/thredds/serverInfo.xml` |
+| Server Version Information (Text) | Enabled | `/thredds/serverVersion.txt` |
 
-<hr width="100%">
+## Catalog Services
 
-<h2><a name="tdsServiceElemRequirements">TDS Requirements for THREDDS Catalog <code>service</code> Elements</a></h2>
+*Catalog Services* provide subsetting and HTML conversion services for THREDDS catalogs. 
+Catalogs served by the TDS can be subset and/or viewed as HTML. 
+Remote catalogs, if allowed/enabled, can be validated, displayed as HTML, or subset.
 
-<p>
-  Since the TDS provides data access services at predefined URL base paths, services
-  whose access is listed as a THREDDS Catalog <strong>service</strong> element:
-</p>
-<ul>
-  <li>must use the appropriate value for the <strong>serviceType</strong> attribute</li>
-  <li>must use the appropriate value for the service <strong>base</strong> URL attribute</li>
-  <li>may use any value (unique to the catalog) for the service <strong>name</strong> attribute</li>
-</ul>
+{% include note.html content="
+Consult the [Configuration Catalogs](config_catalog.html) documentation and [TDS Configuration File Reference](tds_config_ref.html) for more information.
+" %}
 
-<h3>Examples of All Individual Services</h3>
+#### Basic Configuration:
 
-<p>Note: The required <strong>serviceType</strong> and <strong>base</strong> values are
-  shown in bold.</p>
-
-<h4>OPeNDAP</h4>
-<pre>&lt;service name="odap" serviceType="<strong>OPeNDAP</strong>" base="<strong>/thredds/dodsC/</strong>"/&gt;</pre>
-
-<h4>NetCDF Subset Service</h4>
-<pre>&lt;service name="ncss" serviceType="<strong>NetcdfSubset</strong>" base="<strong>/thredds/ncss/</strong>"/&gt;</pre>
-
-<h4>WCS</h4>
-<pre> &lt;service name="wcs" serviceType="<strong>WCS</strong>" base="<strong>/thredds/wcs/</strong>"/&gt;</pre>
-
-<h4>WMS</h4>
-<pre> &lt;service name="wms" serviceType="<strong>WMS</strong>" base="<strong>/thredds/wms/</strong>"&nbsp;/&gt;</pre>
-
-<h4>HTTP Bulk File Service</h4>
-<pre>&lt;service name="fileServer" serviceType="<strong>HTTPServer</strong>" base="<strong>/thredds/fileServer/"</strong>&nbsp;/&gt;</pre>
-
-<h4>ncISO</h4>
-<pre>&lt;service name="iso" serviceType="<strong>ISO</strong>" base="<strong>/thredds/iso/"</strong>&nbsp;/&gt;</pre>
-<pre>&lt;service name="ncml" serviceType="<strong>NCML</strong>" base="<strong>/thredds/ncml/"</strong>&nbsp;/&gt;</pre>
-<pre>&lt;service name="uddc" serviceType="<strong>UDDC</strong>" base="<strong>/thredds/uddc/"</strong>&nbsp;/&gt;</pre>
+|-----------------|-------------------|-------------------------------|-------------------------------|
+| Service Name         | Default Availability | Access Point   |
+|:----------------|:------------------|:------------------------------|:-------------------------------|
+| THREDDS Catalog Services | Enabled | `/thredds/catalog.{xml|html}`<br/> `/thredds/catalog/*/catalog.{xml|html}`<br/>`/thredds/*/*.{xml|html}` |
+| Remote THREDDS Catalog Service | *Disabled* | `/thredds/remoteCatalogService` |
 
 
-<h4>SOS</h4>
-<pre>&lt;service name="sos" serviceType="<strong>SOS</strong>" base="<strong>/thredds/sos/"</strong>&nbsp;/&gt;</pre>
+## `ncISO` Metadata Services
 
-<h3><a name="compoundExample">Example compound <code>service</code> Element</a></h3>
+*`ncISO` Metadata Services* facilitate the generation of [ISO 19115 metadata representation](https://en.wikipedia.org/wiki/Geospatial_metadata){:target="_blank"} from data in [NetCDF](https://www.unidata.ucar.edu/software/netcdf/). 
 
-<pre>&lt;service name="all" serviceType="Compound" base=""&gt;
-    &lt;service name="HTTPServer" serviceType="<strong>HTTPServer</strong>" base="<strong>/thredds/fileServer/</strong>"/&gt;
-    &lt;service name="opendap" serviceType="<strong>OPENDAP</strong>" base="<strong>/thredds/dodsC/</strong>"/&gt;
-    &lt;service name="ncss" serviceType="<strong>NetcdfSubset</strong>" base="<strong>/thredds/ncss/</strong>"/&gt;
-    &lt;service name="cdmremote" serviceType="<strong>CdmRemote</strong>" base="<strong>/thredds/cdmremote/</strong>"/&gt;
+The three `ncISO` Metadata Services are:
 
-    &lt;service name="wcs" serviceType="<strong>WCS</strong>" base="<strong>/thredds/wcs/</strong>"/&gt;
-    &lt;service name="wms" serviceType="<strong>WMS</strong>" base="<strong>/thredds/wms/</strong>"/&gt;
+* **ISO**
 
-    &lt;service name="iso" serviceType="<strong>ISO</strong>" base="<strong>/thredds/iso/</strong>"/&gt;
-    &lt;service name="ncml" serviceType="<strong>NCML</strong>" base="<strong>/thredds/ncml/</strong>"/&gt;
-    &lt;service name="uddc" serviceType="<strong>UDDC</strong>" base="<strong>/thredds/uddc/</strong>"/&gt;
+  The ISO Metadata Service provides [ISO 19115 metadata representation](https://www.ngdc.noaa.gov/wiki/index.php/NcISO){:target="_blank"} of a dataset's structure and metadata.
+  
+   {% include note.html content="
+  Learn how to [enable NcISO](adding_ogc_iso_services.html) in the TDS Configuration file.
+  " %}
+  
+* **NCML**
 
-    &lt;service name="sos" serviceType="<strong>SOS</strong>" base="<strong>/thredds/sos/</strong>"/&gt;
+    The *NCML Metadata Service* provides NCML representation of a dataset.
+    
+    {% include note.html content="
+    More details are available about how to [Use NcML in the TDS](using_ncml_in_the_tds.html). 
+  " %}
 
-  &lt;/service&gt;
-</pre>
+
+* **UDDC**
+    
+    Provide an evaluation of how well the metadata contained in a dataset conforms to the [NetCDF Attribute Convention for Data Discovery (NACDD)](https://wiki.esipfed.org/Category:Attribute_Conventions_Dataset_Discovery){:target="_blank"}.
+
+#### Basic Configuration:
+
+|-----------------|-------------------|-------------------------------|
+| Service Name         | Default Availability | Access Point   |
+|:----------------|:------------------|:------------------------------|
+| ISO | Enabled | `/thredds/iso/*`  |
+| NCML | Enabled | `/thredds/ncml/*`  |
+| UDDC | Enabled | `/thredds/uddc/*`  |
+
+#### Catalog Service Configuration:
+(These are the exact [required](services_ref.html#tds-requirements-for-thredds-catalog-service-elements) values to enable these service.)
+
+|-----------------|-------------------|------------------------|
+|  Service Name |   Service Type  | Service Base URL |
+|:----------------|:------------------|:-----------------------|
+| ISO | `ISO` | `/thredds/iso/` |
+| NCML | `NCML` | `/thredds/ncml/` |
+| UDDC | `UDDC` | `/thredds/uddc/` |
+
+
+
+## Data Access Services
+
+The TDS provides a number of different *Data Access Services*, including:
+
+* **OPeNDAP**
+   
+   The [OPeNDAP DAP2](https://en.wikipedia.org/wiki/OPeNDAP){:target="_blank"} data access protocol.
+   
+   {% include note.html content="
+   View all the available [configuration options](basic_config_catalog.html) for OPeNDAP in the TDS.
+   " %}
+           
+* **NetCDF Subset Service**
+
+   The [NetCDF Subset Service (NCSS)](netcdf_subset_service_ref.html) is a web service for subsetting CDM scientific datasets. 
+   
+   {% include note.html content="
+   Set NCSS configuration options in the [TDS Configuration File](tds_config_ref.html#netcdf-subset-service-ncss) (threddsConfig.xml).
+   " %}
+   
+* **CDM Remote**
+
+   The [`cdmremote/ncstream`](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/cdmremote.html){:target="_blank"} data access service is automatically enabled when an appropriate FeatureCollection is used.
+
+        
+* **OGC Web Coverage Service (WCS)**
+
+   [OGC Web Coverage Service (WCS)](https://www.ogc.org/standards/wcs){:target="_blank"} supports access to geospatial data as "coverages".
+                                                                                                                                            
+   {% include note.html content="
+   More setup, configuration, and implementation details for the TDS OGC WCS implementation are available in the [TDS WCS Reference](wcs_ref.html).
+   " %}
+
+
+* **OGC Web Map Service (WMS)**
+
+   The [OGC Web Map Service (WMS)](https://www.opengeospatial.org/standards/wms){:target="_blank"}  supports access to geo-registered map images from geoscience datasets.
+
+   {% include note.html content="
+   More setup, configuration, and implementation details for the TDS OGC WMS implementation are available in the [TDS WMS Reference](wms_ref.html).
+   " %}
+   
+        
+* **HTTP File Download**
+
+   The HTTP File Download service supports HTTP byte ranges. 
+   
+   {% include note.html content="
+   Set HTTP File Download  configuration options in the [TDS Configuration File](tds_config_ref.html) (threddsConfig.xml).
+   " %}
+
+* **OGC Sensor Observation Service (SOS)**
+
+   The [Sensor Observation Service (SOS)](https://www.ogc.org/standards/sos){:target="_blank"} standard is applicable to use cases in which sensor data needs to be managed in an interoperable way. 
+   
+   {% include note.html content="
+   The [NcSOS plugin](https://github.com/asascience-open/ncSOS/wiki){:target='_blank'} adds a OGC SOS service to your existing THREDDS server.
+   (This plugin is maintained by the developers at [Applied Science Associates](http://asascience.com/){:target='_blank'}.)
+   " %}
+
+#### Basic Configuration:
+
+|-----------------|-------------------|-------------------------------|
+| Service Name         | Default Availability | Access Point   |
+|:----------------|:------------------|:------------------------------|
+| OPeNDAP DAP2 | Enabled | `/thredds/dodsC/*`  |
+| NetCDF Subset Service | Enabled | `/thredds/ncss/*`  |
+| CDM Remote | Enabled | `/thredds/cdmremote/*`  |
+| OGC Web Coverage Service (WCS) | Enabled | `/thredds/wcs/*` |
+| OGC Web Map Service (WMS) | Enabled | `/thredds/wms/*` |
+| HTTP File Download | Enabled | `/thredds/fileServer/*` |
+| OGC Sensor Observation Service (SOS) | *Disabled* | `/thredds/sos/*` | 
+
+#### Catalog Service Configuration:
+(These are the exact [required](services_ref.html#tds-requirements-for-thredds-catalog-service-elements) values to enable these service.)
+
+|-----------------|-------------------|------------------------|
+|  Service Name |   Service Type  | Service Base URL |
+|:----------------|:------------------|:-----------------------|
+| OPeNDAP DAP2 | `OPeNDAP` | `/thredds/dodsC/` |
+| NetCDF Subset Service | `NetcdfSubset` | `/thredds/ncss/` |
+| CDM Remote | `cdmremote` | `/thredds/cdmremote/*` |
+| OGC Web Coverage Service (WCS) | `WCS` | `/thredds/wcs/` | 
+| OGC Web Map Service (WMS) | `WMS` | `/thredds/wms/` | 
+| HTTP File Download | `HTTPServer` | `/thredds/fileServer/` |
+| OGC Sensor Observation Service (SOS) | `SOS` | `/thredds/sos/` |
+  
+   
+
+
+## TDS Requirements For THREDDS Catalog `service` Elements
+
+Since the TDS provides data access services at predefined URL base paths, services whose access is listed as a THREDDS Catalog `service` element:
+
+1. *must* use the appropriate value for the `serviceType` attribute;
+2. *must* use the appropriate value for the service `base` URL attribute; and
+3. *may* use any value (unique to the catalog) for the service `name` attribute
+
+
+### Examples of All Individual Services
+
+The `serviceType` and `base` values are **required** in the following examples:
+
+#### OPeNDAP
+  
+~~~xml
+  <service name="odap" serviceType="OPeNDAP" base="/thredds/dodsC/"/>
+~~~
+
+#### NetCDF Subset Service
+  
+~~~xml
+  <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/"/>
+~~~
+
+#### WCS
+  
+~~~xml
+  <service name="wcs" serviceType="WCS" base="/thredds/wcs/"/>
+~~~
+
+#### WMS
+  
+~~~xml
+  <service name="wms" serviceType="WMS" base="/thredds/wms/" />
+~~~
+
+#### HTTP Bulk File Service
+  
+~~~xml
+  <service name="fileServer" serviceType="HTTPServer" base="/thredds/fileServer/" />
+~~~
+
+#### ncISO
+  
+~~~xml
+  <service name="iso" serviceType="ISO" base="/thredds/iso/" />
+
+  <service name="ncml" serviceType="NCML" base="/thredds/ncml/" />
+
+  <service name="uddc" serviceType="UDDC" base="/thredds/uddc/" />
+~~~
+
+
+#### SOS
+  
+~~~xml
+  <service name="sos" serviceType="SOS" base="/thredds/sos/" />
+~~~
+
+### Compound `service` Element Example
+
+~~~xml
+<service name="all" serviceType="Compound" base="">
+  <service name="HTTPServer" serviceType="HTTPServer" base="/thredds/fileServer/"/>
+  <service name="opendap" serviceType="OPENDAP" base="/thredds/dodsC/"/>
+  <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/"/>
+  <service name="cdmremote" serviceType="CdmRemote" base="/thredds/cdmremote/"/>
+
+  <service name="wcs" serviceType="WCS" base="/thredds/wcs/"/>
+  <service name="wms" serviceType="WMS" base="/thredds/wms/"/>
+
+  <service name="iso" serviceType="ISO" base="/thredds/iso/"/>
+  <service name="ncml" serviceType="NCML" base="/thredds/ncml/"/>
+  <service name="uddc" serviceType="UDDC" base="/thredds/uddc/"/>
+
+  <service name="sos" serviceType="SOS" base="/thredds/sos/"/>
+</service>
+~~~
