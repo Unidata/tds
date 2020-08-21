@@ -322,7 +322,7 @@ entries:
       url: /remote_management_ref.html
       output: web, pdf
 
-    - title: TDM Reference
+    - title: THREDDS Data Manager Reference
       url: /tdm_ref.html
       output: web, pdf
 

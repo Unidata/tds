@@ -6,18 +6,18 @@ toc: false
 permalink: wms_ref.html
 ---
 
-The TDS WMS implementation uses the ncWMS software developed by Jon Blower (Reading E-Science Center at the University of Reading).
-It supports OGC Web Map Service (WMS) versions 1.3.0 and 1.1.1.
+The TDS WMS implementation uses the ncWMS software developed by Jon Blower ([Reading E-Science Center](http://www.met.reading.ac.uk/resc/home/){:target="_blank"} at the University of Reading).
+It supports [OGC Web Map Service (WMS)](https://www.ogc.org/standards/wms){:target="_blank"} versions 1.3.0 and 1.1.1.
 
-## Which files can be served through the WMS server?
+## Which Files Can Be Served Through The WMS server?
 
 Data files must contain gridded data.
-The NetCDF-Java Common Data Model must be able to identify the coordinates system used. Check this by opening in the Grid Panel of the ToolsUI application.
-There should be one or more variables shown as a GeoGrid.
+The [NetCDF-Java Common Data Model](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/){:target="_blank"} must be able to identify the coordinate system used. Check this by opening in the `Grid Panel` of the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} application.
+There should be one or more variables shown as a `GeoGrid`.
 
-## Enabling and Using WMS
+## Enabling And Using WMS
 
-By default the WMS service is enabled in the TDS. 
+The WMS service **is enabled by default** in the TDS. 
 
 As long as the WMS service is enabled, datasets can be configured to have a WMS access method in the TDS catalog configuration files similar to how other services are configured.
 The service element's serviceType and base attribute values must be as follows:
@@ -34,15 +34,15 @@ The dataset to be served must reference this service (or a containing compound s
 </dataset>
 ~~~
 
-WMS clients may not be able to directly use the THREDDS catalogs to find the WMS services but the catalogs are useful for users to browse and for separate search services (e.g., OGC catalog services).
+WMS clients may not be able to directly use the THREDDS catalogs to find the WMS services but the catalogs are useful for users to browse and for separate search services (e.g., [OGC catalog services](https://www.ogc.org/standards/cat){:target="_blank"}).
 
 ## WMS Configuration
 
-Additional WMS configuration options can be set in the threddsConfig.xml file. More details on these options are available [here](#wms-service).
+Additional WMS configuration options can be set in the `threddsConfig.xml` file. More details on these options are available [here](#wms-service).
 
 Further WMS configuration properties are set in the wmsConfig.xml file.
 These properties are mainly related with styling of WMS images.
-Similar to the threddsConfig.xml file, the WMS configuration file (wmsConfig.xml) is found in the `$tds.content.root.path{}/content/thredds` directory.
+Similar to the `threddsConfig.xml file`, the WMS configuration file (wmsConfig.xml) is found in the `$tds.content.root.path{}/content/thredds` directory.
 A detailed description of the wmsConfig.xml file can be found at the MyOcean "Detailed WMS Configuration" page.
 
 If you are installing a new TDS, you should find a default wmsConfig.xml file (along with other configuration files) in your content/thredds directory after you first deploy the TDS.

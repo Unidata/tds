@@ -1,6 +1,6 @@
 ---
 title: Server-Side Catalog Specification
-last_updated: 2020-08-17
+last_updated: 2020-08-21
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: server_side_catalog_specification.html
@@ -32,7 +32,7 @@ Also, see:
 * [`addTimeCoverage`](server_side_catalog_specification.html#addtimecoverage-element)
 
 
-#### `catalog` element
+### `catalog` Element
 
 In addition to all the elements of a [client catalog](client_side_catalog_specification.html), a server catalog may have `datasetRoot` and `catalogScan` elements, and `dataset` elements may be `datasetScan` or `featureCollection` elements.
 
@@ -55,7 +55,7 @@ In addition to all the elements of a [client catalog](client_side_catalog_specif
   </xsd:complexType>
 </xsd:element>
 ~~~
-#### `datasetRoot` element
+### `datasetRoot` Element
 
 ~~~xml
 <xsd:element name="datasetRoot">
@@ -90,7 +90,7 @@ The `dataset2` has URL `dsR1/sub/dataset2.nc`, and refers to the file `C:/data/m
 
 The dataset roots are searched for the longest match, so `dataset3` with URL `dsR1/sub2/dataset3.nc`, will be matched to the second datasetRoot, and so refers to the file `Q:/smaug/floober/dataset3.nc`.
 
-#### `catalogScan` element
+### `catalogScan` Element
 
 ~~~xml
 <xsd:element name="catalogScan">
@@ -112,7 +112,7 @@ If using this element, do not name any of your catalogs "*catalogScan.xml*".
 * `path`: the logical URL path
 * `location`: the top directory to scan (and all subdirectories). Must be a path relative to `$\{tds.content.root.path}`.
 
-#### `dataset` element
+### `dataset` Element
 
 The [`ncml:netcdf`](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the [`restrictAccess`](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) attribute:
 
@@ -143,7 +143,7 @@ The [`ncml:netcdf`](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/anno
 * The `restrictAccess` attribute tells the TDS to [restrict access](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) to this dataset. 
 It is always inherited by all contained datasets.
 
-#### `datasetScan` element 
+### `datasetScan` Element 
 
 A `datasetScan` can be used wherever a `dataset` element is allowed.
 
@@ -218,7 +218,7 @@ If the `C:/data/grib2/` directory contained three files (`data1.wmo`, `data2.wmo
 </catalog>
 ~~~
 
-#### `filter` element
+### `filter` Element
 
 ~~~xml
 <xsd:element name="filter">
@@ -281,7 +281,7 @@ The logic can be summarized as
 
 More examples are available in the [datasetScan](tds_dataset_scan_ref.html) documentation.
 
-#### `namer` element
+### `namer` Element
 
 ~~~xml
 <xsd:element name="namer">
@@ -348,7 +348,7 @@ So, when cataloged, this dataset would end up like this (note that only the `nam
          urlPath="models/NCEP/GFS/Alaska_191km/GFS_Alaska_191km_20051011_0000.grib1"/>
 ~~~
 
-#### `sort` element
+### `sort` Element
 
 ~~~xml
 <xsd:element name="sort">
@@ -374,7 +374,7 @@ By default, datasets at each collection level are listed in ascending order by f
 </datasetScan>
 ~~~
 
-#### `addLatest` element
+### `addLatest` Element
 
 ~~~xml
 <xsd:complexType name="addLatestType">
@@ -392,7 +392,7 @@ If `lastModifedLimit` attribute is set, the TDS will exclude any dataset that wa
 
 An example is available in the [datasetScan](tds_dataset_scan_ref.html) documentation.
 
-#### `addTimeCoverage` element
+### `addTimeCoverage` Element
 
 ~~~xml
 <xsd:element name="addTimeCoverage">
