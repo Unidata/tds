@@ -1,25 +1,25 @@
 ---
-title: THREDDS Web Coverage Service
-last_updated: 2020-04-30
+title: TDS Web Coverage Service (WCS)
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: wcs_ref.html
 ---
 
-The THREDDS WCS Server implements the OGC Web Coverage Service (WCS) 1.0.0 specification.
-It serves gridded data in GeoTIFF or NetCDF format allowing WCS clients to specify a subset of a gridded dataset and download the resulting GeoTIFF or netCDF files.
+The THREDDS WCS Server implements the [OGC Web Coverage Service (WCS)](https://www.ogc.org/standards/wcs){:target="_blank"} 1.0.0 specification.
+It serves gridded data in GeoTIFF or NetCDF format allowing WCS clients to specify a subset of a gridded dataset and download the resulting `GeoTIFF` or `netCDF` files.
 
-## Which files can be served through the WCS server?
+## Which Files Can Be Served Through The WCS Server?
 
-Data files must contain gridded data.
-The NetCDF-Java Common Data Model must be able to identify the coordinates system used.
-Check this by opening in the Grid Panel of the ToolsUI application.
+Data files must contain **gridded data**.
+The [NetCDF-Java Common Data Model](https://www.unidata.ucar.edu/software/netcdf-java/){:target="_blank"} must be able to identify the coordinate system used.
+Check this by opening in the `Grid Panel` of the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} application.
 There should be one or more variables shown as a `GeoGrid` or `Coverage`.
-Currently due to `WCS` and `GeoTIFF` limitations, the X and Y axes must be regularly spaced. 
+Currently, due to `WCS` and `GeoTIFF` limitations, the X and Y axes must be regularly spaced. 
 
 ## Configuration
 
-WCS is enabled by default.
+**WCS is enabled by default**.
 To disable the service, by add the following to the TDS config file, located at `${tds.content.root.path}/thredds/threddsConfig.xml`:
 
 <WCS>
@@ -42,13 +42,13 @@ The dataset to be served must reference this service (or a containing compound s
 
 The dataset can be configured by `datasetRoot` or `datasetScan` as appropriate (see [Basics of Configuration Catalogs](basic_config_catalog.html)).
 They are listed in the resulting THREDDS catalogs as are other datasets.
-`WCS` clients may not be able to directly use the THREDDS catalogs to find the WCS services but the catalogs are useful for users to browse and for separate search services (e.g., OGC catalog services).  
+`WCS` clients may not be able to directly use the THREDDS catalogs to find the WCS services, but the catalogs are useful for users to browse and for separate search services (e.g., [OGC catalog services](https://www.ogc.org/standards/cat){:target="_blank"}).  
 
-## Serving Remote Dataset
+## Serving Remote Datasets
 
 The TDS can also serve remote datasets with the WCS protocol if configured to do so.
 It must be explicitly configured in the `${tds.content.root.path}/thredds/threddsConfig.xml` configuration file.
-This is done by adding an allowRemote element to the WCS element as follows:
+This is done by adding an `allowRemote` element to the WCS element as follows:
 
 ~~~xml
 <WCS>
@@ -86,12 +86,12 @@ http://servername:8080/thredds/wcs?dataset=http://las.pfeg.noaa.gov/cgi-bin/nph-
 
 The current TDS implementation of WCS 1.0 has the following restrictions:
 
-1. No interpolation is available (i.e., interpolationMethod="none").
+1. No interpolation is available (i.e., `interpolationMethod="none"`).
 2. CRS/SRS
-  * All CRS/SRS are listed as "WGS84(DD)" even though it may have little relation to the actual CRS of the data.
+  * All CRS/SRS are listed as `WGS84(DD)` even though it may have little relation to the actual CRS of the data.
   * CRS is horizontal, XY, only (see Range below for vertical, Z)
   * The response coverage is in the native CRS of the data (as the "No Interpolation" item implies).
-  * The netCDF-Java library understands a number of projections (a subset of  the CF convention grid mapping options, and most assuming a spherical earth) including a simple lat/lon grid [-180/180 and -90/90].
+  * The netCDF-Java library understands a number of projections (a subset of the CF convention grid mapping options, and most assuming a spherical earth) including a simple lat/lon grid `[-180/180 and -90/90]`.
   * All BBOX requests are assumed to be in the lat/lon of the native projection.
 3. Temporal selection: only one value can be specified (no list or min/max/res).
 4. Range:
@@ -99,9 +99,9 @@ The current TDS implementation of WCS 1.0 has the following restrictions:
   * "Vertical" is the range axis, only if the coordinate has a vertical component.
   * Range axis selection: only one value can be specified (no list or min/max/res).
 5. Supported GetCoverage response formats:
-  * GeoTIFF: A grayscale 8-bit GeoTIFF file
-  * GeoTIFFfloat: A floating point "Data Sample" GeoTIFF file
-  * NetCDF3: A NetCDF file following the CF-1.0 convention
+  * `GeoTIFF`: A grayscale 8-bit GeoTIFF file
+  * `GeoTIFFfloat`: A floating point "Data Sample" GeoTIFF file
+  * `NetCDF3`: A NetCDF file following the CF-1.0 convention
 
 ### Upcoming WCS 1.0.0 Implementation (version=1.0.0.1)
 
@@ -112,10 +112,10 @@ Same as above (version=1.0.0) except:
 2. Temporal selection: only min/max is supported. No resolution is allowed on the min/max and no lists are allowed.
 3. "Vertical" range axis selection: only min/max is supported. No resolution is allowed on the min/max and no lists are allowed.
 4. Supported GetCoverage response formats:
-  * NetCDF3: A NetCDF file following the CF-1.0 convention
-  * GeoTIFF (Only supports requests for single time and single height.)
-    * GeoTIFF: A grayscale 8-bit GeoTIFF file
-    * GeoTIFF_Float: A floating point "Data Sample" GeoTIFF file
+  * `NetCDF3`: A NetCDF file following the CF-1.0 convention
+  * `GeoTIFF` (Only supports requests for single time and single height.)
+    * `GeoTIFF`: A grayscale 8-bit GeoTIFF file
+    * `GeoTIFF_Float`: A floating point "Data Sample" GeoTIFF file
 
 ### Upcoming WCS 1.0.0+ Implementation (version=1.0.0.11)
 
@@ -129,20 +129,20 @@ As currently expected, same as above (version=1.0.0.1) except:
  * Each coverage can contain multiple range fields
  * If range field is array, only min/max range axis selection allowed.
 3. Supported GetCoverage response formats:
- * NetCDF3: A NetCDF file following the CF-1.0 convention
- * GeoTIFF (Only supports requests for single time and single height.)
-    * GeoTIFF: A grayscale 8-bit GeoTIFF file
-    * GeoTIFF_Float: A floating point "Data Sample" GeoTIFF file
+ * `NetCDF3`: A NetCDF file following the CF-1.0 convention
+ * `GeoTIFF` (Only supports requests for single time and single height.)
+    * `GeoTIFF`: A grayscale 8-bit GeoTIFF file
+    * `GeoTIFF_Float`: A floating point "Data Sample" GeoTIFF file
 
 ## WCS Dataset URLs
 
-All TDS WCS requests start with
+All TDS WCS requests start with:
 
 ~~~
 http://servername:8080/thredds/wcs/ 
 ~~~
 
-The next part of the path indicates which file to use
+The next part of the path indicates which file to use:
 
 ~~~
 http://servername:8080/thredds/wcs/test/sst.nc 
@@ -155,9 +155,9 @@ The WCS Client then forms various queries to the THREDDS WCS server for that dat
 http://servername:8080/thredds/wcs/test/sst.nc?service=WCS&version=1.0.0&request=GetCapabilities
 ~~~
 
-Examples
+#### Examples
 
-Here are example WCS queries (REST API Call appened to the wcs access url of a dataset):
+Here are example WCS queries (REST API Call appended to the WCS access url of a dataset):
 
 | request | REST API call |
 | GetCapabilities | `?request=GetCapabilities&version=1.0.0&service=WCS` |
@@ -167,7 +167,7 @@ Here are example WCS queries (REST API Call appened to the wcs access url of a d
 
 ## WCS Clients
 
-A few WCS clients we know of (though we haven't tried all of them):
+Here are a few WCS clients we know of (though we haven't tried all of them):
 
 * [OWSlib](http://geopython.github.io/OWSLib/){:target="_blank"} (WMS and WCS) [free]
 * [Map Express](https://www.cadcorp.com/products/desktop/cadcorp-sis-desktop-express/){:target="_blank"} (WMS and `WCS`) [commercial / free]

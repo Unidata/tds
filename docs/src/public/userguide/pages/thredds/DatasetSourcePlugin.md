@@ -1,18 +1,18 @@
 ---
 title: Dataset Source Plugin
-last_updated: 2018-04-02
+last_updated: 2018-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: dataset_source_plugin.html
 ---
 
-In order for the TDS to serve data through any of the subsetting protocols like `OPenDAP`, `WCS` or the Netcdf Subsetting Service(`NCSS`), it must be able to read the data into the Common Data Model.
-When the data is contained in a file, this is done with an I/O Service Provider (`IOSP`).
-When the dataset depends on request parameters that are passed to the TDS by the client, then a more general interface is needed, since the `IOSP` does not have access to the `HttpServletRequest` object.
+In order for the TDS to serve data through any of the subsetting protocols like `OPenDAP`, `WCS` or the [NetCDF Subsetting Service (NCSS)](netcdf_subset_service_ref.html), it must be able to read the data into the Common Data Model.
+When the data is contained in a file, this is done with an [I/O Service Provider (IOSP)](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/writing_iosp.html){:target="_blank"}.
+When the dataset depends on request parameters that are passed to the TDS by the client, then a more general interface is needed, since the `IOSP` does not have access to the [`HttpServletRequest`](https://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html){:target="_blank"} object.
 
-## Create a DatasetSource implementation class
+## Create  `DatasetSource` Implementation Class
 
-Your class must implement the `thredds.servlet.DatasetSource` interface:
+Your class must implement the [`thredds.servlet.DatasetSource`](https://docs.unidata.ucar.edu/tds/5.0/javadocAll/thredds/servlet/DatasetSource.html){:target="_blank"} interface:
 
 ~~~java
 public interface DatasetSource {
@@ -35,7 +35,7 @@ For example:
  response.sendError(HttpServletResponse.SC_NOT_FOUND, message);
 ~~~
 
-By returning null, the calling routine assumes that you have sent the response yourself, and will terminate processing without further action.
+By returning `null`, the calling routine assumes that you have sent the response yourself, and will terminate processing without further action.
 
 Example:
 ~~~java
@@ -72,7 +72,7 @@ public class DatasetSourceExample implements thredds.servlet.DatasetSource {
 }
 ~~~
 
-## Loading your class at runtime
+## Loading Your Class At Runtime
 
 You must place your `DatasetSource` class into the `${tomcat_home}/webapps/thredds/WEB-INF/lib` or `${tomcat_home}/webapps/thredds/WEB-INF/classes` directory.
 
@@ -82,10 +82,10 @@ Then tell the TDS to load it by adding a line to the `${tds.content.root.path}/t
 <datasetSource>my.package.DatasetSourceImpl</datasetSource>
 ~~~
 
-## Adding to the Thredds Configuration Catalog
+## Adding To The THREDDS Configuration Catalog
 
 In the above example, `DatasetSourceExample` will _claim_ any request whose path starts with `*/special/*`.
-In the Thredds Configuration Catalog, you will add datasets which have that path.
+In the THREDDS Configuration Catalog, you will add datasets which have that path.
 
 A simple example:
 

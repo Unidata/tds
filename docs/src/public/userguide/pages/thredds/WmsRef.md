@@ -1,6 +1,6 @@
 ---
 title: TDS Web Map Service (WMS)
-last_updated: 2018-04-02
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: wms_ref.html
@@ -38,14 +38,14 @@ WMS clients may not be able to directly use the THREDDS catalogs to find the WMS
 
 ## WMS Configuration
 
-Additional WMS configuration options can be set in the `threddsConfig.xml` file. More details on these options are available [here](#wms-service).
+Additional WMS configuration options can be set in the `threddsConfig.xml` file. 
 
 Further WMS configuration properties are set in the wmsConfig.xml file.
 These properties are mainly related with styling of WMS images.
 Similar to the `threddsConfig.xml file`, the WMS configuration file (wmsConfig.xml) is found in the `$tds.content.root.path{}/content/thredds` directory.
 A detailed description of the wmsConfig.xml file can be found at the MyOcean "Detailed WMS Configuration" page.
 
-If you are installing a new TDS, you should find a default wmsConfig.xml file (along with other configuration files) in your content/thredds directory after you first deploy the TDS.
+If you are installing a new TDS, you should find a default `wmsConfig.xml` file (along with other configuration files) in your content`/thredds` directory after you first deploy the TDS.
 If you are upgrading from a TDS version before version `4.2.20100615.*`, you will have to copy the default file from `${tomcat_home}/webapps/thredds/WEB-INF/altContent/startup/wmsConfig.xml`.
 
 ## Change to CRS List in WMS GetCapabilities Documents
@@ -56,7 +56,8 @@ The number of CRS listed in the WMS GetCapabilities documents has been reduced b
 
 WMS uses a number of graphics packages.
 In some situations, WMS can run into an X Server bug that can cause Tomcat to crash.
-This can be avoided by telling the code there is no display device. You may see error messages like the following:
+This can be avoided by telling the code there is no display device. 
+You may see error messages like the following:
 
 ~~~java
 java.lang.NoClassDefFoundError: Could not initialize class sun.awt.X11GraphicsEnvironment

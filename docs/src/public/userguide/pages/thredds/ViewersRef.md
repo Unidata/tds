@@ -1,6 +1,6 @@
 ---
 title: TDS Dataset Viewer Links
-last_updated: 2020-04-30
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: viewers_ref.html
@@ -8,8 +8,8 @@ permalink: viewers_ref.html
 
 Currently, the TDS automatically adds, when appropriate, the following _standard viewer links_ at the bottom of a datasets HTML web page:
 
-* a Godiva3 web-based WMS client link to any dataset that has a WMS service
-* a Jupyter Notebook viewer which provides the boilerplate python code to access remote data for a direct access dataset
+* a [Godiva3](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#godiva3){:target="_blank"}  web-based WMS client link to any dataset that has a WMS service.
+* a Jupyter Notebook viewer which provides the boilerplate python code to access remote data for a direct-access dataset.
 
 For example:
 
@@ -17,10 +17,13 @@ For example:
 
 In previous versions of the TDS, we also included the following Java WebStart Viewers:
 
-* a NetCDF-Java ToolsUI link to any direct dataset that has an ID
+* a NetCDF-Java ToolsUI link to any direct dataset that has an ID.
 * an IDV link to any dataset that has an OPeNDAP service and has a DataType of GRID.
 
-However, Java WebStart [has been deprecated as of version 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and we have removed such viewers from the TDS.
+
+{%include note.html content="
+Java WebStart [has been deprecated as of version 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target='_blank'}, and we have removed such viewers from the TDS.
+"%}
 
 The TDS also supports three ways to configure other custom viewer links.
 
@@ -31,7 +34,7 @@ The TDS also supports three ways to configure other custom viewer links.
 Each of these methods are described in the sections below.
 However, given the status of Java WebStart, _the third method is no longer recommended_.
 
-## Adding viewer links with `viewer` property elements
+## Adding Viewer Links With `viewer` Property Elements
 
 Dataset viewer links can be added to dataset HTML pages using `viewer` property elements.
 To add a dataset viewer link to a specific dataset, add a property element that has a name starting with `viewer`.
