@@ -228,7 +228,7 @@ Here are examples using NcML:
 Notice that GRIB-1 uses IDs of `center-subcenter-version-param`, e.g., `7-4-2-132`, while GRIB-2 uses IDs of `discipline-category-number`, e.g. `0-1-8`.
 
 {% include note.html content="
-See the [Common Data Model GRIB documentation](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/grib_files_cdm.html){:target='_blank'} for more information.
+See the [Common Data Model GRIB documentation](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grib_files_cdm.html){:target='_blank'} for more information.
 " %}
 
 #### `option`: Set miscellaneous values

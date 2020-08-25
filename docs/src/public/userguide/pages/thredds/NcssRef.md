@@ -55,5 +55,5 @@ These are intended to perform the same function as [OGC GetCapabilities](https:/
    
 ## Subsetting Parameters For NCSS
 
-* [Grid datasets](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/subsetting_parameters_ncss_grid.html){:target="_blank"}
-* [Point and Station (Discrete Sampling Geometry) datasets](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/subsetting_parameters_ncss_point){:target="_blank"}
+* [Grid datasets](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/subsetting_parameters_ncss_grid.html){:target="_blank"}
+* [Point and Station (Discrete Sampling Geometry) datasets](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/subsetting_parameters_ncss_point){:target="_blank"}

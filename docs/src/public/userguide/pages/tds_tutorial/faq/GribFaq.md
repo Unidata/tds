@@ -105,7 +105,7 @@ double time(reftime=742, time=18);
 In this case, the form is always `reftime(reftime)` and `time(reftime, time)`. 
 These are called *two-dimensional* time variables. 
 What we are seeing here are 742 different model runs, with 18 forecast times for each run. 
-You can look at these in the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/toolsui_ref.html){:target="_blank"} `CoordSys` tab, select a time coordinate from the lowest table, then right clieck and choose `Show values`, and you will see, for example:
+You can look at these in the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} `CoordSys` tab, select a time coordinate from the lowest table, then right clieck and choose `Show values`, and you will see, for example:
 
 ~~~
 time =

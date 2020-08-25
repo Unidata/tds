@@ -10,7 +10,7 @@ permalink: fmrc_ref.html
 
 A **Forecast Model Run Collection (FMRC)** is a **collection of forecast model runs** which can be uniquely identified by the start of the model run, called the model **run time**, (also called the **analysis time** or **generating time** or **reference time**). Each model run has a series of forecast times. A collection of these runs therefore has two time coordinates, the run time and the forecast time. An FMRC creates a 2D time collection dataset, and then creates various 1D time subsets out of it. See this [poster](https://www.unidata.ucar.edu/software/tds/current/tutorial/files/FmrcPoster.pdf){:target="_blank"} for a detailed example.
 
-Previously this functionality was provided using [FMRC Aggregation](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/fmrc_ref.html){:target="_blank"} through NcML and the `<fmrcDataset>` element in the TDS configuration catalog. As of TDS 4.2, that implementation is now deprecated and `<featureCollection>` elements are the correct way to provide this functionality. As of 4.3, one should only serve GRIB files with `featureCollection=GRIB`, e.g., not with FMRC Typically, FMRC is is used for collections of model runs stored in netCDF/CF files.
+Previously this functionality was provided using [FMRC Aggregation](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/fmrc_ref.html){:target="_blank"} through NcML and the `<fmrcDataset>` element in the TDS configuration catalog. As of TDS 4.2, that implementation is now deprecated and `<featureCollection>` elements are the correct way to provide this functionality. As of 4.3, one should only serve GRIB files with `featureCollection=GRIB`, e.g., not with FMRC Typically, FMRC is is used for collections of model runs stored in netCDF/CF files.
 
 ## Constraints On FMRC
 
@@ -62,7 +62,7 @@ where:
 
 ## Working With FMRC In ToolsUI
 
-The [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/toolsui_ref.html){:target="_blank"} `FMRC` tab allows you to view internal structures of an FMRC. You can pass it a [collection specification string](/collection_spec_string_ref.html) or a file with a `featureCollection` element in it.
+The [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} `FMRC` tab allows you to view internal structures of an FMRC. You can pass it a [collection specification string](/collection_spec_string_ref.html) or a file with a `featureCollection` element in it.
 
 ## Working With FMRC In Client Software
 
@@ -99,7 +99,7 @@ If true, then all runs for a given offset hour (from `0Z`) are assumed to have t
 
 An `fmrInv.xml` file is made which records the essential grid information from each file. It is cached in a persistent [Berkeley Database (bdb)](https://en.wikipedia.org/wiki/Berkeley_DB){:target="_blank"} key/value store, so that it only has to be done the first time the file is accessed in an FMRC. Each collection becomes a separate bdb database, and each file in the collection is an element in the database, with the filename as the key and the `fmrInv.xml` as the value. When a collection is scanned, any filenames already in the database are reused. Any new ones are read and added to the database. Any entries in the database that no longer have a filename associated with them are deleted.
 
-[ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/toolsui_ref.html){:target="_blank"} `collections` tab allows you to delete database or individual elements.
+[ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} `collections` tab allows you to delete database or individual elements.
 
 ## Conversion of `<datasetFmrc>` to `<featureCollection>`
 

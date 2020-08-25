@@ -66,11 +66,11 @@ In addition to all the elements of a [client catalog](client_side_catalog_specif
 </xsd:element>
 ~~~
 
-The `datasetRoot` element associates a portion of the URL path with a directory on disk where the data files are stored. 
-It must be contained directly in the `catalog` element. 
-The `datasetRoot`s are *global* to a TDS, they only need to be declared once; put them in a catalog that is processed before they are used (by convention, put them in the top catalog).
+* The `datasetRoot` element associates a portion of the URL path with a directory on disk where the data files are stored. 
+* It must be contained directly in the `catalog` element. 
+* The `datasetRoot`s are *global* to a TDS, they only need to be declared once; put them in a catalog that is processed before they are used (by convention, put them in the top catalog).
 
-Example:
+#### Example
 
 ~~~xml
 <catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" 
@@ -106,15 +106,15 @@ A `catalogScan` element indicates a top directory to scan for catalogs (files en
 Subdirectories will also be scanned. 
 Optionally, the directory can be watched, and changes will be detected while the TDS is running. 
 The `catalogScan` must be at the top level of the catalog (not nested in a `dataset`). 
-If using this element, do not name any of your catalogs "*catalogScan.xml*".
+If using this element, do not name any of your catalogs `*catalogScan.xml*`.
 
-* `name`: the name to display in the catalog
-* `path`: the logical URL path
+* `name`: the name to display in the catalog.
+* `path`: the logical URL path.
 * `location`: the top directory to scan (and all subdirectories). Must be a path relative to `$\{tds.content.root.path}`.
 
 ### `dataset` Element
 
-The [`ncml:netcdf`](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the [`restrictAccess`](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) attribute:
+The [`ncml:netcdf`](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the [`restrictAccess`](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) attribute:
 
 ~~~xml
 <xsd:element name="dataset" type="DatasetType" />
@@ -139,7 +139,7 @@ The [`ncml:netcdf`](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/anno
 </xsd:complexType>
 ~~~
 
-* The `ncml:netcdf` element [modifies the dataset with NcML](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/basic_ncml_tutorial.html){:target="_blank"}. For the [`datasetScan` element](server_side_catalog_specification.html#datasetscan-element), it modifies all contained datasets.
+* The `ncml:netcdf` element [modifies the dataset with NcML](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/basic_ncml_tutorial.html){:target="_blank"}. For the [`datasetScan` element](server_side_catalog_specification.html#datasetscan-element), it modifies all contained datasets.
 * The `restrictAccess` attribute tells the TDS to [restrict access](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) to this dataset. 
 It is always inherited by all contained datasets.
 
@@ -170,12 +170,12 @@ A `datasetScan` can be used wherever a `dataset` element is allowed.
 </xsd:element>
 ~~~
 
-The `datasetScan` element generates nested THREDDS catalogs by scanning the directory named in the `location` attribute, and creating a `dataset` for each file found, and a `catalogRef` for each subdirectory. 
-The location must be an absolute path. 
-The `path` attribute is used to create the URL for these files and catalogs. 
-The path must be globally unique over all paths for the TDS. 
-Do not put leading or trailing slashes on the path.
-The `addLatest` attribute adds a *latest resolver service* to the `datasetScan`.
+* The `datasetScan` element generates nested THREDDS catalogs by scanning the directory named in the `location` attribute, and creating a `dataset` for each file found, and a `catalogRef` for each subdirectory. 
+* The location must be an absolute path. 
+* The `path` attribute is used to create the URL for these files and catalogs. 
+* The path must be globally unique over all paths for the TDS. 
+* Do not put leading or trailing slashes on the path.
+* The `addLatest` attribute adds a *latest resolver service* to the `datasetScan`.
 
 A `datasetScan` element is in the `dataset substitutionGroup`, so it can be used wherever a `dataset` element can be used. 
 It is an extension of a `DatasetType`, so any of the `dataset` element nested elements and attributes can be used in it. 
@@ -240,10 +240,10 @@ If the `C:/data/grib2/` directory contained three files (`data1.wmo`, `data2.wmo
 </xsd:complexType>
 ~~~
 
-The `filter` element allows users to specify which datasets are to be included in the generated catalogs. 
-A `filter` element can contain any number of `include` and `exclude` elements. 
-Each `include` or `exclude` element may contain either a `wildcard` or a `regExp` attribute. 
-If the given wildcard pattern or [regular expression](http://www.regular-expressions.info/){:target="_blank"} matches a dataset name, that dataset is included or excluded as specified. 
+* The `filter` element allows users to specify which datasets are to be included in the generated catalogs. 
+* A `filter` element can contain any number of `include` and `exclude` elements. 
+* Each `include` or `exclude` element may contain either a `wildcard` or a `regExp` attribute. 
+* If the given wildcard pattern or [regular expression](http://www.regular-expressions.info/){:target="_blank"} matches a dataset name, that dataset is included or excluded as specified. 
 
 By default, includes and excludes apply only to atomic datasets (regular files). 
 You can specify that they apply to atomic and/or collection datasets (directories) by using the `atomic` and `collection` attributes.

@@ -1,6 +1,6 @@
 ---
-title: TDS Configuration File Reference (threddsConfig.xml)
-last_updated: 2020-04-30
+title: TDS Configuration File Reference (`threddsConfig.xml`)
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: true
 permalink: tds_config_ref.html
@@ -8,19 +8,24 @@ permalink: tds_config_ref.html
 
 The TDS configuration file `${tds.content.root.path}/thredds/threddsConfig.xml` allows the TDS administrator to control the behavior of the TDS.
 
+{%include note.html content="
 As of 5.0, if this file is missing, then default settings will be used.
-We strongly encourage you to fill in the Server Information fields, but all other fields are optional, and default settings are used whenever you don't override.
-Generally its good practice to only include the elements you want to change from the defaults.
+" %}
+
+We strongly encourage you to fill in the **Server Information** fields, but all other fields are optional, and default settings are used whenever you don't override.
+Generally, its good practice to only include the elements you want to change from the defaults.
 
 When changing `threddsConfig.xml`, you must restart the thredds webapp (e.g., through the Tomcat manager application) for them to take effect.
 
-[Here](https://raw.githubusercontent.com/Unidata/thredds/master/tds/src/main/webapp/WEB-INF/altContent/startup/threddsConfig.xml){:target="_blank"} is an annotated example of `threddsConfig.xml`.
+{%include note.html content="
+View an [annotated example](https://raw.githubusercontent.com/Unidata/thredds/master/tds/src/main/webapp/WEB-INF/altContent/startup/threddsConfig.xml){:target='_blank'} of `threddsConfig.xml`.
+" %}
 
-## TDS global configuration options
+## TDS Global Configuration Options
 
 ### Server Information
 
-In the `serverInformation` element, you provide basic information about your server including contact information, and information about the group that hosts the server.
+In the `serverInformation` element, you provide basic information about your server including contact information, and information about the group hosting the server.
 
 ~~~xml
 <serverInformation>
@@ -50,12 +55,13 @@ The information provided in the `serverInformation` element is used in:
 
 * the headers of all generated HTML pages (they contain the names and
 logos of the server and host institution)
-* the Server section of the WMS GetCapabilities response
+* the Server section of the WMS `GetCapabilities` response
 * the server information documents ([see below](#server-information-documents))
-* the Server section of the WCS GetCapabilities response
+* the Server section of the WCS `GetCapabilities` response
 * all generated THREDDS catalogs that don't override this information
 
-NOTE: The best way to use your own logo is to put it in the `${tds.content.root.path}/thredds/public/` directory, and specify it in `serverInformation` as `/thredds/<name>`, e.g.:
+
+The best way to use your own logo is to put it in the `${tds.content.root.path}/thredds/public/` directory, and specify it in `serverInformation` as `/thredds/<name>`, e.g.:
 
 ~~~xml
 <logoUrl>/thredds/yourIcon.gif</logoUrl>
@@ -84,15 +90,15 @@ Default CSS files are provided, and should not be modified. Instead, these can b
     <generateDatasetJsonLD>false</generateDatasetJsonLD>    <!--6-->
 </htmlSetup>
 ~~~
-* <1> The CSS used in all TDS generate html pages (except the OPeNDAP form).
-* <2> The CSS used in TDS catalogs pages
-* <3> The CSS used in TDS Dataset catalogs pages
-* <4> The CSS used in the OPeNDAP form.
-* <5> Google Analytics Tracking Code (GATC) enables tracking catalog use.
+1. The CSS used in all TDS generate html pages (except the OPeNDAP form).
+2. The CSS used in TDS catalogs pages
+3. The CSS used in TDS Dataset catalogs pages
+4. The CSS used in the OPeNDAP form.
+5. Google Analytics Tracking Code (GATC) enables tracking catalog use.
       Obtain the GATC from [Google](https://marketingplatform.google.com/about/analytics/){:target="_blank"} and enter it here to enable this feature.
-* <6> If set to true, schema.org [`Dataset`](https://schema.org/Dataset){:target="_blank"} objects will be encoded using json-ld and embeded into the `<head>` element of the generated dataset HTML pages.
+6. If set to `true`, [`schema.org/Dataset`](https://schema.org/Dataset){:target="_blank"} objects will be encoded using json-ld and embedded into the `<head>` element of the generated dataset HTML pages.
 
-### Controlling THREDDS catalog output
+### Controlling THREDDS Catalog Output
 
 ~~~xml
 <catalogWriting>
@@ -100,8 +106,8 @@ Default CSS files are provided, and should not be modified. Instead, these can b
 </catalogWriting>
 ~~~
 
-* if true, in a TDS catalog, output the Data Size with exact byte count.
-  By default, it will output 4 significant digits, choosing units appropriately
+* if `true`, in a TDS catalog, output the Data Size with exact byte count.
+  By default, it will output 4 significant digits, choosing units appropriately.
 
 ### Extra Catalog Roots
 
@@ -112,7 +118,7 @@ Default CSS files are provided, and should not be modified. Instead, these can b
 ~~~
 
 These elements name _catalog roots_ that are not referenced from your default catalog root ( `${tds.content.root.path}/thredds/catalog.xml`).
-On startup, the TDS reads the default catalog root and any root catalogs you list here, plus any catalogs that are referenced by them in a `catalogRef`.
+On start up, the TDS reads the default catalog root and any root catalogs you list here, plus any catalogs that are referenced by them in a `catalogRef`.
 Data roots and other needed information are found and cached.
 All the catalogs found in this way are called _static catalogs_, and all static catalogs must live within the `${tds.content.root.path}/thredds` directory tree.
 
@@ -131,9 +137,9 @@ This line is needed in the config file only if you are writing your own Java cla
 <datasetSource>my.package.DatasetSourceImpl</datasetSource>
 ~~~
 
-You can add a `DataSource` - essentially an IOSP with access to Servlet request parameters, by loading a [Dataset Source Plugin](dataset_source_plugin.html) at runtime.
+You can add a `DataSource` - essentially an [IOSP](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/writing_iosp.html){:target="_blank"} with access to Servlet request parameters, by loading a [Dataset Source Plugin](dataset_source_plugin.html) at runtime.
 
-### Checking for Updates
+### Checking For Updates
 
 ~~~xml
 <TdsUpdateConfig>
@@ -147,7 +153,7 @@ If you do not want the TDS to check for this on startup, set this to `false`.
 
 ## Controlling Data Services
 
-### Remote Catalog Service for Catalogs
+### Remote Catalog Service For Catalogs
 
 Catalog services are available by default for catalogs served by the local TDS.
 However, for remote catalogs, these services must be explicitly enabled in `threddsConfig.xml`:
@@ -169,14 +175,14 @@ However, for remote catalogs, these services must be explicitly enabled in `thre
 ~~~
 
 This controls the `OPeNDAP` data service.
-Because its easy for a user to inadvertantly request very large amounts of data, the TDS limits the size of the data response. 
+Because its easy for a user to inadvertently request very large amounts of data, the TDS limits the size of the data response. 
 In our experience legitimate requests ask for subset sizes that are well below the defaults.
 
 * `ascLimit`: maximum size of an ascii data request , in Megabytes.
    Default 50 Mbytes.
 * `binLimit`: maximum size of a binary data request , in Megabytes.
    Default is 500 Mbytes.
-* `serverVersion`: this is the String thats returned by the OPeNDAP `getVersion` request, and also placed into the `XDOS-Server` HTTP Header on all OPeNDAP responses.
+* `serverVersion`: this is the String returned by the OPeNDAP `getVersion` request, and placed into the `XDOS-Server` HTTP Header on all OPeNDAP responses.
 
 ### WCS Service
 
@@ -215,7 +221,7 @@ cache directory](#disk-caching-and-temporary-files)).
 ### WMS Service
 
 The OGC WMS service provided as part of the TDS is described in more detail [here](wms_ref.html) (TDS Web Map Service (WMS)).
-By default this service is enabled, and can be disabled by including the following in the `threddsConfig.xml` file:
+By default, this service is enabled, and can be disabled by including the following in the `threddsConfig.xml` file:
 
 ~~~xml
 <WMS>
@@ -258,7 +264,7 @@ By default this service is enabled, and can be disabled by including the followi
 </NetcdfSubsetService>
 ~~~
 
-The following shows all the configuration options available in the NetcdfSubsetService section of the `threddsConfig.xml` file with the default values shown:
+The following shows all the configuration options available in the `NetcdfSubsetService` section of the `threddsConfig.xml` file with the default values shown:
 
 ~~~xml
 <NetcdfSubsetService>
@@ -286,7 +292,7 @@ Here is the description of the various options:
 
 ### ncISO Service
 
-By default these services are enabled, and can be disabled by including the following in the `threddsConfig.xml` file:
+By default, these services are enabled, and can be disabled by including the following in the `threddsConfig.xml` file:
 
 ~~~xml
 <NCISO>
@@ -301,7 +307,7 @@ The ncISO services are described in more detail on the ncISO [reference page](is
 
 ## CDM Configuration
 
-### NetCDF-4 C library loading
+### NetCDF-4 C Library Loading
 
 ~~~xml
 <Netcdf4Clibrary>
@@ -312,14 +318,14 @@ The ncISO services are described in more detail on the ncISO [reference page](is
 ~~~
 
 In order to write netCDF-4 files, you must have the [netCDF-4 C library](https://www.unidata.ucar.edu/downloads/netcdf/) version 4.3.1 or above—compiled and available on your system, along with all supporting libraries (HDF5, zlib, and curl).
-The [details](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/netcdf4_c_library.html){:target="_blank"} of this differ for each operating system.
+The [details](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/netcdf4_c_library.html){:target="_blank"} of this differ for each operating system.
 The elements above allow you to configure how the library is discovered and used.
 
 * `libraryPath`: The directory in which the native library is installed.
 * `libraryName`: The name of the native library.
   This will be used to locate the proper .DLL, .SO, or .DYLIB file within the `libraryPath` directory.
 * `useForReading`: By default, the native library is only used for writing NetCDF-4 files; a pure-Java layer is responsible for reading them.
-  However, if this property is set to true, then it will be used for reading NetCDF-4 (and HDF5) files as well.
+  However, if this property is set to `true`, then it will be used for reading NetCDF-4 (and HDF5) files as well.
 
 For TDS users, we recommend setting the library path and name in `threddsConfig.xml` as in the above example.
 
@@ -352,7 +358,7 @@ Valid values are `first, random, latest`, and `penultimate` (latest but one). Th
 
 ## Disk Caching and temporary files
 
-The various cache directory locations are all under `\{tds.content.root.path}/thredds/` by default:
+The various cache directory locations are all under `/{tds.content.root.path}/thredds/` by default:
 
 | cache | location | description |
 | AggregationCache.dir | `cache/agg/` | for joinExisting aggregations only: write XML files here. |
@@ -364,7 +370,7 @@ The various cache directory locations are all under `\{tds.content.root.path}/th
 | NetcdfSubsetService.dir | `cache/ncss/` | temporary files for NCSS |
 | WCS.dir | `cache/wcs/` | temporary files for WCS |
 
-We recommend that you use these defaults, by not specifying them in the threddsConfig.xml file.
+We recommend that you use these defaults, by not specifying them in the `threddsConfig.xml` file.
 If you need to move the cache location, move all of them by using a symbolic file link in `{tds.content.root.path}/thredds/`.
 At Unidata, we move the entire content directory by creating a symbolic link:
 
@@ -374,7 +380,7 @@ ln -s /data/thredds/content content
 ~~~
 
 These various caches at times may contain large amounts of data. 
-You should choose a location that will not fill up (especially if that location affects other important locations like /opt, /home, etc).
+You should choose a location that will not fill up (especially if that location affects other important locations like `/opt`, `/home`, etc).
 If you have a large disk for your data, that may be a good location for the cache directories.
 On unix-like machines, you can run `df` to get a listing of disks on your machine.
 The listing includes size and mount location.
@@ -395,8 +401,8 @@ The following elements allow fine grain control over the location and scouring o
 These elements control where the `CDM/NetCDF-Java` library writes temporary files, for example when it needs to unzip files, or write GRIB index files, etc.
 If `alwaysUse` is `true`, these temporary files will always be written to the _cache directory_ specified by `dir`
 (see [choosing a cache directory](#disk-caching-and-temporary-files)).
-If `alwaysUse` is `false`, TDS will try to write them to the same directory as the original file, and if the TDS doesnt have write permission it will then write the files to the cache directory.
-Write permission will be determined by what rights the _Tomcat user_ has (the user that starts up Tomcat).
+If `alwaysUse` is `false`, TDS will try to write them to the same directory as the original file, and if the TDS doesn't have write-permission it will then write the files to the cache directory.
+Write permission will be determined by what rights the _Tomcat user_ has (the user that starts up and runs the Tomcat servlet container).
 For security reasons, you want to carefully limit the file permissions of the Tomcat user.
 
 When opening a file, if `alwaysUse` is `true`, TDS looks only in the cache directory for the temporary file. 
@@ -424,7 +430,7 @@ If you have `joinExisting` Aggregations, coordinate information will be written 
 If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cache/agg/` directory.
 We recommend that you use this default, by not specifying a `AggregationCache`.`dir` element.
 
-Every `scour` amount of time, any item that hasn\'t been changed since `maxAge` time will be deleted.
+Every `scour` amount of time, any item that hasn't been changed since `maxAge` time will be deleted.
 If you have aggregations that never change, set `scour` to `-1` to disable the operation.
 Otherwise, make `maxAge` longer than the longest time between changes.
 Basically, you don't want to remove active aggregations.
@@ -439,7 +445,7 @@ If you have large `joinExisting` aggregations, there will be a very pronounced d
 
 The cache information is updated based on the `recheckEvery` field in the `joinExisting` aggregation element.
 
-### FeatureCollection cache
+### FeatureCollection Cache
 
 This is where persistent information is kept about FMRCs, in order to speed them up.
 We recommend that you use the default settings, by not specifying this option.
@@ -460,7 +466,7 @@ with [Berkeley DB](https://www.oracle.com/technetwork/database/berkeleydb/overvi
 * `jvmPercent`: alternately, set the memory use as a percent of JVM memory, i.e. `-Xmx` value.
   `maxSize` will override if present. Default is 2 %.
 
-### GRIB Index redirection
+### GRIB Index Redirection
 
 ~~~xml
 <GribIndex>

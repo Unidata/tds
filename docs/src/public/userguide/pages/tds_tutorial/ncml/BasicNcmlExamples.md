@@ -23,7 +23,7 @@ In this example, we will use NcML to modify a `remote' dataset to fix it enough 
              urlPath="workshop_ncml/hwave_4D.nc"/>
     ~~~
 
-2.  In the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/toolsui_ref.html){:target="_blank"} `Viewer` tab, open [http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc](http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc]){:target="_blank"}. 
+2.  In the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} `Viewer` tab, open [http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc](http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc]){:target="_blank"}. 
 Do you notice anything missing?
     
 3.  In the ToolsUI `CoordSys` tab, open [http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc](http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc]){:target="_blank"}. 
@@ -86,7 +86,7 @@ Add the following to your NcML file:
 
 ## Example 2: Local WRF output
 
-1.  In the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/toolsui_ref.html){:target="_blank"}  `Viewer` tab, open `/machine/tds/data/ncmlExamples/simpleNcmlOne/wrfout_d01_2005-08-27_00_00_00`.  
+1.  In the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"}  `Viewer` tab, open `/machine/tds/data/ncmlExamples/simpleNcmlOne/wrfout_d01_2005-08-27_00_00_00`.  
 Note that the model output are on an [Arakawa C grid'(http://mitgcm.org/sealion/online_documents/node45.html){:target="_blank"}, so we have `regular` and `stag` dimensions.
 
 2.  Open the following link in your browser: [WRF goes CF](https://www.unidata.ucar.edu/blogs/developer/en/entry/wrf_goes_cf){:target="_blank"}

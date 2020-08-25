@@ -50,7 +50,11 @@ If you are upgrading from a TDS version before version `4.2.20100615.*`, you wil
 
 ## Change to CRS List in WMS GetCapabilities Documents
 
-The number of CRS listed in the WMS GetCapabilities documents has been reduced between TDS 4.1 and 4.2. More information is available at this FAQ entry.
+The number of CRS listed in the WMS GetCapabilities documents has been reduced between TDS 4.1 and 4.2. 
+
+{%include note.html content="
+For more information, view the FAQ entry [What happened to the long list of CRSs in my WMS GetCapabilities documents?](tds_faq.html#what-happened-to-the-long-list-of-crss-in-my-wms-getcapabilities-documents).
+" %}
 
 ## Add a JVM Option to Avoid an X Server Bug
 

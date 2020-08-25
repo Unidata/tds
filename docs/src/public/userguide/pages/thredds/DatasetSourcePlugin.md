@@ -7,7 +7,7 @@ permalink: dataset_source_plugin.html
 ---
 
 In order for the TDS to serve data through any of the subsetting protocols like `OPenDAP`, `WCS` or the [NetCDF Subsetting Service (NCSS)](netcdf_subset_service_ref.html), it must be able to read the data into the Common Data Model.
-When the data is contained in a file, this is done with an [I/O Service Provider (IOSP)](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/writing_iosp.html){:target="_blank"}.
+When the data is contained in a file, this is done with an [I/O Service Provider (IOSP)](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/writing_iosp.html){:target="_blank"}.
 When the dataset depends on request parameters that are passed to the TDS by the client, then a more general interface is needed, since the `IOSP` does not have access to the [`HttpServletRequest`](https://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html){:target="_blank"} object.
 
 ## Create  `DatasetSource` Implementation Class

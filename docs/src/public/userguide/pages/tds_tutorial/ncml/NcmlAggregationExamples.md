@@ -11,7 +11,7 @@ Our goal in this section is to aggregate datafiles using NcML.
 
 ## Example 1: JoinExisting
 
-1. In the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/toolsui_ref.html){:target="_blank"} `Viewer` tab, open `/machine/tds/data/ncmlExamples/aggAdvancedNcmlOne/data/archv.2012_240_00.nc`  
+1. In the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} `Viewer` tab, open `/machine/tds/data/ncmlExamples/aggAdvancedNcmlOne/data/archv.2012_240_00.nc`  
 Note that the variable `MT` has a shape of `1` -- there is only one time in the file.
 
 2. In the data file path, change `archv.2012_240_00.nc` to `archv.2012_240_01.nc`. 
@@ -86,7 +86,7 @@ In this example, we will use NcML to aggregate data files produced from the same
 However, something key is missing, and we will have to add it ourselves. 
 Once again, we will see that joining these files is only part of the battle!
 
-1. In the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/toolsui_ref.html){:target="_blank"} `Viewer` tab, open `/machine/tds/data/ncmlExamples/aggAdvancedNcmlTwo/data/umwmout_2013-06-04_23-00-00.nc`.
+1. In the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} `Viewer` tab, open `/machine/tds/data/ncmlExamples/aggAdvancedNcmlTwo/data/umwmout_2013-06-04_23-00-00.nc`.
 
 2. In the data file path, change `umwmout_2013-06-04_23-00-00.nc` to `umwmout_2013-06-05_00-00-00.nc`. 
 Did you notice any changes between the two files?  
