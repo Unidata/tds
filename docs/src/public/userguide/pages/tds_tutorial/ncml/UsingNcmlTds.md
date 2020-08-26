@@ -162,7 +162,7 @@ In the future, some of the capabilities of `datasetScan` will migrate into NcML 
 
 ### Exercise: DatasetScan versus Aggregation Scan
 
-Let\'s look at using a `datasetScan` and an Aggregation `scan` on the same collection of files.
+Let's look at using a `datasetScan` and an Aggregation `scan` on the same collection of files.
 Download  {% include link_file.html file="tds_tutorial/ncml/ncmlTds/catalogScan.xml" text="catalogScan.xml" %}, place it in `${tomcat_home}/content/thredds` directory and add a `catalogRef` to it from your main catalog.
 
 ~~~xml
@@ -241,7 +241,7 @@ Here we show a brief example of modifying files with NcML in a `featureCollectio
 ~~~
 
 1. The `protoDataset` is modified by adding a global attribute `History="Processed by Kraft"`.
-2. Each component file is changed by modifying the time variable\'s `units` attribute and adding a global attribute `Conventions="CF-1.0"`
+2. Each component file is changed by modifying the time variable's `units` attribute and adding a global attribute `Conventions="CF-1.0"`
 
 You might wonder why not put the global attribute `Conventions="CF-1.0"` on the protoDataset instead of on each individual dataset?
 The reason is because in an FMRC, each dataset is converted into a `GridDataset`, and then combined into the FMRC.
@@ -250,7 +250,7 @@ The modifications to the `protoDataset` are then applied to the resulting FMRC 2
 
 ## Debugging NcML
 
-When things go wrong, it\'s best to first debug the aggregation outside of the TDS.
+When things go wrong, it's best to first debug the aggregation outside of the TDS.
 
 Go to the TDS catalog and find the problem dataset. 
 Inside the `<dataset>` element will be a `<netcdf>` element, that is the NcML aggregation.

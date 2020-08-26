@@ -64,7 +64,7 @@ All of the elements that can be used inside of a `dataset` element can be used i
 </featureCollection>
 ~~~
 
-1. A `GRIB2` Feature Collection dataset is defined, with the \"human readable\" name of \"NCEP Polar Sterographic\". 
+1. A `GRIB2` Feature Collection dataset is defined, with the "human readable" name of "NCEP Polar Sterographic". 
    Its URL path(s) will look like `http://server/thredds/<service>/grib/NCEP/NAM/Polar_90km/...`​
    The Dataset `ID` is automatically set to the path, so that its dataset page will be `http://server/thredds/catalog/grib/NCEP/NAM/Polar_90km/catalog.xml?dataset=grib/NCEP/NAM/Polar_90km/...`​
 2. Defines the files in the collection as any file in the directory `/data/ldm/pub/native/grid/NCEP/NAM/Polar_90km/` that matches the regular expression `NAM_Polar_90km.*\.grib2$`. 
@@ -98,7 +98,7 @@ All of the elements that can be used inside of a `dataset` element can be used i
 5. Partitioning will happen at the `file` level.
 6. Only include files whose `lastModified` date is more than 5 minutes old.
    This is to exclude files that are actively being created.
-7. Instruct the TDS to use the collection index if it already exists, without testing if it\'s up-to-date.
+7. Instruct the TDS to use the collection index if it already exists, without testing if it's up-to-date.
 8. Instruct the TDM to examine all the files to detect if they have changed since the index was written.
    Rescan every 15 minutes.
 
@@ -210,7 +210,7 @@ The XML Schema for the `collection` element:
 where
 
 1. `spec` (required): [collection specification string](collection_spec_string_ref.html).
-    In this example, the collection contains all files in the directory `/data/ldm/pub/native/satellite/3.9/WEST-CONUS_4km/` whose filename matches the regular expression `WEST-CONUS_4km_3.9.gini$`, where `.` means \"match any number of characters\" and `gini$` means \"ends with the characters gini\". If you wanted to match \".gini\", you would need to escape the \".\", ie `\.gini$`.
+    In this example, the collection contains all files in the directory `/data/ldm/pub/native/satellite/3.9/WEST-CONUS_4km/` whose filename matches the regular expression `WEST-CONUS_4km_3.9.gini$`, where `.` means "match any number of characters" and `gini$` means "ends with the characters gini". If you wanted to match ".gini", you would need to escape the ".", ie `\.gini$`.
 2. `name` (required): the collection name, which _must be unique for all collections served by your TDS_. 
    This is used for external triggers, for the CDM collection index files, and for logging and debugging messages.
    If missing, the name attribute on the `<featureCollection>` element is used.
@@ -261,7 +261,7 @@ The choice of the protoDataset matters when the datasets are not homogeneous:
 
 * Global and variable attributes are taken from the prototype dataset.
 * If a variable appears in the prototype dataset, it will appear in the feature collection dataset. 
-  If it doesn\'t appear in other datasets, it will have missing data for those times.
+  If it doesn't appear in other datasets, it will have missing data for those times.
 * If a variable does not appears in the prototype dataset, it will not appear in the feature collection dataset, even if it appears in other datasets.
 
 ### update element
@@ -310,7 +310,7 @@ The XML Schema definition for the update element:
 2. `rescan`: uses a [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html){:target="_blank"} to specify when the collection should be re-scanned in a background task, and re-tested to see if it has changed. 
    This is called asynchronous updating.
 3. `trigger`: if set to `allow` (default), then external triggering will be allowed. 
-   This allows collections to be updated by an external program (or person using a browser) sending an explicit \"trigger\" URL to the server.
+   This allows collections to be updated by an external program (or person using a browser) sending an explicit "trigger" URL to the server.
    This URL is protected by HTTPS, so you must [enable triggers](#external-triggers) for this to work.
    Set this to `false` to disable triggering.
 4. `startup`: `[never | nocheck | testIndexOnly | test | always]` (default _never_). 
@@ -336,11 +336,11 @@ The XML Schema definition for the update element:
 
 1. `never`: the collection is used as it is, and no checking is done. 
    The collection index must already exist.
-   Use this for very large collections that you don\'t want to inadvertently scan.
+   Use this for very large collections that you don't want to inadvertently scan.
 2. `nocheck`: the collection index is used if it exists, without checking whether its up-to-date. 
-   If it doesn\'t exist, build it.
+   If it doesn't exist, build it.
 3. `testIndexOnly`: the collection index is used if it exists and it is newer than all of its immediate children.
-4. `test` or `true`: the collection\'s data files are scanned and the new collection of children is compared to the old collection.
+4. `test` or `true`: the collection's data files are scanned and the new collection of children is compared to the old collection.
    If there are any changes, the index is rebuilt.
 5. `always`: the collection is always re-scanned and the indices are rebuilt.
 
@@ -446,8 +446,8 @@ In those cases you need to have a date in the filename and need to specify a dat
    `/dataroot/stuff/20111226/Experiment-02387347.grib1`
 
 
-   let\'s pretend \"stuff\" differs for each subdirectory, so you can\'t match on it.
-   However, you can match on \"Experiment\", so you can use:
+   let's pretend "stuff" differs for each subdirectory, so you can't match on it.
+   However, you can match on "Experiment", so you can use:
 
    `dateFormatMark="yyyyMMdd#/Experiment#"`
 
@@ -497,7 +497,7 @@ You must carefully control when/if it will be scanned.
 ~~~
 
 The dataset will be read in at startup time by using the existing indexes (if they exist).
-If indexes don\'t exist, they will be created on startup.
+If indexes don't exist, they will be created on startup.
 
 If it occasionally changes, then you want to manually tell it when to rescan:
 
@@ -512,7 +512,7 @@ You must [enable triggers](#external-triggers).
 
 For collections that change but are rarely used, use the `recheckAfter` attribute on the `update` element.
 This minimizes unneeded processing for lightly used collections.
-This is also a reasonable strategy for small collections which don\'t take very long to scan.
+This is also a reasonable strategy for small collections which don't take very long to scan.
 
 ~~~xml
 <update recheckAfter="15 min" />
@@ -531,7 +531,7 @@ When you want to ensure that requests are answered as quickly as possible, read 
 <update startup="test" rescan="0 20 * * * ? *" />
 ~~~
 
-This [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html){:target="_blank"} says to rescan the collection files \"every hour at 20 past the hour\", and rebuild the dataset if needed.
+This [cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html){:target="_blank"} says to rescan the collection files "every hour at 20 past the hour", and rebuild the dataset if needed.
 
 ### Sporadically changing Collection
 
@@ -558,9 +558,9 @@ For example:
 ~~~
 
 The dataset will be read in at TDS startup time by using the existing indexes (they must already exist).
-The TDM will test if its changed \"once a day at 3 am\", and send a trigger to the TDS if needed.
+The TDM will test if its changed "once a day at 3 am", and send a trigger to the TDS if needed.
 
-### Very Large GRIB Collection that doesn\'t change
+### Very Large GRIB Collection that doesn't change
 
 You have a very large collection, which takes a long time to scan.
 You must carefully control when/if it will be scanned.

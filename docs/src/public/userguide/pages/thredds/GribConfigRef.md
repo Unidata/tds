@@ -1,6 +1,6 @@
 ---
 title: GRIB Collection Configuration Specification
-last_updated: 2020-08-21
+last_updated: 2020-08-26
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: grib_collection_config_ref.html
@@ -27,7 +27,7 @@ Changes to these settings may happen at any time, without having to recreate the
 They will take affect the next time the TDS starts.
 
 These instructions are tailored for TDS users.
-To work with Grib Collections in client software using the CDM stack, see [CDM Grib Files](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grib_files_cdm.html){:target="_blank"}.
+To work with GRIB Collections in client software using the CDM stack, see [CDM GRIB Files](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grib_files_cdm.html){:target="_blank"}.
 
 ## Stage One: GribCollection Creation
 
@@ -227,9 +227,8 @@ Here are examples using NcML:
 
 Notice that GRIB-1 uses IDs of `center-subcenter-version-param`, e.g., `7-4-2-132`, while GRIB-2 uses IDs of `discipline-category-number`, e.g. `0-1-8`.
 
-{% include note.html content="
-See the [Common Data Model GRIB documentation](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grib_files_cdm.html){:target='_blank'} for more information.
-" %}
+See the [Common Data Model GRIB documentation](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grib_files_cdm.html){:target="_blank"} for more information.
+
 
 #### `option`: Set miscellaneous values
 

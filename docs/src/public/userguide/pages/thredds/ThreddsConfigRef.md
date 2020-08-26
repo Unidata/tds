@@ -371,7 +371,7 @@ The various cache directory locations are all under `/{tds.content.root.path}/th
 | WCS.dir | `cache/wcs/` | temporary files for WCS |
 
 We recommend that you use these defaults, by not specifying them in the `threddsConfig.xml` file.
-If you need to move the cache location, move all of them by using a symbolic file link in `{tds.content.root.path}/thredds/`.
+If you need to move the cache location, move all of them by using a symbolic file link in `${tds.content.root.path}/thredds/`.
 At Unidata, we move the entire content directory by creating a symbolic link:
 
 ~~~bash
@@ -479,7 +479,7 @@ with [Berkeley DB](https://www.oracle.com/technetwork/database/berkeleydb/overvi
 </GribIndex>
 ~~~
 
-These elements control where Grib index files are written.
+These elements control where GRIB index files are written.
 
 * If `alwaysUse` is true, grib index files will always be written to the _index directory_ specified by `dir` (see [choosing a cache directory](#disk-caching-and-temporary-files)).
   If `neverUse` is true, the index directory will never be used. 
@@ -543,7 +543,7 @@ For better performance, make these numbers as high as possible.
 </TimePartition>
 ~~~
 
-These elements control the size of the TDS cache for objects for 1) `NetcdfFile` objects, and 2) `Grib Partition` files, respectively.
+These elements control the size of the TDS cache for objects for 1) `NetcdfFile` objects, and 2) `GRIB Partition` files, respectively.
 Up to `maxFiles` objects will be cached, and every `scour` amount of time, older items in the cache will be released, until only `minFiles` objects are left.
 The `scour` element uses any valid `udunits` time string, such as `sec, min, hour, day`. To disable the cache, set `maxFiles` to 0.
 

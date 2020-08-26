@@ -1,6 +1,6 @@
 ---
 title: Restrict Access To The TDS
-last_updated: 2020-08-17
+last_updated: 2020-08-26
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: restict_access_to_tds.html
@@ -17,50 +17,50 @@ There are three ways to restrict access to the TDS and datasets:
 
 ## Restrict Access By IPs &amp; Hosts Using Tomcat
 
-#### Rationale
+### Rationale
 
 * Use the Tomcat `RemoteHostValve` or `RemoteAddrValve` to restrict access to the TDS and/or other web applications.
-* Configured in the Tomcat `$TOMCAT_HOME/conf/server.xml` or web application `META-INF/context.xml` files.
+* Configured in the Tomcat `${tomcat_home}/conf/server.xml` or web application `META-INF/context.xml` files.
 * Valve declarations can be used to either allow or deny access to content.
 * Utilize the valves for adding an extra layer of security to the Manager application to limit accessed to it from within a specific IP address range.
 * Caveat: these valves rely on incoming IP addresses or hostnames which are vulnerable to spoofing. 
 Also, not much help when dealing with DHCP.
 
-#### `RemoteAddrValve`
+### `RemoteAddrValve`
 
 The `RemoteAddrValve` compares the client IP address against one or more regular expressions to either allow or refuse the request from this client.
 
-For example:
+#### Example
 
 1. Using the `RemoteAddrValve` to allow access only for the clients connecting from localhost:
 
-   ~~~~xml
+   ~~~xml
    <!-- This example only allows access from localhost -->
    <Valve className="org.apache.catalina.valves.RemoteAddrValve"
           allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1"/>
-   ~~~~
+   ~~~
    
 2. Using the `RemoteAddrValve` to allow unrestricted access for the clients connecting from localhost but for all other clients only to port 8443:
-   ~~~~xml
+   ~~~xml
    <!-- This example allows 8080 access from localhost but all other connections must use 8443  -->
    <Valve className="org.apache.catalina.valves.RemoteAddrValve"
           addConnectorPort="true"
           allow="127\.\d+\.\d+\.\d+;\d*|::1;\d*|0:0:0:0:0:0:0:1;\d*|.*;8443"/>
-   ~~~~
+   ~~~
 
-#### `RemoteHostValve`
+### `RemoteHostValve`
 
 The `RemoteHostValve` compares the client hostname against one or more regular expressions to either allow or refuse the request from this client.
 
-For example:
+#### Example
 
-1. Using the `RemoteHostValve` to to restrict access based on resolved host names:
+1. Using the `RemoteHostValve` to restrict access based on resolved host names:
 
-   ~~~~xml
+   ~~~xml
    <!-- This example denies access based on host names -->
    <Valve className="org.apache.catalina.valves.RemoteHostValve"
               deny=".*\.bandwidthhogs\.com" />
-   ~~~~  
+   ~~~  
 
     {%include note.html content="
     Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-8.5-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
@@ -69,7 +69,7 @@ For example:
 
 ## Restrict Access Via Web Application Deployment Descriptor
 
-#### Rationale
+### Rationale
 
 * You can use a web application's [deployment descriptor](https://docs.oracle.com/cd/E19316-01/819-3669/6n5sg7bhc){:target="_blank"} (`web.xml`) file to limit access to parts or all of the application.
 * Servlet containers, including Tomcat, can implement access control configurations found in the deployment descriptor file by enforcing user authentication to the restricted resources.
@@ -79,7 +79,7 @@ For example:
 You will need to configure the [user authentication credentials](/digested_passwords.html) in Tomcat to and should enable [TLS/SSL encryption](/enable_tls_encryption.html) to utilize this type of access control.
 " %}
 
-#### Creating a `security-constraint` in `web.xml`
+### Creating A `security-constraint` In `web.xml`
 
 You can restrict a pattern of URLs, by adding `<security-constraint>` elements into the deployment descriptor (`web.xml`) file. 
 The following fragment will force **all** URL accesses that have the `urlPattern` to authorized users with the role `roleName`. 
@@ -101,7 +101,7 @@ The `<transport-guarantee>` elements forces a switch to communication over the T
 </security-constraint>
 ~~~
 
-Example:
+#### Example
 
 ~~~xml
 <security-constraint>
@@ -120,7 +120,9 @@ Example:
 ~~~
 
 You do **not** include `/thredds` in the `url-pattern` element. 
-Also, note that if you are using multiple data services, you must include each service's URL pattern, for example:
+Also, note that if you are using multiple data services, you must include each service's URL pattern.
+
+#### Example
 
 ~~~xml
 <web-resource-collection>
@@ -137,11 +139,11 @@ Consult the [Using Deployment Descriptors to Secure Web Applications](https://do
 
 ## Restrict Access By Dataset In TDS Catalogs
 
-#### Rationale
+### Rationale
 
 * TDS catalogs offer a more fine-grained approach to access control of datasets.
 
-#### How it works
+### How It Works
 
 A more fine-grained approach is to modify the `dataset` elements in the [TDS configuration catalog](server_side_catalog_specification.html). 
 To do this, you add an attribute on a `dataset` or `datasetScan` element in the TDS catalog: `restrictAccess="roleName"`. 
@@ -152,14 +154,14 @@ If the challenge is successful, the client is redirected back to the original da
 For subsequent requests by the same client, no authentication is needed as long as the session remains valid.
 
 The default TDS configuration uses [Digest authentication](/digested_passwords.html). 
-By modifying the TDS deployment descriptor (`web.xml`) file, the server administrator can require that authentication be done differently, for example require TLS/SSL. 
+By modifying the TDS deployment descriptor (`web.xml`) file, the server administrator can require that authentication be done differently, (e.g., require TLS/SSL). 
 You can also plug in your own Authentication.
 
 {%include warning.html content="
 Changes to the TDS `web.xml` must be **manually** propagated to new versions of the TDS when upgrading.
 " %} 
 
-#### Client communication with the TDS
+### Client Communication With The TDS
 
 To access any restricted dataset that a TDS might serve, a client such as a browser, OPeNDAP enabled application, or WCS client, must be able to:
 
@@ -169,7 +171,7 @@ To access any restricted dataset that a TDS might serve, a client such as a brow
 4 Answer security challenges with the appropriate user name and password; and
 5 Return session cookies.
 
-#### How to configure restricted datasets
+#### How To Configure Restricted Datasets
 
 1.  Decide on distinct sets of datasets that need to be restricted. 
 For each set, choose a name called a `security role`. 
@@ -205,14 +207,17 @@ A user may have multiple roles, and must always have the `restrictedDatasetUser`
     ~~~
     {%include warning.html content="
     Make sure *none* of these `restrictedDatasetUsers` have any of the \"secure\" roles such as `tdsConfig`, `manager`, or `admin`. 
-    The `tdsConfig`, `manager` and `admin` roles allow access to secure parts of Tomcat and TDS. These can only be accessed using HTTPS (TLS), and thus are considered secure. If you are restricting access to datasets, you will also add other users who will have the `restrictedDatasetUser` role. 
-    The `restrictedDatasetUser` usage can also use non-HTTPS URLs, and so is vulnerable to session hijacking. By keeping the roles separate, you make sure the worst that can happen is that someone can download some scientific data they shouldn't have access to.
+    The `tdsConfig`, `manager` and `admin` roles allow access to secure parts of Tomcat and TDS. 
+    These can only be accessed using HTTPS (TLS), and thus are considered secure. 
+    If you are restricting access to datasets, you will also add other users who will have the `restrictedDatasetUser` role. 
+    The `restrictedDatasetUser` usage can also use non-HTTPS URLs, and so is vulnerable to session hijacking. 
+    By keeping the roles separate, you make sure the worst that can happen is that someone can download some scientific data they shouldn't have access to.
     " %} 
     
 4.  In the [TDS configuration catalogs](/server_side_catalog_specification.html), add `restrictAccess={security role}` attributes to the `dataset` or `datasetScan` elements. 
 This will also restrict access to all children of those datasets. 
 
-    Example:
+    #### Example
 
     ~~~xml
     <?xml version="1.0" encoding="UTF-8"?>

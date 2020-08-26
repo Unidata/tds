@@ -19,7 +19,7 @@ entries:
       url: /tocpage
       output: pdf
       type: frontmatter
-  - title: Getting Started with the TDS
+  - title: Getting Started With The TDS
     output: web, pdf
     folderitems:
 
@@ -131,7 +131,7 @@ entries:
       url: /tds_logs.html
       output: web, pdf
 
-    - title: Using the TdsMonitor Tool
+    - title: Using The TdsMonitor Tool
       url: /using_the_tdsmonitor_tool.html
       output: web, pdf
 
@@ -146,7 +146,7 @@ entries:
       external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/ncml_aggregation.html
       output: web, pdf
 
-    - title: Using NcML in the TDS
+    - title: Using NcML In The TDS
       url: /using_ncml_in_the_tds.html
       output: web, pdf
 
@@ -270,7 +270,7 @@ entries:
       url: /tds_config_ref.html
       output: web, pdf
 
-    - title: Viewers
+    - title: Dataset Viewer
       url: /viewers_ref.html
       output: web, pdf
 
@@ -290,7 +290,7 @@ entries:
       url: /netcdf_subset_service_ref.html
       output: web, pdf
 
-    - title: netCDF-Java And TDS Doc Guide
+    - title: NetCDF-Java And TDS Doc Guide
       external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/doc_guide.html
       output: web, pdf
 

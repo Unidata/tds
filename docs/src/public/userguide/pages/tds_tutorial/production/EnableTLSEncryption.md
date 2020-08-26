@@ -1,6 +1,6 @@
 ---
 title: Enable TLS/SSL Encryption
-last_updated: 2020-04-30
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: enable_tls_encryption.html
@@ -31,7 +31,7 @@ For more information on how TLS/SSL works, Wikipedia details the [steps involved
 * The certificate can be used to verify that a public key belongs to an individual.
 * The digital signature can be signed by a Certificate Authority (CA) or the certificate user (a self-signed certificate).
 
-#### Do not use self-signed certificates
+### Do Not Use Self-Signed Certificates
 {%include important.html content="
 Unidata _highly_ recommends the use of a certificate signed by a Certificate Authority (CA).
 " %}
@@ -42,7 +42,7 @@ Unidata _highly_ recommends the use of a certificate signed by a Certificate Aut
 * Self-signed certificates cannot (by nature) be revoked, which may allow an attacker who has already gained access to monitor and inject data into a connection to spoof an identity if a private key has been compromised. 
   CAs on the other hand have the ability to revoke a compromised certificate, which prevents its further use.
 
-#### Certificate keystore file
+### Certificate `keystore` File
 A keystore file stores the details of the TLS/SSL certificate necessary to make the protocol secured.
 The Tomcat documentation includes a section on [importing your certificate](https://tomcat.apache.org/tomcat-8.0-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target="_blank"} into a keystore file.
 Tomcat uses the keystore file for TLS/SSL transactions. 
@@ -57,23 +57,23 @@ This section assumes you have already imported your CA-signed certificate into t
 
 1. Modify the Tomcat configuration to enable TLS/SSL:
 
-   Open `$TOMCAT_HOME/conf/server.xml` with your favorite text editor:
+   Open `${tomcat_home}/conf/server.xml` with your favorite text editor:
 
-   ~~~~bash
+   ~~~bash
    # vi server.xml
-   ~~~~
+   ~~~
 
    Locate the `Java HTTP/1.1 Connector` listening on port `8080` and verify it is redirecting TLS/SSL traffic to port `8443`:
-   ~~~~xml
+   ~~~xml
    <Connector port="8080" 
               protocol="HTTP/1.1"
               connectionTimeout="20000"
               redirectPort="8443" />
-   ~~~~
+   ~~~
 
    Find and uncomment the `NIO implementation SSL HTTP/1.1 Connector` listening on port `8443` to activate this connector:
 
-   ~~~~xml
+   ~~~xml
    <Connector port="8443" 
               protocol="org.apache.coyote.http11.Http11NioProtocol" 
               maxThreads="150" 
@@ -83,17 +83,17 @@ This section assumes you have already imported your CA-signed certificate into t
                         type="RSA" />
        </SSLHostConfig>
    </Connector>
-   ~~~~
+   ~~~
    
    {%include note.html content="
      Tomcat also offers a `SSL/TLS HTTP/1.1 Connector` which utilizes `APR/native implementation`. Consult the [Documentation](http://tomcat.apache.org/tomcat-8.5-doc/config/http.html){:target='_blank'} to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
    " %}
    
-   Specify the keystore file in the `certificateKeystoreFile` attribute of the `Certificate` element to tell Tomcat where to find your keystore (the path will be relative to `$TOMCAT_HOME` directory).  
+   Specify the keystore file in the `certificateKeystoreFile` attribute of the `Certificate` element to tell Tomcat where to find your keystore (the path will be relative to `${tomcat_home}` directory).  
    
-   In this example, the keystore file is `$TOMCAT_HOME/conf/tds-keystore`:
+   In this example, the keystore file is `${tomcat_home}/conf/tds-keystore`:
 
-   ~~~~xml
+   ~~~xml
    <Connector port="8443" 
               protocol="org.apache.coyote.http11.Http11NioProtocol" 
               maxThreads="150" 
@@ -103,11 +103,11 @@ This section assumes you have already imported your CA-signed certificate into t
                         type="RSA"/>
        </SSLHostConfig>
    </Connector>
-   ~~~~
+   ~~~
 
    If you opted to not use the default keystore password (`changeit`), you'll need to specify the new password so Tomcat can open the file.  Add the `certificateKeystorePassword` attribute of the `Certificate` element for your keystore password.
    
-   ~~~~xml
+   ~~~xml
    <Connector port="8443" 
               protocol="org.apache.coyote.http11.Http11NioProtocol" 
               maxThreads="150" 
@@ -118,27 +118,27 @@ This section assumes you have already imported your CA-signed certificate into t
                         type="RSA"/>
        </SSLHostConfig>
    </Connector>
-   ~~~~
+   ~~~
    
       
    {%include important.html content="
-   Keep in mind: Changes to `$TOMCAT_HOME/conf/server.xml` do not take effect until Tomcat is restarted.
+   Keep in mind: Changes to `${tomcat_home}/conf/server.xml` do not take effect until Tomcat is restarted.
    " %}
 
 2. Verify TLS/SSL has been enabled.
 
    Restart Tomcat:
 
-   ~~~~bash
+   ~~~bash
    # /usr/local/tomcat/bin/shutdown.sh
    # /usr/local/tomcat/bin/startup.sh
-   ~~~~
+   ~~~
 
    Verify Tomcat is listening on port 8443 by running the `netstat` command:
 
-   ~~~~bash
+   ~~~bash
    # netstat -an | grep tcp | grep 8443
-   ~~~~
+   ~~~
 
    `netstat` (short for network statistics) is a command-line tool that displays:
 
@@ -148,16 +148,16 @@ This section assumes you have already imported your CA-signed certificate into t
 
    Look for something like the following in the output (output may vary between operating systems):
 
-   ~~~~bash
+   ~~~bash
    tcp        0      0 0.0.0.0:8443                0.0.0.0:*                   LISTEN 
-   ~~~~
+   ~~~
 
    {%include note.html content="
      Run `man netstat` in your terminal window to learn more about this command.
    " %}
 
-#### Troubleshooting
-* Check the XML syntax in `$TOMCAT_HOME/conf/server.xml` to make sure it is well-formed and without error.
+### Troubleshooting
+* Check the XML syntax in `${tomcat_home}/conf/server.xml` to make sure it is well-formed and without error.
 * Did you restart Tomcat after you made your changes to `server.xml`?
 * Did you specify the full path to the keystore file in `server.xml`?
 
@@ -168,13 +168,13 @@ Other than the compelling security reasons, you will want to enable TLS/SSL to t
 ## Configuring Web Applications for TLS/SSL
 
 * The web application deployment descriptor, a.k.a. `web.xml`, specifies if all or parts of it need to be accessed via TLS/SSL.
-* Deployment descriptors are found in the `WEB-INF` directory of the web application: `$TOMCAT_HOME/webapps/application_name/WEB-INF/web.xml`.
+* Deployment descriptors are found in the `WEB-INF` directory of the web application: `${tomcat_home}/webapps/application_name/WEB-INF/web.xml`.
 * By convention, Tomcat and other servlet containers will read the web application deployment descriptors for initialization parameters and container-managed security constraints upon application deployment.
 * The TDS has been pre-configured to require that TLS/SSL encryption is enabled in order to access the both the [TDS Remote Management Tool](remote_management_ref.html), and the [TdsMonitor Tool](using_the_tdsmonitor_tool.html).
 
 This is the entry in the TDS `web.xml` for the TDS Remote Management Tool:
 
-~~~~xml
+~~~xml
 <!-- tdsConfig with HTTPS needed for /admin access  -->
 <security-constraint>
   <web-resource-collection>
@@ -188,7 +188,7 @@ This is the entry in the TDS `web.xml` for the TDS Remote Management Tool:
     <transport-guarantee>CONFIDENTIAL</transport-guarantee>
   </user-data-constraint>
 </security-constraint>
-~~~~
+~~~
 
 * The `<user-data-constraint>` establishes a requirement that the constrained requests be received over a protected transport layer connection.
    This guarantees how the data will be transported between client and server.
@@ -206,9 +206,10 @@ Other than the compelling security reasons, you will want to enable TLS/SSL to t
 
 1. Enable TLS/SSL in Tomcat
    If Tomcat has not already been configured to run via TLS/SSL, follow the tutorial in the previous section to Enable TLS/SSL in Tomcat.
-2. Modify `$TOMCAT_HOME/conf/tomcat-users.xml` to add the new tdsConfig and tdsMonitor roles.
+2. Modify `${tomcat_home}/conf/tomcat-users.xml` to add the new tdsConfig and tdsMonitor roles.
    Add these roles to your list of roles:
-   ~~~~xml
+   
+   ~~~xml
    <tomcat-users xmlns="http://tomcat.apache.org/xml"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd"
@@ -235,18 +236,18 @@ Other than the compelling security reasons, you will want to enable TLS/SSL to t
            password="bb7a2b6cf8da7122125c663fc1585808170b2027677195e0ad121f87b27320ae$1$55003acb56e907b19d29d3b4211dc98c837354690bc90579742d6747efeec4ea" 
            roles="manager-gui, tdsConfig, tdsMonitor"/>
    </tomcat-users>
-   ~~~~
+   ~~~
       
    {%include important.html content="
-   Keep in mind: Changes to `$TOMCAT_HOME/conf/tomcat-users.xml` do not take effect until Tomcat is restarted.
+   Keep in mind: Changes to `${tomcat_home}/conf/tomcat-users.xml` do not take effect until Tomcat is restarted.
    " %}
    
-3. Restart Tomcat and access the [TDS Remote Management Tool](http://localhost:8080/thredds/admin/debug){:target="_blank"} in your browser (authenticate with the login/password specified in `$TOMCAT_HOME/conf/tomcat-users.xml`).
+3. Restart Tomcat and access the [TDS Remote Management Tool](http://localhost:8080/thredds/admin/debug){:target="_blank"} in your browser (authenticate with the login/password specified in `${tomcat_home}/conf/tomcat-users.xml`).
 
    {% include image.html file="tds/tutorial/production_servers/remotemanagementtool.png" alt="TDS Remote Management Tool" caption="" %}
 
 
-### Resources
+## Resources
 * [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/){:target="_blank"}
   is a free online service that analyzes the configuration of any public TLS/SSL web server. 
   Note: be sure to check the Do not show the results on the boards box if you do not want your results to be public.

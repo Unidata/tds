@@ -1,12 +1,12 @@
 ---
 title: Troubleshooting Problems
-last_updated: 2018-04-02
+last_updated: 2020-08-25
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: troubleshooting_problems.html
 ---
 
-## Check log files for errors
+## Check Log Files For Errors
 
 The first step of troubleshooting any type of problem should involve looking at available log data.
 Both Tomcat and the TDS provide a variety of logs that record errors and messages sent by your server.
@@ -14,7 +14,7 @@ Both Tomcat and the TDS provide a variety of logs that record errors and message
 Useful log files
 
 | Log File | Description |
-| `${tomcat.home}/logs/catalina.{date}.log` | Tomcat standard out. This is where Tomcat prints messages about Tomcat startup and uncaught exceptions from any webapp. |
+| `${tomcat.home}/logs/catalina.{date}.log` | Tomcat `STDOUT`. This is where Tomcat prints messages about Tomcat startup and uncaught exceptions from any webapp. |
 | `${tomcat.home}/logs/localhost.{date}.log` | This is where log messages from Tomcat are sent. |
 | `${tds.content.root.path}/logs/serverStartup.log` | This is where TDS logs messages about TDS startup. |
 | `${tds.content.root.path}/logs/catalogInit.log` | Errors and warnings in your catalog configuration files are shown here. Look at this closely every time you change your config catalogs. |
@@ -23,9 +23,9 @@ Useful log files
 | `${tds.content.root.path}/thredds/logs/featureCollectionScan.log` | Log messages from feature collections. |
 | `${tds.content.root.path}/thredds/logs/fc.<collection_name>.log` | Log messages from feature collections. |
 
-## Common errors in the TDS Configuration Catalogs
+## Common Errors In The TDS Configuration Catalogs
 
-### Duplicate path(s)
+### Duplicate Path(s)
 
 If you use the same `path` in more than one data root:
 
@@ -41,7 +41,7 @@ you will get an error message in `${tds.content.root.path}/thredds/logs/catalogI
 Error: already have dataRoot =<testdup> mapped to directory= <C:/data/> wanted to map to=</home/workshop/data/> in catalog
 ~~~
 
-### Duplicate id(s)
+### Duplicate `id`(s)
 
 If you use the same `id` in more than one dataset:
 
@@ -59,9 +59,9 @@ WARNING: Duplicate id on  'THREDDS Catalog Name/Test Single Dataset 3' id= 'test
 Data directory doesn't exist
 ~~~
 
-### Data directory doesn't exist
+### Data Directory Doesn't Exist
 
-If you refer to a non-existant directory:
+If you refer to a non-existent directory:
 
 ~~~xml
 <datasetRoot path="sage" location="C:/data/notexist/" />
@@ -81,9 +81,9 @@ Invalid InvDatasetScan <path=testAll; scanLocation=bad/content/testdata>: Crawla
     ... Dropping this datasetScan [testAll].
 ~~~
 
-### DatasetScan has missing or invalid service
+### DatasetScan Has Missing Or Invalid Service
 
-If you refer to a non-existant `service`, or omit a `service`:
+If you refer to a non-existent `service`, or omit a `service`:
 
 ~~~xml
 <datasetScan name="bad service name" path="segundo" location="C:/data/" serviceName="badd" />
@@ -97,12 +97,13 @@ you will get an error message in `${tds.content.root.path}/thredds/logs/catalogI
 **Error: DatasetScan (Top Dataset/no service name): must have a default service
 ~~~
 
-### Data not compatible with service
+### Data Not Compatible With Service
 
-If you use a `service` on a file which that `service` can\'t deal with:
+If you use a `service` on a file which that `service` can't deal with:
 
 ~~~xml
-<dataset name="Image of my Data" urlPath="images/labyrinth.jpg" serviceName="dodsServer" dataType="Grid" />
+<dataset name="Image of my Data" urlPath="images/labyrinth.jpg" 
+         serviceName="dodsServer" dataType="Grid" />
 ~~~
 
 You won't get an error in `catalogInit.log`, ut when you try to access it:
@@ -110,9 +111,9 @@ You won't get an error in `catalogInit.log`, ut when you try to access it:
 * Browser: `DODServlet ERROR: Cant read C:/data/images/labyrinth.jpg: not a valid NetCDF file.`
 * netCDF-Java client: `Lexical error at line 1, column 1. Encountered: "" (0), after : "" Data file does not exist`
 
-### Data file does not exist
+### Data File Does Not Exist
 
-If you refer to a non-existant file in a `dataset`:
+If you refer to a non-existent file in a `dataset`:
 
 ~~~xml
 <dataset name="My Data" ID="Y" urlPath="images/labyrinth.nc" serviceName="dodsServer" dataType="Grid" />
@@ -128,11 +129,11 @@ If you try to access it via an HTTP server:
 * Browser: `Error 404 The requested resource () is not available.`
 * netCDF-Java client: `Error 404 Not Found`
 
-### `DatasetScan` points to an empty directory, or filters out all files in the directory.
+### `DatasetScan` Points To An Empty Directory, Or Filters Out All Files In The Directory.
 
 No warning - you simply wont see any datasets in that `DatasetScan`.
 
-### Aggregation scan points to an empty directory
+### Aggregation Scan Points To An Empty Directory
 
 No warning, but when you try to access the dataset, client gets:
 

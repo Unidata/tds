@@ -1,6 +1,6 @@
 ---
 title: Upgrading to TDS version 5
-last_updated: 2020-04-30
+last_updated: 2020-08-26
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: upgrade_to_5.html
@@ -8,10 +8,12 @@ permalink: upgrade_to_5.html
 
 ## Requirements
 
-* Java 8 is now required
+* Java 8 is required
 * Tomcat 8 (servlet 3.1)
 * On the command line when starting up Tomcat/TDS, you must specify `-Dtds.content.root.path=<content root>` where `<content root>` points to the top of the content directory.
-  Note that this is `${tomcat_home}/content/`, not`${tomcat_home}/content/thredds/`. Don't forget the trailing slash. For example:
+  Note that this is `${tomcat_home}/content/`, not`${tomcat_home}/content/thredds/`. 
+  Don't forget the trailing slash. 
+  For example:
 
   ~~~bash
   -Dtds.content.root.path=/opt/tomcat-home/content/
@@ -19,7 +21,7 @@ permalink: upgrade_to_5.html
 
 ## Overview
 
-The configuration catalogs and internal state of the TDS has been extensively reworked to be able to scale to large numbers of catalogs, datasets, and internal objects without excessive use of memory.
+The configuration catalogs and internal state of the TDS has been extensively re-worked to be able to scale to large numbers of catalogs, datasets, and internal objects without excessive use of memory.
 A running TDS can be triggered to reread the configuration catalogs without having to restart.
 It can be configured to reread only changed catalogs, for fast incremental updates. Other features have been added to make writing configuration catalogs more maintainable, including the `<catalogScan>` element, and default and standard services.
 
@@ -80,7 +82,7 @@ Following suite, the TDS no longer provide any Web Start based Viewers on Datase
 
 ### Catalogs
 
-### Catalog Schema changes
+### Catalog Schema Changes
 
 Schema version is now `1.2`.
 
@@ -111,7 +113,7 @@ Schema version is now `1.2`.
 * With `addLatest`, the `service` name is no longer used, it is always `Resolver`, and the correct service is automatically added.
   Use `addLatest` attribute for simple case.
 * `fileSort`: by default, datasets at each collection level are listed in increasing order by filename.
-  To change to decreasing order, use the [fileSort](tds_dataset_scan_ref.html#filesSort,filesSort) element.
+  To change to decreasing order, use the [fileSort](tds_dataset_scan_ref.html#sorting-datasets) element.
 * `sort`: deprecated in favor of `filesSort`
 * User pluggable classes implementing `UserImplType` (`crawlableDatasetImpl`, `crawlableDatasetFilterImpl`, `crawlableDatasetLabelerImpl`,
 `crawlableDatasetSorterImpl`) are no longer supported. (This was never officially released or documented).
@@ -122,14 +124,14 @@ Schema version is now `1.2`.
 * The TDS provides standard service elements, which know which services are appropriate for each Feature Type.
 * User defined services in the root catalog are global and can be referenced by name in any other config catalog.
 * User defined services in non-root catalogs are local to that catalog and override (by name) any global services.
-* All services are enabled unless explicitly disabled
-** Except for remote catalog services
+* All services are enabled unless explicitly disabled.
+** Except for remote catalog services.
 * Standard service details are [here](services_ref.html))
 
-### FeatureCollections
+### Feature Collections
 
-* The [update](feature_collections_ref.html#update) element default is now `startup="never"`, meaning do not update collection on startup, and use existing indices when the collection is accessed.
-* The [fileSort](tds_dataset_scan_ref.html#filesSort) element is now inside the `featureCollection` itself, so it can be processed uniformly for all types of feature collections.
+* The [`update`](feature_collections_ref.html#update-element) element default is now `startup="never"`, meaning do not update collection on start up, and use existing indices when the collection is accessed.
+* The [`fileSort`](tds_dataset_scan_ref.html#sorting-datasets) element is now inside the `featureCollection` itself, so it can be processed uniformly for all types of feature collections.
   When a collection shows a list of files, the files will be sorted by increasing name.
   To use a decreasing sort, use the element `<filesSort increasing="false" />` inside the `featureCollection` element.
   This supersedes the old way of placing that element in the `<gribConfig>` element, or the older verbose `lexigraphicByName` element:
@@ -154,10 +156,10 @@ Schema version is now `1.2`.
 ### Recommendations for ESGF
 
 You must determine the number of datasets that are contained in all of your catalogs.
-To get a report, enable [Remote Management](remote_management_ref.html), and from https://server/thredds/admin/debug, select "Make Catalog Report".
+To get a report, enable [Remote Management](remote_management_ref.html), and from `https://server/thredds/admin/debug`, select "Make Catalog Report".
 This may take 5-20 minutes, depending on the numbers of catalogs.
 
-Add the [<ConfigCatalog>](tds_config_ref.html#configuration-catalog) element to `threddsConfig.xml`:
+Add the [`<ConfigCatalog>`](tds_config_ref.html#configuration-catalog) element to `threddsConfig.xml`:
 
 ~~~xml
 <ConfigCatalog>
@@ -176,7 +178,7 @@ where:
   Use the default directory (or symlink to another place) unless you have a good reason to change.
 * `maxDatasets`: this is the number you found in step 1.
   Typical values for ESGF are 1 - 7 million.
-  This is a maximum, so its ok to make it bigger than you need.
+  This is a maximum, so it's ok to make it bigger than you need.
 
 Here are some additional, optional changes you can make to increase maintainability:
 
@@ -184,7 +186,7 @@ Here are some additional, optional changes you can make to increase maintainabil
 2. Place all `service` elements in the root catalog (_catalog.xml_).
    These can be referenced from any catalog.
 3. Remove `<service>` elements from non-root catalogs.
-4. Add a [catalogScan](server_side_catalog_specification.html#catalogScan) element to the root catalog, replacing the list of catalogRefs listing all the other catalogs.
+4. Add a [`catalogScan`](server_side_catalog_specification.html#catalogscan-element) element to the root catalog, replacing the list of `catalogRef`s listing all the other catalogs.
 * This assumes that other catalogs live in a subdirectory under the root, for example `${tds.content.root.path}/thredds/esgcet/**`.
 
   For example:

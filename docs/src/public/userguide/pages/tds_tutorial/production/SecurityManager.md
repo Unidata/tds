@@ -1,12 +1,13 @@
 ---
 title: Running Tomcat With A Security Manager
-last_updated: 2018-11-02
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tomcat_with_security_manager.html
 ---
 
-This section examines running the Tomcat Servlet Container with a security manager.  **Most likely you will have not any need to perform these adjustments.**
+This section examines running the Tomcat Servlet Container with a security manager.  
+**Most likely you will have not any need to perform these adjustments.**
 
 ## Rationale
 

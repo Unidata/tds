@@ -59,7 +59,7 @@ Download {% include link_file.html file="tds_tutorial/fmrc/catalogFmrc.xml" text
    All contained datasets will all have a `path` starting with `BOM/model`.
 3. All the `metadata` contained here will be inherited by the contained datasets.
 4. The collection of files is defined, using a [collection specification string](collection_spec_string_ref.html).
-   Subdirectories of `<path-to-data>/fmrc_tutorial/bom/` will be scanned for files with names that start with \"ocean_fc_\" , and end with \".nc\".
+   Subdirectories of `<path-to-data>/fmrc_tutorial/bom/` will be scanned for files with names that start with "ocean_fc_" , and end with ".nc".
    The run data is extracted from the filename.
 
 The contained datasets include the resulting 2D time dimension dataset, as well as 1D time views described here, as seen in the resulting HTML page for that dataset:
@@ -83,7 +83,7 @@ Luckily the information is in the filename, which is a common practice.
    <collection spec="<path-to-data>/fmrc_tutorial/bom/**/ocean_fc_#yyyyMMdd#.*\.nc$" />
    ~~~
 
-   extracts the run date by applying the template `yyyyMMdd` to the portion of the filename after \"ocean_fc_\".
+   extracts the run date by applying the template `yyyyMMdd` to the portion of the filename after "ocean_fc_".
 
    If the information is in a directory name, then you can use the `dateFormatMark` field on the collection element.
    In our example, an example dataset paths looks like: 
@@ -99,7 +99,7 @@ Luckily the information is in the filename, which is a common practice.
    Note that we: 
      1. remove the date extractor from the collection specification string
      2. add a dateFormatMark attribute. 
-        In this case, the `#` characters delineate a substring match on the entire pathname (so there had better only be one place where the string \"workshop/bom/\" appears). 
+        In this case, the `#` characters delineate a substring match on the entire pathname (so there had better only be one place where the string "workshop/bom/" appears). 
         Immediately following the match comes the date extractor string.
         [See here](feature_collections_ref.html#date-extractor) for more details.
 
@@ -151,18 +151,18 @@ Below is an example dataset, with additional elements and attributes to handle t
    This minimizes unneeded processing for lightly used collections.
 2. `olderThan`: Only files that haven't changed for 5 minutes will be included. 
    This excludes files that are in the middle of being written.
-3. `update`: The collection will be updated upon TDS startup, and periodically using the cron expression \"0 5 3 * * ? *\", meaning every day at 3:05 am local time. 
+3. `update`: The collection will be updated upon TDS startup, and periodically using the cron expression "0 5 3 * * ? *", meaning every day at 3:05 am local time. 
    This updating is done in the background, as opposed to when a request for it comes in.
-4. `protoDataset`: The prototypical dataset is chosen to be the \"next-to-latest\".
+4. `protoDataset`: The prototypical dataset is chosen to be the "next-to-latest".
    The prototypical dataset is changed every day at 3:02 am local time.
 5. `fmrcConfig`: The kinds of datasets that are created are listed explicitly. 
    You can see how this corresponds directly to the HTML dataset page above.
    Remove the ones that you don't want to make available.
-   Default is \"TwoD Best Files Runs\"
+   Default is "TwoD Best Files Runs"
 
 The `recheckAfter` attribute and the `update` element are really alternate ways to specify rescanning strategies.
 Use the `update` element on large collections when you want to ensure quick response.
 Use the `recheckAfter` on lightly used collections in order to minimize server load.
-Don\'t use both of them on the same dataset on a real production server.
+Don't use both of them on the same dataset on a real production server.
 
 More details are in the [`FeatureCollection` reference doc](feature_collections_ref.html).

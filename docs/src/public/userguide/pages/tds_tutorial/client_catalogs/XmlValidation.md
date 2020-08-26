@@ -1,19 +1,19 @@
 ---
 title: XML Validation
-last_updated: 2020-04-29
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: client_catalog_xml_validation.html
 ---
 
-As catalogs get more complicated, you should check that you haven't made any errors.
-There are three components to checking:
+As catalogs get more complicated, you should check that you haven't made any errors in your XML syntax.
+There are three components to checking for catalog:
 
-* Is the XML well-formed?
-* Is it valid against the catalog schema?
-* Does it have everything it needs to be read by a THREDDS client?
+1. Is the XML well-formed?
+2. Is it valid against the catalog schema?
+3. Does it have everything it needs to be read by a THREDDS client?
 
-You can check _well-formedness_ using online tools like [this one](http://www.xmlvalidation.com/){:target="_blank"}.
+You can check _well-formedness_ using [online tools](http://www.xmlvalidation.com/){:target="_blank"}.
 If you also want to check _validity_ in those tools, you will need to declare the catalog schema location like so:
 
 ~~~xml
@@ -34,6 +34,6 @@ Or, you can simply use the [THREDDS Catalog Validation service](https://thredds.
 This service already knows where the schemas are located, so it's not necessary to add that information to the catalog; you only need it if you want to do your own validation.
 
 {%include note.html content="
-Reference documentation - The schema referenced in the example can be found [here](https://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.7.xsd){:target='_blank'}.
-However, you'll probably want to study the [catalog specification](server_side_catalog_specification.html) instead, as it is much more digestable.
+For more information, you can look at the [schema](https://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.7.xsd){:target='_blank'} referenced in the above example.
+However, you'll probably want to study the [catalog specification](client_side_catalog_specification.html) instead, as it is much more digestible.
 " %}

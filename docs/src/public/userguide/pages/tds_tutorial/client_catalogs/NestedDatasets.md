@@ -1,6 +1,6 @@
 ---
 title: Nested Datasets
-last_updated: 2018-04-02
+last_updated: 2018-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: nested_datasets.html
@@ -14,9 +14,12 @@ When you have many datasets to declare in each catalog, you can use _nested_ dat
   <service name="odap" serviceType="OpenDAP"  base="/thredds/dodsC/" />
 
   <dataset name="SAGE III Ozone Loss Experiment" ID="Sage III"> <!-- 1 -->
-    <dataset name="January Averages" serviceName="odap" urlPath="sage/avg/jan.nc" ID="jan.nc"/>  <!-- 2 -->
-    <dataset name="February Averages" serviceName="odap" urlPath="sage/avg/feb.nc" ID="feb.nc"/> <!-- 2 -->
-    <dataset name="March Averages" serviceName="odap" urlPath="sage/avg/mar.nc" ID="mar.nc"/>    <!-- 2 -->
+    <dataset name="January Averages" serviceName="odap" 
+             urlPath="sage/avg/jan.nc" ID="jan.nc"/>  <!-- 2 -->
+    <dataset name="February Averages" serviceName="odap" 
+             urlPath="sage/avg/feb.nc" ID="feb.nc"/> <!-- 2 -->
+    <dataset name="March Averages" serviceName="odap" 
+             urlPath="sage/avg/mar.nc" ID="mar.nc"/>    <!-- 2 -->
   </dataset> <!-- 3 -->
 </catalog>
 ~~~

@@ -1,6 +1,6 @@
 ---
 title: Keep Software Up-To-Date
-last_updated: 2018-11-02
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: keep_software_uptodate.html
@@ -17,7 +17,7 @@ Stay Informed!
 Subscribe to announcement lists for Tomcat, the TDS and any other software you deploy, to stay abreast of new versions released due to security issues.
 
 As soon as a security issue is disclosed, potential attackers will begin trying to exploit that vulnerability.
-It is important that you upgrade your software before an attacker uses the vulnerability against you.
+It is important you upgrade your software before an attacker uses the vulnerability against you.
 
 ## Resources
 

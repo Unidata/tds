@@ -1,6 +1,6 @@
 ---
 title: Running Tomcat
-last_updated: 2020-04-23
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: running_tomcat.html
@@ -19,7 +19,7 @@ The following example shows stopping/starting Tomcat on a linux system, as the `
 
 1. Tomcat isn't currently running so we need to start it up.
 
-   Run the `startup.sh` script in the `$TOMCAT_HOME/bin` directory (`$TOMCAT_HOME` is `/usr/local` in this example):
+   Run the `startup.sh` script in the `${tomcat_home}/bin` directory (`${tomcat_home}` is `/usr/local` in this example):
 
    ~~~ bash
    # pwd
@@ -45,7 +45,7 @@ The following example shows stopping/starting Tomcat on a linux system, as the `
 
 3. See if you can shutdown Tomcat.
 
-   Run the `shutdown.sh` script in the `$TOMCAT_HOME/bin` directory (`$TOMCAT_HOME` is `/usr/local` in this example):
+   Run the `shutdown.sh` script in the `${tomcat_home}/bin` directory (`${tomcat_home}` is `/usr/local` in this example):
 
    ~~~bash
    # pwd
@@ -60,13 +60,13 @@ Which Java is Tomcat currently using? (Hint: what was sent to `STDOUT` when runn
 " %}
 
 {% include troubleshooting.html content="
-Check the logs mostly recently generated in the `$TOMCAT_HOME/logs` directory for clues about why Tomcat failed to start or stop.
+Check the logs mostly recently generated in the `${tomcat_home}/logs` directory for clues about why Tomcat failed to start or stop.
 Pay particular attention to what is being reported in Tomcat's main log file: `catalina.out`.
 " %}
 
 ## Setting `$JAVA_HOME`, `$JAVA_OPTS`, `$CATALINA_HOME`, `$CATALINA_BASE`, And `$CONTENT_ROOT`
 
-We are going to create a file called `setenv.sh` in the `$TOMCAT_HOME/bin` directory to:
+We are going to create a file called `setenv.sh` in the `${tomcat_home}/bin` directory to:
 
 * allow Tomcat to reference/find the location of `$JAVA_HOME` and `$CATALINA_BASE`) during startup and shutdown;
 
@@ -74,9 +74,12 @@ We are going to create a file called `setenv.sh` in the `$TOMCAT_HOME/bin` direc
 
 * add additional settings to the JVM via `$JAVA_OPTS` to enable more advanced services in the TDS (e.g, WMS, etc).
 
-Tomcat's `$TOMCAT_HOME/bin/startup.sh` script executes the `catalina.sh` script found in the same directory.  `catalina.sh` is the main control script for the Tomcat Servlet Container which is executed on server startup and shutdown (also called from the `$TOMCAT_HOME/bin/shutdown.sh` script).
+Tomcat's `${tomcat_home}/bin/startup.sh` script executes the `catalina.sh` script found in the same directory.  
+`catalina.sh` is the main control script for the Tomcat Servlet Container which is executed on server startup and shutdown (also called from the `${tomcat_home}/bin/shutdown.sh` script).
  
-When executed, the `catalina.sh` script will look for a `setenv.sh` in the `$TOMCAT_HOME/bin` directory.  If it finds `setenv.sh`, it will apply the custom environment and JVM configurations specified within the file.  (Thus, saving you the trouble of directly modifying and potentially introducing errors in the important `catalina.sh` script).
+When executed, the `catalina.sh` script will look for a `setenv.sh` in the `${tomcat_home}/bin` directory.  
+If it finds `setenv.sh`, it will apply the custom environment and JVM configurations specified within the file.  
+(Thus, saving you the trouble of directly modifying and potentially introducing errors in the important `catalina.sh` script).
 
 
 {%include note.html content="
@@ -86,7 +89,7 @@ If you're running Tomcat on an instance of Windows OS, you will want to create a
 
 1. Create the `setenv.sh` file.
 
-   Use your favorite text editor to create a new file called `setenv.sh` in the `$TOMCAT_HOME/bin` directory (`$TOMCAT_HOME` is `/usr/local` in this example):
+   Use your favorite text editor to create a new file called `setenv.sh` in the `${tomcat_home}/bin` directory (`${tomcat_home}` is `/usr/local` in this example):
 
    ~~~bash
    # cd /usr/local/tomcat/bin
@@ -139,12 +142,15 @@ If you're running Tomcat on an instance of Windows OS, you will want to create a
 
    The parameters we pass to `$JAVA_OPTS`:
 
-    * `CONTENT_ROOT` is TDS-specific, and defines the location of where TDS-related configuration files will be stored. **This MUST be set!  The TDS will not start without it.**  It is also a good idea to locate this directory somewhere separate from `$TOMCAT_HOME` on your file system.
+    * `CONTENT_ROOT` is TDS-specific, and defines the location of where TDS-related configuration files will be stored. 
+    **This MUST be set!  
+    The TDS will not start without it.**  
+    It is also a good idea to locate this directory somewhere separate from `${tomcat_home}` on your file system.
     * `-Xms` is the initial and minimum allocated memory of the JVM (for performance).
     * `-Xmx` the maximum allocated memory of the JVM (for performance).
     * `-server` tells the Hotspot compiler to run the JVM in "server" mode (for performance).
     * `-Djava.awt.headless=true` is needed to prevent graphics rendering code from assuming a graphics console exists.
-      Without this, WMS code will crash the server in some circumstances.
+    Without this, WMS code will crash the server in some circumstances.
     * `-Djava.util.prefs.systemRoot=$CONTENT_ROOT/thredds/javaUtilPrefs -Djava.util.prefs.userRoot=$CONTENT_ROOT/thredds/javaUtilPrefs` allows the java.util.prefs of the TDS WMS to write system preferences to a location that is writable by the Tomcat user.
 
     {%include note.html content="
@@ -179,14 +185,14 @@ If you're running Tomcat on an instance of Windows OS, you will want to create a
    ~~~
 
    {% include note.html content="
-   For more information on the environment variable prerequisites used by Tomcat, consult `$TOMCAT_HOME/bin/catalina.sh (or catalina.bat)` file."
+   For more information on the environment variable prerequisites used by Tomcat, consult `${tomcat_home}/bin/catalina.sh (or catalina.bat)` file."
    %}
 
 ## Troubleshooting
 
- * Some platforms may require the `$TOMCAT_HOME/bin/setenv.sh` file to have executable permissions (this issue will manifest itself as permission errors in the log files).
+ * Some platforms may require the `${tomcat_home}/bin/setenv.sh` file to have executable permissions (this issue will manifest itself as permission errors in the log files).
  * Do not forget include the `m` in your `-Xms` and `-Xmx` settings.
- * You may have allocated too much memory for the JVM settings if Tomcat fails to start and you get the following error reported in the Tomcat log `catalina.out`:
+ * You may have allocated too much memory for the JVM settings if Tomcat fails to start, and you get the following error reported in the Tomcat log `catalina.out`:
 
    ~~~
    Error occurred during initialization of VM

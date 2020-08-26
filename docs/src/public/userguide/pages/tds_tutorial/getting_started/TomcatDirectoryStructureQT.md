@@ -1,6 +1,6 @@
 ---
 title: Tomcat Directory Structure - Quick Tour
-last_updated: 2020-04-23
+last_updated: 2020-08-23
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tomcat_dir_structure_qt.html
@@ -14,7 +14,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 
 ## Exploring The Tomcat Directory Structure
 
-Examine the Tomcat directory structure, a.k.a. `#TOMCAT_HOME`.  Move into `$TOMCAT_HOME` and do a long listing (`/usr/local` in this example):
+Examine the Tomcat directory structure, a.k.a. `${tomcat_home}`.  Move into `${tomcat_home}` and do a long listing (`/usr/local` in this example):
     
 ~~~bash
 # cd /usr/local/tomcat

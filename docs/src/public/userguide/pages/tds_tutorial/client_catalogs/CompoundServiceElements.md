@@ -1,16 +1,13 @@
 ---
 title: Compound Service Elements
-last_updated: 2020-04-29
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: compound_service_elements.html
 ---
 
-{%include note.html content="
-Reference documentation - A complete listing of recognized service types can be found in the [catalog specification](server_side_catalog_specification.html).
-" %}
-
-Datasets can be made available through more than one access method by defining and then referencing a _compound_ `service` element. The following:
+Datasets can be made available through more than one access method by defining and then referencing a _compound_ `service` element. 
+The following:
 
 ~~~xml
 <service name="all" serviceType="Compound" base="" >
@@ -20,7 +17,8 @@ Datasets can be made available through more than one access method by defining a
 ~~~
 
 defines a compound service named `all` which contains two nested services.
-Any dataset that reference the compound service will have two access methods. For instance:
+Any dataset that reference the compound service will have two access methods. 
+For instance:
 
 ~~~xml
 <dataset name="SAGE III Ozone 2006-10-31" urlPath="sage/20061031.nc" ID="20061031.nc">
@@ -30,13 +28,17 @@ Any dataset that reference the compound service will have two access methods. Fo
 
 would result in these two access URLs, one for OpenDAP access 
 
-`/thredds/dodsC/sage/20061031.nc`
+~~~xml
+/thredds/dodsC/sage/20061031.nc
+~~~
 
-and one for WCS access:
+and, one for WCS access:
 
-`/thredds/wcs/sage/20061031.nc`
+~~~xml
+/thredds/wcs/sage/20061031.nc
+~~~
 
-Note: the contained services can still be referenced independently.
+The contained services can still be referenced independently.
 For instance:
 
 ~~~xml
@@ -47,4 +49,10 @@ For instance:
 
 results in a single access URL:
 
-`/thredds/dodsC/sage/global.nc`
+~~~xml
+/thredds/dodsC/sage/global.nc
+~~~
+
+{%include note.html content="
+A complete listing of [recognized service types](client_side_catalog_specification.html#service-element) can be found in the [Client Catalog Specification](client_side_catalog_specification.html).
+" %}
