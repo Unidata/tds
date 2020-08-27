@@ -4,7 +4,6 @@
     font-size:16px;
 }
 
-
 h3 {
     color: #2F4F4F;
     font-size: 20px !important;
@@ -113,4 +112,9 @@ table th:nth-of-type(2) {
 table th:nth-of-type(3) {
     width: 55%;
 }
+
+code+a>code {
+    margin-left: 0 !important;
+}
+
 
