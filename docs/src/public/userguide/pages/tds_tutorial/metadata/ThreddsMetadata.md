@@ -1,6 +1,6 @@
 ---
 title: THREDDS Metadata
-last_updated: 2020-08-17
+last_updated: 2020-08-26
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: thredds_metadata.html
@@ -8,7 +8,8 @@ permalink: thredds_metadata.html
 
 ## What Is Metadata?
 
-The term *metadata* refers to "data about data". The term is ambiguous, as it is used for two fundamentally different concepts. 
+The term *metadata* refers to "data about data". 
+The term is ambiguous, as it is used for two fundamentally different concepts. 
 *Structural metadata* is about the design and specification of *data structures* and is more properly called "data about the containers of data"; *descriptive metadata*, on the other hand, is about individual instances of application data, the *data content*.
 - [Wikipedia Metadata entry](https://en.wikipedia.org/wiki/Metadata){:target="_blank"}
 
@@ -110,7 +111,7 @@ The example enhanced catalog lives at `${tomcat_home}/content/thredds/enhancedCa
 </catalog>
 ~~~
 
-#### Annotations:
+### Annotations
 
 1. This is the standard `catalog` element for version 1.0.1. The only thing you should change is the name.
 2. You need this service in order to use the `addProxies` child element of the `datasetScan` element.
@@ -148,16 +149,17 @@ The example enhanced catalog lives at `${tomcat_home}/content/thredds/enhancedCa
 
 ## Metadata Standards
 
-There are a number of existing metadata standards available for describing datasets. These include:
+There are a number of existing metadata standards available for describing datasets. 
+These include:
   
 * [Dublin Core](https://dublincore.org/){:target="_blank"} - general library discovery metadata standard
 * [International Directory Network (IDN)](https://idn.ceos.org/){:target="_blank"}  - standard for geophysical data
 * [ISO 19115](https://www.isotc211.org/){:target="_blank"} - standard for geophysical data (FGDC is merging/synchronizing with this ISO standard)
 
-#### Including Metadata Records in THREDDS catalogs
+### Including Metadata Records in THREDDS Catalogs
 
-Any metadata records can be included directly in or referenced from a THREDDS metadata element. 
-Here is an example of how to include a Dublin Core record directly in a THREDDS metadata element:
+Any metadata records can be included directly in or referenced from a THREDDS `metadata` element. 
+Here is an example of how to include a Dublin Core record directly in a THREDDS `metadata` element:
 
 ~~~xml
 <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -167,14 +169,14 @@ Here is an example of how to include a Dublin Core record directly in a THREDDS 
 </metadata>
 ~~~
 
-Here is an example of how to reference a metadata record (XLink attributes are used):
+Here is an example of how to reference a `metadata` record (`xlink` attributes are used):
 
 ~~~xml
 <metadata xlink:title="NCEP GFS Model - Alaska 191km"
           xlink:href="http://server/dc/ncep.gfs.alaska_191km.xml" />
 ~~~
 
-#### What's the diference between metadata and documentation?
+### What's The Difference Between Metadata And Documentation?
 
 When the material is an XML file meant for software to read, use a `metadata` element. 
 When it's an HTML page meant for a human to read, use a `documentation` element:
