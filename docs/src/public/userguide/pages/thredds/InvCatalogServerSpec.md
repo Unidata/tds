@@ -17,6 +17,7 @@ Also, see:
 * [DatasetScan](tds_dataset_scan_ref.html) reference
 * [FeatureCollection](feature_collections_ref.html) reference
 * [Catalog XML Schema](https://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.2.xsd){:target="_blank"}
+* [Client-Side Catalog Specification](client_side_catalog_specification.html)
 
 ## Base Catalog Elements
 
