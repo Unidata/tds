@@ -1,6 +1,6 @@
 ---
 title: GRIB Feature Collections Tutorial
-last_updated: 2020-04-22
+last_updated: 2020-08-26
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: grib_feature_collections.html
@@ -10,7 +10,7 @@ permalink: grib_feature_collections.html
 
 The featureCollection element is a way to tell the TDS to serve collections of [CDM Feature Datasets](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/feature_datasets.html){:target="_blank"}.
 Currently, this is used mostly for [gridded data](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grid_datasets.html){:target="_blank"} whose time and spatial coordinates are recognized by the CDM software stack.
-In this tutorial, we will work with featureCollection for collections of GRIB files.
+In this tutorial, we will work with `featureCollection` for collections of GRIB files.
 
 ## Creating A GRIB Feature Collection
 
@@ -69,7 +69,7 @@ Here's what we have to work with:
 Now, run the TDM.
 Once finished, start the TDS.
 
-The resulting top level web page for the dataset looks like:
+The resulting top-level web page for the dataset looks like:
 
 {% include image.html file="tds/tutorial/grib/gribfc_basic_top.png" alt="Collection Top Level Catalog" caption="" %}
 
@@ -78,13 +78,13 @@ The TDS has created a number of datasets out of the GRIB collection, and made th
 There is:
 
 * "Full Collection" dataset : all the data is available with two dimensions of time: a reference time, and a valid time.
-* "Latest Reference Time" dataset: All of the data from the latest reference time, e.g. latest model run.
+* "Latest Reference Time" dataset: All of the data from the latest reference time, e.g., latest model run.
 * For each `1 month` partition of the data, folder which you can click into, and follow the directory hierarchy. 
   For example selecting the `FNL-2010-01` dataset:
 
 {% include image.html file="tds/tutorial/grib/gribfc_basic_1.png" alt="Collection Second Level Catalog" caption="" %}
 
-we now see an entry for the `1 month` collection virtual dataset (`FNL-2010-01`), as well as a listing of raw files that make up the virtual `1 month` collection:
+We now see an entry for the `1 month` collection virtual dataset (`FNL-2010-01`), as well as a listing of raw files that make up the virtual `1 month` collection:
 
 Each raw dataset corresponds to a single GRIB file on disk.
 The only access method for a raw file is `HTTPServer`:
@@ -101,7 +101,7 @@ It's instructive to look at the "XML view" of the catalog, by removing the query
 localhost:8080/thredds/catalog/gribfc/LocalFNLCollection/LOCAL_FNL-2010-01/catalog.xml
 ~~~
 
-and this is the result:
+And, this is the result:
 
 ~~~xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -163,7 +163,7 @@ You can click around in these pages to familiarize yourself with the various dat
 Did the \"all\" service we defined actually get used?
 " %}
 
-## GRIB Feature Collection with multiple GDS
+## GRIB Feature Collection With Multiple GDS
 
 The second GRIB feature collection we will explore can be found in {% include link_file.html file="tds_tutorial/grib/catalogGribfc1.xml" text="catalogGribfc2.xml" %}:
 
@@ -226,8 +226,8 @@ Browse to the catalog and...woah:
 
 {% include image.html file="tds/tutorial/grib/multi_gds_tds.png" alt="multi gds woah..." caption="" %}
 
-What we see is that the "Grib files" are actually composed of message that are defined on very different grids.
-By examining these files in ToolsUI, we can see there are indeed two GDS.
+What we see is the "GRIB files" are actually composed of message that are defined on very different grids.
+By examining these files in [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"}, we can see there are indeed two GDS.
 It appears that one GDS is associated with more "primary" modeled output; the second GDS appears to be associated with "derived" parameters.
 
 Insert the following into catalogGribfc2.xml somewhere inside the `featureCollection` element:
@@ -240,22 +240,22 @@ Insert the following into catalogGribfc2.xml somewhere inside the `featureCollec
 ~~~
 
 This allows us to name the different GDS group with something a little more readable.
-Remove all of the generated .ncx4 files associated with these GRIB files, re-run the TDM, and restart the TDS.
+Remove all of the generated `.ncx4` files associated with these GRIB files, re-run the TDM, and restart the TDS.
 Now our catalog looks like this:
 
 {% include image.html file="tds/tutorial/grib/multi_gds_tds_rename.png" alt="multi gds woah..." caption="" %}
 
-## GRIB Feature Collection with spurious GDS
+## GRIB Feature Collection With Spurious GDS
 
 Sometimes the GDS for new products gets incorrectly encoded.
 This is generally fixed in a "reasonable" amount of time (for a sufficiently broad definition of reasonable).
 While this might cause a hiccup for real-time data streams, it can absolutely wreak havoc for data archives.
 This is a tale of what can happen, and how to fix it.
 
-The names of offenders have been masked to protect the not-so-innocent
+The names of offenders have been masked to protect the not-so-innocent.
 
 John "data archive" Doe (we'll just call him Joe) notices an issue on his TDS with output GRIB messages from the...uhh...NDFDDDD model that comes across the, ummm, Schmonduit data feed from the LDM.
-He decides to investigate and opens the collection of NDFDDDD GRIB files with ToolsUI and notices...
+He decides to investigate and opens the collection of NDFDDDD GRIB files with [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} and notices...
 
 {% include image.html file="tds/tutorial/grib/gribfc20.png" alt="GRIB GDS ToolsUI" caption="" %}
 
@@ -263,7 +263,7 @@ The bottom table shows that there are two distinct GDS in this collection.
 Some variables use one, some use the other.
 Joe is not happy.
 Joe is sad.
-The column marked "hash" shows the GDS hash codes, an yep, there are two.
+The column marked "hash" shows the GDS hash codes, and yep, there are two.
 Both GDS have the same `nx` and `ny`, which is a bit _suspicious_.
 Joe goes into conspiracy mode.
 Using ToolsUI, he select both GDSs, then right click on them and select "compare GDS" only to see this:
@@ -304,6 +304,8 @@ Unlike in our last example, Joe uses `<gdsHash from="-2121584860" to="28944332"/
 4. A configuration element that is specific to GRIB collections. 
    In this case we are combining records with GDS hashcode `-2121584860` into GDS `28944332`.
 
-Now Joe is sad because this affects the generation of the CDM index (ncx4) files.
-To have this "merging" of GDSs take effect, Joe needs to delete all ncx4 files associated with the collection and regenerate them (TDM to the rescue!).
-Joe turns the crank, stops the TDS, removes the ncx4 files, regenerates the index files using the TDM, starts the TDS, and lives happily ever after...until the next model upgrade...[TO BE CONTINUED](https://i.chzbgr.com/full/9015886336/hDB9E1BC1/){:target="_blank"}
+Now Joe is sad because this affects the generation of the CDM index (`ncx4`) files.
+To have this "merging" of GDSs take effect, Joe needs to delete all `ncx4` files associated with the collection and regenerate them (TDM to the rescue!).
+Joe turns the crank, stops the TDS, removes the `ncx4` files, regenerates the index files using the TDM, starts the TDS, and lives happily ever after...
+until the next model upgrade...
+[TO BE CONTINUED](https://i.chzbgr.com/full/9015886336/hDB9E1BC1/){:target="_blank"}

@@ -1,6 +1,6 @@
 ---
 title: NcML Aggregation Examples
-last_updated: 2020-07-30
+last_updated: 2020-08-25
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: ncml_aggregation_examples.html
@@ -43,7 +43,7 @@ Go to the `NcML` tab of ToolsUI and enter the following:
     Which one should be used to obtain the time values? How would someone know?
 
 4.  Open up the NcML file we created in the `CoordSys` tab. 
-Notice that there are five coordinate related variables listed in the bottom pane? 
+Notice that there are five coordinate-related variables listed in the bottom pane? 
 Notice the two `Coordinate Systems` listed in the middle pane include both `MT` and `Date`? 
 Is this correct?
 
@@ -92,7 +92,8 @@ Once again, we will see that joining these files is only part of the battle!
 Did you notice any changes between the two files?  
 Do you notice anything missing? What dimension will we use to aggregate?
 
-3. Open the file in the `CoordSys` tab. Anything important missing?  
+3. Open the file in the `CoordSys` tab. 
+Anything important missing?  
 Oh, no worries, the TIME IS ENCODED IN THE FILE NAME! 
 Good enough, right?  
 More common than should be advertised (no need to promote this behavior), so we have an NcML method to grab the date from file names. 
@@ -172,5 +173,6 @@ Go ahead and add the following to your NcML file inside the aggregation tag:
     ~~~
     
 6.  Open the NcML file in `FeatureTypes → Grids`, click on a variable (say `seamask`), and click the `Red Alien` to visualize the data.  
-Again, you really need to know your data to do this! Is `seamask` something that should be aggregated? 
+Again, you really need to know your data to do this! 
+Is `seamask` something that should be aggregated? 
 Maybe, maybe not.

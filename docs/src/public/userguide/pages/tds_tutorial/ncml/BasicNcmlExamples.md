@@ -1,6 +1,6 @@
 ---
 title: Basic NcML Examples
-last_updated: 2020-07-30
+last_updated: 2020-08-25
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: basic_ncml_examples.html
@@ -10,9 +10,9 @@ The first dataset is an unknown gridded (we think) netCDF file.
 The second dataset is gridded output from the [Weather Research and Forecasting (WRF)](https://www.mmm.ucar.edu/weather-research-and-forecasting-model){:target="_blank"} model, a very popular atmospheric model among educators and researchers. 
 Our goal will be to make this file [CF compliant](https://cfconventions.org/){:target="_blank"}.
 
-## Example 1: Remote Grid File (unknown)
+## Example 1: Remote Grid File (Unknown)
 
-In this example, we will use NcML to modify a `remote' dataset to fix it enough to work with viewers that can read "Grids" FeatureTypes (e.g., [IDV](https://www.unidata.ucar.edu/software/idv/){:target="_blank"}).
+In this example, we will use NcML to modify a 'remote' dataset to fix it enough to work with viewers that can read "Grids" FeatureTypes (e.g., [IDV](https://www.unidata.ucar.edu/software/idv/){:target="_blank"}).
 
 1. Add the following to your `catalog.xml` file and restart Tomcat:
 
@@ -24,21 +24,24 @@ In this example, we will use NcML to modify a `remote' dataset to fix it enough 
     ~~~
 
 2.  In the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} `Viewer` tab, open [http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc](http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc]){:target="_blank"}. 
-Do you notice anything missing?
+ Do you notice anything missing?
     
 3.  In the ToolsUI `CoordSys` tab, open [http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc](http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc]){:target="_blank"}. 
-Now do you notice anything missing? (*Hint*: what coordinate variables do you expect to see?) 
+  Now do you notice anything missing? 
+  (*Hint*: what coordinate variables do you expect to see?) 
     
-4. Just for fun, let's go to the ToolsUI `FeatureTypes → Grids` tab, and try to open [http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc](http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc]){:target="_blank"}. Obviously, something isn't right. Let's try to fix things with NcML!  
+4. Just for fun, let's go to the ToolsUI `FeatureTypes → Grids` tab, and try to open [http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc](http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc]){:target="_blank"}. 
+   Obviously, something isn't right. 
+   Let's try to fix things with NcML!  
     
-5.   In ToolsUI `NcML` tab, open [http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc](http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc]){:target="_blank"} and save the resulting NcML file.  
+5. In ToolsUI `NcML` tab, open [http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc](http://localhost:8080/thredds/dodsC/workshop_ncml/hwave_4D.nc){:target="_blank"} and save the resulting NcML file.
 Notice the `Conventions` global attribute? 
 Hmmm...
     
 6.  It appears that the file is missing `time` and `level` coordinate variable. 
-First, let's add a time variable using NcML. 
-Let's assume that we were told that the file consists of four time steps going from `2011-10-03 0000 UTC - 0900 UTC`. 
-Add the following to the modified NcML file:   
+  First, let's add a time variable using NcML. 
+  Let's assume that we were told that the file consists of four time steps going from `2011-10-03 0000 UTC - 0900 UTC`. 
+  Add the following to the modified NcML file:   
 
     ~~~xml
     <variable name="time" shape="time" type="int">
@@ -82,12 +85,12 @@ Add the following to your NcML file:
     
 10. Finally, remove any of the unmodified information, like the dimensions and global attributes.
     
-11.  Now, open the NcML file ToolsUI `FeatureTypes → Grids` tab and visualize the variable `wave_height`.    
+11.  Now, open the NcML file [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} `FeatureTypes → Grids` tab and visualize the variable `wave_height`.    
 
 ## Example 2: Local WRF output
 
 1.  In the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"}  `Viewer` tab, open `/machine/tds/data/ncmlExamples/simpleNcmlOne/wrfout_d01_2005-08-27_00_00_00`.  
-Note that the model output are on an [Arakawa C grid'(http://mitgcm.org/sealion/online_documents/node45.html){:target="_blank"}, so we have `regular` and `stag` dimensions.
+Note that the model output are on an [Arakawa C grid](http://mitgcm.org/sealion/online_documents/node45.html){:target="_blank"}, so we have `regular` and `stag` dimensions.
 
 2.  Open the following link in your browser: [WRF goes CF](https://www.unidata.ucar.edu/blogs/developer/en/entry/wrf_goes_cf){:target="_blank"}
 

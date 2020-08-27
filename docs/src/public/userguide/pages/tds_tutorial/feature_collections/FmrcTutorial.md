@@ -1,24 +1,25 @@
 ---
 title: Forecast Model Run Collection (FMRC) Tutorial
-last_updated: 2020-04-22
+last_updated: 2020-08-26
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: fmrc_tutorial.html
 ---
 
 The `featureCollection` element is a way to tell the TDS to serve collections of [CDM Feature Datasets](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/feature_datasets.html){:target="_blank"}.
-Currently this is used mostly for [gridded data](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grid_datasets.html){:target="_blank"} whose time and spatial coordinates are recognized by the CDM software stack.
+Currently, this is used mostly for [gridded data](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/grid_datasets.html){:target="_blank"} whose time and spatial coordinates are recognized by the CDM software stack.
 This allows the TDS to automatically create logical datasets composed of collections of files, particularly gridded model data output, called **Forecast Model Run Collections (FMRC)**.
 
 A Forecast Model Run Collection is a collection of forecast model output.
 A special kind of aggregation, called an **FMRC Aggregation**, creates a dataset that has two time coordinates, called the `run` time and the `forecast` time.
 This dataset can then be sliced up in various ways to create 1D time views of the model output.
 See {% include link_file.html file="tds_tutorial/fmrc/FmrcPoster.pdf" text="this poster" %} for a detailed example.
-As of TDS 4.2, you should use the `featureCollection` element in your configuration catalog. (The previous way of doing this was with a `datasetFmrc` element, which is now deprecated.)
+As of TDS 4.2, you should use the `featureCollection` element in your configuration catalog. 
+(The previous way of doing this was with a `datasetFmrc` element, which is now deprecated.)
 
 The component files of the collection must all be recognized as as a `Grid` Feature type by the CDM software.
 
-## Exercise: Creating datasets out of the FMRC
+## Exercise: Creating Datasets Out Of The FMRC
 
 Download {% include link_file.html file="tds_tutorial/fmrc/catalogFmrc.xml" text="catalogFmrc.xml" %}, place it in your TDS `${tds.content.root.path}/thredds` directory and add a `catalogRef` to it from your main catalog.
 
@@ -59,7 +60,7 @@ Download {% include link_file.html file="tds_tutorial/fmrc/catalogFmrc.xml" text
    All contained datasets will all have a `path` starting with `BOM/model`.
 3. All the `metadata` contained here will be inherited by the contained datasets.
 4. The collection of files is defined, using a [collection specification string](collection_spec_string_ref.html).
-   Subdirectories of `<path-to-data>/fmrc_tutorial/bom/` will be scanned for files with names that start with "ocean_fc_" , and end with ".nc".
+   Subdirectories of `<path-to-data>/fmrc_tutorial/bom/` will be scanned for files with names that start with `ocean_fc_` , and end with `.nc`.
    The run data is extracted from the filename.
 
 The contained datasets include the resulting 2D time dimension dataset, as well as 1D time views described here, as seen in the resulting HTML page for that dataset:
@@ -67,11 +68,11 @@ The contained datasets include the resulting 2D time dimension dataset, as well 
 {% include image.html file="tds/tutorial/fmrc/FmrcExample1.png" alt="Example FMRC" caption="" %}
 
 The TDS has created a number of datasets out of the `FMRC`, and made them available through the catalog interface.
-Explore them through the browser, ToolsUI, the IDV, or siphon.
+Explore them through the browser, [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"}, the [IDV](https://www.unidata.ucar.edu/software/idv/){:target="_blank"}, or [Siphon](https://www.unidata.ucar.edu/software/siphon/){:target="_blank"}.
 
 **Finally**, what happens if we remove the `service` and `serviceName` elements, and restart the TDS?
 
-## Specifying the Run Time
+## Specifying The Run Time
 
 `FMRC`s are collections of files with (possibly) different `run` times, and the software needs to know what that `run` time is.
 If you look closely at the files in this example, you may notice that the run time does not appear explicitly inside the file anywhere.
@@ -83,7 +84,7 @@ Luckily the information is in the filename, which is a common practice.
    <collection spec="<path-to-data>/fmrc_tutorial/bom/**/ocean_fc_#yyyyMMdd#.*\.nc$" />
    ~~~
 
-   extracts the run date by applying the template `yyyyMMdd` to the portion of the filename after "ocean_fc_".
+   Extracts the run date by applying the template `yyyyMMdd` to the portion of the filename after "ocean_fc_".
 
    If the information is in a directory name, then you can use the `dateFormatMark` field on the collection element.
    In our example, an example dataset paths looks like: 
@@ -98,8 +99,8 @@ Luckily the information is in the filename, which is a common practice.
 
    Note that we: 
      1. remove the date extractor from the collection specification string
-     2. add a dateFormatMark attribute. 
-        In this case, the `#` characters delineate a substring match on the entire pathname (so there had better only be one place where the string "workshop/bom/" appears). 
+     2. add a `dateFormatMark` attribute. 
+        In this case, the `#` characters delineate a substring match on the entire pathname (so there had better only be one place where the string `workshop/bom/` appears). 
         Immediately following the match comes the date extractor string.
         [See here](feature_collections_ref.html#date-extractor) for more details.
 
@@ -113,7 +114,7 @@ Luckily the information is in the filename, which is a common practice.
     :_CoordinateModelRunDate = "2010-11-05T00:00:00Z";
     ~~~
 
-## Feature Collections that change
+## Feature Collections That Change
 
 The above example creates a static collection of files.
 A common case is that one has a collection of files that are changing, as files are added and deleted while being served through the TDS.
@@ -151,7 +152,7 @@ Below is an example dataset, with additional elements and attributes to handle t
    This minimizes unneeded processing for lightly used collections.
 2. `olderThan`: Only files that haven't changed for 5 minutes will be included. 
    This excludes files that are in the middle of being written.
-3. `update`: The collection will be updated upon TDS startup, and periodically using the cron expression "0 5 3 * * ? *", meaning every day at 3:05 am local time. 
+3. `update`: The collection will be updated upon TDS startup, and periodically using the cron expression `0 5 3 * * ? *`, meaning every day at 3:05 am local time. 
    This updating is done in the background, as opposed to when a request for it comes in.
 4. `protoDataset`: The prototypical dataset is chosen to be the "next-to-latest".
    The prototypical dataset is changed every day at 3:02 am local time.
@@ -165,4 +166,4 @@ Use the `update` element on large collections when you want to ensure quick resp
 Use the `recheckAfter` on lightly used collections in order to minimize server load.
 Don't use both of them on the same dataset on a real production server.
 
-More details are in the [`FeatureCollection` reference doc](feature_collections_ref.html).
+More details are in the [`FeatureCollection`](feature_collections_ref.html)  reference documenation.
