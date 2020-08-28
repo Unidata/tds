@@ -21,17 +21,6 @@ Also, see:
 
 ## Base Catalog Elements
 
-* [`catalog`](server_side_catalog_specification.html#catalog-element)
-* [`datasetRoot`](server_side_catalog_specification.html#datasetroot-element)
-* [`catalogScan`](server_side_catalog_specification.html#catalogscan-element)
-* [`dataset`](server_side_catalog_specification.html#dataset-element)
-* [`datasetScan`](server_side_catalog_specification.html#datasetscan-element)
-* [`filter`](server_side_catalog_specification.html#filter-element)
-* [`namer`](server_side_catalog_specification.html#namer-element)
-* [`sort`](server_side_catalog_specification.html#sort-element)
-* [`addLatest`](server_side_catalog_specification.html#addlatest-element)
-* [`addTimeCoverage`](server_side_catalog_specification.html#addtimecoverage-element)
-
 
 ### `catalog` Element
 
@@ -115,7 +104,7 @@ If using this element, do not name any of your catalogs `*catalogScan.xml*`.
 
 ### `dataset` Element
 
-The [`ncml:netcdf`](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the [`restrictAccess`](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) attribute:
+The [`ncml:netcdf`](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the [`restrictAccess`](restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) attribute:
 
 ~~~xml
 <xsd:element name="dataset" type="DatasetType" />
@@ -140,8 +129,8 @@ The [`ncml:netcdf`](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java
 </xsd:complexType>
 ~~~
 
-* The `ncml:netcdf` element [modifies the dataset with NcML](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/basic_ncml_tutorial.html){:target="_blank"}. For the [`datasetScan` element](server_side_catalog_specification.html#datasetscan-element), it modifies all contained datasets.
-* The `restrictAccess` attribute tells the TDS to [restrict access](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) to this dataset. 
+* The `ncml:netcdf` element [modifies the dataset with NcML](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/basic_ncml_tutorial.html){:target="_blank"}. For the [`datasetScan` element](#datasetscan-element), it modifies all contained datasets.
+* The `restrictAccess` attribute tells the TDS to [restrict access](restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) to this dataset. 
 It is always inherited by all contained datasets.
 
 ### `datasetScan` Element 
@@ -409,7 +398,7 @@ An example is available in the [datasetScan](tds_dataset_scan_ref.html) document
 The `addTimeCoverage` element indicates that a THREDDS `timeCoverage` element should be added to each atomic dataset cataloged by the containing `datasetScan` element and describes how to determine the time coverage for each dataset in the collection.
 
 Currently, the `addTimeCoverage` element can only describe one method for determining the time coverage of a dataset. 
-The  `datasetNameMatchPattern` attribute is used in a [regular expression](http://www.regular-expressions.info/){:target="_blank"} match on the dataset name. If the match succeeds, a [capturing group](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html){:target="_blank"}  replacement is performed on the `startTimeSubstitutionPattern` attribute, and the result is the start time string (see the [`namer` element](server_side_catalog_specification.html#namer-element) description, above, for more on regular expressions and capturing groups). 
+The  `datasetNameMatchPattern` attribute is used in a [regular expression](http://www.regular-expressions.info/){:target="_blank"} match on the dataset name. If the match succeeds, a [capturing group](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html){:target="_blank"}  replacement is performed on the `startTimeSubstitutionPattern` attribute, and the result is the start time string (see the [`namer` element](#namer-element) description, above, for more on regular expressions and capturing groups). 
 The time coverage duration is given by the `duration` attribute.
 
 The `datasetPathMatchPattern` attribute was added (2009-06-05, TDS 4.0) to allow matching on the entire dataset path instead of just the dataset name. 
