@@ -21,6 +21,7 @@ buildscript {
     classpath buildPlugins.shadow
     classpath buildPlugins.spotless
     classpath buildPlugins.grgit
+    classpath buildPlugins.protobuf
   }
 }
 
