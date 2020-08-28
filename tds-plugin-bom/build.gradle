@@ -1,0 +1,41 @@
+description = 'A Bill of Materials (BOM) for TDS plugins to utilize.'
+ext.title = 'Bill of Materials for THREDDS Data Server (TDS) Plugins'
+
+apply plugin: 'java-platform'
+apply from: "$rootDir/gradle/any/dependencies.gradle"
+apply from: "$rootDir/gradle/any/publishing.gradle"
+
+// responsible for generating a maven bill of materials for TDS plugins to use
+
+javaPlatform {
+  allowDependencies()
+}
+
+dependencies {
+  api enforcedPlatform(project(':tds-platform'))
+  constraints {
+    api project(':tdcommon')
+    // TODO - pull out what is needed from TDS into a new gradle subproject
+    // to make a lighter weight dependency for plugin implementations to target
+    api project(':tds')
+  }
+}
+
+publishing {
+  publications {
+    tdsBom(MavenPublication) {
+      from components.javaPlatform
+      // make sure subprojects published with the primary artifact as a war are added to the bom using
+      // the classifier "classes" and type "jar"
+      pom.withXml {
+        Node pomNode = asNode()
+        pomNode.dependencyManagement.dependencies.'*'.findAll() {
+          it.artifactId.text() == 'tds' | it.artifactId.text() == 'd4ts' | it.artifactId.text() == 'dtswar'
+        }.each() {
+          it.appendNode('classifier', 'classes')
+          it.appendNode('type', 'jar')
+        }
+      }
+    }
+  }
+}

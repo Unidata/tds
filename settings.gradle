@@ -12,6 +12,11 @@ include 'opendap:server'
 include 'tdcommon'
 include 'tdm'
 include 'testUtil'
+include 'tds-plugin-bom'
 include 'tds-platform'
 include 'tds-testing-platform'
 include 'tds'
+
+// Set name of the opendap servlet artifact
+project(':opendap:server').name = 'opendap-servlet'
+project(':dap4:d4servlet').name = 'dap4-servlet'

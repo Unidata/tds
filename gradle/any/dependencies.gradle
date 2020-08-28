@@ -16,6 +16,11 @@ repositories {
   jcenter()
   mavenCentral()  // JCenter isn't quite a superset of Maven Central.
 
+  // chronicle-bom needs access to chronicle snapshots
+  maven {
+    url 'https://oss.sonatype.org/content/repositories/snapshots/'
+  }
+
   // All of the hosted repositories below could be replaced with:
   //     url "https://artifacts.unidata.ucar.edu/repository/unidata-all/"
   // which is a group repository that contains all other repositories. However, I prefer to list all source

@@ -24,7 +24,7 @@ dependencies {
   compile 'edu.ucar:netcdf4'
   compile 'edu.ucar:httpservices'
   compile 'edu.ucar:opendap'
-  compile project(':opendap:server')
+  compile project(':opendap:opendap-servlet')
   compile project(':tdcommon')
   compile 'edu.ucar:cdm-mcidas'
   compile 'edu.ucar:waterml'
@@ -34,7 +34,7 @@ dependencies {
   compile 'edu.ucar:d4core'
   compile 'edu.ucar:d4lib'
 
-  compile project(':dap4:d4servlet')
+  compile project(':dap4:dap4-servlet')
 
   // Server stuff
   providedCompile "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"
@@ -262,6 +262,9 @@ war {
   from gwtDir
 }
 
+jar {
+  archiveClassifier = 'classes'
+}
 
 ////////////////////////////////////// Test fresh TDS installation //////////////////////////////////////
 
