@@ -10,6 +10,7 @@ ext {
   buildPlugins.sonarqube = 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0'
   buildPlugins.spotless = 'com.diffplug.spotless:spotless-plugin-gradle:4.5.1'
   buildPlugins.grgit = 'org.ajoberstar.grgit:grgit-core:4.0.2'
+  buildPlugins.protobuf = 'com.google.protobuf:protobuf-gradle-plugin:0.8.12'
 
   // slf4j version is declared in a place where we cannot use the tds-platform project to handle resolving versions
   // (e.g. gradle/any/dependencies.gradle, for transitive dependency replacement purposes)
@@ -25,4 +26,8 @@ ext {
   // coordinates for javax.servlet-api if the gradle plugin in applied. If we don't, we see errors like this:
   depVersion.javaxServletApi = '3.1.0'
   depVersion.hibernateValidator = '6.1.5.Final'
+  // TODO: figure out way to keep this verion in sync with netcdf-java version
+  // It is included in the netcdf-java-bom (via netcdf-java-platform), but we can't
+  // reference that version in a gradle build script (see gradle/any/protobuf.gradle)
+  depVersion.protobuf = '3.12.4'
 }

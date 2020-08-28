@@ -3,6 +3,7 @@ ext.title = 'Server-side common library'
 
 apply from: "$rootDir/gradle/any/dependencies.gradle"
 apply from: "$rootDir/gradle/any/java-published.gradle"
+apply from: "$rootDir/gradle/any/protobuf.gradle"
 
 dependencies {
   implementation enforcedPlatform(project(':tds-platform'))
