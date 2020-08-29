@@ -87,12 +87,7 @@ dependencies {
   }
 
   // threddsIso related libs
-  runtime('EDS:threddsIso') {
-    // exclude servlet-api
-    exclude group: 'javax.servlet', module: 'javax.servlet-api'
-    // exclude logging binding
-    exclude group: 'ch.qos.logback'
-  }
+  runtime 'EDS:tds-plugin'
   runtime 'net.sf.saxon:Saxon-HE'
   runtime 'jaxen:jaxen'
 
