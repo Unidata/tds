@@ -44,7 +44,7 @@ Related resources:
 ~~~
 
 The `catalog` element is the top-level element.
-It may contain zero or more [`service`](#service-element) elements, followed by zero or more [`property`](#property-element) elements, followed by one or more [`dataset type`](#dataset-element) elements. 
+It may contain zero or more [`service`](#service-element) elements, followed by zero or more [`property`](#property-element) elements, followed by one or more [`dataset type`](#dataset-type) elements. 
 The `base` is used to resolve any relative URLs in the catalog such as `catalogRefs`, `services`, etc. 
 It is usually the URL of the catalog document itself. 
 Optionally, the catalog may have a display `name`. 
@@ -90,13 +90,13 @@ Note the necessary presence of the [`xml namespace`](http://en.wikipedia.org/wik
 A `service` element represents a data access service and allows basic data access information to be factored out of `dataset` and `access` elements.
 
 The `name` attribute is required and its value must be unique for all `service` elements within the catalog. 
-These unique names are used in the definition of a [dataset access method](#dataset_access_methods) to refer to a specific `service` element. 
-The mandatory `base` attribute and the optional `suffix` attribute are both used in the construction of the dataset URL (see [constructing URLS](#constructing_urls)). 
+These unique names are used in the definition of a [dataset access method](#dataset-access-methods) to refer to a specific `service` element. 
+The mandatory `base` attribute and the optional `suffix` attribute are both used in the construction of the dataset URL (see [constructing URLS](#constructing-urls)). 
 The `base` may be an absolute URL or it may be relative to the catalog's base URL. 
-The `service` element has a `serviceType` attribute whose value is typically one of the [`serviceType`](#service_type) values. 
+The `service` element has a `serviceType` attribute whose value is typically one of the [`serviceType`](#service-element) values. 
 The optional `desc` attribute allows you to give a human-readable description of the `service`.
 
-A `service` element may contain `0` or more [`property`]((#property_element)) elements to allow for the encoding of additional, service-specific information.
+A `service` element may contain `0` or more [`property`](#property-element) elements to allow for the encoding of additional, service-specific information.
 
 Only `service` element with `serviceType="Compound"` may have nested `service` elements. 
 Compound services are used when there is more than one way to access a dataset (e.g., `OpenDAP` and `FTP`), **and** the access URLs are the same except for the service base. 
@@ -114,7 +114,7 @@ Simple examples of where the `base` is an absolute URL and a relative to catalog
 ~~~
 
 {% include note.html content="
-See the [constructing URLS](#constructing_urls) section of this document for more information on how the *resolved URL* is created.
+See the [constructing URLS](#constructing-urls) section of this document for more information on how the *resolved URL* is created.
 "%}
 
 ### `dataset` Type
@@ -143,7 +143,7 @@ See the [constructing URLS](#constructing_urls) section of this document for mor
 ~~~
 
 A `dataset` element represents a named, logical set of data at a level of granularity appropriate for presentation to a user. 
-A `dataset` is a [`directdataset`](#directDataset) if it contains at least one [dataset access method](#dataset_access_methods), otherwise it is a container for nested datasets, called a [`collectionDataset`](#collectiondataset).
+A `dataset` is a [`directdataset`](#direct-datasets) if it contains at least one [dataset access method](#dataset-access-methods), otherwise it is a container for nested datasets, called a [`collectionDataset`](#collection-datasets).
 
 A `dataset` must have a `name` attribute, and may have other attributes. 
 The `name` of the dataset should be a human readable name that will be displayed to users.
@@ -156,8 +156,8 @@ A dataset may have a naming `authority` specified within itself or in a parent d
 If a `dataset` has an `ID` and an `authority` attribute, then the combination of the two should be globally unique for all time. 
 If the same `dataset` is specified in multiple catalogs, then the combination of its `authority` and `ID` should be identical if possible.
 
-A `dataset` element contains any number of elements from the [`threddsMetadataGroup`](#threddsmetadatagroup) in any order. 
-These are followed by `0` or more [`access`](#access_element) elements, followed by `0` or more nested `dataset` elements (actually you can use any element in the dataset substitution group: `dataset` or `catalogRef`). 
+A `dataset` element contains any number of elements from the [`threddsMetadataGroup`](#threddsmetadatagroup-element-group) in any order. 
+These are followed by `0` or more [`access`](#access-element) elements, followed by `0` or more nested `dataset` elements (actually you can use any element in the dataset substitution group: `dataset` or `catalogRef`). 
 The data represented by a nested `dataset` element should be a subset, a specialization or in some other sense "contained" within the data represented by its parent `dataset` element.
 
 If the `harvest` attribute is `true`, then this dataset is available to be placed into digital libraries or other discovery services. 
@@ -171,7 +171,7 @@ In this case, any other properties of the dataset are ignored, and the dataset t
 The `dataset` element's `serviceName` (which can also be specified as a `serviceName` element) specifies which `service` to use for this dataset. 
 As of 5.0, it is optional as long as you specify the `dataType` or `featureType` of the dataset. 
 The `urlPath` attribute, in combination with the applicable service, is used to specify data access methods. 
-When you have more than one way to access a dataset, either explicitly define them using more than one nested [`access`]((#access_element)) elements, or use a [`compoundService`](#compoundservice).
+When you have more than one way to access a dataset, either explicitly define them using more than one nested [`access`](#access-element) elements, or use a [`compoundService`](#access-methods-and-compound-services).
 
 #### Examples
 
@@ -212,12 +212,12 @@ In this case the `dataset` referred to *logically* replaces the `alias` dataset.
 </xsd:element >
 ~~~
 
-An `access` element specifies how a dataset can be accessed through a data [`service`]((#service_element)) element. 
+An `access` element specifies how a dataset can be accessed through a data [`service`](#service-element) element. 
 It always refers to the dataset that it is immediately contained within.
 
-The `urlPath` is appended to the service's base to get the dataset URL (see [constructing URLS](#constructing_urls)). 
+The `urlPath` is appended to the service's base to get the dataset URL (see [constructing URLS](#constructing-urls)). 
 The `serviceName` refers to the unique name of a `service` element. 
-The [`dataFormat`](#dataFormat) is important when the [`serviceType`](#serviceType) is a bulk-transport protocol, like `FTP` or `HTTP`, as it specifies the format of the transferred file. 
+The [`dataFormat`](#dataformat-enumeration) is important when the [`serviceType`](#servicetypes-enumeration) is a bulk-transport protocol, like `FTP` or `HTTP`, as it specifies the format of the transferred file. 
 It is not needed for client/server protocols like `OpenDAP` or `ADDE`.
 
 An `access` element may contain an optional `dataSize` element to specify how large the dataset would be if it were to be copied to the client.
@@ -327,7 +327,7 @@ You can also add the `xlink:type` or `xlink:show` attributes.
 </xsd:group>
 ~~~
 
-The elements in the `threddsMetadataGroup` may be used as nested elements of both [`dataset`](#dataset-element) and [`metadata`](#metadata-element) elements. 
+The elements in the `threddsMetadataGroup` may be used as nested elements of both [`dataset`](#dataset-type) and [`metadata`](#metadata-element) elements. 
 There may be any number of them in any order, but more than one `geospatialCoverage`, `timeCoverage`, `dataType`, `dataFormat`, `serviceName`, or `authority` elements will be ignored.
 A [`documentation`](#documentation-element) element contains (or points to) human-readable content. 
 Documentation content may be displayed to users by THREDDS clients as appropriate for the situation. 
@@ -337,26 +337,26 @@ A [`property`](#property-element) element is an arbitrary name/value pair.
 The next group of elements are used primarily for use in Digital Libraries.
 
 A [`contributor`](#contributor-element) element is typically a person's name with an optional role attribute, documenting some person's contribution to the dataset. 
-A [`creator`](#creator-element) element indicates who created the dataset. 
-A [`date`](#date-element) element is used to document various dates associated with the dataset, using one of the date type enumerations. 
-A [`keyword`](#keyword-element) element is used for library searches, while a project element specifies what scientific project the dataset belongs to. 
-Both the [`project`](#project-element) and `keyword` elements have type `controlledVocabulary`, which allows an optional vocabulary attribute to specify if you are using words from a restricted list, for example DIF. 
-A [`publisher`](#publisher-element) element indicates who is responsible for serving the dataset. 
+A `creator` element indicates who created the dataset. 
+A [`date`](#date-type) element is used to document various dates associated with the dataset, using one of the date type enumerations. 
+A `keyword` element is used for library searches, while a project element specifies what scientific project the dataset belongs to. 
+Both the `project` and `keyword` elements have type `controlledVocabulary`, which allows an optional vocabulary attribute to specify if you are using words from a restricted list, for example DIF. 
+A `publisher` element indicates who is responsible for serving the dataset. 
 Both a `contibutor` and `publisher` element use the `sourceType` definition.
 
 The next group of elements are used in search services.
 
 The [`geospatialCoverage`](#geospatialcoverage-element) element specifies a lat/lon bounding box for the data. 
-The [`timeCoverage`](#timecoverge-element) element specifies the range of dates that the dataset covers. 
+The [`timeCoverage`](#timecoverage-element) element specifies the range of dates that the dataset covers. 
 The [`variables`](#variables-element) element specifies the names of variables contained in the datasets, and ways to map the names to standard vocabularies.
-The [`dataType`](#datatype-element) element is used to indicate the high-level semantic type of the dataset (e.g., `grid`, `point`, `trajectory`) and can be used by clients to decide how to display the data. 
+The [`dataType`](#datatype-enumeration) element is used to indicate the high-level semantic type of the dataset (e.g., `grid`, `point`, `trajectory`) and can be used by clients to decide how to display the data. 
 The values come from the [`dataType`](#datatype-enumeration) enumeration which are intended to map to the scientific data types from the [Common Data Model (CDM)](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/common_data_model_overview.html){:target='_blank'}. 
-The [`dataFormat`](#dataformat-element) element indicates the format of the data and is mainly used so clients can determine how to read data that is accessed using a bulk access method. 
+The [`dataFormat`](#dataformat-enumeration) element indicates the format of the data and is mainly used so clients can determine how to read data that is accessed using a bulk access method. 
 The data format values come from the [dataFormat](#dataformat-enumeration) enumeration. 
-The [`serviceName`](#servicename-element) element is a reference to a service element; its content must match the name of a `service` element in the catalog. 
-The service referenced by a dataset is used in the [construction of access method URLs](#constructing_urls) for that dataset. 
+The `serviceName` element is a reference to a service element; its content must match the name of a `service` element in the catalog. 
+The service referenced by a dataset is used in the [construction of access method URLs](#constructing-urls) for that dataset. 
 (This element and the `serviceName` attribute of an `access` element are both used in the same way.) 
-The [`authority`](#authority-element) element is used to further refine dataset `ID`s with the goal of allowing for globally unique `ID`s. 
+The `authority` element is used to further refine dataset `ID`s with the goal of allowing for globally unique `ID`s. 
 The [`dataSize`](#datasize-element) element can be used to specify how large the dataset would be if it were to be copied to a client.
 
 Including any of these elements in a `metadata` element with its inherit attribute set to `true` means that they apply to the containing dataset and any nested datasets.
@@ -1032,7 +1032,7 @@ We encourage you to use these well-known values if possible, and to submit new v
 </xsd:simpleType>
 ~~~
 
-These describe the data formats, used in an `access` attribute or [`dataset`](#dataset-element) element, when the service is a bulk-transport protocol (like FTP), and the client has to know how to read the downloaded dataset file.
+These describe the data formats, used in an `access` attribute or [`dataset`](#dataset-type) element, when the service is a bulk-transport protocol (like FTP), and the client has to know how to read the downloaded dataset file.
 
 In addition to the file formats explicitly listed, you can use a mime type. 
 We have listed relevant file formats above.
@@ -1251,5 +1251,176 @@ These are the known vocabularies for standard variable names, used in the [`vari
 `DIF` is [Directory Interchange Format](https://idn.ceos.org/){:target="_blank"} from NASA's Global Change Master Directory, which has a controlled variable classification scheme. 
 The World Meteorological Organization's [GRIB (version 1)](https://dss.ucar.edu/docs/formats/grib/gribdoc/){:target="_blank"} data file format defines a set of standard parameters.
 
-You can also use another vocabulary name; [s**end it to us](https://www.unidata.ucar.edu/mailing_lists/archives/thredds/){:target="_blank"}, and we will add it to this list.
+You can also use another vocabulary name; [send it to us](https://www.unidata.ucar.edu/mailing_lists/archives/thredds/){:target="_blank"}, and we will add it to this list.
+
+## Dataset Access Methods
+
+There are two ways a dataset's access methods can be specified:
+
+1. A dataset element may include a `urlPath` attribute. 
+The value of the `urlPath` attribute along with the dataset default service specify one or more* access methods.
+
+2. A `dataset` element may include child `access` elements. 
+Each `access` element defines one or more access methods. 
+The values of the access element's `urlPath` and `serviceName` attributes specify one or more access methods. 
+If the `access` element does not include a `serviceName` attribute, the dataset default service is used.
+
+(*) Multiple access methods are defined whenever the `service` element is a [`compoundService`](#access-methods-and-compound-services).
+
+### Dataset Default Service
+
+There are a number of ways a `service` element can be referenced by a dataset. 
+When multiple references come into play for a given dataset, the following is the precedence for deciding on the default service to use with access methods:
+
+1. A dataset may have a `serviceName` attribute or element directly in it.
+2. A dataset may inherit a `serviceName` from a parent dataset.
+3. A dataset may contain an `access` element that defines a `serviceName` and `urlPath`.
+4. A dataset may have a `featureType` or `dataType` defined and a `urlPath`, in which case it will use the default services for that type.
+
+#### Examples
     
+1. A `dataset` element has a `urlPath` attribute and inherits a `serviceName` from a parent/ancestor dataset. 
+  This is a common case as many catalogs will contain datasets that all refer to the same service.
+   
+   ~~~xml
+   <dataset name="collection of data">
+     <metadata inherited="true">
+       <serviceName>myservice</serviceName>
+     </metadata>
+     <dataset name="my dataset" urlPath="myData.nc" />
+     <dataset name="our dataset" urlPath="ourData.nc" />
+     <dataset name="their dataset" urlPath="theirData.nc" />
+     ...
+   </dataset>
+   ~~~
+   
+   2. A `dataset` element has a `urlPath` attribute and directly contains a `serviceName` element or attribute.
+   
+   ~~~xml
+   <dataset name="my dataset" urlPath="myData.nc">
+     <serviceName>myservice</serviceName>
+   </dataset>
+   
+   <dataset name="my dataset" urlPath="myData.nc" serviceName="myservice">
+   ~~~
+   
+   3. A `dataset` element contains a child access element. 
+   
+   ~~~xml
+   <dataset name="my dataset">
+     <access serviceName="myservice" urlPath="myData.nc" />
+   </dataset>
+   ~~~
+   
+   4. A dataset may have a `featureType` or `dataType` enumeration defined and a `urlPath`. 
+   
+   ~~~xml
+   <dataset name="my dataset"  dataType="Grid" urlPath="myData.nc" />  
+   ~~~  
+
+The [standard services](services_ref.html#standard-data-services) for Grids will be used.    
+
+### Access Methods And Compound Services
+
+Any `service` element of type `Compound` used in the construction of access methods results in one access method for each nested service.
+
+#### Example
+
+~~~xml
+<service name="all" serviceType="Compound" base="" >
+  <service name="odap" serviceType="OPENDAP" base="/thredds/dodsC/" />
+  <service name="wcs" serviceType="WCS" base="/thredds/wcs/" />
+</service>
+<dataset name="cool data" urlPath="cool/data.nc">
+  <serviceName>all</serviceName>
+</dataset>
+~~~
+
+The above results in two access methods for `cool data` using the `urlPath` attribute value `cool/data.nc`:
+1. one using the `odap` `service` element and;
+2. the other using the `wcs` `service` element
+
+### Constructing URLs
+
+A dataset access URL is constructed by concatenating the service `base` URL with the access `urlPath`. 
+If the service has a `suffix` attribute, that is then appended:
+
+~~~
+URL = service.base + access.urlPath + service.suffix
+~~~
+
+These operations are straight string concatenations -- a slash (`/`) is not automatically added. 
+If a slash is needed between the `base` and `urlPath`, remember to include a trailing slash on the value of the `service@base` attribute.
+
+Clients have access to each of these elements and may make use of the URL in protocol-specific ways. 
+For example the OPeNDAP protocol appends `dds`, `das`, and `dods` to make the actual calls to the OPeNDAP server.
+
+When a service `base` is a relative URL, it is resolved against the catalog base URL. 
+
+#### Example
+
+If the catalog base URL is `https://thredds.ucar.edu/thredds/dodsC/catalog.xml` and a service `base` is `airtemp/`, then the resolved `base` is `https://thredds.ucar.edu/thredds/dodsC/airtemp/`. 
+
+If the service base is `/airtemp/`, the resolved URL is `https://thredds.ucar.edu/thredds/airtemp/`.
+
+## Dataset Classification
+
+THREDDS *Dataset Inventory Catalogs* organize and describe collections of data. 
+A catalog can be thought of as a logical directory of data resources available via the Internet. 
+A dataset may be a:
+
+1. **direct dataset** (describes how to directly access data over the Internet);
+2. **collection dataset** (contains other datasets); or
+3. **dynamic dataset** (content is generated by a call to a server).
+
+### Direct Datasets
+
+A direct access dataset has an access URL and a service type (like `FTP`, `DODS`, `WMS`, etc.) that allows a THREDDS-enabled application to directly access its data, using the specified service's protocol. 
+It is represented simply by a dataset `type` element.
+
+### Collection Datasets
+
+A collection dataset has nested `<dataset> `elements. We distinguish two types:
+
+1. A *heterogeneous collection* dataset may have arbitrarily-deep nested datasets, and there are no constraints on how the datasets are related.
+2. A *coherent collection* dataset contains nested datasets which must be direct and coherently related. 
+A coherent dataset should have a `collectionType` attribute that describes the relationship of its nested datasets.
+
+### Dynamic Datasets
+
+A dynamic dataset has an access URL and a service `type` Catalog, or `Resolver`. 
+Its contents are generated dynamically by making a call to a server, and describe datasets that are constantly changing, and/or are too large to list exhaustively.
+
+A *resolver dataset* is a kind of query dataset, with service type Resolver. 
+It returns a catalog which must contain either a direct dataset, or a coherent collection dataset. 
+It is typically used to implement a *virtual* dataset like "latest model run" or "latest measurement" on a real time dataset, where the actual URL must be generated when the user requests it.
+
+A query dataset looks a lot like a [`catalogRef`](#catalogref-element), since you de-reference a URL and get a catalog back. 
+However, a `catalogRef` is cacheable, but a query dataset is inherently dynamic, so is not cacheable.
+
+## Datasets As Web Resources
+
+Its important to distinguish a THREDDS dataset from its access URL. 
+A dataset can have multiple ways of being accessed, and so have multiple access URLs. 
+But, even in the simple case that a dataset has one access URL, the dataset potentially contains metadata that is not stored with the data pointed to by its access URL. 
+In order to use the full power of THREDDS, you must work with the full dataset object, not just with its access URL.
+
+One way to reference the dataset as a web resource is to use `catalog.xml#datasetId`, where `catalogURL` is the URL of a THREDDS catalog, and `datasetId` is the ID of a dataset inside of that catalog. 
+
+#### Example
+
+~~~
+http://server:8080/thredds/catalog/grib.v5/gfs_2p5deg/catalog.xml#grib.v5/gfs_2p5deg/TwoD
+~~~
+
+The reference implementation of THREDDS datasets is the netCDF-Java library, which accepts dataset URLS of the form `thredds:catalog.xml#dataset_id`, where the `thredds:` prefix ensures that the URL is understood as a THREDDS catalog and dataset.
+
+In the context of a web browser, the dataset URL is `catalog.html?dataset=datasetId`, for example
+
+#### Example
+
+~~~
+http://localhost:8081/thredds/catalog/GFS_CONUS_80km/catalog.html?dataset=GFS_CONUS_80km/Best
+~~~
+
+This URL, when sent to a THREDDS Data Server, shows the metadata for the dataset with ID `GFS_CONUS_80km/Best` in the catalog `http://localhost:8081/thredds/catalog/GFS_CONUS_80km/catalog.html`.
