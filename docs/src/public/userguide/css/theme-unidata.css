@@ -117,4 +117,15 @@ code+a>code {
     margin-left: 0 !important;
 }
 
+/* submenus in left menu */
+
+.nav ul li ul li a {
+    padding-left: 15px !important;
+}
+
+.nav ul li ul li a::before {
+    font-size: 13px;
+    content: "\2023  ";
+}
+
 
