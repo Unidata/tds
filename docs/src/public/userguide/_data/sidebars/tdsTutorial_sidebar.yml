@@ -275,12 +275,10 @@ entries:
       url: /viewers_ref.html
       output: web, pdf
 
-    - title: Data Source Plugins
-      url: /dataset_source_plugin.html
-      output: web, pdf
+
 
       subfolders:
-        - title: Catalogs
+        - title: TDS Catalogs
           output: web, pdf
           subfolderitems:
             - title: TDS Config (threddsConfig.xml)
@@ -295,14 +293,17 @@ entries:
               url: /client_side_catalog_specification.html
               output: web, pdf
 
+        - title: For Developers
+          output: web, pdf
+          subfolderitems:
+            - title: TDS Doc Guide
+              external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/doc_guide.html
+              output: web, pdf
 
+            - title: Data Source Plugins
+              url: /dataset_source_plugin.html
+              output: web, pdf
 
-
-    - title: NetCDF-Java And TDS Doc Guide
-      external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/doc_guide.html
-      output: web, pdf
-
-      subfolders:
         - title: Netcdf Subset Service (NCSS)
           output: web, pdf
           subfolderitems:
@@ -316,6 +317,21 @@ entries:
 
             - title: NCSS For Point Data
               url: /ncss_point.html
+              output: web, pdf
+
+        - title: Services
+          output: web, pdf
+          subfolderitems:
+            - title: TDS Services
+              url: /services_ref.html
+              output: web, pdf
+
+            - title: WCS Reference
+              url: /wcs_ref.html
+              output: web, pdf
+
+            - title: WMS Reference
+              url: /wms_ref.html
               output: web, pdf
 
     - title: Configuring TDS With DatasetScan
@@ -342,21 +358,7 @@ entries:
       url: /tdm_ref.html
       output: web, pdf
 
-      subfolders:
-        - title: Services
-          output: web, pdf
-          subfolderitems:
-            - title: TDS Services
-              url: /services_ref.html
-              output: web, pdf
 
-            - title: WCS Reference
-              url: /wcs_ref.html
-              output: web, pdf
-
-            - title: WMS Reference
-              url: /wms_ref.html
-              output: web, pdf
     
     - title: PointFeature Collection Reference
       url: /pointfeature_collection_ref.html
