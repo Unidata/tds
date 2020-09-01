@@ -252,6 +252,10 @@ entries:
       url: /installation_checklist.html
       output: web, pdf
 
+    - title: TDS Upgrade Procedure
+      url: /upgrade_tds_ref.html
+      output: web, pdf
+
   - title: FAQ
     output: web, pdf
     folderitems:
@@ -266,9 +270,6 @@ entries:
   - title: Reference Guide
     output: web, pdf
     folderitems:
-    - title: TDS Config (threddsConfig.xml)
-      url: /tds_config_ref.html
-      output: web, pdf
 
     - title: Dataset Viewer
       url: /viewers_ref.html
@@ -278,29 +279,44 @@ entries:
       url: /dataset_source_plugin.html
       output: web, pdf
 
-    - title: WCS Reference
-      url: /wcs_ref.html
-      output: web, pdf
+      subfolders:
+        - title: Catalogs
+          output: web, pdf
+          subfolderitems:
+            - title: TDS Config (threddsConfig.xml)
+              url: /tds_config_ref.html
+              output: web, pdf
 
-    - title: WMS Reference
-      url: /wms_ref.html
-      output: web, pdf
+            - title: Server-Side Catalog Specification
+              url: /server_side_catalog_specification.html
+              output: web, pdf
 
-    - title: Netcdf Subset Service Reference
-      url: /netcdf_subset_service_ref.html
-      output: web, pdf
+            - title: Client-Side Catalog Specification
+              url: /client_side_catalog_specification.html
+              output: web, pdf
+
+
+
 
     - title: NetCDF-Java And TDS Doc Guide
       external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/doc_guide.html
       output: web, pdf
 
-    - title: Server-Side Catalog Specification
-      url: /server_side_catalog_specification.html
-      output: web, pdf
+      subfolders:
+        - title: Netcdf Subset Service (NCSS)
+          output: web, pdf
+          subfolderitems:
+            - title: NCSS Reference
+              url: /netcdf_subset_service_ref.html
+              output: web, pdf
 
-    - title: Client-Side Catalog Specification
-      url: /client_side_catalog_specification.html
-      output: web, pdf
+            - title: NCSS For GRIB Data
+              url: /ncss_grib.html
+              output: web, pdf
+
+            - title: NCSS For Point Data
+              url: /ncss_point.html
+              output: web, pdf
 
     - title: Configuring TDS With DatasetScan
       url: /tds_dataset_scan_ref.html
@@ -326,9 +342,21 @@ entries:
       url: /tdm_ref.html
       output: web, pdf
 
-    - title: TDS Services
-      url: /services_ref.html
-      output: web, pdf
+      subfolders:
+        - title: Services
+          output: web, pdf
+          subfolderitems:
+            - title: TDS Services
+              url: /services_ref.html
+              output: web, pdf
+
+            - title: WCS Reference
+              url: /wcs_ref.html
+              output: web, pdf
+
+            - title: WMS Reference
+              url: /wms_ref.html
+              output: web, pdf
     
     - title: PointFeature Collection Reference
       url: /pointfeature_collection_ref.html
@@ -342,6 +370,8 @@ entries:
       url: /partitions_ref.html
       output: web, pdf
 
-    - title: TDS Upgrade Procedure
-      url: /upgrade_tds_ref.html
+
+
+    - title: Digital Libraries Reference
+      url: /digital_libraries.html
       output: web, pdf
