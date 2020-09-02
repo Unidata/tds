@@ -1,6 +1,6 @@
 ---
 title: Secure the Tomcat Manager Application
-last_updated: 2020-04-30
+last_updated: 2020-08-25
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: secure_manager_app.html
@@ -17,10 +17,10 @@ This section assumes you have successfully performed the tasks as outlined in th
 ## Rationale
 
 The Tomcat The Manager application:
-* \"Free\" web application that comes with Tomcat distribution that lives in the Tomcat Lives in the `$TOMCAT_HOME/webapps/manager` directory.
+* "Free" web application that comes with Tomcat distribution that lives in the Tomcat Lives in the `${tomcat_home}/webapps/manager` directory.
 * Not enabled by default.
 * Allows Tomcat administrators to deploy, un-deploy, or reload web applications such as the TDS without having to shut down and restart Tomcat.
-* If exploited, an attacker can use the Manager application to install programs on your server willy-nilly.
+* If exploited, an attacker can use the Manager application to install programs on your server *willy-nilly*.
 * If you choose to enable the Manager application, we _highly recommend_ [enabling digested passwords](digested_passwords.html) and [TLS/SSL encryption](enable_tls_encryption.html) for the Manager application.
 * Restricting access to the Manager application to a small [subset of IP addresses or host names using a Tomcat valve](restict_access_to_tds.html) is also a good idea.
 * **Uninstall this application if you don't plan to use it.**
@@ -29,17 +29,17 @@ The Tomcat The Manager application:
 
 The following example demonstrates enabling TLS/SSL for the Tomcat Manager Application on a linux system as the `root` user.
 
-1. Modify the deployment descriptor (`$TOMCAT_HOME/webapps/manager/WEB-INF/web.xml` )of the Tomcat Manager application.
+1. Modify the deployment descriptor (`${tomcat_home}/webapps/manager/WEB-INF/web.xml` )of the Tomcat Manager application.
 
    Use your favorite editor to open the deployment descriptor for the Tomcat Manager application:
    
-   ~~~~bash
-   # vi $TOMCAT_HOME/webapps/manager/WEB-INF/web.xml
-   ~~~~
+   ~~~bash
+   # vi ${tomcat_home}/webapps/manager/WEB-INF/web.xml
+   ~~~
 
    Locate the `<security-constraint>` elements (around line ~122):
 
-   ~~~~xml
+   ~~~xml
    <!-- Define a Security Constraint on this Application -->
    <!-- NOTE:  None of these roles are present in the default users file -->
    <security-constraint>
@@ -81,13 +81,13 @@ The following example demonstrates enabling TLS/SSL for the Tomcat Manager Appli
         <role-name>manager-status</role-name>
      </auth-constraint>
    </security-constraint>
-   ~~~~
+   ~~~
 
    The Tomcat 8.x version of the Manager application deployment descriptor contains a `<security-constraint>` section for each of the four possible `ContactPaths` (as per [Manager Application](https://tomcat.apache.org/migration.html){:target="_blank"} section of the Tomcat Migration Guide).
 
    Add a `<user-data-constraint>` with a `<transport-guarantee>` of `CONFIDENTIAL` for the desired `ContactPaths` to to enable port-forwarding to port `8443`:
 
-   ~~~~xml
+   ~~~xml
    <!-- Define a Security Constraint on this Application -->
    <!-- NOTE:  None of these roles are present in the default users file -->
    <security-constraint>
@@ -144,7 +144,7 @@ The following example demonstrates enabling TLS/SSL for the Tomcat Manager Appli
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
    </security-constraint>
-   ~~~~
+   ~~~
 
 2. Verify TLS/SSL has been enabled for the Tomcat Manager application.
 
@@ -156,13 +156,13 @@ The following example demonstrates enabling TLS/SSL for the Tomcat Manager Appli
       You will have to perform this configuration change to the Manager application deployment descriptor every time you upgrade Tomcat.  :-|
    " %}
 
-#### Troubleshooting
+## Troubleshooting
 
-* Check the XML syntax in `$TOMCAT_HOME/webapps/manager/WEB-INF/web.xml` to make sure it is well-formed and without error.
+* Check the XML syntax in `${tomcat_home}/webapps/manager/WEB-INF/web.xml` to make sure it is well-formed and without error.
 * Did you specify a `<transport-guarantee>` of `CONFIDENTIAL`?
 * Did you restart Tomcat after you made your changes to `web.xml`?
 
-### Resources
+## Resources
 * [Manager App HOW-TO](https://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html){:target="_blank"}
   The Apache Tomcat document referencing how to use and configure the Manager application.
 * [Tomcat Migration Guide](https://tomcat.apache.org/migration.html){:target="_blank"}

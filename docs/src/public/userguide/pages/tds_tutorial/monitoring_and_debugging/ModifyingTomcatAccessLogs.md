@@ -1,12 +1,10 @@
 ---
 title: Modifying Tomcat Access Logs
-last_updated: 2020-04-30
+last_updated: 2020-08-23
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tomcat_access_log.html
 ---
-
-{% include image.html file="tds/tutorial/monitoring_and_debugging/log.png" alt="Log!" caption="" %}
 
 ## Tomcat Access Logs
 
@@ -97,25 +95,25 @@ Modify the `prefix`, `suffix`, and `pattern` attributes of the `AccessLogValve` 
    -rw-r----- 1 tomcat tomcat     0 Oct 25 07:06 manager.2018-10-25.log
    ~~~
 
-### Access log format
+### Access Log Format
 
-The access log entry format we are using is almost identical to the standard combined logging format with an addition: the %D which is used for documenting the Time taken to process the request, in milliseconds will appear at the end of each log entry:
+The access log entry format we are using is almost identical to the standard combined logging format with an addition: the `%D` which is used for documenting the `Time taken to process the request, in milliseconds` will appear at the end of each log entry:
 
 ~~~xml
 pattern="%h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot; %D"
 ~~~
 
-### Access log format
+
 
 {%include note.html content="
-For more information on access log format configuration, see the Tomcat <a href=\"http://tomcat.apache.org/tomcat-8.5-doc/config/valve.html\" target=\"_blank\">Valve Component</a> Documentation.
+For more information on access log format configuration, see the Tomcat [Valve Component](http://tomcat.apache.org/tomcat-8.5-doc/config/valve.html){:target='_blank'} documentation.
 " %}
 
 
 The above pattern makes use of the following codes:
 
  * `%h` - Remote host name (or IP address if resolveHosts is false)
- * `%l` - Remote logical username from identd (always returns '-')
+ * `%l` - Remote logical username from `identd` (always returns '-')
  * `%u` - Remote user that was authenticated (if any), else '-'
  * `%t` - Date and time, in Common Log Format
  * `%r` - First line of the request (method and request URI)

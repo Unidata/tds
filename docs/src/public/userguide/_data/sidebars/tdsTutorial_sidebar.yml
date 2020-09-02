@@ -3,7 +3,7 @@
 
 entries:
 - title: Sidebar
-  product: TDS Tutorial and Reference Documentation
+  product: TDS Tutorial And Reference Documentation
   version: 5.0
   folders:
 
@@ -19,14 +19,14 @@ entries:
       url: /tocpage
       output: pdf
       type: frontmatter
-  - title: Getting Started with the TDS
+  - title: Getting Started With The TDS
     output: web, pdf
     folderitems:
 
     - title: TDS Overview
       url: /index.html
       output: web, pdf
-    - title: Installing Java and Tomcat
+    - title: Installing Java And Tomcat
       url: /install_java_tomcat.html
       output: web, pdf
 
@@ -46,7 +46,7 @@ entries:
       url: /tomcat_configuration_files.html
       output: web, pdf
 
-    - title: Deploying the TDS
+    - title: Deploying The TDS
       url: /deploying_the_tds.html
       output: web, pdf
 
@@ -81,7 +81,7 @@ entries:
       url: /client_catalog_xml_validation.html
       output: web, pdf
 
-    - title: Client Catalogs in ToolsUI
+    - title: Client Catalogs In ToolsUI
       url: /client_catalog_via_toolsUI.html
       output: web, pdf
 
@@ -96,7 +96,7 @@ entries:
       url: /default_config_catalog.html
       output: web, pdf
 
-    - title: Basics of Configuration Catalogs
+    - title: Basics Of Configuration Catalogs
       url: /basic_config_catalog.html
       output: web, pdf
 
@@ -112,15 +112,15 @@ entries:
       url: /adding_ogc_iso_services.html
       output: web, pdf
 
-    - title: Adding the netCDF Subset Service
+    - title: Adding The NetCDF Subset Service
       url: /adding_ncss.html
       output: web, pdf
 
-    - title: Customizing the TDS Look and Feel
+    - title: Customizing The TDS Look And Feel
       url: /customizing_tds_look_and_feel.html
       output: web, pdf
 
-  - title: Monitoring and Debugging
+  - title: Monitoring And Debugging
     output: web, pdf
     folderitems:
     - title: Modifying Tomcat Access Logs
@@ -131,7 +131,7 @@ entries:
       url: /tds_logs.html
       output: web, pdf
 
-    - title: Using the TdsMonitor Tool
+    - title: Using The TdsMonitor Tool
       url: /using_the_tdsmonitor_tool.html
       output: web, pdf
 
@@ -146,7 +146,7 @@ entries:
       external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/ncml_aggregation.html
       output: web, pdf
 
-    - title: Using NcML in the TDS
+    - title: Using NcML In The TDS
       url: /using_ncml_in_the_tds.html
       output: web, pdf
 
@@ -228,7 +228,7 @@ entries:
       url: /keep_software_uptodate.html
       output: web, pdf
 
-    - title: Running Behind a Proxy Server
+    - title: Running Behind A Proxy Server
       url: /tds_behind_proxy.html
       output: web, pdf
 
@@ -244,12 +244,16 @@ entries:
       url: /performance_tips.html
       output: web, pdf
 
-    - title: Upgrading to 5.0
+    - title: Upgrading To 5.0
       url: /upgrade_to_5.html
       output: web, pdf
 
     - title: Installation Checklist
       url: /installation_checklist.html
+      output: web, pdf
+
+    - title: TDS Upgrade Procedure
+      url: /upgrade_tds_ref.html
       output: web, pdf
 
   - title: FAQ
@@ -266,39 +270,71 @@ entries:
   - title: Reference Guide
     output: web, pdf
     folderitems:
-    - title: TDS Config (threddsConfig.xml)
-      url: /tds_config_ref.html
-      output: web, pdf
 
-    - title: Viewers
+    - title: Dataset Viewer
       url: /viewers_ref.html
       output: web, pdf
 
-    - title: Data Source Plugins
-      url: /dataset_source_plugin.html
-      output: web, pdf
 
-    - title: WCS Reference
-      url: /wcs_ref.html
-      output: web, pdf
 
-    - title: WMS Reference
-      url: /wms_ref.html
-      output: web, pdf
+      subfolders:
+        - title: TDS Catalogs
+          output: web, pdf
+          subfolderitems:
+            - title: TDS Config (threddsConfig.xml)
+              url: /tds_config_ref.html
+              output: web, pdf
 
-    - title: Netcdf Subset Service Reference
-      url: /netcdf_subset_service_ref.html
-      output: web, pdf
+            - title: Server-Side Catalog Specification
+              url: /server_side_catalog_specification.html
+              output: web, pdf
 
-    - title: netCDF-Java and TDS Doc Guide
-      external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/doc_guide.html
-      output: web, pdf
+            - title: Client-Side Catalog Specification
+              url: /client_side_catalog_specification.html
+              output: web, pdf
 
-    - title: Server-side Catalog Specification
-      url: /server_side_catalog_specification.html
-      output: web, pdf
+        - title: For Developers
+          output: web, pdf
+          subfolderitems:
+            - title: TDS Doc Guide
+              external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/doc_guide.html
+              output: web, pdf
 
-    - title: Configuring TDS with DatasetScan
+            - title: Data Source Plugins
+              url: /dataset_source_plugin.html
+              output: web, pdf
+
+        - title: Netcdf Subset Service (NCSS)
+          output: web, pdf
+          subfolderitems:
+            - title: NCSS Reference
+              url: /netcdf_subset_service_ref.html
+              output: web, pdf
+
+            - title: NCSS For GRIB Data
+              url: /ncss_grib.html
+              output: web, pdf
+
+            - title: NCSS For Point Data
+              url: /ncss_point.html
+              output: web, pdf
+
+        - title: Services
+          output: web, pdf
+          subfolderitems:
+            - title: TDS Services
+              url: /services_ref.html
+              output: web, pdf
+
+            - title: WCS Reference
+              url: /wcs_ref.html
+              output: web, pdf
+
+            - title: WMS Reference
+              url: /wms_ref.html
+              output: web, pdf
+
+    - title: Configuring TDS With DatasetScan
       url: /tds_dataset_scan_ref.html
       output: web, pdf
 
@@ -306,7 +342,7 @@ entries:
       external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/coverage_feature.html
       output: web, pdf
 
-    - title: Annotated Schema for NcML
+    - title: Annotated Schema For NcML
       external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/annotated_ncml_schema.html
       output: web, pdf
 
@@ -318,26 +354,26 @@ entries:
       url: /remote_management_ref.html
       output: web, pdf
 
-    - title: TDM Reference
+    - title: THREDDS Data Manager Reference
       url: /tdm_ref.html
       output: web, pdf
 
-    - title: TDS Services
-      url: /services_ref.html
-      output: web, pdf
+
     
     - title: PointFeature Collection Reference
       url: /pointfeature_collection_ref.html
       output: web, pdf
 
-    - title: GRIB Collection Cofig
+    - title: GRIB Collection Configuration
       url: /grib_collection_config_ref.html
       output: web, pdf
        
-    - title: Time Partitions
+    - title: GRIB Time Partitions
       url: /partitions_ref.html
       output: web, pdf
 
-    - title: TDS Upgrade Procedure
-      url: /upgrade_tds_ref.html
+
+
+    - title: Digital Libraries Reference
+      url: /digital_libraries.html
       output: web, pdf

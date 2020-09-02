@@ -1,6 +1,6 @@
 ---
 title: PointFeature Collections
-last_updated: 2020-04-30
+last_updated: 2020-08-21
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: pointfeature_collection_ref.html
@@ -20,7 +20,7 @@ A Point Feature Collection is a collection of files which the CDM can recognize 
 
 ## Example Point Feature Collections
 
-### station data
+### `station` data
 
 ~~~xml
 <featureCollection name="Metar Station Data" harvest="true" 
@@ -32,7 +32,7 @@ A Point Feature Collection is a collection of files which the CDM can recognize 
 </featureCollection>
 ~~~
 
-### point data
+### `point` data
 
 ~~~xml
 <featureCollection name="Surface Buoy Point Data" harvest="true" 
@@ -44,7 +44,7 @@ A Point Feature Collection is a collection of files which the CDM can recognize 
 </featureCollection>
 ~~~
 
-### pointConfig element
+### `pointConfig` element
 
 Defines options on feature collections with `featureType=POINT` or `STATION`
 

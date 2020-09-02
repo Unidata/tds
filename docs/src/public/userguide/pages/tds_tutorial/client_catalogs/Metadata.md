@@ -1,19 +1,15 @@
 ---
 title: Client Catalog Metadata
-last_updated: 2018-04-02
+last_updated: 2018-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: client_catalog_metadata.html
 ---
 
-## Describing datasets
-
-{%include note.html content="
-Reference documentation - A complete listing of available properties can be found in the catalog specification.
-" %}
+## Describing Datasets
 
 So far, we've used the `name`, `serviceName`, and `urlPath` attributes to tell THREDDS how to treat our datasets.
-However, there are a lot of optional properties, or _metadata_, that can be added to help _other_ applications and digital libraries know how to &ldquo;do the right thing&rdquo; with our data.
+However, there are a lot of optional properties, or _metadata_, that can be added to help _other_ applications and digital libraries know how to "do the right thing" with our data.
 Here is a sample of them:
 
 * The `collectionType` attribute is used on collection datasets to describe the relationship of their nested datasets.
@@ -36,10 +32,10 @@ Here is a sample of them:
 ~~~
 
 {%include note.html content="
-Reference documentation - A complete listing of necessary attributes can be found here.
+A complete listing of [available properties](client_side_catalog_specification.html#threddsMetadataGroup-element-group) can be found in the [Client Catalog Specification](client_side_catalog_specification.html).
 " %}
 
-## Exporting THREDDS datasets to digital libraries
+## Exporting THREDDS Datasets To Digital Libraries
 
 The `harvest` attribute indicates that the dataset is at the right level of granularity to be exported to digital libraries or other discovery services.
 Elements such as `summary`, `rights`, and `publisher` are needed in order to create valid entries for these services.
@@ -55,7 +51,7 @@ Elements such as `summary`, `rights`, and `publisher` are needed in order to cre
 </dataset>
 ~~~
 
-## Sharing metadata
+## Sharing Metadata
 
 When a catalog includes multiple datasets, it can often be the case that they have share properties.
 For example:
@@ -93,7 +89,7 @@ Rather than declare the same information on each dataset, you can use the `metad
 3. These datasets use all the metadata values declared in the parent dataset.
 4. This dataset overrides `authority`, but uses the other 2 metadata values
 
-## When should I use a metadata element?
+## When Should I Use A Metadata Element?
 
 Both the `dataset` and `metadata` elements are containers for metadata called the `threddsMetadata` group.
 When the metadata is specific to the dataset, put it directly in the `dataset` element.

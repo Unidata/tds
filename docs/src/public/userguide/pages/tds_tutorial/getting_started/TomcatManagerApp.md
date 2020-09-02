@@ -1,6 +1,6 @@
 ---
 title: Tomcat Manager Application
-last_updated: 2020-04-23
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tomcat_manager_app.html
@@ -15,9 +15,9 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 ## About The Manager Application
 
 * "Free" web application that comes with Tomcat distribution.
-* Lives in the `$TOMCAT_HOME/webapps/manager` directory.
+* Lives in the `${tomcat_home}/webapps/manager` directory.
 * Allows Tomcat administrators to deploy, un-deploy, or reload web applications such as the TDS without having to shut down and restart Tomcat. 
-* Provides server status statistics for the JVM and each connector you have configured in `$TOMCAT_HOME/conf/server.xml`.
+* Provides server status statistics for the JVM and each connector you have configured in `${tomcat_home}/conf/server.xml`.
 
 {%include note.html content=
 "For more information about the Tomcat manager application, see the [Tomcat Manager App HOW-TO](https://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html){:target='_blank'} documentation.
@@ -32,21 +32,22 @@ You will be prompted to login via BASIC authentication, which will end in failur
 {%include image.html file="tds/tutorial/getting_started/manager401.png" alt="Manager app with 401 response code" caption="" %}
 
 {%include question.html content="
-Based on what we know about Tomcat configuration, which file in the `$TOMCAT_HOME/conf` directory should we edit to grant ourselves access to the `manager` application?
+Based on what we know about Tomcat configuration, which file in the `${tomcat_home}/conf` directory should we edit to grant ourselves access to the `manager` application?
 " %}
 
 ## Granting Access To The Manager Application
 
-**By default, the Tomcat Manager application is disabled** in an effort to prevent unintended exploitation.  In order to use the Manager application you must change Tomcat configurations to enable it.
+**By default, the Tomcat Manager application is disabled** in an effort to prevent unintended exploitation.  
+In order to use the Manager application you must change Tomcat configurations to enable it.
 
 This will be done in the following 2 steps:
 
 #### I. Create a context configuration file for the manager application
 
-   Use your favorite text editor to create a new file called `manager.xml` in the `$TOMCAT_HOME/conf/Catalina/localhost`: 
+   Use your favorite text editor to create a new file called `manager.xml` in the `${tomcat_home}/conf/Catalina/localhost`: 
 
    ~~~bash
-   # cd $TOMCAT_HOME/conf/Catalina/localhost
+   # cd ${tomcat_home}/conf/Catalina/localhost
    # vi manager.xml
    ~~~
 
@@ -69,7 +70,7 @@ To gain access to restricted parts of the TDS, you will perform the same steps y
 
 1. Modify `tomcat-users.xml` to add `role` and `user` elements.
 
-   Use your favorite editor to open `$TOMCAT_HOME/conf/tomcat-users.xml`:
+   Use your favorite editor to open `${tomcat_home}/conf/tomcat-users.xml`:
 
    ~~~bash
    # vi tomcat-users.xml
@@ -77,7 +78,7 @@ To gain access to restricted parts of the TDS, you will perform the same steps y
    
    You should see something like this:
    
-   ~~~~bash
+   ~~~bash
    <?xml version="1.0" encoding="UTF-8"?>
    <!--
      Licensed to the Apache Software Foundation (ASF) under one or more
@@ -122,12 +123,12 @@ To gain access to restricted parts of the TDS, you will perform the same steps y
      <user username="role1" password="<must-be-changed>" roles="role1"/>
    -->
    </tomcat-users>
-   ~~~~
+   ~~~
 
    The `role` and `user` elements are commented out.  Why?
      
    {%include warning.html content="  
-   Think of the security implications of enabling this web application and making it available to anyone to access/use if he knows the URL. Someone with less than good intentions could learn about server environment and undeploy/deploy any application using the Manager application.   
+   Think of the security implications of enabling this web application and making it available to anyone to access/use if he knows the URL. Someone with less than good intentions could learn about server environment and un-deploy/deploy any application using the Manager application.   
    " %} 
    
 
@@ -212,12 +213,12 @@ To gain access to restricted parts of the TDS, you will perform the same steps y
    Did you restart Tomcat after you made your changes to `tomcat-users.xml`?
    " %}
    {%include troubleshooting.html content="
-   Any errors will be reported in the `$TOMCAT_HOME/logs/catalina.out` file.
+   Any errors will be reported in the `${tomcat_home}/logs/catalina.out` file.
    " %}
    
 ## Deploying The TDS Using The Manager Application
 
-Take the Manager application for a test-drive to undeploy and re-deploy the TDS.
+Take the Manager application for a test-drive to un-deploy and re-deploy the TDS.
 
 1. Use the Tomcat Manager application to un-deploy the TDS.
 
@@ -226,7 +227,7 @@ Take the Manager application for a test-drive to undeploy and re-deploy the TDS.
 
    {% include image.html file="tds/tutorial/getting_started/undeploy.png" alt="Undeploy the TDS" caption="" %}
 
-   List the contents of the `$TOMCAT_HOME/webapps` directory to verify that both `thredds.war` and the unpacked `thredds/` directory have been removed:
+   List the contents of the `${tomcat_home}/webapps` directory to verify that both `thredds.war` and the unpacked `thredds/` directory have been removed:
 
    ~~~bash
    # cd /usr/local/tomcat/webapps
@@ -249,7 +250,8 @@ Take the Manager application for a test-drive to undeploy and re-deploy the TDS.
 
 
 {%include note.html content="
-Running an older version of Tomcat?  The manager application URLs and roles have been re-structured.
+Running an older version of Tomcat?  
+The manager application URLs and roles have been re-structured.
 See the [Tomcat Migration Guide](http://tomcat.apache.org/migration.html){:target='_blank'} for more information.
 " %}
 

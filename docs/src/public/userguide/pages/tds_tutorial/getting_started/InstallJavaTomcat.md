@@ -1,6 +1,6 @@
 ---
-title: Installation of Java and Tomcat
-last_updated: 2020-04-23
+title: Installation Of Java And Tomcat
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: install_java_tomcat.html
@@ -22,7 +22,8 @@ While there are different distributors of Java and servlet containers, Unidata d
 
 ## Installing OpenJDK Java JDK
 
-The following example shows the JDK installation on a linux system.  The installation is being performed as the `root` user.
+The following example shows the JDK installation on a linux system.  
+The installation is being performed as the `root` user.
 
 {% include note.html content="
 For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guide](https://adoptopenjdk.net/installation.html){:target='_blank'}.
@@ -75,9 +76,11 @@ For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guid
     " %}
 
 <a name="tomcat"></a>
-## Installing the Tomcat Servlet Container
+## Installing The Tomcat Servlet Container
 
-The following example shows Tomcat installation on a linux system. (This type of installation will work on Mac OS systems as well.) The installation is being performed as the `root` user.
+The following example shows Tomcat installation on a linux system. 
+(This type of installation will work on Mac OS systems as well.) 
+The installation is performed as the `root` user.
 
 {% include note.html content="
 For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-8.5-doc/setup.html#Windows){:target='_blank'}.
@@ -131,7 +134,9 @@ For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomca
 
 Adding symbolic links for both the Tomcat and the JDK installations will allow for upgrades of both packages without having to change to configuration files and server startup/shutdown scripts.
 
-The following example shows creating symbolic links for the Tomcat and JDK installation on a linux system. (This type of installation will work on Mac OS systems as well.) The installation is being performed as the `root` user.
+The following example shows creating symbolic links for the Tomcat and JDK installation on a linux system. 
+(This type of installation will work on Mac OS systems as well.) 
+The installation is performed as the `root` user.
 
 {%include note.html content="
 Windows users can consult the [Microsoft Documentation](https://docs.microsoft.com/en-us/windows/win32/fileio/symbolic-links){:target='_blank'} for creating symbolic links on Windows systems.

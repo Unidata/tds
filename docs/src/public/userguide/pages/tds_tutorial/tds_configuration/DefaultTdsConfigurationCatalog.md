@@ -1,6 +1,6 @@
 ---
 title: Default TDS Configuration Catalog
-last_updated: 2018-10-22
+last_updated: 2020-08-25
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: default_config_catalog.html
@@ -57,11 +57,13 @@ We ship a simple test catalog:
 </catalog>
 ~~~
 
-When the TDS starts, this root configuration catalog is read, as are all catalogs in the catalog tree defined by catalogRef elements.
+When the TDS starts, this root configuration catalog is read, as are all catalogs in the catalog tree defined by `catalogRef` elements.
 The resulting tree of catalogs are used as the top-level catalogs served by the TDS.
-The main root catalog, `${tds.content.root.path}/thredds/catalog.xml`,  can be accessed at
+The main root catalog, `${tds.content.root.path}/thredds/catalog.xml`,  can be accessed at:
 
-`www.server.com/thredds/catalog/catalog.xml`
+~~~
+www.server.com/thredds/catalog/catalog.xml
+~~~
 
 In the case of our test catalog, the tree looks like:
 
@@ -77,18 +79,22 @@ The nested catalog, `enhancedCatalog.xml`, is exposed to end users in a `<catalo
 <catalogRef xlink:title="Test Enhanced Catalog" name="Test Enhanced Catalog" xlink:href="enhancedCatalog.xml"/>
 ~~~
 
-and can be accessed at the provided by the `xlink:href`, which in this case is:
+and, can be accessed at the provided by the `xlink:href`, which in this case is:
 
-`www.server.com/thredds/catalog/enhancedCatalog.xml`
+~~~
+www.server.com/thredds/catalog/enhancedCatalog.xml
+~~~
 
 The tree of configuration catalogs can be as deeply nested as desired.
 
 ## Additional Root Catalogs
 
-Additional root configuration catalogs can be defined in the `<tds.content.root.path>/thredds/threddsConfig.xml` file. 
+Additional root configuration catalogs can be defined in the `${tds.content.root.path}/thredds/threddsConfig.xml` file. 
 For instance, to add a test catalog add the following line to `threddsConfig.xml`:
 
-`<catalogRoot>myTestCatalog.xml</catalogRoot>`
+~~~xml
+<catalogRoot>myTestCatalog.xml</catalogRoot>
+~~~
 
 Each additional root configuration catalog can be the root of another tree of configuration catalogs.
 To access the new root as an end user, you would visit: 

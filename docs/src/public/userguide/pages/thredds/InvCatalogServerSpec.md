@@ -1,6 +1,6 @@
 ---
-title: Server-side Catalog Specification
-last_updated: 2020-07-31
+title: Server-Side Catalog Specification
+last_updated: 2020-08-21
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: server_side_catalog_specification.html
@@ -17,22 +17,12 @@ Also, see:
 * [DatasetScan](tds_dataset_scan_ref.html) reference
 * [FeatureCollection](feature_collections_ref.html) reference
 * [Catalog XML Schema](https://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.2.xsd){:target="_blank"}
+* [Client-Side Catalog Specification](client_side_catalog_specification.html)
 
 ## Base Catalog Elements
 
-* [`catalog`](server_side_catalog_specification.html#catalog-element)
-* [`datasetRoot`](server_side_catalog_specification.html#datasetroot-element)
-* [`catalogScan`](server_side_catalog_specification.html#catalogscan-element)
-* [`dataset`](server_side_catalog_specification.html#dataset-element)
-* [`datasetScan`](server_side_catalog_specification.html#datasetscan-element)
-* [`filter`](server_side_catalog_specification.html#filter-element)
-* [`namer`](server_side_catalog_specification.html#namer-element)
-* [`sort`](server_side_catalog_specification.html#sort-element)
-* [`addLatest`](server_side_catalog_specification.html#addlatest-element)
-* [`addTimeCoverage`](server_side_catalog_specification.html#addtimecoverage-element)
 
-
-#### `catalog` element
+### `catalog` Element
 
 In addition to all the elements of a [client catalog](client_side_catalog_specification.html), a server catalog may have `datasetRoot` and `catalogScan` elements, and `dataset` elements may be `datasetScan` or `featureCollection` elements.
 
@@ -55,7 +45,7 @@ In addition to all the elements of a [client catalog](client_side_catalog_specif
   </xsd:complexType>
 </xsd:element>
 ~~~
-#### `datasetRoot` element
+### `datasetRoot` Element
 
 ~~~xml
 <xsd:element name="datasetRoot">
@@ -66,11 +56,11 @@ In addition to all the elements of a [client catalog](client_side_catalog_specif
 </xsd:element>
 ~~~
 
-The `datasetRoot` element associates a portion of the URL path with a directory on disk where the data files are stored. 
-It must be contained directly in the `catalog` element. 
-The `datasetRoot`s are *global* to a TDS, they only need to be declared once; put them in a catalog that is processed before they are used (by convention, put them in the top catalog).
+* The `datasetRoot` element associates a portion of the URL path with a directory on disk where the data files are stored. 
+* It must be contained directly in the `catalog` element. 
+* The `datasetRoot`s are *global* to a TDS, they only need to be declared once; put them in a catalog that is processed before they are used (by convention, put them in the top catalog).
 
-Example:
+#### Example
 
 ~~~xml
 <catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" 
@@ -90,7 +80,7 @@ The `dataset2` has URL `dsR1/sub/dataset2.nc`, and refers to the file `C:/data/m
 
 The dataset roots are searched for the longest match, so `dataset3` with URL `dsR1/sub2/dataset3.nc`, will be matched to the second datasetRoot, and so refers to the file `Q:/smaug/floober/dataset3.nc`.
 
-#### `catalogScan` element
+### `catalogScan` Element
 
 ~~~xml
 <xsd:element name="catalogScan">
@@ -106,15 +96,15 @@ A `catalogScan` element indicates a top directory to scan for catalogs (files en
 Subdirectories will also be scanned. 
 Optionally, the directory can be watched, and changes will be detected while the TDS is running. 
 The `catalogScan` must be at the top level of the catalog (not nested in a `dataset`). 
-If using this element, do not name any of your catalogs "*catalogScan.xml*".
+If using this element, do not name any of your catalogs `*catalogScan.xml*`.
 
-* `name`: the name to display in the catalog
-* `path`: the logical URL path
+* `name`: the name to display in the catalog.
+* `path`: the logical URL path.
 * `location`: the top directory to scan (and all subdirectories). Must be a path relative to `$\{tds.content.root.path}`.
 
-#### `dataset` element
+### `dataset` Element
 
-The `[ncml:netcdf]`(https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the [`restrictAccess`](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) attribute:
+The [`ncml:netcdf`](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/annotated_ncml_schema.html){:target="_blank"} element is specific to server side catalogs, along with the [`restrictAccess`](restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) attribute:
 
 ~~~xml
 <xsd:element name="dataset" type="DatasetType" />
@@ -139,11 +129,11 @@ The `[ncml:netcdf]`(https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/anno
 </xsd:complexType>
 ~~~
 
-* The `ncml:netcdf` element [modifies the dataset with NcML](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/basic_ncml_tutorial.html){:target="_blank"}. For the [`datasetScan` element](server_side_catalog_specification.html#datasetscan-element), it modifies all contained datasets.
-* The `restrictAccess` attribute tells the TDS to [restrict access](/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) to this dataset. 
+* The `ncml:netcdf` element [modifies the dataset with NcML](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/basic_ncml_tutorial.html){:target="_blank"}. For the [`datasetScan` element](#datasetscan-element), it modifies all contained datasets.
+* The `restrictAccess` attribute tells the TDS to [restrict access](restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) to this dataset. 
 It is always inherited by all contained datasets.
 
-#### `datasetScan` element 
+### `datasetScan` Element 
 
 A `datasetScan` can be used wherever a `dataset` element is allowed.
 
@@ -170,12 +160,12 @@ A `datasetScan` can be used wherever a `dataset` element is allowed.
 </xsd:element>
 ~~~
 
-The `datasetScan` element generates nested THREDDS catalogs by scanning the directory named in the `location` attribute, and creating a `dataset` for each file found, and a `catalogRef` for each subdirectory. 
-The location must be an absolute path. 
-The `path` attribute is used to create the URL for these files and catalogs. 
-The path must be globally unique over all paths for the TDS. 
-Do not put leading or trailing slashes on the path.
-The `addLatest` attribute adds a *latest resolver service* to the `datasetScan`.
+* The `datasetScan` element generates nested THREDDS catalogs by scanning the directory named in the `location` attribute, and creating a `dataset` for each file found, and a `catalogRef` for each subdirectory. 
+* The location must be an absolute path. 
+* The `path` attribute is used to create the URL for these files and catalogs. 
+* The path must be globally unique over all paths for the TDS. 
+* Do not put leading or trailing slashes on the path.
+* The `addLatest` attribute adds a *latest resolver service* to the `datasetScan`.
 
 A `datasetScan` element is in the `dataset substitutionGroup`, so it can be used wherever a `dataset` element can be used. 
 It is an extension of a `DatasetType`, so any of the `dataset` element nested elements and attributes can be used in it. 
@@ -218,7 +208,7 @@ If the `C:/data/grib2/` directory contained three files (`data1.wmo`, `data2.wmo
 </catalog>
 ~~~
 
-#### `filter` element
+### `filter` Element
 
 ~~~xml
 <xsd:element name="filter">
@@ -240,10 +230,10 @@ If the `C:/data/grib2/` directory contained three files (`data1.wmo`, `data2.wmo
 </xsd:complexType>
 ~~~
 
-The `filter` element allows users to specify which datasets are to be included in the generated catalogs. 
-A `filter` element can contain any number of `include` and `exclude` elements. 
-Each `include` or `exclude` element may contain either a `wildcard` or a `regExp` attribute. 
-If the given wildcard pattern or [regular expression](http://www.regular-expressions.info/){:target="_blank"} matches a dataset name, that dataset is included or excluded as specified. 
+* The `filter` element allows users to specify which datasets are to be included in the generated catalogs. 
+* A `filter` element can contain any number of `include` and `exclude` elements. 
+* Each `include` or `exclude` element may contain either a `wildcard` or a `regExp` attribute. 
+* If the given wildcard pattern or [regular expression](http://www.regular-expressions.info/){:target="_blank"} matches a dataset name, that dataset is included or excluded as specified. 
 
 By default, includes and excludes apply only to atomic datasets (regular files). 
 You can specify that they apply to atomic and/or collection datasets (directories) by using the `atomic` and `collection` attributes.
@@ -281,7 +271,7 @@ The logic can be summarized as
 
 More examples are available in the [datasetScan](tds_dataset_scan_ref.html) documentation.
 
-#### `namer` element
+### `namer` Element
 
 ~~~xml
 <xsd:element name="namer">
@@ -348,7 +338,7 @@ So, when cataloged, this dataset would end up like this (note that only the `nam
          urlPath="models/NCEP/GFS/Alaska_191km/GFS_Alaska_191km_20051011_0000.grib1"/>
 ~~~
 
-#### `sort` element
+### `sort` Element
 
 ~~~xml
 <xsd:element name="sort">
@@ -374,7 +364,7 @@ By default, datasets at each collection level are listed in ascending order by f
 </datasetScan>
 ~~~
 
-#### `addLatest` element
+### `addLatest` Element
 
 ~~~xml
 <xsd:complexType name="addLatestType">
@@ -392,7 +382,7 @@ If `lastModifedLimit` attribute is set, the TDS will exclude any dataset that wa
 
 An example is available in the [datasetScan](tds_dataset_scan_ref.html) documentation.
 
-#### `addTimeCoverage` element
+### `addTimeCoverage` Element
 
 ~~~xml
 <xsd:element name="addTimeCoverage">
@@ -408,7 +398,7 @@ An example is available in the [datasetScan](tds_dataset_scan_ref.html) document
 The `addTimeCoverage` element indicates that a THREDDS `timeCoverage` element should be added to each atomic dataset cataloged by the containing `datasetScan` element and describes how to determine the time coverage for each dataset in the collection.
 
 Currently, the `addTimeCoverage` element can only describe one method for determining the time coverage of a dataset. 
-The  `datasetNameMatchPattern` attribute is used in a [regular expression](http://www.regular-expressions.info/){:target="_blank"} match on the dataset name. If the match succeeds, a [capturing group](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html){:target="_blank"}  replacement is performed on the `startTimeSubstitutionPattern` attribute, and the result is the start time string (see the [`namer` element](server_side_catalog_specification.html#namer-element) description, above, for more on regular expressions and capturing groups). 
+The  `datasetNameMatchPattern` attribute is used in a [regular expression](http://www.regular-expressions.info/){:target="_blank"} match on the dataset name. If the match succeeds, a [capturing group](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html){:target="_blank"}  replacement is performed on the `startTimeSubstitutionPattern` attribute, and the result is the start time string (see the [`namer` element](#namer-element) description, above, for more on regular expressions and capturing groups). 
 The time coverage duration is given by the `duration` attribute.
 
 The `datasetPathMatchPattern` attribute was added (2009-06-05, TDS 4.0) to allow matching on the entire dataset path instead of just the dataset name. 

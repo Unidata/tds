@@ -1,25 +1,25 @@
 ---
 title: Installation Checklist
-last_updated: 2020-04-30
+last_updated: 2020-08-26
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: installation_checklist.html
 ---
 
-##  Bare-bones Instructions for Standing Up a TDS Production Server
+##  Bare-bones Instructions For Standing Up A TDS Production Server
 
-#### Prior to Installation
+### Prior To Installation
 1. Purchase a certificate from a [certificate authority](https://en.wikipedia.org/wiki/Certificate_authority){:target="_blank"} for your TDS domain/host. 
 2. Create a [dedicated user/group](tomcat_permissions.html#dedicated) for running the Tomcat server.
 
-#### Java
+### Install Java
 
 1. [Install the JDK](install_java_tomcat.html#installing-java-jdk)
 
-#### Tomcat
+### Install And Configure Tomcat
 
 1. [Install Tomcat](install_java_tomcat.html#installing-the-tomcat-servlet-container)
-2. Create a [`setenv.sh` file](running_tomcat.html#setting-java_home-java_opts-catalina_base-and-content_root) in `$TOMCAT_HOME/bin` to set JVM options and the TDS `$CONTENT_ROOT`.
+2. Create a [`setenv.sh` file](running_tomcat.html#setting-java_home-java_opts-catalina_base-and-content_root) in `${tomcat_home}/bin` to set JVM options and the TDS `$CONTENT_ROOT`.
 3. Make the following modifications to `${tomcat_home}/conf/server.xml`:
  * Enable [digested password support](digested_passwords.html#configure-tomcat-to-use-digested-passwords) by modifying the `UserDatabaseRealm`.
  * Enable [TLS/SSL in tomcat](enable_tls_encryption.html#enabling-tlsssl-in-tomcat) using you CA certificate.
@@ -33,7 +33,7 @@ permalink: installation_checklist.html
 7. Remove all [unused web applications](remove_unused_webapps.html) from the `${tomcat_home}/webapps` directory.
 8. Modify the [permissions of `${tomcat_home}`](tomcat_permissions.html) to restrict access.
 
-#### TDS
+### Deploying The TDS
 1. [Download the TDS WAR](https://www.unidata.ucar.edu/downloads/tds/){:target="_blank"} file.
 2. If needed, [rename the WAR file](deploying_the_tds.html) to `thredds.war`.
 3. [Deploy the `thredds.war`](deploying_the_tds.html) file to the `${tomcat_home}/webapps` directory.
@@ -43,19 +43,19 @@ permalink: installation_checklist.html
  * Add the needed information to the [`ServerInformation` element](basic_tds_configuration.html#server-information).
  * [Enable any other optional services](adding_ogc_iso_services.html)  like WMS or WCS.
  
-#### Continued Maintenance
+### Continued Maintenance
 1. Be sure to periodically check to make sure you are running the [latest versions of Java, Tomcat and the TDS](keep_software_uptodate.html).
 2. If you have enabled [access logging](tomcat_access_log.html) (and you should), zip up the unused access logs in `${tomcat_home}/logs/` and archive them off to another directory.
 3. Likewise, zip up the unused [TDS servlet logs](tds_logs.html) in `${tomcat_home}/content/thredds/logs` and archive them as well.
 4. Manually rotate Tomcat's [`catalina.out`](tomcat_log_files.html#things-to-know-about-catalinaout) log file when it grows too large.
 
-#### Upgrading the TDS
+### Upgrading The TDS
 
 {%include important.html content="
 When installing a new `thredds.war`, everything in `${tomcat_home}/webapps/thredds` is overwritten. However, nothing in `${tomcat_home}/content/` is overwritten.
 " %}
 
-#### Upgrading Tomcat
+### Upgrading Tomcat
 {%include important.html content="
 If you are using the Tomcat `manager` application, you will need to [modify the deployment descriptor](secure_manager_app.html#enabling-tlsssl-for-the-tomcat-manager-application) to enable access via HTTPS only.
 " %}

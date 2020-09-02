@@ -1,12 +1,12 @@
 ---
 title: GRIB FAQ
-last_updated: 2020-08-01
+last_updated: 2020-08-26
 sidebar: tdsTutorial_sidebar
 toc: true
 permalink: tds_grib_faq.html
 ---
 
-## How do I control where the index files are written?
+## How do I control where the GRIB index files are written?
 
 In `${tomcat}/content/thredds/threddsConfig.xml`, add or change the `<GribIndex>` element:
 
@@ -61,7 +61,8 @@ Not currently, please send us your use cases so we can evaluate feasibility.
 
 ## How do I get both the reference and the forecast time of the data?
 
-This information is available for versions 4.6.0+. Each variable has a `coordinates` attribute that names both the *reference time* and the *forecast time* coordinate. If the variable needs only one time dimension, this will look like:
+This information is available for versions 4.6.0+. Each variable has a `coordinates` attribute that names both the *reference time*, and the *forecast time* coordinate. 
+If the variable needs only one time dimension, this will look like:
 
 ~~~
    float Ground_heat_flux_surface_3_Hour_Average(time=166552, lat=320, lon=640);
@@ -105,7 +106,7 @@ double time(reftime=742, time=18);
 In this case, the form is always `reftime(reftime)` and `time(reftime, time)`. 
 These are called *two-dimensional* time variables. 
 What we are seeing here are 742 different model runs, with 18 forecast times for each run. 
-You can look at these in the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/toolsui_ref.html){:target="_blank"} `CoordSys` tab, select a time coordinate from the lowest table, then right clieck and choose `Show values`, and you will see, for example:
+You can look at these in the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} `CoordSys` tab, select a time coordinate from the lowest table, then right clieck and choose `Show values`, and you will see, for example:
 
 ~~~
 time =
@@ -119,7 +120,8 @@ time =
  ...
 ~~~
 
-There is one other variant, namely when there is a single runtime. Then you get a *scalar runtime coordinate*, e.g.:
+There is one other variant, namely when there is a single runtime. 
+Then you get a *scalar runtime coordinate*, e.g.:
 
 ~~~
 float Dewpoint_temperature_height_above_ground(time=14, height_above_ground1=1, y=1059, x=1799);

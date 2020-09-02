@@ -85,7 +85,7 @@ Implementation notes:
 
 The GRIB Collections framework has been rewritten in CDM version 4.6, in order to handle very large collections efficiently.
 Oh wait we already did that in 4.5.
-Sorry, it wasn\'t good enough.
+Sorry, it wasn't good enough.
 
 * `TimePartition` can now be set to `directory` (default), `file`, a time period, or `none`. 
   Details [here](partitions_ref.html).

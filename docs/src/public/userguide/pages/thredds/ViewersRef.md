@@ -1,6 +1,6 @@
 ---
 title: TDS Dataset Viewer Links
-last_updated: 2020-04-30
+last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: viewers_ref.html
@@ -8,19 +8,22 @@ permalink: viewers_ref.html
 
 Currently, the TDS automatically adds, when appropriate, the following _standard viewer links_ at the bottom of a datasets HTML web page:
 
-* a Godiva3 web-based WMS client link to any dataset that has a WMS service
-* a Jupyter Notebook viewer which provides the boilerplate python code to access remote data for a direct access dataset
+* a [Godiva3](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#godiva3){:target="_blank"}  web-based WMS client link to any dataset that has a WMS service.
+* a Jupyter Notebook viewer which provides the boilerplate python code to access remote data for a direct-access dataset.
 
-For example:
+#### Example
 
 {% include image.html file="tds/reference/viewers/StandardViewers.png" alt="Viewers" caption="" %}
 
 In previous versions of the TDS, we also included the following Java WebStart Viewers:
 
-* a NetCDF-Java ToolsUI link to any direct dataset that has an ID
+* a NetCDF-Java ToolsUI link to any direct dataset that has an ID.
 * an IDV link to any dataset that has an OPeNDAP service and has a DataType of GRID.
 
-However, Java WebStart [has been deprecated as of version 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and we have removed such viewers from the TDS.
+
+{%include note.html content="
+Java WebStart [has been deprecated as of version 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target='_blank'}, and we have removed such viewers from the TDS.
+"%}
 
 The TDS also supports three ways to configure other custom viewer links.
 
@@ -31,14 +34,15 @@ The TDS also supports three ways to configure other custom viewer links.
 Each of these methods are described in the sections below.
 However, given the status of Java WebStart, _the third method is no longer recommended_.
 
-## Adding viewer links with `viewer` property elements
+## Adding Viewer Links With `viewer` Property Elements
 
 Dataset viewer links can be added to dataset HTML pages using `viewer` property elements.
-To add a dataset viewer link to a specific dataset, add a property element that has a name starting with `viewer`.
-When the TDS generates a dataset HTML page, it looks for all `viewer` property elements and uses the value of each property element to generate a viewer link.
+To add a dataset viewer link to a specific dataset, add a `property` element that has a name starting with `viewer`.
+When the TDS generates a dataset HTML page, it looks for all `viewer` property elements and uses the value of each `property` element to generate a viewer link.
 The value of the `viewer` property element must be a string containing a URL and a name separated by a comma.
 An HTML link is built using the URL and the name.
-For instance, the following example:
+
+#### Example
 
 ~~~xml
 <dataset name="Test Single Dataset" ID="testDataset" serviceName="odap" urlPath="test/testData.nc" dataType="Grid">
@@ -59,10 +63,13 @@ which looks like this on the TDS page:
 
 {% include image.html file="tds/reference/viewers/AddViewers.png" alt="Added Viewers" caption="" %}
 
-### Adding viewer links to many datasets
+### Adding Viewer Links To Multiple Datasets
 
-When a `viewer` property element is contained in an inherited metadata element, it will apply to all the descendants of the containing dataset.
-For instance, the following example will result in viewer links for all children datasets:
+When a `viewer` property element is contained in an inherited `metadata` element, it will apply to all the descendants of the containing dataset.
+
+#### Example
+
+The following will result in viewer links for all children datasets:
 
 ~~~xml
 <dataset name="Test inherited viewer" ID="tiv">
@@ -87,7 +94,7 @@ When added to a datasetScan elements, the `viewer` property results in a viewer 
 </datasetScan>
 ~~~
 
-### Adding the Dataset URL to the Viewer Link
+### Adding The Dataset URL To The Viewer Link
 
 Adding the same viewer link to all your dataset pages may not be what you want.
 The TDS also supports inserting a dataset access URL into the viewer link URL.
@@ -107,11 +114,12 @@ results in the following viewer link:
 <a href="http://some.tds.edu/cdmvalidator/validate?URL=http://myhost:8080/thredds/dodsC/test/testData.nc">Validation Service</a>
 ~~~
 
-### Selecting the Dataset access URL used in the Viewer Link
+### Selecting The Dataset Access URL Used In The Viewer Link
 
-When a Dataset has more than one kind of access, each access will have a seperate URL.
+When a Dataset has more than one kind of access, each access will have a separate URL.
 Use the service type inside of curly brackets to select which access URL to use.
-For example, the following:
+
+#### Example
 
 ~~~xml
 <service name="all" base="" serviceType="compound">
@@ -153,12 +161,12 @@ and for the second dataset, the viewer link is:
 http://myhost:8080/wmsView/show?dataset=http://myhost:8080/thredds/wcs/tvss/ds2.nc
 ~~~
 
-If your server is publicly accessible, this example calls the some.tds.edu validator service for your dataset, using OPeNDAP.
+If your server is publicly accessible, this example calls the `some.tds.edu` validator service for your dataset, using OPeNDAP.
 The dataset page now looks something like:
 
 {% include image.html file="tds/reference/viewers/validateViewer.png" alt="Viewer with Data Access" caption="" %}
 
-## Returning a JNLP file
+## Returning A JNLP File
 
 Viewer links can also support on the fly generation of JNLP files.
 This can be very useful when using data viewing software that can be started with a JNLP file (i.e., running under Java Webstart).
@@ -173,19 +181,21 @@ The TDS will return any JNLP template file under the `${tds.content.root.path}/t
 http://localhost:8080/thredds/view/<filename>
 ~~~
 
-For example, the URL
+#### Example
+
+The URL:
 
 ~~~
 http://localhost:8080/thredds/view/my/cool/viewer.jnlp
 ~~~
 
-will look for and return the file
+will look for and return the file:
 
 ~~~bash
 ${tds.content.root.path}/thredds/views/my/cool/viewer.jnlp
 ~~~
 
-### Adding Dataset Information to the JNLP Template File
+### Adding Dataset Information To The JNLP Template File
 
 The TDS processes the JNLP template file before sending it to the client as the response to their request.
 The processing looks for replacement strings of the form `{name}` and replaces them with the value of the corresponding URL query parameter.
@@ -195,7 +205,7 @@ So, if the JNLP template file contains any occurrences of the `{dataset}` string
 http://localhost:8080/thredds/view/my/cool/viewer.jnlp?dataset=http://some.other.server/thredds/dodsC/cool/data.nc
 ~~~
 
-all occurrences of `{dataset}` would be replaced by `http://some.other.server/thredds/dodsC/cool/data.nc`.
+All occurrences of `{dataset}` would be replaced by `http://some.other.server/thredds/dodsC/cool/data.nc`.
 
 So, looking at an approximation of the IDV JNLP file:
 
@@ -228,7 +238,7 @@ So, looking at an approximation of the IDV JNLP file:
 </jnlp>
 ~~~
 
-The third from the last line would be replaced with
+The third from the last line would be replaced with:
 
 ~~~xml
     <argument>type:opendap.grid:http://some.other.server/thredds/dodsC/cool/data.nc</argument>
@@ -236,12 +246,12 @@ The third from the last line would be replaced with
 
 Which passes the dataset access URL to the IDV as an argument.
 
-## Create a Viewer implementation Java class
+## Create A Viewer Implementation Java class
 
 This method is available in TDS version 3.14+.
 
 This technique gives you full control over whether your viewer link appears, and what the URL looks like.
-You must create a Java class which implements the `thredds.servlet.Viewer` interface:
+You must create a Java class which implements the [`thredds.server.viewer.Viewer`](https://docs.unidata.ucar.edu/tds/5.0/javadocAll/thredds/server/viewer/Viewer.html){:target="_blank"} interface:
 
 ~~~java
 public interface Viewer {
@@ -251,10 +261,10 @@ public interface Viewer {
 }
 ~~~
 
-* (1) Your class is passed a thredds.catalog.InvDatasetImpl object, and it returns true if it is viewable by your viewer.
-* (2) Your class is passed a viewable thredds.catalog.InvDatasetImpl, and it must return a well-formed HTML string that has an href link in it.
+* (1) Your class is passed a `thredds.catalog.InvDatasetImpl` object, and it returns `true` if it is viewable by your viewer.
+* (2) Your class is passed a viewable `thredds.catalog.InvDatasetImpl`, and it must return a well-formed HTML string that has an `href` link in it.
 
-Example:
+#### Example
 
 ~~~java
 package my.package;
@@ -292,9 +302,9 @@ public class IDV implements Viewer {
 * (6) Forms the HTML string to be placed on the dataset's TDS web page.
   Note that is has an `href` embedded in it, which will be displayed in this example as:
 
-Integrated Data Viewer (IDV) (WebStart)
+    [Integrated Data Viewer (IDV) (WebStart)]()
 
-### Referencing an external URL
+### Referencing An External URL
 
 If the viewer you want to reference is not part of the TDS, just make the href absolute, e.g.:
 
@@ -304,18 +314,20 @@ If the viewer you want to reference is not part of the TDS, just make the href a
 
 In this example, the server would see the OPeNDAP data access URL and remotely read it.
 
-### Loading your class at runtime
+### Loading Your Class At Runtime
 
 You must place your Viewer class into the `${tomcat_home}/webapps/thredds/WEB-INF/lib` or `${tomcat_home}/webapps/thredds/WEB-INF/classes` directory.
 (Previous instructions to place it into the ${tomcat_home}/shared directory doesn't work, because of classloader problems).
 
-Then tell the TDS to load it by adding a line to the `${tds.content.root.path}/thredds/threddsConfig.xml` file, for example:
+Then tell the TDS to load it by adding a line to the `${tds.content.root.path}/thredds/threddsConfig.xml` file.
+
+#### Example
 
 ~~~xml
 <viewer>my.package.MyViewer</viewer>
 ~~~
 
-### Using a Generated JNLP File
+### Using A Generated JNLP File
 
 A Viewer implementation can still use the TDS JNLP template service (see above).
 It just needs to return the appropriate HTML link referencing an existing JNLP template file and giving the appropriate replacment URL query parameters.
@@ -324,12 +336,12 @@ The IDV implementation above does just that.
 One reason to write an implementation of Viewer and use is JNLP is if the viewer has requirements for the datasets it can handle.
 Looking at the IDV implementation above, we see it enforces two requirements:
 
-* the dataset must have an `OPeNDAP` (aka DODS) access URL, and
-* the dataset must be gridded data.
+1. the dataset must have an `OPeNDAP` (aka DODS) access URL, and
+2. the dataset must be gridded data.
 
-### Embedding the ToolsUI viewers on your web page
+### Embedding The ToolsUI Viewers On Your Web Page
 
-To call the ToolsUI application webstart application from your webpage, return this JNLP file:
+To call the [ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} application webstart application from your webpage, return this JNLP file:
 
 ~~~xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -362,10 +374,10 @@ To call the ToolsUI application webstart application from your webpage, return t
 
 where you should replace:
 
-* `{catalog}` with the absolute URL of the THREDDS catalog
+* `{catalog}` with the absolute URL of the THREDDS catalog.
 * `{dataset}` with the ID of the dataset you want the ToolsUI to view.
 
-For example:
+#### Example
 
 ~~~xml
   <application-desc main-class="ucar.nc2.ui.ToolsUI">
@@ -373,9 +385,9 @@ For example:
  </application-desc>
 ~~~
 
-If you dont specify the `<argument>`, ToolsUI will still startup normally, and not jump to the `THREDDS catalog` tab.
+If you don't specify the `<argument>`, ToolsUI will still startup normally, and not jump to the `THREDDS catalog` tab.
 
-## Review of how ToolsUI works
+## Review Of How ToolsUI Works
 
 When TDS gets this URL:
 
@@ -383,8 +395,8 @@ When TDS gets this URL:
 http://oos.soest.hawaii.edu/thredds/view/ToolsUI.jnlp?catalog=http://oos.soest.hawaii.edu/thredds/idd/nss_hioos.xml&dataset=NS02agg
 ~~~
 
-it creates a jnlp file which is sent back to your browser.
-If your browser has Java WebStart installed as a helper application (which happens when you install Java on your computer), the JNLP file is handled by the "Java plugin" on your browser, which downloads ToolsUI from wherever the jnlp file specifies (currently https://www.unidata.ucar.edu/software/netcdf-java/v4.3/webstart/)
+it creates a JNLP file which is sent back to your browser.
+If your browser has Java WebStart installed as a helper application (which happens when you install Java on your computer), the JNLP file is handled by the "Java plugin" on your browser, which downloads ToolsUI from wherever the jnlp file specifies.
 
 The JNLP file has been customized to include the command line argument of the form `{catalog}#{dataset}`, and the ToolsUI application looks for this and uses it to open that catalog and display the named dataset in the `Catalog Chooser` tab.
 This UI component gives access to all the metadata and access protocols of that dataset.

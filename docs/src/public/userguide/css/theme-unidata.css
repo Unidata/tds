@@ -4,8 +4,10 @@
     font-size:16px;
 }
 
-
-h3 {color: #ED1951; }
+h3 {
+    color: #2F4F4F;
+    font-size: 20px !important;
+}
 h4 {color: #808080; }
 
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
@@ -95,8 +97,8 @@ div.sidebarTitle {
 li.sidebarTitle {
     margin-top:40px;
     font-weight:normal;
-    font-size:130%;
-    color: #ED1951;
+    font-size:135%;
+    color: #034250;
     margin-bottom:10px;
     margin-left: 5px;
 }
@@ -110,4 +112,20 @@ table th:nth-of-type(2) {
 table th:nth-of-type(3) {
     width: 55%;
 }
+
+code+a>code {
+    margin-left: 0 !important;
+}
+
+/* submenus in left menu */
+
+.nav ul li ul li a {
+    padding-left: 15px !important;
+}
+
+.nav ul li ul li a::before {
+    font-size: 13px;
+    content: "\2023  ";
+}
+
 

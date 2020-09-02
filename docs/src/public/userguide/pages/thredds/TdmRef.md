@@ -1,6 +1,6 @@
 ---
-title: THREDDS Data Manager
-last_updated: 2020-04-30
+title: THREDDS Data Manager (TDM)
+last_updated: 2020-08-21
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: tdm_ref.html
@@ -8,22 +8,23 @@ permalink: tdm_ref.html
 
 ## Overview
 
-The TDM creates indexes for GRIB featureCollections, in a process separate from the TDS. This allows lengthy file scanning and reindexing to happen in the background.
+The THREDDS Data Manager (TDM) creates indexes for GRIB featureCollections, in a process separate from the TDS. 
+This allows lengthy file scanning and reindexing to happen in the background.
 The TDS uses the existing indices until notified that new ones are ready.
 
 The TDM shares the TDS configuration, including `threddsConfig.xml` and the server configuration catalogs.
-On startup, it reads through the catalogs and finds GRIB `featureCollections` with a `<tdm>` element and adds them to a list.
+On server startup, it reads through the catalogs and finds GRIB `featureCollections` with a `<tdm>` element and adds them to a list.
 It can index once or periodically, depending on how you configure the `<tdm>` element.
 If you change the configuration, you must restart the TDM.
 
 * For static datasets, let the TDM create the indexes, then start the TDS.
 * For dynamic datasets, the TDM should run continually, and can send messages to the TDS when a dataset changes.
 
-## Installing the TDM
+## Installing The TDM
 
 Get the current jar linked from the [TDS Download Page](https://www.unidata.ucar.edu/downloads/tds/){:target="_blank"}
 
-The TDM can be run from anywhere, but by convention we create a directory `$tds.content.root.path}/tdm`, and run the TDM from there.
+The TDM can be run from anywhere on the local machine, but by convention we create a directory `$tds.content.root.path}/tdm`, and run the TDM from there.
 
 Create a shell script to run the TDM, for example `runTdm.sh`:
 
@@ -31,18 +32,10 @@ Create a shell script to run the TDM, for example `runTdm.sh`:
 <JAVA> <JVM options> -Dtds.content.root.path=<content directory> -jar <TDM jar> [-tds <tdsServers>] [-cred <user:passwd>] [-showOnly] [-log level]
 ~~~
 
-for example:
-
-~~~bash
-/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/opt/tds/content -jar tdm-5.0.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
-~~~
-
-where:
-
 * `<JAVA>` Large collections need a lot of memory, so use a 64-bit JVM
 * `<JVM options>`
   * `-Xmx4g*` to give it 4 Gbytes of memory (for example). 
-    More is better.
+    **More is better**.
 * `-Dtds.content.root.path=<content directory>` this passes the content directory as a system property.
   The thredds configuration catalogs and `threddsConfig.xml` are found in `<content directory>/thredds`.
   Use an absolute path.
@@ -55,20 +48,28 @@ where:
 * `-showOnly`: (optional) if this is present, just show the featureCollections that will be indexed and exit.
 * `-log level`: (optional) set the log4j logging level = `DEBUG`, `INFO` (default), `WARN`, `ERROR`
 
-Troubleshooting:
 
-* Make sure that the `<JVM Options>`, including `-Dtds.content.root.path`, come before the `-jar <TDM jar>`
+#### Example:
+
+~~~bash
+/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/opt/tds/content -jar tdm-5.0.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
+~~~
+
+#### Troubleshooting
+
+* Make sure the `<JVM Options>`, including `-Dtds.content.root.path`, come before the `-jar <TDM jar>`
 * The `<content directory>` does not include the `/thredds` subdirectory, e.g. `/opt/tds/content` not `/opt/tds/content/thredds`.
-* You must run the TDM as a user who has read and write permission into the data directories, so it can write the index files (OR)
-* If you are using [GRIB index redirection](tds_config_ref.html#grib-index-redirection), the TDM must have read access to the data directories, and write access to the index directories.
+* Regarding permissions:
+    * You must run the TDM as a user who has read and write permission into the data directories, so it can write the index files (OR)
+    * If you are using [GRIB index redirection](tds_config_ref.html#grib-index-redirection), the TDM must have read access to the data directories, and write access to the index directories.
 
-## Running the TDM:
+## Running The TDM:
 
-* Upon startup, if `-tds` was used, but `-cred` was not, you will be prompted for the password for the `tdm` user password. 
+* Upon server startup, if `-tds` was used, but `-cred` was not, you will be prompted for the password for the `tdm` user password. 
   This allows you to start up the TDM without putting the password into a startup script.
-  Note that user `tdm` should be given only the role of `tdsTrigger`, which only gives rights to trigger collection reloading (see [below](#sending-triggers-to-the-tds)).
+  Note that user `tdm` should be given only the role of `tdsTrigger`, which only gives rights to [trigger collection](#sending-triggers-to-the-tds) reloading.
 * The TDM will write index files into the data directories or index directories. 
-  The index files will have extensions **gbx9** and **ncx4**.
+  The index files will have extensions `gbx9` and `ncx4`.
 * For each `featureCollection`, a log file is created in the TDM working directory, with name `fc.<collectionName>.log`.
   Monitor these logs to look for problems with the indexing.
 * If you start the TDS in a shell, its best to put in the background so it can run independent of the shell:
@@ -78,12 +79,12 @@ Troubleshooting:
 bg
 ~~~
 
-## Sending triggers to the TDS
+## Sending Triggers To The TDS
 
-The TDM scans the files in the feature Collection, and when it detects that the collection has changed, rewrites the index files.
+The TDM scans the files in the feature collection, and when it detects that the collection has changed, rewrites the index files.
 If enabled, it will send a trigger message to the TDS, and the TDS will reload that dataset.
 To enable this, you must configure the TDS with the `tdsTrigger` role, and add the user `tdm` with that role.
-Typically you do that by editing the `${tomcat_home}/conf/tomcat-user.xml` file, e.g.:
+Typically, you do that by editing the `${tomcat_home}/conf/tomcat-user.xml` file, e.g.:
 
 ~~~xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -95,9 +96,11 @@ Typically you do that by editing the `${tomcat_home}/conf/tomcat-user.xml` file,
 </tomcat-users>
 ~~~
 
-Make sure that the `tdm` user has only the `tdsTrigger` role, for security.
+{%include warning.html content="
+For security, make sure the `tdm` user has only the `tdsTrigger` role.
+"%}
 
-If you dont want to allow external triggers, for example if your datasets are static, simply don\'t enable the `tdsTrigger` role in Tomcat.
+If you don't want to allow external triggers, for example if your datasets are static, simply don't enable the `tdsTrigger` role in Tomcat.
 You can also set `trigger="false"` in the `update` element in your catalog:
 
 ~~~xml
@@ -109,7 +112,7 @@ You can also set `trigger="false"` in the `update` element in your catalog:
 Example configuration in the TDS configuration catalogs.
 Point the TDM to the content directory using `-Dtds.content.root.path=<content directory>` on the TDM command line.
 
-### Static dataset:
+### Static Dataset:
 
 ~~~xml
 <featureCollection name="NOMADS CFSRR" featureType="GRIB2" harvest="true" 
@@ -158,7 +161,7 @@ Point the TDM to the content directory using `-Dtds.content.root.path=<content d
   * `startup="never"` tells the TDS to read in the `featureCollection` when starting up, using the existing indices
   * `trigger="allow"` enables the TDS to receive messages from the TDM when the dataset has changed
 
-## GCPass1
+## `GCPass1`
 
 This is a utility program to examine the files in a collection before actually indexing them.
 
@@ -168,7 +171,7 @@ This is a utility program to examine the files in a collection before actually i
 java -Xmx2g -classpath tdm-4.6.jar thredds.tdm.GCpass1 -spec "Q:/cdmUnitTest/gribCollections/rdavm/ds083.2/PofP/**/.*grib1" -useCacheDir "C:/temp/cache/"  > gcpass1.out
 ~~~
 
-### Command line arguments:
+### Command Line Arguments:
 
 ~~~bash
 Usage: thredds.tdm.GCpass1 [options]
@@ -196,7 +199,7 @@ Usage: thredds.tdm.GCpass1 [options]
 ~~~
 
 * You must have `spec` or (`regexp` and `rootDir`).
-* If `useCacheDir` is not set, indexes will be in the data directories
+* If `useCacheDir` is not set, indexes will be in the data directories.
 
 ### Sample Output:
 
@@ -259,7 +262,7 @@ thin (0)           # <14>
 ~~~
 
 1. The Feature Collection configuration
-2. The top level directory
+2. The top-level directory
 3. Subdirectory
 4. Partitions - in this case these are directories because this is a _directory partition_. 
    * number of files in the partition 

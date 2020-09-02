@@ -1,6 +1,6 @@
 ---
-title: Recommended Process for Upgrading a TDS
-last_updated: 2020-04-30
+title: Recommended Process For Upgrading A TDS
+last_updated: 2020-08-21
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: upgrade_tds_ref.html
@@ -12,11 +12,11 @@ The reason for this is that Tomcat and other webapp containers have working dire
 
 So, here is the process we follow when we upgrade the TDS on our systems (we use Tomcat, but the process should be similar for other webapp containers):
 
-* Use the Tomcat manager app to un-deploy the TDS
+1. Use the Tomcat manager app to un-deploy the TDS
   * `https://server:port/manager/html/`
-* Shutdown Tomcat
-* Clean up and archive any log files:
+2. Shutdown Tomcat
+3. Clean up and archive any log files:
   * `${tomcat.home}/logs/*`
   * `${tds.content.root.path}/thredds/logs/*`
-* Startup Tomcat
-* Use the Tomcat manager to deploy the new TDS
+4. Startup Tomcat
+5. Use the Tomcat manager to deploy the new TDS

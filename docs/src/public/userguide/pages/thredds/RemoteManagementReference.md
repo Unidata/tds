@@ -1,6 +1,6 @@
 ---
 title: Remote Management Reference
-last_updated: 2020-04-30
+last_updated: 2020-08-21
 sidebar: tdsTutorial_sidebar
 toc: false
 permalink: remote_management_ref.html
@@ -12,13 +12,13 @@ It's very convenient to be able to remotely manage and administer the Tomcat web
 However, remote access to the server introduces potential security problems, so by default these capabilities are not turned on.
 You can run Tomcat and TDS quite successfully by editing the configuration files on the server, and restarting when needed.
 
-Managing a server is difficult and we recommend that you enable remote management.
+Managing a server is difficult, and we recommend that you enable remote management.
 By following the procedures here, you can do so without opening any big security holes.
 However, you must decide this yourself, based on your organization's security policies, and a risk assessment for your server.
 In what follows we try to explain what risks the various options have, as well as we understand them.
 A good compromise may be to do all the work to enable remote management, then turn it on only while actively configuring the server, and turn it off when in production mode.
 
-In any case, we strongly recommend that you also read and follow the guidelines in the <b>Putting TDS Into Production</b> section of this tutorial.
+In any case, we strongly recommend that you also read and follow the guidelines in the [Putting TDS Into Production](tomcat_permissions.html) section of this tutorial.
 
 Follow the [checklist](installation_checklist.html) for more concise and up-to-date configuration instruction.
 
@@ -48,22 +48,26 @@ Note that all 3 of these roles are independent - you can add any, all or none of
 The easiest way to enable or disable remote administration is to change this file and restart Tomcat.
 
 The list of users, their names and passwords, are whatever you want them to be.
-Note that after you get this set up, you can manage users remotely through the administrator interface.
-Note also that before you go into production mode, you should change to using [digest passwords](digested_passwords.html).
+After you get this set up, you can manage users remotely through the administrator interface.
+Before you go into production mode, you **should** change to using [digest passwords](digested_passwords.html).
 
-Note that any changes won't take effect until you restart Tomcat.
+{%include note.html content="
+Remember that any changes to the `tomcat-users.xml` file won't take effect until you restart Tomcat.
+" %}
+
+
 
 **Higher Security**:
 You can also use an LDAP server or a Database to store users and roles, which may give you higher levels of security.
 Use of this feature is beyond the scope of this documentation, however.
 
-## Enable Secure Sockets Layer (SSL)
+## Enable TLS/SSL Encryption
 
-We ensure that no one can intercept and read sensitive information to and from the server (through doing what\'s called network sniffing) by encrypting the information using [SSL/TLS encryption](enable_tls_encryption.html)
+We ensure that no one can intercept and read sensitive information to and from the server (through doing what's called network sniffing) by encrypting the information using [SSL/TLS encryption](enable_tls_encryption.html)
 
 ## TDS Remote Debugging
 
-Once SSL is enabled, you can remotely debug and configure the TDS.
+Once TLS/SSL is enabled, you can remotely debug and configure the TDS.
 You need to login with a user who has the `tdsConfig` role.
 
 Debugging information is available at [http://localhost:8080/thredds/admin/debug](http://localhost:8080/thredds/admin/debug){:target="_blank"}.
