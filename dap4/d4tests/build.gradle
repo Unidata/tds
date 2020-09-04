@@ -8,7 +8,7 @@ dependencies {
   // A lot of these dependencies should be in the testRuntime config, not testCompile.
   testCompile 'edu.ucar:d4core'
   testCompile 'edu.ucar:d4lib'
-  testCompile project(':dap4:d4servlet')
+  testCompile project(':dap4:dap4-servlet')
 
   testCompile(project(':dap4:d4ts')) {
     exclude group: 'org.apache.logging.log4j'
@@ -24,7 +24,7 @@ dependencies {
     exclude group: 'org.apache.logging.log4j'
     exclude group: 'org.apache.taglibs', module: 'taglibs-standard-spec'
     exclude group: 'org.apache.taglibs', module: 'taglibs-standard-impl'
-    exclude group: 'EDS', module: 'threddsIso'
+    exclude group: 'EDS', module: 'tds-plugin'
     exclude group: 'net.sf.saxon', module: 'Saxon-HE'
   }
 

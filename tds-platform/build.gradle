@@ -16,7 +16,7 @@ dependencies {
   api enforcedPlatform('edu.ucar:netcdf-java-bom:5.4.0-SNAPSHOT')
   api enforcedPlatform('org.springframework:spring-framework-bom:5.2.7.RELEASE')
   api enforcedPlatform('org.springframework.security:spring-security-bom:5.3.3.RELEASE')
-  api platform('net.openhft:chronicle-bom:2.19.364')
+  api platform('net.openhft:chronicle-bom:2.20.8')
 
   constraints {
     // dependencies without explicit versions are getting their version set by one of the platforms above
@@ -78,9 +78,6 @@ dependencies {
     // reify
     api 'org.apache.httpcomponents:httpcore:4.4.13'
 
-    // threddsIso
-    runtime "jaxen:jaxen:${depVersion.jaxen}"
-
     // tds
     api 'org.json:json:20180813'
     api 'com.coverity.security:coverity-escapers:1.1.1'
@@ -108,8 +105,9 @@ dependencies {
     api "com.google.gwt:gwt-user:${depVersion.gwt}"
 
     // threddsIso
-    runtime 'EDS:threddsIso:2.4.0-SNAPSHOT'
+    runtime 'EDS:tds-plugin:2.4.0-SNAPSHOT'
     runtime 'net.sf.saxon:Saxon-HE:9.7.0-8'
+    runtime "jaxen:jaxen:${depVersion.jaxen}"
   }
 }
 

@@ -24,8 +24,9 @@ dependencies {
   }
   testCompile project(':testUtil')
   // tds needs threddsIso stuff at runtime
-  runtime 'EDS:threddsIso'
+  runtime 'EDS:tds-plugin'
   runtime 'net.sf.saxon:Saxon-HE'
+  runtime 'jaxen:jaxen'
 
   testRuntime 'edu.ucar:cdm-image'
   testRuntime 'edu.ucar:cdm-radial'
