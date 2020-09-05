@@ -251,7 +251,7 @@ task compileGwt (dependsOn: classes, type: JavaExec) {
       '-extra', extraDir,
   ]
 
-  maxHeapSize = '256M'
+  maxHeapSize = '512M'
 }
 
 war {
