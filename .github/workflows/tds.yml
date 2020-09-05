@@ -19,19 +19,23 @@ jobs:
       - name: Build and test with Gradle
         run: ./gradlew assemble --refresh-dependencies
 
-  tests-adpotopenjdk-hs-8:
-    name: THREDDS Data Server Tests (AdoptOpenJDK-HS 8)
+  tests-adpotopenjdk-hs:
+    name: THREDDS Data Server Tests (AdoptOpenJDK-HS)
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # test against latest 8 and 11
+        java: [ 8, 11 ]
     steps:
       - uses: actions/checkout@v2
-      - name: Fetch latest AdoptOpenJDK 8 (hotspot) built for linux"
-        run: curl -L "https://api.adoptopenjdk.net/v2/binary/releases/openjdk8?openjdk_impl=hotspot&arch=x64&release=latest&type=jdk&os=linux" -o aojdk8-hs.tar.gz
-      - name: Setup Latest AdoptOpenJDK (hotspot) 8
+      - name: Fetch latest AdoptOpenJDK ${{ matrix.java }} (hotspot) built for linux
+        run: curl -L "https://api.adoptopenjdk.net/v2/binary/releases/openjdk${{ matrix.java }}?openjdk_impl=hotspot&arch=x64&release=latest&type=jdk&os=linux" -o aojdk${{ matrix.java }}-hs.tar.gz
+      - name: Setup Latest AdoptOpenJDK (hotspot) ${{ matrix.java }}
         uses: actions/setup-java@master
         with:
-          java-version: 8
+          java-version: ${{ matrix.java }}
           architecture: x64
-          jdkFile: ./aojdk8-hs.tar.gz
+          jdkFile: ./aojdk${{ matrix.java }}-hs.tar.gz
       - name: Print java version
         run: java -version
       - name: Install netCDF-C
@@ -40,10 +44,10 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
+          key: ${{ runner.os }}-${{ matrix.java }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.java }}-gradle
       - name: Build and test with Gradle
-        run: ./gradlew -Dtds.content.root.path=$CONTENT_DIR  -Dtds.download.dir=$DOWNLOAD_DIR -Dtds.upload.dir=$UPLOAD_DIR --info --stacktrace testAll
+        run: ./gradlew -Dtds.content.root.path=$CONTENT_DIR -Dtds.download.dir=$DOWNLOAD_DIR -Dtds.upload.dir=$UPLOAD_DIR --info --stacktrace testAll
         env:
           TRAVIS: 'true'
           CONTENT_DIR: ${{ github.workspace }}/tds/src/test/content
@@ -52,7 +56,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
-          name: tds_JUnit_Results_${{ github.sha }}_AdoptOpenJDK-HS-8
+          name: tds_JUnit_Results_${{ github.sha }}_AdoptOpenJDK-HS-${{ matrix.java }}
           path: build/reports/allTests
 
   tests-adpotopenjdk-hs-8-builders:
