@@ -45,8 +45,11 @@ dependencies {
     api 'org.quartz-scheduler:quartz:2.3.2'
     api 'net.openhft:chronicle-map'
 
-    // Annotations: Nullable
+    // Annotations
+    // Nullable
     api 'com.google.code.findbugs:jsr305'
+    // Resource
+    api 'javax.annotation:javax.annotation-api:1.3.2'
 
     // tds logging
     api 'org.slf4j:slf4j-api'

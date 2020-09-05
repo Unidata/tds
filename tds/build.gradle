@@ -101,6 +101,9 @@ dependencies {
   runtime 'org.glassfish:javax.el'
   annotationProcessor "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
 
+  // @Resource annotation (removed post Java 8)
+  compile 'javax.annotation:javax.annotation-api'
+
   compile 'org.thymeleaf:thymeleaf-spring5'
 
   // Testing
@@ -112,7 +115,6 @@ dependencies {
   testCompile 'com.google.truth:truth'
   testCompile 'junit:junit'
   testCompile project(':testUtil')  // Contains stuff like the JUnit @Category classes.
-
 
   // Logging
   compile 'org.slf4j:slf4j-api'
