@@ -4,6 +4,7 @@
  */
 package thredds.server.wcs;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,6 @@ import thredds.server.config.TdsContext;
 import thredds.server.config.ThreddsConfig;
 import thredds.servlet.*;
 import java.io.*;
-import javax.annotation.PostConstruct;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import ucar.nc2.util.DiskCache2;
@@ -21,7 +21,7 @@ import ucar.nc2.util.DiskCache2;
  */
 @Controller
 @RequestMapping("/wcs")
-public class WCSController {
+public class WCSController implements InitializingBean {
   private static org.slf4j.Logger logServerStartup = org.slf4j.LoggerFactory.getLogger("serverStartup");
 
   @Autowired
@@ -38,8 +38,7 @@ public class WCSController {
     GetCapabilities, DescribeCoverage, GetCoverage
   }
 
-  @PostConstruct
-  public void init() throws ServletException {
+  public void afterPropertiesSet() throws ServletException {
 
     allow = ThreddsConfig.getBoolean("WCS.allow", true);
     logServerStartup.info("WCS:allow= " + allow);

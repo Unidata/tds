@@ -15,10 +15,10 @@ import java.util.Collections;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import thredds.client.catalog.*;
@@ -32,7 +32,7 @@ import ucar.unidata.util.StringUtil2;
 import thredds.server.wms.Godiva3Viewer;
 
 @Component
-public class ViewerServiceImpl implements ViewerService {
+public class ViewerServiceImpl implements ViewerService, InitializingBean {
   private static Logger logger = LoggerFactory.getLogger(ViewerServiceImpl.class);
 
   public static ViewerLinkProvider getStaticView() {
@@ -135,8 +135,7 @@ public class ViewerServiceImpl implements ViewerService {
   }
 
   @SuppressWarnings("unused")
-  @PostConstruct
-  private void registerViewers() {
+  public void afterPropertiesSet() {
     registerViewer(new Godiva3Viewer());
     registerViewer(new StaticView());
     registerViewer(

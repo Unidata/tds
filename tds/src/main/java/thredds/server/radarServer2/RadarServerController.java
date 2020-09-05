@@ -8,6 +8,7 @@ package thredds.server.radarServer2;
 
 import com.google.common.base.Joiner;
 import java.nio.charset.StandardCharsets;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -37,7 +38,6 @@ import ucar.nc2.time.CalendarPeriod;
 import ucar.nc2.units.DateRange;
 import ucar.nc2.units.DateType;
 import ucar.nc2.units.TimeDuration;
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/radarServer")
-public class RadarServerController {
+public class RadarServerController implements InitializingBean {
   Map<String, RadarDataInventory> data;
 
   static final String entryPoint = "radarServer/";
@@ -117,8 +117,7 @@ public class RadarServerController {
     debugHandler.addAction(act);
   }
 
-  @PostConstruct
-  public void init() {
+  public void afterPropertiesSet() {
     enabled = ThreddsConfig.getBoolean("RadarServer.allow", false);
     if (!enabled)
       return;

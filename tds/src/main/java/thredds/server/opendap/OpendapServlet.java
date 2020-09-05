@@ -6,7 +6,6 @@
 package thredds.server.opendap;
 
 import java.nio.charset.StandardCharsets;
-import javax.annotation.PostConstruct;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +18,7 @@ import opendap.dap.*;
 import opendap.dap.parsers.ParseException;
 import opendap.servers.*;
 import opendap.servlet.*;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +46,7 @@ import ucar.nc2.util.EscapeStrings;
  */
 @Controller
 @RequestMapping("/dodsC")
-public class OpendapServlet extends AbstractServlet {
+public class OpendapServlet extends AbstractServlet implements InitializingBean {
 
   static public org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(OpendapServlet.class);
   static org.slf4j.Logger logServerStartup = org.slf4j.LoggerFactory.getLogger("serverStartup");
@@ -66,8 +66,7 @@ public class OpendapServlet extends AbstractServlet {
 
   private boolean debugSession = false;
 
-  @PostConstruct
-  public void init() throws javax.servlet.ServletException {
+  public void afterPropertiesSet() throws javax.servlet.ServletException {
     // super.init();
 
     logServerStartup.info(getClass().getName() + " initialization start");
