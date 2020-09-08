@@ -5,6 +5,7 @@
 
 package thredds.core;
 
+import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,7 +18,6 @@ import thredds.server.catalog.tracker.DataRootExt;
 import thredds.server.config.TdsContext;
 import thredds.util.filesource.FileSource;
 import ucar.nc2.util.AliasTranslator;
-import javax.annotation.Resource;
 import java.io.File;
 import java.util.*;
 

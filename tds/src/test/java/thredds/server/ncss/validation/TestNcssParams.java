@@ -28,7 +28,7 @@ public class TestNcssParams {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     validator = factory.getValidator();
 
-    Class c = resolver.getClass();
+    Class c = NcssGridParamsBean.class;
     InputStream is = c.getResourceAsStream("/ValidationMessages.properties");
     if (is != null) {
       try {

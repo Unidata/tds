@@ -4,6 +4,7 @@
  */
 package thredds.server.admin;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,6 @@ import thredds.server.catalog.tracker.DatasetTracker;
 import thredds.server.catalog.tracker.DatasetTrackerNoop;
 import thredds.server.config.TdsContext;
 import thredds.util.ContentType;
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 /**
@@ -28,7 +28,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping(value = {"/admin/trigger"})
-public class AdminTriggerController {
+public class AdminTriggerController implements InitializingBean {
   private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AdminTriggerController.class);
 
   @Autowired
@@ -40,7 +40,6 @@ public class AdminTriggerController {
   @Autowired
   private ConfigCatalogInitialization catInit;
 
-  @PostConstruct
   public void afterPropertiesSet() {
 
     DebugCommands.Category debugHandler = debugCommands.findCategory("Catalogs");

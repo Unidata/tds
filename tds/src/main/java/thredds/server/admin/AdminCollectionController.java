@@ -9,7 +9,6 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.coverity.security.Escape;
@@ -19,6 +18,7 @@ import com.google.common.net.UrlEscapers;
 import org.quartz.JobKey;
 import org.quartz.TriggerKey;
 import org.quartz.impl.matchers.GroupMatcher;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -52,7 +52,7 @@ import ucar.unidata.util.StringUtil2;
  */
 @Controller
 @RequestMapping(value = {"/admin/collection"})
-public class AdminCollectionController {
+public class AdminCollectionController implements InitializingBean {
   private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AdminCollectionController.class);
 
   private static final String PATH = "/admin/collection";
@@ -83,7 +83,6 @@ public class AdminCollectionController {
   @Autowired
   CollectionUpdater collectionUpdater;
 
-  @PostConstruct
   public void afterPropertiesSet() {
     Escaper urlParamEscaper = UrlEscapers.urlFormParameterEscaper();
 
