@@ -16,12 +16,20 @@ apply from: "$rootDir/gradle/any/properties.gradle"
 apply plugin: 'org.gretty'
 apply plugin: 'jacoco'
 
+// allow servlet container to be configured by setting a system property
+// default to tomcat 8.5.x
+def servletContainerName = System.getProperty('tds.test.gretty.container')
+if (servletContainerName == null || servletContainerName.isEmpty()) {
+  servletContainerName = 'tomcat85'
+}
+
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
 import org.akhikhl.gretty.GradleUtils
 import org.akhikhl.gretty.AppStartTask
 
 gretty {
-  servletContainer = 'tomcat85'  // All webapps run on Tomcat 8.5.x
+  // servlet container configurable using system property
+  servletContainer "$servletContainerName"
 
   // Pass filtered system properties to the embedded Tomcat that Gretty will launch.
   systemProperties addFilteredSysProps([:])
@@ -72,4 +80,11 @@ gretty {
       }
     }
   }
+}
+
+configurations.runtimeClasspath {
+  // When gretty uses tomcat 9, javax.servlet-api gets added to the runtimeClasspath of the projects
+  // to which the plugin is applied. This makes sure we exclude it, which keeps it from getting included
+  // with our war artifacts.
+  exclude group: 'javax.servlet', module: 'javax.servlet-api'
 }

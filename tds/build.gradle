@@ -107,7 +107,7 @@ dependencies {
   compile 'org.thymeleaf:thymeleaf-spring5'
 
   // Testing
-  //providedCompile 'javax.servlet:javax.servlet-api'
+  testCompile "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"
   testCompile 'org.springframework:spring-test'
   testCompile 'org.hamcrest:hamcrest-core'
   testCompile 'commons-io:commons-io'
@@ -340,7 +340,7 @@ task "after${taskName.capitalize()}"(type: AppAfterIntegrationTestTask, group: "
 }
 
 configurations.all {
-  // STAX is already included in Java 1.6+; no need for a third-party depenency.
+  // STAX is already included in Java 1.6+; no need for a third-party dependency.
   /*
     ./gradlew -q tds:dependencyInsight --configuration runtime --dependency stax-api
     stax:stax-api:1.0.1
