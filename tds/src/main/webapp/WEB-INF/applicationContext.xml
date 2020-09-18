@@ -42,6 +42,10 @@
            requestQueryFilterAllowAngleBrackets,
            requestCORSFilter,
            requestBracketingLogMessageFilter"/>
+                <security:filter-chain pattern="/fileServer/**" filters="
+           requestQueryFilter,
+           requestCORSFilter,
+           requestBracketingLogMessageFilter"/>
                 <security:filter-chain pattern="/**" filters="
            httpHeadFilter,
            requestQueryFilter,

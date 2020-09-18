@@ -125,7 +125,7 @@ public class HttpHeadFilter implements Filter {
      * Sets the content length, based on what has been written to the outputstream so far.
      */
     void setContentLength() {
-      super.setContentLength(noBodyOutputStream.getContentLength());
+      super.setContentLengthLong(noBodyOutputStream.getContentLength());
     }
   }
 
@@ -136,12 +136,12 @@ public class HttpHeadFilter implements Filter {
     /**
      * The number of bytes written to this stream so far.
      */
-    private int contentLength = 0;
+    private long contentLength = 0;
 
     /**
      * @return The number of bytes written to this stream so far.
      */
-    int getContentLength() {
+    long getContentLength() {
       return contentLength;
     }
 
