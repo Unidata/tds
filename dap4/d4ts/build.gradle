@@ -8,7 +8,7 @@ dependencies {
     compile 'edu.ucar:d4core'
     compile 'edu.ucar:d4lib'
     compile project(":dap4:dap4-servlet")
-    compileOnly "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"
+    providedCompile "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"
 
     compile 'org.slf4j:slf4j-api'
 

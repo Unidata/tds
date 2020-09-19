@@ -32,6 +32,8 @@ jobs:
         java: [ 8, 11, 14 ]
         # test against both old and new netCDF-Java api
         ncjnewapi: ['false', 'true']
+        # test against tomcat 8.5.x and tomcat 9.x
+        servletcontainer: [ 'tomcat85', 'tomcat9' ]
     steps:
       - uses: actions/checkout@v2
       - name: Fetch latest Adoptium JDK ${{ matrix.java }} (hotspot) built for linux
@@ -52,8 +54,8 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-${{ matrix.java }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-${{ matrix.java }}-gradle
-      - name: Build and test with Gradle
-        run: ./gradlew -Dtds.content.root.path=$CONTENT_DIR -Dtds.download.dir=$DOWNLOAD_DIR -Dtds.upload.dir=$UPLOAD_DIR -Dthredds.test.experimental.useNetcdfJavaBuilders=${{ matrix.ncjnewapi }} --info --stacktrace testAll
+      - name: Build and test with Gradle (${{ matrix.servletcontainer }})
+        run: ./gradlew -Dtds.content.root.path=$CONTENT_DIR -Dtds.download.dir=$DOWNLOAD_DIR -Dtds.upload.dir=$UPLOAD_DIR -Dthredds.test.experimental.useNetcdfJavaBuilders=${{ matrix.ncjnewapi }} -Dtds.test.gretty.container=${{ matrix.servletcontainer }} --info --stacktrace testAll
         env:
           TRAVIS: 'true'
           CONTENT_DIR: ${{ github.workspace }}/tds/src/test/content
@@ -62,7 +64,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
-          name: tds_JUnit_Results_${{ github.sha }}_AdoptOpenJDK-HS-${{ matrix.java }}-newApi-${{ matrix.ncjnewapi }}
+          name: tds_JUnit_Results_${{ github.sha }}_AdoptOpenJDK-HS-${{ matrix.java }}-newApi-${{ matrix.ncjnewapi }}-${{ matrix.servletcontainer }}
           path: build/reports/allTests
 
   spotless:
