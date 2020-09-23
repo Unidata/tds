@@ -3,7 +3,7 @@
 
 entries:
 - title: Sidebar
-  product: TDS Tutorial And Reference Documentation
+  product: TDS Administrator's Guide
   version: 5.0
   folders:
 
@@ -19,7 +19,7 @@ entries:
       url: /tocpage
       output: pdf
       type: frontmatter
-  - title: Getting Started With The TDS
+  - title: Installation and Upgrading
     output: web, pdf
     folderitems:
 
@@ -54,7 +54,7 @@ entries:
       url: /tomcat_manager_app.html
       output: web, pdf
 
-  - title: Client Catalogs
+  - title: TDS Overview & Structure
     output: web, pdf
     folderitems:
     - title: Basic Client Catalog Primer
@@ -85,7 +85,7 @@ entries:
       url: /client_catalog_via_toolsUI.html
       output: web, pdf
 
-  - title: TDS Configuration
+  - title: Configuration
     output: web, pdf
     folderitems:
     - title: TDS Content Directory
@@ -135,62 +135,6 @@ entries:
       url: /using_the_tdsmonitor_tool.html
       output: web, pdf
 
-  - title: netCDF Markup Language (NcML)
-    output: web, pdf
-    folderitems:
-    - title: Basic NcML Tutorial
-      external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html
-      output: web, pdf
-
-    - title: NcML Aggregation
-      external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/ncml_aggregation.html
-      output: web, pdf
-
-    - title: Using NcML In The TDS
-      url: /using_ncml_in_the_tds.html
-      output: web, pdf
-
-    - title: Basic NcML Examples
-      url: /basic_ncml_examples.html
-      output: web, pdf
-
-    - title: NcML Aggregation Examples
-      url: /ncml_aggregation_examples.html
-      output: web, pdf
-
-  - title: Feature Collections
-    output: web, pdf
-    folderitems:
-    - title: Overview
-      url: /feature_collections_ref.html
-      output: web, pdf
-
-    - title: GRIB Feature Collections
-      url: /grib_feature_collections_ref.html
-      output: web, pdf
-
-    - title: GRIB Feature Collection Tutorial
-      url: /grib_feature_collections.html
-      output: web, pdf
-
-    - title: Forecast Model Run Collections (FMRC)
-      url: /fmrc_ref.html
-      output: web, pdf
-
-    - title: FMRC Tutorial
-      url: /fmrc_tutorial.html
-      output: web, pdf
-
-  - title: Metadata
-    output: web, pdf
-    folderitems:
-    - title: THREDDS Metadata
-      url: /thredds_metadata.html
-      output: web, pdf
-
-    - title: ISO Metadata Generation - ncIso
-      url: /iso_metadata.html
-      output: web, pdf
 
   - title: Putting TDS Into Production
     output: web, pdf
@@ -267,7 +211,7 @@ entries:
       url: /tds_grib_faq.html
       output: web, pdf      
 
-  - title: Reference Guide
+  - title: Reference
     output: web, pdf
     folderitems:
 

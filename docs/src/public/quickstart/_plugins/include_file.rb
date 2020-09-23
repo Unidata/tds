@@ -10,7 +10,7 @@ module Jekyll
         tmpl = File.read File.join Dir.pwd, @text
       else
         # running jekyll using gradle
-        tmpl = File.read File.join Dir.pwd, 'src/public/userguide/', @text
+        tmpl = File.read File.join Dir.pwd, 'src/public/quickstart/', @text
       end
       # simply return the text, as is, from the file
       tmpl
