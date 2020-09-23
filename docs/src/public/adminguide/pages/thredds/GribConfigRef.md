@@ -1,7 +1,7 @@
 ---
 title: GRIB Collection Configuration Specification
 last_updated: 2020-08-26
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: grib_collection_config_ref.html
 ---

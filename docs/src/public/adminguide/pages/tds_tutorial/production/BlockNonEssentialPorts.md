@@ -1,7 +1,7 @@
 ---
 title: Block Non-Essential Port Access At The Firewall
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: block_nonessential_ports.html
 ---

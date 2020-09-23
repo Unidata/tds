@@ -1,7 +1,7 @@
 ---
 title: Using The TdsMonitor Tool
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: using_the_tdsmonitor_tool.html
 ---

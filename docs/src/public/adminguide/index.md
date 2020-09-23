@@ -1,7 +1,7 @@
 ---
 title: TDS Online Tutorial
 last_updated: 2020-04-01
-sidebar: tdsTutorial_sidebar 
+sidebar: /userguideorial_sidebar 
 permalink: index.html
 toc: false
 ---

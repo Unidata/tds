@@ -1,7 +1,7 @@
 ---
 title: Troubleshooting Problems
 last_updated: 2020-08-25
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: troubleshooting_problems.html
 ---

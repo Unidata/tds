@@ -1,7 +1,7 @@
 ---
 title: Remote Management Reference
 last_updated: 2020-08-21
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: remote_management_ref.html
 ---
