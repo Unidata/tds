@@ -22,6 +22,7 @@ buildscript {
     classpath buildPlugins.spotless
     classpath buildPlugins.grgit
     classpath buildPlugins.protobuf
+    classpath buildPlugins.jruby
   }
 }
 

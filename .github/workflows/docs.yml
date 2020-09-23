@@ -23,10 +23,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Build docs using Gradle
-        run: ./gradlew buildJekyllSite
+        run: ./gradlew buildAllJekyllSites
       - uses: actions/upload-artifact@v2
         if: success()
         name: Upload a preview of the rendered html
         with:
           name: documentation_${{ github.sha }}
-          path: docs/build/userguide
+          path: docs/build/jekyll
