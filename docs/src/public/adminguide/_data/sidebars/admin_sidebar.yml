@@ -3,9 +3,8 @@
 
 entries:
 - title: Sidebar
-  product: TDS Administrator's Guide
+  product: Administrator's Guide
   folders:
-
   - title:
     output: pdf
     type: frontmatter
@@ -18,13 +17,10 @@ entries:
       url: /tocpage
       output: pdf
       type: frontmatter
+
   - title: Installation and Upgrading
     output: web, pdf
     folderitems:
-
-    - title: TDS Overview
-      url: /index.html
-      output: web, pdf
     - title: Installing Java And Tomcat
       url: /install_java_tomcat.html
       output: web, pdf
