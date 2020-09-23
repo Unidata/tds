@@ -1,7 +1,7 @@
 ---
-title: TDS Online Tutorial
+title: TDS Administrator's Guide
 last_updated: 2020-04-01
-sidebar: /userguideorial_sidebar 
+sidebar: admin_sidebar 
 permalink: index.html
 toc: false
 ---
@@ -10,13 +10,17 @@ toc: false
 
 The overarching goal of Unidata's Thematic Real-time Environmental Distributed Data Services (THREDDS) project is to provide students, educators and researchers with coherent access to a large collection of real-time and archived datasets from a variety of environmental data sources at a number of distributed server sites.
 
-## What is the THREDDS Data Server (TDS)?
+## Intended Audience
 
-The THREDDS Data Server (TDS) is a web server that provides metadata and data access for scientific datasets, using OPeNDAP, OGC WMS and WCS, HTTP, and other remote data access protocols.
-The TDS is developed and supported by Unidata, a division of the University Corporation for Atmospheric Research (UCAR), and is sponsored by the National Science Foundation.
+* People who install and/or maintain the TDS
+* People who modify TDS configurations
+* People who modify existing catalogs in ${tds.content.root.path}/thredds/
 
+Assumption: Users of this guide do NOT have prior knowledge of Unidata jargon, meteorology, netCDF, TDS, etc.
 Some of the technology in the TDS:
 
+
+## sdsad
 * THREDDS [Dataset Inventory Catalogs](basic_config_catalog.html) are used to provide virtual directories of available data and their associated metadata. 
   These catalogs can be generated dynamically or statically.
 * The [Netcdf-Java/CDM library](https://www.unidata.ucar.edu/software/netcdf-java/){:target="_blank"} reads NetCDF, OpenDAP, and HDF5 datasets, as well as other binary formats such as GRIB and NEXRAD into a Common Data Model (CDM), essentially an (extended) netCDF view of the data.
@@ -45,5 +49,3 @@ You are welcome to browse and access these meteorological datasets.
 If you need regular access to large amounts of data, please contact <support-idd@unidata.ucar.edu>.
 
 As of version 5.0, the TDS is released under the BSD-3 licence, which can be found can be found [here](https://github.com/Unidata/tds/blob/master/LICENSE){:target="_blank"}.
-
-For information on how to cite the TDS, please visit <https://www.unidata.ucar.edu/community/index.html#acknowledge>
