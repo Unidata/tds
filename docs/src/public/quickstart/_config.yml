@@ -2,10 +2,10 @@
 output: web
 # this property is useful for conditional filtering of content that is separate from the PDF.
 
-topnav_title: THREDDS Data Server Documentation
+topnav_title: THREDDS Data Server (TDS)
 # this appears on the top navigation bar next to the home button
 
-site_title: THREDDS Data Server Documentation
+site_title: TDS Quick Start Guide
 # this appears in the html browser tab for the site title (seen mostly by search engines, not users)
 
 site_topic: THREDDS Data Server
@@ -74,7 +74,7 @@ defaults:
       layout: "page"
       comments: true
       search: true
-      sidebar: project_sidebar
+      sidebar: quickstart_sidebar
   -
     scope:
       path: ""
@@ -93,18 +93,17 @@ defaults:
       layout: "post"
       comments: true
       search: true
-      sidebar: project_sidebar
+      sidebar: quickstart_sidebar
 
 # these are defaults used for the frontmatter for these file types
 
 sidebars:
-- project_sidebar
-- tdsTutorial_sidebar
+- quickstart_sidebar
 
 description: "This is a documentation site for the netCDF-Java and THREDDS Data Server (TDS) technologies, which are part of the THREDDS Project."
 # the description is used in the feed.xml file
 
 # needed for sitemap.xml file only
-url: www.unidata.ucar.edu
+url: https://docs.unidata.ucar.edu/tds/
 
 google_analytics: UA-92978945-1
