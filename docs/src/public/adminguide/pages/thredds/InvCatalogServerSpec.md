@@ -1,7 +1,7 @@
 ---
 title: Server-Side Catalog Specification
 last_updated: 2020-08-21
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: server_side_catalog_specification.html
 ---

@@ -1,7 +1,7 @@
 ---
 title: Tomcat Configuration Files
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: tomcat_configuration_files.html
 ---

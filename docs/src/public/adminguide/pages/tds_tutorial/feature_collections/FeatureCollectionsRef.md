@@ -1,7 +1,7 @@
 ---
 title: Feature Collections
 last_updated: 2020-08-26
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: feature_collections_ref.html
 ---

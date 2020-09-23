@@ -1,7 +1,7 @@
 ---
 title: Configuration Catalogs
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: config_catalog.html
 ---

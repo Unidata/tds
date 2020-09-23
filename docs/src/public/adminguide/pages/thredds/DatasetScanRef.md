@@ -1,7 +1,7 @@
 ---
 title: Configuring TDS With DatasetScan
 last_updated: 2020-08-21
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: tds_dataset_scan_ref.html
 ---

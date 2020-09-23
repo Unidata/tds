@@ -1,7 +1,7 @@
 ---
 title: TDS Web Map Service (WMS)
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: wms_ref.html
 ---

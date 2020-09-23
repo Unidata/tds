@@ -1,7 +1,7 @@
 ---
 title: TDS And `ncISO` - Metadata Services
 last_updated: 2020-08-26
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: iso_metadata.html
 ---

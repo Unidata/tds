@@ -1,7 +1,7 @@
 ---
 title: Enable TLS/SSL Encryption
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: enable_tls_encryption.html
 ---
