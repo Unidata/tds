@@ -19,7 +19,7 @@
                 {% for entry in site.data.topnav.topnav %}
                 {% for item in entry.items %}
                 {% if item.external_url %}
-                <li><a href="{{item.external_url}}" target="_blank">{{item.title}}</a></li>
+                <li><a href="{{item.external_url | replace: "/netcdf-java/current/", netcdf-java_doc_replace  }}" target="_blank">{{item.title}}</a></li>
                 {% elsif page.url contains item.url %}
                 <li class="active"><a href="{{item.url | remove: "/"}}">{{item.title}}</a></li>
                 {% else %}
@@ -36,7 +36,7 @@
                     <ul class="dropdown-menu">
                         {% for folderitem in folder.folderitems %}
                         {% if folderitem.external_url %}
-                        <li><a href="{{folderitem.external_url}}" target="_blank">{{folderitem.title}}</a></li>
+                        <li><a href="{{folderitem.external_url | replace: "/netcdf-java/current/", netcdf-java_doc_replace  }}" target="_blank">{{folderitem.title}}</a></li>
                         {% elsif page.url contains folderitem.url %}
                         <li class="dropdownActive"><a href="{{folderitem.url |  remove: "/"}}">{{folderitem.title}}</a></li>
                         {% else %}
