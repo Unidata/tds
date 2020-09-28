@@ -1,5 +1,5 @@
 ---
-title: Customizing The TDS Look And Feel
+title: Customizing the TDS Look and Feel
 last_updated: 2020-08-24
 sidebar: tdsTutorial_sidebar
 toc: false
@@ -7,19 +7,21 @@ permalink: customizing_tds_look_and_feel.html
 ---
 
 TDS provides a extensible and customizable user interface using [Thymeleaf](https://www.thymeleaf.org/){:target="_blank"} Java template engine.
-The pages which currently support customization are:
+The HTML pages which currently support customization are:
  * Catalog
  * Dataset access
 
-UI customization can be implemented through the contribution of both CSS stylesheets and Thymeleaf HTML templates.
-Additionally, TDS administrators may register Jupyter Notebooks as dataset viewers using the Jupyter Notebook service.
+UI customization can be implemented through the contribution of [CSS stylesheets](customizing_tds_look_and_feel.html#css-stylesheets) 
+and [Thymeleaf HTML templates](customizing_tds_look_and_feel.html#thymeleaf-templates).
+To promote the accessibility and usability of dataset, TDS administrators may register Jupyter Notebooks as dataset viewers 
+using the [Jupyter Notebook service](customizing_tds_look_and_feel.html#jupyter-notebooks).
 
 ## CSS Stylesheets
 
-To customize TDS using CSS, custom CSS documents should be placed inside the `${tds.content.root.path}/thredds/public` directory.
+To customize the TDS using CSS, contributed CSS documents should be placed inside the `${tds.content.root.path}/thredds/public` directory.
 
-TDS is configured to use the CSS documents supplied in the `public` directory in `threddsConfig.xml`.
-There are three properties within the `htmlSetup` element used to define stylesheets:
+By default, the TDS is configured to use several CSS documents supplied in the `public` directory in `threddsConfig.xml`.
+There are four properties within the `htmlSetup` element used to define stylesheets:
 
 ~~~xml
 <htmlSetup>
@@ -30,28 +32,31 @@ There are three properties within the `htmlSetup` element used to define stylesh
 </htmlSetup>
 ~~~
 
-CSS documents given for `catalogCssUrl` and `datasetCssUrl` elements will be applied on the Catalog and Dataset
-access HTML pages, respectively.
-A CSS document supplied to `standardCssUrl` will be used in all generated HTML pages.
-The OPeNDAP HTML form is treated special -- the only CSS document applied to this page is defined by the `openDapCssUrl` element.
+To override HTML style default the TDS, replace any or all of the standard stylsheets with your own.
+Each property is responsible for style on a set of HTML pages:
+* `standardCssUrl`: styles are applied on all generated HTML pages (except the OPeNDAP HTML form)
+* `catalogCssUrl`: styles are applied only on Catalog HTML pages
+* `datasetCssUrl`: styles are applied only on Dataset access HTML pages
+* `openDapCssUrl`: styles are applied only on the OPeNDAP HTML form; unlike other pages, this is the only CSS document applied on the page
 
 ## Thymeleaf Templates
 
-When TDS is deployed, a `templates` directory is created within the main `content` directory (`tds.content.root.path`).
-The Thymeleaf template resolver used by TDS will search this directory for user-supplied template fragments each time
-a customizable HTML page is requested.
+When the TDS is deployed, a `templates` directory is created within the main `content` directory (`tds.content.root.path`).
+Each time a customizable HTML page is requested (Catalog or Dataset), the Thymeleaf template resolver will search this directory
+for user-supplied template fragments.
 
 Pages are customizable at plug-in points defined by the tag `ext:`, which instructs the template resolver to look for
-externally supplied template fragments. 
-Some of the plug-in points provide defaults when no user-supplied template is available (such as the main TDS header and footer, whereas other plug-in allow for additional content. 
+externally supplied template fragments.  
+Some of the plug-in points provide defaults when no user-supplied template is available (such as the main TDS header and footer, 
+whereas other plug-in allow for additional content. 
 See the [Thymeleaf documentation](https://www.thymeleaf.org/doc/articles/layouts.html){:target="_blank"} for an overview of natural templating using Thymeleaf and fragments. 
-A full list of current plug-in points for user-supplied fragments can be found in the following sections.
+A full list of currently supported plug-in points for user-supplied fragments can be found in the following sections.
 
-### Overwriting A Default
+### Overwriting a default
 
 To contribute a template fragment, place the `fragment` element in `templates/tdsTemplateFragments.html`.
 
-#### Example: Overwriting The Default Header
+#### Example: overwriting the default header
 
 Add the following to the 'template/tdsTemplateFragments.html' file:
 
@@ -60,20 +65,18 @@ Add the following to the 'template/tdsTemplateFragments.html' file:
 ~~~
 
 The templating system will automatically attach default TDS CSS properties to custom headers and footers.
-To avoid this behavior, users must provide their own overrides through custom stylesheets.
+To avoid this behavior, users must provide their own overrides through [custom stylesheets](customizing_tds_look_and_feel.html#css-stylesheets).
 
-Current default fragments which may be overridden are:
+Current default fragments which allow overrides are:
   * `header`
   * `footer`
 
-### Contributing Additional Content Sections
+### Contributing additional content sections
 
-Additional content sections may be contributed the same way as overridable defaults, but will only render as HTML element
-if a user-contributed template fragment is found.
+Users may contribute additional content sections the same way as overridable defaults; unlike sections with default content, i.e. headers and footers), 
+additional content sections are optional and will only render as HTML elements if a user-contributed template fragment exists.
 
-#### Example: Adding Content To The Bottom Of The Catalog
-
-
+#### Example: adding content to the bottom of the Catalog
 
 Add the following to the 'template/tdsTemplateFragments.html' file:
 
@@ -83,9 +86,9 @@ Add the following to the 'template/tdsTemplateFragments.html' file:
 </div>
 ~~~
 
-#### Example: Contributing Multiple Fragments
+#### Example: contributing multiple fragments
 
-Add the following to the 'template/tdsTemplateFragments.html' file:
+To add multiple fragments to a customizable section, add the following to the 'template/tdsTemplateFragments.html' file:
 
 ~~~html
 <div th:fragment="datasetCustomContentBottom">
@@ -101,19 +104,20 @@ And, in the `templates/additionalFragments/myFragments.html` file:
     <div th:fragment="mySectionContent" class="section-content">Your contributed content here.</div>
 ~~~
 
-We have defined our own fragments in a separate file, `myFragments.html`. 
-Fragments which correspond to a plug-in point, such as `catalogCustomContentTop` must be within the file `tdsTemplateFragments`, however the main fragments may reference paths to other template files by using the `ext:` tag.
+In the example above, we have defined our own fragments in a separate file, `myFragments.html`. 
+Fragments which correspond to a plug-in point, such as `catalogCustomContentTop` must be within the file `tdsTemplateFragments`, 
+however main fragments may reference paths to unlimited other template files by using the `ext:` tag.
 
-Note: The classes `section-header` and `section-content` apply the default TDS style for content panes.
+*Note:* The classes `section-header` and `section-content` apply the default TDS style for content panes.
 
-Current contributable sections are:
+Currently supported contributable sections are:
 
   * `catalogCustomContentTop` - additional content placed at the top of catalog pages.
   * `catalogCustomContentBottom` - additional content placed at the bottom of catalog pages.
   * `datasetCustomContentBottom` - additional content placed at the bottom of dataset access pages.
 
-### Contributing Additional Content Tabs
-Contributing tabbed content requires two fragments, one for the tab button and another for the content.
+### Contributing additional content tabs
+Contributing tabbed content requires two fragments, one for the *tab button* and another for the *content*.
 Each tab button must implement the click event handler `switchTab(buttonElement, contentElementId, groupId)`.
 
 #### Example
@@ -136,17 +140,16 @@ In the above example, the `tab-button` and `tab-content` classes apply the same 
 default tabs. 
 The `info` class groups the contributed tabs with the other tabs in the information tab pane.
 To group a contributed tab with the access tab pane, use the `access` class.
-Note: Multiple custom tabs may be contributed by grouping them within the fragment tags.
+*Note:* Multiple custom tabs may be contributed by grouping them within the fragment tags.
 
 Current contributable tabs are:
 
   * `customAccessTabButtons/customAccessTabContent` - adds tabs to the tab pane holding the "Access" and "Preview" views.
   * `customInfoTabButtons/customInfoTabContent` - adds tabs to the tab pane holding view with information about the dataset.
 
-### Using TDS Properties In Contributed Templates
+### Accessing TDS properties in custom templates
 Information from the server is passed to the templated pages through a data model. 
-The properties made available to
-the template parser are:
+The properties made available to the template parser are:
 
 ~~~java
 {
@@ -167,7 +170,8 @@ the template parser are:
 }
 ~~~
 
-Additionally, the catalog page is passed the properties `boolean rootCatalog`, which is set to `true` only on the top-level catalog page, and `List<CatalogItemContext> items`, a set of items in the Catalogdefined as `CatalogItemContext` data contracts:
+Additionally, the catalog page is passed the properties `boolean rootCatalog`, which is set to `true` only on the top-level catalog page, 
+and `List<CatalogItemContext> items`, a set of items in the Catalog defined as `CatalogItemContext` data contracts:
 
 ~~~java
 class CatalogItemContext {
@@ -215,7 +219,7 @@ class DatasetContext {
 
   List<Map<String, String>> getVariables();
 
-  String getVaraiableMapLink();
+  String getVariableMapLink();
 
   Map<String, Object> getGeospatialCoverage();
 
@@ -233,7 +237,7 @@ class DatasetContext {
 }
 ~~~
 
-#### Example: Dataset View
+#### Example: Dataset view
 
 Add a section to a dataset view which links to the host institution site and displays a table of all properties returned by `getAllContext()`.
 
@@ -253,28 +257,27 @@ Add the following to the 'template/tdsTemplateFragments.html' file:
 </div>
 ~~~
 
-### Adding TDS Properties To Templates
+### Contributing to the TDS: adding accessible properties
 
 Don't see what you're looking for?
 If the properties exposed to the template parser do not meet your needs, you are encouraged to update the above data models by submitting a pull request to
-[https://github.com/Unidata/thredds](https://github.com/Unidata/thredds){:target="_blank"}. 
+the [Unidata TDS GitHub repository](https://github.com/Unidata/tds){:target="_blank"}. 
 The data models are defined and populated in
-[`CatalogViewContextParser.java`](https://github.com/Unidata/thredds/blob/5.0.0/tds/src/main/java/thredds/server/catalogservice/CatalogViewContextParser.java){:target="_blank"}.
+[`CatalogViewContextParser.java`](https://github.com/Unidata/tds/blob/master/tds/src/main/java/thredds/server/catalogservice/CatalogViewContextParser.java){:target="_blank"}.
 
 ## Jupyter Notebooks
 
 ### About
-The goal of the Jupyter Notebook service is to provide an method of interacting with and visualizing TDS datasets without
+The goal of the *Jupyter Notebook service* is to provide a method of interacting with and visualizing TDS datasets without
 large data transfers. 
-When the Notebook service is enabled, requests to the service will return a Notebook (`ipynb` file) which demos accessing the requested dataset via [Siphon](https://unidata.github.io/siphon/latest/api/){:target="_blank"}. 
-Notebook files may be viewed in Jupyter Notebook or JupyterLab and edited by the end user to explore capabilities of the dataset and Siphon.
+When the Notebook service is enabled, the service provides a list of available Notebooks the demo access to requested dataset via [Siphon](https://unidata.github.io/siphon/latest/api/){:target="_blank"}. 
+The service returns requested Notebooks as `ipynb` files, which may be viewed in Jupyter Notebook or JupyterLab and edited by the end user to 
+explore capabilities of the dataset and Siphon.
+
+Read more about Jupyter Notebooks [here](https://jupyter-notebook.readthedocs.io/en/stable/).
 
 ### Enable/Disable Notebook Service
-By default, the Jupyter Notebook service is enabled. 
-If no contributed Notebook viewers are found, the TDS will supply a default viewer for accessing all datasets in the system. 
-This default can be found in `notebooks/jupyter_viewer.ipynb` in the content directory.
-
-To disable the Notebook service, add the following property to `threddsConfig.xml`:
+By default, the Jupyter Notebook service is enabled. To disable the Notebook service, add the following property to `threddsConfig.xml`:
 
 ~~~xml
   <JupyterNotebookService>
@@ -292,46 +295,98 @@ To configure the Notebook service, add the following properties to `threddsConfi
   </JupyterNotebookService>
 ~~~
 
-Where `<maxAge>` defines how long a mapping between a dataset and a Notebook should be stored after the last access, and `<maxFile>` defines the maximum number of mapping which can be stored at one time.
+Where `<maxAge>` defines how long a mapping between a dataset and a Notebook should be stored after the last access, and `<maxFiles>` defines the maximum number of mappings which can be stored at one time.
+The TDS provides some default Notebook viewers, which can be 
 
-### Contribute Notebooks
-  * To add a Notebook viewers to the TDS Notebook service, place `ipynb` files in the `notebooks` folder within the
-  content directory. 
-  (Note: To register new Notebook viewers, the server must be restarted with the new files in the
- notebook directory, TDS will not process new Notebooks while active.)
-  * To map a Notebook viewer to a subset of datasets, include the following in the Notebook's metadata:
+### Using the Notebooks Service
 
-~~~
-  "metadata": {
-  ...
-    "viewer_info": {
-      "accept_datasetIDs": [],
-      "accept_catalogs": [],
-      "accept_dataset_types": [],
-      "accept_all" : false,
-      "order": 1
-    }
-  }
-~~~
+#### Accessing Notebooks through a browser
 
-All `viewer_info` properties are optional. 
-Multiple properties may be used to register a single Notebook.
+All Notebooks viewers that are valid for a given dataset can be accessed though the Dataset HTML page under the "Preview" tab.
 
-* `accept_datasetIDs` - Accepts a list of dataset IDs for which the Notebook is valid.
-* `accept_catalogs` - Accepts a list of catalog names or URLs which contain datasets for which the Notebook is valid.
-* `accept_dataset_types`: Accepts a list of  feature types for which the Notebook is valid (e.g. Grid, Point).
-* `accept_all` - If true, indicates the Notebook is valid for all datasets.
-* `order` - In the case that more than one Notebook is valid for a given dataset, `order` will be used to determine
-which Notebook is returned.
+#### Accessing Notebooks via code
 
-If no `viewer_info` is included in the Notebook metadata, the following default will be supplied:
+Two public endpoints are available in the Notebook service:
+* Get all valid viewers for a dataset: {hostURL}/thredds/notebook/{datasetID}?catalog={catalogURL}
+    * e.g. https://mysite.edu/thredds/notebook/mydataset?catalog=catalog.xml
+* Download a selected viewer: {hostURL}/thredds/notebook/{datasetID}?catalog={catalogURL}&filename={filename}
+    * e.g. https://mysite.edu/thredds/notebook/mydataset?catalog=catalog.xml&filename=jupyter_viewer.ipynb
+
+### Custom Notebooks
+To add a Notebook viewers to the TDS Notebook service, place `ipynb` files in the `notebooks` folder within the content directory. 
+(*Note*: To register new Notebook viewers, the server must be restarted with the new files in the notebook directory, 
+TDS will not process new Notebooks while active.)
+
+Notebook viewer properties are set by adding a `viewer_info` property to the Notebooks metadata block:
 
 ~~~
   "metadata": {
   ...
     "viewer_info": {
-      "accept_all" : true,
-      "order": INT_MAX
+    ...
     }
   }
 ~~~
+
+The Notebook services checks for two viewer properties: `description` and `accepts`. The `description` property defines a plain-text
+description of the viewer, and defaults to an empty string if not present. The `accepts` property defines the set of datasets for which
+the viewer is valid and may include any or all of the following sub-properties:
+
+* `accept_datasetIDs`: Accepts a list of dataset IDs for which the Notebook is valid.
+* `accept_catalogs`: Accepts a list of catalog names or URLs which contain datasets for which the Notebook is valid.
+* `accept_dataset_types`: Accepts a list of  feature types for which the Notebook is valid (e.g. Grid, Point, Station).
+* `accept_all`: If true, indicates the Notebook is valid for all datasets.
+
+If no `accepts` properties are included in the Notebook metadata, the Notebook will default to `"accept_all": true`.
+
+#### Examples
+
+A Notebook configured for all datasets in the catalog `testCatalog`:
+~~~
+  "metadata": {
+  ...
+    "viewer_info": {
+        "description": "This Notebook displays all datasets in the test catalog.",
+        "accepts": {
+          "accept_catalogs": ["testCatalog"],
+        }
+    }
+  }
+~~~
+
+A Notebook configured for all gridded datasets and a dataset called `almostGridded`
+~~~
+  "metadata": {
+  ...
+    "viewer_info": {
+        "description": "This Notebook displays gridded data.",
+        "accepts": {
+          "accept_datasetIDs": ["almostGridded],
+          "accept_dataset_types": ["Grid"]
+        }
+    }
+  }
+~~~
+
+#### Suppressing default Notebooks
+
+To suppress default Notebooks, you can override them with a custom Notebook or a dummy Notebook, configured to not accept any datasets.
+
+For example, to suppress `default_viewer.ipynb`, place a file of the same name in the content directory with the following `viewer_info`:
+~~~
+  "metadata": {
+  ...
+    "viewer_info": {
+        "accepts": {
+          "accept_all": false
+        }
+    }
+  }
+~~~
+
+### Contributing default Notebooks
+
+You can contribute default Notebooks viewers to the TDS repository to highlight various types of datasets by submitting a pull request to
+the [Unidata TDS GitHub repository](https://github.com/Unidata/tds){:target="_blank"}.
+The default Notebooks live in the [`jupyter_notebooks`](https://github.com/Unidata/tds/tree/master/tds/src/main/webapp/WEB-INF/altContent/startup/jupyter_notebooks) directory.
+*NOTE:* Be sure to map your contributed Notebooks to the appropriate datasets by editing the Notebook's metadata, as described above.

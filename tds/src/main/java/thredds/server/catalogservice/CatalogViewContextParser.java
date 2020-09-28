@@ -520,7 +520,11 @@ class DatasetContext {
       String datasetId = null;
 
       ServiceType stype = s.getType();
+      // Viewer services are listed as viewers
       if (stype != null) {
+        if (stype.getAccessType().equals(ServiceType.AccessType.DataViewer)) {
+          continue;
+        }
         switch (stype) {
           case OPENDAP:
           case DODS:
@@ -553,20 +557,6 @@ class DatasetContext {
                 catalogUrl = catalogUrl.substring(0, catalogUrl.lastIndexOf('#'));
               queryString = "catalog=" + catalogUrl + "&dataset=" + datasetId;
             }
-            break;
-
-          case JupyterNotebook:
-            datasetId = ds.getId();
-            catalogUrl = ds.getCatalogUrl();
-            if (catalogUrl.indexOf('#') > 0)
-              catalogUrl = catalogUrl.substring(0, catalogUrl.lastIndexOf('#'));
-            if (catalogUrl.indexOf(contentDir) > -1) {
-              catalogUrl = catalogUrl.substring(catalogUrl.indexOf(contentDir) + contentDir.length());
-            }
-            catalogUrl =
-                catalogUrl.substring(catalogUrl.indexOf("/catalog/") + ("/catalog/").length()).replace("html", "xml");
-            queryString = "catalog=" + catalogUrl;
-            urlString = urlString.substring(0, urlString.indexOf(s.getBase()) + s.getBase().length()) + datasetId;
             break;
 
           case NetcdfSubset:
@@ -892,10 +882,11 @@ class DatasetContext {
       Map<String, String> viewerMap = new HashMap<>();
       viewerMap.put("title", viewer.getTitle());
       viewerMap.put("href", viewer.getUrl());
+      viewerMap.put("description", viewer.getDescription());
+      viewerMap.put("type", viewer.getType());
       this.viewerLinks.add(viewerMap);
     }
   }
-
 }
 
 
