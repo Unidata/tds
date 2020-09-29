@@ -23,6 +23,7 @@ buildscript {
     classpath buildPlugins.grgit
     classpath buildPlugins.protobuf
     classpath buildPlugins.jruby
+    classpath buildPlugins.depcheck
   }
 }
 
@@ -96,3 +97,5 @@ apply from: "$rootDir/gradle/root/publishing.gradle"
 apply from: "$rootDir/gradle/root/sonarqube.gradle"
 // Adds the spotless tasks to the root project and add check for .gradle files
 apply from: "$rootDir/gradle/root/spotless.gradle"
+// Adds the owasp dependency-check tasks to the root project (dependencyCheckAggregate for project-wide check)
+apply from: "$rootDir/gradle/root/dependency-check.gradle"
