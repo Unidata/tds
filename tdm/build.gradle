@@ -5,7 +5,6 @@ apply from: "$rootDir/gradle/any/dependencies.gradle"
 // Because of the shadow jar (tdmFat.jar), we won't use java-published.gradle
 // for this subproject.
 apply from: "$rootDir/gradle/any/java-published.gradle"
-//apply from: "$rootDir/gradle/any/publishing.gradle"
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
