@@ -21,28 +21,82 @@ entries:
   - title: Installation and Upgrading
     output: web, pdf
     folderitems:
-    - title: Installing Java And Tomcat
-      url: /install_java_tomcat.html
+    - title: System Requirements
+      url: /system_requirements.html
       output: web, pdf
 
-    - title: Tomcat Directory Structure
-      url: /tomcat_dir_structure_qt.html
+    - title: Download
+      url: /download.html
+      output: web, pdf
+
+    - title: Installation
+      url: /installation.html
+      output: web, pdf
+
+
+
+    - title: TDM installation
+      url: /tomcat_configuration_files.html
+      output: web, pdf
+
+    - title: Deploying The TDS
+      url: /deploying_the_tds.html
+      output: web, pdf
+
+      subfolders:
+        - title: Putting the TDS into production
+          output: web, pdf
+          subfolderitems:
+            - title: Restrict Tomcat Permissions
+              url: /tomcat_permissions.html
+              output: web, pdf
+
+            - title: Use Digested Passwords
+              url: /digested_passwords.html
+              output: web, pdf
+
+            - title: Enable TLS/SSL Encryption
+              url: /enable_tls_encryption.html
+              output: web, pdf
+
+            - title: Secure Tomcat Manager App
+              url: /secure_manager_app.html
+              output: web, pdf
+
+            - title: Remove Unused Web Applications
+              url: /remove_unused_webapps.html
+              output: web, pdf
+
+            - title: Block Non-Essential Ports
+              url: /block_nonessential_ports.html
+              output: web, pdf
+
+            - title: Keep Software Up-To-Date
+              url: /keep_software_uptodate.html
+              output: web, pdf
+
+            - title: Tomcat With A Security Manager
+              url: /tomcat_with_security_manager.html
+              output: web, pdf
+
+    - title: Restrict Access To The TDS
+      url: /restict_access_to_tds.html
+      output: web, pdf
+
+    - title: Running Behind A Proxy Server
+      url: /tds_behind_proxy.html
       output: web, pdf
 
     - title: Running Tomcat
       url: /running_tomcat.html
       output: web, pdf
 
-    - title: Tomcat Log Files
+    - title: Troubleshooting Problems
+      url: /troubleshooting_problems.html
+      output: web, pdf
+
+    - title: Upgrading
       url: /tomcat_log_files.html
-      output: web, pdf
-
-    - title: Tomcat Config Files
-      url: /tomcat_configuration_files.html
-      output: web, pdf
-
-    - title: Deploying The TDS
-      url: /deploying_the_tds.html
       output: web, pdf
 
     - title: Tomcat Manager Application
