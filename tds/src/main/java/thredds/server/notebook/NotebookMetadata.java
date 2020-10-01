@@ -65,8 +65,7 @@ public class NotebookMetadata {
     JSONObject jobj;
     try {
       jobj = new JSONObject(tokener);
-      return jobj.getJSONObject(NotebookMetadataKeys.metadata.key)
-              .getJSONObject(NotebookMetadataKeys.viewerInfo.key);
+      return jobj.getJSONObject(NotebookMetadataKeys.metadata.key).getJSONObject(NotebookMetadataKeys.viewerInfo.key);
 
     } catch (JSONException e) {
       return null;

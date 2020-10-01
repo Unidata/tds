@@ -101,8 +101,8 @@ public class JupyterNotebookViewerService implements ViewerService {
       catUrl =
           catUrl.substring(catUrl.indexOf(catalogServiceBase) + catalogServiceBase.length()).replace("html", "xml");
 
-      String url = req.getContextPath() + StandardService.jupyterNotebook.getBase()
-              + ds.getID() + "?catalog=" + catUrl + "&filename=" + notebook.getFilename();
+      String url = req.getContextPath() + StandardService.jupyterNotebook.getBase() + ds.getID() + "?catalog=" + catUrl
+          + "&filename=" + notebook.getFilename();
       return new ViewerLinkProvider.ViewerLink(notebook.getFilename(), url, notebook.getDescription(), type);
     }
   }
