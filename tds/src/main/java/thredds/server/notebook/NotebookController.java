@@ -1,9 +1,14 @@
 package thredds.server.notebook;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import thredds.client.catalog.Catalog;
 import thredds.client.catalog.Dataset;
 import thredds.core.AllowedServices;
@@ -21,6 +26,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/notebook")
@@ -39,34 +48,31 @@ public class NotebookController {
   AllowedServices allowedServices;
 
   @Autowired
-  JupyterNotebookServiceCache jupyterNotbooks;
+  JupyterNotebookServiceCache jupyterNotebooks;
 
-  @RequestMapping("**")
-  public void getNotebookForDataset(HttpServletRequest req, HttpServletResponse res, @Valid NotebookParamsBean params,
-      BindingResult validationResult) throws Exception {
+  @RequestMapping(value = "**", params = "filename", method = RequestMethod.GET)
+  public void getNotebook(@RequestParam("filename") String filename, HttpServletRequest req, HttpServletResponse res,
+      @Valid NotebookParamsBean params, BindingResult validationResult)
+      throws ServiceNotAllowed, IOException, BindException, URISyntaxException {
 
-    if (!allowedServices.isAllowed(StandardService.jupyterNotebook))
+    if (!allowedServices.isAllowed(StandardService.jupyterNotebook) || filename.isEmpty()) {
       throw new ServiceNotAllowed(StandardService.jupyterNotebook.toString());
-
-    // Get Catalog and Dataset
-    TdsRequestedDataset reqD = new TdsRequestedDataset(req, getBase());
-    String datasetId = reqD.getPath();
-
-    String catalogName = params.catalog;
-    if (catalogName == null) {
-      throw new IllegalArgumentException("Argument 'catalog' cannot be null.");
     }
-
-    Catalog catalog = getCatalog(catalogName, req);
-    Dataset dataset = catalog.findDatasetByID(datasetId);
+    if (validationResult.hasErrors()) {
+      throw new BindException(validationResult);
+    }
 
     // Get notebook
-    File responseFile = getNotebookFile(dataset, catalog);
+    File responseFile = getNotebookFile(filename);
     if (responseFile == null) {
-      throw new ServiceNotAllowed(StandardService.jupyterNotebook.toString());
+      throw new FileNotFoundException(filename);
     }
 
-    // Transform notebook with dataset id;
+    // Get Dataset
+    String catalogName = params.catalog;
+    Dataset dataset = getDataset(catalogName, req);
+
+    // Transform each notebook with dataset id;
     String fileContents = new String(Files.readAllBytes(Paths.get(responseFile.getAbsolutePath())));
 
     // Build catalog URL
@@ -89,8 +95,45 @@ public class NotebookController {
     res.setStatus(HttpServletResponse.SC_OK);
   }
 
+  @RequestMapping(value = "**", method = RequestMethod.GET)
+  public void getNotebooksForDataset(HttpServletRequest req, HttpServletResponse res, @Valid NotebookParamsBean params,
+      BindingResult validationResult)
+      throws IllegalArgumentException, ServiceNotAllowed, IOException, URISyntaxException, BindException {
+
+    if (!allowedServices.isAllowed(StandardService.jupyterNotebook)) {
+      throw new ServiceNotAllowed(StandardService.jupyterNotebook.toString());
+    }
+    if (validationResult.hasErrors()) {
+      throw new BindException(validationResult);
+    }
+
+    // Get Dataset
+    String catalogName = params.catalog;
+    Dataset dataset = getDataset(catalogName, req);
+
+    JSONArray notebooks = getNotebookParams(dataset);
+
+    // Set content...
+    res.setContentType("application/json");
+    res.setCharacterEncoding("UTF-8");
+    res.getWriter().write(notebooks.toString());
+    res.getWriter().flush();
+    res.getWriter().close();
+    res.setStatus(HttpServletResponse.SC_OK);
+  }
+
   protected String getBase() {
     return StandardService.jupyterNotebook.getBase();
+  }
+
+  private Dataset getDataset(String catalogName, HttpServletRequest req)
+      throws URISyntaxException, IOException, IllegalArgumentException {
+    if (catalogName == null) {
+      throw new IllegalArgumentException("Argument 'catalog' cannot be null.");
+    }
+    String datasetId = new TdsRequestedDataset(req, getBase()).getPath();
+    Catalog catalog = getCatalog(catalogName, req);
+    return catalog.findDatasetByID(datasetId);
   }
 
   private Catalog getCatalog(String catalogName, HttpServletRequest req) throws URISyntaxException, IOException {
@@ -117,18 +160,25 @@ public class NotebookController {
     return catalog;
   }
 
-  private File getNotebookFile(Dataset ds, Catalog cat) {
+  private JSONArray getNotebookParams(Dataset ds) {
+    List<JSONObject> objs =
+        jupyterNotebooks.getMappedNotebooks(ds).stream().map(nb -> nb.getParams()).collect(Collectors.toList());
+    return new JSONArray(objs);
+  }
 
-    String filename = jupyterNotbooks.getNotebookFilename(ds);
-    if (filename == null)
+  private File getNotebookFile(String filename) {
+    if (filename.isEmpty()) {
       return null;
+    }
 
     File notebooksDir = new File(tdsContext.getThreddsDirectory(), "notebooks");
 
     if (notebooksDir.exists() && notebooksDir.isDirectory()) {
       File jupyterViewer = new File(notebooksDir, filename);
-      return jupyterViewer.exists() ? jupyterViewer : null;
-    }
+      if (jupyterViewer.exists()) {
+        return jupyterViewer;
+      } ;
+    } ;
     return null;
   }
 }

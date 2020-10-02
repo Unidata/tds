@@ -5,11 +5,8 @@
 
 package thredds.server.viewer;
 
-import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Formatter;
@@ -19,14 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import thredds.client.catalog.*;
-import thredds.core.AllowedServices;
-import thredds.core.StandardService;
-import thredds.server.config.TdsContext;
-import thredds.server.notebook.JupyterNotebookServiceCache;
-import ucar.nc2.constants.FeatureType;
 import ucar.nc2.util.IO;
 import ucar.unidata.util.StringUtil2;
 import thredds.server.wms.Godiva3Viewer;
@@ -41,15 +32,6 @@ public class ViewerServiceImpl implements ViewerService, InitializingBean {
 
   private List<Viewer> viewers = new ArrayList<>();
   private HashMap<String, String> templates = new HashMap<>();
-
-  @Autowired
-  private TdsContext tdsContext;
-
-  @Autowired
-  private JupyterNotebookServiceCache jupyterNotebooks;
-
-  @Autowired
-  private AllowedServices allowedServices;
 
   @Override
   public List<Viewer> getViewers() {
@@ -66,6 +48,11 @@ public class ViewerServiceImpl implements ViewerService, InitializingBean {
     return viewers.add(v);
   }
 
+  public boolean registerViewers(List<Viewer> v) {
+    return viewers.addAll(v);
+  }
+
+  @Deprecated
   @Override
   public String getViewerTemplate(String path) {
 
@@ -138,53 +125,9 @@ public class ViewerServiceImpl implements ViewerService, InitializingBean {
   public void afterPropertiesSet() {
     registerViewer(new Godiva3Viewer());
     registerViewer(new StaticView());
-    registerViewer(
-        new JupyterNotebookViewer(jupyterNotebooks, allowedServices, tdsContext.getContentRootPathProperty()));
   }
 
   // Viewers...
-
-  private static class JupyterNotebookViewer implements Viewer {
-    private static final String title = "Jupyter Notebook viewer";
-
-    private JupyterNotebookServiceCache jupyterNotebooks;
-
-    private AllowedServices allowedServices;
-
-    private String contentDir;
-
-    public JupyterNotebookViewer(JupyterNotebookServiceCache jupyterNotebooks, AllowedServices allowedServices,
-        String contentDir) {
-      this.jupyterNotebooks = jupyterNotebooks;
-      this.allowedServices = allowedServices;
-      this.contentDir = contentDir;
-    }
-
-    public boolean isViewable(Dataset ds) {
-      return this.allowedServices.isAllowed(StandardService.jupyterNotebook)
-          && jupyterNotebooks.getNotebookFilename(ds) != null;
-    }
-
-    public String getViewerLinkHtml(Dataset ds, HttpServletRequest req) {
-      ViewerLinkProvider.ViewerLink viewerLink = this.getViewerLink(ds, req);
-      return "<a href='" + viewerLink.getUrl() + "'>" + viewerLink.getTitle() + "</a>";
-    }
-
-    public ViewerLinkProvider.ViewerLink getViewerLink(Dataset ds, HttpServletRequest req) {
-      String catUrl = ds.getCatalogUrl();
-      if (catUrl.indexOf('#') > 0)
-        catUrl = catUrl.substring(0, catUrl.lastIndexOf('#'));
-      if (catUrl.indexOf(contentDir) > -1) {
-        catUrl = catUrl.substring(catUrl.indexOf(contentDir) + contentDir.length());
-      }
-      String catalogServiceBase = StandardService.catalogRemote.getBase();
-      catUrl =
-          catUrl.substring(catUrl.indexOf(catalogServiceBase) + catalogServiceBase.length()).replace("html", "xml");
-
-      String url = req.getContextPath() + StandardService.jupyterNotebook.getBase() + ds.getID() + "?catalog=" + catUrl;
-      return new ViewerLinkProvider.ViewerLink(JupyterNotebookViewer.title, url);
-    }
-  }
 
   // LOOK whats this for ??
   private static final String propertyNamePrefix = "viewer";

@@ -52,7 +52,7 @@ import thredds.server.viewer.ViewerLinkProvider;
 public class Godiva3Viewer implements Viewer {
   static private final Logger logger = LoggerFactory.getLogger(Godiva3Viewer.class);
 
-  static private final String title = "Godiva3 (browser-based)";
+  static private final String title = "Godiva3";
 
   /**
    * Returns true if this is a gridded dataset that is accessible via WMS.
@@ -90,6 +90,7 @@ public class Godiva3Viewer implements Viewer {
       return null;
     }
     String url = req.getContextPath() + "/Godiva.html?server=" + dataURI.toString();
-    return new ViewerLinkProvider.ViewerLink(Godiva3Viewer.title, url);
+    return new ViewerLinkProvider.ViewerLink(Godiva3Viewer.title, url, "",
+        ViewerLinkProvider.ViewerLink.ViewerType.Browser);
   }
 }

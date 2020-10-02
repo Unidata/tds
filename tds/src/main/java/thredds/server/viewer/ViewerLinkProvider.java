@@ -32,10 +32,22 @@ public interface ViewerLinkProvider extends Viewer {
   class ViewerLink {
     private String title;
     private String url;
+    private String description;
+    private ViewerType type;
 
     public ViewerLink(String title, String url) {
+      this(title, url, "", ViewerType.Unknown);
+    }
+
+    public ViewerLink(String title, String url, String description) {
+      this(title, url, description, ViewerType.Unknown);
+    }
+
+    public ViewerLink(String title, String url, String description, ViewerType type) {
       this.title = title;
       this.url = url;
+      this.description = description;
+      this.type = type;
     }
 
     public String getTitle() {
@@ -44,6 +56,28 @@ public interface ViewerLinkProvider extends Viewer {
 
     public String getUrl() {
       return url;
+    }
+
+    public String getDescription() {
+      return description;
+    }
+
+    public String getType() {
+      return type.getName();
+    }
+
+    public static enum ViewerType {
+      Application("Application"), Browser("Browser"), JupyterNotebook("Jupyter Notebook"), Unknown("Unknown");
+
+      protected final String name;
+
+      private ViewerType(String name) {
+        this.name = name;
+      }
+
+      public String getName() {
+        return this.name;
+      }
     }
   }
 }

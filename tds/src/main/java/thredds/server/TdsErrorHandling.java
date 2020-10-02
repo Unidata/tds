@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+import thredds.server.exception.MethodNotImplementedException;
 import thredds.server.exception.RequestTooLargeException;
 import thredds.server.exception.ServiceNotAllowed;
 import thredds.server.ncss.exception.NcssException;
@@ -66,6 +67,16 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
     return new ResponseEntity<>("Request Too Large: " + htmlEscape(ex.getMessage()), responseHeaders,
         HttpStatus.FORBIDDEN);
+  }
+
+  @ExceptionHandler(MethodNotImplementedException.class)
+  public ResponseEntity<String> handle(MethodNotImplementedException ex) {
+    logger.warn("TDS Error", ex);
+
+    HttpHeaders responseHeaders = new HttpHeaders();
+    responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+    return new ResponseEntity<>("Method not implemented: " + htmlEscape(ex.getMessage()), responseHeaders,
+        HttpStatus.NOT_IMPLEMENTED);
   }
 
   @ExceptionHandler(FileNotFoundException.class)
