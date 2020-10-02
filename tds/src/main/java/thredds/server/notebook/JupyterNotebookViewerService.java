@@ -1,9 +1,8 @@
 package thredds.server.notebook;
 
-import gov.noaa.pmel.sgt.MethodNotImplementedError;
+import thredds.server.exception.MethodNotImplementedException;
 import thredds.client.catalog.Dataset;
 import thredds.core.StandardService;
-import thredds.server.config.TdsContext;
 import thredds.server.viewer.Viewer;
 import thredds.server.viewer.ViewerLinkProvider;
 import thredds.server.viewer.ViewerService;
@@ -39,7 +38,7 @@ public class JupyterNotebookViewerService implements ViewerService {
 
   @Override
   public String getViewerTemplate(String template) {
-    throw new MethodNotImplementedError();
+    throw new MethodNotImplementedException("JupyterNotebookViewerService.getViewerTemplate is not implemented");
   }
 
   @Override
@@ -54,7 +53,7 @@ public class JupyterNotebookViewerService implements ViewerService {
 
   @Override
   public void showViewers(Formatter sbuff, Dataset dataset, HttpServletRequest req) {
-    throw new MethodNotImplementedError();
+    throw new MethodNotImplementedException("JupyterNotebookViewerService.showViewers is not implemented");
   }
 
   @Override
