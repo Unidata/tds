@@ -16,12 +16,32 @@ $( document ).ready(function() {
         placement : 'top'
     });
 
+
+    // CUSTOM CODE FOR BREADCRUMBS TO USE WITH FUNCTION DEFINED BELOW.
+    let activeParents = $(".nav li.active").parents("li");
+    // Look to see how many parents exist.
+    if ($(activeParents).length > 0) {
+        $(activeParents).each(function() {
+            addToBreadCrumbs($(this).children("a").text());
+        });
+    }
+
+
     /**
      * AnchorJS
      */
     anchors.add('h2,h3,h4,h5');
 
 });
+
+// IT ADDS PARENT CATEGORY TABS INTO BREADCRUMBS.
+// BREAD CRUMBS ADDED TO PAGE AS PER:
+// https://jekyllcodex.org/without-plugin/breadcrumbs/
+// NOTE: THIS DOES NOT USE A PLUGIN & WILL WORK FOR GITHUB.
+function addToBreadCrumbs(parentText) {
+  let bcStart = $("#breadcrumbs .bcStart");
+  $(bcStart).after(" / <span>" + parentText + "</span>");
+}
 
 // needed for nav tabs on pages. See Formatting > Nav tabs for more details.
 // script from http://stackoverflow.com/questions/10523433/how-do-i-keep-the-current-tab-active-with-twitter-bootstrap-after-a-page-reload
