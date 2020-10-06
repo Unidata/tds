@@ -1,51 +1,34 @@
 ---
 title: TDS Administrator's Guide
-last_updated: 2020-04-01
+last_updated: 2020-10-01
 sidebar: admin_sidebar 
 permalink: index.html
 toc: false
 ---
 
-## What is the THREDDS Project?
+## Who Should Use This Guide?
 
-The overarching goal of Unidata's Thematic Real-time Environmental Distributed Data Services (THREDDS) project is to provide students, educators and researchers with coherent access to a large collection of real-time and archived datasets from a variety of environmental data sources at a number of distributed server sites.
+This TDS Administrator's Guide is for:
 
-## Intended Audience
+* People who install, secure, and/or maintain the THREDDS Data Server (TDS) in a production environment;
+* People who modify TDS configurations; 
+* People who modify existing THREDDS catalogs to make data available via the TDS.
 
-* People who install and/or maintain the TDS
-* People who modify TDS configurations
-* People who modify existing catalogs in ${tds.content.root.path}/thredds/
-
-Assumption: Users of this guide do NOT have prior knowledge of Unidata jargon, meteorology, netCDF, TDS, etc.
-Some of the technology in the TDS:
+Users of this guide do need to have prior knowledge of the THREDDS Data Server or other Unidata technologies.
 
 
-## sdsad
-* THREDDS [Dataset Inventory Catalogs](basic_config_catalog.html) are used to provide virtual directories of available data and their associated metadata. 
-  These catalogs can be generated dynamically or statically.
-* The [Netcdf-Java/CDM library](https://www.unidata.ucar.edu/software/netcdf-java/){:target="_blank"} reads NetCDF, OpenDAP, and HDF5 datasets, as well as other binary formats such as GRIB and NEXRAD into a Common Data Model (CDM), essentially an (extended) netCDF view of the data.
-  Datasets that can be read through the Netcdf-Java library are called CDM datasets.
-* TDS can use the [NetCDF Markup Language](using_ncml_in_the_tds.html) (NcML) to modify and create virtual aggregations of CDM datasets.
-* An integrated server provides [OPeNDAP](http://www.opendap.org/){:target="_blank"} access to any CDM dataset.
-  OPeNDAP is a widely used, subsetting data access method extending the HTTP protocol.
-* An integrated server provides bulk file access through the HTTP protocol.
-* An integrated server provides data access through the [OpenGIS Consortium (OGC) Web Coverage Service (WCS)](https://www.ogc.org/standards/wcs){:target="_blank"} protocol, for any gridded dataset whose coordinate system information is complete.
-* An integrated server provides data access through the [OpenGIS Consortium (OGC) Web Map Service (WMS)](http://www.opengeospatial.org/standards/wms){:target="_blank"} protocol, for any gridded dataset whose coordinate system information is complete.
-  This software was developed by Jon Blower (University of Reading (UK) E-Science Center) as part of the [ESSC Web Map Service for environmental data](https://github.com/Reading-eScience-Centre/edal-java){:target="_blank"} (aka Godiva3).
-* The integrated [ncISO server](iso_metadata.html) provides automated metadata analysis and ISO metadata generation.
-* The integrated [NetCDF Subset Service](netcdf_subset_service_ref.html) allows subsetting certain CDM datasets in coordinate space, using a REST API.
-  Gridded data subsets can be returned in [CF-compliant](http://cfconventions.org/cf-conventions/v1.6.0/cf-conventions.html){:target="_blank"} netCDF-3 or netCDF-4.
-  Point data subsets can be returned in CSV, XML, WaterML (with [assistance](https://github.com/Unidata/thredds/tree/5.0.0/waterml#waterml){:target="_blank"}
-  from [ERDDAP](https://coastwatch.pfeg.noaa.gov/erddap/index.html){:target="_blank"} \[NOAA / Robert Simons/CoHort Software\], [license information](https://github.com/Unidata/thredds/tree/5.0.0/docs/src/private/licenses/third-party/erddap){:target="_blank"}), 
-  or [CF-DSG v1.6](http://cfconventions.org/cf-conventions/v1.6.0/cf-conventions.html#discrete-sampling-geometries){:target="_blank"} netCDF files.
+## Other TDS Documentation
 
-The THREDDS Data Server is implemented in 100% Java\*, and is contained in a single war file, which allows very easy installation into a servlet container such as the open-source Tomcat web server.
-Configuration is made as simple and as automatic as possible, and we have made the server as secure as possible.
+Multiple guides are available for the TDS, depending on the need and audience, including:
 
-\* Writing to netCDF-4 files is supported through the netCDF C library only.
+* A [TDS Quick Start](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/quickstart/){:target="_blank"} for those who want to get the TDS up and running quickly in a *development* environment.
+* The [TDS User's Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/userguide/){:target="_blank"} for users who wish to access the TDS via browser and consume data via the TDS web interface.
+* The [TDS Developer's Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/devguide/){:target="_blank"} for developers looking to access the TDS data programmatically.
 
-Much of the realtime data available over the Unidata Internet Data Distribution (IDD) is available through a demonstration THREDDS Data Server hosted at Unidata at [https://thredds.ucar.edu/](https://thredds.ucar.edu/thredds/catalog.html){:target="_blank"}.
-You are welcome to browse and access these meteorological datasets.
-If you need regular access to large amounts of data, please contact <support-idd@unidata.ucar.edu>.
+## What Is The THREDDS Data Server?
 
-As of version 5.0, the TDS is released under the BSD-3 licence, which can be found can be found [here](https://github.com/Unidata/tds/blob/master/LICENSE){:target="_blank"}.
+The THREDDS Data Server (TDS) is a component of the Unidata's [Thematic Real-time Environmental Distributed Data Services (THREDDS)](https://journals.tdl.org/jodi/index.php/jodi/article/view/51){:target="_blank"} project.
+The goal of the THREDDS project is to provide students, educators, and researchers with coherent access to a large collection of real-time and archived datasets from a variety of environmental data sources at a number of distributed TDS server sites.
+
+The TDS is an open-source Java web application contained in a single [WAR](https://fileinfo.com/extension/war){:target="_blank"} file which allows easy installation in a servlet container such as the [Tomcat](http://tomcat.apache.org/){:target="_blank"} application server. 
+
