@@ -18,19 +18,19 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: Installation and Upgrading
+  - title: Installation And Upgrading
     output: web, pdf
     folderitems:
     - title: System Requirements
       url: /system_requirements.html
       output: web, pdf
 
-    - title: Download
+    - title: Download And Installation
       url: /download.html
       output: web, pdf
 
-    - title: Installation
-      url: /installation.html
+    - title: JVM Settings
+      url: /jvm_settings.html
       output: web, pdf
 
     - title: TDM installation
@@ -209,7 +209,7 @@ entries:
 
     - title: GRIB FAQ
       url: /tds_grib_faq.html
-      output: web, pdf      
+      output: web, pdf
 
   - title: Reference Material
     output: web, pdf

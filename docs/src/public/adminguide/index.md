@@ -21,7 +21,7 @@ Users of this guide do need to have prior knowledge of the THREDDS Data Server o
 
 Multiple guides are available for the TDS, depending on the need and audience, including:
 
-* A [TDS Quick Start](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/quickstart/){:target="_blank"} for those who want to get the TDS up and running quickly in a *development* environment.
+* A [TDS Quick Start Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/quickstart/){:target="_blank"} for those who want to get the TDS up and running quickly in a _development_ environment.
 * The [TDS User's Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/userguide/){:target="_blank"} for users who wish to access the TDS via browser and consume data via the TDS web interface.
 * The [TDS Developer's Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/devguide/){:target="_blank"} for developers looking to access the TDS data programmatically.
 
