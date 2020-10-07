@@ -1,6 +1,6 @@
 ---
 title: THREDDS Data Manager (TDM)
-last_updated: 2020-08-21
+last_updated: 2020-10-02
 sidebar: admin_sidebar
 toc: false
 permalink: tdm_ref.html
@@ -24,36 +24,38 @@ If you change the configuration, you must restart the TDM.
 
 Get the current jar linked from the [TDS Download Page](https://www.unidata.ucar.edu/downloads/tds/){:target="_blank"}
 
+
 The TDM can be run from anywhere on the local machine, but by convention we create a directory `$tds.content.root.path}/tdm`, and run the TDM from there.
 
-Create a shell script to run the TDM, for example `runTdm.sh`:
+Create a shell script to run the TDM; for example `runTdm.sh`:
 
-~~~bash
+~~~
 <JAVA> <JVM options> -Dtds.content.root.path=<content directory> -jar <TDM jar> [-tds <tdsServers>] [-cred <user:passwd>] [-showOnly] [-log level]
 ~~~
 
-* `<JAVA>` Large collections need a lot of memory, so use a 64-bit JVM
-* `<JVM options>`
-  * `-Xmx4g*` to give it 4 Gbytes of memory (for example). 
-    **More is better**.
-* `-Dtds.content.root.path=<content directory>` this passes the content directory as a system property.
-  The thredds configuration catalogs and `threddsConfig.xml` are found in `<content directory>/thredds`.
-  Use an absolute path.
-* `-jar tdm-5.0.jar` : execute the TDM from the jar file
-* `-tds <tdsServers>`: (optional) list of TDS servers to notify.
-   If more than one, separate with commas, with no blanks.
-   Specify only the scheme, host and optional port with a trailing slash for example: `http://localhost:8081/`
-* `-cred <user:passwd>`: (optional) if you send notifications, the TDS will authenticate using this user name and password.
-  If you do not include this option, you will be prompted for the password on startup, and the user name will be set to `tdm`.
-* `-showOnly`: (optional) if this is present, just show the featureCollections that will be indexed and exit.
-* `-log level`: (optional) set the log4j logging level = `DEBUG`, `INFO` (default), `WARN`, `ERROR`
+|-----------|-------------|-------------|
+| Parameter | Required | Description |
+| `<JAVA>`  | required | Large data collections need a lot of memory, so use a 64-bit JVM. |
+| `<JVM options>` | required | **More is better**.  Example: `Xmx4g*` to give the TDM 4 Gbytes of memory. |
+| `-Dtds.content.root.path=<content directory>` | This passes the [content directory](tds_content_directory.html) as a system property.  
+The thredds configuration catalogs and `threddsConfig.xml` are found in `<content directory>/thredds/`. 
+Use an absolute path. |
+| `-jar tdm-5.0.jar` | required | Execute the TDM from the jar file. |
+| `-tds <tdsServers>` | optional | The list of TDS servers to notify. 
+If more than one, separate with commas, with no blanks. 
+Specify only the scheme, host and optional port with a trailing slash for example: `http://localhost:8081/` |
+| `-cred <user:passwd>` | optional | If you send notifications, the TDS will authenticate using this user name and password. 
+If you do not include this option, you will be prompted for the password on TDM startup, and the user name will be set to tdm. |
+| `-showOnly` | optional | If this is present, display the [featureCollections](feature_collections_overview.html) that will be indexed and then exit. |
+| `-log level` | optional | set the `log4j` logging level. Options are: `DEBUG`, `INFO` (default), `WARN`, and `ERROR`. |
 
+#### Example
 
-#### Example:
-
-~~~bash
+~~~
 /opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/opt/tds/content -jar tdm-5.0.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
 ~~~
+
+
 
 #### Troubleshooting
 

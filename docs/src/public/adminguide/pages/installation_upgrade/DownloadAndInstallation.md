@@ -35,3 +35,21 @@ Please visit the [Support](support.html) page for information on which version o
 ## Installation
 
 ### TDS WAR Installation
+
+Install the TDS as per the deployment instructions of [Tomcat](http://tomcat.apache.org/){:target="_blank"} servlet container. 
+
+{% capture quick_guide_info %}
+See the [TDS Quick Start Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/quickstart/){:target='_blank'} for detailed step-by-step instructions on how to install the TDS.
+{% endcapture %}
+
+{% include info.html content=quick_guide_info%}
+
+
+### TDM Installation
+
+
+The THREDDS Data Manager (TDM) creates indexes for [GRIB `featureCollections`](grib_feature_collections_ref.html), in a process separate from the TDS. 
+
+Installation and use of the TDM requires further understand of [THREDDS catalogs](catalog_primer.html) and [TDS configuration](basic_tds_configuration.html) covered in later sections of this guide.
+ 
+Install and use of the THREDDS Data Manager is covered in the [THREDDS Data Manager Reference](tdm_ref.html) section.
