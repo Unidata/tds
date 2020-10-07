@@ -119,15 +119,30 @@ body.print h4 {color: #679DCE !important; font-size:14px; font-style: italic !im
     color: #216f9b;
 }
 
+
+table  {
+    width: 100%;
+}
+table th,
+pre, table code,
+table td:first-of-type {
+    white-space: pre !important;
+}
+
+
+/*
 table th:first-of-type {
      width: 35%;
  }
+
 table th:nth-of-type(2) {
     width: 10%;
 }
 table th:nth-of-type(3) {
     width: 55%;
 }
+*/
+
 
 code+a>code {
     margin-left: 0 !important;
