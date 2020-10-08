@@ -2,25 +2,39 @@
 title: TDS Content Directory
 last_updated: 2020-10-03
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: tds_content_directory.html
 ---
 
-## Location Of The TDS Configuration Directory
+## Purpose
 
 All THREDDS Data Server configuration information is stored under the TDS content directory.
-The location of the directory is controlled by the `tds.content.root.path` Java system property.
-There is no default location - `tds.content.root.path` **must be set or the TDS will not start**.
-Please see the [Running Tomcat](running_tomcat.html) page of this tutorial for information on how to set this location.
+The content directory is created and populated with default files the first time the TDS is deployed or any time the directory is empty.
 
+## Location
+
+
+The location of this directory is chosen by you, the administrator. 
+Due to the importance of this directory, it is a good idea to locate it somewhere separate from `${tomcat_home}` on your file system.
+It needs to be persisted between Tomcat upgrades or TDS re-deployments.
+
+The location of the directory is controlled by [setting the `tds.content.root.path` Java system property](jvm_settings.html#tds-content-directory).
+
+{% include warning.html content="
+There is no default location for this directory in the TDS; **`tds.content.root.path` must be set or the TDS will not start**. 
+"%}
 
 ## Layout
 
-The content directory is created and populated with default files the first time the TDS is deployed or any time the directory is empty.
-Once created, it is persistent even when the TDS installation is upgraded or re-deployed.
-All your configuration, modifications, and additions should be made in this directory.
+All TDS configuration, modifications, and additions should be made in this directory.
 Do not place files containing passwords or anything else with security issues in this directory.
 Typically, you will only be adding and modifying catalogs and configuration files.
+
+### `thredds` Subdirectory
+
+The TDS stashes its configurations in a `/thredds` subdirectory of the TDS content directory, e.g.: `${tds.content.root.path}/thredds/`
+
+Other types of information used by the TDS, such as the [THREDDS Data Manager (TDM)](tdm_ref.html), will utilize other subdirectories in `${tds.content.root.path}`.
 
 For now, we will focus on the following subset of the content directory:
 
