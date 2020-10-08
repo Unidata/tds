@@ -33,12 +33,12 @@ entries:
       url: /jvm_settings.html
       output: web, pdf
 
-    - title: TDM installation
-      url: /tomcat_configuration_files.html
+    - title: TDS Content Directory
+      url: /tds_content_directory.html
       output: web, pdf
 
-    - title: Deploying The TDS
-      url: /deploying_the_tds.html
+    - title: Recommended places to store your datasets
+      url: /dataset_storage.html
       output: web, pdf
 
       subfolders:
@@ -97,23 +97,10 @@ entries:
       url: /tomcat_log_files.html
       output: web, pdf
 
-    - title: Tomcat Manager Application
-      url: /tomcat_manager_app.html
-      output: web, pdf
+
 
     - title: Modifying Tomcat Access Logs
       url: /tomcat_access_log.html
-      output: web, pdf
-
-  - title: TDS Overview & Structure
-    output: web, pdf
-    folderitems:
-    - title: TDS content directory tour
-      url: /tds_content_directory.html
-      output: web, pdf
-
-    - title: Recommended places to store your datasets
-      url: /dataset_storage.html
       output: web, pdf
 
   - title: Configuration
@@ -221,4 +208,8 @@ entries:
 
     - title: TDS Configuration File Reference
       url: /tds_config_ref.html
+      output: web, pdf
+
+    - title: Tomcat Manager Application
+      url: /tomcat_manager_app.html
       output: web, pdf

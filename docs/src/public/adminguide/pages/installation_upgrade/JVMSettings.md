@@ -2,7 +2,7 @@
 title: Java Virtual Machine (JVM) Settings
 last_updated: 2020-10-02
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: jvm_settings.html
 ---
 
@@ -87,9 +87,10 @@ All THREDDS Data Server configuration information is stored in the [TDS content 
 This directory is created the first time the TDS is deployed to your server.
 
 The location of this directory is chosen by you, the administrator.
-It is a good idea to locate this directory somewhere separate from `${tomcat_home}` on your file system, as it needs to be persisted between Tomcat upgrades.
+It is a good idea to locate this directory somewhere separate from `${tomcat_home}` on your file system.
+It needs to be persisted between Tomcat upgrades or TDS re-deployments.
 
-The location of TDS content directory is controlled by the `tds.content.root.path` Java system property using this syntax:
+The location of TDS content directory is controlled by setting the `tds.content.root.path` Java system property using this syntax:
 `-Dtds.content.root.path=path_to_TDS_content_root`
 
 #### Example setting the TDS content directory
