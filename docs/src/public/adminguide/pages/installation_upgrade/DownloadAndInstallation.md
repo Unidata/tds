@@ -2,10 +2,16 @@
 title: Download And Installation
 last_updated: 2020-09-20
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: download.html
 ---
 
+{% capture quick_guide_tip%}
+Need help?
+Use the [TDS Quick Start Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/quickstart/){:target='_blank'} to get the TDS up and running quickly.
+{% endcapture %}
+
+{% include tip.html content=quick_guide_tip%}
 
 ## Download
 
@@ -36,20 +42,27 @@ Please visit the [Support](support.html) page for information on which version o
 
 ### TDS WAR Installation
 
-Install the TDS as per the deployment instructions of [Tomcat](http://tomcat.apache.org/){:target="_blank"} servlet container. 
+The TDS can be installed one of two ways:
 
-{% capture quick_guide_info %}
-See the [TDS Quick Start Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/quickstart/){:target='_blank'} for detailed step-by-step instructions on how to install the TDS.
-{% endcapture %}
+1. Copying the TDS WAR file into the Tomcat `webapps` directory (`$tomcat_home/webapps/`).
+2. The [Tomcat Manager](tomcat_manager_app.html) application.
 
-{% include info.html content=quick_guide_info%}
+{% include note.html content="
+The TDS WAR file will have the version number in the file name: `thredds##version_number.war`   
+   
+Tomcat will see this matching the context information in the TDS WAR `/META-INF/context.xml` file, strip out the hash tags and version information, and make the TDS accessible via this URL structure: `http://servername:port/thredds`     
+    
+This has the benefit of seeing which version of the TDS is deployed when viewing the raw WAR file.
+"%}
 
 
 ### TDM Installation
 
-
-The THREDDS Data Manager (TDM) creates indexes for [GRIB `featureCollections`](grib_feature_collections_ref.html), in a process separate from the TDS. 
-
-Installation and use of the TDM requires further understand of [THREDDS catalogs](catalog_primer.html) and [TDS configuration](basic_tds_configuration.html) covered in later sections of this guide.
- 
 Install and use of the THREDDS Data Manager is covered in the [THREDDS Data Manager Reference](tdm_ref.html) section.
+
+{% include info.html content="
+The THREDDS Data Manager (TDM) creates indexes for [GRIB `featureCollections`](grib_feature_collections_ref.html), in a process separate from the TDS.
+Installation and use of the TDM requires further understand of [THREDDS catalogs](catalog_primer.html) and [TDS configuration](basic_tds_configuration.html) covered in later sections of this guide.
+"%}
+ 
+
