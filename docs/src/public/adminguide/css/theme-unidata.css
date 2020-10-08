@@ -129,6 +129,11 @@ table td:first-of-type {
     white-space: pre !important;
 }
 
+.alert-more-info {
+    background-color: #d9e0f7;
+    border-color: #bec3d6;
+    color: #7f8794;
+}
 
 /*
 table th:first-of-type {
