@@ -1,8 +1,8 @@
 ---
 title: Remove Unused Web Applications
-last_updated: 2020-04-30
+last_updated: 2020-10-02
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: remove_unused_webapps.html
 ---
 

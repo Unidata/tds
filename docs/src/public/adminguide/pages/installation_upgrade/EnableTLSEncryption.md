@@ -2,15 +2,12 @@
 title: Enable TLS/SSL Encryption
 last_updated: 2020-08-24
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: enable_tls_encryption.html
 ---
 
 This section demonstrates how to enable TLS/SSL Encryption for the TDS and Tomcat Servlet Container.
 
-{%include note.html content="
-This section assumes you have successfully performed the tasks as outlined in the [Getting Started With The TDS](install_java_tomcat.html) section of this tutorial.
-" %}
 
 ## Rationale
 * Communication between two servers can be intercepted (i.e., an http transaction between client and server).

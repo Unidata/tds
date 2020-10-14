@@ -1,8 +1,8 @@
 ---
 title: Running Tomcat With A Security Manager
-last_updated: 2020-08-24
+last_updated: 2020-10-02
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: tomcat_with_security_manager.html
 ---
 

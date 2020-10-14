@@ -1,15 +1,12 @@
 ---
 title: Restrict Tomcat Permissions
-last_updated: 2020-08-24
+last_updated: 2020-10-02
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: tomcat_permissions.html
 ---
 This section demonstrates how to restrict the permissions of Tomcat Servlet Container.
 
-{%include note.html content="
-This section assumes you have successfully performed the tasks as outlined in the [Getting Started With The TDS](install_java_tomcat.html) section of this tutorial.
-" %}
 
 ## Rationale
 

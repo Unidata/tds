@@ -1,16 +1,12 @@
 ---
 title: Use Digested Passwords
-last_updated: 2020-08-24
+last_updated: 2020-10-02
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: digested_passwords.html
 ---
 
 This section demonstrates how to enable digested passwords for the TDS and Tomcat Servlet Container.
-
-{%include note.html content="
-This section assumes you have successfully performed the tasks as outlined in the [Getting Started With The TDS](install_java_tomcat.html) section of this tutorial.
-" %}
 
 ## Rationale
 
@@ -18,7 +14,7 @@ This section assumes you have successfully performed the tasks as outlined in th
 * Better to have the passwords encrypted using a cryptographic hash functions (`SHA`) and then stored in `${tomcat_home}/conf/tomcat-users.xml` file.
 * Tomcat can be configured to support digested passwords (this is **not the default setting**).
 
-#### How it works
+### How it works
  
 When a client makes a request Tomcat will tell the client that a digested password is required.  
 Based on this dialog, the client will automatically digest the password entered by the user.
