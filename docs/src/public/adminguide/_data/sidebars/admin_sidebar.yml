@@ -37,10 +37,6 @@ entries:
       url: /tds_content_directory.html
       output: web, pdf
 
-    - title: Recommended places to store your datasets
-      url: /dataset_storage.html
-      output: web, pdf
-
       subfolders:
         - title: Securing the TDS
           output: web, pdf
@@ -85,19 +81,9 @@ entries:
       url: /tds_behind_proxy.html
       output: web, pdf
 
-    - title: Running Tomcat
-      url: /running_tomcat.html
-      output: web, pdf
-
-    - title: Troubleshooting Problems
-      url: /troubleshooting_problems.html
-      output: web, pdf
-
     - title: Upgrading
       url: /tomcat_log_files.html
       output: web, pdf
-
-
 
     - title: Modifying Tomcat Access Logs
       url: /tomcat_access_log.html
@@ -212,4 +198,8 @@ entries:
 
     - title: Tomcat Manager Application
       url: /tomcat_manager_app.html
+      output: web, pdf
+
+    - title: Caching
+      url: /Caching.md
       output: web, pdf

@@ -1,16 +1,12 @@
 ---
 title: Secure the Tomcat Manager Application
-last_updated: 2020-08-25
+last_updated: 2020-10-02
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: secure_manager_app.html
 ---
 
 This section demonstrates how to secure the Tomcat Manager Application by enabling access via TLS/SSL Encryption.
-
-{%include note.html content="
-This section assumes you have successfully performed the tasks as outlined in the [Getting Started With The TDS](install_java_tomcat.html) and [Enabling TLS/SSL](enable_tls_encryption.html) sections of this tutorial
-" %}
 
 **If you do not intend to use the Tomcat Manager Application, you can skip this section and proceed to [removing unused web applications](remove_unused_webapps.html).**
 

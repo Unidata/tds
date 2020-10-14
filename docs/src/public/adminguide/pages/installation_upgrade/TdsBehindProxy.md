@@ -2,15 +2,12 @@
 title: Running The TDS Behind a Proxy Server
 last_updated: 2020-08-24
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: tds_behind_proxy.html
 ---
 
 This section demonstrates how to run the TDS and Tomcat Servlet Container behind an Apache HTTP proxy server using the [`mod_jk`](https://tomcat.apache.org/connectors-doc/){:target="_blank"} connector.
 
-{%include note.html content="
-This section assumes you have successfully performed the tasks as outlined in the [Getting Started With The TDS](install_java_tomcat.html)  section of this tutorial, enabled [Enabled digested passwords](digested_passwords.html) in Tomcat, and are familiar with maintaining the [Apache HTTP](https://httpd.apache.org/){:target='_blank'} server in a production environment.
-" %}
 
 ## About Reverse Proxies
 
@@ -69,7 +66,7 @@ Other HTTPD servers (e.g., NGINX) have not yet been explored.
 
 The following example shows how to implement a proxy using the Apache HTTPD server, Tomcat Servlet Container, and Tomcat's `mod_jk` on a linux system.
 
-#### Install `mod_jk`
+### Install `mod_jk`
 
 1. [Download](https://tomcat.apache.org/download-connectors.cgi){:target="_blank"} the latest version of Tomcat's `mod_jk` module.
 
@@ -92,7 +89,7 @@ The following example shows how to implement a proxy using the Apache HTTPD serv
     -rwxr-xr-x 1 root root 1147204 Oct  8 12:34 mod_jk.so
     ~~~
 
-#### Configure Apache HTTP Server To Use `mod_jk` To Talk To Tomcat
+### Configure Apache HTTP Server To Use `mod_jk` To Talk To Tomcat
 
 1.  Update Apache configurations to use the `mod_jk` module.
 
@@ -195,7 +192,7 @@ The following example shows how to implement a proxy using the Apache HTTPD serv
     " %}
 
 
-#### Configure Tomcat and the TDS for the proxy
+### Configure Tomcat and the TDS for the proxy
 
 1. Modify the Tomcat `AJP Connector`
 

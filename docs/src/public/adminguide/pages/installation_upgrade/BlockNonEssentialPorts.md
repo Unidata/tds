@@ -2,13 +2,11 @@
 title: Block Non-Essential Port Access At The Firewall
 last_updated: 2020-08-24
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: block_nonessential_ports.html
 ---
 
-
 This section stresses the importance of blocking non-essential port access at the firewall.
-
 
 ## Rationale
 
