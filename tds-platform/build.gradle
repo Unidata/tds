@@ -16,7 +16,7 @@ dependencies {
   api enforcedPlatform('edu.ucar:netcdf-java-bom:5.4.0-SNAPSHOT')
   api enforcedPlatform('org.springframework:spring-framework-bom:5.2.7.RELEASE')
   api enforcedPlatform('org.springframework.security:spring-security-bom:5.3.3.RELEASE')
-  api platform('net.openhft:chronicle-bom:2.20.8')
+  api platform('net.openhft:chronicle-bom:2.20.93')
 
   constraints {
     // dependencies without explicit versions are getting their version set by one of the platforms above
