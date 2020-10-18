@@ -38,6 +38,8 @@ class FreshTdsInstallSpec extends Specification {
         
         and: "it copied over the default startup files"
         // See TdsContext.afterPropertiesSet(), in the "Copy default startup files, if necessary" section.
+        new File(contentRootPath, "README.txt").exists()
+        new File(threddsDirectory, "README.txt").exists()
         new File(threddsDirectory, "catalog.xml").exists()
         new File(threddsDirectory, "enhancedCatalog.xml").exists()
         new File(new File(threddsDirectory, "public"), "testdata").exists()
