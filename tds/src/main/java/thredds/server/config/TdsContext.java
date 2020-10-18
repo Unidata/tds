@@ -267,16 +267,14 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
       File rootDirReadMe = new File(contentRootDir, "README.txt");
       if (!rootDirReadMe.exists()) {
         File defaultRootDirReadMeFile = new File(startupContentDirectory, "root_README.txt");
-        logServerStartup.info("TdsContext.init(): Copying root README file from {}.",
-            defaultRootDirReadMeFile);
+        logServerStartup.info("TdsContext.init(): Copying root README file from {}.", defaultRootDirReadMeFile);
         IO.copyFile(defaultRootDirReadMeFile, rootDirReadMe);
       }
 
       File threddsDirReadMe = new File(threddsDirectory, "README.txt");
       if (!threddsDirReadMe.exists()) {
         File defaultThreddsDirReadMeFile = new File(startupContentDirectory, "thredds_README.txt");
-        logServerStartup.info("TdsContext.init(): Copying thredds README file from {}.",
-            defaultThreddsDirReadMeFile);
+        logServerStartup.info("TdsContext.init(): Copying thredds README file from {}.", defaultThreddsDirReadMeFile);
         IO.copyFile(defaultThreddsDirReadMeFile, threddsDirReadMe);
       }
 
