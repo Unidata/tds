@@ -28,46 +28,45 @@ Typically, you will only be adding and modifying catalogs and configuration file
 
 ## `thredds/` Subdirectory
 
-By default, a `thredds/` subdirectory is created in of the TDS content directory.
+By default, a `thredds/` subdirectory is created in the TDS content directory.
 E.g.: `${tds.content.root.path}/thredds/`
 
-It is within this `thredds/` subdirectory the aforementioned configuration files (called [_catalogs_](basic_catalog.html)) and other information needed to run the TDS are stored.  
+The aforementioned configuration files (called [_catalogs_](basic_catalog.html)) and other information needed to run the TDS are stored in the `thredds/` subdirectory . 
 
-### Contents Of `${tds.content.root.path}/thredds/`
+### Contents
 
-Below is a brief explanation of the files and subdirectories of `${tds.content.root.path}/thredds/` directory that come with the TDS "out-of-the-box". 
-Links to more information about the various files and subdirectories have been included for your convenience.
+The `thredds/` directory includes a number of files and subdirectories:
 
-#### `cache/`
-This directory contains cashed TDS configuration information. 
-[Caching](caching.html) is discussed is more detail in the [performance tuning](caching.html) section of this guide.
+~~~
+$ ll
+total 48
+drwxr-x---   8 tomcat  tomcat   256 Oct 14 12:30 cache
+-rw-r-----   1 tomcat  tomcat  2259 Oct 14 12:30 catalog.xml
+-rw-r-----   1 tomcat  tomcat  2609 Oct 14 12:30 enhancedCatalog.xml
+drwxr-x---   9 tomcat  tomcat   288 Oct 14 12:30 logs
+drwxr-x---   3 tomcat  tomcat    96 Oct 14 12:30 notebooks
+drwxr-x---   3 tomcat  tomcat    96 Oct 14 12:30 public
+drwxr-x---   3 tomcat  tomcat    96 Oct 14 12:31 state
+drwxr-x---   3 tomcat  tomcat    96 Oct 14 12:30 templates
+-rw-r-----   1 tomcat  tomcat  8655 Oct 14 12:30 threddsConfig.xml
+-rw-r-----   1 tomcat  tomcat  2797 Oct 14 12:30 wmsConfig.xml
+~~~
 
-#### `catalog.xml`
-This is the main TDS configuration file (a.k.a the _root catalog_) used to serve data.
-[more information](basic_catalog.html)
+Below is a brief explanation of these files and subdirectories, with links to further information.
 
-#### `enhancedCatalog.xml`
-This is an _example client catalog_ file that comes with the TDS, and is referenced from [`catalog.xml`](basic_catalog.html) file.
-This file and client catalogs are discussed in the [TDS configuration](basic_catalog.html) section of this guide.
-
-#### `logs/`
-_TDS-generated log files_ are located within this directory.
-These logs are _different_ from the servlet container (Tomcat) log files.
-[TDS logging](tds_logging.html), and the contents of the `logs/` directory is covered in the [more information](tds_logging.html)
-
-#### `notebooks/`
-
-#### `public/`
-
-#### `state/`
-
-#### `templates/`
-User-supplied Thymeleaf HTML templates (see [Customizing TDS](customizing_tds_look_and_feel.html#thymeleaf-templates) for details).
-
-#### `threddsConfig.xml` 
-A [configuration file](tds_config_ref.html) for allowing non-default services, configuring caching, etc.
-
-#### `wmsConfig.xml`
+|---------|--------------|
+| Name | Description |
+|:--------|:-------------|
+| `cache/` | This directory contains cashed TDS configuration information. <br/>[[more information]](caching.html)  |
+| `catalog.xml` | This is the main TDS _client_ configuration file (a.k.a, the _root catalog_) used to serve data. <br/>[[more information]](basic_catalog.html) |
+| `enhancedCatalog.xml` | This is an _example client catalog_ file that comes with the TDS, and is referenced from `catalog.xml` file.<br/>[[more information]](basic_catalog.html)  |
+| `logs/` | _TDS-generated log files_ are located within this directory, and are _different_ from the servlet container (Tomcat) log files.<br/>[[more information]]() |
+| `notebooks/` | This directory contains public endpoint `.ipynb` files for the TDS Jupyter Notebook service.<br/>[[more information]]() | 
+| `public/` | Files in this directory are automatically mapped and served from the TDS context root.<br/>[[more information]]()| 
+| `state/` | The contents of this directory (a file called `prefs.xml`) holds state information about the configuration catalogs on TDS startup.<br/>[[more information]]() | 
+| `templates/` | User-supplied Thymeleaf HTML templates to customize the look and feel of your TDS server.<br/>[[more information]](customizing_tds_look_and_feel.html#thymeleaf-templates) |
+|`threddsConfig.xml` | A configuration file for allowing non-default services, configuring caching, etc.<br/>[[more information]](tds_config_ref.html) |
+| `wmsConfig.xml` | A configuration file for the THREDDS Web Mapping Service (WMS).<br>[[more information]](wms_ref.html) |
 
 
 ## Other Subdirectories In `${tds.content.root.path}`
