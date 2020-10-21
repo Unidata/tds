@@ -1,13 +1,10 @@
 ---
 title: Running The TDS Behind a Proxy Server
-last_updated: 2020-08-24
+last_updated: 2020-10-15
 sidebar: admin_sidebar
 toc: true
 permalink: tds_behind_proxy.html
 ---
-
-This section demonstrates how to run the TDS and Tomcat Servlet Container behind an Apache HTTP proxy server using the [`mod_jk`](https://tomcat.apache.org/connectors-doc/){:target="_blank"} connector.
-
 
 ## About Reverse Proxies
 
@@ -15,15 +12,16 @@ View the Wikipedia entry on [Reverse Proxies](https://en.wikipedia.org/wiki/Reve
 
 ### Uses Of Reverse Proxies
 
-* A reverse proxy is a proxy server that appears to clients to be an ordinary server.
-   Requests are forwarded to one or more origin servers which handle the request.
-   The response is returned as if it came directly from the proxy server.
+A reverse proxy is a proxy server that appears to clients to be an ordinary server.
+Requests are forwarded to one or more origin servers which handle the request.
+The response is returned as if it came directly from the proxy server.
 
-   {% include image.html file="tds/tutorial/production_servers/tds_reverse_proxy.png" alt="reverse proxy" caption="" %}
+{% include image.html file="tds/tutorial/production_servers/tds_reverse_proxy.png" alt="reverse proxy" caption="" %}
 
-* Reverse proxies can be used to hide the existence and characteristics of the origin server(s) and can be an additional layer of defense and can protect against some OS and WebServer specific attacks.
-  However, it does not provide any protection to attacks against vulnerabilities in the web application or proxy service itself (e.g., Apache, Tomcat).
-* A reverse proxy can also be used for load balancing, caching content, content compression, and SSL acceleration.
+Reverse proxies can be used to hide the existence and characteristics of the origin server(s) and can be an additional layer of defense and can protect against some OS and WebServer specific attacks.
+However, it does not provide any protection to attacks against vulnerabilities in the web application or proxy service itself (e.g., Apache, Tomcat).
+
+A reverse proxy can also be used for load balancing, caching content, content compression, and SSL acceleration.
 
 ### Using Tomcat And Apache HTTP Server
 
@@ -32,8 +30,8 @@ The TDS reverse proxy using Apache has been tested and vetted by Unidata.
 Other HTTPD servers (e.g., NGINX) have not yet been explored.
 " %}
 
-* Using Apache as a front-end proxy server for the TDS running on Tomcat is perhaps the easiest method for setting up a reverse proxy for the TDS. 
-  There are two methods to accomplish this:
+Using Apache as a front-end proxy server for the TDS running on Tomcat is perhaps the easiest method for setting up a reverse proxy for the TDS. 
+There are two methods to accomplish this:
   * Apache's `mod_proxy` in combination with Tomcat's HTTP connector; or
   * the `mod_jk` Apache module with the Tomcat AJP connector.
   

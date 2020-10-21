@@ -22,9 +22,9 @@ If it finds `setenv.sh`, it will apply the custom environment and JVM configurat
 
 You can use the `setenv.sh` file to configure the JVM by setting by defining and populating the `$JAVA_OPTS` variable.
 
-#### Example `setenv.sh` file
+#### Example `setenv.sh` File
 
-~~~
+~~~bash
 #!/bin/sh
 #
 # ENVARS for Tomcat
@@ -93,9 +93,9 @@ It needs to be persisted between Tomcat upgrades or TDS re-deployments.
 The location of TDS content directory is controlled by setting the `tds.content.root.path` Java system property using this syntax:
 `-Dtds.content.root.path=path_to_TDS_content_root`
 
-#### Example setting the TDS content directory
+#### Example Setting `tds.content.root.path`
 
-~~~
+~~~bash
 -Dtds.content.root.path=/data/content
 ~~~
 
@@ -131,9 +131,9 @@ If you intend to use this service, you'll need to set the following options in t
    The TDS stashes its configurations in a `/thredds` subdirectory of the [TDS content directory](tds_content_directory.html).
    "%} 
    
-#### Example setting WMS JVM options
+#### Example Setting WMS JVM Options
    
-~~~
+~~~bash
 -Djava.awt.headless=true \
 -Djava.util.prefs.systemRoot=/data/content/thredds/javaUtilPrefs \
 -Djava.util.prefs.userRoot=/data/content/thredds/javaUtilPrefs
@@ -174,9 +174,9 @@ Unidata recommends setting the following JVM options to promote better performan
     
     Configure the Hotspot compiler to run the JVM in _server_ mode with the `server` Java system property using this syntax: `-server`
  
-#### Example setting JVM performance options
+#### Example Setting JVM Performance Options
 
-~~~
+~~~bash
 -Xmx4096m -Xms512m -server
 ~~~
 

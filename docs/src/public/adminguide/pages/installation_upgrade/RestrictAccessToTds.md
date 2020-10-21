@@ -1,36 +1,38 @@
 ---
 title: Restrict Access To The TDS
-last_updated: 2020-08-26
+last_updated: 2020-10-15
 sidebar: admin_sidebar
-toc: false
-permalink: restict_access_to_tds.html
+toc: true
+permalink: restrict_access_to_tds.html
 ---
 
-This section demonstrates how to restrict access to specific datasets or the TDS application as a whole.
+## Methods Of Restricting Access
+
+There are three options to limit access to specific datasets or the TDS application as a whole:
+
+* [Limit Access To Entire TDS By IP/Host](#limit-access-to-entire-tds-by-iphost)
+* [Limit Access To Parts Or Entire TDS By User/Role](#limit-access-to-parts-or-entire-tds-by-userrole)
+* [Limit Access To Specific Dataset By User/Role](#limit-access-to-specific-dataset-by-userrole)
+
+They can be used individually or in combination with one another.
+All of these options rely upon the Tomcat servlet container functionality to a certain degree.
+
+## Limit Access To Entire TDS By IP/Host
+
+The Tomcat `RemoteHostValve` or `RemoteAddrValve` allows you to either allow or deny access to the TDS (or other web applications) by IP address or host name.  This is an _application-wide_ approach to access control.
+
+Configure the valves in the Tomcat `${tomcat_home}/conf/server.xml` or web application `META-INF/context.xml` files.
 
 {%include note.html content="
-This section assumes you have successfully performed the tasks as outlined in the [Getting Started With The TDS](install_java_tomcat.html) section of this tutorial.
-" %}
-
-There are three ways to restrict access to the TDS and datasets:
-
-
-## Restrict Access By IPs &amp; Hosts Using Tomcat
-
-### Rationale
-
-* Use the Tomcat `RemoteHostValve` or `RemoteAddrValve` to restrict access to the TDS and/or other web applications.
-* Configured in the Tomcat `${tomcat_home}/conf/server.xml` or web application `META-INF/context.xml` files.
-* Valve declarations can be used to either allow or deny access to content.
-* Utilize the valves for adding an extra layer of security to the Manager application to limit accessed to it from within a specific IP address range.
-* Caveat: these valves rely on incoming IP addresses or hostnames which are vulnerable to spoofing. 
-Also, not much help when dealing with DHCP.
+These valves rely on incoming IP addresses or hostnames which are vulnerable to spoofing. 
+Also, this approach is not much help when dealing with [DHCP](https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol){:target='_blank'} clients.
+" %} 
 
 ### `RemoteAddrValve`
 
 The `RemoteAddrValve` compares the client IP address against one or more regular expressions to either allow or refuse the request from this client.
 
-#### Example
+#### Example `RemoteAddrValve` Use
 
 1. Using the `RemoteAddrValve` to allow access only for the clients connecting from localhost:
 
@@ -52,7 +54,7 @@ The `RemoteAddrValve` compares the client IP address against one or more regular
 
 The `RemoteHostValve` compares the client hostname against one or more regular expressions to either allow or refuse the request from this client.
 
-#### Example
+#### Example `RemoteHostValve` Use
 
 1. Using the `RemoteHostValve` to restrict access based on resolved host names:
 
@@ -62,18 +64,17 @@ The `RemoteHostValve` compares the client hostname against one or more regular e
               deny=".*\.bandwidthhogs\.com" />
    ~~~  
 
-    {%include note.html content="
+    {%include info.html content="
     Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-8.5-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
     " %}
 
 
-## Restrict Access Via Web Application Deployment Descriptor
+## Limit Access To Parts Or Entire TDS By User/Role
 
-### Rationale
+Use a web application's [deployment descriptor](https://docs.oracle.com/cd/E19316-01/819-3669/6n5sg7bhc){:target="_blank"} (`web.xml`) file to limit access to parts or all of the application.
 
-* You can use a web application's [deployment descriptor](https://docs.oracle.com/cd/E19316-01/819-3669/6n5sg7bhc){:target="_blank"} (`web.xml`) file to limit access to parts or all of the application.
-* Servlet containers, including Tomcat, can implement access control configurations found in the deployment descriptor file by enforcing user authentication to the restricted resources.
-* This type of restricted access works well when you want to restrict your entire site to a single set of users, or  when you want to give access to different datasets to different users. 
+Servlet containers, including Tomcat, can implement access control configurations found in the deployment descriptor file by enforcing user authentication to the restricted resources.
+This type of access control works well when you want to restrict your entire site to a single set of users, or when you want to give access to different datasets to different users. 
 
 {%include note.html content="
 You will need to configure the [user authentication credentials](/digested_passwords.html) in Tomcat to and should enable [TLS/SSL encryption](/enable_tls_encryption.html) to utilize this type of access control.
@@ -81,7 +82,7 @@ You will need to configure the [user authentication credentials](/digested_passw
 
 ### Creating A `security-constraint` In `web.xml`
 
-You can restrict a pattern of URLs, by adding `<security-constraint>` elements into the deployment descriptor (`web.xml`) file. 
+Restrict a pattern of URLs, by adding `<security-constraint>` elements into the deployment descriptor (`web.xml`) file. 
 The following fragment will force **all** URL accesses that have the `urlPattern` to authorized users with the role `roleName`. 
 The `<transport-guarantee>` elements forces a switch to communication over the TLS/SSL socket:
 
@@ -101,7 +102,7 @@ The `<transport-guarantee>` elements forces a switch to communication over the T
 </security-constraint>
 ~~~
 
-#### Example
+#### Example `<security-constraint>` Use
 
 ~~~xml
 <security-constraint>
@@ -119,10 +120,10 @@ The `<transport-guarantee>` elements forces a switch to communication over the T
 </security-constraint>
 ~~~
 
-You do **not** include `/thredds` in the `url-pattern` element. 
-Also, note that if you are using multiple data services, you must include each service's URL pattern.
+You do **not** include `/thredds` in the `<url-pattern>` element. 
+Also, if you are using multiple data services, you must include each service's URL pattern.
 
-#### Example
+#### Example `<url-pattern>` Use
 
 ~~~xml
 <web-resource-collection>
@@ -133,15 +134,13 @@ Also, note that if you are using multiple data services, you must include each s
 </web-resource-collection>
 ~~~
 
-{%include note.html content="
-Consult the [Using Deployment Descriptors to Secure Web Applications](https://docs.oracle.com/cd/E19226-01/820-7627/6nisfjn8c/){:target='_blank'} by Oracle for documentation outlining the role of the deployment descriptor in web application security.
+{%include info.html content="
+Consult the [Using Deployment Descriptors to Secure Web Applications](https://docs.oracle.com/cd/E19226-01/820-7627/6nisfjn8c/){:target='_blank'} by Oracle for the documentation outlining the role of the deployment descriptor in web application security.
 " %}
 
-## Restrict Access By Dataset In TDS Catalogs
+## Limit Access To Specific Dataset By User/Role
 
-### Rationale
-
-* TDS catalogs offer a more fine-grained approach to access control of datasets.
+THREDDS catalogs offer a more fine-grained approach to access control of datasets.
 
 ### How It Works
 
@@ -153,7 +152,7 @@ When a client tries to access a restricted dataset, it is redirected to a URL th
 If the challenge is successful, the client is redirected back to the original dataset URL, except now it has an authenticated session, represented by a session cookie passed to the client. 
 For subsequent requests by the same client, no authentication is needed as long as the session remains valid.
 
-The default TDS configuration uses [Digest authentication](/digested_passwords.html). 
+The default TDS configuration uses BASIC authentication [digested passwords](/digested_passwords.html). 
 By modifying the TDS deployment descriptor (`web.xml`) file, the server administrator can require that authentication be done differently, (e.g., require TLS/SSL). 
 You can also plug in your own Authentication.
 
@@ -168,7 +167,7 @@ To access any restricted dataset that a TDS might serve, a client such as a brow
 1 Follow redirects, including circular redirects;
 2 Switch to TLS/SSL and back;
 3 Perform Basic and Digest authentication;
-4 Answer security challenges with the appropriate user name and password; and
+4 Answer the security challenges with the appropriate user name and password; and
 5 Return session cookies.
 
 #### How To Configure Restricted Datasets
@@ -217,7 +216,7 @@ A user may have multiple roles, and must always have the `restrictedDatasetUser`
 4.  In the [TDS configuration catalogs](/server_side_catalog_specification.html), add `restrictAccess={security role}` attributes to the `dataset` or `datasetScan` elements. 
 This will also restrict access to all children of those datasets. 
 
-    #### Example
+    #### Example `restrictAccess={security role}` Use
 
     ~~~xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -244,11 +243,9 @@ This will also restrict access to all children of those datasets.
 You should be prompted for a username and password. This must match a user that has a `role` matching the `restrictAccess` attribute on the dataset.
 
     {%include troubleshooting.html content="
-     If your browser has cached credentials which are wrong, it will simply send them without giving you a chance to renter. 
-     Firefox, at least, doesn't seem to have a way to clear this cache. 
-     Try exiting all instances of the browser and restarting it.
-    " %} 
-    {%include troubleshooting.html content="
-     If you are denied access when you enter in your username/password, but subsequent tests allow you to access the data. 
-     Make sure your user has both the `restrictedDatasetUser` and the particular security role needed for that dataset.
+     In BASIC authentication process, your browser will send _cached_ credentials, if they exist, to the server without giving you a chance to re-enter. 
+     You will need to clear your browser cache of incorrect or out-of-date credentials in order to authenticate successfully. 
+     Depending on your browser, this may require exiting all instances of the browser and restarting it.   
+
+     Furthermore, make sure your user has the `restrictedDatasetUser` security role in addition to the role needed to access the desired dataset.
      " %} 
