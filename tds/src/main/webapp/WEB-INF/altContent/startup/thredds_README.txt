@@ -8,9 +8,9 @@ made to the pertinent files in this directory.
 CONTENTS:
 This directory will contain the following subdirectories and files:
 
-  - cache/                Contains cashed TDS configuration information.
+  - cache/                Contains directories for temporary files and on-disk caches.
   - catalog.xml           Main TDS client configuration file (a.k.a, the root catalog) used to serve data.
-  - enhancedCatalog.xml   Example client catalog file that comes with the TDS (referenced from catalog.xml).
+  - enhancedCatalog.xml   Example configuration catalog, demonstrating advanced features (referenced from catalog.xml).
   - logs/                 TDS-generated log files are located within this directory.
   - notebooks/            Contains public endpoint .ipynb files for the TDS Jupyter Notebook service.
   - public/               Certain files in this directory are automatically mapped and served from the TDS context root.
