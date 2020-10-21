@@ -74,7 +74,7 @@ entries:
               output: web, pdf
 
     - title: Restrict Access To The TDS
-      url: /restict_access_to_tds.html
+      url: /restrict_access_to_tds.html
       output: web, pdf
 
     - title: Running Behind A Proxy Server

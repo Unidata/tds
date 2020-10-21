@@ -37,7 +37,7 @@ The aforementioned configuration files (called [_catalogs_](basic_catalog.html))
 
 The `thredds/` directory includes a number of files and subdirectories:
 
-~~~
+~~~bash
 $ ll
 total 48
 drwxr-x---   8 tomcat  tomcat   256 Oct 14 12:30 cache
@@ -57,15 +57,15 @@ Below is a brief explanation of these files and subdirectories, with links to fu
 |---------|--------------|
 | Name | Description |
 |:--------|:-------------|
-| `cache/` | This directory contains cashed TDS configuration information. <br/>[[more information]](caching.html)  |
+| `cache/` | Contains directories for temporary files and on-disk caches. <br/>[[more information]](caching.html)  |
 | `catalog.xml` | This is the main TDS _client_ configuration file (a.k.a, the _root catalog_) used to serve data. <br/>[[more information]](basic_catalog.html) |
-| `enhancedCatalog.xml` | This is an _example client catalog_ file that comes with the TDS, and is referenced from `catalog.xml` file.<br/>[[more information]](basic_catalog.html)  |
+| `enhancedCatalog.xml` | Example configuration catalog, demonstrating advanced features (referenced from `catalog.xml`).<br/>[[more information]](basic_catalog.html)  |
 | `logs/` | _TDS-generated log files_ are located within this directory, and are _different_ from the servlet container (Tomcat) log files.<br/>[[more information]]() |
 | `notebooks/` | This directory contains public endpoint `.ipynb` files for the TDS Jupyter Notebook service.<br/>[[more information]]() | 
-| `public/` | Files in this directory are automatically mapped and served from the TDS context root.<br/>[[more information]]()| 
-| `state/` | The contents of this directory (a file called `prefs.xml`) holds state information about the configuration catalogs on TDS startup.<br/>[[more information]]() | 
+| `public/` | Certain files in this directory are automatically mapped and served from the TDS context root.<br/>[[more information]]()| 
+| `state/` | Contains state information about the TDS configuration catalogs.<br/>[[more information]]() | 
 | `templates/` | User-supplied Thymeleaf HTML templates to customize the look and feel of your TDS server.<br/>[[more information]](customizing_tds_look_and_feel.html#thymeleaf-templates) |
-|`threddsConfig.xml` | A configuration file for allowing non-default services, configuring caching, etc.<br/>[[more information]](tds_config_ref.html) |
+|`threddsConfig.xml` | Main TDS configuration file for allowing non-default services, configuring caching, etc.<br/>[[more information]](tds_config_ref.html) |
 | `wmsConfig.xml` | A configuration file for the THREDDS Web Mapping Service (WMS).<br>[[more information]](wms_ref.html) |
 
 

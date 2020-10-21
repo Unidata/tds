@@ -3,6 +3,17 @@
     border-left: 5px solid #ED1951;
     font-size:16px;
 }
+h1, h2, h3, h4, h5 {
+    font-weight: 400;
+}
+
+body h1 {
+    font-size: 30px;
+    margin: 20px 0;
+}
+h2 {
+    color: #777777;
+}
 
 h3 {
     color: #2F4F4F;
@@ -161,11 +172,23 @@ code+a>code {
 }
 
 /* table of contents */
+div#toc {
+    border-left: 4px solid #DCDCDC;
+
+}
+
 div#toc ul {
     background: none;
     margin-left: 5px;
     border-radius: 0;
 }
+
+
+div#toc>ul::before {
+    content: "On This Page:";
+    padding-left: 0;
+}
+
 
 div#toc ul li {
     font-size: 100% !important;
