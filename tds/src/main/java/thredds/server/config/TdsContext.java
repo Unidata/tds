@@ -264,6 +264,20 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
     ////////////////////////////////
 
     try {
+      File rootDirReadMe = new File(contentRootDir, "README.txt");
+      if (!rootDirReadMe.exists()) {
+        File defaultRootDirReadMeFile = new File(startupContentDirectory, "root_README.txt");
+        logServerStartup.info("TdsContext.init(): Copying root README file from {}.", defaultRootDirReadMeFile);
+        IO.copyFile(defaultRootDirReadMeFile, rootDirReadMe);
+      }
+
+      File threddsDirReadMe = new File(threddsDirectory, "README.txt");
+      if (!threddsDirReadMe.exists()) {
+        File defaultThreddsDirReadMeFile = new File(startupContentDirectory, "thredds_README.txt");
+        logServerStartup.info("TdsContext.init(): Copying thredds README file from {}.", defaultThreddsDirReadMeFile);
+        IO.copyFile(defaultThreddsDirReadMeFile, threddsDirReadMe);
+      }
+
       File catalogFile = new File(threddsDirectory, "catalog.xml");
       if (!catalogFile.exists()) {
         File defaultCatalogFile = new File(startupContentDirectory, "catalog.xml");
@@ -320,6 +334,7 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
       logServerStartup.error("TdsContext.init(): " + message);
       throw new IllegalStateException(message, e);
     }
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // logging
