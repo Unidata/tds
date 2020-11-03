@@ -19,9 +19,9 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 * Allows Tomcat administrators to deploy, un-deploy, or reload web applications such as the TDS without having to shut down and restart Tomcat. 
 * Provides server status statistics for the JVM and each connector you have configured in `${tomcat_home}/conf/server.xml`.
 
-{%include note.html content=
-"For more information about the Tomcat manager application, see the [Tomcat Manager App HOW-TO](https://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html){:target='_blank'} documentation.
-" %}
+
+For more information about the Tomcat manager application, see the [Tomcat Manager App HOW-TO](https://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html){:target='_blank'} documentation.
+
 
 ## Accessing The Manager Application
 

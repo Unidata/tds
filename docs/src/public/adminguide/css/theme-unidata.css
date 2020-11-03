@@ -21,6 +21,10 @@ h3 {
 }
 h4 {color: #808080; }
 
+.nav {
+    margin: 0 0 10px 0;
+}
+
 
 .nav .sidebarTitle a,
 .nav .sidebarTitle a:active,
@@ -166,6 +170,7 @@ code+a>code {
 #breadcrumbs {
     color: #8D8D8D;
     font-size: 12px;
+    border-bottom: 1px solid #DCDCDC;
 }
 #breadcrumbs .bcEnd {
     font-weight: bold;

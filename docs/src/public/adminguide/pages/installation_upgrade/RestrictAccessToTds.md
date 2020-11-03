@@ -64,9 +64,11 @@ The `RemoteHostValve` compares the client hostname against one or more regular e
               deny=".*\.bandwidthhogs\.com" />
    ~~~  
 
-    {%include info.html content="
-    Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-8.5-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
-    " %}
+{% capture remote_host_valve %}
+    Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-{{site.tomcat_version}}-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
+{% endcapture %}
+
+    {% include info.html content=remote_host_valve%}
 
 
 ## Limit Access To Parts Or Entire TDS By User/Role
@@ -205,11 +207,17 @@ A user may have multiple roles, and must always have the `restrictedDatasetUser`
           roles="fieldProject,tiggeData,restrictedDatasetUser"/>
     ~~~
     {%include warning.html content="
-    Make sure *none* of these `restrictedDatasetUsers` have any of the \"secure\" roles such as `tdsConfig`, `manager`, or `admin`. 
+    Make sure *none* of these `restrictedDatasetUsers` have any of the \"secure\" roles such as `tdsConfig`, `manager`, or `admin`.
+    
+     
     The `tdsConfig`, `manager` and `admin` roles allow access to secure parts of Tomcat and TDS. 
     These can only be accessed using HTTPS (TLS), and thus are considered secure. 
+    
+    
     If you are restricting access to datasets, you will also add other users who will have the `restrictedDatasetUser` role. 
-    The `restrictedDatasetUser` usage can also use non-HTTPS URLs, and so is vulnerable to session hijacking. 
+    The `restrictedDatasetUser` usage can also use non-HTTPS URLs, and so is vulnerable to [session hijacking](enable_tls_encryption.html). 
+    
+    
     By keeping the roles separate, you make sure the worst that can happen is that someone can download some scientific data they shouldn't have access to.
     " %} 
     
@@ -243,9 +251,12 @@ This will also restrict access to all children of those datasets.
 You should be prompted for a username and password. This must match a user that has a `role` matching the `restrictAccess` attribute on the dataset.
 
     {%include troubleshooting.html content="
-     In BASIC authentication process, your browser will send _cached_ credentials, if they exist, to the server without giving you a chance to re-enter. 
+     In the BASIC and DIGEST authentication processes, your browser will send _cached_ credentials, if they exist, to the server without giving you a chance to re-enter. 
+     
+     
      You will need to clear your browser cache of incorrect or out-of-date credentials in order to authenticate successfully. 
-     Depending on your browser, this may require exiting all instances of the browser and restarting it.   
-
+     Depending on your browser, this may require exiting all instances of the browser and restarting it.
+     
+     
      Furthermore, make sure your user has the `restrictedDatasetUser` security role in addition to the role needed to access the desired dataset.
      " %} 

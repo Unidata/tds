@@ -16,7 +16,7 @@ A reverse proxy is a proxy server that appears to clients to be an ordinary serv
 Requests are forwarded to one or more origin servers which handle the request.
 The response is returned as if it came directly from the proxy server.
 
-{% include image.html file="tds/tutorial/production_servers/tds_reverse_proxy.png" alt="reverse proxy" caption="" %}
+{% include image.html file="installation_upgrade/tds_reverse_proxy.png" alt="reverse proxy" caption="" %}
 
 Reverse proxies can be used to hide the existence and characteristics of the origin server(s) and can be an additional layer of defense and can protect against some OS and WebServer specific attacks.
 However, it does not provide any protection to attacks against vulnerabilities in the web application or proxy service itself (e.g., Apache, Tomcat).
@@ -42,12 +42,12 @@ There are two methods to accomplish this:
 
 ### Tomcat-Apache Proxy Documentation
 
-* [Tomcat Connectors](https://tomcat.apache.org/tomcat-8.5-doc/connectors.html){:target="_blank"}
+* [Tomcat Connectors](https://tomcat.apache.org/tomcat-{{site.tomcat_version}}-doc/connectors.html){:target="_blank"}
   Documentation describing the difference between the Tomcat HTTP and AJP connectors.
 * `mod_proxy`
-   * [Tomcat HTTP Connector](https://tomcat.apache.org/tomcat-8.5-doc/config/http.html){:target="_blank"}
+   * [Tomcat HTTP Connector](https://tomcat.apache.org/tomcat-{{site.tomcat_version}}-doc/config/http.html){:target="_blank"}
      Configuration for the Tomcat HTTP connector (for use with Apache's mod_proxy).
-   * [Tomcat Proxy Support - How To](https://tomcat.apache.org/tomcat-8.5-doc/proxy-howto.html){:target="_blank"}
+   * [Tomcat Proxy Support - How To](https://tomcat.apache.org/tomcat-{{site.tomcat_version}}-doc/proxy-howto.html){:target="_blank"}
      Tomcat documentation showing how to use the build-in Apache module mod_proxy for Apache versions 1.3X and 2.X.
 * `mod_jk`
   * [Tomcat AJP Connector](https://tomcat.apache.org/tomcat-8.5-doc/config/ajp.html){:target="_blank"}
@@ -205,7 +205,7 @@ The following example shows how to implement a proxy using the Apache HTTPD serv
                   protocol="AJP/1.3" />
    ~~~
 
-   {% include note.html content="
+   {% include info.html content="
    Consult the Tomcat documentation for more information about the [AJP Connector](https://tomcat.apache.org/tomcat-8.5-doc/config/ajp.html){:target='_blank'} configuration options.
    " %}
   
@@ -295,7 +295,9 @@ The following example shows how to implement a proxy using the Apache HTTPD serv
    
    {%include warning.html content="
    If you leave outside access to the TDS and Tomcat open via port `8080` this once protected portion of the TDS is now open in the clear. 
-   Hence, we recommend disabling these connectors if you are using Apache as a proxy).  
+   Hence, we recommend disabling these connectors if you are using Apache as a proxy.  
+   
+   
    Also, keep these changes to the configurations in mind if you ever decide to reverse or undo the Apache reverse proxy!
    " %}
    
@@ -367,7 +369,7 @@ However, if your network configuration requires that you use a different context
    <service name="odap" serviceType="OPeNDAP" base="/my/thredds/dodsC/"/>
    ~~~
 
-## Troubleshooting
+## Troubleshooting Tips
 
 * Check the catalog URL in the title of the HTML view of catalogs matches the requested URL.
 * Check the Data Access URL in the OPeNDAP Data Access Form matches the requested URL (minus the `.html` suffix).

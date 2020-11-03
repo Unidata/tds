@@ -38,29 +38,24 @@ entries:
       output: web, pdf
 
       subfolders:
-        - title: Securing the TDS
+        - title: Securing The TDS
           output: web, pdf
           subfolderitems:
-            - title: Restrict Tomcat Permissions
-              url: /tomcat_permissions.html
-              output: web, pdf
-
-            - title: Use Digested Passwords
-              url: /digested_passwords.html
-              output: web, pdf
-
             - title: Enable TLS/SSL Encryption
               url: /enable_tls_encryption.html
               output: web, pdf
-
+            - title: Restrict Tomcat Permissions
+              url: /tomcat_permissions.html
+              output: web, pdf
+            - title: Use Digested Passwords
+              url: /digested_passwords.html
+              output: web, pdf
             - title: Secure Tomcat Manager App
               url: /secure_manager_app.html
               output: web, pdf
-
             - title: Remove Unused Web Applications
               url: /remove_unused_webapps.html
               output: web, pdf
-
             - title: Block Non-Essential Ports
               url: /block_nonessential_ports.html
               output: web, pdf
@@ -81,13 +76,14 @@ entries:
       url: /tds_behind_proxy.html
       output: web, pdf
 
+    - title: Modifying Tomcat Access Logs
+      url: /tomcat_access_log.html
+      output: web, pdf
+
     - title: Upgrading
       url: /tomcat_log_files.html
       output: web, pdf
 
-    - title: Modifying Tomcat Access Logs
-      url: /tomcat_access_log.html
-      output: web, pdf
 
   - title: Configuration
     output: web, pdf
