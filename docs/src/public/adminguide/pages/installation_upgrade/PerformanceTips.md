@@ -75,7 +75,7 @@ Have a look at the `compression` and `compressibleMimeType` attributes of the To
 ~~~
 
 This says to compress (`gzip` or `deflate`) when the number of bytes is `>= 1000`, for the named `mime-types`.
-See the Tomcat HTTP Connector [reference page](https://tomcat.apache.org/tomcat-8.5-doc/config/http.html){:target="_blank"} for more details.
+See the Tomcat HTTP Connector [reference page](https://tomcat.apache.org/tomcat-{{site.tomcat_version}}-doc/config/http.html){:target="_blank"} for more details.
 
 ### Automatic Startup
 

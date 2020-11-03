@@ -6,18 +6,24 @@ toc: true
 permalink: digested_passwords.html
 ---
 
-This section demonstrates how to enable digested passwords for the TDS and Tomcat Servlet Container.
 
-## Rationale
+## Do Not Store Passwords In Plaintext
 
-* Passwords stored in clear text are a vulnerability if the host is compromised.
-* Better to have the passwords encrypted using a cryptographic hash functions (`SHA`) and then stored in `${tomcat_home}/conf/tomcat-users.xml` file.
-* Tomcat can be configured to support digested passwords (this is **not the default setting**).
+Passwords stored in clear text are a vulnerability if the host is compromised.
+It is better to have the passwords encrypted using a cryptographic hash functions and then stored in `${tomcat_home}/conf/tomcat-users.xml` file.
 
-### How it works
+Tomcat can be configured to support digested passwords, (this is **not the default setting**).
+
+## Digest Access Authentication 
  
-When a client makes a request Tomcat will tell the client that a digested password is required.  
-Based on this dialog, the client will automatically digest the password entered by the user.
+A very simplified explanation of digest authentication:
+
+* When a client makes a request, Tomcat will tell the client that a digested password is required.  
+* Based on this dialog, the client will automatically digest the password entered by the user.
+
+{% include info.html content="
+For a more detailed explanation of this authentication process, see the [Oracle Digest Authentication Tutorial](https://docs.oracle.com/cd/E21455_01/common/tutorials/authn_http_digest.html){:target='_blank'} configuration options.
+" %}
 
 ## Configure Tomcat To Use Digested Passwords
 
@@ -63,8 +69,11 @@ A Tomcat Realm represents a "database" of usernames, passwords, and roles assign
           resources under the key "UserDatabase".  Any edits
           that are performed against this UserDatabase are immediately
           available for use by the Realm.  -->
-     <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase">
-       <CredentialHandler className="org.apache.catalina.realm.MessageDigestCredentialHandler" algorithm="SHA-256" />
+     <Realm className="org.apache.catalina.realm.UserDatabaseRealm" 
+            resourceName="UserDatabase">
+       <CredentialHandler 
+            className="org.apache.catalina.realm.MessageDigestCredentialHandler" 
+            algorithm="SHA-256" />
      </Realm>
    </Realm>
 
@@ -107,19 +116,19 @@ A Tomcat Realm represents a "database" of usernames, passwords, and roles assign
                     xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd"
                     version="1.0">
       <!--
-        NOTE:  By default, no user is included in the "manager-gui" role required
-        to operate the "/manager/html" web application.  If you wish to use this app,
-        you must define such a user - the username and password are arbitrary. It is
-        strongly recommended that you do NOT use one of the users in the commented out
-        section below since they are intended for use with the examples web
-        application.
+       NOTE:  By default, no user is included in the "manager-gui" role required
+       to operate the "/manager/html" web application.  If you wish to use this app,
+       you must define such a user - the username and password are arbitrary. It is
+       strongly recommended that you do NOT use one of the users in the commented out
+       section below since they are intended for use with the examples web
+       application.
       -->
       <!--
-        NOTE:  The sample user and role entries below are intended for use with the
-        examples web application. They are wrapped in a comment and thus are ignored
-        when reading this file. If you wish to configure these users for use with the
-        examples web application, do not forget to remove the <!.. ..> that surrounds
-        them. You will also need to set the passwords to something appropriate.
+       NOTE:  The sample user and role entries below are intended for use with the
+       examples web application. They are wrapped in a comment and thus are ignored
+       when reading this file. If you wish to configure these users for use with the
+       examples web application, do not forget to remove the <!.. ..> that surrounds
+       them. You will also need to set the passwords to something appropriate.
       -->
         <role rolename="manager-gui"/>
         <user username="admin" 
@@ -138,7 +147,7 @@ A Tomcat Realm represents a "database" of usernames, passwords, and roles assign
     Since we are using BASIC authentication, you will need to clear any authenticated sessions in your browser to test whether digested passwords have been enabled.
     " %}
 
-## Troubleshooting
+## Troubleshooting Tips
 
 * Check the XML syntax in `${tomcat_home}/conf/tomcat-users.xml` and `${tomcat_home}/conf/server.xml` to make sure it is well-formed and without error.
 * Did you restart Tomcat after you made your changes to `tomcat-users.xml` and `server.xml`?

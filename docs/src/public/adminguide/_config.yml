@@ -20,6 +20,9 @@ company_name: Unidata
 netcdf-java_docset_version: 5.4
 # this will appear in the sidebar and doc pages
 
+tomcat_version: 9.0
+# this will appear in the doc pages
+
 github_editme_path: 
 
 #github_editme_path: tomjohnson1492/documentation-theme-jekyll/blob/gh-pages/pages/

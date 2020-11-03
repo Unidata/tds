@@ -5,23 +5,25 @@ sidebar: admin_sidebar
 toc: true
 permalink: tomcat_permissions.html
 ---
-This section demonstrates how to restrict the permissions of Tomcat Servlet Container.
 
-
-## Rationale
+## Do Not Run Tomcat As The Super User
 
 The JVM doesn't fork at all, nor does it support `setuid()` calls.
 The JVM, and therefore Tomcat, is _one_ process.
 The JVM is a virtual machine with many threads under the same process.
 
-* Because of OS constraints, all threads in the same JVM process must run under the same user id.
-  No thread may run as the `root` user unless they are **all** are run as the `root` user.
-  Hence, any programs run in Tomcat (TDS, manager application, other JSPs and servlets) will run as the `root` user.
-* If you _choose_ to run the Tomcat process as the `root` user and an attacker manages to exploit a weakness in Tomcat or something running in `${tomcat_home}/webapps/` to run arbitrary commands, those commands will be run as the **superuser**!
+Because of OS constraints, all threads in the same JVM process must run under the same user id.
+No thread may run as the `root` user unless they are **all** are run as the `root` user.
+Hence, any programs run in Tomcat (TDS, manager application, other JSPs and servlets) will run as the `root` user.
+  
+If you _choose_ to run the Tomcat process as the `root` user, and an attacker manages to exploit a weakness in Tomcat or something running in `${tomcat_home}/webapps/` to run arbitrary commands, those commands will be run as the **superuser**!
 
-{%include warning.html content="
-We strongly discourage running Tomcat as the `root` user and recommend creating an unprivileged, dedicated user and group for running the Tomcat process.
-" %}
+We **strongly discourage running Tomcat as the `root` user** and recommend creating an unprivileged, dedicated user and group for running the Tomcat process.
+
+{%include info.html content="
+See [Tomcat as root and security issues](https://marc.info/?t=104516038700003&r=1&w=2){:target='_blank'} for a lengthy thread in the tomcat-users mailing list archives dedicated to the perils of running Tomcat as the root user.
+"%}
+  
 
 ## Create A Dedicated User/Group For Running Tomcat
 
@@ -178,9 +180,3 @@ We also recommend restricting the permissions of the Tomcat `user/group` within 
     total 144
     drwxr-x--- 3 tomcat tomcat  4096 Oct 24 17:43 content
     ~~~
-
- 
-## Resources
-
-* [Tomcat as root and security issues](https://marc.info/?t=104516038700003&r=1&w=2){:target="_blank"}
-  A lengthy thread in the tomcat-users mailing list archives dedicated to the perils of running Tomcat as the root user.
