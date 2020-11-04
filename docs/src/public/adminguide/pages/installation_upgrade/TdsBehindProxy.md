@@ -6,24 +6,7 @@ toc: true
 permalink: tds_behind_proxy.html
 ---
 
-## About Reverse Proxies
-
-View the Wikipedia entry on [Reverse Proxies](https://en.wikipedia.org/wiki/Reverse_proxy){:target="_blank"} for more information on reverse proxies uses and types of proxies servers.
-
-### Uses Of Reverse Proxies
-
-A reverse proxy is a proxy server that appears to clients to be an ordinary server.
-Requests are forwarded to one or more origin servers which handle the request.
-The response is returned as if it came directly from the proxy server.
-
-{% include image.html file="installation_upgrade/tds_reverse_proxy.png" alt="reverse proxy" caption="" %}
-
-Reverse proxies can be used to hide the existence and characteristics of the origin server(s) and can be an additional layer of defense and can protect against some OS and WebServer specific attacks.
-However, it does not provide any protection to attacks against vulnerabilities in the web application or proxy service itself (e.g., Apache, Tomcat).
-
-A reverse proxy can also be used for load balancing, caching content, content compression, and SSL acceleration.
-
-### Using Tomcat And Apache HTTP Server
+## Using Tomcat And Apache HTTP Server
 
 {%include note.html content="
 The TDS reverse proxy using Apache has been tested and vetted by Unidata.  
