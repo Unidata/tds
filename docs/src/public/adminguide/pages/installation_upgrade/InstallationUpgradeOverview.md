@@ -1,12 +1,17 @@
 ---
-title: Installation Checklist
+title: Overview
 last_updated: 2020-08-26
 sidebar: admin_sidebar
-toc: false
-permalink: installation_checklist.html
+toc: true
+permalink: installation_upgrading_overview.html
 ---
 
-##  Bare-bones Instructions For Standing Up A TDS Production Server
+##  What This Section Covers
+
+This section covers the installation of the THREDDS Data Server.
+
+Not production
+get help ftom quickstart
 
 ### Prior To Installation
 1. Purchase a certificate from a [certificate authority](https://en.wikipedia.org/wiki/Certificate_authority){:target="_blank"} for your TDS domain/host. 
