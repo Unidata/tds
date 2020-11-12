@@ -21,8 +21,8 @@ entries:
   - title: Installation And Upgrading
     output: web, pdf
     folderitems:
-    - title: Overview
-      url: /installation_upgrading_overview.html
+    - title: Release Notes
+      url: /release_notes.html
       output: web, pdf
     - title: System Requirements
       url: /system_requirements.html
@@ -39,11 +39,11 @@ entries:
     - title: Running Behind A Proxy Server
       url: /tds_behind_proxy.html
       output: web, pdf
-    - title: Modifying Tomcat Access Logs
-      url: /tomcat_access_log.html
-      output: web, pdf
     - title: Upgrading
-      url: /tomcat_log_files.html
+      url: /upgrading.html
+      output: web, pdf
+    - title: Installation & Upgrading Checklist
+      url: /installation_upgrading_checklist.html
       output: web, pdf
   - title: Configuration
     output: web, pdf
@@ -119,18 +119,27 @@ entries:
     - title: Seeking Support
       url: /support.html
       output: web, pdf
-    - title: Modifying Tomcat Access Logs
-      url: /tomcat_access_log.html
-      output: web, pdf
 
     - title: TDS Log Files
       url: /tds_logs.html
       output: web, pdf
-
+    - title: Modifying Tomcat Access Logs
+      url: /tomcat_access_log.html
+      output: web, pdf
     - title: Using The TdsMonitor Tool
       url: /using_the_tdsmonitor_tool.html
       output: web, pdf
 
+  - title: Performance Tuning
+    output: web, pdf
+    folderitems:
+      - title: FAQ
+        url: /tds_faq.html
+        output: web, pdf
+
+      - title: GRIB FAQ
+        url: /tds_grib_faq.html
+        output: web, pdf
 
   - title: FAQ
     output: web, pdf

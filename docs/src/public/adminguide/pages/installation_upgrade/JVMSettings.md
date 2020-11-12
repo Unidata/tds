@@ -8,7 +8,7 @@ permalink: jvm_settings.html
 
 ## Setting `$JAVA_OPTS`
 
-You will need to define and pass the following the options and parameters to the Java Virtual Machine (JVM) in order to:
+You will need to define and pass the following options and parameters to the Java Virtual Machine (JVM) in order to:
 
 1. tell the TDS where to store configuration files; and
 2. increase the amount of memory allocated to the JVM to enhance performance; and
@@ -96,10 +96,10 @@ The location of TDS content directory is controlled by setting the `tds.content.
 #### Example Setting `tds.content.root.path`
 
 ~~~bash
--Dtds.content.root.path=/data/content
+-Dtds.content.root.path=/data/content/
 ~~~
 
-There is no default location for this directory in the TDS; **`tds.content.root.path` must be set or the TDS will not start**. 
+There is no default location for this directory in the TDS; **`tds.content.root.path` must be set, or the TDS will not start**. 
 
 {% include info.html content="
 The [TDS content directory](tds_content_directory.html) is explained in greater detail in [subsequent sections](tds_content_directory.html) of this guide.

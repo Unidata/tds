@@ -6,6 +6,8 @@ toc: false
 permalink: using_the_tdsmonitor_tool.html
 ---
 
+link to modifying access logs
+
 ## `TdsMonitor` Tool
 
  The `TdsMonitor` tool allows you to fetch remote `TDS` log files onto your local machine, and analyze them.

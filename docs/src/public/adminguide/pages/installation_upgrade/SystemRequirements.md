@@ -24,7 +24,7 @@ Unidata develops, tests, and runs/deploys the THREDDS Data Server using:
 * [ZFS](https://zfsonlinux.org/){:target="_blank"} for Linux systems
 
 {% include note.html content="
-Reference the TDS [GitHub Actions](https://github.com/Unidata/tds/blob/master/.github/workflows/tds.yml#L21-L36){:target='_blank'} for current TDS testing environment.
+Reference the TDS [GitHub Actions](https://github.com/Unidata/tds/blob/master/.github/workflows/tds.yml#L21-L36){:target='_blank'} for the current TDS testing environment.
 "%}
 
 ## A Note About Hardware

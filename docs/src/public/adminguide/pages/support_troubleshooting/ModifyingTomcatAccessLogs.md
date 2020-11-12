@@ -1,24 +1,29 @@
 ---
 title: Modifying Tomcat Access Logs
-last_updated: 2020-08-23
+last_updated: 2020-10-23
 sidebar: admin_sidebar
-toc: false
+toc: true
 permalink: tomcat_access_log.html
 ---
 
-## Tomcat Access Logs
+## Purpose Of Tomcat Access Logs
+As part of the installation process, we recommend you make the following changes to the Tomcat Access Logging to aid in future troubleshooting and maintenance. 
 
-{%include note.html content="
-This section assumes you are familiar with the [JDK and Tomcat Servlet Container](install_java_tomcat.html), have [deployed the TDS](deploying_the_tds.html), and are comfortable with basic and advanced TDS configuration.
-" %}
+The Tomcat access log records _all_ requests processed by the server.
+As of Tomcat 7, access logging is enabled by default in `${tomcat_home}/conf/server.xml`.
 
-* The access log records all requests processed by the server.
-* As of Tomcat 7, enabled in Tomcat by default in `${tomcat_home}/conf/server.xml`.
-* Information it contains is different from other logs in `${tomcat_home}/logs`.
-* Used for monitoring who is using your server and as a way of obtaining "feedback" about the activity and performance of the server.
-* In order to use the [`TdsMonitor`](using_the_tdsmonitor_tool.html)  tool, you will need to change the default configuration of the `AccessLogValve`.
+The Tomcat access logs are valuable for monitoring/identifying the users of your THREDDS Data Server and what content/data they are accessing with what frequency.
 
-### Modifying Tomcat Access Logging For The `TdsMonitor`
+**This information is helpful in gauging the performance of your server.** 
+
+### TDSMonitor Tool
+
+The TDS comes with a [monitoring tool](using_the_tdsmonitor_tool.html), called [`TdsMonitor`](using_the_tdsmonitor_tool.html), to help analyze your Tomcat access log files and glean the maximum amount the information from the logs.
+
+In order to gain the most use of the [`TdsMonitor`](using_the_tdsmonitor_tool.html) tool, Unidata requests you change the default configuration of the Tomcat `AccessLogValve` format as outlined below.
+
+## Modifying Tomcat Access Logging For The `TdsMonitor`
+
 
 Modify the `prefix`, `suffix`, and `pattern` attributes of the `AccessLogValve` element.
 
