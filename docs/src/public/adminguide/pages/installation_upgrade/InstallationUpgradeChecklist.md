@@ -1,9 +1,9 @@
 ---
-title: Overview
+title: Checklist
 last_updated: 2020-08-26
 sidebar: admin_sidebar
 toc: true
-permalink: installation_upgrading_overview.html
+permalink: installation_upgrading_checklist.html
 ---
 
 ##  What This Section Covers
@@ -64,3 +64,8 @@ When installing a new `thredds.war`, everything in `${tomcat_home}/webapps/thred
 {%include important.html content="
 If you are using the Tomcat `manager` application, you will need to [modify the deployment descriptor](secure_manager_app.html#enabling-tlsssl-for-the-tomcat-manager-application) to enable access via HTTPS only.
 " %}
+
+
+startup scripts
+log maintenance
+
