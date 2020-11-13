@@ -63,10 +63,10 @@ A new TDS service has been added for remote access to CDM Feature Datasets.
 * Target is a python client that has full access to all the coordinate information and coordinate based subsetting capabilities of the Java client.
 * Compatible / integrated with the Netcdf Subset Service (NCSS), using the same web API.
 
-### `ThreddsConfig.xml`
+### Catalog Caching
 
-You no longer turn catalog caching on or off, but you can control how many catalogs are cached (see
-[here](tds_config_ref.html) for the new syntax).
+You no longer turn catalog caching on or off, but you can control how many catalogs are cached (see the
+[catalog specification](tds_config_ref.html#configuration-catalog) for the new syntax).
 
 The following is no longer used:
 
@@ -169,7 +169,7 @@ Consult the [Feature Collection](feature_collections_ref.html) references for mo
 
 ### Recommendations For ESGF
 
-You must determine the number of datasets that are contained in all of your catalogs.
+For Earth System Grid Federation (ESGF) data, you must determine the number of datasets that are contained in all of your catalogs.
 To get a report, enable [Remote Management](remote_management_ref.html), and from `https://server/thredds/admin/debug`, select "Make Catalog Report".
 
 {% include note.html content="

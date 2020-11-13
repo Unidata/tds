@@ -3,7 +3,7 @@ title: TDS Administrator's Guide
 last_updated: 2020-10-01
 sidebar: admin_sidebar 
 permalink: index.html
-toc: false
+toc: true
 ---
 
 ## Who Should Use This Guide?
@@ -25,10 +25,4 @@ Multiple guides are available for the TDS, depending on the need and audience, i
 * The [TDS User's Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/userguide/){:target="_blank"} for users who wish to access the TDS via browser and consume data via the TDS web interface.
 * The [TDS Developer's Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/devguide/){:target="_blank"} for developers looking to access the TDS data programmatically.
 
-## What Is The THREDDS Data Server?
-
-The THREDDS Data Server (TDS) is a component of the Unidata's [Thematic Real-time Environmental Distributed Data Services (THREDDS)](https://journals.tdl.org/jodi/index.php/jodi/article/view/51){:target="_blank"} project.
-The goal of the THREDDS project is to provide students, educators, and researchers with coherent access to a large collection of real-time and archived datasets from a variety of environmental data sources at a number of distributed TDS server sites.
-
-The TDS is an open-source Java web application contained in a single [WAR](https://fileinfo.com/extension/war){:target="_blank"} file which allows easy installation in a servlet container such as the [Tomcat](http://tomcat.apache.org/){:target="_blank"} application server. 
 
