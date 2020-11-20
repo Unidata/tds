@@ -215,7 +215,7 @@ public class DatasetManager implements InitializingBean {
       // this is safer given all the trouble we have with ncml and caching.
       if (netcdfElem != null) {
         String ncmlLocation = "DatasetScan#" + location; // LOOK some descriptive name
-        //NetcdfDatasets.openNcmlDataset()
+        // NetcdfDatasets.openNcmlDataset()
         org.jdom2.output.XMLOutputter xmlOutputter = new XMLOutputter();
         String ncmlString = xmlOutputter.outputString(netcdfElem);
         NetcdfDataset ncd = NetcdfDatasets.openNcmlDataset(new StringReader(ncmlString), location, null);
