@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog name="S3 Test Catalog"
-  xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0">
+  xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+  xmlns:ncml="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" version="1.2">
 
   <datasetRoot path="s3-test" location="cdms3:noaa-goes16" />
 
-  <dataset name="Test GOES-16 S3" ID="testS3Grid"
+  <dataset name="Test Single GOES-16 S3 (December 29th, 2019 21:01) " ID="2020-11-02_2101-OR-ABI-L1b-RadC-M6C16-G16"
     urlPath="s3-test/ABI-L1b-RadC/2019/363/21/OR_ABI-L1b-RadC-M6C16_G16_s20193632101189_e20193632103574_c20193632104070.nc"
     dataType="Grid"
     serviceName="obstoreGrid"/>
 
+  <dataset name="Test GOES-16 S3 Aggregation (November 2nd, 2020)"
+    ID="2020-11-02_OR-ABI-L1b-RadC-M6C01-G16"
+    urlPath="s3-agg/ABI-L1b-RadC/2020/11/02/OR_ABI-L1b-RadC-M6C01_G16.nc">
+    <serviceName>obstoreGrid</serviceName>
+    <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+      id="2020-11-02_OR-ABI-L1b-RadC-M6C01-G16"
+      >
+      <remove name="t" type="variable" />
+      <variable name="time">
+        <attribute name="bounds" value="time_bounds" />
+      </variable>
+      <variable name="Rad">
+        <attribute name="coordinates" value="time y x" />
+      </variable>
+      <variable name="DQF">
+        <attribute name="coordinates" value="time y x" />
+      </variable>
+      <aggregation dimName="time" type="joinNew">
+        <variableAgg name="Rad" />
+        <variableAgg name="DQF" />
+        <scan location="cdms3:noaa-goes16?ABI-L1b-RadC/2020/307/#delimiter=/"
+          dateFormatMark="OR_ABI-L1b-RadC-M3C01_G16_s#yyyyDDDHHmmss"
+          regExp=".*OR_ABI-L1b-RadC-M6C01_G16_s.*" />
+      </aggregation>
+    </ncml:netcdf>
+  </dataset>
 </catalog>
