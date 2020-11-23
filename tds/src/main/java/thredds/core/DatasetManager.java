@@ -6,6 +6,7 @@
 package thredds.core;
 
 import com.coverity.security.Escape;
+import org.jdom2.output.XMLOutputter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,6 +35,7 @@ import ucar.nc2.ft2.coverage.adapter.DtCoverageAdapter;
 import ucar.nc2.ft2.coverage.adapter.DtCoverageDataset;
 import ucar.nc2.ft2.simpgeometry.SimpleGeometryFeatureDataset;
 import ucar.nc2.ft2.coverage.CoverageCollection;
+import ucar.nc2.internal.ncml.NcmlReader;
 import ucar.nc2.ncml.NcMLReader;
 import ucar.nc2.util.Optional;
 import ucar.nc2.util.cache.FileFactory;
@@ -134,7 +136,7 @@ public class DatasetManager implements InitializingBean {
 
     public NetcdfFile open(DatasetUrl durl, int buffer_size, ucar.nc2.util.CancelTask cancelTask, Object spiObject)
         throws IOException {
-      return NcMLReader.readNcML(new StringReader(ncml), durl.getTrueurl(), cancelTask);
+      return NetcdfDatasets.openNcmlDataset(new StringReader(ncml), durl.getTrueurl(), cancelTask);
     }
   }
 
@@ -213,9 +215,10 @@ public class DatasetManager implements InitializingBean {
       // this is safer given all the trouble we have with ncml and caching.
       if (netcdfElem != null) {
         String ncmlLocation = "DatasetScan#" + location; // LOOK some descriptive name
-        NetcdfDataset ncd = NcMLReader.readNcML(ncmlLocation, netcdfElem, "file:" + location, null);
-        // new NcMLReader().readNetcdf(reqPath, ncd, ncd, netcdfElem, null);
-        // if (log.isDebugEnabled()) log.debug(" -- DatasetHandler found DataRoot NcML = " + ds);
+        // NetcdfDatasets.openNcmlDataset()
+        org.jdom2.output.XMLOutputter xmlOutputter = new XMLOutputter();
+        String ncmlString = xmlOutputter.outputString(netcdfElem);
+        NetcdfDataset ncd = NetcdfDatasets.openNcmlDataset(new StringReader(ncmlString), location, null);
         return ncd;
       }
 

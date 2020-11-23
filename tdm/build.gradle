@@ -18,6 +18,7 @@ dependencies {
 
     compile 'org.apache.httpcomponents:httpclient'
     compile 'org.jdom:jdom2'
+    compile 'org.springframework:spring-beans'
     compile 'org.springframework:spring-core'
     compile 'org.springframework:spring-context'
     compile 'com.google.protobuf:protobuf-java'
@@ -38,6 +39,10 @@ shadowJar {
   }
   manifest.attributes 'Main-Class': 'thredds.tdm.Tdm'
   mergeServiceFiles()
+  append 'META-INF/spring.factories'
+  append 'META-INF/spring.handlers'
+  append 'META-INF/spring.schemas'
+  append 'META-INF/spring.tooling'
 }
 
 publishing {

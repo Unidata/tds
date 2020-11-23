@@ -4,6 +4,8 @@
  */
 package thredds.server.ncss.controller;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,11 @@ import ucar.nc2.write.NetcdfFormatWriter;
 public class NcssGridController extends AbstractNcssController {
   // Compression rate used to estimate the filesize of netcdf4 compressed files
   static private final short ESTIMATED_COMPRESION_RATE = 4;
+  // pattern for valid WKT lat lon point
+  // Two decimal digits seperated by whitespace, potentially starting and/or ending with
+  // a comma
+  private static final Pattern LATLON_WKT_PATTERN = Pattern.compile("[, ]?\\\\d*\\.\\\\d*\\s\\\\d*\\\\.\\\\d*,?");
+
 
   @Autowired
   private AllowedServices allowedServices;
@@ -230,7 +237,15 @@ public class NcssGridController extends AbstractNcssController {
       Map<String, Object> model = new HashMap<>();
       model.put("gcd", gcd);
       model.put("datasetPath", datasetUrlPath);
-      model.put("horizExtentWKT", gcd.getHorizCoordSys().getLatLonBoundaryAsWKT(50, 100));
+      String horizontalExtentWKT = gcd.getHorizCoordSys().getLatLonBoundaryAsWKT(50, 100);
+      Matcher latLonWktMatcher = LATLON_WKT_PATTERN.matcher(horizontalExtentWKT);
+      if (latLonWktMatcher.groupCount() > 3) {
+        // TODO: clean up any potential NaN values
+        model.put("horizExtentWKT", horizontalExtentWKT);
+      } else {
+        model.put("horizExtentWKT", "POLYGON((-90 45, 90 45, 90 -45, -90 -45, -90 45))");
+      }
+
       model.put("accept", makeAcceptList(op));
 
       switch (op) {
