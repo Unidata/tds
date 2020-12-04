@@ -179,7 +179,7 @@ code+a>code {
 /* table of contents */
 div#toc {
     border-left: 4px solid #DCDCDC;
-
+    margin-bottom: 30px;
 }
 
 div#toc ul {

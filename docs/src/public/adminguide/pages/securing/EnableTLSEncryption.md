@@ -6,7 +6,7 @@ toc: true
 permalink: enable_tls_encryption.html
 ---
 
-## Steps Needed To Enable Transport Layer Security
+## Steps Needed To Enable Transport Layer Security (TLS)
 
 The following must be performed to create a secure connection for a web application (such as the TDS):
 
@@ -21,11 +21,11 @@ The following example demonstrates enabling Transport Layer Security in the Tomc
 
    
    {% include important.html content="
-   **Do NOT use a self-signed certificate.**
-   Unidata _highly_ recommends the use of a certificate signed by a Certificate Authority (CA).  
-
-
-   There are a lot of [compelling arguments](https://www.sslshopper.com/article-when-are-self-signed-certificates-acceptable.html){:target='_blank'} as to why self-signed certificates should not be used in a production environment.
+   **Do NOT use a self-signed certificate!**
+   Unidata _highly_ recommends the use of a certificate signed by a Certificate Authority (CA).
+   
+   
+   There are a lot of [compelling arguments](https://www.sslshopper.com/article-when-are-self-signed-certificates-acceptable.html){:target='_blank'} as to why self-signed certificates should **not** be used in a production environment.
    "%}
 
 

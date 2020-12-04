@@ -41,7 +41,6 @@ The goal of the THREDDS project is to provide students, educators, and researche
      Catalogs may contain metadata to document details about the datasets. 
      
   5. TDS configuration files provide the TDS with information about which datasets and data collections are available and what services are provided for the datasets.
-  
   These configuration files, known as server-side catalogs, are also XMl files and are persisted in a directory called the [TDS Content Directory](tds_content_directory.html).
 
 
