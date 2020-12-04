@@ -1,12 +1,12 @@
 ---
 title: Checklist
-last_updated: 2020-08-26
+last_updated: 2020-11-23
 sidebar: admin_sidebar
 toc: true
 permalink: installation_upgrading_checklist.html
 ---
 
-##  What This Section Covers
+##  Installation Check list
 
 This section covers the installation of the THREDDS Data Server.
 

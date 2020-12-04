@@ -35,11 +35,17 @@ entries:
     - title: System Requirements
       url: /system_requirements.html
       output: web, pdf
+    - title: Prior To Installation
+      url: /prior_to_installation.html
+      output: web, pdf
     - title: Download And Installation
       url: /download.html
       output: web, pdf
     - title: JVM Settings
       url: /jvm_settings.html
+      output: web, pdf
+    - title: Restrict Tomcat Permissions
+      url: /tomcat_permissions.html
       output: web, pdf
     - title: TDS Content Directory
       url: /tds_content_directory.html
@@ -50,9 +56,48 @@ entries:
     - title: Upgrading
       url: /upgrading.html
       output: web, pdf
+
+
     - title: Installation & Upgrading Checklist
       url: /installation_upgrading_checklist.html
       output: web, pdf
+
+
+  - title: Securing The TDS
+    output: web, pdf
+    folderitems:
+      - title: Overview
+        url: /securing_tds_overview.html
+        output: web, pdf
+      - title: Enable TLS/SSL Encryption
+        url: /enable_tls_encryption.html
+        output: web, pdf
+
+      - title: Use Digested Passwords
+        url: /digested_passwords.html
+        output: web, pdf
+      - title: Secure Tomcat Manager App
+        url: /secure_manager_app.html
+        output: web, pdf
+      - title: Remove Unused Web Applications
+        url: /remove_unused_webapps.html
+        output: web, pdf
+      - title: Block Non-Essential Ports
+        url: /block_nonessential_ports.html
+        output: web, pdf
+      - title: Keep Software Up-To-Date
+        url: /keep_software_uptodate.html
+        output: web, pdf
+      - title: Tomcat With A Security Manager
+        url: /tomcat_with_security_manager.html
+        output: web, pdf
+      - title: Restrict Access To The TDS
+        url: /restrict_access_to_tds.html
+        output: web, pdf
+
+
+
+
   - title: Configuration
     output: web, pdf
     folderitems:
@@ -158,40 +203,6 @@ entries:
 
     - title: GRIB FAQ
       url: /tds_grib_faq.html
-      output: web, pdf
-
-  - title: Securing The TDS
-    output: web, pdf
-    folderitems:
-    - title: Overview
-      url: /securing_tds_overview.html
-      output: web, pdf
-    - title: Enable TLS/SSL Encryption
-      url: /enable_tls_encryption.html
-      output: web, pdf
-    - title: Restrict Tomcat Permissions
-      url: /tomcat_permissions.html
-      output: web, pdf
-    - title: Use Digested Passwords
-      url: /digested_passwords.html
-      output: web, pdf
-    - title: Secure Tomcat Manager App
-      url: /secure_manager_app.html
-      output: web, pdf
-    - title: Remove Unused Web Applications
-      url: /remove_unused_webapps.html
-      output: web, pdf
-    - title: Block Non-Essential Ports
-      url: /block_nonessential_ports.html
-      output: web, pdf
-    - title: Keep Software Up-To-Date
-      url: /keep_software_uptodate.html
-      output: web, pdf
-    - title: Tomcat With A Security Manager
-      url: /tomcat_with_security_manager.html
-      output: web, pdf
-    - title: Restrict Access To The TDS
-      url: /restrict_access_to_tds.html
       output: web, pdf
 
   - title: Reference Material

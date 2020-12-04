@@ -3,7 +3,7 @@ title: TDS Installation And Upgrading
 last_updated: 2020-08-26
 sidebar: admin_sidebar
 toc: true
-permalink: installation_upgrading_overview.html
+permalink: securing_tds_overview.html
 ---
 
 ##  What This Section Covers
