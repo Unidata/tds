@@ -12,7 +12,7 @@ apply plugin: 'groovy'  // For FreshInstall Spock tests.
 
 dependencies {
   implementation enforcedPlatform (project(':tds-platform'))
-  compile enforcedPlatform (project(':tds-testing-platform'))
+  testCompile enforcedPlatform (project(':tds-testing-platform'))
 
   compile 'edu.ucar:bufr'
   compile 'edu.ucar:cdm-core'
