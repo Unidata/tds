@@ -12,7 +12,7 @@ buildscript {
   // The buildscript {} block is odd: even though we applied dependencies.gradle above, the repositories therein
   // do not get included here. Instead, we must explicitly define the repos again. Yay for duplication.
   repositories {
-    jcenter()
+    gradlePluginPortal()
   }
 
   dependencies {
@@ -20,7 +20,6 @@ buildscript {
     classpath buildPlugins.sonarqube
     classpath buildPlugins.shadow
     classpath buildPlugins.spotless
-    classpath buildPlugins.grgit
     classpath buildPlugins.protobuf
     classpath buildPlugins.jruby
     classpath buildPlugins.depcheck
@@ -79,6 +78,11 @@ ext {
   // Will hold the list of projects that apply the java plugin
   // Used by :docs (javadoc tasks) and sonarqube
   javaProjects = []
+}
+
+tasks.named('wrapper') {
+  distributionType = Wrapper.DistributionType.ALL
+  gradleVersion = '6.8.3'
 }
 
 gradle.projectsEvaluated {
