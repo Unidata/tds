@@ -24,8 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # test against latest Adoptium LTS releases, and latest non-LTS version supported by gradle
-        java: [ 8, 11, 14 ]
+        # test against latest Adoptium LTS release, and latest non-LTS version supported by gradle
+        java: [ 11, 14 ]
         # test against both old and new netCDF-Java api
         ncjnewapi: ['false', 'true']
         # test against tomcat 8.5.x and tomcat 9.x
