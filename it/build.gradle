@@ -67,5 +67,5 @@ test {
 }
 
 // spin up the tds for testing
-test.dependsOn(':tds:AppWarBeforeIntegrationTest')
-test.finalizedBy(':tds:AppWarAfterIntegrationTest')
+test.dependsOn(':tds:AppWarBeforeIntegrationTestExternalProject')
+test.finalizedBy(':tds:AppWarAfterIntegrationTestExternalProject')

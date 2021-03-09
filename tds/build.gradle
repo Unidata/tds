@@ -179,16 +179,29 @@ war {
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
 import org.akhikhl.gretty.AppAfterIntegrationTestTask
 
-task('AppWarBeforeIntegrationTest', type: AppBeforeIntegrationTestTask) {
+task('AppWarBeforeIntegrationTestExternalProject', type: AppBeforeIntegrationTestTask) {
   inplace = false
   integrationTestTask 'test'
 }
-task('AppWarAfterIntegrationTest', type: AppAfterIntegrationTestTask) {
+
+task('AppWarAfterIntegrationTestExternalProject', type: AppAfterIntegrationTestTask) {
   integrationTestTask 'test'
+}
+
+task('AppWarBeforeIntegrationTest', type: AppBeforeIntegrationTestTask) {
+  inplace = false
+  integrationTestTask 'freshInstallTest'
+}
+
+task('AppWarAfterIntegrationTest', type: AppAfterIntegrationTestTask) {
+  integrationTestTask 'freshInstallTest'
 }
 
 AppWarBeforeIntegrationTest.dependsOn assemble
 AppWarAfterIntegrationTest.mustRunAfter AppWarBeforeIntegrationTest
+
+AppWarBeforeIntegrationTestExternalProject.dependsOn assemble
+AppWarAfterIntegrationTestExternalProject.mustRunAfter AppWarBeforeIntegrationTestExternalProject
 
 gretty {
   httpPort = 8081
@@ -287,12 +300,13 @@ task "before${taskName.capitalize()}"(type: AppBeforeIntegrationTestTask, group:
   inplace = false
   integrationTestTask taskName
 
-  gretty.afterEvaluate {
-    // Make sure the server for the regular tests is shut down before we start it back up!
-    mustRunAfter tasks.AppWarAfterIntegrationTest
-  }
+  //gretty.afterEvaluate {
+  //  // Make sure the server for the regular tests is shut down before we start it back up!
+  //  mustRunAfter tasks.test
+  //}
 
   debug = false  // Start the embedded sever in debug mode.
+
   ext.nonExistentContentDir = File.createTempDir('tds-test', 'content');
   nonExistentContentDir.deleteOnExit();
 
