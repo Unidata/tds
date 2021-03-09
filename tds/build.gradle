@@ -181,10 +181,10 @@ import org.akhikhl.gretty.AppAfterIntegrationTestTask
 
 task('AppWarBeforeIntegrationTest', type: AppBeforeIntegrationTestTask) {
   inplace = false
-  integrationTestTask 'test'
+  integrationTestTask 'freshInstallTest'
 }
 task('AppWarAfterIntegrationTest', type: AppAfterIntegrationTestTask) {
-  integrationTestTask 'test'
+  integrationTestTask 'freshInstallTest'
 }
 
 AppWarBeforeIntegrationTest.dependsOn assemble
