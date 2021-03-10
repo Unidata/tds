@@ -5,6 +5,7 @@ apply from: "$rootDir/gradle/any/dependencies.gradle"
 apply from: "$rootDir/gradle/any/java-internal.gradle"
 
 dependencies {
+    implementation enforcedPlatform(project(':tds-testing-platform'))
     implementation enforcedPlatform(project(':tds-platform'))
 
     implementation 'edu.ucar:cdm-core'

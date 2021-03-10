@@ -9,7 +9,6 @@ ext {
   buildPlugins.shadow = 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
   buildPlugins.sonarqube = 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0'
   buildPlugins.spotless = 'com.diffplug.spotless:spotless-plugin-gradle:4.5.1'
-  buildPlugins.grgit = 'org.ajoberstar.grgit:grgit-core:4.0.2'
   buildPlugins.protobuf = 'com.google.protobuf:protobuf-gradle-plugin:0.8.12'
   buildPlugins.jruby = 'com.github.jruby-gradle:jruby-gradle-plugin:2.0.0'
   buildPlugins.depcheck = 'org.owasp:dependency-check-gradle:6.0.2'
@@ -24,6 +23,7 @@ ext {
   depVersion.gwt = '2.8.2'
   depVersion.log4jWeb = '2.13.3'
   depVersion.jaxen = '1.1.6'
+  depVersion.netcdfJava = '5.4.2-SNAPSHOT'
   // gradle seems to have issues with the compileOnly configuration, so we need to provide the full maven
   // coordinates for javax.servlet-api if the gradle plugin in applied. If we don't, we see errors like this:
   depVersion.javaxServletApi = '3.1.0'

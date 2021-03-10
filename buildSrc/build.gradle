@@ -6,8 +6,8 @@ plugins {
 }
 
 repositories {
-  jcenter()
-  mavenCentral()  // JCenter isn't quite a superset of Maven Central.
+  gradlePluginPortal()
+  mavenCentral()
 }
 
 dependencies {

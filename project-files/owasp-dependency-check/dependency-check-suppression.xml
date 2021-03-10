@@ -16,14 +16,8 @@
     <packageUrl regex="true">^pkg:maven/net\.openhft/chronicle\-wire@.*$</packageUrl>
     <cve>CVE-2018-8909</cve>
     <cve>CVE-2020-15258</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name: tds-5.0.0-SNAPSHOT.war: chronicle-wire-2.20.80.jar
-      reason: not a chronicle-wire vulnerability (Wire - Audio, Video, and Signaling (AVS) App).
-      ]]></notes>
-    <packageUrl regex="true">^pkg:maven/net\.openhft/chronicle\-wire@.*$</packageUrl>
     <cve>CVE-2020-27853</cve>
+    <cve>CVE-2021-21301</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -41,7 +35,7 @@
     <packageUrl regex="true">^pkg:maven/org\.codehaus\.jettison/jettison@.*$</packageUrl>
     <cve>CVE-2020-7712</cve>
   </suppress>
-  <suppress>
+  <!--suppress>
     <notes><![CDATA[
        file name: junit-4.13.1.jar
        reason: Fixed in junit-4.13.1 for applications running JDK 1.7 and later. We require Java 1.8
@@ -50,5 +44,17 @@
       ]]></notes>
     <packageUrl regex="true">^pkg:maven/junit/junit@.*$</packageUrl>
     <vulnerabilityName>CVE-2020-15250</vulnerabilityName>
+  </suppress-->
+  <suppress>
+    <notes><![CDATA[
+      file name example: taglibs-standard-impl-1.2.5.jar
+      reason: These CVEs are for a GO based project called tag (MP3/MP4/OGG/FLAC metadata parsing library).
+              False positive. See https://github.com/dhowden/tag/issues/77 (from first CVE listed)
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.taglibs/taglibs\-standard\-impl@.*$</packageUrl>
+    <cve>CVE-2020-29242</cve>
+    <cve>CVE-2020-29243</cve>
+    <cve>CVE-2020-29244</cve>
+    <cve>CVE-2020-29245</cve>
   </suppress>
 </suppressions>

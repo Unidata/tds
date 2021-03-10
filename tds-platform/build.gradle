@@ -13,10 +13,10 @@ dependencies {
   // when resolving dependencies (even transitively)
   // If there is a conflict (previously hidden by optimistic resolution), we should get an error when we build, and
   // at that point we can take things on a case-by-case basis.
-  api enforcedPlatform('edu.ucar:netcdf-java-bom:5.4.0-SNAPSHOT')
-  api enforcedPlatform('org.springframework:spring-framework-bom:5.3.1')
-  api enforcedPlatform('org.springframework.security:spring-security-bom:5.4.1')
-  api platform('net.openhft:chronicle-bom:2.20.93')
+  api enforcedPlatform("edu.ucar:netcdf-java-bom:${depVersion.netcdfJava}")
+  api enforcedPlatform('org.springframework:spring-framework-bom:5.3.4')
+  api enforcedPlatform('org.springframework.security:spring-security-bom:5.4.5')
+  api platform('net.openhft:chronicle-bom:2.21ea74')
 
   constraints {
     // dependencies without explicit versions are getting their version set by one of the platforms above
@@ -79,7 +79,7 @@ dependencies {
     runtime "org.apache.logging.log4j:log4j-web:${depVersion.log4jWeb}"
 
     // reify
-    api 'org.apache.httpcomponents:httpcore:4.4.13'
+    api 'org.apache.httpcomponents:httpcore'
 
     // tds
     api 'org.json:json:20180813'
@@ -97,11 +97,12 @@ dependencies {
     api 'org.n52.sensorweb:52n-xml-om-v20'
 
     // edal-java (ncwms)
-    api 'uk.ac.rdg.resc:edal-common:1.4.2.1-SNAPSHOT'
-    api 'uk.ac.rdg.resc:edal-cdm:1.4.2.1-SNAPSHOT'
-    api 'uk.ac.rdg.resc:edal-wms:1.4.2.1-SNAPSHOT'
-    api 'uk.ac.rdg.resc:edal-graphics:1.4.2.1-SNAPSHOT'
-    api 'uk.ac.rdg.resc:edal-godiva:1.4.2.1-SNAPSHOT'
+    def edalVersion = '1.5.0'
+    api "uk.ac.rdg.resc:edal-common:${edalVersion}"
+    api "uk.ac.rdg.resc:edal-cdm:${edalVersion}"
+    api "uk.ac.rdg.resc:edal-wms:${edalVersion}"
+    api "uk.ac.rdg.resc:edal-graphics:${edalVersion}"
+    api "uk.ac.rdg.resc:edal-godiva:${edalVersion}"
 
     // gwt version defined in gradle/any/shared-mvn-coords.gradle, accessible via gradle/any/dependencies.gradle
     api "com.google.gwt:gwt-dev:${depVersion.gwt}"

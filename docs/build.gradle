@@ -8,7 +8,7 @@ plugins {
 import com.github.jrubygradle.JRubyExec
 
 repositories {
-  jcenter()
+  mavenCentral()
   ruby.gems()
 }
 
