@@ -22,7 +22,7 @@ The goal of the THREDDS project is to provide students, educators, and researche
 
    While there are a variety of servlet containers, we at Unidata use Tomcat as it is open-source, widely used, and highly vetted.
 
-   {%include note.html content="
+   {%include info.html content="
     When a Java-based web application such as the TDS is first deployed in a servlet container, some of its contents is compiled into [servlets](https://docs.oracle.com/javaee/5/tutorial/doc/bnafe.html){:target='_blank'}, a special type Java class which facilities the request-response programming model between a client and server.  
     " %}
 
@@ -41,7 +41,7 @@ The goal of the THREDDS project is to provide students, educators, and researche
      Catalogs may contain metadata to document details about the datasets. 
      
   5. TDS configuration files provide the TDS with information about which datasets and data collections are available and what services are provided for the datasets.
-  These configuration files, known as server-side catalogs, are also XMl files and are persisted in a directory called the [TDS Content Directory](tds_content_directory.html).
+  These configuration files, known as server-side catalogs, are also XML files and are persisted in a directory called the [TDS Content Directory](tds_content_directory.html).
 
 
 
