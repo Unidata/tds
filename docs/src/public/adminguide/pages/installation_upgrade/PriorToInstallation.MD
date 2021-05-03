@@ -5,24 +5,28 @@ sidebar: admin_sidebar
 toc: true
 permalink: prior_to_installation.html
 ---
-
 Unidata recommends performing the following tasks to prepare your system prior to installing the TDS.
-
-
-## Review The System Requirements
-
-Read the [System Requirements](system_requirements.html) to ensure you are using the necessary  
 
 {% capture quick_guide_tip%}
 Need help?
 Use the [TDS Quick Start Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_version}}/quickstart/){:target='_blank'} to get the TDS up and running quickly.
 {% endcapture %}
-
 {% include tip.html content=quick_guide_tip%}
+
+
+## Review The System Requirements
+
+Consult the [System Requirements](system_requirements.html) before installation to ensure your server environment is compatable for running the TDS.
 
 ## Purchase TLS Certificate From A Certificate Authority
 
+The use of HTTPS has been the defacto standard for web traffic since Chrome and other browsers have started denoting HTTP sites as "[Not Secure](https://blog.chromium.org/2018/02/a-secure-web-is-here-to-stay.html){:target='_blank'}"
 
+Unidata **highly recommends** the use of the HTTPS protocol with your TDS, and a certificate signed by a [Certificate Authority (CA)](https://en.wikipedia.org/wiki/Certificate_authority){:target='_blank'}.
+
+{%include important.html content="
+A self-signed certificate says to your users \"_Trust me - I am who I say I am._\" While a certificate signed by a CA says, \"_Trust me - the CA agrees I am who I say I am._\"
+"%}
 
 ## Create Dedicated Tomcat User And Group
 
@@ -69,11 +73,6 @@ And, something like the following in your `/etc/passwd` file:
 tomcat:x:25945:2001::/usr/local/tomcat:/bin/bash
 ~~~
 
-
-
 ### Create Server Startup/Shutdown Scripts For Tomcat
   
-  1. Purchase a certificate from a [certificate authority](https://en.wikipedia.org/wiki/Certificate_authority){:target="_blank"} for your TDS domain/host. 
-      
-
-
+Create the appropriate server startup and shutdown scripts for your server if you intend to run the TDS in a production environment.
