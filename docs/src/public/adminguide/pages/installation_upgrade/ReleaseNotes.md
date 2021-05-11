@@ -80,7 +80,7 @@ The following is no longer used:
 
 ## Java Web Start Deprecated
 
-Java Web Start has been [deprecated as of Java 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and has been removed in [Java 11](https://www.oracle.com/technetwork/java/javase/11-relnote-issues-5012449.html){:target="_blank"}, which is the Long-term Release post-Java 8.
+Java Web Start has been [deprecated as of Java 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and has been removed in [Java 11](https://www.oracle.com/java/technologies/javase/11-relnotes.html){:target="_blank"}, which is the Long-term Release post-Java 8.
 Due to these changes, the netCDF-Java project no longer provide Java Web Start files as of version 5.0.0.
 Following suite, the TDS no longer provide any Web Start based Viewers on Dataset pages out of the box.
 
