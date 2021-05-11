@@ -73,9 +73,9 @@ You will need to set the following JVM options for the TDS.
 | `Xms` | _Recommended for performance_<br/> The initial and minimum allocated memory of the JVM. <br/>[[more information](#jvm-performance-options)] |
 | `Xmx` | _Recommended for performance_<br/> The maximum allocated memory of the JVM. <br/>[[more information](#jvm-performance-options)] |
 | `server` | _Recommended for performance_<br/> Tells the Hotspot compiler to run the JVM in "server" mode. <br/>[[more information](#jvm-performance-options)] |
-| `java.awt.headless` | _Required for WMS usage_<br/> Needed to prevent graphics rendering code from assuming a graphics console exists. <br/>[[more information](#options-needed-for-wms-usage)] |
-| `java.util.prefs.systemRoot` | _Required for WMS usage_<br/> Allows the `java.util.prefs` of the TDS WMS to write system preferences to a location that is writable by the Tomcat user. <br/>[[more information](#options-needed-for-wms-usage)]
-| `java.util.prefs.userRoot` | _Required for WMS usage_<br/> Allows the `java.util.prefs` of the TDS WMS to write system preferences to a location that is writable by the Tomcat user. <br/>[[more information](#options-needed-for-wms-usage)]
+| `java.awt.headless` | _Required for WMS usage_<br/> Needed to prevent graphics rendering code from assuming a graphics console exists. <br/>[[more information](#jvm-options-needed-for-wms-usage)] |
+| `java.util.prefs.systemRoot` | _Required for WMS usage_<br/> Allows the `java.util.prefs` of the TDS WMS to write system preferences to a location that is writable by the Tomcat user. <br/>[[more information](#jvm-options-needed-for-wms-usage)]
+| `java.util.prefs.userRoot` | _Required for WMS usage_<br/> Allows the `java.util.prefs` of the TDS WMS to write system preferences to a location that is writable by the Tomcat user. <br/>[[more information](#jvm-options-needed-for-wms-usage)]
 
 {%include note.html content="
 For more information about the possible options/arguments available for `$JAVA_OPTS`, please consult the [Oracle Documentation](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABDJJFI){:target='_blank'}.
@@ -103,44 +103,6 @@ There is no default location for this directory in the TDS; **`tds.content.root.
 
 {% include info.html content="
 The [TDS content directory](tds_content_directory.html) is explained in greater detail in [subsequent sections](tds_content_directory.html) of this guide.
-"%} 
-
-### JVM Options Needed For WMS Usage
-
-The [Web Map Service (WMS)](wms_ref.html) is one of the [data access services](services_ref.html#data-access-services) available in the TDS. 
-If you intend to use this service, you'll need to set the following options in the JVM.
-
-* **JVM headless mode**  
-
-   The JVM needs to be run in [`headless mode`](https://blog.idrsolutions.com/2013/08/what-is-headless-mode-in-java/){:target="_blank"} to prevent graphics rendering code used in the WMS from assuming a graphics console exists in the server environment.  
-   (Application servers typically do not need peripherals, such as display devices).
-   Without this, the WMS code will crash the server in some circumstances.
-   
-   Enabled _headless mode_ with the `java.awt.headless` Java system property using this syntax: `-Djava.awt.headless=true`
-
-* **Java preferences**
-
-   The [Java Preferences API](https://www.vogella.com/tutorials/JavaPreferences/article.html){:target="_blank"} facilities the systematic handling of Java program preference configurations, such as user settings.
-   The TDS WMS code leverages this API to write system preferences to a location that is writable by the Tomcat user.
-   
-   This _location_ is one of the uses for the aforementioned [TDS content directory](#tds-content-directory). 
-   
-   Specify the `java.util.prefs.systemRoot` and `java.util.prefs.userRoot` Java system properties using this syntax: `-Djava.util.prefs.systemRoot=path_to_TDS_content_root/thredds/javaUtilPrefs` and `-Djava.util.prefs.userRoot=path_to_TDS_content_root/thredds/javaUtilPrefs`
-   
-   {% include note.html content="
-   The TDS stashes its configurations in a `/thredds` subdirectory of the [TDS content directory](tds_content_directory.html).
-   "%} 
-   
-#### Example Setting WMS JVM Options
-   
-~~~bash
--Djava.awt.headless=true \
--Djava.util.prefs.systemRoot=/data/content/thredds/javaUtilPrefs \
--Djava.util.prefs.userRoot=/data/content/thredds/javaUtilPrefs
-~~~
-   
-{% include info.html content="
-The [WMS Reference](wms_ref.html) contains more information about the TDS Web Map Service.
 "%} 
 
 ### JVM Performance Options
@@ -180,7 +142,43 @@ Unidata recommends setting the following JVM options to promote better performan
 -Xmx4096m -Xms512m -server
 ~~~
 
+### JVM Options Needed For WMS Usage
 
+The [Web Map Service (WMS)](wms_ref.html) is one of the [data access services](services_ref.html#data-access-services) available in the TDS. 
+If you intend to use this service, you'll need to set the following options in the JVM.
+
+* **JVM headless mode**  
+
+   The JVM needs to be run in [`headless mode`](https://blog.idrsolutions.com/2013/08/what-is-headless-mode-in-java/){:target="_blank"} to prevent graphics rendering code used in the WMS from assuming a graphics console exists in the server environment.  
+   (Application servers typically do not need peripherals, such as display devices).
+   Without this, the WMS code will crash the server in some circumstances.
+   
+   Enabled _headless mode_ with the `java.awt.headless` Java system property using this syntax: `-Djava.awt.headless=true`
+
+* **Java preferences**
+
+   The [Java Preferences API](https://www.vogella.com/tutorials/JavaPreferences/article.html){:target="_blank"} facilities the systematic handling of Java program preference configurations, such as user settings.
+   The TDS WMS code leverages this API to write system preferences to a location that is writable by the Tomcat user.
+   
+   This _location_ is one of the uses for the aforementioned [TDS content directory](#tds-content-directory). 
+   
+   Specify the `java.util.prefs.systemRoot` and `java.util.prefs.userRoot` Java system properties using this syntax: `-Djava.util.prefs.systemRoot=path_to_TDS_content_root/thredds/javaUtilPrefs` and `-Djava.util.prefs.userRoot=path_to_TDS_content_root/thredds/javaUtilPrefs`
+   
+   {% include note.html content="
+   The TDS stashes its configurations in a `/thredds` subdirectory of the [TDS content directory](tds_content_directory.html).
+   "%} 
+   
+#### Example Setting WMS JVM Options
+   
+~~~bash
+-Djava.awt.headless=true \
+-Djava.util.prefs.systemRoot=/data/content/thredds/javaUtilPrefs \
+-Djava.util.prefs.userRoot=/data/content/thredds/javaUtilPrefs
+~~~
+   
+{% include info.html content="
+The [WMS Reference](wms_ref.html) contains more information about the TDS Web Map Service.
+"%} 
 
 
 
