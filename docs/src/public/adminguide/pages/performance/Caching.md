@@ -1,3 +1,12 @@
+---
+title: Caching
+last_updated: 2020-10-03
+sidebar: admin_sidebar
+toc: true
+permalink: caching.html
+---
+
+
    * `cache/` - various cache directories
      * `agg/`
      * `cdm/`
