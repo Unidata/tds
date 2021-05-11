@@ -57,12 +57,6 @@ entries:
       url: /upgrading.html
       output: web, pdf
 
-
-    - title: Installation & Upgrading Checklist
-      url: /installation_upgrading_checklist.html
-      output: web, pdf
-
-
   - title: Securing The TDS
     output: web, pdf
     folderitems:
@@ -102,7 +96,11 @@ entries:
     output: web, pdf
     folderitems:
     - title: THREDDS Catalog Introduction
-      url: /catalog.html
+      url: /config_catalog_intro.html
+      output: web, pdf
+
+    - title: Configuration Catalog Files
+      url: /config_catalog_files.html
       output: web, pdf
 
     - title: Constructing Access URLs
@@ -162,9 +160,24 @@ entries:
       url: /adding_ncss.html
       output: web, pdf
 
-    - title: Customizing The TDS Look And Feel
-      url: /customizing_tds_look_and_feel.html
+    - title: Customize TDS Appearance
+      url: /customize_tds_appearance.html
       output: web, pdf
+
+  - title: Logging
+    output: web, pdf
+    folderitems:
+      - title: Tomcat Log Files
+        url: /tomcat_logs.html
+        output: web, pdf
+
+      - title: TDS Log Files
+        url: /tds_logs.html
+        output: web, pdf
+
+      - title: Log Maintenance
+        url: /log_maintenance.html
+        output: web, pdf
 
   - title: Troubleshooting and Support
     output: web, pdf
@@ -186,8 +199,8 @@ entries:
   - title: Performance Tuning
     output: web, pdf
     folderitems:
-      - title: FAQ
-        url: /tds_faq.html
+      - title: Caching
+        url: /cachning.html
         output: web, pdf
 
       - title: GRIB FAQ
