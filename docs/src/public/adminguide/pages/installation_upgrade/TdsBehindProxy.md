@@ -280,7 +280,6 @@ The following example shows how to implement a proxy using the Apache HTTPD serv
    If you leave outside access to the TDS and Tomcat open via port `8080` this once protected portion of the TDS is now open in the clear. 
    Hence, we recommend disabling these connectors if you are using Apache as a proxy.  
    
-   
    Also, keep these changes to the configurations in mind if you ever decide to reverse or undo the Apache reverse proxy!
    " %}
    
