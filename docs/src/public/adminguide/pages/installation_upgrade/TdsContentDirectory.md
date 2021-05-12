@@ -61,7 +61,7 @@ Below is a brief explanation of these files and subdirectories, with links to fu
 | `catalog.xml` | This is the main TDS _client_ configuration file (a.k.a, the _root catalog_) used to serve data. <br/>[[more information]](config_catalog_files.html) |
 | `enhancedCatalog.xml` | Example configuration catalog, demonstrating advanced features (referenced from `catalog.xml`).<br/>[[more information]](config_catalog_files.html)  |
 | `logs/` | _TDS-generated log files_ are located within this directory, and are _different_ from the servlet container (Tomcat) log files.<br/>[[more information]](tds_logs.html) |
-| `notebooks/` | This directory contains public endpoint `.ipynb` files for the TDS Jupyter Notebook service.<br/>[[more information]](customize_tds_appearance.html#jupyter-notebooks) | 
+| `notebooks/` | This directory contains public endpoint `.ipynb` files for the TDS Jupyter Notebook service.<br/>[[more information]](jupyter_notebooks.html) | 
 | `public/` | Certain files in this directory are automatically mapped and served from the TDS context root.<br/>[[more information]](where_to_store_your_data.html)| 
 | `state/` | Contains state information about the TDS configuration catalogs. *You should not modify or touch the contents of this directory.* | 
 | `templates/` | User-supplied Thymeleaf HTML templates to customize the look and feel of your TDS server.<br/>[[more information]](customize_tds_appearance.html#thymeleaf-templates) |

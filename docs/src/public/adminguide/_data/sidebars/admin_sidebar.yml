@@ -66,7 +66,6 @@ entries:
       - title: Enable TLS/SSL Encryption
         url: /enable_tls_encryption.html
         output: web, pdf
-
       - title: Use Digested Passwords
         url: /digested_passwords.html
         output: web, pdf
@@ -85,9 +84,6 @@ entries:
       - title: Restrict Access To The TDS
         url: /restrict_access_to_tds.html
         output: web, pdf
-
-
-
 
   - title: Configuration
     output: web, pdf
@@ -157,9 +153,17 @@ entries:
       url: /adding_ncss.html
       output: web, pdf
 
-    - title: Customize TDS Appearance
-      url: /customize_tds_appearance.html
-      output: web, pdf
+
+      subfolders:
+        - title: Customization
+          output: web, pdf
+          subfolderitems:
+            - title: Customizing TDS Appearance
+              url: /customize_tds_appearance.html
+              output: web, pdf
+            - title: Adding Jupyter Notebooks
+              url: /jupyter_notebooks.html
+              output: web, pdf
 
   - title: Logging
     output: web, pdf
