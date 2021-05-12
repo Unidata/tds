@@ -1,9 +1,9 @@
 ---
-title: FAQ
+title: Troubleshooting FAQs
 last_updated: 2020-08-26
-sidebar: tdsTutorial_sidebar
+sidebar: admin_sidebar
 toc: true
-permalink: tds_faq.html
+permalink: troubleshooting_faqs.html
 ---
 
 ## General
