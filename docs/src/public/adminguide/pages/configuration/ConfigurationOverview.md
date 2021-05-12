@@ -21,9 +21,9 @@ The TDS comes with the configuration files (note that not all of them contain th
 |---------|--------------|
 | Name | Description |
 |:--------|:-------------|
-| `catalog.xml` | This is the main TDS _client_ configuration file (a.k.a, the _root catalog_) used to serve data. <br/>[[more information]](server_side_catalog_specification.html) |
-| `enhancedCatalog.xml` | Example configuration catalog, demonstrating advanced features (referenced from `catalog.xml`).<br/>[[more information]](server_side_catalog_specification.html)  |
-| `threddsConfig.xml` | Main TDS configuration file for allowing non-default services, configuring caching, etc.<br/>[[more information]](tds_config_ref.html) |
+| `catalog.xml` | This is the main TDS _client_ configuration file (a.k.a, the _root catalog_) used to serve data. <br/>[[more information]](catalog.html) |
+| `enhancedCatalog.xml` | Example configuration catalog, demonstrating advanced features (referenced from `catalog.xml`).<br/>[[more information]](enhanced_catalog.html)  |
+| `threddsConfig.xml` | Main TDS configuration file for allowing non-default services, configuring caching, etc.<br/>[[more information]](thredds_config.html) |
 | `wmsConfig.xml` | A configuration file for the THREDDS Web Mapping Service (WMS).<br>[[more information]](wms_ref.html) |
 
 ## Nomenclature
@@ -60,3 +60,17 @@ When in doubt, think:
 {% include info.html content="
 The client catalogs are explained in greater detail in the TDS User's Guide.
 "%} 
+
+## How To Proceed With Configuration
+
+THREDDS catalogs collect, organize, and describe accessible datasets. 
+They provide a hierarchical structure for organizing the datasets as well as an access method (URL), and a human-understandable name for each dataset. 
+Further descriptive information about each dataset can also be added.
+
+Use the information in the Configuration section of this documentation, and reference the [catalog specification](server_side_catalog_specification.html) to create your own catalogs.
+
+A good place to start is to modify the [existing catalogs](#location) for your own purposes.
+
+**You MUST use the root [`catalog.xml`](catalog.html) and [`threddsConfig.xml`](enhanced_catalog.html) files**. 
+The TDS consults these files on startup.
+The [`enhancedCatalog.xml`](enhanced_catalog.html) and [`wmsConfig.xml`](wms_ref.html) files are optional.
