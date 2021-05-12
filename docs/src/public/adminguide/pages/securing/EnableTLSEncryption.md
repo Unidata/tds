@@ -1,5 +1,5 @@
 ---
-title: Enable TLS Encryption
+title: Enable TLS/SSL Encryption
 last_updated: 2020-10-10
 sidebar: admin_sidebar
 toc: true
@@ -117,7 +117,7 @@ The following example demonstrates enabling Transport Layer Security in the Tomc
      Run `man netstat` in your terminal window to learn more about this command.
    " %}
 
-### Troubleshooting Tips
+### Troubleshooting
 * Check the XML syntax in `${tomcat_home}/conf/server.xml` to make sure it is well-formed and without error.
 * Did you restart Tomcat after you made your changes to `server.xml`?
 * Did you specify the full path to the keystore file in `server.xml`?
@@ -201,7 +201,7 @@ Using the [security constraint definitions](#example-deployment-descriptor-entry
 | Comment # | Description |
 |:-----|:------------| 
 | 1 | The URI pattern `https://hostname:port/admin/*` of the THREDDS Data Server is considered a protected resource.<br/>Any content therein will be governed by the rest of the security constraint. |
-| 2 & 3 | The `<auth-constraint>` and `role-name` elements do not deal with TLS connections per se, but rather [_access control_](#accessing-tds-monitoring-and-debugging-tools).<br/>  These configurations are restricting access to users in the role `tdsConfig`. |
+| 2 & 3 | The `<auth-constraint>` and `role-name` elements do not deal with TLS connections per se, but rather access control.<br/>  These configurations are restricting access to users in the role `tdsConfig`. |
 | 4 | We are requiring a TLS connection to access this content. |   
 
 
@@ -232,5 +232,5 @@ Using the [security constraint definitions](#example-deployment-descriptor-entry
 | Comment # | Description |
 |:-----|:------------| 
 | 1 | The URI pattern `https://hostname:port/admin/logs/*` of the THREDDS Data Server is considered a protected resource.<br/>Any content therein will be governed by the rest of the security constraint. <br/><br/>Note these configurations will override the configurations declared for the [TDS Remote Management Tool](#security-constraint-for-the-tds-remote-management-tool) for the `/admin/logs/*` directory. |
-| 2 & 3 | The `<auth-constraint>` and `role-name` elements do not deal with TLS connections per se, but rather [_access control_](#accessing-tds-monitoring-and-debugging-tools).<br/>  These configurations are restricting access to users in the role `tdsMonitor`. |
+| 2 & 3 | The `<auth-constraint>` and `role-name` elements do not deal with TLS connections per se, but rather access control.<br/>  These configurations are restricting access to users in the role `tdsMonitor`. |
 | 4 | We are requiring a TLS connection to access this content. |   

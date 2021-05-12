@@ -82,9 +82,6 @@ entries:
       - title: Keep Software Up-To-Date
         url: /keep_software_uptodate.html
         output: web, pdf
-      - title: Tomcat With A Security Manager
-        url: /tomcat_with_security_manager.html
-        output: web, pdf
       - title: Restrict Access To The TDS
         url: /restrict_access_to_tds.html
         output: web, pdf
