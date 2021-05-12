@@ -5,8 +5,6 @@ sidebar: admin_sidebar
 toc: true
 permalink: customize_tds_appearance.html
 ---
-
-
 TDS provides a extensible and customizable user interface using [Thymeleaf](https://www.thymeleaf.org/){:target="_blank"} Java template engine.
 The pages which currently support customization are:
  * Catalog
@@ -14,9 +12,31 @@ The pages which currently support customization are:
 
 UI customization can be implemented through the contribution of both CSS stylesheets and Thymeleaf HTML templates.
 
+## The `public` Directory
+
+Certain files in the `${tds.content.root.path}/thredds/public` directory are automatically mapped and served from the TDS context root.
+
+For Example:
+ 
+   `${tds.content.root.path}/thredds/public/logo.png` 
+
+will be available as 
+
+`https://you.server.name/thredds/logo.png`
+
+### Allowed Files 
+
+The TDS currently will serve the following files if they are placed in `${tds.content.root.path}/thredds/public`:
+ * .css
+ * .gif
+ * .jpg
+ * .png
+ * .jsp
+ * sitemap.xml
+
 ## CSS Stylesheets
 
-To customize TDS using CSS, custom CSS documents should be placed inside the `${tds.content.root.path}/thredds/public` directory.
+To customize TDS using CSS, custom CSS documents should be placed inside the aforementioned `${tds.content.root.path}/thredds/public` directory.
 
 TDS is configured to use the CSS documents supplied in the `public` directory in `threddsConfig.xml`.
 There are three properties within the `htmlSetup` element used to define stylesheets:

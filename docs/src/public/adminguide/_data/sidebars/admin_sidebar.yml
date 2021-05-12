@@ -92,6 +92,26 @@ entries:
       url: /configuration_overview.html
       output: web, pdf
 
+      subfolders:
+        - title: Configuration Catalog Files
+          output: web, pdf
+          subfolderitems:
+            - title: catalog.xml
+              url: /catalog.html
+              output: web, pdf
+
+            - title: enhancedCatalog.xml
+              url: /enhancedCatalog.html
+              output: web, pdf
+
+            - title: threddsConfig.xml
+              url: /threddsConfig.html
+              output: web, pdf
+
+            - title: Organizing Catalogs
+              url: /organizing_catalogs.html
+              output: web, pdf
+
     - title: Constructing Access URLs
       url: /constucting_access_urls.html
       output: web, pdf
@@ -133,24 +153,23 @@ entries:
       url: /adding_metadata.html
       output: web, pdf
 
-    - title: Configuration Catalogs
-      url: /config_catalog.html
-      output: web, pdf
-
-    - title: Basic TDS Configuration
-      url: /basic_tds_configuration.html
-      output: web, pdf
-
-    - title: Adding OGC / ISO Services
-      url: /adding_ogc_iso_services.html
-      output: web, pdf
-
-    - title: Adding The NetCDF Subset Service
-      url: /adding_ncss.html
-      output: web, pdf
-
-
       subfolders:
+        - title: Making Data Available Via Services
+          output: web, pdf
+          subfolderitems:
+            - title: Available Services
+              url: /available_services.html
+              output: web, pdf
+
+            - title: Adding Services
+              url: /adding_services.html
+              output: web, pdf
+
+            - title: Dataet Source Plugin
+              url: /dataset_source_plugin.html
+              output: web, pdf
+
+
         - title: Customization
           output: web, pdf
           subfolderitems:
@@ -183,9 +202,13 @@ entries:
       - title: Caching
         url: /cachning.html
         output: web, pdf
-      - title: GRIB FAQ
-        url: /tds_grib_faq.html
+      - title: TDS
+        url: /cachning.html
         output: web, pdf
+      - title: Tomcat
+        url: /cachning.html
+        output: web, pdf
+
 
   - title: Troubleshooting and Support
     output: web, pdf
@@ -217,6 +240,6 @@ entries:
       url: /tomcat_manager_app.html
       output: web, pdf
 
-    - title: Caching
-      url: /Caching.md
+    - title: GRIB FAQ
+      url: /tds_grib_faq.html
       output: web, pdf
