@@ -6,9 +6,7 @@ toc: false
 permalink: keep_software_uptodate.html
 ---
 
-This section stresses the importance of keeping your software up-to-date.
-
-## Rationale
+## Best Practice
 
 Running the most current versions of software keeps your environment protected against _known_ security vulnerabilities.
 This includes the JDK, Tomcat, the TDS and any other third-party libraries or software you run.

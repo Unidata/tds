@@ -6,9 +6,7 @@ toc: true
 permalink: block_nonessential_ports.html
 ---
 
-This section stresses the importance of blocking non-essential port access at the firewall.
-
-## Rationale
+## Best Practice
 
 {%include important.html content="
 We recommend working with your systems/network administrator to block access to all non-essential ports at the firewall.
@@ -22,9 +20,3 @@ We recommend working with your systems/network administrator to block access to 
 ## Keep In Mind
 * Port `8080` should have unrestricted access unless you plan to [proxy requests to the Tomcat Servlet Container from an HTTP server](tds_behind_proxy.html){:target="_blank"}.
 * If you are using any of the TDS monitoring and debugging tools, or the Tomcat Manager application, you must also open up port `8443`.
-
-## Resources
-* Your local systems/network administrator:
-
-  {% include image.html file="tds/tutorial/production_servers/super.png" alt="super sys admin" caption="" %}
-

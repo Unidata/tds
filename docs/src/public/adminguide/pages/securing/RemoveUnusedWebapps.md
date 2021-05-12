@@ -6,11 +6,10 @@ toc: true
 permalink: remove_unused_webapps.html
 ---
 
-This section stresses the importance of removing any unused web applications from the Tomcat Servlet Container.
-
-## Rationale
+## Best Practice
 Generally, it is good practice to remove any unused web applications out of `${tomcat_home}/webapps`.
 
+## Tomcat Web Applications That Come With Tomcat
 Tomcat "ships" with several default web applications you may want to consider removing if they are not being utilized:
 
 * The `ROOT` application is Tomcat's `DocumentRoot` and contains the server's main web page.

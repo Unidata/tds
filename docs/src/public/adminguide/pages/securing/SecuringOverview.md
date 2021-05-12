@@ -1,5 +1,5 @@
 ---
-title: TDS Installation And Upgrading
+title: Securing The TDS Overview
 last_updated: 2020-08-26
 sidebar: admin_sidebar
 toc: true
@@ -8,57 +8,52 @@ permalink: securing_tds_overview.html
 
 ##  What This Section Covers
 
-This section covers the installation of the THREDDS Data Server.
+This section contains industry standard best practices and recommendations to secure the THREDDS Data Server for use in a production environment.
+
+## Why Is Security Important?
+
+Misconfiguration of Tomcat or the TDS can introduce security vulnerabilities in your production server environment. 
+The following recommendations should be considered "layers" of security: not completely effective by themselves, but more potent when combined.
+
+**This is not a complete laundry list of security fixes!**
+ Please use it as a starting point when securing your server.
+
+### Reporting A Security Issue
+To report a potential security-related issue or bug, contact: <security@unidata.ucar.edu>
+
+## Recommendations
+Unidata strongly recommends performing the following tasks if you intent to run the TDS in a production environment:
+
+1. [Enable TLS/SSL Encryption](enable_tls_encryption.html)
+2. [Use Digested Passwords](digested_passwords.html)
+3. [Secure Tomcat Manager Application](secure_manager_app.html)
+4. [Remove Unused Web Applications](remove_unused_webapps.html)
+5. [Block Non-Essential Ports](block_nonessential_ports.html)
+6. [Keep Software Up-To-Date](keep_software_uptodate.html)
+
+## Restricting Access To The TDS
+
+You can [restrict access](restrict_access_to_tds.html) to specific datasets or the TDS application as a whole:
+* [Limit Access To Entire TDS By IP/Host](restrict_access_to_tds.html#limit-access-to-entire-tds-by-iphost)
+* [Limit Access To Parts Or Entire TDS By User/Role](restrict_access_to_tds.html#limit-access-to-parts-or-entire-tds-by-userrole)
+* [Limit Access To Specific Dataset By User/Role](restrict_access_to_tds.html#limit-access-to-specific-dataset-by-userrole)
+
+## Modifying The Security Manager
+
+The JVM Security Manager that comes with Tomcat imposes a fine-grained security restrictions to all Java applications running the JVM.
+It confines the Java applications in a sandbox, and restricts them from utilizing certain features of the Java language Tomcat normally is able to access.
 
 
-### Prior To Installation
-1. Purchase a certificate from a [certificate authority](https://en.wikipedia.org/wiki/Certificate_authority){:target="_blank"} for your TDS domain/host. 
-2. Create a [dedicated user/group](tomcat_permissions.html#dedicated) for running the Tomcat server.
+If you are hosting untrusted servlets or JSP on your server, then implementing the Security Manager may be a good idea _if you know what you are doing_.
+Be aware the Security Manager may prevent trusted web applications (like the TDS) from performing certain functions if configured too restrictively.
 
-### Install Java
+**Most likely, you will have not any need to perform these adjustments.**
 
-1. [Install the JDK](install_java_tomcat.html#installing-java-jdk)
-
-### Install And Configure Tomcat
-
-1. [Install Tomcat](install_java_tomcat.html#installing-the-tomcat-servlet-container)
-2. Create a [`setenv.sh` file](running_tomcat.html#setting-java_home-java_opts-catalina_base-and-content_root) in `${tomcat_home}/bin` to set JVM options and the TDS `$CONTENT_ROOT`.
-3. Make the following modifications to `${tomcat_home}/conf/server.xml`:
- * Enable [digested password support](digested_passwords.html#configure-tomcat-to-use-digested-passwords) by modifying the `UserDatabaseRealm`.
- * Enable [TLS/SSL in tomcat](enable_tls_encryption.html#enabling-tlsssl-in-tomcat) using you CA certificate.
- * Enable [Compression](performance_tips.html#compression) in the Tomcat connectors.
- * Modify the Tomcat [AccessLogValve](tomcat_access_log.html) log format and changed the prefix and suffix and pattern attributes for the access log file.
-4. Create a [digested password](digested_passwords.html#digest.sh) using the algorithm specified in the `UserDatabaseRealm` of the `${tomcat_home}/conf/server.xml` file.
-5. Make the following modifications to `${tomcat_home}/conf/tomcat-users.xml`:
- * Create roles for [manager-gui](tomcat_manager_app.html#granting-access-to-the-manager-application), [`tdsConfig`](digested_passwords.html#configure-tomcat-to-use-digested-passwords) and [tdsMonitor](digested_passwords.html#configure-tomcat-to-use-digested-passwords).
- * Create a [user](tomcat_manager_app.html#granting-access-to-the-manager-application) with the [digested password](digested_passwords.html#configure-tomcat-to-use-digested-passwords) with access to the `manager-gui`, `tdsConfig`, and `tdsMonitor` roles.
-6. If you choose to use the Tomcat `manager` application, modify the [deployment descriptor](secure_manager_app.html) (`${tomcat_home}/webapps/manager/WEB-INF/web.xml`) to force access to occur only via HTTPS.
-7. Remove all [unused web applications](remove_unused_webapps.html) from the `${tomcat_home}/webapps` directory.
-8. Modify the [permissions of `${tomcat_home}`](tomcat_permissions.html) to restrict access.
-
-### Deploying The TDS
-1. [Download the TDS WAR](https://www.unidata.ucar.edu/downloads/tds/){:target="_blank"} file.
-2. If needed, [rename the WAR file](deploying_the_tds.html) to `thredds.war`.
-3. [Deploy the `thredds.war`](deploying_the_tds.html) file to the `${tomcat_home}/webapps` directory.
-4. Start/restart Tomcat so that it has a chance to create initial files in [`${tomcat_home}/content/thredds`](tds_content_directory.html).
-5. [Modify `${tomcat_home}/content/thredds/catalog.xml`](default_config_catalog.html#default-tds-root-catalog) for your site.
-6. Modify `${tomcat_home}/content/thredds/threddsConfig.xml` for your site in the following manner:
- * Add the needed information to the [`ServerInformation` element](basic_tds_configuration.html#server-information).
- * [Enable any other optional services](adding_ogc_iso_services.html)  like WMS or WCS.
- 
-### Continued Maintenance
-1. Be sure to periodically check to make sure you are running the [latest versions of Java, Tomcat and the TDS](keep_software_uptodate.html).
-2. If you have enabled [access logging](tomcat_access_log.html) (and you should), zip up the unused access logs in `${tomcat_home}/logs/` and archive them off to another directory.
-3. Likewise, zip up the unused [TDS servlet logs](tds_logs.html) in `${tomcat_home}/content/thredds/logs` and archive them as well.
-4. Manually rotate Tomcat's [`catalina.out`](tomcat_log_files.html#things-to-know-about-catalinaout) log file when it grows too large.
-
-### Upgrading The TDS
-
-{%include important.html content="
-When installing a new `thredds.war`, everything in `${tomcat_home}/webapps/thredds` is overwritten. However, nothing in `${tomcat_home}/content/` is overwritten.
+{%include info.html content="
+Please reference the Oracle [Security Manager](https://docs.oracle.com/javase/tutorial/essential/environment/security.html){:target='_blank'} documentation if you choose to go down this dark path.
 " %}
 
-### Upgrading Tomcat
-{%include important.html content="
-If you are using the Tomcat `manager` application, you will need to [modify the deployment descriptor](secure_manager_app.html#enabling-tlsssl-for-the-tomcat-manager-application) to enable access via HTTPS only.
-" %}
+
+
+
+
