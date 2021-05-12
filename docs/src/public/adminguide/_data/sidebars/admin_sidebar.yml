@@ -88,12 +88,8 @@ entries:
   - title: Configuration
     output: web, pdf
     folderitems:
-    - title: THREDDS Catalog Introduction
-      url: /config_catalog_intro.html
-      output: web, pdf
-
-    - title: Configuration Catalog Files
-      url: /config_catalog_files.html
+    - title: Overview
+      url: /configuration_overview.html
       output: web, pdf
 
     - title: Constructing Access URLs
@@ -171,13 +167,24 @@ entries:
       - title: Tomcat Log Files
         url: /tomcat_logs.html
         output: web, pdf
-
+      - title: Modifying Tomcat Access Logs
+        url: /tomcat_access_log.html
+        output: web, pdf
       - title: TDS Log Files
         url: /tds_logs.html
         output: web, pdf
-
       - title: Log Maintenance
         url: /log_maintenance.html
+        output: web, pdf
+
+  - title: Performance Tuning
+    output: web, pdf
+    folderitems:
+      - title: Caching
+        url: /cachning.html
+        output: web, pdf
+      - title: GRIB FAQ
+        url: /tds_grib_faq.html
         output: web, pdf
 
   - title: Troubleshooting and Support
@@ -186,38 +193,13 @@ entries:
     - title: Seeking Support
       url: /support.html
       output: web, pdf
-
-    - title: TDS Log Files
-      url: /tds_logs.html
-      output: web, pdf
-    - title: Modifying Tomcat Access Logs
-      url: /tomcat_access_log.html
+    - title: Troubleshooting FAQs
+      url: /troubleshooting_faqs.html
       output: web, pdf
     - title: Using The TdsMonitor Tool
       url: /using_the_tdsmonitor_tool.html
       output: web, pdf
 
-  - title: Performance Tuning
-    output: web, pdf
-    folderitems:
-      - title: Caching
-        url: /cachning.html
-        output: web, pdf
-
-      - title: GRIB FAQ
-        url: /tds_grib_faq.html
-        output: web, pdf
-
-  - title: FAQ
-    output: web, pdf
-    folderitems:
-    - title: FAQ
-      url: /tds_faq.html
-      output: web, pdf
-
-    - title: GRIB FAQ
-      url: /tds_grib_faq.html
-      output: web, pdf
 
   - title: Reference Material
     output: web, pdf
