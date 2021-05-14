@@ -108,9 +108,9 @@ entries:
               url: /threddsConfig.html
               output: web, pdf
 
-            - title: Organizing Catalogs
-              url: /organizing_catalogs.html
-              output: web, pdf
+    - title: Organizing Catalogs
+      url: /organizing_catalogs.html
+      output: web, pdf
 
     - title: Constructing Access URLs
       url: /constucting_access_urls.html

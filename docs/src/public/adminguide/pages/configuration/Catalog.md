@@ -1,15 +1,18 @@
 ---
-title: Default TDS Configuration Catalog
-last_updated: 2020-08-25
+title: catalog.xml
+last_updated: 2020-10-03
 sidebar: admin_sidebar
-toc: false
-permalink: default_config_catalog.html
+toc: true
+permalink: catalog.html
 ---
 
-## Default TDS Root Catalog
 
+##  Default TDS Configuration Catalog 
 The main TDS configuration catalog is at `${tds.content.root.path}/thredds/catalog.xml`.
-We ship a simple test catalog:
+It is also referred to as the **root catalog**.
+
+### Default Root Catalog
+Here is the default root `catalog.xml` file that is shopped with the TDS: 
 
 ~~~xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -57,15 +60,38 @@ We ship a simple test catalog:
 </catalog>
 ~~~
 
-When the TDS starts, this root configuration catalog is read, as are all catalogs in the catalog tree defined by `catalogRef` elements.
-The resulting tree of catalogs are used as the top-level catalogs served by the TDS.
-The main root catalog, `${tds.content.root.path}/thredds/catalog.xml`,  can be accessed at:
+### How The TDS Loads Configuration Catalog Data
+
+When the TDS starts, the root configuration catalog (`catalog.xml`) is read.  
+
+
+You can include references to other configuration catalogs in `catalog.xml`, using the `catalogRef` elements.
+On the second to the last line in the [above `catalog.xml`](#default-root-catalog), the `catalogRef` element loads another configuration catalog called `enhancedCatalog.xml`.
+~~~xml
+ <catalogRef xlink:title="Test Enhanced Catalog" xlink:href="enhancedCatalog.xml" name=""/>
+~~~
+
+`enhancedCatalog.xml` is another test configuration catalog that comes with the TDS.
+It serves as an example of how to include/use other catalog files.
+
+Upon startup, the TDS reads the configurations in `catalog.xml` and all of the other _included_ catalogs (e.g., `enhancedCatalog.xml`) referenced by the `catalogRef` element.
+ 
+ The result is the creation of a "tree of catalogs" are served by the TDS as the top-level client catalogs.
+
+
+### Accessing The Root Catalog As A Client Catalog
+
+The [relationship](configuration_overview.html#knowing-the-difference-between-the-two) between the configuration catalogs and the client catalogs is described in the [Configuration Overview](configuration_overview.html#knowing-the-difference-between-the-two) section.  
+As a reminder, the TDS configuration catalogs represent the top-level client catalogs served by the TDS. 
+Specifically, the TDS takes the information in the configuration catalogs and uses it to generate the client catalogs. 
+
+That said, the main root configuration catalog (`${tds.content.root.path}/thredds/catalog.xml`),  can be accessed as a client catalog at:
 
 ~~~
 www.server.com/thredds/catalog/catalog.xml
 ~~~
 
-In the case of our test catalog, the tree looks like:
+In the case of our `enhancedCatalog.xml` test catalog, the tree looks like:
 
 ~~~
 catalog.xml
@@ -99,4 +125,6 @@ For instance, to add a test catalog add the following line to `threddsConfig.xml
 Each additional root configuration catalog can be the root of another tree of configuration catalogs.
 To access the new root as an end user, you would visit: 
 
-`www.server.com/thredds/catalog/myTestCatalog.xml`
+~~~
+www.server.com/thredds/catalog/myTestCatalog.xml
+~~~

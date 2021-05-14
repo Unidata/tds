@@ -1,12 +1,12 @@
 ---
-title: Basic TDS Configuration
+title: threddsConfig.xml
 last_updated: 2020-04-30
 sidebar: admin_sidebar
-toc: false
-permalink: basic_tds_configuration.html
+toc: true
+permalink: threddsConfig.html
 ---
 
-## TDS Configuration File `threddsConfig.xml`
+## TDS Configuration File 
 
 The TDS configuration file (`${tds.content.root.path}/thredds/threddsConfig.xml`) allows the TDS administrator to set a number of parameters that control the behavior of the TDS.
 Most of these parameters will be set with reasonable default values.
