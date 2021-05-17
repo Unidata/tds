@@ -1,0 +1,18 @@
+{% if page.sidebar == "project_sidebar" %}
+{% assign sidebar = site.data.sidebars.project_sidebar.entries %}
+
+{% elsif page.sidebar == "admin_sidebar" %}
+{% assign sidebar = site.data.sidebars.admin_sidebar.entries %}
+
+{% else %}
+{% assign sidebar = site.data.sidebars.project_sidebar.entries %}
+{% endif %}
+
+
+{% comment %}
+sidebar configuration for print files
+{% endcomment %}
+
+{% if site.product == "project" %}
+{% assign sidebar_pdf = site.data.sidebars.project_sidebar.entries %}
+{% endif %}

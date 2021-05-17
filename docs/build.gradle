@@ -20,7 +20,7 @@ dependencies {
 }
 
 // Names of the directories under src/public/ that contain a jekyll documentation set
-def docSets = ['userguide',]
+def docSets = ['userguide', 'adminguide', 'quickstart', 'devguide']
 
 ///////////////////////////////////////// Jekyll Sites /////////////////////////////////////////
 

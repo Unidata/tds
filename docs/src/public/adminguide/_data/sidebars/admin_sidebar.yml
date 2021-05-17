@@ -1,0 +1,245 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+
+entries:
+- title: Sidebar
+  product: Administrator's Guide
+  folders:
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: /titlepage
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage
+      output: pdf
+      type: frontmatter
+  - title: Quick TDS Overview
+    output: web, pdf
+    folderitems:
+      - title: What Is The TDS?
+        url: /what_is_the_tds.html
+        output: web, pdf
+      - title: Has The TDS Been Vetted?
+        url: /tds_vetted.html
+        output: web, pdf
+  - title: Installation And Upgrading
+    output: web, pdf
+    folderitems:
+    - title: Release Notes
+      url: /release_notes.html
+      output: web, pdf
+    - title: System Requirements
+      url: /system_requirements.html
+      output: web, pdf
+    - title: Prior To Installation
+      url: /prior_to_installation.html
+      output: web, pdf
+    - title: Download And Installation
+      url: /download.html
+      output: web, pdf
+    - title: JVM Settings
+      url: /jvm_settings.html
+      output: web, pdf
+    - title: Restrict Tomcat Permissions
+      url: /tomcat_permissions.html
+      output: web, pdf
+    - title: TDS Content Directory
+      url: /tds_content_directory.html
+      output: web, pdf
+    - title: Running Behind A Proxy Server
+      url: /tds_behind_proxy.html
+      output: web, pdf
+    - title: Upgrading
+      url: /upgrading.html
+      output: web, pdf
+
+  - title: Securing The TDS
+    output: web, pdf
+    folderitems:
+      - title: Overview
+        url: /securing_tds_overview.html
+        output: web, pdf
+      - title: Enable TLS/SSL Encryption
+        url: /enable_tls_encryption.html
+        output: web, pdf
+      - title: Use Digested Passwords
+        url: /digested_passwords.html
+        output: web, pdf
+      - title: Secure Tomcat Manager App
+        url: /secure_manager_app.html
+        output: web, pdf
+      - title: Remove Unused Web Applications
+        url: /remove_unused_webapps.html
+        output: web, pdf
+      - title: Block Non-Essential Ports
+        url: /block_nonessential_ports.html
+        output: web, pdf
+      - title: Keep Software Up-To-Date
+        url: /keep_software_uptodate.html
+        output: web, pdf
+      - title: Restrict Access To The TDS
+        url: /restrict_access_to_tds.html
+        output: web, pdf
+
+  - title: Configuration
+    output: web, pdf
+    folderitems:
+    - title: Overview
+      url: /configuration_overview.html
+      output: web, pdf
+
+      subfolders:
+        - title: Configuration Catalog Files
+          output: web, pdf
+          subfolderitems:
+            - title: catalog.xml
+              url: /catalog.html
+              output: web, pdf
+
+            - title: enhancedCatalog.xml
+              url: /enhancedCatalog.html
+              output: web, pdf
+
+            - title: threddsConfig.xml
+              url: /threddsConfig.html
+              output: web, pdf
+
+    - title: Organizing Catalogs
+      url: /organizing_catalogs.html
+      output: web, pdf
+
+    - title: Constructing Access URLs
+      url: /constucting_access_urls.html
+      output: web, pdf
+
+      subfolders:
+        - title: Making Data Accessible
+          output: web, pdf
+          subfolderitems:
+            - title: Nested Datasets
+              url: /nested_datasets.html
+              output: web, pdf
+
+            - title: Remote Datasets
+              url: /remote_datasets.html
+              output: web, pdf
+
+            - title: datasetRoot Element
+              url: /datasetroot.html
+              output: web, pdf
+
+            - title: datasetScan Element
+              url: /datasetscan.html
+              output: web, pdf
+
+            - title: NCML
+              url: /ncml.html
+              output: web, pdf
+
+            - title: Feature Collections
+              url: /feature_collections.html
+              output: web, pdf
+
+            - title: Collection Specification String
+              url: /collection_specific_string.html
+              output: web, pdf
+
+
+    - title: Adding Metadata
+      url: /adding_metadata.html
+      output: web, pdf
+
+      subfolders:
+        - title: Making Data Available Via Services
+          output: web, pdf
+          subfolderitems:
+            - title: Available Services
+              url: /available_services.html
+              output: web, pdf
+
+            - title: Adding Services
+              url: /adding_services.html
+              output: web, pdf
+
+            - title: Dataet Source Plugin
+              url: /dataset_source_plugin.html
+              output: web, pdf
+
+
+        - title: Customization
+          output: web, pdf
+          subfolderitems:
+            - title: Customizing TDS Appearance
+              url: /customize_tds_appearance.html
+              output: web, pdf
+            - title: Adding Jupyter Notebooks
+              url: /jupyter_notebooks.html
+              output: web, pdf
+
+  - title: Logging
+    output: web, pdf
+    folderitems:
+      - title: Tomcat Log Files
+        url: /tomcat_logs.html
+        output: web, pdf
+      - title: Modifying Tomcat Access Logs
+        url: /tomcat_access_log.html
+        output: web, pdf
+      - title: TDS Log Files
+        url: /tds_logs.html
+        output: web, pdf
+      - title: Log Maintenance
+        url: /log_maintenance.html
+        output: web, pdf
+
+  - title: Performance Tuning
+    output: web, pdf
+    folderitems:
+      - title: Caching
+        url: /cachning.html
+        output: web, pdf
+      - title: TDS
+        url: /cachning.html
+        output: web, pdf
+      - title: Tomcat
+        url: /cachning.html
+        output: web, pdf
+
+
+  - title: Troubleshooting and Support
+    output: web, pdf
+    folderitems:
+    - title: Seeking Support
+      url: /support.html
+      output: web, pdf
+    - title: Troubleshooting FAQs
+      url: /troubleshooting_faqs.html
+      output: web, pdf
+    - title: Using The TdsMonitor Tool
+      url: /using_the_tdsmonitor_tool.html
+      output: web, pdf
+
+
+  - title: Reference Material
+    output: web, pdf
+    folderitems:
+
+    - title: Catalog Specification
+      url: /server_side_catalog_specification.html
+      output: web, pdf
+
+    - title: TDS Configuration File Reference
+      url: /tds_config_ref.html
+      output: web, pdf
+
+    - title: Tomcat Manager Application
+      url: /tomcat_manager_app.html
+      output: web, pdf
+
+    - title: GRIB FAQ
+      url: /tds_grib_faq.html
+      output: web, pdf

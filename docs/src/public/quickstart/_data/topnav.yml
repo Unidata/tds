@@ -1,0 +1,30 @@
+## Topnav single links
+## if you want to list an external url, use external_url instead of url. the theme will apply a different link base.
+#topnav:
+#- title: Topnav
+#  items:
+#    - title: Introduction 
+#      url: /index.html
+
+#Topnav dropdowns
+topnav_dropdowns:
+- title: Topnav dropdowns
+  folders:
+    - title: TDS Documentation
+      folderitems:
+        - title: Quick Start Guide
+          url: index.html
+        - title: Administrator's Guide
+          external_url: https://docs.unidata.ucar.edu/tds/current/adminguide/
+        - title: Developer's Guide
+          external_url: https://docs.unidata.ucar.edu/tds/current/devguide/
+        - title: User's Guide
+          external_url: https://docs.unidata.ucar.edu/tds/current/userguide/
+    - title: THREDDS Project Documentation
+      folderitems:
+        - title: NetCDF-Java
+          external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/
+        - title: Rosetta
+          external_url: https://www.unidata.ucar.edu/software/rosetta/docs/
+        - title: Siphon
+          external_url: https://unidata.github.io/siphon/latest/
