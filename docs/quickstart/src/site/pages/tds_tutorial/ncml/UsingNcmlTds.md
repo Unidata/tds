@@ -1,7 +1,7 @@
 ---
 title: Using NcML In The TDS 
 last_updated: 2020-08-25
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: using_ncml_in_the_tds.html
 ---

@@ -1,7 +1,7 @@
 ---
 title: Modifying Tomcat Access Logs
 last_updated: 2020-08-23
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: tomcat_access_log.html
 ---

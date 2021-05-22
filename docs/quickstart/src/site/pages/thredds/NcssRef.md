@@ -1,7 +1,7 @@
 ---
 title: NetCDF Subset Service Reference
 last_updated: 2020-08-29
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: netcdf_subset_service_ref.html
 ---

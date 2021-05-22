@@ -1,7 +1,7 @@
 ---
 title: PointFeature Collections
 last_updated: 2020-08-21
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: pointfeature_collection_ref.html
 ---

@@ -1,7 +1,7 @@
 ---
 title: XML Validation
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: client_catalog_xml_validation.html
 ---

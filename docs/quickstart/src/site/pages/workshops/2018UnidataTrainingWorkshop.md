@@ -1,7 +1,7 @@
 ---
 title: 2018 Training Workshop Schedule
 last_updated: 2020-04-22
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink:  workshop2018.html
 ---

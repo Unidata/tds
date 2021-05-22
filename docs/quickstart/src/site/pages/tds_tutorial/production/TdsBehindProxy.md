@@ -1,7 +1,7 @@
 ---
 title: Running The TDS Behind a Proxy Server
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: tds_behind_proxy.html
 ---

@@ -1,7 +1,7 @@
 ---
 title: Client-Side Catalog Specification
 last_updated: 2020-08-25
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: client_side_catalog_specification.html
 ---

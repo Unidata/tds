@@ -1,7 +1,7 @@
 ---
 title: Enable TLS Encryption
 last_updated: 2020-10-10
-sidebar: admin_sidebar
+sidebar: quickstart_sidebar
 toc: true
 permalink: enable_tls_encryption.html
 ---

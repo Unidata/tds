@@ -1,7 +1,7 @@
 ---
 title: Recommended Process For Upgrading A TDS
 last_updated: 2020-08-21
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: upgrade_tds_ref.html
 ---

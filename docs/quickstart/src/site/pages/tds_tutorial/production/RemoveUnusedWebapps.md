@@ -1,7 +1,7 @@
 ---
 title: Remove Unused Web Applications
 last_updated: 2020-04-30
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: remove_unused_webapps.html
 ---

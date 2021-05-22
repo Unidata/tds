@@ -1,7 +1,7 @@
 ---
 title: Basic NcML Examples
 last_updated: 2020-08-25
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: basic_ncml_examples.html
 ---

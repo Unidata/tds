@@ -1,7 +1,7 @@
 ---
 title: Tomcat Log Files
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: tomcat_log_files.html
 ---

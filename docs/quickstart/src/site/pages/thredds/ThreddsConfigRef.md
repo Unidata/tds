@@ -1,7 +1,7 @@
 ---
 title: TDS Configuration File Reference (`threddsConfig.xml`)
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: true
 permalink: tds_config_ref.html
 ---

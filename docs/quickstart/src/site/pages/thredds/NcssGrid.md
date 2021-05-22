@@ -1,7 +1,7 @@
 ---
 title: NetCDF Subset Service For GRID Data
 last_updated: 2020-08-31
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: ncss_grid.html
 ---

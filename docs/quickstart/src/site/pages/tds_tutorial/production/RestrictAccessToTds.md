@@ -1,7 +1,7 @@
 ---
 title: Restrict Access To The TDS
 last_updated: 2020-08-26
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: restict_access_to_tds.html
 ---

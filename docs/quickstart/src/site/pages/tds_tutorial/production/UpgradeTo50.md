@@ -1,7 +1,7 @@
 ---
 title: Upgrading to TDS version 5
 last_updated: 2020-08-26
-sidebar: tdsTutorial_sidebar
+sidebar: quickstart_sidebar
 toc: false
 permalink: upgrade_to_5.html
 ---
