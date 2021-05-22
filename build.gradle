@@ -13,6 +13,19 @@ buildscript {
   // do not get included here. Instead, we must explicitly define the repos again. Yay for duplication.
   repositories {
     gradlePluginPortal()
+    exclusiveContent {
+      forRepository {
+        maven {
+          url "https://artifacts.unidata.ucar.edu/repository/unidata-all/"
+        }
+      }
+      // only look for unidata plugin related artifacts from the unidata-all repo
+      filter {
+        includeModule 'edu.ucar.unidata.site', 'jekyll-plugin'
+        includeModule 'edu.ucar.unidata.site', 'jekyll-gems'
+        includeModule 'edu.ucar.unidata', 'unidata-nexus-gradle'
+      }
+    }
   }
 
   dependencies {
@@ -21,7 +34,8 @@ buildscript {
     classpath buildPlugins.shadow
     classpath buildPlugins.spotless
     classpath buildPlugins.protobuf
-    classpath buildPlugins.jruby
+    classpath buildPlugins.nexus
+    classpath buildPlugins.jekyll
     classpath buildPlugins.depcheck
   }
 }
