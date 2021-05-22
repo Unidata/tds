@@ -1,7 +1,7 @@
 ---
 title: Installation Checklist
 last_updated: 2020-08-26
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: installation_checklist.html
 ---

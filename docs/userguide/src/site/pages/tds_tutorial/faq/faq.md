@@ -1,7 +1,7 @@
 ---
 title: FAQ
 last_updated: 2020-08-26
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: true
 permalink: tds_faq.html
 ---

@@ -1,7 +1,7 @@
 ---
 title: Client Catalogs In ToolsUI
 last_updated: 2020-08-25
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: client_catalog_via_toolsUI.html
 ---

@@ -1,7 +1,7 @@
 ---
 title: Nested Datasets
 last_updated: 2018-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: nested_datasets.html
 ---

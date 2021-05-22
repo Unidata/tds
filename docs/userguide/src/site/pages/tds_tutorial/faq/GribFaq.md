@@ -1,7 +1,7 @@
 ---
 title: GRIB FAQ
 last_updated: 2020-08-26
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: true
 permalink: tds_grib_faq.html
 ---

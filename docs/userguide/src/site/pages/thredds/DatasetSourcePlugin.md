@@ -1,7 +1,7 @@
 ---
 title: Dataset Source Plugin
 last_updated: 2018-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: dataset_source_plugin.html
 ---

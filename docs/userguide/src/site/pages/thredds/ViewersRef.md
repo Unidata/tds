@@ -1,7 +1,7 @@
 ---
 title: TDS Dataset Viewer Links
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: viewers_ref.html
 ---

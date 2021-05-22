@@ -1,7 +1,7 @@
 ---
 title: GRIB Feature Collections
 last_updated: 2020-04-22
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: grib_feature_collections_ref.html
 ---

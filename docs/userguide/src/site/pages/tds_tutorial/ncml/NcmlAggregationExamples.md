@@ -1,7 +1,7 @@
 ---
 title: NcML Aggregation Examples
 last_updated: 2020-08-25
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: ncml_aggregation_examples.html
 ---

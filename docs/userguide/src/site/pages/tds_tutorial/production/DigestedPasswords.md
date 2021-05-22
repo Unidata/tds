@@ -1,7 +1,7 @@
 ---
 title: Use Digested Passwords
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: digested_passwords.html
 ---

@@ -1,7 +1,7 @@
 ---
 title: Customizing the TDS Look and Feel
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: customizing_tds_look_and_feel.html
 ---

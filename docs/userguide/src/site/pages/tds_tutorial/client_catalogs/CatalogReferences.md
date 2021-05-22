@@ -1,7 +1,7 @@
 ---
 title: Catalog References
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: client_catalog_references.html
 ---

@@ -1,7 +1,7 @@
 ---
 title: Running Tomcat
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: running_tomcat.html
 ---

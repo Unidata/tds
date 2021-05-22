@@ -1,7 +1,7 @@
 ---
 title: Collection Specification String
 last_updated: 2020-08-03
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: collection_spec_string_ref.html
 ---

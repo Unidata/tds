@@ -1,7 +1,7 @@
 ---
 title: Keep Software Up-To-Date
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: keep_software_uptodate.html
 ---

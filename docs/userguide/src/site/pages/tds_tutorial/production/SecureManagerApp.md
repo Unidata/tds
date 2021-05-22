@@ -1,7 +1,7 @@
 ---
 title: Secure the Tomcat Manager Application
 last_updated: 2020-08-25
-sidebar: tdsTutorial_sidebar
+sidebar: user_sidebar
 toc: false
 permalink: secure_manager_app.html
 ---
