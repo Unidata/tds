@@ -1,7 +1,7 @@
 ---
 title: Digital Library Record Generation and Harvesting Reference
 last_updated: 2020-08-31
-sidebar: tdsTutorial_sidebar
+sidebar: dev_sidebar
 toc: false
 permalink: digital_libraries.html
 ---

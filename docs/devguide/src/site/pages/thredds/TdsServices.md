@@ -1,7 +1,7 @@
 ---
 title: TDS Services
 last_updated: 2020-08-21
-sidebar: tdsTutorial_sidebar
+sidebar: dev_sidebar
 toc: false
 permalink: services_ref.html
 ---

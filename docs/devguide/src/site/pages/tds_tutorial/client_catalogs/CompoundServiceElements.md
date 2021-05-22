@@ -1,7 +1,7 @@
 ---
 title: Compound Service Elements
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: dev_sidebar
 toc: false
 permalink: compound_service_elements.html
 ---

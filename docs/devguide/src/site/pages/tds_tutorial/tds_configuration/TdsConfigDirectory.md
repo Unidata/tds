@@ -1,7 +1,7 @@
 ---
 title: TDS Content Directory
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: dev_sidebar
 toc: false
 permalink: tds_content_directory.html
 ---

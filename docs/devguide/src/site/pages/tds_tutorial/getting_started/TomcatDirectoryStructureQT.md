@@ -1,7 +1,7 @@
 ---
 title: Tomcat Directory Structure - Quick Tour
 last_updated: 2020-08-23
-sidebar: tdsTutorial_sidebar
+sidebar: dev_sidebar
 toc: false
 permalink: tomcat_dir_structure_qt.html
 ---

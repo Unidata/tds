@@ -1,7 +1,7 @@
 ---
 title: Basic TDS Configuration
 last_updated: 2020-04-30
-sidebar: tdsTutorial_sidebar
+sidebar: dev_sidebar
 toc: false
 permalink: basic_tds_configuration.html
 ---

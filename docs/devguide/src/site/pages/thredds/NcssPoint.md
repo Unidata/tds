@@ -1,7 +1,7 @@
 ---
 title: NetCDF Subset Service For Point Data
 last_updated: 2020-08-31
-sidebar: tdsTutorial_sidebar
+sidebar: dev_sidebar
 toc: false
 permalink: ncss_point.html
 ---

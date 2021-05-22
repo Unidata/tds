@@ -1,7 +1,7 @@
 ---
 title: Forecast Model Run Collection (FMRC) Tutorial
 last_updated: 2020-08-26
-sidebar: tdsTutorial_sidebar
+sidebar: dev_sidebar
 toc: false
 permalink: fmrc_tutorial.html
 ---

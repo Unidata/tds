@@ -1,7 +1,7 @@
 ---
 title: TDS Web Coverage Service (WCS)
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: dev_sidebar
 toc: false
 permalink: wcs_ref.html
 ---

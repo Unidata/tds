@@ -1,7 +1,7 @@
 ---
 title: Deploying The TDS 
 last_updated: 2020-08-24
-sidebar: tdsTutorial_sidebar
+sidebar: dev_sidebar
 toc: false
 permalink: deploying_the_tds.html
 ---
