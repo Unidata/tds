@@ -159,7 +159,9 @@ public class TestDir {
 
     AliasTranslator.addAlias("${cdmUnitTest}", cdmUnitTestDir);
 
-    cdmUseBuilders = Boolean.getBoolean(cdmUseBuildersPropName);
+    String useBuilderProp = System.getProperty(cdmUseBuildersPropName, "");
+    // default (prop not set) true. Otherwise, check prop.
+    cdmUseBuilders = useBuilderProp.equals("") ? Boolean.TRUE : Boolean.getBoolean(cdmUseBuildersPropName);
   }
 
   private static boolean isLocationObjectStore(String location) {
