@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-import ucar.unidata.util.test.category.NotTravis;
+import ucar.unidata.util.test.category.NotPullRequest;
 
 /**
  * This test is to check non-ssh related authorization: Basic primarily.
@@ -36,7 +36,7 @@ import ucar.unidata.util.test.category.NotTravis;
  * and container-based (i.e. tomcat server.xml) This class tests
  * pure container-based authorization
  * 2. Because this code need to depend on the tomcat server.xml being
- * properly set up, it cannot be run under Jenkins or Travis.
+ * properly set up, it cannot be run under Jenkins or GitHub Actions.
  * 3. This requires, for tomcat 8, that the following be in tomcat-users.xml.
  * <role rolename="containerauth"/>
  * <user username="authuser" password="authpwd" roles="containerauth"/>
@@ -71,7 +71,7 @@ import ucar.unidata.util.test.category.NotTravis;
  * restrictAccess="containerauth"/>
  *
  */
-@Category(NotTravis.class)
+@Category(NotPullRequest.class)
 public class TestTomcatAuth extends UnitTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

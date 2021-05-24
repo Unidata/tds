@@ -10,7 +10,8 @@ ext {
   buildPlugins.sonarqube = 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0'
   buildPlugins.spotless = 'com.diffplug.spotless:spotless-plugin-gradle:4.5.1'
   buildPlugins.protobuf = 'com.google.protobuf:protobuf-gradle-plugin:0.8.12'
-  buildPlugins.jruby = 'com.github.jruby-gradle:jruby-gradle-plugin:2.0.0'
+  buildPlugins.nexus = 'edu.ucar.unidata:unidata-nexus-gradle:0.0.1'
+  buildPlugins.jekyll = 'edu.ucar.unidata.site:jekyll-plugin:0.0.4'
   buildPlugins.depcheck = 'org.owasp:dependency-check-gradle:6.0.2'
 
   // slf4j version is declared in a place where we cannot use the tds-platform project to handle resolving versions

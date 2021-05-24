@@ -22,14 +22,14 @@ import ucar.unidata.util.test.UnitTestCommon;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import ucar.unidata.util.test.category.NotTravis;
+import ucar.unidata.util.test.category.NotPullRequest;
 
 /**
  * This test is to check ssh authorization.
  * As a rule, this needs to run against localhost:8443
  * using a pure tomcat server.
  */
-@Category(NotTravis.class)
+@Category(NotPullRequest.class)
 public class TestSSH extends UnitTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

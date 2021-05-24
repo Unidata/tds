@@ -15,7 +15,7 @@ import thredds.util.ContentType;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-import ucar.unidata.util.test.category.NotTravis;
+import ucar.unidata.util.test.category.NotPullRequest;
 
 /**
  * Test Admin services, needs authentication
@@ -23,7 +23,7 @@ import ucar.unidata.util.test.category.NotTravis;
  * @author caron
  * @since 7/6/2015
  */
-@Category(NotTravis.class)
+@Category(NotPullRequest.class)
 @RunWith(Parameterized.class)
 public class TestAdminDebug {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

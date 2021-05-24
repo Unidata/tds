@@ -3,11 +3,14 @@ package dap4.test;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.unidata.util.test.TestDir;
+import ucar.unidata.util.test.category.NotPullRequest;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
@@ -17,6 +20,7 @@ import java.util.List;
 /**
  * Test at the NetcdfDataset level
  */
+@Category(NotPullRequest.class)
 public class TestConstraints extends DapTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

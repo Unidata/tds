@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 import thredds.server.dap4.Dap4Controller;
 import ucar.unidata.util.test.category.NotJenkins;
-import ucar.unidata.util.test.category.NotTravis;
+import ucar.unidata.util.test.category.NotPullRequest;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.StringWriter;
@@ -62,7 +62,7 @@ import java.util.List;
  * cdltestfiles.
  */
 
-@Category({NotJenkins.class, NotTravis.class}) // must call explicitly in intellij
+@Category({NotJenkins.class, NotPullRequest.class}) // must call explicitly in intellij
 public class GenerateRaw extends DapTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
