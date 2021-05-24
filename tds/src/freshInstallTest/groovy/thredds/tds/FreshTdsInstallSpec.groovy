@@ -9,7 +9,7 @@ import org.xmlunit.diff.Diff
 import spock.lang.Specification
 import thredds.TestOnLocalServer
 import thredds.util.ContentType
-import ucar.unidata.util.test.category.NotTravis;
+import ucar.unidata.util.test.category.NotPullRequest;
 
 import java.nio.charset.Charset
 
@@ -21,7 +21,7 @@ import java.nio.charset.Charset
  * @author cwardgar
  * @since 2017-04-21
  */
-@Category(NotTravis.class)
+@Category(NotPullRequest.class)
 class FreshTdsInstallSpec extends Specification {
     private static final Logger logger = LoggerFactory.getLogger(FreshTdsInstallSpec)
     

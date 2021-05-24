@@ -14,12 +14,15 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 import thredds.server.dap4.Dap4Controller;
+import ucar.unidata.util.test.category.NotPullRequest;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -36,8 +39,7 @@ import java.util.List;
  * for datasets into files., These files are then used to
  * test client side deserialization (see TestCDMClient).
  */
-
-
+@Category(NotPullRequest.class)
 public class TestServletConstraints extends DapTestCommon {
   static public boolean DEBUG = false;
   static public boolean DEBUGDATA = false;

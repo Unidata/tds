@@ -53,7 +53,6 @@ jobs:
       - name: Build and test with Gradle (${{ matrix.servletcontainer }})
         run: ./gradlew -Dtds.content.root.path=$CONTENT_DIR -Dtds.download.dir=$DOWNLOAD_DIR -Dtds.upload.dir=$UPLOAD_DIR -Dthredds.test.experimental.useNetcdfJavaBuilders=${{ matrix.ncjnewapi }} -Dtds.test.gretty.container=${{ matrix.servletcontainer }} --info --stacktrace testAll
         env:
-          TRAVIS: 'true'
           CONTENT_DIR: ${{ github.workspace }}/tds/src/test/content
           DOWNLOAD_DIR: '/tmp/download'
           UPLOAD_DIR: '/tmp/upload'

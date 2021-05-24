@@ -38,7 +38,7 @@ public class TestRestrictDataset {
   public static Collection<Object[]> getTestParameters() {
     return Arrays.asList(new Object[][] {
         // These first 6 actually don't require cdmUnitTest/. Could be broken out into separate class that can
-        // run on Travis.
+        // run on GitHub Actions.
         // explicit services
         {"/dodsC/testRestrictedDataset/testData2.nc.dds"}, {"/cdmremote/testRestrictedDataset/testData2.nc?req=header"},
         {"/fileServer/testRestrictedDataset/testData2.nc"},

@@ -14,14 +14,14 @@ import org.slf4j.LoggerFactory;
 import thredds.TestOnLocalServer;
 import ucar.httpservices.*;
 import ucar.unidata.util.test.category.NotJenkins;
-import ucar.unidata.util.test.category.NotTravis;
+import ucar.unidata.util.test.category.NotPullRequest;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Random;
 
-@Category({NotJenkins.class, NotTravis.class}) // must call explicitly in intellij
+@Category({NotJenkins.class, NotPullRequest.class}) // must call explicitly in intellij
 public class TestUpload extends TestReify {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
