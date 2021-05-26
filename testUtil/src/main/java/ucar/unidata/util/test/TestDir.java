@@ -22,6 +22,7 @@ import java.util.*;
  *
  *        <p>
  *        <table>
+ *        <caption>Java System Property Names</caption>
  *        <tr>
  *        <th colspan="3">-D Property Names
  *        <tr>
@@ -40,6 +41,7 @@ import java.util.*;
  *        </table>
  *        <p>
  *        <table>
+ *        <caption>Computed Paths</caption>
  *        <tr>
  *        <th colspan="4">Computed Paths
  *        <tr>
