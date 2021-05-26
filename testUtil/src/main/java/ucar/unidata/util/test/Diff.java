@@ -92,39 +92,49 @@ class fileInfo {
  * Use without fee is permitted when not for direct commercial
  * advantage, and when credit to the source is given. Other uses
  * require specific permission.
- * <p/>
+ * <p>
+ * </p>
  * Converted from C to Java by Ian F. Darwin, http://www.darwinsys.com/, January, 1997.
  * Copyright 1997, Ian F. Darwin.
- * <p/>
+ * <p>
+ * </p>
  * Conversion is NOT FULLY TESTED.
- * <p/>
+ * <p>
+ * </p>
  * USAGE: diff oldfile newfile
- * <p/>
+ * <p>
+ * </p>
  * This program assumes that "oldfile" and "newfile" are text files.
  * The program writes to stdout a description of the changes which would
  * transform "oldfile" into "newfile".
- * <p/>
+ * <p>
+ * </p>
  * The printout is in the form of commands, each followed by a block of
  * text. The text is delimited by the commands, which are:
- * <p/>
+ * <p>
+ * </p>
  * DELETE AT n
  * ..deleted lines
- * <p/>
+ * <p>
+ * </p>
  * INSERT BEFORE n
  * ..inserted lines
- * <p/>
+ * <p>
+ * </p>
  * n MOVED TO BEFORE n
  * ..moved lines
- * <p/>
+ * <p>
+ * </p>
  * n CHANGED FROM
  * ..old lines
  * CHANGED TO
  * ..newer lines
- * <p/>
+ * <p>
+ * </p>
  * The line numbers all refer to the lines of the oldfile, as they are
  * numbered before any commands are applied.
  * The text lines are printed as-is, without indentation or prefixing. The
- * commands are printed in upper case, with a prefix of ">>>>", so that
+ * commands are printed in upper case, with a prefix of {@code ">>>>"}, so that
  * they will stand out. Other schemes may be preferred.
  * Files which contain more than MAXLINECOUNT lines cannot be processed.
  * This can be fixed by changing "symbol" to a Vector.
@@ -166,7 +176,8 @@ class fileInfo {
  * sizes are known.) The only slow piece of code is the "strcmp" in the tree
  * descent: it can be speeded up by keeping a hash in the tree node, and
  * only using "strcmp" when two hashes happen to be equal.
- * <p/>
+ * <p>
+ * </p>
  * Change Log
  * ----------
  * 1Jan97 Ian F. Darwin: first working rewrite in Java, based entirely on
