@@ -307,6 +307,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     // how to choose the typical dataset ?
     String typicalDataset = ThreddsConfig.get("Aggregation.typicalDataset", "penultimate");
     Aggregation.setTypicalDatasetMode(typicalDataset);
+    ucar.nc2.internal.ncml.Aggregation.setTypicalDatasetMode(typicalDataset);
     startupLog.info("TdsInit: Aggregation.setTypicalDatasetMode= " + typicalDataset);
 
     ////////////////////////////////////////////////////////////////
@@ -334,10 +335,25 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
         new File(tdsContext.getThreddsDirectory().getPath(), "/cache/agg/").getPath());
     scourSecs = ThreddsConfig.getSeconds("AggregationCache.scour", 24 * 60 * 60);
     maxAgeSecs = ThreddsConfig.getSeconds("AggregationCache.maxAge", 90 * 24 * 60 * 60);
+
+    // non-builder API
     DiskCache2 aggCache = new DiskCache2(dir, false, maxAgeSecs / 60, scourSecs / 60);
     String cachePathPolicy = ThreddsConfig.get("AggregationCache.cachePathPolicy", null);
     aggCache.setPolicy(cachePathPolicy);
     Aggregation.setPersistenceCache(aggCache);
+
+    // builder API
+    String dir2;
+    if (dir.endsWith("/") || dir.endsWith("\\\\")) {
+      String sep = dir.substring(dir.length());
+      dir2 = dir.substring(0, dir.length() - 1) + "New" + sep;
+    } else {
+      dir2 = dir + "New/";
+    }
+
+    DiskCache2 aggCache2 = new DiskCache2(dir2, false, maxAgeSecs / 60, scourSecs / 60);
+    aggCache2.setPolicy(cachePathPolicy);
+    ucar.nc2.internal.ncml.Aggregation.setPersistenceCache(aggCache2);
     startupLog.info("TdsInit: AggregationCache= " + dir + " scour = " + scourSecs + " maxAgeSecs = " + maxAgeSecs);
 
     /* 4.3.15: grib index file placement, using DiskCache2 */
