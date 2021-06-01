@@ -165,7 +165,6 @@ war {
   }
 }
 
-
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
 import org.akhikhl.gretty.AppAfterIntegrationTestTask
 
@@ -345,4 +344,5 @@ configurations.all {
    */
   exclude group: 'stax', module: 'stax-api'
   exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+  exclude group: 'net.openhft', module: 'chronicle-analytics'
 }

@@ -1,7 +1,8 @@
 /* Copyright */
 package thredds.server.catalog.tracker;
 
-import java.io.*;
+import com.google.protobuf.InvalidProtocolBufferException;
+
 import java.util.Formatter;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Formatter;
  * @author caron
  * @since 3/28/2015
  */
-public class DatasetExt implements Externalizable {
+public class DatasetExt {
   static public int total_count = 0;
   static public long total_nbytes = 0;
 
@@ -47,8 +48,7 @@ public class DatasetExt implements Externalizable {
     return f.toString();
   }
 
-  @Override
-  public void writeExternal(ObjectOutput out) throws IOException {
+  public byte[] toProtoBytes() {
     ConfigCatalogExtProto.Dataset.Builder builder = ConfigCatalogExtProto.Dataset.newBuilder();
     builder.setCatId(catId);
     builder.setName("");
@@ -58,21 +58,16 @@ public class DatasetExt implements Externalizable {
       builder.setNcml(ncml);
 
     ConfigCatalogExtProto.Dataset index = builder.build();
-    byte[] b = index.toByteArray();
-    out.writeInt(b.length);
-    out.write(b);
+
+    byte[] protoBytes = index.toByteArray();
 
     total_count++;
-    total_nbytes += b.length + 4;
-    // System.out.printf(" write size = %d%n", b.length);
+    total_nbytes += protoBytes.length + 4;
+
+    return protoBytes;
   }
 
-  @Override
-  public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-    int len = in.readInt();
-    byte[] b = new byte[len];
-    in.readFully(b);
-
+  public void fromProtoBytes(byte[] b) throws InvalidProtocolBufferException {
     ConfigCatalogExtProto.Dataset pDataset = ConfigCatalogExtProto.Dataset.parseFrom(b);
     this.catId = pDataset.getCatId(); // LOOK not used
     if (pDataset.getRestrict().length() > 0)
@@ -80,37 +75,4 @@ public class DatasetExt implements Externalizable {
     if (pDataset.getNcml().length() > 0)
       ncml = pDataset.getNcml();
   }
-
-  /*
-   * private ConfigCatalogExtProto.Property buildProperty(Property p) {
-   * ConfigCatalogExtProto.Property.Builder builder = ConfigCatalogExtProto.Property.newBuilder();
-   * builder.setName(p.getName());
-   * builder.setValue(p.getValue());
-   * return builder.build();
-   * }
-   * 
-   * private List<Property> parseProperty(List<ConfigCatalogExtProto.Property> ps) {
-   * List<Property> result = new ArrayList<>();
-   * for (ConfigCatalogExtProto.Property p : ps)
-   * result.add(new Property(p.getName(), p.getValue()));
-   * return result;
-   * }
-   * 
-   * private ConfigCatalogExtProto.Access buildAccess(Access a) {
-   * ConfigCatalogExtProto.Access.Builder builder = ConfigCatalogExtProto.Access.newBuilder();
-   * builder.setServiceName(a.getService().getName());
-   * builder.setUrlPath(a.getUrlPath());
-   * builder.setDataSize(a.getDataSize());
-   * if (a.getDataFormatName() != null)
-   * builder.setDataFormatS(a.getDataFormatName());
-   * return builder.build();
-   * }
-   * 
-   * private AccessBuilder parseAccess(DatasetBuilder dsb, ConfigCatalogExtProto.Access ap) {
-   * return new AccessBuilder(dsb, ap.getUrlPath(), null, /* ap.getServiceName(), ap.getDataFormatS(),
-   * ap.getDataSize());
-   * }
-   */
-
-
 }

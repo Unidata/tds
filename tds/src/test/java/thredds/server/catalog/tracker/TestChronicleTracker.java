@@ -1,5 +1,5 @@
 /* Copyright */
-package thredds.server.catalog;
+package thredds.server.catalog.tracker;
 
 import net.openhft.chronicle.map.*;
 import org.jdom2.Element;
@@ -10,7 +10,8 @@ import thredds.client.catalog.CatalogRef;
 import thredds.client.catalog.Dataset;
 import thredds.client.catalog.tools.CatalogCrawler;
 import thredds.server.catalog.tracker.DatasetExt;
-import java.io.Externalizable;
+import thredds.server.catalog.tracker.DatasetExtBytesMarshaller;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -65,10 +66,10 @@ public class TestChronicleTracker {
 
       File file = new File(pathname);
 
-      ChronicleMapBuilder<String, Externalizable> builder =
-          ChronicleMapBuilder.of(String.class, Externalizable.class).averageValueSize(1000).entries(1000 * 1000);
+      ChronicleMapBuilder<String, DatasetExt> builder = ChronicleMapBuilder.of(String.class, DatasetExt.class)
+          .averageValueSize(1000).entries(1000 * 1000).valueMarshaller(DatasetExtBytesMarshaller.INSTANCE);
 
-      final ChronicleMap<String, Externalizable> map = builder.createPersistedTo(file);
+      final ChronicleMap<String, DatasetExt> map = builder.createPersistedTo(file);
 
       final int chunk = 10000;
       final int chunk10 = 100000;
