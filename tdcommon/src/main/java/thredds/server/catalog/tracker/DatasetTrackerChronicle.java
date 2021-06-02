@@ -105,8 +105,9 @@ public class DatasetTrackerChronicle implements DatasetTracker {
   }
 
   private void open() throws IOException {
-    ChronicleMapBuilder<String, DatasetExt> builder = ChronicleMapBuilder.of(String.class, DatasetExt.class)
-        .averageValueSize(200).entries(maxDatasets).averageKeySize(averagePathLength).skipCloseOnExitHook(true);
+    ChronicleMapBuilder<String, DatasetExt> builder =
+        ChronicleMapBuilder.of(String.class, DatasetExt.class).averageValueSize(200).entries(maxDatasets)
+            .averageKeySize(averagePathLength).valueMarshaller(DatasetExtBytesMarshaller.INSTANCE);
     datasetMap = builder.createPersistedTo(dbFile);
     changed = false;
   }

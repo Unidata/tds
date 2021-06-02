@@ -70,21 +70,11 @@ dependencies {
   testCompile 'jaxen:jaxen'
 
   // edal ncwms related libs
-  compile('uk.ac.rdg.resc:edal-common') {
-    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-  }
-  compile ('uk.ac.rdg.resc:edal-cdm') {
-    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-  }
-  compile ('uk.ac.rdg.resc:edal-graphics') {
-    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-  }
-  compile ('uk.ac.rdg.resc:edal-wms') {
-    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-  }
-  compile('uk.ac.rdg.resc:edal-godiva') {
-    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-  }
+  compile('uk.ac.rdg.resc:edal-common')
+  compile ('uk.ac.rdg.resc:edal-cdm')
+  compile ('uk.ac.rdg.resc:edal-graphics')
+  compile ('uk.ac.rdg.resc:edal-wms')
+  compile('uk.ac.rdg.resc:edal-godiva')
 
   // threddsIso related libs
   runtime 'EDS:tds-plugin'
@@ -175,7 +165,6 @@ war {
   }
 }
 
-
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
 import org.akhikhl.gretty.AppAfterIntegrationTestTask
 
@@ -193,6 +182,7 @@ AppWarAfterIntegrationTest.mustRunAfter AppWarBeforeIntegrationTest
 gretty {
   httpPort = 8081
   contextPath = '/thredds'
+  jvmArgs = ['--illegal-access=permit', '--add-exports', 'java.base/jdk.internal.ref=ALL-UNNAMED']
 }
 
 ////////////////////////////////////// Godiva 3 //////////////////////////////////////
@@ -283,6 +273,8 @@ sourceSets {
 }
 
 task "before${taskName.capitalize()}"(type: AppBeforeIntegrationTestTask, group: 'gretty') {
+  // needs access to the war artifact
+  dependsOn assemble
   description = "Starts server before $taskName."
   inplace = false
   integrationTestTask taskName
@@ -351,4 +343,6 @@ configurations.all {
               ...
    */
   exclude group: 'stax', module: 'stax-api'
+  exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+  exclude group: 'net.openhft', module: 'chronicle-analytics'
 }
