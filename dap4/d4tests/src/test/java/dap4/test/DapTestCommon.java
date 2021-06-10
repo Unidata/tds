@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
-import thredds.TdsUnitTestCommon;
+import thredds.test.util.TdsUnitTestCommon;
 import thredds.core.DatasetManager;
 import thredds.core.TdsRequestedDataset;
 import thredds.server.dap4.Dap4Controller;

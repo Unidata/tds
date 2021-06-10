@@ -7,7 +7,7 @@ import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import org.xmlunit.diff.Diff
 import spock.lang.Specification
-import thredds.TestOnLocalServer
+import thredds.test.util.TestOnLocalServer
 import thredds.util.ContentType
 import ucar.unidata.util.test.category.NotPullRequest;
 

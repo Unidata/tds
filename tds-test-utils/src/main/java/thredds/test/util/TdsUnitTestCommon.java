@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-package thredds;
+package thredds.test.util;
 
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;

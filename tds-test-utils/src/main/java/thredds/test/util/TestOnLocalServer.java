@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 2021 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
-package thredds;
+package thredds.test.util;
 
 import java.util.Optional;
 import org.apache.http.auth.AuthScope;

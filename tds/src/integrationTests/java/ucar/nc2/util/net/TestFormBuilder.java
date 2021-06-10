@@ -11,7 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thredds.TdsUnitTestCommon;
+import thredds.test.util.TdsUnitTestCommon;
 import ucar.httpservices.*;
 import ucar.unidata.util.test.TestDir;
 

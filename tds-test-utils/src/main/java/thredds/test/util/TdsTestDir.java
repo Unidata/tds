@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-package thredds;
+package thredds.test.util;
 
 public class TdsTestDir {
   public static String cdmUseBuildersPropName = "thredds.test.experimental.useNetcdfJavaBuilders";
