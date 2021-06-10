@@ -1,9 +1,10 @@
 /*
- * (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
  */
+
 package thredds.server.wcs;
 
-import java.nio.charset.StandardCharsets;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -19,14 +20,7 @@ import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.List;
+import thredds.TdsTestDir;
 import thredds.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.nc2.NetcdfFile;
@@ -34,20 +28,25 @@ import ucar.nc2.NetcdfFiles;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
-import ucar.nc2.ft2.coverage.Coverage;
-import ucar.nc2.ft2.coverage.CoverageCollection;
-import ucar.nc2.ft2.coverage.CoverageCoordAxis1D;
-import ucar.nc2.ft2.coverage.CoverageCoordSys;
-import ucar.nc2.ft2.coverage.FeatureDatasetCoverage;
-import ucar.nc2.ft2.coverage.HorizCoordSys;
+import ucar.nc2.ft2.coverage.*;
 import ucar.nc2.ft2.coverage.adapter.DtCoverageAdapter;
 import ucar.nc2.ft2.coverage.adapter.DtCoverageDataset;
 import ucar.nc2.time.Calendar;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.util.IO;
 import ucar.unidata.util.test.Assert2;
-import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -137,7 +136,7 @@ public class TestWcsServer {
 
   private DtCoverageDataset getDtCoverageDataset(NetcdfFile ncf) throws IOException {
     DtCoverageDataset dtc;
-    if (TestDir.cdmUseBuilders) {
+    if (TdsTestDir.cdmUseBuilders) {
       dtc = new DtCoverageDataset(NetcdfDatasets.enhance(ncf, NetcdfDataset.getDefaultEnhanceMode(), null));
     } else {
       dtc = new DtCoverageDataset(new NetcdfDataset(ncf), null);

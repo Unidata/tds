@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package dap4.test;
 
 import org.junit.Assert;
@@ -6,6 +11,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.TdsUnitTestCommon;
 import ucar.httpservices.HTTPMethod;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.unidata.util.test.TestDir;
@@ -180,7 +186,7 @@ public class TestConstraints extends DapTestCommon {
     String url = testcase.makeurl();
     NetcdfDataset ncfile = null;
     try {
-      ncfile = openDatasetDap4Tests(url);
+      ncfile = TdsUnitTestCommon.openDatasetDap4Tests(url);
     } catch (Exception e) {
       throw e;
     }

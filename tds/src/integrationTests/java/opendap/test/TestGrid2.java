@@ -2,18 +2,20 @@
  * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package opendap.test;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.TdsUnitTestCommon;
 import thredds.TestOnLocalServer;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.write.Ncdump;
 import ucar.unidata.util.test.TestDir;
-import ucar.unidata.util.test.UnitTestCommon;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
@@ -33,7 +35,7 @@ import java.lang.invoke.MethodHandles;
  * } testgrid2;
  */
 
-public class TestGrid2 extends UnitTestCommon {
+public class TestGrid2 extends TdsUnitTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   static final protected String URLPATH = "/thredds/dodsC/scanLocal/testgrid2.nc";

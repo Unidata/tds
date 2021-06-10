@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -16,17 +16,18 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.TdsUnitTestCommon;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
 import ucar.unidata.util.test.TestDir;
-import ucar.unidata.util.test.UnitTestCommon;
+import ucar.unidata.util.test.category.NotPullRequest;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-import ucar.unidata.util.test.category.NotPullRequest;
 
 /**
  * This test is to check non-ssh related authorization: Basic primarily.
@@ -72,7 +73,7 @@ import ucar.unidata.util.test.category.NotPullRequest;
  *
  */
 @Category(NotPullRequest.class)
-public class TestTomcatAuth extends UnitTestCommon {
+public class TestTomcatAuth extends TdsUnitTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   static final String BADPASSWORD = "bad";

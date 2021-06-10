@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package dap4.test;
 
 import org.junit.Assert;
@@ -6,8 +11,10 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.TdsUnitTestCommon;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.unidata.util.test.category.NotJenkins;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -147,7 +154,7 @@ public class TestH5Iosp extends DapTestCommon {
 
     System.out.println("Testcase: " + testcase.testinputpath);
 
-    NetcdfDataset ncfile = openDatasetDap4Tests(testcase.testinputpath);
+    NetcdfDataset ncfile = TdsUnitTestCommon.openDatasetDap4Tests(testcase.testinputpath);
 
     String metadata = null;
     String data = null;

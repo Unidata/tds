@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.ncss.view.dsg;
 
 import org.apache.commons.io.FilenameUtils;
@@ -8,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.TdsTestDir;
 import thredds.server.ncss.controller.NcssDiskCache;
 import thredds.server.ncss.format.SupportedFormat;
 import ucar.nc2.Attribute;
@@ -30,13 +36,13 @@ import ucar.nc2.util.CompareNetcdf2;
 import ucar.nc2.util.DiskCache2;
 import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonRect;
+
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Formatter;
 import java.util.List;
-import ucar.unidata.util.test.TestDir;
 
 /**
  * Created by cwardgar on 2014/05/27.
@@ -211,7 +217,7 @@ public class DsgSubsetWriterTest {
   }
 
   public static boolean compareNetCDF(File expectedResultFile, File actualResultFile) throws IOException {
-    if (TestDir.cdmUseBuilders) {
+    if (TdsTestDir.cdmUseBuilders) {
       return compareNetCDFNew(expectedResultFile, actualResultFile);
     } else {
       return compareNetCDFOld(expectedResultFile, actualResultFile);

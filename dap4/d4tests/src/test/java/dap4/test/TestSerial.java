@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package dap4.test;
 
 import dap4.core.util.DapUtil;
@@ -6,9 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.TdsUnitTestCommon;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.unidata.util.test.TestDir;
-import ucar.unidata.util.test.UnitTestCommon;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
@@ -178,12 +184,12 @@ public class TestSerial extends DapTestCommon {
       String url = testcase.makeurl(constraints[i]);
       NetcdfDataset ncfile = null;
       try {
-        ncfile = openDatasetDap4Tests(url);
+        ncfile = TdsUnitTestCommon.openDatasetDap4Tests(url);
       } catch (Exception e) {
         throw e;
       }
 
-      String usethisname = UnitTestCommon.extractDatasetname(url, null);
+      String usethisname = TdsUnitTestCommon.extractDatasetname(url, null);
       String metadata = (NCDUMP ? ncdumpmetadata(ncfile, usethisname) : null);
       String data = (NCDUMP ? ncdumpdata(ncfile, usethisname) : null);
 

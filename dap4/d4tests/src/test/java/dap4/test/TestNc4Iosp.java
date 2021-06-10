@@ -1,4 +1,19 @@
+/*
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package dap4.test;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import thredds.TdsUnitTestCommon;
+import ucar.nc2.dataset.NetcdfDataset;
+import ucar.unidata.util.test.category.NotPullRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,14 +24,6 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import ucar.nc2.dataset.NetcdfDataset;
-import ucar.unidata.util.test.category.NotPullRequest;
 
 @Category(NotPullRequest.class)
 public class TestNc4Iosp extends DapTestCommon {
@@ -153,7 +160,7 @@ public class TestNc4Iosp extends DapTestCommon {
   void doOneTest(Nc4IospTest testcase) throws Exception {
     System.err.println("Testcase: " + testcase.testinputpath);
 
-    NetcdfDataset ncfile = openDatasetDap4Tests(testcase.testinputpath);
+    NetcdfDataset ncfile = TdsUnitTestCommon.openDatasetDap4Tests(testcase.testinputpath);
 
     String metadata = null;
     String data = null;

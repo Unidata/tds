@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.cdmr;
 
 import org.apache.commons.io.filefilter.SuffixFileFilter;
@@ -9,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.TdsTestDir;
 import thredds.TestOnLocalServer;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
@@ -18,9 +24,9 @@ import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.stream.CdmRemote;
 import ucar.nc2.util.CompareNetcdf2;
-import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import ucar.unidata.util.test.TestDir;
-import ucar.unidata.util.StringUtil2;
+import ucar.unidata.util.test.category.NeedsCdmUnitTest;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -110,7 +116,7 @@ public class TestCdmRemoteCompareHeadersP {
   }
 
   static int compareDatasets(String local, String remote, boolean readData) throws IOException {
-    if (TestDir.cdmUseBuilders) {
+    if (TdsTestDir.cdmUseBuilders) {
       return compareDatasetsNew(local, remote, readData);
     } else {
       return compareDatasetsOld(local, remote, readData);

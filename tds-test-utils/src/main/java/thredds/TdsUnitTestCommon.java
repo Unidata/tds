@@ -1,63 +1,58 @@
 /*
- * /*
- * Copyright 2012, UCAR/Unidata.
- * See the LICENSE file for more information.
+ * Copyright (c) 2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
  */
 
-package ucar.unidata.util.test;
+package thredds;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.dataset.DatasetUrl;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.write.Ncdump;
+import ucar.unidata.util.test.Diff;
+import ucar.unidata.util.test.SysStreamLogger;
+
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import ucar.nc2.write.Ncdump;
 
-
-abstract public class UnitTestCommon {
+public abstract class TdsUnitTestCommon {
   //////////////////////////////////////////////////
   // Static Constants
 
-  static public boolean LOGSTDIO = System.getProperty("intellij") == null;
+  public static boolean LOGSTDIO = System.getProperty("intellij") == null;
 
-  static public final boolean DEBUG = false;
+  public static final boolean DEBUG = false;
 
-  static public final Charset UTF8 = Charset.forName("UTF-8");
+  public static final Charset UTF8 = StandardCharsets.UTF_8;
 
-  static protected final int[] OKCODES = new int[] {200, 404};
-
-  protected static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(UnitTestCommon.class);
+  protected static final int[] OKCODES = {200, 404};
 
   // Look for these to verify we have found the thredds root
-  static final String[] DEFAULTSUBDIRS = new String[] {"tds", "opendap", "dap4"};
+  static final String[] DEFAULTSUBDIRS = {"opendap", "dap4"};
 
   // NetcdfDataset enhancement to use: need only coord systems
   static final Set<NetcdfDataset.Enhance> ENHANCEMENT = EnumSet.of(NetcdfDataset.Enhance.CoordSystems);
 
-  static protected String threddsroot = null;
-  static protected String threddsServer = null;
+  protected static String threddsroot = null;
+  protected static String threddsServer = null;
 
   static {
     // Compute the root path
     threddsroot = locateThreddsRoot();
     assert threddsroot != null : "Cannot locate /thredds parent dir";
-    threddsServer = TestDir.remoteTestServer;
+    threddsServer = TdsTestDir.remoteTestServer;
     if (DEBUG)
-      System.err.println("UnitTestCommon: threddsServer=" + threddsServer);
+      System.err.println("TdsUnitTestCommon: threddsServer=" + threddsServer);
   }
 
   //////////////////////////////////////////////////
@@ -114,100 +109,6 @@ abstract public class UnitTestCommon {
     return null;
   }
 
-  static protected String rebuildpath(String[] pieces, int last) {
-    StringBuilder buf = new StringBuilder();
-    for (int i = 0; i <= last; i++) {
-      buf.append("/");
-      buf.append(pieces[i]);
-    }
-    return buf.toString();
-  }
-
-  static public void clearDir(File dir, boolean clearsubdirs) {
-    // wipe out the dir contents
-    if (!dir.exists())
-      return;
-    for (File f : dir.listFiles()) {
-      if (f.isDirectory()) {
-        if (clearsubdirs) {
-          clearDir(f, true); // clear subdirs
-          f.delete();
-        }
-      } else
-        f.delete();
-    }
-  }
-
-  //////////////////////////////////////////////////
-  // Static classes
-
-  /**
-   * Provide an interface that allows for arbitrary modification
-   * of text before is is passed to compare().
-   */
-  static public interface Modifier {
-    public String modify(String text);
-  }
-
-  /**
-   * Instance of Modifier specialized to delete lines matching
-   * a given Java regular expression
-   * of text before is is passed to compare().
-   * A Line is defined by text.split("[\n]").
-   */
-  static public class ModDelete implements Modifier {
-    protected Pattern pattern = null;
-
-    public ModDelete(String regexp) {
-      this.pattern = Pattern.compile(regexp);
-
-    }
-
-    public String modify(String text) {
-      String[] lines = text.split("[\n]");
-      StringBuilder result = new StringBuilder();
-      for (int i = 0; i < lines.length; i++) {
-        String line = lines[i];
-        Matcher m = this.pattern.matcher(line);
-        if (m.matches()) {
-          result.append(line);
-          result.append("\n");
-        }
-      }
-      return result.toString();
-    }
-  }
-
-  /**
-   * Instance of Modifier specialized to delete named attributes.
-   */
-  static public class ModSuppress implements Modifier {
-    protected List<Pattern> patterns = new ArrayList<>();
-
-    public ModSuppress() {}
-
-    public void suppress(String attributename) {
-      String re = String.format("<Attribute[ ]+name=\"%s\".*</Attribute>[^\n]\n", attributename);
-      Pattern pattern = Pattern.compile(re);
-      patterns.add(pattern);
-    }
-
-    public String modify(String text) {
-      StringBuilder result = new StringBuilder(text);
-      for (Pattern p : patterns) {
-        for (;;) {
-          Matcher m = p.matcher(result.toString());
-          if (!m.matches())
-            break;
-          int pos0 = m.start();
-          int pos1 = m.end();
-          result.delete(pos0, pos1);
-        }
-      }
-      return result.toString();
-    }
-  }
-
   //////////////////////////////////////////////////
   // Instance variables
 
@@ -227,11 +128,11 @@ abstract public class UnitTestCommon {
   //////////////////////////////////////////////////
   // Constructor(s)
 
-  public UnitTestCommon() {
+  public TdsUnitTestCommon() {
     this("Testing");
   }
 
-  public UnitTestCommon(String name) {
+  public TdsUnitTestCommon(String name) {
     this.title = name;
     setSystemProperties();
   }
@@ -308,7 +209,7 @@ abstract public class UnitTestCommon {
     System.err.println("===============");
   }
 
-  static public String compare(String tag, String baseline, String testresult) {
+  public static String compare(String tag, String baseline, String testresult) {
     // Check for empty testresult
     if (testresult.trim().length() == 0)
       return ">>>> EMPTY TEST RESULT";
@@ -324,23 +225,10 @@ abstract public class UnitTestCommon {
     }
   }
 
-  static public boolean same(String tag, String baseline, String testresult) {
+  public static boolean same(String tag, String baseline, String testresult) {
     String result = compare(tag, baseline, testresult);
     if (result == null) {
       System.err.println("Files are Identical");
-      return true;
-    } else {
-      System.err.println(result);
-      return false;
-    }
-  }
-
-  static public boolean similar(String tag, String baseline, String testresult, Modifier mbaseline, Modifier mtest) {
-    String baselinemod = mbaseline.modify(baseline);
-    String testresultmod = mtest.modify(testresult);
-    String result = compare(tag, baselinemod, testresultmod);
-    if (result == null) {
-      System.err.println("Files are Similar");
       return true;
     } else {
       System.err.println(result);
@@ -356,7 +244,6 @@ abstract public class UnitTestCommon {
     try {
       try (HTTPMethod method = HTTPFactory.Get(candidate)) {
         method.execute();
-        String s = method.getResponseAsString();
         System.err.println(" ; found");
         return true;
       }
@@ -380,7 +267,7 @@ abstract public class UnitTestCommon {
   // Static utilities
 
   // Copy result into the a specified dir
-  static public void writefile(String path, String content) throws IOException {
+  public static void writefile(String path, String content) throws IOException {
     File f = new File(path);
     if (f.exists())
       f.delete();
@@ -390,7 +277,7 @@ abstract public class UnitTestCommon {
   }
 
   // Copy result into the a specified dir
-  static public void writefile(String path, byte[] content) throws IOException {
+  public static void writefile(String path, byte[] content) throws IOException {
     File f = new File(path);
     if (f.exists())
       f.delete();
@@ -399,7 +286,7 @@ abstract public class UnitTestCommon {
     out.close();
   }
 
-  static public String readfile(String filename) throws IOException {
+  public static String readfile(String filename) throws IOException {
     StringBuilder buf = new StringBuilder();
     Path file = Paths.get(filename);
     try (BufferedReader rdr = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
@@ -413,14 +300,14 @@ abstract public class UnitTestCommon {
     }
   }
 
-  static public byte[] readbinaryfile(String filename) throws IOException {
+  public static byte[] readbinaryfile(String filename) throws IOException {
     FileInputStream stream = new FileInputStream(filename);
     byte[] result = readbinaryfile(stream);
     stream.close();
     return result;
   }
 
-  static public byte[] readbinaryfile(InputStream stream) throws IOException {
+  public static byte[] readbinaryfile(InputStream stream) throws IOException {
     // Extract the stream into a bytebuffer
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     byte[] tmp = new byte[1 << 16];
@@ -441,7 +328,7 @@ abstract public class UnitTestCommon {
   }
 
   // Fix up a filename reference in a string
-  static public String shortenFileName(String text, String filename) {
+  public static String shortenFileName(String text, String filename) {
     // In order to achieve diff consistentcy, we need to
     // modify the output to change "netcdf .../file.nc {...}"
     // to "netcdf file.nc {...}"
@@ -453,24 +340,7 @@ abstract public class UnitTestCommon {
     return text;
   }
 
-  static public void tag(String t) {
-    System.err.println(t);
-    System.err.flush();
-  }
-
-  static public String canonjoin2(String prefix, String suffix) {
-    if (prefix == null)
-      prefix = "";
-    if (suffix == null)
-      suffix = "";
-    StringBuilder result = new StringBuilder(prefix);
-    if (!prefix.endsWith("/"))
-      result.append("/");
-    result.append(suffix.startsWith("/") ? suffix.substring(1) : suffix);
-    return result.toString();
-  }
-
-  static public String canonjoin(String... pieces) {
+  public static String canonjoin(String... pieces) {
     StringBuilder buf = new StringBuilder();
     for (int i = 0; i < pieces.length; i++) {
       // invariant buf does not end with ('/')
@@ -498,7 +368,7 @@ abstract public class UnitTestCommon {
    * @param path convert this path
    * @return canonicalized version
    */
-  static public String canonicalpath(String path) {
+  public static String canonicalpath(String path) {
     if (path == null)
       return null;
     path = path.trim();
@@ -515,20 +385,20 @@ abstract public class UnitTestCommon {
    * return true if this path appears to start with a windows drive letter
    *
    * @param path
-   * @return true, if path appears to start with a drive letter
+   * @return true, if path has drive letter
    */
 
-  static public boolean hasDriveLetter(String path) {
+  public static boolean hasDriveLetter(String path) {
     if (path != null && path.length() >= 2) {
       return (DRIVELETTERS.indexOf(path.charAt(0)) >= 0 && path.charAt(1) == ':');
     }
     return false;
   }
 
-  static final public String DRIVELETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toLowerCase();
+  public static final String DRIVELETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toLowerCase();
 
 
-  static public String extractDatasetname(String urlorpath, String suffix) {
+  public static String extractDatasetname(String urlorpath, String suffix) {
     try {
       URI x = new URI(urlorpath);
       StringBuilder path = new StringBuilder(x.getPath());
@@ -548,7 +418,7 @@ abstract public class UnitTestCommon {
     return null;
   }
 
-  static protected String ncdumpmetadata(NetcdfFile ncfile, String datasetname) throws Exception {
+  protected static String ncdumpmetadata(NetcdfFile ncfile, String datasetname) throws Exception {
     StringWriter sw = new StringWriter();
     StringBuilder args = new StringBuilder("-strict");
     if (datasetname != null) {
@@ -565,7 +435,7 @@ abstract public class UnitTestCommon {
     return sw.toString();
   }
 
-  static protected String ncdumpdata(NetcdfFile ncfile, String datasetname) throws Exception {
+  protected static String ncdumpdata(NetcdfFile ncfile, String datasetname) throws Exception {
     StringBuilder args = new StringBuilder("-strict -vall");
     if (datasetname != null) {
       args.append(" -datasetname ");
@@ -583,111 +453,15 @@ abstract public class UnitTestCommon {
     return sw.toString();
   }
 
-  /**
-   * @param prefix - string to prefix all command line options: typically "--"
-   * @param options - list of option names of interest
-   * @return specified properties converted to command line form
-   */
-  static public String[] propertiesToArgs(String prefix, String... options) {
-    if (options == null || options.length == 0)
-      throw new IllegalArgumentException("No options specified");
-    if (prefix == null)
-      prefix = "--";
-    List<String> args = new ArrayList<>();
-    Set<String> defined = System.getProperties().stringPropertyNames();
-    for (String key : options) {
-      if (!defined.contains(key))
-        continue; // not defined
-      String value = System.getProperty(key);
-      args.add(prefix + key);
-      if (value != null)
-        args.add(value);
-    }
-    return args.toArray(new String[args.size()]);
-  }
-
-  static protected boolean check(int code) {
+  protected static boolean check(int code) {
     return check(code, OKCODES);
   }
 
-  static protected boolean check(int code, int[] ok) {
+  protected static boolean check(int code, int[] ok) {
     for (int okcode : ok) {
       if (okcode == code)
         return true;
     }
     return false;
   }
-
-  /*
-   * // Replacement for stderr & stdout
-   * static public class STDIO
-   * {
-   * public STDIO(String name)
-   * {
-   * }
-   * 
-   * public void
-   * printf(String format, Object... args)
-   * {
-   * System.err.println(String.format(format, args));
-   * }
-   * 
-   * public void
-   * println(String msg)
-   * {
-   * printf("%s%n", msg);
-   * }
-   * 
-   * public void
-   * print(String msg)
-   * {
-   * printf("%s", msg);
-   * }
-   * 
-   * public void
-   * flush()
-   * {
-   * }
-   * }
-   * 
-   * static public STDIO stderr = new STDIO("test");
-   * static public STDIO stdout = new STDIO("test");
-   * 
-   * static TemporaryFolder temporaryfolder = null;
-   * 
-   * static public File
-   * makeTemporaryDir(String name)
-   * throws IOException
-   * {
-   * if(temporaryfolder == null)
-   * temporaryfolder = new TemporaryFolder();
-   * return temporaryfolder.newFolder(name);
-   * }
-   * 
-   * static public File
-   * makeTemporaryFile(String name)
-   * throws IOException
-   * {
-   * if(temporaryfolder == null)
-   * temporaryfolder = new TemporaryFolder();
-   * return temporaryfolder.newFile(name);
-   * }
-   * static public void
-   * logify(String s)
-   * {
-   * StringReader rs = new StringReader(s);
-   * BufferedReader r = new BufferedReader(rs);
-   * String line = null;
-   * for(; ; ) {
-   * try {
-   * line = r.readLine();
-   * } catch (IOException ioe) {
-   * break;
-   * }
-   * if(line == null) break;
-   * System.err.println(line);
-   * }
-   * }
-   */
 }
-

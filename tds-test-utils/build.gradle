@@ -10,6 +10,7 @@ dependencies {
 
     implementation 'edu.ucar:cdm-core'
     implementation 'edu.ucar:httpservices'
+    implementation 'edu.ucar:cdm-test-utils'
 
     implementation project(':tdcommon')
 
