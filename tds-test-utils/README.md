@@ -1,6 +1,6 @@
-# testUtil
+# tds-test-utils
 
-Contains miscellaneous utility methods for use in our test suite.
+Contains miscellaneous utility methods specific to the TDS project for use in our test suite.
 
 ## Inclusion of third-party software
 

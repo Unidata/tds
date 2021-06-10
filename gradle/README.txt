@@ -3,7 +3,7 @@
 `any/`: Contains script plugins that can be applied to any project, including the root. 
 Most of what we need in the `any/` directory can be found in these two script plugins:
 
-  1. `java-internal`: Applied to non-published java project (`:testUtil`)
+  1. `java-internal`: Applied to non-published java project (`:tds-test-utils`)
   Uses the following plugins:
      * [java](https://docs.gradle.org/current/userguide/java_plugin.html)
      * `gradle/any/javadoc.gradle`
@@ -45,5 +45,3 @@ Most of what we need in the `any/` directory can be found in these two script pl
 2. Find new dependency license checker
    The license plugin we used in the past does not seem to work with the java-library and java-platform plugins.
    Sad times.
-
-3. Start using `cdm-test-utils` and refactor the `:testUtil` subproject to have only what builds on the new `cdm-test-utils` package.
