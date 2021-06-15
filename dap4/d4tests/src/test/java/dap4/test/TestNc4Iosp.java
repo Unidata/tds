@@ -244,7 +244,6 @@ public class TestNc4Iosp extends DapTestCommon {
     }
 
     // Print the meta-databuffer using these args to NcdumpW
-    ok = false;
     try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8)) {
       ok = ucar.nc2.NCdumpW.print(ncfile, args.toString(), outputStreamWriter, null);
@@ -272,8 +271,6 @@ public class TestNc4Iosp extends DapTestCommon {
     }
 
     // Dump the databuffer
-
-    ok = false;
     try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8)) {
       ok = ucar.nc2.NCdumpW.print(ncfile, args.toString(), outputStreamWriter, null);
