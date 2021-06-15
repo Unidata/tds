@@ -36,6 +36,7 @@ import thredds.server.dap4.Dap4Controller;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPUtil;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.nc2.jni.netcdf.Nc4prototypes;
 import ucar.unidata.util.test.TestDir;
 
@@ -493,17 +494,8 @@ abstract public class DapTestCommon extends TdsUnitTestCommon {
   }
 
   static public String getCLibraryVersion() {
-    Nc4prototypes nc4 = getCLibrary();
+    Nc4prototypes nc4 = NetcdfClibrary.getForeignFunctionInterface();
     return (nc4 == null ? "Unknown" : nc4.nc_inq_libvers());
-  }
-
-  static public Nc4prototypes getCLibrary() {
-    try {
-      Method getclib = NC4IOSP.getMethod("getCLibrary");
-      return (Nc4prototypes) getclib.invoke(null);
-    } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-      return null;
-    }
   }
 }
 
