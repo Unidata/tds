@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
+import thredds.test.util.TdsTestDir;
 import thredds.test.util.TdsUnitTestCommon;
 import thredds.core.DatasetManager;
 import thredds.core.TdsRequestedDataset;
@@ -38,14 +39,11 @@ import ucar.httpservices.HTTPUtil;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.nc2.jni.netcdf.Nc4prototypes;
-import ucar.unidata.util.test.TestDir;
 
 import javax.servlet.ServletException;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
@@ -349,7 +347,7 @@ abstract public class DapTestCommon extends TdsUnitTestCommon {
   public DapTestCommon(String name) {
     super(name);
 
-    this.d4tsserver = TestDir.dap4TestServer;
+    this.d4tsserver = TdsTestDir.dap4TestServer;
     if (DEBUG)
       System.err.println("DapTestCommon: d4tsServer=" + d4tsserver);
   }

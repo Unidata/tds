@@ -11,10 +11,10 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.test.util.TdsTestDir;
 import thredds.test.util.TdsUnitTestCommon;
 import ucar.httpservices.HTTPMethod;
 import ucar.nc2.dataset.NetcdfDataset;
-import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NotPullRequest;
 
 import java.io.ByteArrayOutputStream;
@@ -138,7 +138,7 @@ public class TestConstraints extends DapTestCommon {
     testSetup();
     if (DEBUGSERVER)
       HTTPMethod.MOCKEXECUTOR = new MockExecutor(getResourceRoot());
-    TestCase.setRoots(SERVLETPATH, canonjoin(getResourceRoot(), BASELINEDIR), TestDir.dap4TestServer);
+    TestCase.setRoots(SERVLETPATH, canonjoin(getResourceRoot(), BASELINEDIR), TdsTestDir.dap4TestServer);
     defineAllTestcases();
     chooseTestcases();
   }

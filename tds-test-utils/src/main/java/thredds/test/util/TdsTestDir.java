@@ -12,6 +12,9 @@ public class TdsTestDir {
   // Remote Test server(s)
   public static String remoteTestServer = "localhost:8081";
 
+  public static String dap4TestServerPropName = "d4ts";
+  public static String dap4TestServer = "localhost:8083";
+
   static {
     String useBuilderProp = System.getProperty(cdmUseBuildersPropName, "");
     // default (prop not set) true. Otherwise, check prop.

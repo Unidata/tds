@@ -12,9 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.test.util.TdsTestDir;
 import thredds.test.util.TdsUnitTestCommon;
 import ucar.nc2.dataset.NetcdfDataset;
-import ucar.unidata.util.test.TestDir;
 
 import java.io.*;
 import java.lang.invoke.MethodHandles;
@@ -152,7 +152,7 @@ public class TestCDMClient extends DapTestCommon {
     if (ext.charAt(0) == '.')
       ext = ext.substring(1);
     if (scheme.startsWith("http")) {
-      return "http://" + TestDir.dap4TestServer + "/d4ts";
+      return "http://" + TdsTestDir.dap4TestServer + "/d4ts";
     } else if (scheme.equals("file")) {
       if (ext.equals("raw"))
         return "file:/" + this.resourceroot + "/" + TESTCDMINPUT;
