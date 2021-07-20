@@ -124,7 +124,7 @@
       <appender-ref ref="fmrc"/>
     </logger>
 
-    <logger name="thredds.inventory.bdb.MetadataManager" level="info" additivity="false">
+    <logger name="thredds.featurecollection.cache.GridInventoryCacheChronicle" level="info" additivity="false">
       <appender-ref ref="fmrc"/>
     </logger>
 
