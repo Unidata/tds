@@ -504,7 +504,6 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     FileCache.shutdown(); // this handles background threads for all instances of FileCache
     DiskCache2.exit(); // this handles background threads for all instances of DiskCache2
     executor.shutdownNow();
-
     /*
      * try {
      * catalogWatcher.close();
@@ -524,10 +523,20 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     datasetManager.setDatasetTracker(null); // closes the existing tracker
 
     collectionUpdater.shutdown();
-    startupLog.info("TdsInit shutdown");
-    MDC.clear();
 
     // release epsg database setup by edal-java
+    // do this first, as there is a race condition somewhere outside the TDS that causes a scary warning in the logs
+    // about memory leaks.
     GISUtils.releaseEpsgDatabase();
+
+    // give the epsg database time to clean-up
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      startupLog.error("Failed to give epsg database extra time to clean-up. May get warning about a memory leak.");
+    }
+
+    startupLog.info("TdsInit shutdown");
+    MDC.clear();
   }
 }
