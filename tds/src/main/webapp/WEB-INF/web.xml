@@ -102,10 +102,6 @@
   </servlet-mapping>
 
   <listener>
-    <listener-class>org.h2.server.web.DbStarter</listener-class>
-  </listener>
-
-  <listener>
     <listener-class>uk.ac.rdg.resc.edal.wms.WmsContextListener</listener-class>
   </listener>
 
