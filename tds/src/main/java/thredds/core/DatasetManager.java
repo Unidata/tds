@@ -94,13 +94,13 @@ public class DatasetManager implements InitializingBean {
   }
 
   public void setDatasetTracker(DatasetTracker datasetTracker) {
-    if (this.datasetTracker != null)
+    if (this.datasetTracker != null) {
       try {
         this.datasetTracker.close();
       } catch (IOException e) {
         log.error("Cant close datasetTracker ", e);
       }
-
+    }
     this.datasetTracker = datasetTracker;
   }
 

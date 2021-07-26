@@ -75,7 +75,6 @@ public class DatasetTrackerChronicle implements DatasetTracker {
     if (datasetMap != null) {
       datasetMap.close();
       System.out.printf("datasetMap.close() was called%n");
-      datasetMap = null;
     }
   }
 
@@ -84,9 +83,11 @@ public class DatasetTrackerChronicle implements DatasetTracker {
   }
 
   public boolean reinit() {
+    if (datasetMap != null) {
+      datasetMap.close();
+    }
     if (dbFile.exists()) {
-      boolean wasDeleted = dbFile.delete();
-      if (!wasDeleted) {
+      if (!dbFile.delete()) {
         catalogInitLog.error("DatasetTrackerChronicle not able to delete {} ", dbFile.getAbsolutePath());
         return false;
       }
@@ -94,7 +95,7 @@ public class DatasetTrackerChronicle implements DatasetTracker {
 
     try {
       open();
-      alreadyExists = false;
+      alreadyExists = true;
       return true;
 
     } catch (Throwable e) {
@@ -105,9 +106,9 @@ public class DatasetTrackerChronicle implements DatasetTracker {
   }
 
   private void open() throws IOException {
-    ChronicleMapBuilder<String, DatasetExt> builder =
-        ChronicleMapBuilder.of(String.class, DatasetExt.class).averageValueSize(200).entries(maxDatasets)
-            .averageKeySize(averagePathLength).valueMarshaller(DatasetExtBytesMarshaller.INSTANCE);
+    ChronicleMapBuilder<String, DatasetExt> builder = ChronicleMapBuilder.of(String.class, DatasetExt.class)
+        .averageValueSize(200).entries(maxDatasets).averageKeySize(averagePathLength)
+        .valueMarshaller(DatasetExtBytesMarshaller.INSTANCE).skipCloseOnExitHook(true);
     datasetMap = builder.createPersistedTo(dbFile);
     changed = false;
   }
