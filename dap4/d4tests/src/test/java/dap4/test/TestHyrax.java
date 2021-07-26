@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package dap4.test;
 
 import dap4.core.util.DapUtil;
@@ -7,13 +12,17 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.test.util.TdsUnitTestCommon;
 import ucar.nc2.dataset.NetcdfDataset;
-import ucar.unidata.util.test.UnitTestCommon;
 import ucar.unidata.util.test.category.NotJenkins;
 import ucar.unidata.util.test.category.NotPullRequest;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -272,13 +281,13 @@ public class TestHyrax extends DapTestCommon {
     String url = testcase.makeurl();
     NetcdfDataset ncfile = null;
     try {
-      ncfile = openDatasetDap4Tests(url);
+      ncfile = TdsUnitTestCommon.openDatasetDap4Tests(url);
     } catch (Exception e) {
       System.err.println(testcase.xfail ? "XFail" : "Fail");
       e.printStackTrace();
       return testcase.xfail;
     }
-    String usethisname = UnitTestCommon.extractDatasetname(url, null);
+    String usethisname = TdsUnitTestCommon.extractDatasetname(url, null);
     String metadata = (NCDUMP ? ncdumpmetadata(ncfile, usethisname) : null);
     if (prop_visual) {
       visual(testcase.title + ".dmr", metadata);
@@ -311,22 +320,20 @@ public class TestHyrax extends DapTestCommon {
 
 
   String ncdumpmetadata(NetcdfDataset ncfile, String datasetname) throws Exception {
-    StringWriter sw = new StringWriter();
-
     StringBuilder args = new StringBuilder("-strict");
     if (datasetname != null) {
       args.append(" -datasetname ");
       args.append(datasetname);
     }
+    String dump = "";
     // Print the meta-databuffer using these args to NcdumpW
-    try {
-      if (!ucar.nc2.NCdumpW.print(ncfile, args.toString(), sw, null))
-        throw new Exception("NcdumpW failed");
-    } catch (IOException ioe) {
-      throw new Exception("NcdumpW failed", ioe);
+    try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8)) {
+      ucar.nc2.NCdumpW.print(ncfile, args.toString(), outputStreamWriter, null);
+      dump = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
     }
-    sw.close();
-    return sw.toString();
+
+    return dump;
   }
 
   String ncdumpdata(NetcdfDataset ncfile, String datasetname) throws Exception {
@@ -339,16 +346,14 @@ public class TestHyrax extends DapTestCommon {
     }
 
     // Dump the databuffer
-    sw = new StringWriter();
-    try {
-      if (!ucar.nc2.NCdumpW.print(ncfile, args.toString(), sw, null))
-        throw new Exception("NCdumpW failed");
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
-      throw new Exception("NCdumpW failed", ioe);
+    String dump = "";
+    try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8)) {
+      ucar.nc2.NCdumpW.print(ncfile, args.toString(), outputStreamWriter, null);
+      dump = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
     }
-    sw.close();
-    return sw.toString();
+
+    return dump;
   }
 
   //////////////////////////////////////////////////

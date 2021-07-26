@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.client.catalog
 
 import org.junit.experimental.categories.Category
@@ -5,7 +10,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import spock.lang.Specification
 import spock.lang.Unroll
-import thredds.TestOnLocalServer
+import thredds.test.util.ClientCatalogUtil
+import thredds.test.util.TestOnLocalServer
 import ucar.unidata.util.test.category.NeedsCdmUnitTest
 
 /**

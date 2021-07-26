@@ -4,7 +4,7 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TestOnLocalServer;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.unidata.util.test.category.NeedsExternalResource;

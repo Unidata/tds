@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TestOnLocalServer;
 import ucar.httpservices.*;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import org.slf4j.Logger;

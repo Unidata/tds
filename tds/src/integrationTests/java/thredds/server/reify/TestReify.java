@@ -1,5 +1,5 @@
 /*
- * Copyright 2016, University Corporation for Atmospheric Research
+ * Copyright 2016-2021, University Corporation for Atmospheric Research
  * See the LICENSE.txt file for more information.
  */
 
@@ -16,10 +16,11 @@ import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
+import thredds.test.util.TdsUnitTestCommon;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPUtil;
-import ucar.unidata.util.test.UnitTestCommon;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -28,7 +29,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
 
-abstract public class TestReify extends UnitTestCommon {
+abstract public class TestReify extends TdsUnitTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   static protected final boolean DEBUG = false;

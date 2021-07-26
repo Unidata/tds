@@ -1,14 +1,10 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package thredds.server.opendap;
 
-import java.io.IOException;
-import java.lang.invoke.MethodHandles;
-import java.nio.charset.StandardCharsets;
-import java.util.Formatter;
-import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -22,7 +18,7 @@ import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TestOnLocalServer;
 import thredds.client.catalog.Catalog;
 import thredds.client.catalog.Dataset;
 import thredds.client.catalog.tools.DataFactory;
@@ -42,6 +38,12 @@ import ucar.unidata.util.StringUtil2;
 import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
+
+import java.io.IOException;
+import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
+import java.util.Formatter;
+import java.util.List;
 
 @Category(NeedsCdmUnitTest.class)
 public class TestTdsDodsServer {
@@ -186,7 +188,7 @@ public class TestTdsDodsServer {
     final String urlPrefix = TestOnLocalServer.withHttpPath("/dodsC/scanCdmUnitTests/tds/opendap/");
     final String dirName = TestDir.cdmUnitTestDir + "tds/opendap/"; // read all files from this dir
 
-    TestDir.actOnAll(dirName, new TestDir.FileFilterNoWant(".gbx8 .gbx9 .ncx .ncx2 .ncx3"), new TestDir.Act() {
+    TestDir.actOnAll(dirName, TestDir.FileFilterSkipSuffix(".gbx8 .gbx9 .ncx .ncx2 .ncx3"), new TestDir.Act() {
       public int doAct(String filename) throws IOException {
         filename = StringUtil2.replace(filename, '\\', "/");
         filename = StringUtil2.remove(filename, dirName);

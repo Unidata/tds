@@ -93,7 +93,7 @@ public class DapRequest {
         else {
           if (!url.getProtocol().equals("file"))
             throw new DapException("Cannot locate resource root");
-          this.resourceroot = DapUtil.canonicalpath(url.getFile());
+          this.resourceroot = DapUtil.canonicalpath(url.getFile() + "/resources");
         }
       } catch (MalformedURLException e) {
         this.resourceroot = null;

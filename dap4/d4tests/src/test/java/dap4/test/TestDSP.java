@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ucar.unidata.util.test.TestDir;
+import thredds.test.util.TdsTestDir;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -193,7 +193,7 @@ public class TestDSP extends DapTestCommon {
     if (ext.charAt(0) == '.')
       ext = ext.substring(1);
     if (scheme.startsWith("http")) {
-      return "http://" + TestDir.dap4TestServer + "/d4ts";
+      return "http://" + TdsTestDir.dap4TestServer + "/d4ts";
     } else if (scheme.equals("file")) {
       if (ext.equals("raw"))
         return "file:/" + this.resourceroot + "/" + TESTCDMINPUT;

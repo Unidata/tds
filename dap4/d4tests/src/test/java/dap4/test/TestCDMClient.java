@@ -1,6 +1,6 @@
 /*
- * Copyright 2016, University Corporation for Atmospheric Research
- * See the LICENSE.txt file for more information.
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
  */
 
 package dap4.test;
@@ -12,14 +12,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.test.util.TdsTestDir;
+import thredds.test.util.TdsUnitTestCommon;
 import ucar.nc2.dataset.NetcdfDataset;
-import ucar.unidata.util.test.TestDir;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
+
+import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,7 +152,7 @@ public class TestCDMClient extends DapTestCommon {
     if (ext.charAt(0) == '.')
       ext = ext.substring(1);
     if (scheme.startsWith("http")) {
-      return "http://" + TestDir.dap4TestServer + "/d4ts";
+      return "http://" + TdsTestDir.dap4TestServer + "/d4ts";
     } else if (scheme.equals("file")) {
       if (ext.equals("raw"))
         return "file:/" + this.resourceroot + "/" + TESTCDMINPUT;
@@ -233,7 +234,7 @@ public class TestCDMClient extends DapTestCommon {
 
     NetcdfDataset ncfile;
     try {
-      ncfile = openDatasetDap4Tests(testcase.getURL());
+      ncfile = TdsUnitTestCommon.openDatasetDap4Tests(testcase.getURL());
     } catch (Exception e) {
       e.printStackTrace();
       throw new Exception("File open failed: " + testcase.getURL(), e);
@@ -259,21 +260,19 @@ public class TestCDMClient extends DapTestCommon {
   }
 
   String dumpmetadata(NetcdfDataset ncfile, String datasetname) throws Exception {
-    StringWriter sw = new StringWriter();
     StringBuilder args = new StringBuilder("-strict");
     if (datasetname != null) {
       args.append(" -datasetname ");
       args.append(datasetname);
     }
     // Print the meta-databuffer using these args to NcdumpW
-    try {
-      if (!ucar.nc2.NCdumpW.print(ncfile, args.toString(), sw, null))
-        throw new Exception("NcdumpW failed");
-    } catch (IOException ioe) {
-      throw new Exception("NcdumpW failed", ioe);
+    String dump = "";
+    try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8)) {
+      ucar.nc2.NCdumpW.print(ncfile, args.toString(), outputStreamWriter, null);
+      dump = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
     }
-    sw.close();
-    return sw.toString();
+    return dump;
   }
 
   String dumpdata(NetcdfDataset ncfile, String datasetname) throws Exception {
@@ -282,18 +281,14 @@ public class TestCDMClient extends DapTestCommon {
       args.append(" -datasetname ");
       args.append(datasetname);
     }
-    StringWriter sw = new StringWriter();
+    String dump = "";
     // Dump the databuffer
-    sw = new StringWriter();
-    try {
-      if (!ucar.nc2.NCdumpW.print(ncfile, args.toString(), sw, null))
-        throw new Exception("NCdumpW failed");
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
-      throw new Exception("NCdumpW failed", ioe);
+    try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8)) {
+      ucar.nc2.NCdumpW.print(ncfile, args.toString(), outputStreamWriter, null);
+      dump = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
     }
-    sw.close();
-    return sw.toString();
+    return dump;
   }
 
   //////////////////////////////////////////////////

@@ -1,8 +1,10 @@
+/*
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.ncss.controller.point;
 
-import static com.google.common.truth.Truth.assertThat;
-import java.lang.invoke.MethodHandles;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -22,13 +24,18 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import thredds.test.util.TdsTestDir;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.util.cache.FileCache;
 import ucar.unidata.io.RandomAccessFile;
-import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
+
+import java.lang.invoke.MethodHandles;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -48,7 +55,7 @@ public class TestStationFcOpenFiles {
     mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     rafCache = (FileCache) RandomAccessFile.getGlobalFileCache();
     rafCache.clearCache(true);
-    if (TestDir.cdmUseBuilders) {
+    if (TdsTestDir.cdmUseBuilders) {
       NetcdfDatasets.getNetcdfFileCache().clearCache(true);
     } else {
       NetcdfDataset.getNetcdfFileCache().clearCache(true);

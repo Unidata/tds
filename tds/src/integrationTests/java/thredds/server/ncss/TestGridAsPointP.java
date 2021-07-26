@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package thredds.server.ncss;
 
-import java.nio.charset.StandardCharsets;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -21,7 +21,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TdsTestDir;
+import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
@@ -37,16 +38,18 @@ import ucar.nc2.ft.FeatureDatasetFactoryManager;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.util.IO;
 import ucar.unidata.util.test.Assert2;
-import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
+
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -169,7 +172,7 @@ public class TestGridAsPointP {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
     Assert.assertNotNull(content);
     logger.debug("return size = {}", content.length);
-    if (TestDir.cdmUseBuilders) {
+    if (TdsTestDir.cdmUseBuilders) {
       checkGridAsPointNetcdfNew(content, varName);
     } else {
       checkGridAsPointNetcdfOld(content, varName);

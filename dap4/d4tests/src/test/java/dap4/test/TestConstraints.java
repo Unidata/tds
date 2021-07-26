@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package dap4.test;
 
 import org.junit.Assert;
@@ -6,14 +11,18 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.test.util.TdsTestDir;
+import thredds.test.util.TdsUnitTestCommon;
 import ucar.httpservices.HTTPMethod;
 import ucar.nc2.dataset.NetcdfDataset;
-import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NotPullRequest;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,7 +138,7 @@ public class TestConstraints extends DapTestCommon {
     testSetup();
     if (DEBUGSERVER)
       HTTPMethod.MOCKEXECUTOR = new MockExecutor(getResourceRoot());
-    TestCase.setRoots(SERVLETPATH, canonjoin(getResourceRoot(), BASELINEDIR), TestDir.dap4TestServer);
+    TestCase.setRoots(SERVLETPATH, canonjoin(getResourceRoot(), BASELINEDIR), TdsTestDir.dap4TestServer);
     defineAllTestcases();
     chooseTestcases();
   }
@@ -180,7 +189,7 @@ public class TestConstraints extends DapTestCommon {
     String url = testcase.makeurl();
     NetcdfDataset ncfile = null;
     try {
-      ncfile = openDatasetDap4Tests(url);
+      ncfile = TdsUnitTestCommon.openDatasetDap4Tests(url);
     } catch (Exception e) {
       throw e;
     }
@@ -215,33 +224,30 @@ public class TestConstraints extends DapTestCommon {
   String ncdumpmetadata(NetcdfDataset ncfile, String datasetname) {
     boolean ok = false;
     String metadata = null;
-    StringWriter sw = new StringWriter();
+    String dump = "";
     StringBuilder args = new StringBuilder("-strict");
     if (datasetname != null) {
       args.append(" -datasetname ");
       args.append(datasetname);
     }
     // Print the meta-databuffer using these args to NcdumpW
-    ok = false;
-    try {
-      ok = ucar.nc2.NCdumpW.print(ncfile, args.toString(), sw, null);
+    try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8)) {
+      ok = ucar.nc2.NCdumpW.print(ncfile, args.toString(), outputStreamWriter, null);
+      dump = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
     } catch (IOException ioe) {
       ioe.printStackTrace();
       ok = false;
     }
-    try {
-      sw.close();
-    } catch (IOException e) {
-    } ;
     if (!ok) {
       System.err.println("NcdumpW failed");
     }
-    return sw.toString();
+    return dump;
   }
 
   String ncdumpdata(NetcdfDataset ncfile, String datasetname) {
     boolean ok = false;
-    StringWriter sw = new StringWriter();
+    String dump = "";
 
     StringBuilder args = new StringBuilder("-strict -vall");
     if (datasetname != null) {
@@ -250,22 +256,18 @@ public class TestConstraints extends DapTestCommon {
     }
 
     // Dump the databuffer
-    sw = new StringWriter();
-    ok = false;
-    try {
-      ok = ucar.nc2.NCdumpW.print(ncfile, args.toString(), sw, null);
+    try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8)) {
+      ok = ucar.nc2.NCdumpW.print(ncfile, args.toString(), outputStreamWriter, null);
+      dump = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
     } catch (IOException ioe) {
       ioe.printStackTrace();
       ok = false;
     }
-    try {
-      sw.close();
-    } catch (IOException e) {
-    } ;
     if (!ok) {
       System.err.println("NcdumpW failed");
     }
-    return sw.toString();
+    return dump;
   }
 
   //////////////////////////////////////////////////

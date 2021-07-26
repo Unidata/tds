@@ -25,7 +25,7 @@ import java.lang.invoke.MethodHandles;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import static org.junit.Assert.assertEquals;

@@ -47,7 +47,7 @@ The THREDDS Data Server is released under the BSD-3 licence, which can be found 
 
 Furthermore, this project includes code from third-party open-source software components:
 * [Gretty](https://github.com/akhikhl/gretty): for details, see `buildSrc/README.md`
-* [JUnit](https://github.com/junit-team/junit4): for details, see `testUtil/README.md`
+* [JUnit](https://github.com/junit-team/junit4): for details, see `tds-test-utils/README.md`
 
 Each of these software components have their own license. Please see `docs/src/private/licenses/third-party/`.
 

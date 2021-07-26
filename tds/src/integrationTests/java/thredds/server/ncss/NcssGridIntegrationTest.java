@@ -1,20 +1,27 @@
+/*
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.ncss;
 
-import java.io.IOException;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TdsTestDir;
+import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.grid.GridDataset;
-import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
+
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+
 import static org.junit.Assert.assertNotNull;
 
 @Category(NeedsCdmUnitTest.class)
@@ -61,7 +68,7 @@ public class NcssGridIntegrationTest {
         "/ncss/grid/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1?var=Temperature_isobaric");
 
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
-    if (TestDir.cdmUseBuilders) {
+    if (TdsTestDir.cdmUseBuilders) {
       openBinaryNew(content, "Temperature_isobaric");
     } else {
       openBinaryOld(content, "Temperature_isobaric");
@@ -82,7 +89,7 @@ public class NcssGridIntegrationTest {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
 
     // Open the binary response in memory
-    if (TestDir.cdmUseBuilders) {
+    if (TdsTestDir.cdmUseBuilders) {
       openBinaryNew(content, "Relative_humidity_height_above_ground");
     } else {
       openBinaryOld(content, "Relative_humidity_height_above_ground");
@@ -101,7 +108,7 @@ public class NcssGridIntegrationTest {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
 
     // Open the binary response in memory
-    if (TestDir.cdmUseBuilders) {
+    if (TdsTestDir.cdmUseBuilders) {
       openBinaryNew(content, "eastward_ekman_current_velocity");
     } else {
       openBinaryOld(content, "eastward_ekman_current_velocity");

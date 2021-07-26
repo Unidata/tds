@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TestOnLocalServer;
 import ucar.nc2.util.IO;
 import ucar.unidata.util.test.category.NeedsExternalResource;
 import java.io.IOException;

@@ -1,31 +1,33 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
 package thredds.server.opendap;
 
 import opendap.dap.BaseType;
-import opendap.servers.*;
+import opendap.servers.CEEvaluator;
+import opendap.servers.ServerDDS;
+import opendap.servers.ServerMethods;
 import opendap.servlet.AsciiWriter;
 import opendap.servlet.GuardedDataset;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ucar.nc2.dataset.NetcdfDatasets;
-import ucar.unidata.util.test.TestDir;
-import ucar.unidata.util.test.UnitTestCommon;
-import ucar.unidata.util.test.Diff;
+import thredds.test.util.TdsTestDir;
+import thredds.test.util.TdsUnitTestCommon;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
+import ucar.unidata.util.test.Diff;
+
 import java.io.*;
-import java.io.FileWriter;
 import java.lang.invoke.MethodHandles;
 import java.util.Enumeration;
 
 // Test that the Constraint parsing is correct
 
-public class TestCEEvaluator extends UnitTestCommon {
+public class TestCEEvaluator extends TdsUnitTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   static boolean DEBUG = false;
@@ -112,7 +114,7 @@ public class TestCEEvaluator extends UnitTestCommon {
 
         try {
           file = new File(path);
-          if (TestDir.cdmUseBuilders) {
+          if (TdsTestDir.cdmUseBuilders) {
             ncfile = NetcdfDatasets.openFile(file.getPath(), null);
           } else {
             ncfile = NetcdfDataset.openFile(file.getPath(), null);
@@ -120,7 +122,7 @@ public class TestCEEvaluator extends UnitTestCommon {
           if (ncfile == null)
             throw new FileNotFoundException(path);
           if (DEBUG)
-            visual("cdm file", ncdumpmetadata(ncfile, UnitTestCommon.extractDatasetname(path, null)));
+            visual("cdm file", ncdumpmetadata(ncfile, TdsUnitTestCommon.extractDatasetname(path, null)));
           ds = new GuardedDatasetCacheAndClone(path, ncfile, false);
           dds = ds.getDDS();
           // force the name
@@ -215,7 +217,7 @@ public class TestCEEvaluator extends UnitTestCommon {
 
       // generate the complete unconstrained data set
       file = new File(path);
-      if (TestDir.cdmUseBuilders) {
+      if (TdsTestDir.cdmUseBuilders) {
         ncfile = NetcdfDatasets.openFile(file.getPath(), null);
       } else {
         ncfile = NetcdfDataset.openFile(file.getPath(), null);

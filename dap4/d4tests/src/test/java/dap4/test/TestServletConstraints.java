@@ -424,6 +424,12 @@ public class TestServletConstraints extends DapTestCommon {
         printer.verifychecksum();
       }
     }));
+    for (int i = 0; i < 3; i++) {
+      int numCases = this.alltestcases.size();
+      for (int testCase = 0; testCase < numCases; testCase++) {
+        this.alltestcases.add(this.alltestcases.get(testCase));
+      }
+    }
   }
 
   //////////////////////////////////////////////////

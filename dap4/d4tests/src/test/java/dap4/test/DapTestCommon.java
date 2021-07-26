@@ -1,6 +1,6 @@
 /*
- * Copyright 2012, UCAR/Unidata.
- * See the LICENSE file for more information.
+ * Copyright (c) 2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
  */
 
 package dap4.test;
@@ -29,29 +29,28 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
+import thredds.test.util.TdsTestDir;
+import thredds.test.util.TdsUnitTestCommon;
 import thredds.core.DatasetManager;
 import thredds.core.TdsRequestedDataset;
 import thredds.server.dap4.Dap4Controller;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPUtil;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.nc2.jni.netcdf.Nc4prototypes;
-import ucar.unidata.util.test.TestDir;
-import ucar.unidata.util.test.UnitTestCommon;
+
 import javax.servlet.ServletException;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 
 @ContextConfiguration
 @WebAppConfiguration("file:src/test/data")
-abstract public class DapTestCommon extends UnitTestCommon {
+abstract public class DapTestCommon extends TdsUnitTestCommon {
 
   //////////////////////////////////////////////////
   // Constants
@@ -348,7 +347,7 @@ abstract public class DapTestCommon extends UnitTestCommon {
   public DapTestCommon(String name) {
     super(name);
 
-    this.d4tsserver = TestDir.dap4TestServer;
+    this.d4tsserver = TdsTestDir.dap4TestServer;
     if (DEBUG)
       System.err.println("DapTestCommon: d4tsServer=" + d4tsserver);
   }
@@ -493,17 +492,8 @@ abstract public class DapTestCommon extends UnitTestCommon {
   }
 
   static public String getCLibraryVersion() {
-    Nc4prototypes nc4 = getCLibrary();
+    Nc4prototypes nc4 = NetcdfClibrary.getForeignFunctionInterface();
     return (nc4 == null ? "Unknown" : nc4.nc_inq_libvers());
-  }
-
-  static public Nc4prototypes getCLibrary() {
-    try {
-      Method getclib = NC4IOSP.getMethod("getCLibrary");
-      return (Nc4prototypes) getclib.invoke(null);
-    } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-      return null;
-    }
   }
 }
 

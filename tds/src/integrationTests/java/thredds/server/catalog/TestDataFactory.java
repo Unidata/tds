@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TestOnLocalServer;
 import thredds.client.catalog.ServiceType;
 import thredds.client.catalog.tools.DataFactory;
 import ucar.nc2.constants.FeatureType;

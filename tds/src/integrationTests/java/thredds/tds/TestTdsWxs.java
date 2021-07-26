@@ -7,7 +7,7 @@ package thredds.tds;
 import junit.framework.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TestOnLocalServer;
 import ucar.nc2.util.IO;
 import java.io.IOException;
 import java.io.File;

@@ -1,7 +1,13 @@
-package thredds.client.catalog;
+/*
+ * Copyright (c) 2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
+package thredds.test.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thredds.client.catalog.Catalog;
 import thredds.client.catalog.builder.CatalogBuilder;
 import ucar.unidata.util.StringUtil2;
 import ucar.unidata.util.test.TestDir;
@@ -15,11 +21,11 @@ import java.lang.invoke.MethodHandles;
 public class ClientCatalogUtil {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  static public String makeUrlFromFragment(String catFrag) {
-    return "file:" + TestDir.cdmLocalTestDataDir + "thredds/catalog/" + catFrag;
+  public static String makeUrlFromFragment(String catFrag) {
+    return "file:" + dataDir + catFrag;
   }
 
-  static public Catalog open(String urlString) throws IOException {
+  public static Catalog open(String urlString) throws IOException {
     if (!urlString.startsWith("http:") && !urlString.startsWith("file:")) {
       urlString = makeUrlFromFragment(urlString);
     } else {
@@ -48,5 +54,5 @@ public class ClientCatalogUtil {
     return "file:" + dataDir;
   }
 
-  public static String dataDir = TestDir.cdmLocalTestDataDir + "thredds/catalog/";
+  public static String dataDir = "../tds/src/integrationTests/data/thredds/catalog/";
 }

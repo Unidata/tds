@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.services;
 
-import java.nio.charset.StandardCharsets;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -20,7 +24,8 @@ import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TdsTestDir;
+import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
@@ -35,14 +40,16 @@ import ucar.nc2.time.Calendar;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateUnit;
 import ucar.nc2.util.IO;
-import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
+
 import java.io.*;
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -156,7 +163,7 @@ public class ConsistentDatesTest {
     NetcdfFile nf;
     NetcdfDataset ds;
 
-    if (TestDir.cdmUseBuilders) {
+    if (TdsTestDir.cdmUseBuilders) {
       nf = NetcdfFiles.openInMemory("test_data.ncs", result);
       ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
     } else {
@@ -227,7 +234,7 @@ public class ConsistentDatesTest {
 
     NetcdfFile nf;
     NetcdfDataset ds;
-    if (TestDir.cdmUseBuilders) {
+    if (TdsTestDir.cdmUseBuilders) {
       nf = NetcdfFiles.openInMemory("test_data.ncs", result);
       ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
     } else {

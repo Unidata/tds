@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import thredds.TestOnLocalServer;
+import thredds.test.util.TestOnLocalServer;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;

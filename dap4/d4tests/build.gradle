@@ -45,7 +45,8 @@ dependencies {
   compile 'org.springframework:spring-webmvc'
 
   testCompile 'junit:junit'
-  testCompile project(':testUtil')
+  testCompile project(':tds-test-utils')
+  testCompile 'edu.ucar:cdm-test-utils'
 }
 
 test {

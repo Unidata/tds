@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 2021 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
-package thredds;
+package thredds.test.util;
 
 import java.util.Optional;
 import org.apache.http.auth.AuthScope;
@@ -91,11 +91,13 @@ public class TestOnLocalServer {
     logger.debug("req = '{}'", endpoint);
 
     try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
+      // Even if there are no credentials, create a new credentials provider to use, which effectively disables
+      // credential caching in our tests. This ensures that tests that expect 401, 403 still work.
+      BasicCredentialsProvider bcp = new BasicCredentialsProvider();
       if (cred != null) {
-        BasicCredentialsProvider bcp = new BasicCredentialsProvider();
         bcp.setCredentials(AuthScope.ANY, cred);
-        session.setCredentialsProvider(bcp);
       }
+      session.setCredentialsProvider(bcp);
 
       HTTPMethod method = HTTPFactory.Get(session);
       int statusCode = method.execute();

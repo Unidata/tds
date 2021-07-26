@@ -104,7 +104,8 @@ dependencies {
   testCompile 'pl.pragmatists:JUnitParams'
   testCompile 'com.google.truth:truth'
   testCompile 'junit:junit'
-  testCompile project(':testUtil')  // Contains stuff like the JUnit @Category classes.
+  testCompile project(':tds-test-utils');
+  testCompile 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
 
   // Logging
   compile 'org.slf4j:slf4j-api'
