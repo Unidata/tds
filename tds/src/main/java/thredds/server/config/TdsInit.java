@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -20,6 +20,7 @@ import thredds.core.ConfigCatalogInitialization;
 import thredds.core.DatasetManager;
 import thredds.core.StandardService;
 import thredds.featurecollection.CollectionUpdater;
+import thredds.featurecollection.cache.GridInventoryCacheChronicle;
 import thredds.featurecollection.InvDatasetFeatureCollection;
 import thredds.server.catalog.ConfigCatalogCache;
 import thredds.server.catalog.DatasetScan;
@@ -45,6 +46,8 @@ import ucar.util.prefs.PreferencesExt;
 import ucar.util.prefs.XMLStore;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.Timer;
@@ -386,10 +389,6 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
      * startupLog.info("TdsInit: CdmRemote= " + dir + " scour = " + scourSecs + " maxAgeSecs = " + maxAgeSecs);
      */
 
-    // turn back on for 4.6 needed for FMRC
-    // turned off for 4.5 not used ??
-    // new for 4.2 - feature collection caching
-    // in 4.4, change name to FeatureCollectionCache, but keep old for backwards compatibility
     String fcCache = ThreddsConfig.get("FeatureCollectionCache.dir", null);
     if (fcCache == null)
       fcCache = ThreddsConfig.get("FeatureCollection.dir", null);
@@ -397,13 +396,13 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
       fcCache = ThreddsConfig.get("FeatureCollection.cacheDirectory",
           tdsContext.getThreddsDirectory().getPath() + "/cache/collection/"); // cacheDirectory is old way
 
-    long maxSizeBytes = ThreddsConfig.getBytes("FeatureCollectionCache.maxSize", -1);
-    if (maxSizeBytes == -1)
-      maxSizeBytes = ThreddsConfig.getBytes("FeatureCollection.maxSize", 0);
-
-    int jvmPercent = ThreddsConfig.getInt("FeatureCollectionCache.jvmPercent", -1);
-    if (-1 == jvmPercent)
-      jvmPercent = ThreddsConfig.getInt("FeatureCollection.jvmPercent", 2);
+    Path fcCacheDir = Paths.get(fcCache);
+    try {
+      GridInventoryCacheChronicle.init(fcCacheDir);
+      startupLog.info("TdsInit: GridDatasetInv cache= {}", fcCache);
+    } catch (Exception e) {
+      startupLog.error("TdsInit: Failed initialize GridDatasetInv cache= {}", fcCache, e);
+    }
 
     ///////////////////////////////////////////////
     // Object caching
@@ -503,6 +502,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
       cdmDiskCacheTimer.cancel();
     FileCache.shutdown(); // this handles background threads for all instances of FileCache
     DiskCache2.exit(); // this handles background threads for all instances of DiskCache2
+    GridInventoryCacheChronicle.shutdown();
     executor.shutdownNow();
     /*
      * try {
