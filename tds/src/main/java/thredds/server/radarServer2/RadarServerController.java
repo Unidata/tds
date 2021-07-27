@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -8,8 +8,11 @@ package thredds.server.radarServer2;
 
 import com.google.common.base.Joiner;
 import java.nio.charset.StandardCharsets;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -38,6 +41,7 @@ import ucar.nc2.time.CalendarPeriod;
 import ucar.nc2.units.DateRange;
 import ucar.nc2.units.DateType;
 import ucar.nc2.units.TimeDuration;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -117,48 +121,63 @@ public class RadarServerController implements InitializingBean {
     debugHandler.addAction(act);
   }
 
-  public void afterPropertiesSet() {
-    enabled = ThreddsConfig.getBoolean("RadarServer.allow", false);
-    if (!enabled)
-      return;
+  @EventListener
+  public void init(ContextRefreshedEvent event) {
+    // The context is refreshed three times.
+    // All three times, the event.getApplicationContext().getApplicationName() is /thredds
+    // However, the display name and ID are different:
+    // 1. Root WebApplicationContext
+    // org.springframework.web.context.WebApplicationContext:/thredds
+    // 2. org.springframework.web.context.support.GenericWebApplicationContext@6c14bf64
+    // org.springframework.web.context.support.GenericWebApplicationContext@6c14bf64
+    // 3. WebApplicationContext for namespace 'spring-servlet'
+    // org.springframework.web.context.WebApplicationContext:/thredds/spring
+    //
+    // Initializing will work on any one of these, but we only need one.
 
-    setupDebug();
+    if (event.getApplicationContext().getDisplayName().equals("Root WebApplicationContext")) {
+      enabled = ThreddsConfig.getBoolean("RadarServer.allow", false);
+      if (!enabled)
+        return;
 
-    data = new TreeMap<>();
-    vars = new TreeMap<>();
-    String contentPath = tdsContext.getThreddsDirectory().getPath();
-    List<RadarServerConfig.RadarConfigEntry> configs =
-        RadarServerConfig.readXML(contentPath + "/radar/radarCollections.xml");
-    for (RadarServerConfig.RadarConfigEntry conf : configs) {
-      RadarDataInventory di = new RadarDataInventory(conf.dataPath, conf.crawlItems);
-      di.setName(conf.name);
-      di.setDescription(conf.doc);
+      data = new TreeMap<>();
+      vars = new TreeMap<>();
 
-      for (String part : conf.layout.split("/")) {
-        switch (part) {
-          case "STATION":
-            di.addStationDir();
-            break;
-          case "VARIABLE":
-            di.addVariableDir();
-            break;
-          default: // Assume date format
-            di.addDateDir(part);
+      setupDebug();
+      String contentPath = tdsContext.getThreddsDirectory().getPath();
+      List<RadarServerConfig.RadarConfigEntry> configs =
+          RadarServerConfig.readXML(contentPath + "/radar/radarCollections.xml");
+      for (RadarServerConfig.RadarConfigEntry conf : configs) {
+        RadarDataInventory di = new RadarDataInventory(conf.dataPath, conf.crawlItems);
+        di.setName(conf.name);
+        di.setDescription(conf.doc);
+
+        for (String part : conf.layout.split("/")) {
+          switch (part) {
+            case "STATION":
+              di.addStationDir();
+              break;
+            case "VARIABLE":
+              di.addVariableDir();
+              break;
+            default: // Assume date format
+              di.addDateDir(part);
+          }
         }
+
+        di.addFileTime(conf.dateParseRegex, conf.dateFmt);
+        di.setNearestWindow(CalendarPeriod.of(1, CalendarPeriod.Field.Hour));
+
+        // TODO: These needs to come from files instead
+        di.setDataFormat(conf.dataFormat);
+        di.setTimeCoverage(conf.timeCoverage);
+        di.setGeoCoverage(conf.spatialCoverage);
+
+        data.put(conf.urlPath, di);
+        vars.put(conf.urlPath, conf.vars);
+        StationList sl = di.getStationList();
+        sl.loadFromXmlFile(contentPath + "/" + conf.stationFile);
       }
-
-      di.addFileTime(conf.dateParseRegex, conf.dateFmt);
-      di.setNearestWindow(CalendarPeriod.of(1, CalendarPeriod.Field.Hour));
-
-      // TODO: These needs to come from files instead
-      di.setDataFormat(conf.dataFormat);
-      di.setTimeCoverage(conf.timeCoverage);
-      di.setGeoCoverage(conf.spatialCoverage);
-
-      data.put(conf.urlPath, di);
-      vars.put(conf.urlPath, conf.vars);
-      StationList sl = di.getStationList();
-      sl.loadFromXmlFile(contentPath + "/" + conf.stationFile);
     }
   }
 
@@ -587,5 +606,11 @@ public class RadarServerController implements InitializingBean {
       query.addCriteria(RadarDataInventory.DirType.Variable, var);
 
     return true;
+  }
+
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    // Nothing to set at this point in the startup process
+    // This is before TdsInit.onApplicationEvent is called
   }
 }
