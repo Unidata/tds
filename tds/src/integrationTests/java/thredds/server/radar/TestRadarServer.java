@@ -16,6 +16,8 @@ import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
@@ -32,7 +34,7 @@ public class TestRadarServer {
         {"/radarServer/nexrad/level3/IDD/stations.xml"}, {"/radarServer/terminal/level3/IDD/stations.xml"},});
   }
 
-  String xmlEncoding = "application/xml;charset=UTF-8";
+  private static final String expectedContentType = "application/xml";
   String path;
 
   public TestRadarServer(String path) {
@@ -50,43 +52,18 @@ public class TestRadarServer {
 
     try (HTTPMethod method = HTTPFactory.Get(path)) {
       int status = method.execute();
-      assert (status == 200) : path + " response status= " + status;
-
+      assertThat(status).isEqualTo(200);
+      assertThat(method.getResponseHeaderValue("Content-Type").get()).isEqualTo(expectedContentType);
+      String responseContent = "";
       try (InputStream is = method.getResponseBodyAsStream()) {
-        System.out.printf("response= '%s'%n", IO.readContents(is));
+        responseContent = IO.readContents(is);
       }
-
+      assertThat(validateResponseContent(responseContent)).isTrue();
     }
-
-    /*
-     * try {
-     * HttpUriResolver httpUriResolver = HttpUriResolverFactory.getDefaultHttpUriResolver(catUri);
-     * httpUriResolver.makeRequest();
-     * int status = httpUriResolver.getResponseStatusCode();
-     * assert (status == 200) : path + " response status= " + status;
-     * //assert (httpUriResolver.getResponseContentType().equals(xmlEncoding)) :
-     * // " status = " + httpUriResolver.getResponseContentType()+" expected= "+xmlEncoding;
-     * 
-     * InputStream is = httpUriResolver.getResponseBodyAsInputStream();
-     * System.out.printf("response= '%s'%n", IO.readContents(is));
-     * 
-     * /* InputStream is = httpUriResolver.getResponseBodyAsInputStream();
-     * 
-     * InputStreamReader isr = new InputStreamReader(is, "UTF-8");
-     * int cnt = 1;
-     * while (isr.ready()) {
-     * char[] c = new char[1000];
-     * int num = isr.read(c);
-     * System.out.println(cnt + "[" + num + "]" + new String(c));
-     * cnt++;
-     * }
-     * 
-     * } catch (IOException e) {
-     * fail("Failed to read catalog [" + path + "]: " + e.getMessage());
-     * }
-     */
-
   }
 
+  private static boolean validateResponseContent(String responseContent) {
+    return responseContent.contains("<dataset") || responseContent.contains("<stationsList>");
+  }
 
 }
