@@ -29,6 +29,7 @@
   </htmlSetup>
 
   <catalogRoot>rootCatalog2.xml</catalogRoot>
+  <catalogRoot>radar/radarCollections.xml</catalogRoot>
   <!--
    The <CatalogServices> element:
    -->
@@ -67,6 +68,10 @@
     <maxImageWidth>5000</maxImageWidth>
     <maxImageHeight>5000</maxImageHeight>
   </WMS>
+
+  <RadarServer>
+    <allow>true</allow>
+  </RadarServer>
 
   <!-- Enable DLwriter service but disable on remote catalogs.
        -->
