@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stationList>
+    <station name="DES_MOINES/Johnston" value="KDMX" state="IA" country="US">
+        <location3D latitude="41.72" longitude="-93.72" elevation="299" />
+    </station>
+    <station name="QUAD_CITIES/Davenport" value="KDVN" state="IA" country="US">
+        <location3D latitude="41.6" longitude="-90.57" elevation="230" />
+    </station>
+</stationList>
