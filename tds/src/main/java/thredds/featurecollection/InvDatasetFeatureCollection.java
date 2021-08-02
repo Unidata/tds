@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -50,33 +50,29 @@ import java.util.List;
 public abstract class InvDatasetFeatureCollection implements Closeable {
   private static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(InvDatasetFeatureCollection.class);
 
-  static protected final String LATEST_DATASET_CATALOG = "latest.xml";
-  static protected final String VARIABLES = "?metadata=variableMap";
-  static protected final String FILES = "files";
+  protected static final String LATEST_DATASET_CATALOG = "latest.xml";
+  protected static final String VARIABLES = "?metadata=variableMap";
+  protected static final String FILES = "files";
+  protected static final boolean useNetcdfJavaBuilders = true;
 
   // can be changed
-  static protected AllowedServices allowedServices;
-  static protected String contextName = "/thredds"; // set by TdsInit
-  static protected boolean useNetcdfJavaBuilders = false;
+  protected static AllowedServices allowedServices;
+  protected static String contextName = "/thredds"; // set by TdsInit
 
   // cant use spring wiring because InvDatasetFeatureCollection not a spring component because depends on catalog config
-  static public void setContextName(String c) {
+  public static void setContextName(String c) {
     contextName = c;
   }
 
-  static public void setUseNetcdfJavaBuilders(boolean use) {
-    useNetcdfJavaBuilders = use;
-  }
-
-  static public void setAllowedServices(AllowedServices _allowedServices) {
+  public static void setAllowedServices(AllowedServices _allowedServices) {
     allowedServices = _allowedServices;
   }
 
-  static protected String buildCatalogServiceHref(String path) {
+  protected static String buildCatalogServiceHref(String path) {
     return contextName + "/catalog/" + path + "/catalog.xml";
   }
 
-  static public InvDatasetFeatureCollection factory(FeatureCollectionRef parent, FeatureCollectionConfig config) {
+  public static InvDatasetFeatureCollection factory(FeatureCollectionRef parent, FeatureCollectionConfig config) {
     InvDatasetFeatureCollection result;
     if (config.type == FeatureCollectionType.FMRC)
       result = new InvDatasetFcFmrc(parent, config);
@@ -256,7 +252,7 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
   // for subclasses
 
   // localState is synched, may be directly changed
-  abstract protected void updateCollection(State localState, CollectionUpdateType force);
+  protected abstract void updateCollection(State localState, CollectionUpdateType force);
 
   ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -377,9 +373,9 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
    * @param catURI the base URI for the catalog to be made, used to resolve relative URLs.
    * @return containing catalog
    */
-  abstract public CatalogBuilder makeCatalog(String match, String orgPath, URI catURI) throws IOException;
+  public abstract CatalogBuilder makeCatalog(String match, String orgPath, URI catURI) throws IOException;
 
-  abstract protected DatasetBuilder makeDatasetTop(URI catURI, State localState) throws IOException;
+  protected abstract DatasetBuilder makeDatasetTop(URI catURI, State localState) throws IOException;
 
   /**
    * Make the containing catalog of this feature collection
