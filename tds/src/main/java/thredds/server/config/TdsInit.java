@@ -225,11 +225,6 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     // initialize the tds configuration beans
     tdsConfigMapper.init(tdsContext);
 
-    // use new builders in netCDF-Java (default - true)
-    useBuilders = ThreddsConfig.getBoolean("Experimental.useNetcdfJavaBuilders", true);
-
-    datasetManager.setUseNetcdfJavaBuilders(useBuilders);
-
     // prefer cdmRemote when available
     DataFactory.setPreferCdm(true);
     // netcdf-3 files can only grow, not have metadata changes
@@ -268,7 +263,6 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
 
     allowedServices.finish(); // finish when we know everything is wired
     InvDatasetFeatureCollection.setAllowedServices(allowedServices);
-    InvDatasetFeatureCollection.setUseNetcdfJavaBuilders(useBuilders);
     DatasetScan.setSpecialServices(allowedServices.getStandardService(StandardService.resolver),
         allowedServices.getStandardService(StandardService.httpServer));
     DatasetScan.setAllowedServices(allowedServices);

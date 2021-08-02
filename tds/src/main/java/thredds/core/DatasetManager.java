@@ -85,7 +85,7 @@ public class DatasetManager implements InitializingBean {
 
   // controls whether or not we use the new builder api of netCDF-Java
   // note: will always use new stuff when accessing object stores
-  private boolean useNetcdfJavaBuilders = false;
+  private static final boolean useNetcdfJavaBuilders = true;
 
   @Override
   public void afterPropertiesSet() throws Exception {
@@ -102,10 +102,6 @@ public class DatasetManager implements InitializingBean {
       }
     }
     this.datasetTracker = datasetTracker;
-  }
-
-  public void setUseNetcdfJavaBuilders(boolean use) {
-    this.useNetcdfJavaBuilders = use;
   }
 
   public boolean useNetcdfJavaBuilders() {

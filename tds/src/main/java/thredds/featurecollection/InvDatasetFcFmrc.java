@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 package thredds.featurecollection;
@@ -44,22 +44,22 @@ import java.util.*;
 
 @ThreadSafe
 public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
-  static private final Logger logger = org.slf4j.LoggerFactory.getLogger(InvDatasetFcFmrc.class);
+  private static final Logger logger = org.slf4j.LoggerFactory.getLogger(InvDatasetFcFmrc.class);
 
-  static private final String FMRC = "fmrc.ncd";
-  static private final String BEST = "best.ncd";
+  private static final String FMRC = "fmrc.ncd";
+  private static final String BEST = "best.ncd";
 
-  static private final String RUNS = "runs";
-  static private final String RUN_NAME = "RUN_";
-  static private final String RUN_TITLE = "Forecast Model Run";
+  private static final String RUNS = "runs";
+  private static final String RUN_NAME = "RUN_";
+  private static final String RUN_TITLE = "Forecast Model Run";
 
-  static private final String FORECAST = "forecast";
-  static private final String FORECAST_NAME = "ConstantForecast_";
-  static private final String FORECAST_TITLE = "Constant Forecast Date";
+  private static final String FORECAST = "forecast";
+  private static final String FORECAST_NAME = "ConstantForecast_";
+  private static final String FORECAST_TITLE = "Constant Forecast Date";
 
-  static private final String OFFSET = "offset";
-  static private final String OFFSET_NAME = "Offset_";
-  static private final String OFFSET_TITLE = "Constant Forecast Offset";
+  private static final String OFFSET = "offset";
+  private static final String OFFSET_NAME = "Offset_";
+  private static final String OFFSET_TITLE = "Constant Forecast Offset";
 
   //////////////////////////////////////////////////////////////////////////////
 
