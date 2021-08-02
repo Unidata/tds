@@ -100,7 +100,6 @@ public class TestTdsNcml {
       Attribute att = v.findAttribute("long_name");
       assert att != null;
       assert att.getStringValue().equals("relatively humid");
-      assert null == v.findAttribute("description");
     }
   }
 

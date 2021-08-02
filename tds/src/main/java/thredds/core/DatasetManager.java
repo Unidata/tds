@@ -6,6 +6,7 @@
 package thredds.core;
 
 import com.coverity.security.Escape;
+import org.jdom2.Attribute;
 import org.jdom2.output.XMLOutputter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,9 +214,27 @@ public class DatasetManager implements InitializingBean {
         String ncmlLocation = "DatasetScan#" + location; // LOOK some descriptive name
         // open with openFile(), not acquireFile, so we skip the caches
         NetcdfDataset ncd = null;
-        NetcdfFile ncf = NetcdfDatasets.openFile(location, null);
+
+        // look for addRecords attribute on the netcdf element. The new API in netCDF-Java does not handle this,
+        // so we will handle it special here.
+        Attribute addRecordsAttr = netcdfElem.getAttribute("addRecords");
+        boolean addRecords = false;
+        if (addRecordsAttr != null) {
+          addRecords = Boolean.valueOf(addRecordsAttr.getValue());
+        }
+
+        NetcdfFile ncf;
+        if (addRecords) {
+          DatasetUrl datasetUrl = DatasetUrl.findDatasetUrl(location);
+          // work around for presence of addRecords="true" on a netcdf element
+          ncf = NetcdfDatasets.openFile(datasetUrl, -1, null, NetcdfFile.IOSP_MESSAGE_ADD_RECORD_STRUCTURE);
+        } else {
+          ncf = NetcdfDatasets.openFile(location, null);
+        }
+
         NetcdfDataset.Builder modifiedDsBuilder = NcmlReader.mergeNcml(ncf, netcdfElem);
-        // new location indicates this is a dataset from a dataset scan wrapped with NcML.
+
+        // set new location to indicate this is a dataset from a dataset scan wrapped with NcML.
         modifiedDsBuilder.setLocation(ncmlLocation);
         ncd = modifiedDsBuilder.build();
         return ncd;
