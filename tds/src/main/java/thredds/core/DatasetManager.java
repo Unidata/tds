@@ -36,7 +36,6 @@ import ucar.nc2.ft2.coverage.adapter.DtCoverageDataset;
 import ucar.nc2.ft2.simpgeometry.SimpleGeometryFeatureDataset;
 import ucar.nc2.ft2.coverage.CoverageCollection;
 import ucar.nc2.internal.ncml.NcmlReader;
-import ucar.nc2.ncml.NcMLReader;
 import ucar.nc2.util.Optional;
 import ucar.nc2.util.cache.FileFactory;
 import javax.servlet.http.HttpServletRequest;
@@ -207,14 +206,18 @@ public class DatasetManager implements InitializingBean {
       if (location == null)
         throw new FileNotFoundException(reqPath);
 
-      // if theres an ncml element, open it directly through NcMLReader, therefore not being cached.
-      // this is safer given all the trouble we have with ncml and caching.
+      // if there's an ncml element, open it through NcMLReader, supplying the underlying file
+      // from NetcdfFiles.open(), therefore not being cached.
+      // This is safer given all the trouble we have with ncml and caching.
       if (netcdfElem != null) {
         String ncmlLocation = "DatasetScan#" + location; // LOOK some descriptive name
-        // NetcdfDatasets.openNcmlDataset()
-        org.jdom2.output.XMLOutputter xmlOutputter = new XMLOutputter();
-        String ncmlString = xmlOutputter.outputString(netcdfElem);
-        NetcdfDataset ncd = NetcdfDatasets.openNcmlDataset(new StringReader(ncmlString), location, null);
+        // open with openFile(), not acquireFile, so we skip the caches
+        NetcdfDataset ncd = null;
+        NetcdfFile ncf = NetcdfDatasets.openFile(location, null);
+        NetcdfDataset.Builder modifiedDsBuilder = NcmlReader.mergeNcml(ncf, netcdfElem);
+        // new location indicates this is a dataset from a dataset scan wrapped with NcML.
+        modifiedDsBuilder.setLocation(ncmlLocation);
+        ncd = modifiedDsBuilder.build();
         return ncd;
       }
 
