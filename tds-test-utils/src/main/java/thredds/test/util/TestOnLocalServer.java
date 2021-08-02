@@ -161,4 +161,9 @@ public class TestOnLocalServer {
       assert false;
     }
   }
+
+  public static void clearCredentials(HTTPSession session) throws HTTPException {
+    BasicCredentialsProvider bcp = new BasicCredentialsProvider();
+    session.setCredentialsProvider(bcp);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 package thredds.tds;
@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
+
+import static thredds.test.util.TestOnLocalServer.clearCredentials;
 
 /**
  * Test restricted datasets
@@ -65,12 +67,15 @@ public class TestRestrictDataset {
     this.path = path;
   }
 
+
+
   @Test
   public void testFailNoAuth() {
     String endpoint = TestOnLocalServer.withHttpPath(path);
     logger.info(String.format("testRestriction req = '%s'", endpoint));
 
     try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
+      clearCredentials(session);
       HTTPMethod method = HTTPFactory.Get(session);
       int statusCode = method.execute();
 
@@ -164,6 +169,8 @@ public class TestRestrictDataset {
     logger.info(String.format("testRestriction req = '%s'", endpoint));
     try {
       try (HTTPMethod method = HTTPFactory.Get(endpoint)) {
+        HTTPSession session = method.getSession();
+        clearCredentials(session);
         int statusCode = method.execute();
         if (statusCode != HttpStatus.SC_UNAUTHORIZED && statusCode != HttpStatus.SC_FORBIDDEN) {
           logger.error(String.format("statuscode=%d expected HttpStatus.SC_UNAUTHORIZED or HttpStatus.SC_FORBIDDEN",
@@ -176,6 +183,5 @@ public class TestRestrictDataset {
       Assert.fail(e.getMessage());
     }
   }
-
 }
 
