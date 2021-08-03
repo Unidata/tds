@@ -132,15 +132,8 @@ public class FmrcHorizSubsettingTest {
     assertEquals(200, mvc.getResponse().getStatus());
 
     // Open the binary response in memory
-    if (TdsTestDir.cdmUseBuilders) {
-      try (NetcdfFile nf = NetcdfFiles.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray())) {
-        check(
-            new ucar.nc2.dt.grid.GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null)));
-      }
-    } else {
-      try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray())) {
-        check(new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf)));
-      }
+    try (NetcdfFile nf = NetcdfFiles.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray())) {
+      check(new ucar.nc2.dt.grid.GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null)));
     }
   }
 

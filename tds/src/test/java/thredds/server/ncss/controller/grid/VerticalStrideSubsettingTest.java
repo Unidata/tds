@@ -135,14 +135,9 @@ public class VerticalStrideSubsettingTest {
         // Open the binary response in memory
         NetcdfFile nf;
         ucar.nc2.dt.grid.GridDataset gdsDataset;
-        if (TdsTestDir.cdmUseBuilders) {
-          nf = NetcdfFiles.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
-          gdsDataset =
-              new ucar.nc2.dt.grid.GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
-        } else {
-          nf = NetcdfFile.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
-          gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
-        }
+        nf = NetcdfFiles.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
+        gdsDataset =
+            new ucar.nc2.dt.grid.GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
 
         assertTrue(gdsDataset.getCalendarDateRange().isPoint());
         List<VariableSimpleIF> vars = gdsDataset.getDataVariables();

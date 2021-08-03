@@ -160,16 +160,9 @@ public class ConsistentDatesTest {
     String endpoint = TestOnLocalServer.withHttpPath(
         "/ncss/grid/cdmUnitTest/ncss/climatology/PF5_SST_Climatology_Monthly_1985_2001.nc?var=sst&latitude=45&longitude=-20&temporal=all&accept=netcdf");
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
-    NetcdfFile nf;
-    NetcdfDataset ds;
 
-    if (TdsTestDir.cdmUseBuilders) {
-      nf = NetcdfFiles.openInMemory("test_data.ncs", result);
-      ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
-    } else {
-      nf = NetcdfFile.openInMemory("test_data.ncs", result);
-      ds = new NetcdfDataset(nf);
-    }
+    NetcdfFile nf = NetcdfFiles.openInMemory("test_data.ncs", result);
+    NetcdfDataset ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
 
     CoordinateAxis1D tAxis = (CoordinateAxis1D) ds.findCoordinateAxis("time");
     Attribute calendarAtt = tAxis.findAttribute(CF.CALENDAR);
@@ -232,15 +225,8 @@ public class ConsistentDatesTest {
     System.out.printf("Write file to %s%n", tmpFile.getAbsolutePath());
     IO.appendToFile(is, tmpFile.getAbsolutePath());
 
-    NetcdfFile nf;
-    NetcdfDataset ds;
-    if (TdsTestDir.cdmUseBuilders) {
-      nf = NetcdfFiles.openInMemory("test_data.ncs", result);
-      ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
-    } else {
-      nf = NetcdfFile.openInMemory("test_data.ncs", result);
-      ds = new NetcdfDataset(nf);
-    }
+    NetcdfFile nf = NetcdfFiles.openInMemory("test_data.ncs", result);
+    NetcdfDataset ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
 
     CoordinateAxis1DTime tAxis = CoordinateAxis1DTime.factory(ds, ds.findCoordinateAxis("time"), null);
     List<CalendarDate> dates = tAxis.getCalendarDates();
