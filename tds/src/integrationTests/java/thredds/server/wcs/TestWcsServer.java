@@ -135,12 +135,8 @@ public class TestWcsServer {
   }
 
   private DtCoverageDataset getDtCoverageDataset(NetcdfFile ncf) throws IOException {
-    DtCoverageDataset dtc;
-    if (TdsTestDir.cdmUseBuilders) {
-      dtc = new DtCoverageDataset(NetcdfDatasets.enhance(ncf, NetcdfDataset.getDefaultEnhanceMode(), null));
-    } else {
-      dtc = new DtCoverageDataset(new NetcdfDataset(ncf), null);
-    }
+    DtCoverageDataset dtc =
+        new DtCoverageDataset(NetcdfDatasets.enhance(ncf, NetcdfDataset.getDefaultEnhanceMode(), null));
     return dtc;
   }
 

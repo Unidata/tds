@@ -217,11 +217,7 @@ public class DsgSubsetWriterTest {
   }
 
   public static boolean compareNetCDF(File expectedResultFile, File actualResultFile) throws IOException {
-    if (TdsTestDir.cdmUseBuilders) {
-      return compareNetCDFNew(expectedResultFile, actualResultFile);
-    } else {
-      return compareNetCDFOld(expectedResultFile, actualResultFile);
-    }
+    return compareNetCDFNew(expectedResultFile, actualResultFile);
   }
 
   private static boolean compareNetCDFOld(File expectedResultFile, File actualResultFile) throws IOException {

@@ -116,11 +116,7 @@ public class TestCdmRemoteCompareHeadersP {
   }
 
   static int compareDatasets(String local, String remote, boolean readData) throws IOException {
-    if (TdsTestDir.cdmUseBuilders) {
-      return compareDatasetsNew(local, remote, readData);
-    } else {
-      return compareDatasetsOld(local, remote, readData);
-    }
+    return compareDatasetsNew(local, remote, readData);
   }
 
   private static int compareDatasetsNew(String local, String remote, boolean readData) throws IOException {

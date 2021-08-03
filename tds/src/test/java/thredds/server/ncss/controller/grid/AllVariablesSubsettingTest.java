@@ -71,14 +71,9 @@ public class AllVariablesSubsettingTest {
     // NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", response.getContentAsByteArray() );
     NetcdfFile nf;
     GridDataset gdsDataset;
-    if (TdsTestDir.cdmUseBuilders) {
-      nf = NetcdfFiles.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
-      gdsDataset =
-          new ucar.nc2.dt.grid.GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
-    } else {
-      nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
-      gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
-    }
+    nf = NetcdfFiles.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
+    gdsDataset =
+        new ucar.nc2.dt.grid.GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
 
     assertTrue(gdsDataset.getCalendarDateRange().isPoint());
     assertEquals(7, gdsDataset.getDataVariables().size());

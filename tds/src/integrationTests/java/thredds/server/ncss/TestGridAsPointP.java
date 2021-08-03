@@ -172,11 +172,7 @@ public class TestGridAsPointP {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
     Assert.assertNotNull(content);
     logger.debug("return size = {}", content.length);
-    if (TdsTestDir.cdmUseBuilders) {
-      checkGridAsPointNetcdfNew(content, varName);
-    } else {
-      checkGridAsPointNetcdfOld(content, varName);
-    }
+    checkGridAsPointNetcdfNew(content, varName);
   }
 
   private void checkGridAsPointNetcdfOld(byte[] content, String varName) throws JDOMException, IOException {

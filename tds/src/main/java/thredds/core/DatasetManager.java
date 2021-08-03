@@ -6,6 +6,7 @@
 package thredds.core;
 
 import com.coverity.security.Escape;
+import org.jdom2.Attribute;
 import org.jdom2.output.XMLOutputter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,6 @@ import ucar.nc2.ft2.coverage.adapter.DtCoverageDataset;
 import ucar.nc2.ft2.simpgeometry.SimpleGeometryFeatureDataset;
 import ucar.nc2.ft2.coverage.CoverageCollection;
 import ucar.nc2.internal.ncml.NcmlReader;
-import ucar.nc2.ncml.NcMLReader;
 import ucar.nc2.util.Optional;
 import ucar.nc2.util.cache.FileFactory;
 import javax.servlet.http.HttpServletRequest;
@@ -207,14 +207,36 @@ public class DatasetManager implements InitializingBean {
       if (location == null)
         throw new FileNotFoundException(reqPath);
 
-      // if theres an ncml element, open it directly through NcMLReader, therefore not being cached.
-      // this is safer given all the trouble we have with ncml and caching.
+      // if there's an ncml element, open it through NcMLReader, supplying the underlying file
+      // from NetcdfFiles.open(), therefore not being cached.
+      // This is safer given all the trouble we have with ncml and caching.
       if (netcdfElem != null) {
         String ncmlLocation = "DatasetScan#" + location; // LOOK some descriptive name
-        // NetcdfDatasets.openNcmlDataset()
-        org.jdom2.output.XMLOutputter xmlOutputter = new XMLOutputter();
-        String ncmlString = xmlOutputter.outputString(netcdfElem);
-        NetcdfDataset ncd = NetcdfDatasets.openNcmlDataset(new StringReader(ncmlString), location, null);
+        // open with openFile(), not acquireFile, so we skip the caches
+        NetcdfDataset ncd = null;
+
+        // look for addRecords attribute on the netcdf element. The new API in netCDF-Java does not handle this,
+        // so we will handle it special here.
+        Attribute addRecordsAttr = netcdfElem.getAttribute("addRecords");
+        boolean addRecords = false;
+        if (addRecordsAttr != null) {
+          addRecords = Boolean.valueOf(addRecordsAttr.getValue());
+        }
+
+        NetcdfFile ncf;
+        if (addRecords) {
+          DatasetUrl datasetUrl = DatasetUrl.findDatasetUrl(location);
+          // work around for presence of addRecords="true" on a netcdf element
+          ncf = NetcdfDatasets.openFile(datasetUrl, -1, null, NetcdfFile.IOSP_MESSAGE_ADD_RECORD_STRUCTURE);
+        } else {
+          ncf = NetcdfDatasets.openFile(location, null);
+        }
+
+        NetcdfDataset.Builder modifiedDsBuilder = NcmlReader.mergeNcml(ncf, netcdfElem);
+
+        // set new location to indicate this is a dataset from a dataset scan wrapped with NcML.
+        modifiedDsBuilder.setLocation(ncmlLocation);
+        ncd = modifiedDsBuilder.build();
         return ncd;
       }
 

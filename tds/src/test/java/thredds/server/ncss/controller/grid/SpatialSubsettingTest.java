@@ -134,14 +134,9 @@ public class SpatialSubsettingTest {
             NetcdfFile nf = NetcdfFile.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
             ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
             // Open the binary response in memory
-            if (TdsTestDir.cdmUseBuilders) {
-              nf = NetcdfFiles.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
-              gdsDataset = new ucar.nc2.dt.grid.GridDataset(
-                  NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
-            } else {
-              nf = NetcdfFile.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
-              gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
-            }
+            nf = NetcdfFiles.openInMemory("test_data.ncs", result.getResponse().getContentAsByteArray());
+            gdsDataset = new ucar.nc2.dt.grid.GridDataset(
+                NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
             LatLonRect responseBBox = gdsDataset.getBoundingBox();
 
             assertTrue(

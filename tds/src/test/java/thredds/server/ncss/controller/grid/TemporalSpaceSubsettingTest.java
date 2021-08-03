@@ -136,13 +136,8 @@ public class TemporalSpaceSubsettingTest {
     // Open the binary response in memory
     NetcdfFile nf;
     NetcdfDataset ds;
-    if (TdsTestDir.cdmUseBuilders) {
-      nf = NetcdfFiles.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
-      ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
-    } else {
-      nf = NetcdfFile.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
-      ds = new NetcdfDataset(nf);
-    }
+    nf = NetcdfFiles.openInMemory("test_data.ncs", mvc.getResponse().getContentAsByteArray());
+    ds = NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null);
     Dimension time = ds.findDimension("time");
 
     assertEquals(lengthTimeDim, time.getLength());

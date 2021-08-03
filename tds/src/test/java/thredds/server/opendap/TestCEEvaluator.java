@@ -114,11 +114,7 @@ public class TestCEEvaluator extends TdsUnitTestCommon {
 
         try {
           file = new File(path);
-          if (TdsTestDir.cdmUseBuilders) {
-            ncfile = NetcdfDatasets.openFile(file.getPath(), null);
-          } else {
-            ncfile = NetcdfDataset.openFile(file.getPath(), null);
-          }
+          ncfile = NetcdfDatasets.openFile(file.getPath(), null);
           if (ncfile == null)
             throw new FileNotFoundException(path);
           if (DEBUG)
@@ -217,11 +213,8 @@ public class TestCEEvaluator extends TdsUnitTestCommon {
 
       // generate the complete unconstrained data set
       file = new File(path);
-      if (TdsTestDir.cdmUseBuilders) {
-        ncfile = NetcdfDatasets.openFile(file.getPath(), null);
-      } else {
-        ncfile = NetcdfDataset.openFile(file.getPath(), null);
-      }
+      ncfile = NetcdfDatasets.openFile(file.getPath(), null);
+
       if (ncfile == null)
         throw new FileNotFoundException(path);
       ds = new GuardedDatasetCacheAndClone(path, ncfile, false);

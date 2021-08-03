@@ -55,11 +55,7 @@ public class TestStationFcOpenFiles {
     mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     rafCache = (FileCache) RandomAccessFile.getGlobalFileCache();
     rafCache.clearCache(true);
-    if (TdsTestDir.cdmUseBuilders) {
-      NetcdfDatasets.getNetcdfFileCache().clearCache(true);
-    } else {
-      NetcdfDataset.getNetcdfFileCache().clearCache(true);
-    }
+    NetcdfDatasets.getNetcdfFileCache().clearCache(true);
   }
 
   @Test

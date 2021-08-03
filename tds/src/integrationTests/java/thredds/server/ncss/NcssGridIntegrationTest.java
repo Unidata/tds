@@ -68,11 +68,7 @@ public class NcssGridIntegrationTest {
         "/ncss/grid/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1?var=Temperature_isobaric");
 
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
-    if (TdsTestDir.cdmUseBuilders) {
-      openBinaryNew(content, "Temperature_isobaric");
-    } else {
-      openBinaryOld(content, "Temperature_isobaric");
-    }
+    openBinaryNew(content, "Temperature_isobaric");
   }
 
   @Test
@@ -89,11 +85,7 @@ public class NcssGridIntegrationTest {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
 
     // Open the binary response in memory
-    if (TdsTestDir.cdmUseBuilders) {
-      openBinaryNew(content, "Relative_humidity_height_above_ground");
-    } else {
-      openBinaryOld(content, "Relative_humidity_height_above_ground");
-    }
+    openBinaryNew(content, "Relative_humidity_height_above_ground");
   }
 
   // this fails when _ChunkSizes are left on
@@ -108,10 +100,6 @@ public class NcssGridIntegrationTest {
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
 
     // Open the binary response in memory
-    if (TdsTestDir.cdmUseBuilders) {
-      openBinaryNew(content, "eastward_ekman_current_velocity");
-    } else {
-      openBinaryOld(content, "eastward_ekman_current_velocity");
-    }
+    openBinaryNew(content, "eastward_ekman_current_velocity");
   }
 }
