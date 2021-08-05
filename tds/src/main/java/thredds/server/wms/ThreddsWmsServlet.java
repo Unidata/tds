@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2015 The University of Reading
  * All rights reserved.
  * 
@@ -28,6 +28,9 @@
 
 package thredds.server.wms;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import ucar.nc2.dataset.NetcdfDatasets;
 import uk.ac.rdg.resc.edal.graphics.exceptions.EdalLayerNotFoundException;
 import uk.ac.rdg.resc.edal.wms.RequestParams;
@@ -53,10 +56,14 @@ import ucar.nc2.dataset.NetcdfDataset;
  * @author Guy Griffiths
  */
 @SuppressWarnings("serial")
+@Controller
+@RequestMapping("/wms")
 public class ThreddsWmsServlet extends WmsServlet {
-  private Map<String, WmsCatalogue> catalogueCache = new HashMap<>();
+
+  private static final Map<String, WmsCatalogue> catalogueCache = new HashMap<>();
 
   @Override
+  @RequestMapping(value = "**", method = {RequestMethod.GET})
   protected void dispatchWmsRequest(String request, RequestParams params, HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse, WmsCatalogue catalogue) throws Exception {
     /*
@@ -77,9 +84,9 @@ public class ThreddsWmsServlet extends WmsServlet {
     if (catalogueCache.containsKey(tdsDataset.getPath())) {
       catalogue = catalogueCache.get(tdsDataset.getPath());
     } else {
-      NetcdfFile ncf = tdsDataset.getNetcdfFile(httpServletRequest, httpServletResponse, tdsDataset.getPath());
+      NetcdfFile ncf = TdsRequestedDataset.getNetcdfFile(httpServletRequest, httpServletResponse, tdsDataset.getPath());
       NetcdfDataset ncd;
-      if (tdsDataset.useNetcdfJavaBuilders()) {
+      if (TdsRequestedDataset.useNetcdfJavaBuilders()) {
         ncd = NetcdfDatasets.enhance(ncf, NetcdfDataset.getDefaultEnhanceMode(), null);
       } else {
         ncd = NetcdfDataset.wrap(ncf, NetcdfDataset.getDefaultEnhanceMode());
