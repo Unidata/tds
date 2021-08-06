@@ -1,13 +1,14 @@
 ---
 title: TDS Web Map Service (WMS)
-last_updated: 2020-08-24
+last_updated: 2021-08-06
 sidebar: dev_sidebar
 toc: false
 permalink: wms_ref.html
 ---
 
-The TDS WMS implementation uses the ncWMS software developed by Jon Blower ([Reading E-Science Center](http://www.met.reading.ac.uk/resc/home/){:target="_blank"} at the University of Reading).
+The TDS WMS implementation uses the [edal-java](https://reading-escience-centre.github.io/edal-java/){:target="_blank"} software developed by Jon Blower ([Reading E-Science Center](http://www.met.reading.ac.uk/resc/home/){:target="_blank"} at the University of Reading).
 It supports [OGC Web Map Service (WMS)](https://www.ogc.org/standards/wms){:target="_blank"} versions 1.3.0 and 1.1.1.
+Interacting with the WMS service included with the TDS should be the same as ncWMS (for more information, see the [Usage](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html){:target="_blank"} section of the [ncWMS User Guide](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/){:target="_blank"}.
 
 ## Which Files Can Be Served Through The WMS server?
 
@@ -34,26 +35,25 @@ The dataset to be served must reference this service (or a containing compound s
 </dataset>
 ~~~
 
-WMS clients may not be able to directly use the THREDDS catalogs to find the WMS services but the catalogs are useful for users to browse and for separate search services (e.g., [OGC catalog services](https://www.ogc.org/standards/cat){:target="_blank"}).
+WMS clients may not be able to directly use the THREDDS catalogs to find the WMS services, but the catalogs are useful for users to browse and for separate search services (e.g., [OGC catalog services](https://www.ogc.org/standards/cat){:target="_blank"}).
 
 ## WMS Configuration
 
-Additional WMS configuration options can be set in the `threddsConfig.xml` file. 
-
+Additional server level WMS configuration options can be set in the `threddsConfig.xml` file (see the [WMS Service](../adminguide/tds_config_ref.html) section of the TDS Configuration File Reference documentation). 
 Further WMS configuration properties are set in the wmsConfig.xml file.
 These properties are mainly related with styling of WMS images.
-Similar to the `threddsConfig.xml file`, the WMS configuration file (wmsConfig.xml) is found in the `$tds.content.root.path{}/content/thredds` directory.
-A detailed description of the wmsConfig.xml file can be found at the MyOcean "Detailed WMS Configuration" page.
+Similar to the `threddsConfig.xml file`, the WMS configuration file (wmsConfig.xml) is found in the `${tds.content.root.path}/thredds` directory.
+A detailed description of the wmsConfig.xml file can be on the [Customizing WMS](customizing_wms.html) reference page.
 
-If you are installing a new TDS, you should find a default `wmsConfig.xml` file (along with other configuration files) in your content`/thredds` directory after you first deploy the TDS.
-If you are upgrading from a TDS version before version `4.2.20100615.*`, you will have to copy the default file from `${tomcat_home}/webapps/thredds/WEB-INF/altContent/startup/wmsConfig.xml`.
+If you are installing a new TDS, you should find a default `wmsConfig.xml` file (along with other configuration files) in the `${tds.content.root.path}/thredds` directory after you first deploy the TDS.
+If a copy of the file is missing in the expected location, you can obtain a fresh copy from `${tomcat_home}/webapps/thredds/WEB-INF/altContent/startup/wmsConfig.xml`.
 
 ## Change to CRS List in WMS GetCapabilities Documents
 
 The number of CRS listed in the WMS GetCapabilities documents has been reduced between TDS 4.1 and 4.2. 
 
 {%include note.html content="
-For more information, view the FAQ entry [What happened to the long list of CRSs in my WMS GetCapabilities documents?](tds_faq.html#what-happened-to-the-long-list-of-crss-in-my-wms-getcapabilities-documents).
+For more information, view the FAQ entry [What happened to the long list of CRSs in my WMS GetCapabilities documents?](../adminguide/troubleshooting_faqs.html#what-happened-to-the-long-list-of-crss-in-my-wms-getcapabilities-documents).
 " %}
 
 ## Add a JVM Option to Avoid an X Server Bug
@@ -79,7 +79,7 @@ What the option means:
 
 `-Djava.awt.headless=true` sets the value of the `java.awt.headless` system property to `true`.
 Setting this system property to true prevent graphics rendering code from assuming that a graphics console exists.
-More on using the headless mode in Java SE here.
+More information about using the headless mode in Java SE can be found on the Oracle [website](https://www.oracle.com/technical-resources/articles/javase/headless.html){:target="_blank"}.
 
 ## Add a JVM Option to Avoid `java.util.prefs` Problem Storing System Preferences
 
@@ -88,7 +88,7 @@ This problem can be avoided by setting the `java.util.prefs.systemRoot` system p
 The given directory must exist and must contain a directory named ".systemPrefs" which must be writable by the user under which Tomcat is run.
 
 ~~~bash
-JAVA_OPTS="-Xmx1024m -Xms256m -server -Djava.util.prefs.systemRoot=$CATALINA_HOME/content/thredds/javaUtilPrefs"
+JAVA_OPTS="-Xmx1024m -Xms256m -server -Djava.util.prefs.systemRoot=${tds.content.root.path}/thredds/javaUtilPrefs"
 export JAVA_OPT
 ~~~
 
@@ -96,7 +96,7 @@ What the option means:
 
 `-Djava.util.prefs.systemRoot=<directory>` sets the value of the `java.util.prefs.systemRoot` system property to the given directory path.
 The `java.util.prefs` code will use the given directory to persist the system (as opposed to user) preferences.
-More information on the issue can be found on the TDS FAQ page.
+More information on the issue can be found on the [TDS FAQ page](../adminguide/troubleshooting_faqs.html#im-seeing-the-error-inconsistent-array-length-read-538976288--1668244581-when-i-open-the-dataset-in-the-idv-why).
 
 ## Serving Remote Datasets
 
@@ -115,7 +115,7 @@ A slight extension of the WMS Dataset URL format allows the TDS to serve remote 
 The dataset is identified by adding the parameter dataset whose value is a URL:
 
 ~~~
-http://servername:8080/thredds/wms?dataset=datasetURL
+https://servername:8080/thredds/wms?dataset=datasetURL
 ~~~
 
 The URL must be a dataset readable by the NetCDF-Java library, typically an OPeNDAP dataset on another server.
@@ -123,11 +123,11 @@ It must have gridded data with identifiable coordinate systems (see above).
 For example, an OPeNDAP URL might be
 
 ~~~
-http://las.pfeg.noaa.gov/cgi-bin/nph-dods/data/oceanwatch/nrt/gac/AG14day.nc
+https://las.pfeg.noaa.gov/cgi-bin/nph-dods/data/oceanwatch/nrt/gac/AG14day.nc
 ~~~
 
 This can be served remotely as a WMS dataset with this URL:
 
 ~~~
-http://servername:8080/thredds/wms?dataset=http://las.pfeg.noaa.gov/cgi-bin/nph-dods/data/oceanwatch/nrt/gac/AG14day.nc
+https://servername:8080/thredds/wms?dataset=https://las.pfeg.noaa.gov/cgi-bin/nph-dods/data/oceanwatch/nrt/gac/AG14day.nc
 ~~~
