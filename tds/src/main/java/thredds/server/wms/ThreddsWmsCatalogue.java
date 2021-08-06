@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2015 The University of Reading
  * All rights reserved.
  *
@@ -29,10 +29,11 @@
 package thredds.server.wms;
 
 import org.joda.time.DateTime;
+import thredds.server.config.TdsServerInfoBean;
+import thredds.server.config.WmsConfigBean;
 import uk.ac.rdg.resc.edal.dataset.DataSource;
 import uk.ac.rdg.resc.edal.dataset.Dataset;
 import uk.ac.rdg.resc.edal.dataset.DiscreteLayeredDataset;
-import uk.ac.rdg.resc.edal.domain.Extent;
 import uk.ac.rdg.resc.edal.domain.MapDomain;
 import uk.ac.rdg.resc.edal.exceptions.EdalException;
 import uk.ac.rdg.resc.edal.feature.DiscreteFeature;
@@ -40,7 +41,6 @@ import uk.ac.rdg.resc.edal.graphics.exceptions.EdalLayerNotFoundException;
 import uk.ac.rdg.resc.edal.graphics.utils.EnhancedVariableMetadata;
 import uk.ac.rdg.resc.edal.graphics.utils.LayerNameMapper;
 import uk.ac.rdg.resc.edal.graphics.utils.PlottingDomainParams;
-import uk.ac.rdg.resc.edal.graphics.utils.PlottingStyleParameters;
 import uk.ac.rdg.resc.edal.graphics.utils.SldTemplateStyleCatalogue;
 import uk.ac.rdg.resc.edal.graphics.utils.StyleCatalogue;
 import uk.ac.rdg.resc.edal.metadata.DiscreteLayeredVariableMetadata;
@@ -49,11 +49,9 @@ import uk.ac.rdg.resc.edal.util.CollectionUtils;
 import uk.ac.rdg.resc.edal.wms.WmsCatalogue;
 import uk.ac.rdg.resc.edal.wms.util.ContactInfo;
 import uk.ac.rdg.resc.edal.wms.util.ServerInfo;
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+
 import ucar.nc2.Attribute;
 import ucar.nc2.dataset.NetcdfDataset;
 
@@ -102,7 +100,7 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
   /*
    * The Dataset associated with this catalogue
    */
-  private DiscreteLayeredDataset<? extends DataSource, ? extends DiscreteLayeredVariableMetadata> dataset;
+  private final DiscreteLayeredDataset<? extends DataSource, ? extends DiscreteLayeredVariableMetadata> dataset;
 
   /*
    * A StyleCatalogue allows us to support different styles for different
@@ -111,10 +109,16 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
    * Currently EDAL/ncWMS only have one supported type of StyleCatalogue
    */
   private static final StyleCatalogue styleCatalogue = SldTemplateStyleCatalogue.getStyleCatalogue();
+  private static TdsServerInfoBean serverInfo;
+  private static WmsConfigBean wmsConfig;
 
-  private String datasetTitle;
+  private final String datasetTitle;
+  private final String tdsDatasetPath;
 
-  public ThreddsWmsCatalogue(NetcdfDataset ncd, String id) throws IOException, EdalException {
+  // set at startup
+  private static final boolean downloadableDefault = true;
+
+  public ThreddsWmsCatalogue(NetcdfDataset ncd, String tdsDatasetPath) throws IOException, EdalException {
     // in the TDS, we already have a NetcdfFile object, so let's use it to create
     // the edal-java related dataset. To do so, we use our own TdsWmsDatasetFactory, which
     // overrides the getNetcdfDatasetFromLocation method from CdmGridDatasetFactory to take
@@ -124,16 +128,23 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
 
     // set dataset title
     Attribute datasetTitleAttr;
-    datasetTitle = ncd.getTitle();
-    if (datasetTitle == null) {
+    String possibleDatasetTitle = ncd.getTitle();
+    if (possibleDatasetTitle == null) {
       datasetTitleAttr = ncd.findGlobalAttributeIgnoreCase("title");
       if (datasetTitleAttr != null) {
-        datasetTitle = datasetTitleAttr.getStringValue();
+        possibleDatasetTitle = datasetTitleAttr.getStringValue();
       }
     }
 
+    datasetTitle = possibleDatasetTitle != null ? possibleDatasetTitle : "No dataset title found.";
+
     String location = ncd.getLocation();
-    dataset = datasetFactory.createDataset(id, location);
+    dataset = datasetFactory.createDataset(tdsDatasetPath, location);
+    this.tdsDatasetPath = tdsDatasetPath;
+  }
+
+  public String getTdsDatasetPath() {
+    return tdsDatasetPath;
   }
 
   @Override
@@ -203,7 +214,7 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
    * attribute "title" (not case-sensitive)
    *
    * @param layerName name of the layer
-   * @return
+   * @return title of the dataset
    */
   @Override
   public String getDatasetTitle(String layerName) {
@@ -227,7 +238,7 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
      * GetVerticalProfile/GetTimeseries requests with the format as
      * "text/csv"
      */
-    return false;
+    return downloadableDefault;
   }
 
   @Override
@@ -257,26 +268,33 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
     return new ContactInfo() {
       @Override
       public String getTelephone() {
-        return "x5217";
+        return serverInfo.getContactPhone();
       }
 
       @Override
       public String getOrganisation() {
-        return "ReSC";
+        return serverInfo.getContactOrganization();
       }
 
       @Override
       public String getName() {
-        return "Guy";
+        return serverInfo.getContactName();
       }
 
       @Override
       public String getEmail() {
-        return "guy@reading";
+        return serverInfo.getContactEmail();
       }
     };
   }
 
+  public static void setTdsServerInfo(TdsServerInfoBean info) {
+    serverInfo = info;
+  }
+
+  public static void setWmsConfig(WmsConfigBean config) {
+    wmsConfig = config;
+  }
 
   public ServerInfo getServerInfo() {
     /*
@@ -285,7 +303,7 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
     return new ServerInfo() {
       @Override
       public String getName() {
-        return "THREDDS server";
+        return serverInfo.getName();
       }
 
       @Override
@@ -300,22 +318,30 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
 
       @Override
       public int getMaxImageWidth() {
-        return 1000;
+        return wmsConfig.getMaxImageWidth();
       }
 
       @Override
       public int getMaxImageHeight() {
-        return 1000;
+        return wmsConfig.getMaxImageHeight();
       }
 
       @Override
       public List<String> getKeywords() {
-        return new ArrayList<>();
+        String tdsKeywords = serverInfo.getKeywords();
+        List<String> wmsKeywords = new ArrayList<>();
+        if (tdsKeywords != null) {
+          String[] keywords = tdsKeywords.split(",");
+          if (keywords.length > 0) {
+            wmsKeywords = Arrays.asList(keywords);
+          }
+        }
+        return wmsKeywords;
       }
 
       @Override
       public String getAbstract() {
-        return "This is a THREDDS data server";
+        return serverInfo.getSummary();
       }
 
       @Override
@@ -394,99 +420,6 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
      * The supplied VariableMetadata can be used to find out more about the
      * variable being plotted.
      */
-    return new EnhancedVariableMetadata() {
-
-      /**
-       * @return The ID of the variable this {@link EnhancedVariableMetadata} is
-       *         associated with
-       */
-      @Override
-      public String getId() {
-        return metadata.getId();
-      }
-
-      /**
-       * @return The title of this layer to be displayed in the menu and the
-       *         Capabilities document
-       */
-      @Override
-      public String getTitle() {
-        /*
-         * Should perhaps be more meaningful/configurable?
-         */
-        return metadata.getId();
-      }
-
-      /**
-       * @return A brief description of this layer to be displayed in the
-       *         Capabilities document
-       */
-      @Override
-      public String getDescription() {
-        return null;
-      }
-
-      /**
-       * @return Copyright information about this layer to be displayed be clients
-       */
-      @Override
-      public String getCopyright() {
-        return null;
-      }
-
-      /**
-       * @return More information about this layer to be displayed be clients
-       */
-      @Override
-      public String getMoreInfo() {
-        return null;
-      }
-
-      /**
-       * @return The default plot settings for this variable - this may not return
-       *         <code>null</code>, but any of the defined methods within the
-       *         returned {@link PlottingStyleParameters} object may do.
-       */
-      @Override
-      public PlottingStyleParameters getDefaultPlottingParameters() {
-        List<Extent<Float>> scaleRanges = null;
-        String palette = null;
-        Color aboveMaxColour = null;
-        Color belowMinColour = null;
-        Color noDataColour = null;
-        Boolean logScaling = false;
-        Integer numColourBands = null;
-        Float opacity = 1.0f;
-
-        return new PlottingStyleParameters(scaleRanges, palette, aboveMaxColour, belowMinColour, noDataColour,
-            logScaling, numColourBands, opacity);
-
-      }
-
-      /**
-       * @return Whether or not this layer can be queried with GetFeatureInfo requests
-       */
-      @Override
-      public boolean isQueryable() {
-        return false;
-      };
-
-      /**
-       * @return Whether or not this layer can be downloaded in CSV/CoverageJSON format
-       */
-      @Override
-      public boolean isDownloadable() {
-        return false;
-      };
-
-      /**
-       * @return Whether this layer is disabled
-       */
-      @Override
-      public boolean isDisabled() {
-        return false;
-      };
-
-    };
+    return new TdsEnhancedVariableMetadata(this, metadata);
   }
 }

@@ -170,6 +170,11 @@
       <appender-ref ref="threddsServlet"/>
     </logger>
 
+    <!-- log issues related to loading custom color palettes -->
+    <logger name="uk.ac.rdg.resc.edal.graphics.utils.ColourPalette" level="warn" additivity="false">
+      <appender-ref ref="serverStartup"/>
+    </logger>
+
     <!-- spring -->
 
     <logger name="org.springframework.http" level="info" additivity="false">

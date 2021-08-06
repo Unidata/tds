@@ -170,7 +170,7 @@ If a request is forwarded to another internal service, a _1000 (Forwarded)_ or _
 The error _Inconsistent array length read_ only tells you that there was an error on the server in the middle of responding to an OPeNDAP request.
 You then must look in the `threddsServlet.log` and find the error to know why.
 
-###: Why am I getting lots of `java.util.prefs.BackingStoreException warning` messages?
+### Why am I getting lots of `java.util.prefs.BackingStoreException warning` messages?
 
 If you allow and use the TDS WMS service, you may be seeing warning messages in your Tomcat `catalina.out` log file that look something like this:
 
