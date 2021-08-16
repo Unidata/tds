@@ -37,8 +37,6 @@ class TdsConfigMapper {
   @Autowired
   private WmsConfigBean wmsConfig;
   @Autowired
-  private CorsConfigBean corsConfig;
-  @Autowired
   private TdsUpdateConfigBean tdsUpdateConfig;
 
   private static final Logger startupLog = org.slf4j.LoggerFactory.getLogger("serverStartup");
@@ -260,45 +258,6 @@ class TdsConfigMapper {
     }
   }
 
-  enum CorsConfigMappings {
-    CORS_ENABLED("CORS.enabled", null, "false"), CORS_MAXIMUM_AGE("CORS.maxAge", null, "1728000"), CORS_ALLOWED_METHODS(
-        "CORS.allowedMethods", null, "GET"), CORS_ALLOWED_HEADERS("CORS.allowedHeaders", null,
-            "Authorization"), CORS_ALLOWED_ORIGIN("CORS.allowedOrigin", null, "*");
-
-    private String key;
-    private String alternateKey;
-    private String defaultValue;
-
-    CorsConfigMappings(String key, String alternateKey, String defaultValue) {
-      if (key == null)
-        throw new IllegalArgumentException("The key may not be null.");
-
-      this.key = key;
-      this.alternateKey = alternateKey;
-      this.defaultValue = defaultValue;
-    }
-
-    String getDefaultValue() {
-      return this.defaultValue;
-    }
-
-    String getValueFromThreddsConfig() {
-      return TdsConfigMapper.getValueFromThreddsConfig(this.key, this.alternateKey, this.defaultValue);
-    }
-
-    static void load(CorsConfigBean corsConfig) {
-      corsConfig.setEnabled(Boolean.parseBoolean(CORS_ENABLED.getValueFromThreddsConfig()));
-      try {
-        corsConfig.setMaxAge(Integer.parseInt(CORS_MAXIMUM_AGE.getValueFromThreddsConfig()));
-      } catch (NumberFormatException e) {
-        corsConfig.setMaxAge(Integer.parseInt(CORS_MAXIMUM_AGE.getDefaultValue()));
-      }
-      corsConfig.setAllowedHeaders(CORS_ALLOWED_HEADERS.getValueFromThreddsConfig());
-      corsConfig.setAllowedMethods(CORS_ALLOWED_METHODS.getValueFromThreddsConfig());
-      corsConfig.setAllowedOrigin(CORS_ALLOWED_ORIGIN.getValueFromThreddsConfig());
-    }
-  }
-
   enum TdsUpdateConfigMappings {
     TDSUPDAATE_LOGVERSIONINFO("TdsUpdateConfig.logVersionInfo", null, "true");
 
@@ -337,7 +296,6 @@ class TdsConfigMapper {
     ServerInfoMappings.load(tdsServerInfo);
     HtmlConfigMappings.load(htmlConfig, tdsContext, tdsServerInfo);
     WmsConfigMappings.load(wmsConfig, tdsContext);
-    CorsConfigMappings.load(corsConfig);
     TdsUpdateConfigMappings.load(tdsUpdateConfig);
   }
 

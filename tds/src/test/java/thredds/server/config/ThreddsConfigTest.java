@@ -41,11 +41,6 @@ public class ThreddsConfigTest {
     assertEquals(52428800, ThreddsConfig.getBytes("NetcdfSubsetService.maxFileDownloadSize", -1L));
   }
 
-  @Test
-  public void testHasElement() {
-    assertFalse(ThreddsConfig.hasElement("CORS"));
-  }
-
   // Tests the "cachePathPolicy" element, added in response to this message on the thredds mailing list:
   // https://www.unidata.ucar.edu/mailing_lists/archives/thredds/2016/msg00001.html
   @Test
