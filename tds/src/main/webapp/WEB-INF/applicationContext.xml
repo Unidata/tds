@@ -30,26 +30,21 @@
                 <security:filter-chain pattern="/dap4/**" filters="
            httpHeadFilter,
            requestQueryFilterAllowAngleBrackets,
-           requestCORSFilter,
            requestBracketingLogMessageFilter"/>
                 <security:filter-chain pattern="/dodsC/**" filters="
            httpHeadFilter,
            requestQueryFilterAllowAngleBrackets,
-           requestCORSFilter,
            requestBracketingLogMessageFilter"/>
                 <security:filter-chain pattern="/wms/**" filters="
            httpHeadFilter,
            requestQueryFilterAllowAngleBrackets,
-           requestCORSFilter,
            requestBracketingLogMessageFilter"/>
                 <security:filter-chain pattern="/fileServer/**" filters="
            requestQueryFilter,
-           requestCORSFilter,
            requestBracketingLogMessageFilter"/>
                 <security:filter-chain pattern="/**" filters="
            httpHeadFilter,
            requestQueryFilter,
-           requestCORSFilter,
            requestBracketingLogMessageFilter"/>
             </list>
         </constructor-arg>
@@ -61,7 +56,6 @@
     <bean id="requestQueryFilterAllowAngleBrackets" class="thredds.servlet.filter.RequestQueryFilter">
         <property name="allowAngleBrackets" value="true"/>
     </bean>
-    <bean id="requestCORSFilter" class="thredds.servlet.filter.RequestCORSFilter"/>
     <bean id="requestBracketingLogMessageFilter" class="thredds.servlet.filter.RequestBracketingLogMessageFilter"/>
 
     <!-- Properties -->
@@ -97,7 +91,6 @@
         <property name="webappLogoAlt" value="${tds.logo.alt}"/>
         <property name="installUrl" value="${tds.install.url}"/>
     </bean>
-    <bean id="corsConfig" class="thredds.server.config.CorsConfigBean"/>
     <bean id="tdsUpdateConfig" class="thredds.server.config.TdsUpdateConfigBean"/>
     <bean id="wmsConfig" class="thredds.server.config.WmsConfigBean"/>
 
