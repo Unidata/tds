@@ -361,7 +361,7 @@ The various cache directory locations are all under `/{tds.content.root.path}/th
 
 | cache | location | description |
 | AggregationCache.dir | `cache/agg/` | for joinExisting aggregations only: write XML files here. |
-| CdmRemote.dir | `cache/cdmr/` | temporary files for cdmremote and cdmrFeature |
+| CdmRemote.dir | `cache/cdmr/` | temporary files for cdmremote |
 | CdmValidatorService.dir | `cache/cdmValidate/` | temporary files for cdmvalidator (seperate war) |
 | DiskCache.dir | `cache/cdm/` | only used when non-writeable data directory or `alwaysUse` = true; puts CDM indexes, decompressed files, etc. into this directory |
 | GribIndex.dir | `cache/grib/` | put GRIB Index files (gbx9, ncx4) in this directory |

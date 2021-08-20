@@ -8,8 +8,6 @@ permalink: ncss_grid.html
 
 ## Subsetting Parameters For NCSS GRID
 
-These parameters are identical to the `CdmrFeature` service:
-
 |----------------|----------|-------------------------------|-------------|---------|
 | Parameter Name | Required | Description & Possible Values | Constraints | Default |
 |----------------|----------|-------------------------------|-------------|---------|

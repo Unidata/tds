@@ -36,48 +36,23 @@ public class TestDataFactory {
   public static Collection<Object[]> getTestParameters() {
     return Arrays.asList(new Object[][] {
         /// GRIB feature collections
-        {TestOnLocalServer.withProtocolAndPath("thredds:http",
-            "catalog/grib.v5/NDFD/CONUS_5km/catalog.xml#grib.v5/NDFD/CONUS_5km/TwoD"), FeatureType.FMRC,
-            ServiceType.CdmrFeature},
-        {TestOnLocalServer.withProtocolAndPath("thredds:http",
-            "catalog/gribCollection.v5/GFS_CONUS_80km/catalog.xml#gribCollection.v5/GFS_CONUS_80km/TwoD"),
-            FeatureType.FMRC, ServiceType.CdmrFeature},
-        {TestOnLocalServer.withProtocolAndPath("thredds:http",
-            "catalog/gribCollection.v5/GFS_CONUS_80km/catalog.xml#gribCollection.v5/GFS_CONUS_80km/Best"),
-            FeatureType.GRID, ServiceType.CdmrFeature},
-        {TestOnLocalServer.withProtocolAndPath("thredds:resolve:http",
-            "catalog/gribCollection.v5/GFS_CONUS_80km/latest.xml"), FeatureType.GRID, ServiceType.CdmrFeature},
         {TestOnLocalServer.withProtocolAndPath("thredds:resolve:http", "catalog/grib/NDFD/CONUS_5km/latest.xml"),
             FeatureType.GRID, ServiceType.CdmRemote},
-        // {"thredds:resolve:http://rdavm.ucar.edu:8080/thredds/catalog/aggregations/g/ds083.2/1/latest.xml",
-        // FeatureType.GRID, ServiceType.CdmrFeature},
-        {TestOnLocalServer.withProtocolAndPath("thredds:http",
-            "catalog/gribCollection.v5/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1/catalog.xml#gribCollection.v5/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1"),
-            FeatureType.GRID, ServiceType.CdmrFeature},
-        {TestOnLocalServer.withProtocolAndPath("thredds:http",
-            "catalog/rdaTest/ds094.2_dt/catalog.xml#rdaTest/ds094.2_dt/GaussLatLon_880X1760-0p00N-180p00E"),
-            FeatureType.GRID, ServiceType.CdmrFeature},
-
         // dataset or datasetScan
         {TestOnLocalServer.withProtocolAndPath("thredds:http", "catalog/catalog.xml#testDataset"), FeatureType.GRID,
             ServiceType.OPENDAP},
         {TestOnLocalServer.withProtocolAndPath("thredds:http",
             "catalog/testEnhanced/catalog.xml#testEnhanced/2004050412_eta_211.nc"), FeatureType.GRID,
             ServiceType.OPENDAP},
-
         // test that cdmRemote takes precedence over OpenDAP
         // {TestOnLocalServer.withProtocolAndPath("thredds:http",
         // "catalog/hioos/model/wav/swan/oahu/catalog.xml#hioos/model/wav/swan/oahu/SWAN_Oahu_Regional_Wave_Model_(500m)_fmrc.ncd"),
         // FeatureType.GRID, ServiceType.CdmRemote},
-
-        /// point data
+        //
+        // point data
         {TestOnLocalServer.withProtocolAndPath("thredds:http",
             "catalog/testStationScan/catalog.xml#testStationScan/Surface_METAR_20130824_0000.nc"), FeatureType.STATION,
             ServiceType.CdmRemote},
-        // LOOK not ready yet
-        // {TestOnLocalServer.withProtocolAndPath("thredds:http",
-        // "catalog/testStationFeatureCollection/catalog.xml#testStationFeatureCollection/Metar_Station_Data_fc.cdmr"),
-        // FeatureType.STATION, ServiceType.CdmrFeature},
         {TestOnLocalServer.withProtocolAndPath("thredds:resolve:http",
             "catalog/testStationFeatureCollection/files/latest.xml"), FeatureType.STATION, ServiceType.CdmRemote},
         {TestOnLocalServer.withProtocolAndPath("thredds:http",

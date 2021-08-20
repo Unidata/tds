@@ -50,15 +50,6 @@ Minor syntax changes:
 * For station datasets, `subset=stns` or `subset=bb` is not needed.
   Just define `stns` or a bounding box.
 
-
-### CdmrFeature Service
-
-A new TDS service has been added for remote access to CDM Feature Datasets.
-
-* Initial implementation for Coverage (Grid, FMRC, Swath) datasets, based on the new Coverage implementation in `ucar.nc2.ft2.coverage`.
-* Target is a python client that has full access to all of the coordinate information and coordinate based subsetting capabilities of the Java client.
-* Compatible / integrated with the Netcdf Subset Service (NCSS), using the same web API.
-
 ### `ThreddsConfig.xml`
 
 You no longer turn catalog caching on or off, but you can control how many catalogs are cached (see

@@ -530,23 +530,18 @@ class DatasetContext {
           case DODS:
             urlString = urlString + ".html";
             break;
-
           case DAP4:
             urlString = urlString + ".dmr.xml";
             break;
-
           case WCS:
             queryString = "service=WCS&version=1.0.0&request=GetCapabilities";
             break;
-
           case WMS:
             queryString = "service=WMS&version=1.3.0&request=GetCapabilities";
             break;
-
           case WFS:
             queryString = "service=WFS&version=2.0.0&request=GetCapabilities";
             break;
-
           case NCML:
           case UDDC:
           case ISO:
@@ -558,16 +553,11 @@ class DatasetContext {
               queryString = "catalog=" + catalogUrl + "&dataset=" + datasetId;
             }
             break;
-
           case NetcdfSubset:
             urlString = urlString + "/dataset.html";
             break;
-
           case CdmRemote:
             queryString = "req=cdl";
-            break;
-          case CdmrFeature:
-            queryString = "req=form";
         }
       }
       Map<String, String> accessMap = new HashMap<>();

@@ -56,7 +56,7 @@ where:
 
 * `datasetTypes`: list the dataset types that are exposed in the TDS catalog.
    The possible values are:
-  * `cdmrFeature`: creates a CdmrFeature dataset and service.
+  * `cdmrFeature`: creates a CdmrFeature dataset.
      All of the files in the collection are treated as part of the same dataset.
   * `Files`: each component file of the collection is available separately, as in a `datasetScan`. 
     A `latest` file will be added.

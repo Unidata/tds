@@ -29,7 +29,6 @@ We ship a simple test catalog:
     <service name="ncssGrid" serviceType="NetcdfSubset" base="/thredds/ncss/grid/"/>
     <service name="ncssPoint" serviceType="NetcdfSubset" base="/thredds/ncss/point/"/>
     <service name="cdmremote" serviceType="CdmRemote" base="/thredds/cdmremote/"/>
-    <service name="cdmrFeature" serviceType="CdmrFeature" base="/thredds/cdmrfeature/grid/"/>
     <service name="iso" serviceType="ISO" base="/thredds/iso/"/>
     <service name="ncml" serviceType="NCML" base="/thredds/ncml/"/>
     <service name="uddc" serviceType="UDDC" base="/thredds/uddc/"/>
