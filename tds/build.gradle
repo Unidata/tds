@@ -226,6 +226,8 @@ task compileGwt (dependsOn: classes, type: JavaExec) {
 war {
   dependsOn compileGwt
   from gwtDir
+  destinationDirectory = new File(rootProject.getBuildDir(), "downloads")
+  archiveFileName = "thredds##${project.getVersion()}.war"
 }
 
 jar {
@@ -252,6 +254,8 @@ configurations.all {
 
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
 import org.akhikhl.gretty.AppAfterIntegrationTestTask
+
+import java.nio.file.Paths
 
 gretty {
   httpPort = 8081

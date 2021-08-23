@@ -1,3 +1,5 @@
+import java.nio.file.Paths
+
 ext.title = 'THREDDS Data Manager (TDM)'
 
 apply from: "$rootDir/gradle/any/dependencies.gradle"
@@ -43,13 +45,8 @@ shadowJar {
   append 'META-INF/spring.handlers'
   append 'META-INF/spring.schemas'
   append 'META-INF/spring.tooling'
+  destinationDirectory = Paths.get(rootDir.absolutePath, "build", "downloads").toFile()
+  archiveFileName = "tdm-${project.getVersion()}.jar"
 }
 
-publishing {
-  publications {
-    shadow(MavenPublication) { publication ->
-      artifactId = 'tdmFat'
-      project.shadow.component(publication)
-    }
-  }
-}
+assemble.dependsOn shadowJar
