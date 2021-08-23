@@ -372,18 +372,6 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     // LOOK just create the diskCache here and send it in
     ncssDiskCache.init();
 
-    // LOOK is this used ??
-    // 4.3.16
-    /*
-     * dir = ThreddsConfig.get("CdmRemote.dir", new File(tdsContext.getContentDirectory().getPath(),
-     * "/cache/cdmr/").getPath());
-     * scourSecs = ThreddsConfig.getSeconds("CdmRemote.scour", 30 * 60);
-     * maxAgeSecs = ThreddsConfig.getSeconds("CdmRemote.maxAge", 60 * 60);
-     * DiskCache2 cdmrCache = new DiskCache2(dir, false, maxAgeSecs / 60, scourSecs / 60);
-     * CdmrFeatureController.setDiskCache(cdmrCache);
-     * startupLog.info("TdsInit: CdmRemote= " + dir + " scour = " + scourSecs + " maxAgeSecs = " + maxAgeSecs);
-     */
-
     String fcCache = ThreddsConfig.get("FeatureCollectionCache.dir", null);
     if (fcCache == null)
       fcCache = ThreddsConfig.get("FeatureCollection.dir", null);

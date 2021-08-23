@@ -8,8 +8,6 @@
       <map>
         <entry key="catalogRemote" value="false"/>
         <entry key="cdmRemote" value="true"/>
-        <entry key="cdmrFeatureGrid" value="true"/>
-        <!-- entry key="cdmrFeaturePoint" value="true"/ LOOK -->
         <entry key="dap4" value="true"/>
         <entry key="httpServer" value="true"/>
         <entry key="resolver" value="true"/>
@@ -29,7 +27,6 @@
       <list>
         <value>opendap</value>
         <value>cdmRemote</value>
-        <value>cdmrFeatureGrid</value>
         <value>httpServer</value>
         <value>jupyterNotebook</value>
         <value>netcdfSubsetGrid</value>
@@ -43,7 +40,6 @@
 
     <property name="pointCollectionServices">
       <list>
-        <value>cdmrFeaturePoint</value>
         <value>netcdfSubsetPoint</value>
       </list>
     </property>

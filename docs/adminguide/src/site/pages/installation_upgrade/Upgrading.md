@@ -55,9 +55,8 @@ In addition to the step outlined in the [recommended upgrade process](#recommend
 1. Modify your [JVM settings](jvm_settings.html) to be compatible with TDS 5, particularly the setting for specifying the location of the [content directory](tds_content_directory.html).
 
 2. Review and update your catalogs to reflect the changes made to:
-   
-   * The TDS data services if you use the [Netcdf Subset Service (NCSS)](release_notes.html#netcdf-subset-service-ncss), 
-[`CdmrFeature` Service](release_notes.html#cdmrfeature-service), or if you use [catalog caching](release_notes.html#catalog-caching).
+
+   * The TDS data services if you use the [Netcdf Subset Service (NCSS)](release_notes.html#netcdf-subset-service-ncss), or if you use [catalog caching](release_notes.html#catalog-caching).
    * The default behavior of [standard services](release_notes.html#standard-services) in TDS 5.
    * The THREDDS [catalog schema](release_notes.html#catalog-schema-changes).
    * [Client](release_notes.html#client-catalogs) and [server configuration](release_notes.html#server-configuration-catalogs) catalog syntax.

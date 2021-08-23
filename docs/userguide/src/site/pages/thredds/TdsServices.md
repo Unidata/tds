@@ -13,7 +13,6 @@ permalink: services_ref.html
 The TDS has a set of **Standard Data Services** that are always available (unless explicitly disabled) and can be referenced from any configuration catalog:
 
 * cdmRemote
-* cdmrFeatureGrid
 * dap4
 * httpService
 * resolver
