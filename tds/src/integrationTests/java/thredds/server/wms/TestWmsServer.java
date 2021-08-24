@@ -43,6 +43,7 @@ public class TestWmsServer {
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.xmlwms);
     Reader in = new StringReader(new String(result, StandardCharsets.UTF_8));
     SAXBuilder sb = new SAXBuilder();
+    sb.setExpandEntities(false);
     Document doc = sb.build(in);
 
     XPathExpression<Element> xpath = XPathFactory.instance().compile("//wms:Capability/wms:Layer/wms:Layer/wms:Layer",

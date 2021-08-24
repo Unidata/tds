@@ -19,6 +19,7 @@ public class XmlUtil {
   public static Document getStringResponseAsDoc(MockHttpServletResponse response) throws JDOMException, IOException {
 
     SAXBuilder sb = new SAXBuilder();
+    sb.setExpandEntities(false);
     String strResponse = response.getContentAsString();
     return sb.build(new ByteArrayInputStream(strResponse.getBytes(response.getCharacterEncoding())));
   }

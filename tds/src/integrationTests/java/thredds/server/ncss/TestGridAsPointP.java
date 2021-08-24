@@ -115,6 +115,7 @@ public class TestGridAsPointP {
     logger.debug("xml={}", xml);
     Reader in = new StringReader(xml);
     SAXBuilder sb = new SAXBuilder();
+    sb.setExpandEntities(false);
     Document doc = sb.build(in);
 
     String xpathq = String.format("/stationFeatureCollection/stationFeature");

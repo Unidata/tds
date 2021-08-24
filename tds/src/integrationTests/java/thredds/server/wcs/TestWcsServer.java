@@ -80,6 +80,7 @@ public class TestWcsServer {
 
     Reader in = new StringReader(new String(result, StandardCharsets.UTF_8));
     SAXBuilder sb = new SAXBuilder();
+    sb.setExpandEntities(false);
     Document doc = sb.build(in);
 
     // XPathExpression<Element> xpath =
@@ -316,6 +317,7 @@ public class TestWcsServer {
     byte[] result = TestOnLocalServer.getContent(url + baloney + "&request=GetCapabilities", 200, ContentType.xml);
     Reader in = new StringReader(new String(result, StandardCharsets.UTF_8));
     SAXBuilder sb = new SAXBuilder();
+    sb.setExpandEntities(false);
     Document doc = sb.build(in);
 
     boolean isName = doc.getRootElement().getName().equals("WCS_Capabilities");
