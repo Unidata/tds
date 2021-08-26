@@ -100,8 +100,9 @@ public class WmsDetailedConfig {
   public static WmsDetailedConfig loadFromStream(InputStream in) {
     WmsDetailedConfig wmsConfig = new WmsDetailedConfig();
     try {
-      Document doc = new SAXBuilder().build(in);
-
+      SAXBuilder builder = new SAXBuilder();
+      builder.setExpandEntities(false);
+      Document doc = builder.build(in);
       // Load the global default settings
       XPathExpression<Element> defaultSettingsExpression = XPathFactory.instance().compile("/wmsConfig/global/defaults",
           Filters.element(), null, Namespace.NO_NAMESPACE);

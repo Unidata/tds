@@ -82,6 +82,7 @@ public class ConsistentDatesTest {
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.xml);
     Reader in = new StringReader(new String(result, StandardCharsets.UTF_8));
     SAXBuilder sb = new SAXBuilder();
+    sb.setExpandEntities(false);
     Document doc = sb.build(in);
 
     if (show) {
@@ -110,6 +111,7 @@ public class ConsistentDatesTest {
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.xml);
     Reader in = new StringReader(new String(result, StandardCharsets.UTF_8));
     SAXBuilder sb = new SAXBuilder();
+    sb.setExpandEntities(false);
     Document doc = sb.build(in);
 
     Namespace wcs = Namespace.getNamespace("wcs", doc.getRootElement().getNamespaceURI());
@@ -138,6 +140,7 @@ public class ConsistentDatesTest {
       System.out.printf("checkNCSSDates%n%s%n", results);
     Reader in = new StringReader(results);
     SAXBuilder sb = new SAXBuilder();
+    sb.setExpandEntities(false);
     Document doc = sb.build(in);
 
     XPathExpression<Element> xpath =
