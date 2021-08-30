@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package thredds.server.cdmr;
 
 import org.junit.Assert;
@@ -16,7 +17,10 @@ import thredds.server.catalog.TdsLocalCatalog;
 import ucar.ma2.DataType;
 import ucar.nc2.VariableSimpleIF;
 import ucar.nc2.constants.FeatureType;
-import ucar.nc2.ft2.coverage.*;
+import ucar.nc2.dataset.CoordinateAxis;
+import ucar.nc2.dt.GridCoordSystem;
+import ucar.nc2.dt.GridDataset;
+import ucar.nc2.dt.GridDatatype;
 import ucar.nc2.util.Misc;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.IOException;
@@ -48,25 +52,23 @@ public class TestCdmRemoteServer {
       }
       assert dataResult.featureDataset != null;
 
-      FeatureDatasetCoverage gds = (FeatureDatasetCoverage) dataResult.featureDataset;
+      GridDataset gds = (GridDataset) dataResult.featureDataset;
       String gridName = "Pressure_reduced_to_MSL";
       VariableSimpleIF vs = gds.getDataVariable(gridName);
       Assert.assertNotNull(gridName, vs);
 
-      Assert.assertEquals(1, gds.getCoverageCollections().size());
-      CoverageCollection cc = gds.getCoverageCollections().get(0);
-      Coverage grid = cc.findCoverage(gridName);
+      GridDatatype grid = gds.findGridByShortName(gridName);
       Assert.assertNotNull(gridName, grid);
 
-      CoverageCoordSys gcs = grid.getCoordSys();
+      GridCoordSystem gcs = grid.getCoordinateSystem();
       Assert.assertNotNull(gcs);
 
-      assert null == gcs.getZAxis();
+      assert null == gcs.getVerticalAxis();
 
-      CoverageCoordAxis time = gcs.getTimeAxis();
+      CoordinateAxis time = gcs.getTimeAxis();
       Assert.assertNotNull("time axis", time);
       double[] expect = new double[] {0., 6.0, 12.0, 18.0};
-      double[] have = (double[]) time.getCoordsAsArray().get1DJavaArray(DataType.DOUBLE);
+      double[] have = (double[]) time.read().get1DJavaArray(DataType.DOUBLE);
       Assert.assertArrayEquals(expect, have, Misc.defaultMaxRelativeDiffDouble);
     }
   }

@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package thredds.server.cdmr;
 
 import org.junit.Assert;
@@ -18,8 +19,9 @@ import ucar.nc2.VariableSimpleIF;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dt.GridCoordSystem;
+import ucar.nc2.dt.GridDataset;
+import ucar.nc2.dt.GridDatatype;
 import ucar.nc2.dt.grid.GeoGrid;
-import ucar.nc2.ft2.coverage.*;
 import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.IOException;
@@ -44,29 +46,27 @@ public class TestCdmRemoteServer2 {
         assert false;
       }
       Assert.assertNotNull(dataResult.featureDataset);
-      Assert.assertEquals(ucar.nc2.ft2.coverage.FeatureDatasetCoverage.class, dataResult.featureDataset.getClass());
+      Assert.assertEquals(ucar.nc2.dt.grid.GridDataset.class, dataResult.featureDataset.getClass());
 
-      FeatureDatasetCoverage gds = (FeatureDatasetCoverage) dataResult.featureDataset;
+      GridDataset gds = (GridDataset) dataResult.featureDataset;
       String gridName = "sst";
       VariableSimpleIF vs = gds.getDataVariable(gridName);
       Assert.assertNotNull(gridName, vs);
 
-      Assert.assertEquals(1, gds.getCoverageCollections().size());
-      CoverageCollection cc = gds.getCoverageCollections().get(0);
-      Coverage grid = cc.findCoverage(gridName);
+      GridDatatype grid = gds.findGridByShortName(gridName);
       Assert.assertNotNull(gridName, grid);
 
-      CoverageCoordSys gcs = grid.getCoordSys();
+      GridCoordSystem gcs = grid.getCoordinateSystem();
       Assert.assertNotNull(gcs);
-      assert null == gcs.getZAxis();
+      assert null == gcs.getVerticalAxis();
 
-      CoverageCoordAxis time = gcs.getTimeAxis();
+      CoordinateAxis time = gcs.getTimeAxis();
       Assert.assertNotNull("time axis", time);
-      Assert.assertEquals(12, time.getNcoords());
+      Assert.assertEquals(12, time.getSize());
 
       double[] expect = new double[] {366.0, 1096.485, 1826.97, 2557.455, 3287.94, 4018.425, 4748.91, 5479.395, 6209.88,
           6940.365, 7670.85, 8401.335};
-      Array data = time.getCoordsAsArray();
+      Array data = time.read();
       for (int i = 0; i < expect.length; i++)
         Assert2.assertNearlyEquals(expect[i], data.getDouble(i));
     }

@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package thredds.server.catalog;
 
 import org.junit.Assert;
@@ -10,7 +11,6 @@ import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.client.catalog.*;
-import ucar.nc2.units.DateRange;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -165,7 +165,7 @@ public class TestTdsDatasetScan {
     Assert.assertNotNull(orgServices);
     Assert.assertEquals(ServiceType.Compound, orgServices.getType());
     Assert.assertNotNull(orgServices.getNestedServices());
-    Assert.assertEquals(12, orgServices.getNestedServices().size()); // has 12 services
+    Assert.assertEquals(11, orgServices.getNestedServices().size()); // has 11 services
     boolean hasFileServer = false;
     for (Service sn : orgServices.getNestedServices())
       if (ServiceType.HTTPServer == sn.getType())
