@@ -12,7 +12,7 @@ You will need to define and pass the following options and parameters to the Jav
 
 1. tell the TDS where to store configuration files; and
 2. increase the amount of memory allocated to the JVM to enhance performance; and
-3. add additional settings to the JVM to enable more advanced services in the TDS (e.g, [WMS](wms_ref.html), etc).
+3. add additional settings to the JVM to enable more advanced services in the TDS (e.g, [WMS](adding_wms.html), etc).
 
 ### Utilize Tomcat `setenv.sh`
 
@@ -144,7 +144,7 @@ Unidata recommends setting the following JVM options to promote better performan
 
 ### JVM Options Needed For WMS Usage
 
-The [Web Map Service (WMS)](wms_ref.html) is one of the [data access services](services_ref.html#data-access-services) available in the TDS. 
+The [Web Map Service (WMS)](adding_wms.html) is one of the [data access services](services_ref.html#data-access-services) available in the TDS. 
 If you intend to use this service, you'll need to set the following options in the JVM.
 
 * **JVM headless mode**  
@@ -177,7 +177,7 @@ If you intend to use this service, you'll need to set the following options in t
 ~~~
    
 {% include info.html content="
-The [WMS Reference](wms_ref.html) contains more information about the TDS Web Map Service.
+The [WMS Reference](adding_wms.html) contains more information about the TDS Web Map Service.
 "%} 
 
 

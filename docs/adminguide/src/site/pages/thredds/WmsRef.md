@@ -1,9 +1,9 @@
 ---
 title: TDS Web Map Service (WMS)
 last_updated: 2021-08-06
-sidebar: dev_sidebar
+sidebar: admin_sidebar
 toc: false
-permalink: wms_ref.html
+permalink: adding_wms.html
 ---
 
 The TDS WMS implementation uses the [edal-java](https://reading-escience-centre.github.io/edal-java/){:target="_blank"} software developed by Jon Blower ([Reading E-Science Center](http://www.met.reading.ac.uk/resc/home/){:target="_blank"} at the University of Reading).
@@ -18,7 +18,17 @@ There should be one or more variables shown as a `GeoGrid`.
 
 ## Enabling And Using WMS
 
-The WMS service **is enabled by default** in the TDS. 
+The WMS service **is enabled by default** in the TDS.
+Additional `WMS` configuration options can be set in the `threddsConfig.xml` file.
+More details are available in the `WCS` section of the [threddsConfig.xml file](http://127.0.0.1:4005/tds_config_ref.html#wms-service) documentation.
+If you do not wish to use this service, it must be explicitly disabled in the `threddsConfig.xml` configuration file before it can be used.
+This is done by adding an `allow` element to the `WMS` element as follows:
+
+~~~xml
+<WMS>
+    <allow>false</allow>
+</WMS>
+~~~
 
 As long as the WMS service is enabled, datasets can be configured to have a WMS access method in the TDS catalog configuration files similar to how other services are configured.
 The service element's serviceType and base attribute values must be as follows:
@@ -131,3 +141,31 @@ This can be served remotely as a WMS dataset with this URL:
 ~~~
 https://servername:8080/thredds/wms?dataset=https://las.pfeg.noaa.gov/cgi-bin/nph-dods/data/oceanwatch/nrt/gac/AG14day.nc
 ~~~
+
+## Various `WMS` Clients
+
+* [GoogleEarth](https://www.google.com/earth/){:target="_blank"} (WMS) [free]
+* Godiva3 (WMS) [free - distributed with TDS]
+* [NASA WorldWind](https://worldwind.arc.nasa.gov){:target="_blank"} (WMS) [free]
+* [IDV](https://www.unidata.ucar.edu/software/idv/){:target="_blank"} (WMS) [free]
+* [ToolsUI](https://www.unidata.ucar.edu/downloads/netcdf-java/){:target="_blank"} (WMS) [free]
+* [OWSlib](http://geopython.github.io/OWSLib/){:target="_blank"} (WMS and WCS) [free]
+* [Map Express](https://www.cadcorp.com/products/desktop/cadcorp-sis-desktop-express/){:target="_blank"} (`WMS` and `WCS`) [commercial / free]
+* [IDL](https://www.harrisgeospatial.com/Software-Technology/IDL){:target="_blank"} (WMS) [commercial]
+* [gvSIG](http://www.gvsig.org/web/){:target="_blank"} (WMS and WCS) [free]
+
+#### Godiva3 `WMS` Client
+
+The Godiva3 `WMS` client is part of the `ncWMS` code base and as such is included in the TDS distribution.
+It is a web application written in JavaScript using the OpenLayers library.
+
+In the TDS, you can access the Godiva2 client from the `Viewers` section of all `WMS` accessible datasets.
+The Godiva3 User Guide is available from the [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#godiva3){:target="_blank"}.
+
+{% include image.html file="tds/tutorial/tds_configuration/Godiva2_screenshot.png" alt="Godiva2" caption="" %}
+
+<!-- 
+### OWSLib (python client) example:
+
+[tds-python-workshop `WMS` notebook](http://nbviewer.jupyter.org/github/Unidata/unidata-python-workshop/blob/master/notebooks/wms_sample.ipynb){:target="_blank"}
+-->

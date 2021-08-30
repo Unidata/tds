@@ -158,7 +158,7 @@ The TDS provides a number of different *Data Access Services*, including:
    The [OGC Web Map Service (WMS)](https://www.opengeospatial.org/standards/wms){:target="_blank"}  supports access to geo-registered map images from geoscience datasets.
 
    {% include note.html content="
-   More setup, configuration, and implementation details for the TDS OGC WMS implementation are available in the [TDS WMS Reference](wms_ref.html).
+   More setup, configuration, and implementation details for the TDS OGC WMS implementation are available in the [TDS WMS Reference](adding_wms.html).
    " %}
    
         

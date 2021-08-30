@@ -24,7 +24,7 @@ The TDS comes with the configuration files (note that not all of them contain th
 | `catalog.xml` | This is the main TDS _client_ configuration file (a.k.a, the _root catalog_) used to serve data. <br/>[[more information]](catalog.html) |
 | `enhancedCatalog.xml` | Example configuration catalog, demonstrating advanced features (referenced from `catalog.xml`).<br/>[[more information]](enhanced_catalog.html)  |
 | `threddsConfig.xml` | Main TDS configuration file for allowing non-default services, configuring caching, etc.<br/>[[more information]](thredds_config.html) |
-| `wmsConfig.xml` | A configuration file for the THREDDS Web Mapping Service (WMS).<br>[[more information]](wms_ref.html) |
+| `wmsConfig.xml` | A configuration file for the THREDDS Web Mapping Service (WMS).<br>[[more information]](adding_wms.html) |
 
 ## Nomenclature
 
@@ -73,4 +73,4 @@ A good place to start is to modify the [existing catalogs](#location) for your o
 
 **You MUST use the root [`catalog.xml`](catalog.html) and [`threddsConfig.xml`](enhanced_catalog.html) files**. 
 The TDS consults these files on startup.
-The [`enhancedCatalog.xml`](enhanced_catalog.html) and [`wmsConfig.xml`](wms_ref.html) files are optional.
+The [`enhancedCatalog.xml`](enhanced_catalog.html) and [`wmsConfig.xml`](adding_wms.html) files are optional.

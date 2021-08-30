@@ -15,12 +15,13 @@ If you are a client wanting to access data through the NetCDF Subset Service, lo
 
 ## Enabling NCSS In the TDS
 
-The NetCDF Subset Service must be enabled in the `threddsConfig.xml` configuration file before it can be used.
+The NetCDF Subset Service is enabled by default.
+If you do not wish to use this service, it must be explicitly disabled in the `threddsConfig.xml` configuration file before it can be used.
 This is done by adding an `allow` element to the `NetcdfSubsetService` element as follows:
 
 ~~~xml
 <NetcdfSubsetService>
-    <allow>true</allow>
+    <allow>false</allow>
 </NetcdfSubsetService>
 ~~~
 

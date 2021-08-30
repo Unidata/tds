@@ -1,7 +1,7 @@
 ---
 title: Customizing WMS
 last_updated: 2021-08-06
-sidebar: dev_sidebar
+sidebar: admin_sidebar
 toc: false
 permalink: customizing_wms.html
 ---
