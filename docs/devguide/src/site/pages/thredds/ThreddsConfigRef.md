@@ -220,7 +220,7 @@ cache directory](#disk-caching-and-temporary-files)).
 
 ### WMS Service
 
-The OGC WMS service provided as part of the TDS is described in more detail [here](wms_ref.html) (TDS Web Map Service (WMS)).
+The OGC WMS service provided as part of the TDS is described in more detail [here](adding_wms.html) (TDS Web Map Service (WMS)).
 By default, this service is enabled, and can be disabled by including the following in the `threddsConfig.xml` file:
 
 ~~~xml

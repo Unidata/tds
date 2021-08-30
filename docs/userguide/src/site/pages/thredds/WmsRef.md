@@ -3,7 +3,7 @@ title: TDS Web Map Service (WMS)
 last_updated: 2020-08-24
 sidebar: user_sidebar
 toc: false
-permalink: wms_ref.html
+permalink: adding_wms.html
 ---
 
 The TDS WMS implementation uses the ncWMS software developed by Jon Blower ([Reading E-Science Center](http://www.met.reading.ac.uk/resc/home/){:target="_blank"} at the University of Reading).

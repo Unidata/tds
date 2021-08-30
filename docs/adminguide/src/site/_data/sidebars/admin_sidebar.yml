@@ -165,17 +165,38 @@ entries:
             - title: Dataet Source Plugin
               url: /dataset_source_plugin.html
               output: web, pdf
+    - title: NCSS
+      url: /adding_ncss.html
+      output: web, pdf
 
+    - title: WCS Service
+      url: /adding_wcs_service.html
+      output: web, pdf
 
-        - title: Customization
+    - title: ncIso Services
+      url: /adding_iso_services.html
+      output: web, pdf
+
+      subfolders:
+        - title: WMS
           output: web, pdf
           subfolderitems:
-            - title: Customizing TDS Appearance
-              url: /customize_tds_appearance.html
-              output: web, pdf
-            - title: Adding Jupyter Notebooks
-              url: /jupyter_notebooks.html
-              output: web, pdf
+          - title: WMS Reference
+            url: /adding_wms.html
+            output: web, pdf
+          - title: Customizing WMS
+            url: /customizing_wms.html
+            output: web, pdf
+
+  - title: Customization
+    output: web, pdf
+    folderitems:
+      - title: Customizing TDS Appearance
+        url: /customize_tds_appearance.html
+        output: web, pdf
+      - title: Adding Jupyter Notebooks
+        url: /jupyter_notebooks.html
+        output: web, pdf
 
   - title: Logging
     output: web, pdf

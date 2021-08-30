@@ -32,7 +32,7 @@ The goal of the THREDDS project is to provide students, educators, and researche
    It merges the [netCDF](https://www.unidata.ucar.edu/software/netcdf/){:target="_blank"}, [OPeNDAP](https://www.opendap.org/){:target="_blank"}, and [HDF5](https://portal.hdfgroup.org/display/support){:target="_blank"} data models to create a common API for many types of scientific data.
    Thus, facilitating multiple access methods to TDS data and the ability to create virtual datasets through aggregation.
    
-  3. The TDS makes its data available via multiple _remote data access protocols_ include OPeNDAP, [OGC Web Coverage Service (WCS)](wcs_ref.html), [OGC Web Map Service (WMS)](wms_ref.html), and HTTP.
+  3. The TDS makes its data available via multiple _remote data access protocols_ include OPeNDAP, [OGC Web Coverage Service (WCS)](wcs_ref.html), [OGC Web Map Service (WMS)](adding_wms.html), and HTTP.
    Remote clients, such as Unidata's [Siphon](https://www.unidata.ucar.edu/software/siphon/){:target="_blank"}, can leverage these remote data protocols to access scientific data.
   
   4. Every TDS publishes THREDDS _client catalogs_ that advertise the datasets and services it makes available. 

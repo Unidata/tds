@@ -3,7 +3,7 @@ title: TDS Services
 last_updated: 2020-08-21
 sidebar: admin_sidebar
 toc: false
-permalink: services_ref.html
+permalink: available_services.html
 ---
 
 ## Data Services
@@ -82,7 +82,7 @@ The three `ncISO` Metadata Services are:
   The ISO Metadata Service provides [ISO 19115 metadata representation](https://www.ngdc.noaa.gov/wiki/index.php/NcISO){:target="_blank"} of a dataset's structure and metadata.
   
    {% include note.html content="
-  Learn how to [enable NcISO](adding_ogc_iso_services.html) in the TDS Configuration file.
+  Learn how to [enable NcISO](adding_iso_services.html) in the TDS Configuration file.
   " %}
   
 * **NCML**
@@ -158,7 +158,7 @@ The TDS provides a number of different *Data Access Services*, including:
    The [OGC Web Map Service (WMS)](https://www.opengeospatial.org/standards/wms){:target="_blank"}  supports access to geo-registered map images from geoscience datasets.
 
    {% include note.html content="
-   More setup, configuration, and implementation details for the TDS OGC WMS implementation are available in the [TDS WMS Reference](wms_ref.html).
+   More setup, configuration, and implementation details for the TDS OGC WMS implementation are available in the [TDS WMS Reference](adding_wms.html).
    " %}
    
         

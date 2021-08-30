@@ -111,7 +111,7 @@ permalink:  workshop2018.html
   * exercise- how can we increase our ncISO score?
   * [Attribute Convention for Data Discovery](http://wiki.esipfed.org/index.php/Attribute_Convention_for_Data_Discovery){:target="_blank"}
 * WMS
-  * WMS configure, [reference](wms_ref.html)
+  * WMS configure, [reference](../adminguide/adding_wms.html)
 * NCSS
   * Netcdf Subset Service [configure](adding_ncss.html), [reference](netcdf_subset_service_ref.html)
 
