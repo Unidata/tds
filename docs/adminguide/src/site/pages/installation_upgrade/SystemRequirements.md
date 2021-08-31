@@ -8,7 +8,7 @@ permalink: system_requirements.html
 
 ## Minimum Requirements
 
-* OpenJDK Java 8 or above
+* OpenJDK Java 11 or above
 * Apache Tomcat 8.5 or above (or a servlet contain that supports servlet specification 3.1)
 * 64-bit operating system
 * High-performance file system
