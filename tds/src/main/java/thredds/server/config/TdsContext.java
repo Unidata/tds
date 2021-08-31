@@ -351,7 +351,7 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
     System.setProperty("tds.log.dir", loggingDirectory); // variable substitution
 
     logServerStartup.info("TdsContext version= " + getVersionInfo());
-    logServerStartup.info("TdsContext intialized logging in " + logDir.getPath());
+    logServerStartup.info("TdsContext initialized logging in " + logDir.getPath());
   }
 
   @Override

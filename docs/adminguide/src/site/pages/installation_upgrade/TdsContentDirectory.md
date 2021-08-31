@@ -66,7 +66,7 @@ Below is a brief explanation of these files and subdirectories, with links to fu
 | `state/` | Contains state information about the TDS configuration catalogs. *You should not modify or touch the contents of this directory.* | 
 | `templates/` | User-supplied Thymeleaf HTML templates to customize the look and feel of your TDS server.<br/>[[more information]](customize_tds_appearance.html#thymeleaf-templates) |
 | `threddsConfig.xml` | Main TDS configuration file for allowing non-default services, configuring caching, etc.<br/>[[more information]](thredds_config.html) |
-| `wmsConfig.xml` | A configuration file for the THREDDS Web Mapping Service (WMS).<br>[[more information]](wms_ref.html) |
+| `wmsConfig.xml` | A configuration file for the THREDDS Web Mapping Service (WMS).<br>[[more information]](adding_wms.html) |
 
 
 ## Other Subdirectories In `${tds.content.root.path}`

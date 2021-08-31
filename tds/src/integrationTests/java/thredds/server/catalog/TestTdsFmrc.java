@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.catalog;
 
 import org.junit.Assert;
@@ -14,6 +19,10 @@ import ucar.ma2.Array;
 import ucar.nc2.Attribute;
 import ucar.nc2.VariableSimpleIF;
 import ucar.nc2.constants.FeatureType;
+import ucar.nc2.dataset.CoordinateAxis;
+import ucar.nc2.dt.GridCoordSystem;
+import ucar.nc2.dt.GridDataset;
+import ucar.nc2.dt.GridDatatype;
 import ucar.nc2.ft2.coverage.*;
 import ucar.nc2.util.CompareNetcdf2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
@@ -44,35 +53,33 @@ public class TestTdsFmrc {
       assert !dataResult.fatalError;
       assert dataResult.featureDataset != null;
 
-      FeatureDatasetCoverage gds = (FeatureDatasetCoverage) dataResult.featureDataset;
+      GridDataset gds = (GridDataset) dataResult.featureDataset;
       String gridName = "Total_cloud_cover";
       VariableSimpleIF vs = gds.getDataVariable(gridName);
       Assert.assertNotNull(gridName, vs);
 
-      Assert.assertEquals(1, gds.getCoverageCollections().size());
-      CoverageCollection cc = gds.getCoverageCollections().get(0);
-      Coverage grid = cc.findCoverage(gridName);
+      GridDatatype grid = gds.findGridByShortName(gridName);
       Assert.assertNotNull(gridName, grid);
       Assert.assertArrayEquals(new int[] {8, 103, 108}, grid.getShape());
 
-      CoverageCoordSys gcs = grid.getCoordSys();
+      GridCoordSystem gcs = grid.getCoordinateSystem();
       Assert.assertNotNull(gcs);
-      assert null == gcs.getZAxis();
+      assert null == gcs.getVerticalAxis();
 
-      CoverageCoordAxis time = gcs.getTimeAxis();
+      CoordinateAxis time = gcs.getTimeAxis();
       assert time != null;
       Assert.assertNotNull("time axis", time);
-      Assert.assertEquals(8, time.getNcoords());
+      Assert.assertEquals(8, time.getSize());
       double[] want = new double[] {3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0};
       CompareNetcdf2 cn = new CompareNetcdf2();
-      assert cn.compareData("time", time.getCoordsAsArray(), Array.makeFromJavaArray(want), false);
+      assert cn.compareData("time", time.read(), Array.makeFromJavaArray(want), false);
 
       Attribute att = gds.findGlobalAttributeIgnoreCase("ncmlAdded");
       assert att != null;
       assert att.isString();
       assert att.getStringValue().equals("goodStuff");
 
-      grid = cc.findCoverage("Visibility");
+      grid = gds.findGridByShortName("Visibility");
       att = grid.findAttributeIgnoreCase("ncmlAdded");
       assert att != null;
       assert att.isString();

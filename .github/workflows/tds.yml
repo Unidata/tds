@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         # test against latest 11 and 14 of zulu and temurin java
-        java-version: [ 11, 14 ]
+        java-version: [ 11 ]
         java-vendor: [ 'zulu', 'temurin' ]
         # test against tomcat 8.5.x and tomcat 9.x
         servletcontainer: [ 'tomcat85', 'tomcat9' ]
