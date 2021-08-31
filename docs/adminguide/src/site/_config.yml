@@ -75,7 +75,7 @@ docset_name: adminguide
 ###########################################
 
 # this will appear in the sidebar and various doc pages
-netcdf-java_docset_version: 5.0
+netcdf-java_docset_version: 5.4
 
 # this will appear in various doc pages
 tomcat_version: 9.0

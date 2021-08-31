@@ -242,7 +242,7 @@ entries:
       output: web, pdf
 
     - title: Upgrading To 5.0
-      url: /upgrade_to_5.html
+      url: /upgrade.html
       output: web, pdf
 
     - title: Installation Checklist
