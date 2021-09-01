@@ -24,7 +24,7 @@ Deprecated classes and methods have been removed, and the module structure and t
 
 As of TDS 5, the following are considered to be minimum system requirements:
 
-* Java 8 or above
+* Java 11 or above
 * Apache Tomcat 8.5 or above (or a servlet contain that supports servlet specification 3.1)
 
 ## JVM Setting Requirement Changes
@@ -38,6 +38,11 @@ Consult the [JVM Settings](jvm_settings.html#tds-content-directory) documentatio
 "%} 
 
 ## Changes To TDS Data Services
+
+### cdmrFeature
+
+The `CdmrFeature` services has been removed.
+This was an experimental service whose functionality will be replaced.
 
 ### Netcdf Subset Service (NCSS)
 
@@ -67,7 +72,9 @@ The following is no longer used:
 </Catalog>
 ~~~
 
-* By default, most services are enabled, but may still be turned off in `threddsConfig.xml`.
+## TDS Services
+
+* By default, most services are enabled, but [can be disabled in threddsConfig.xml](tds_config_ref.html).
 
 ## Java Web Start Deprecated
 

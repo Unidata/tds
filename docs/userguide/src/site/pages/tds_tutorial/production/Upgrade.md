@@ -1,14 +1,14 @@
 ---
 title: Upgrading to TDS version 5
 last_updated: 2020-08-26
-sidebar: quickstart_sidebar
+sidebar: user_sidebar
 toc: false
-permalink: upgrade_to_5.html
+permalink: upgrade.html
 ---
 
 ## Requirements
 
-* Java 8 is required
+* Java 11 is required
 * Tomcat 8 (servlet 3.1)
 * On the command line when starting up Tomcat/TDS, you must specify `-Dtds.content.root.path=<content root>` where `<content root>` points to the top of the content directory.
   Note that this is `${tomcat_home}/content/`, not`${tomcat_home}/content/thredds/`. 

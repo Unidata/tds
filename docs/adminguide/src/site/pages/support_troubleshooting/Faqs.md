@@ -379,32 +379,6 @@ The default heap size is quite small, so you need to always set this JVM Option 
 -Xmx4g
 ~~~
 
-### Im getting the error "java.lang.OutOfMemoryError: PermGen space". Whats up?
-
-The good news is that this problem goes away with Java 8, and we recommend that you switch to Java 8 NOW.
-
-Before Java 8, if you reload the `thredds.war` webapp enough times without restarting Tomcat, you will eventually run into `java.lang.OutOfMemoryError: PermGen space`.
-This is a known bug in JDK/Tomcat.
-The only thing to do is to stop and restart Tomcat.
-
-You can increase `PermGen` using this JVM Option (for example, in `setenv.sh`):
-
-~~~
--XX:MaxPermSize=256m
-~~~
-
-In Java 6 and 7, the default is `64m`.
-However, with enough redeploys , you will eventually run out of `PermGen` space no matter what your `MaxPermSize` setting is.
-We have gotten into the habit of restarting Tomcat on our production server whenever we redeploy.
-Lots of redeploys only happen on our test server.
-
-Resources:
-
-* ["Classloader leaks"](http://frankkieviet.blogspot.com/2006/10/classloader-leaks-dreaded-permgen-space.html){:target="_blank"} (Frank Kieviet's Engineering Notebook) (2016-02-26)
-* ["Return of the PermGen"](https://web.archive.org/web/20130522112026/http://my.opera.com/karmazilla/blog/2007/09/29/return-of-the-permgen){:target="_blank"} (2007-09-29)
-* ["PermGen Strikes Back"](https://web.archive.org/web/20130315110359/http://my.opera.com/karmazilla/blog/2007/03/15/permgen-strikes-back){:target="_blank"} (2007-03-15)
-* ["Good Riddance PermGen OutOfMemoryError"](https://web.archive.org/web/20130318215355/http://my.opera.com/karmazilla/blog/2007/03/13/good-riddance-permgen-outofmemoryerror){:target="_blank"} (2007-03-13)
-
 ### During shut down, I'm getting messages about threads (ThreadLocal) having to be shut down to prevent memory leaks. What's up?
 
 Tomcat memory leak detection code started logging these messages as of Tomcat 6.0.24.
