@@ -497,8 +497,8 @@ public class ConfigCatalogHtmlWriter {
       sb.append("<br>\n");
     }
 
-    sb.append(this.tdsContext.getWebappDisplayName()).append(" [Version ").append(this.tdsContext.getVersionInfo());
-    sb.append("] <a href='").append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getWebappDocsUrl()))
+    sb.append(this.tdsContext.getWebappDisplayName()).append("<a href='")
+        .append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getWebappDocsUrl()))
         .append("'> Documentation</a>");
     sb.append("</h3>\n");
   }
