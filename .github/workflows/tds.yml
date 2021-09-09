@@ -6,15 +6,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # test against latest 11 and 14 of zulu and temurin java
+        # test against latest 11, 14 of zulu and 11 of temurin java
         java-version: [ 11 ]
         java-vendor: [ 'zulu', 'temurin' ]
         # test against tomcat 8.5.x and tomcat 9.x
         servletcontainer: [ 'tomcat85', 'tomcat9' ]
+        include:
+          - java-version: 14
+            java-vendor: 'zulu'
+            servletcontainer: 'tomcat85'
+          - java-version: 14
+            java-vendor: 'zulu'
+            servletcontainer: 'tomcat9'
     steps:
       - uses: actions/checkout@v2
       - name: Build and test with Gradle (${{ matrix.java-vendor }} ${{ matrix.java-version }})
-        uses: Unidata/thredds-test-action@v1
+        uses: Unidata/thredds-test-action@v2
         with:
           java-vendor: ${{ matrix.java-vendor }}
           java-version: ${{ matrix.java-version }}
@@ -29,8 +36,6 @@ jobs:
         with:
           name: tds_JUnit_Results_${{ github.sha }}_AdoptOpenJDK-HS-${{ matrix.java }}-newApi-${{ matrix.ncjnewapi }}-${{ matrix.servletcontainer }}
           path: build/reports/allTests
-
-
 
   spotless:
     name: Code Style Check
