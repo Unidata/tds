@@ -98,7 +98,7 @@ def publishDownloadsTask = tasks.register('publishDownloads', PublishToRawRepoTa
   repoName = 'downloads-tds'
 
   publishSrc = new File(rootProject.getBuildDir(), "downloads")
-  destPath = "tds/$project.cleanVersion/"
+  destPath = "$project.cleanVersion/"
   dependsOn createChecksumsTask
 
   onlyIf {
