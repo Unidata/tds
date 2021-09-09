@@ -107,7 +107,6 @@
   </table>
   <hr size="1" noshade="noshade">
   <h3>
-    ${webappName} [Version ${webappVersion}]
     <a href="${docsPath}">Documentation</a>
   </h3>
 </body>

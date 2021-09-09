@@ -130,7 +130,7 @@ docsets.each { docset ->
   docVersionTypes.each { docType ->
     def nexusTaskName = makeNexusTaskName(docType, docset)
     def nexusVersion = docType != 'current' ? "${project.docVersion}" : 'current'
-    def nexusPath = "tds/${nexusVersion}/${docset}"
+    def nexusPath = "${nexusVersion}/${docset}"
 
     def pubAsTask = tasks.register("publishAs${nexusTaskName}", PublishToRawRepoTask) {
       description  "Publish ${docset} to Nexus under ${nexusPath}/."
