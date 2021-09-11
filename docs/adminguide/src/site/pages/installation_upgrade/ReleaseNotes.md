@@ -59,6 +59,30 @@ Generally the previous queries are backwards compatible. See [NCSS Reference](ne
 * For station datasets, `subset=stns` or `subset=bb` is not needed.
   Just define `stns` or a bounding box.
 
+### ncWMS
+
+The WMS service bundled with the TDS has been upgraded from ncWMS 1.x to edal-java 2.x.
+This also includes an upgrade of the built-in browser based viewer Godiva, from version 2 to 3.
+As a result of the move to edal-java 2.x, the default color palletes have changed.
+All palette names have either been changed or removed.
+The table below summarizes the changes:
+
+| 1.x             | 2.x          |
+| --------------- | ------------ |
+| alg             | N/A          |
+| alg2            | N/A          |
+| ferret          | N/A          |
+| greyscale       | seq-GreysRev |
+| ncview          | x-Ncview     |
+| occam           | x-Occam      |
+| occam_pastel-30 | N/A          |
+| rainbow         | x-Rainbow    |
+| redblue         | div-BuRd     |
+| sst_36          | x-Sst        |
+
+This change will most likely impact any custom settings in `wmsConfig.xml`, so adjust accordingly.
+Please visit the [ncWMS User Guide](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap){:target="_blank"} for a visual listing of all color palette options available with the TDS out of the box.
+
 ### Catalog Caching
 
 You no longer turn catalog caching on or off, but you can control how many catalogs are cached (see the
