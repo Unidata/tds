@@ -124,7 +124,7 @@ public class WmsDetailedConfigTest {
     ThreddsWmsCatalogue layerCatalog = new ThreddsWmsCatalogue(ncd, tdsDatasetPathInWwsConfig);
     LayerSettings settings = wmsConfig.getSettings(layerCatalog, variableMetadata);
 
-    assertThat(settings.getDefaultPaletteName()).isEqualTo("occam");
+    assertThat(settings.getDefaultPaletteName()).isEqualTo("x-Occam");
     assertThat(settings.isAllowFeatureInfo()).isFalse();
     assertThat(settings.getDefaultColorScaleRange()).isEqualTo(defaultExtent);
   }
@@ -138,7 +138,7 @@ public class WmsDetailedConfigTest {
     ThreddsWmsCatalogue layerCatalog = new ThreddsWmsCatalogue(ncd, tdsDatasetPathInWwsConfig);
     LayerSettings settings = wmsConfig.getSettings(layerCatalog, variableMetadata);
 
-    assertThat(settings.getDefaultPaletteName()).isEqualTo("occam");
+    assertThat(settings.getDefaultPaletteName()).isEqualTo("x-Occam");
     assertThat(settings.isAllowFeatureInfo()).isFalse();
     assertThat(settings.getDefaultColorScaleRange()).isEqualTo(Extents.newExtent(0.0f, 2920.0f));
   }
@@ -153,7 +153,7 @@ public class WmsDetailedConfigTest {
     ThreddsWmsCatalogue layerCatalog = new ThreddsWmsCatalogue(ncd, tdsDatasetPathInWwsConfig);
     LayerSettings settings = wmsConfig.getSettings(layerCatalog, variableMetadata);
 
-    assertThat(settings.getDefaultPaletteName()).isEqualTo("occam");
+    assertThat(settings.getDefaultPaletteName()).isEqualTo("x-Occam");
     assertThat(settings.isAllowFeatureInfo()).isFalse();
     assertThat(settings.getDefaultColorScaleRange()).isEqualTo(Extents.newExtent(0.0f, 2920.0f));
   }

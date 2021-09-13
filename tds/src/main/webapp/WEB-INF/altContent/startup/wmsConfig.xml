@@ -37,7 +37,7 @@ the GetFeatureInfo operation.
             <pathDefaults>
                 <!-- These will apply to all variables in this path unless overridden below -->
                 <allowFeatureInfo>false</allowFeatureInfo>
-                <defaultPaletteName>occam</defaultPaletteName>
+                <defaultPaletteName>x-Occam</defaultPaletteName>
             </pathDefaults>
 
             <variables>
