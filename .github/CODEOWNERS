@@ -15,11 +15,12 @@
 # users just like we do for commit author emails.
 # docs/*  docs@example.com
 
+* @haileyajohnson
+
 #####################
 # top level modules #
 #####################
 
-gradle/** @lesserwhirls
 
 ###########################################
 # classpath / not module specific matches #
@@ -30,21 +31,13 @@ gradle/** @lesserwhirls
 **/opendap/** @DennisHeimbigner
 **/dap4/** @DennisHeimbigner
 
-**/webapp/godiva2/** @lesserwhirls
-
 ######################
 # general file types #
 ######################
 
-*.gradle @lesserwhirls
-gradle* @lesserwhirls
-
-*.py @lesserwhirls @dopplershift
+*.py @dopplershift
 
 ####################
 # individual files #
 ####################
 
-docs/internal/release.md @lesserwhirls
-
-tds/src/main/webapp/Godiva.html @lesserwhirls
