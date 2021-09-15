@@ -6,6 +6,8 @@ package thredds.server.wcs;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import thredds.server.config.TdsContext;
@@ -38,35 +40,56 @@ public class WCSController implements InitializingBean {
     GetCapabilities, DescribeCoverage, GetCoverage
   }
 
-  public void afterPropertiesSet() throws ServletException {
+  @Override
+  public void afterPropertiesSet() throws javax.servlet.ServletException {
+    // Nothing to set at this point in the startup process
+    // This is before TdsInit.onApplicationEvent is called
+  }
 
-    allow = ThreddsConfig.getBoolean("WCS.allow", true);
-    logServerStartup.info("WCS:allow= " + allow);
-    if (!allow) {
-      logServerStartup.info("WCS service not enabled in threddsConfig.xml: ");
-      return;
+  @EventListener
+  public void init(ContextRefreshedEvent event) {
+    // The context is refreshed three times.
+    // All three times, the event.getApplicationContext().getApplicationName() is /thredds
+    // However, the display name and ID are different:
+    // 1. Root WebApplicationContext
+    // org.springframework.web.context.WebApplicationContext:/thredds
+    // 2. org.springframework.web.context.support.GenericWebApplicationContext@6c14bf64
+    // org.springframework.web.context.support.GenericWebApplicationContext@6c14bf64
+    // 3. WebApplicationContext for namespace 'spring-servlet'
+    // org.springframework.web.context.WebApplicationContext:/thredds/spring
+    //
+    // Initializing will work on any one of these, but we only need one.
+
+    if (event.getApplicationContext().getDisplayName().equals("Root WebApplicationContext")) {
+      allow = ThreddsConfig.getBoolean("WCS.allow", true);
+      logServerStartup.info("WCS:allow= " + allow);
+      if (!allow) {
+        logServerStartup.info("WCS service not enabled in threddsConfig.xml: ");
+        return;
+      }
+      allowRemote = ThreddsConfig.getBoolean("WCS.allowRemote", false);
+      deleteImmediately = ThreddsConfig.getBoolean("WCS.deleteImmediately", deleteImmediately);
+      maxFileDownloadSize = ThreddsConfig.getBytes("WCS.maxFileDownloadSize", (long) 1000 * 1000 * 1000);
+      String cache = ThreddsConfig.get("WCS.dir", new File(tdsContext.getThreddsDirectory(), "/cache/wcs/").getPath());
+      File cacheDir = new File(cache);
+      cacheDir.mkdirs();
+
+      int scourSecs = ThreddsConfig.getSeconds("WCS.scour", 60 * 10);
+      int maxAgeSecs = ThreddsConfig.getSeconds("WCS.maxAge", -1);
+      maxAgeSecs = Math.max(maxAgeSecs, 60 * 5); // give at least 5 minutes to download before scouring kicks in.
+      scourSecs = Math.max(scourSecs, 60 * 5); // always need to scour, in case user doesnt get the file, we need to
+                                               // clean
+      // it up
+
+      // LOOK: what happens if we are still downloading when the disk scour starts?
+      diskCache = new DiskCache2(cache, false, maxAgeSecs / 60, scourSecs / 60);
+
+      // Version Handlers
+      // - Latest non-experimental version supported is "1.0.0"
+      this.wcsHandler = new WcsHandler("1.0.0").setDeleteImmediately(deleteImmediately).setDiskCache(diskCache);
+
+      logServerStartup.info("WCS service - init done - ");
     }
-    allowRemote = ThreddsConfig.getBoolean("WCS.allowRemote", false);
-    deleteImmediately = ThreddsConfig.getBoolean("WCS.deleteImmediately", deleteImmediately);
-    maxFileDownloadSize = ThreddsConfig.getBytes("WCS.maxFileDownloadSize", (long) 1000 * 1000 * 1000);
-    String cache = ThreddsConfig.get("WCS.dir", new File(tdsContext.getThreddsDirectory(), "/cache/wcs/").getPath());
-    File cacheDir = new File(cache);
-    cacheDir.mkdirs();
-
-    int scourSecs = ThreddsConfig.getSeconds("WCS.scour", 60 * 10);
-    int maxAgeSecs = ThreddsConfig.getSeconds("WCS.maxAge", -1);
-    maxAgeSecs = Math.max(maxAgeSecs, 60 * 5); // give at least 5 minutes to download before scouring kicks in.
-    scourSecs = Math.max(scourSecs, 60 * 5); // always need to scour, in case user doesnt get the file, we need to clean
-                                             // it up
-
-    // LOOK: what happens if we are still downloading when the disk scour starts?
-    diskCache = new DiskCache2(cache, false, maxAgeSecs / 60, scourSecs / 60);
-
-    // Version Handlers
-    // - Latest non-experimental version supported is "1.0.0"
-    this.wcsHandler = new WcsHandler("1.0.0").setDeleteImmediately(deleteImmediately).setDiskCache(diskCache);
-
-    logServerStartup.info("WCS service - init done - ");
   }
 
   @RequestMapping("**")
