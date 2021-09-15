@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -61,7 +61,7 @@ public class TdsUpdateConfigBean {
     int connectionTimeout = 3; // http connection timeout in seconds
     Map<String, String> latestVersionInfo = new HashMap<>();
 
-    String versionUrl = "https://www.unidata.ucar.edu/software/tds/latest.xml";
+    String versionUrl = "https://downloads.unidata.ucar.edu/tds/startup/latest.xml";
     try {
       try (HTTPMethod method = HTTPFactory.Get(versionUrl)) {
         HTTPSession httpClient = method.getSession();
