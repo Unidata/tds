@@ -109,7 +109,7 @@ dependencies {
     api "com.google.gwt:gwt-user:${depVersion.gwt}"
 
     // threddsIso
-    runtime 'EDS:tds-plugin:2.4.0-SNAPSHOT'
+    runtime 'EDS:tds-plugin:2.4.0'
     runtime 'net.sf.saxon:Saxon-HE:9.7.0-8'
     runtime "jaxen:jaxen:${depVersion.jaxen}"
   }
