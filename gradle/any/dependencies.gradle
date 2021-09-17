@@ -12,6 +12,7 @@ apply from: "$rootDir/gradle/any/shared-mvn-coords.gradle"
 
 repositories {
   mavenCentral()
+  // uncomment for release process
 //  mavenLocal()
 
   // chronicle-bom needs access to chronicle snapshots
