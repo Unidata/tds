@@ -41,7 +41,7 @@ public class TdsContextTest {
   @Test
   public void testVersionRetrieval() {
     String stableKey = "stable";
-    String devKey = "development";
+    String maintKey = "maintenance";
     String version = tdsContext.getVersionInfo();
 
     Map<String, String> latestVersionInfo = tdsUpdateConfig.getLatestVersionInfo(version);
@@ -52,7 +52,7 @@ public class TdsContextTest {
     assert (latestVersionInfo.containsKey(stableKey));
     assert (!latestVersionInfo.get(stableKey).isEmpty());
     // contains the dev key and the dev version is not empty
-    assert (latestVersionInfo.containsKey(devKey));
-    assert (!latestVersionInfo.get(devKey).isEmpty());
+    assert (latestVersionInfo.containsKey(maintKey));
+    assert (!latestVersionInfo.get(maintKey).isEmpty());
   }
 }
