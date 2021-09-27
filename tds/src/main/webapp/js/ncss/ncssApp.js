@@ -18,6 +18,7 @@ function initMap(horizExtentWKT) {
     var controls = [
         new ol.control.Zoom(),
         new ol.control.Rotate(),
+        new ol.control.Attribution(),
         mousePositionControl
     ];
 
