@@ -30,8 +30,6 @@ topnav_dropdowns:
           external_url: https://www.unidata.ucar.edu/software/tds/
         - title: GitHub
           external_url: https://github.com/Unidata/tds
-        - title: Administrator's Guide
-          external_url: https://docs.unidata.ucar.edu/tds/5.0/adminguide/index.html
 
     - title: Rosetta
       folderitems:
