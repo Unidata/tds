@@ -121,23 +121,18 @@ public class ServletUtil {
 
     // Set the type of the file
     String filename = file.getPath();
-    if (null == contentType) {
-      if (filename.endsWith(".html"))
-        contentType = ContentType.html.getContentHeader();
-      else if (filename.endsWith(".xml"))
-        contentType = ContentType.xml.getContentHeader();
-      else if (filename.endsWith(".txt") || (filename.endsWith(".log")))
-        contentType = ContentType.text.getContentHeader();
-      else if (filename.indexOf(".log.") > 0)
-        contentType = ContentType.text.getContentHeader();
-      else if (filename.endsWith(".nc"))
-        contentType = ContentType.netcdf.getContentHeader();
-      else if (filename.endsWith(".nc4"))
-        contentType = ContentType.netcdf.getContentHeader();
-      else if (servlet != null)
-        contentType = servlet.getServletContext().getMimeType(filename);
 
-      if (contentType == null)
+    // Check for server configured (well-known) content-type
+    if ( contentType == null)
+      contentType = req.getServletContext().getMimeType( filename);
+
+    // If not, check for a TDS known content-type
+    if ( contentType == null) {
+      ContentType tdsSpecificContentType = ContentType.findContentTypeFromFilename( filename);
+      if ( tdsSpecificContentType != null)
+        contentType = tdsSpecificContentType.getContentHeader();
+      else
+        // Otherwise, assume it is binary.
         contentType = ContentType.binary.getContentHeader();
     }
 

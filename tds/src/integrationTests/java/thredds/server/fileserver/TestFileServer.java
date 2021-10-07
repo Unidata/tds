@@ -32,6 +32,7 @@ public class TestFileServer {
   public static List<Object[]> getTestParameters() {
     List<Object[]> result = new ArrayList<>();
 
+    result.add( new Object[] {"fileServer/scanLocal/point.covjson.json", ContentType.json} );
     result.add(
         new Object[] {"fileServer/rdaTest/ds094.2_dt/files/flxf01.gdas.A_PCP.SFC.01Z.grb2.gbx9", ContentType.binary});
     result.add(new Object[] {"fileServer/testStationFeatureCollection/files/Surface_METAR_20060325_0000.nc",
