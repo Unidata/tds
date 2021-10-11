@@ -148,9 +148,14 @@ public class NotebookMetadata {
   }
 
   private enum NotebookMetadataKeys {
-    metadata("metadata"), viewerInfo("viewer_info"), description("description"), acceptObject("accepts"), acceptAll(
-        "accept_all"), acceptDatasetIDs(
-            "accept_datasetIDs"), acceptCatalogs("accept_catalogs"), acceptDatasetTypes("accept_dataset_types");
+    metadata("metadata"),
+    viewerInfo("viewer_info"),
+    description("description"),
+    acceptObject("accepts"),
+    acceptAll("accept_all"),
+    acceptDatasetIDs("accept_datasetIDs"),
+    acceptCatalogs("accept_catalogs"),
+    acceptDatasetTypes("accept_dataset_types");
 
     final String key;
 
