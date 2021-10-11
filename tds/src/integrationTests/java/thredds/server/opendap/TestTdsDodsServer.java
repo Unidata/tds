@@ -23,6 +23,7 @@ import thredds.client.catalog.Catalog;
 import thredds.client.catalog.Dataset;
 import thredds.client.catalog.tools.DataFactory;
 import thredds.server.catalog.TdsLocalCatalog;
+import thredds.util.ContentType;
 import ucar.ma2.Array;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
@@ -53,14 +54,14 @@ public class TestTdsDodsServer {
   public void checkBadRequest() {
     String endpoint = TestOnLocalServer.withHttpPath(
         "/dodsC/scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2.badascii?Visibility_surface[0:1:0][0:1:0][0:1:0]");
-    TestOnLocalServer.getContent(endpoint, 400, null);
+    TestOnLocalServer.getContent(endpoint, 400, (ContentType) null);
   }
 
   @Test
   public void testGridArrayAscii() {
     String endpoint = TestOnLocalServer.withHttpPath(
         "/dodsC/scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2.ascii?Visibility_surface[0:1:0][0:1:0][0:1:0]");
-    byte[] result = TestOnLocalServer.getContent(endpoint, 200, null);
+    byte[] result = TestOnLocalServer.getContent(endpoint, 200, (ContentType) null);
     Assert.assertNotNull(result);
     String results = new String(result, StandardCharsets.UTF_8);
     assert results.contains("scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2");
