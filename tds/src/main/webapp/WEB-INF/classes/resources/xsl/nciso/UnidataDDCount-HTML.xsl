@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:nc="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:nc="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xd:doc xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet">
 		<xd:desc>
 			<xd:p><xd:b>Created on:</xd:b> April 14, 2011</xd:p>

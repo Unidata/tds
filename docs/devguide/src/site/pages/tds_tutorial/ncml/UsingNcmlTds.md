@@ -26,7 +26,7 @@ The TDS dataset must have a unique URL path (this is true for all TDS datasets),
 You can use NcML to modify an existing CDM dataset:
 
 ~~~xml
-<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+<catalog xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
          xmlns:xlink="http://www.w3.org/1999/xlink"
          name="TDS workshop test 1" version="1.0.2">
   <service name="ncdods" serviceType="OPENDAP" base="/thredds/dodsC/"/>      <!-- 1 -->
@@ -34,7 +34,7 @@ You can use NcML to modify an existing CDM dataset:
   <dataset name="Example NcML Modified" ID="ExampleNcML-Modified" 
              urlPath="ExampleNcML/Modified.nc">                              <!-- 2 -->
     <serviceName>ncdods</serviceName>
-    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" 
+    <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2" 
             location="/machine/tds/workshop/ncml/example1.nc">               <!-- 3 -->
       <variable name="Temperature" orgName="T"/>                             <!-- 4 -->
       <variable name="ReletiveHumidity" orgName="rh">                        <!-- 5 -->
@@ -65,7 +65,7 @@ You can use NcML to modify an existing CDM dataset:
 Let's look at serving a file directly versus serving it through NcML:
 
 ~~~xml
-<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+<catalog xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
          xmlns:xlink="http://www.w3.org/1999/xlink"
          name="TDS workshop test 2" version="1.0.2">
 
@@ -76,7 +76,7 @@ Let's look at serving a file directly versus serving it through NcML:
   </dataset>
   <dataset name="Example NcML Modified" ID="Modified" urlPath="ExampleNcML/Modified.nc">
     <serviceName>ncdods</serviceName>                      <!-- 3 -->
-    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" 
+    <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2" 
         location="/machine/tds/workshop/ncml/example1.nc"> <!-- 4 -->
       <variable name="Temperature" orgName="T"/>
     </netcdf>
@@ -98,14 +98,14 @@ Let's look at serving a file directly versus serving it through NcML:
 Here is an example that defines a dataset using NcML aggregation.
 
 ~~~xml
-<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+<catalog xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
          xmlns:xlink="http://www.w3.org/1999/xlink"
          name="TDS workshop test 3" version="1.0.2">
 
   <service name="ncdods" serviceType="OPENDAP" base="/thredds/dodsC/" />              <!-- 1 -->
   <dataset name="Example NcML Agg" ID="ExampleNcML-Agg" urlPath="ExampleNcML/Agg.nc"> <!-- 2 -->
     <serviceName>ncdods</serviceName>                                                 <!-- 3 -->
-    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"> <!-- 4 -->
+    <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2"> <!-- 4 -->
       <aggregation dimName="time" type="joinExisting">                      <!-- 5 -->
         <scan location="/machine/tds/workshop/ncml/cg/" dateFormatMark="CG#yyyyDDD_HHmmss"
               suffix=".nc" subdirs="false"/>                                <!-- 6 -->
@@ -138,7 +138,7 @@ It is not self-contained, however, since it gets its location from the datasets 
     <serviceName>ncdods</serviceName>
     <dataType>Grid</dataType>
   </metadata>
-  <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"> <!-- 3 -->
+  <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2"> <!-- 3 -->
     <attribute name="Conventions" value="CF-1.0"/>
   </netcdf>
 </datasetScan>
@@ -167,14 +167,14 @@ Download  {% include link_file.html file="tds_tutorial/ncml/ncmlTds/catalogScan.
 
 ~~~xml
 <?xml version="1.0" encoding="UTF-8"?>
-<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+<catalog xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      name="TDS workshop test 4" version="1.0.2">
 
   <service name="ncdods" serviceType="OPENDAP" base="/thredds/dodsC/"/>
   <dataset name="Example NcML Agg" ID="ExampleNcML-Agg" urlPath="ExampleNcML/Agg.nc"> <!-- 1 -->
     <serviceName>ncdods</serviceName>
-    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">           <!-- 2 -->
+    <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2">           <!-- 2 -->
       <aggregation dimName="time" type="joinExisting" recheckEvery="4 sec">
         <scan location="/machine/tds/workshop/ncml/cg/" dateFormatMark="CG#yyyyDDD_HHmmss" suffix=".nc" subdirs="false"/>
       </aggregation>
@@ -189,7 +189,7 @@ Download  {% include link_file.html file="tds_tutorial/ncml/ncmlTds/catalogScan.
     <filter>
       <include wildcard="*.nc"/>     <!-- 4 -->
     </filter>
-    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"> <!-- 5 -->
+    <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2"> <!-- 5 -->
       <attribute name="Yoyo" value="Ma"/>
     </netcdf>
   </datasetScan>
@@ -211,7 +211,7 @@ Here we show a brief example of modifying files with NcML in a `featureCollectio
 
 ~~~xml
 <?xml version="1.0" encoding="UTF-8"?>
-<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+<catalog xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
          xmlns:xlink="http://www.w3.org/1999/xlink"
          name="Unidata THREDDS Data Server" version="1.0.3">
 
@@ -226,12 +226,12 @@ Here we show a brief example of modifying files with NcML in a `featureCollectio
 
     <collection spec="/machine/tds/workshop/ncml/gomoos/gomoos.#yyyyMMdd#.cdf$"/>
     <protoDataset>  <!-- 1 -->
-      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2">
         <attribute name="History" value="Processed by Kraft"/>
       </netcdf>
     </protoDataset>
 
-    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"> <!-- 2 -->
+    <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2"> <!-- 2 -->
       <variable name="time">
         <attribute name="units" value="days since 2006-11-01 00:00 UTC"/>
       </variable>

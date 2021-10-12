@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog name="Problem with missing GC" 
-  xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" 
+  xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0  http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.xsd">
+  xsi:schemaLocation="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0  http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.xsd">
   
   <service name="this" serviceType="OpenDAP" base=""/>
   
   <dataset ID="hasGC" name="dataset contains metadata" serviceName="this" urlPath="that">
-    <metadata  xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" >
+    <metadata  xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0" >
       
       <property name="upLimit" value="52"/>
       <property name="downLimit" value="5"/>

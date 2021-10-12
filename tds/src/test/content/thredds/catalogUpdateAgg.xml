@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog name="MYOCEAN Project - Ocean Color datasets inventory" version="1.0.1"
-         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
          xmlns:xlink="http://www.w3.org/1999/xlink"
          expires="2010-04-24T00:00:00">
 
@@ -57,7 +57,7 @@
         </geospatialCoverage>
       </metadata>
 
-      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2">
         <aggregation dimName="time" type="joinExisting" recheckEvery="1 min">
           <scan location="Q:/support/BRN-329262/2013/" suffix=".nc" subdirs="true"/>
         </aggregation>

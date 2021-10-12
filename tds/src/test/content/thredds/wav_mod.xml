@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <catalog name="Wave Model Output"
-         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
          xmlns:xlink="http://www.w3.org/1999/xlink" >
 
   <service name="fmrcServices" serviceType="Compound" base="">
@@ -124,7 +124,7 @@
     <update startup="true" rescan="0 5 13 * * ? *" trigger="allow" /> <!-- 13:05:00 everyday -->
 
     <protoDataset>
-      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2">
         <!-- Metadata Reference -->
         <attribute name="id" value="HIOOS-SWAN-Oahu"/>
         <attribute name="naming_authority" value="org.hioos"/>

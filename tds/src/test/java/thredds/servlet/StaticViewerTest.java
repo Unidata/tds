@@ -134,7 +134,7 @@ public class StaticViewerTest {
 
   private static String setupCatDsWithViewerProperty(String viewerName, String viewerValue) {
     return "<?xml version='1.0' encoding='UTF-8'?>\n"
-        + "<catalog xmlns='http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0'\n"
+        + "<catalog xmlns='https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0'\n"
         + "         xmlns:xlink='http://www.w3.org/1999/xlink'\n" + "         name='Catalog 1'\n"
         + "         version='1.0.3'>\n" + "  <service name='all' serviceType='Compound' base=''>\n"
         + "    <service name='odap' serviceType='OPENDAP' base='/thredds/dodsC/' />\n"

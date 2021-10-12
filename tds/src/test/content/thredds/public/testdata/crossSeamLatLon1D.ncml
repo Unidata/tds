@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This file is a copy of cdm/src/test/resources/ucar/nc2/ft2/coverage/crossSeamLatLon1D.ncml -->
-<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+<netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2">
     <dimension name="lat" length="5" />
     <dimension name="lon" length="5" />
     

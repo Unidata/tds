@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog name="Example THREDDS Inventory Catalog" version="1.0"
-     xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+     xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
      xmlns:xlink="http://www.w3.org/1999/xlink">
 
 		<!-- compound service error -->

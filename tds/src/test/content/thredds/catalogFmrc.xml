@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog name="TDS Unit Test FMRC"
-         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
          xmlns:xlink="http://www.w3.org/1999/xlink">
 
   <featureCollection featureType="FMRC" name="GFS_CONUS_80km_nc" path="testGFSfmrc">
@@ -36,7 +36,7 @@
 
     <protoDataset choice="Penultimate" change="0 43 * * * ? *">
 
-      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2">
         <attribute name="ncmlAdded" value="goodStuff"/>
         <variable name="Visibility">
           <attribute name="ncmlAdded" value="reallyGoodStuff"/>
@@ -45,7 +45,7 @@
     </protoDataset>
 
 
-    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+    <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2">
       <variable name="Visibility">
         <attribute name="ncmlInnerAdded" value="innerTruth"/>
       </variable>
@@ -66,7 +66,7 @@
     <collection spec="${cdmUnitTest}/ncml/agg/#yyyyMMdd_HHmm#.nc$"/>
 
     <protoDataset>
-      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <netcdf xmlns="https://namespaces.unidata.ucar.edu/netcdf/ncml-2.2">
         <variable name="Visibility">
           <attribute name="units" value="celsius"/>
         </variable>
