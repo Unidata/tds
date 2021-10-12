@@ -1,7 +1,7 @@
 <%@page contentType="text/xml"%><%@page pageEncoding="UTF-8"%><?xml version="1.0" encoding="UTF-8"?>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+<catalog xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
          xmlns:xlink="http://www.w3.org/1999/xlink"
          name="<c:out value="${name}"/>" 
          version="1.0.1">

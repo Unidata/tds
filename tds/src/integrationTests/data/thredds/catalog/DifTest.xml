@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<metadata  xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" 
+<metadata  xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0 http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.xsd">
+  xsi:schemaLocation="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0 http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.xsd">
   
   <contributor role="Investigator">Mashor Mashnor</contributor>
           

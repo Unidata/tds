@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog name="Unit Test Server, GRIB Collections with default services"
-         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0">
+         xmlns="https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0">
 
   <service name="opendapOnly" serviceType="OPENDAP" base="/thredds/dodsC/"/>
 
