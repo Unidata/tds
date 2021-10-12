@@ -32,15 +32,15 @@ public class TestInvCatalogXmlView {
 
   @Test
   public void testUnknownEncoding() throws IOException {
-    StringBuilder catAsString = new StringBuilder()
-        .append("<catalog xmlns=\"https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0\"\n")
-        .append("         xmlns:xlink=\"http://www.w3.org/1999/xlink\"\n").append("         version=\"1.0.1\">\n")
-        .append("  <service name=\"ncDap\" serviceType=\"OPENDAP\" base=\"/thredds/dodsC/\" />\n")
-        .append("  <dataset name=\"some data\" ID=\"SomeData\">\n").append("     <metadata inherited=\"true\">\n")
-        .append("       <serviceName>ncDap</serviceName>\n").append("     </metadata>\n")
-        .append("     <dataset name=\"data one\" id=\"data1\" urlPath=\"some/data/one.nc\" />")
-        .append("     <dataset name=\"data two\" id=\"data2\" urlPath=\"some/data/two.nc\" />").append("  </dataset>\n")
-        .append("</catalog>");
+    StringBuilder catAsString =
+        new StringBuilder().append("<catalog xmlns=\"https://namespaces.unidata.ucar.edu/thredds/InvCatalog/v1.0\"\n")
+            .append("         xmlns:xlink=\"http://www.w3.org/1999/xlink\"\n").append("         version=\"1.0.1\">\n")
+            .append("  <service name=\"ncDap\" serviceType=\"OPENDAP\" base=\"/thredds/dodsC/\" />\n")
+            .append("  <dataset name=\"some data\" ID=\"SomeData\">\n").append("     <metadata inherited=\"true\">\n")
+            .append("       <serviceName>ncDap</serviceName>\n").append("     </metadata>\n")
+            .append("     <dataset name=\"data one\" id=\"data1\" urlPath=\"some/data/one.nc\" />")
+            .append("     <dataset name=\"data two\" id=\"data2\" urlPath=\"some/data/two.nc\" />")
+            .append("  </dataset>\n").append("</catalog>");
     String catUri = "Cat.TestInvCatalogXmlView.testNoDeclaredEncoding";
 
     URI catURI = null;

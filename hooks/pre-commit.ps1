@@ -11,7 +11,7 @@ if (-Not ($FILES -eq $null)) {
    write-output "    $_"
   }
   $COMMA_SEP_FILES = ($FILES -join ",")
-  ./gradlew spotlessApply -Pfiles=""$COMMA_SEP_FILES"" 2>&1 | Out-Null
+  `./gradlew spotlessApply` -Pfiles=""$COMMA_SEP_FILES"" 2>&1 | Out-Null
   write-output "...the code is spotless! :-)"
   git add $FILES
 }
