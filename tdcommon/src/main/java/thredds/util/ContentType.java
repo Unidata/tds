@@ -17,6 +17,7 @@ public enum ContentType {
   html("text/html", "UTF-8"),
   jnlp("application/x-java-jnlp-file", null),
   json("application/json", "UTF-8"),
+  json("application/json", null),
   ncstream("application/octet-stream", null),
   netcdf("application/x-netcdf", null),
   ogc_exception("application/vnd.ogc.se_xml", "UTF-8"),

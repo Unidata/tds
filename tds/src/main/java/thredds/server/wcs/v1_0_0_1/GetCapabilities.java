@@ -18,8 +18,10 @@ import java.util.List;
 public class GetCapabilities extends WcsRequest {
 
   public enum Section {
-    All(""), Service("WCS_Capabilities/Service"), Capability("WCS_Capabilities/Capability"), ContentMetadata(
-        "WCS_Capabilities/ContentMetadata");
+    All(""),
+    Service("WCS_Capabilities/Service"),
+    Capability("WCS_Capabilities/Capability"),
+    ContentMetadata("WCS_Capabilities/ContentMetadata");
 
     private final String altId;
 

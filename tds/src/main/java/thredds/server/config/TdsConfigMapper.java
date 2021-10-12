@@ -52,23 +52,20 @@ class TdsConfigMapper {
   }
 
   enum ServerInfoMappings {
-    SERVER_NAME("serverInformation.name", "htmlSetup.installName", "Initial TDS Installation"), SERVER_LOGO_URL(
-        "serverInformation.logoUrl", "htmlSetup.installLogoUrl", "threddsIcon.png"), SERVER_LOGO_ALT_TEXT(
-            "serverInformation.logoAltText", "htmlSetup.installLogoAlt", "Initial TDS Installation"), SERVER_ABSTRACT(
-                "serverInformation.abstract", null, "Scientific Data"), SERVER_KEYWORDS("serverInformation.keywords",
-                    null, "meteorology, atmosphere, climate, ocean, earth science"), SERVER_CONTACT_NAME(
-                        "serverInformation.contact.name", null,
-                        ""), SERVER_CONTACT_ORGANIZATION("serverInformation.contact.organization", null,
-                            ""), SERVER_CONTACT_EMAIL("serverInformation.contact.email", null,
-                                ""), SERVER_CONTACT_PHONE("serverInformation.contact.phone", null,
-                                    ""), SERVER_HOST_INSTITUTION_NAME("serverInformation.hostInstitution.name",
-                                        "htmlSetup.hostInstName", ""), SERVER_HOST_INSTITUTION_WEBSITE(
-                                            "serverInformation.hostInstitution.webSite", "htmlSetup.hostInstUrl",
-                                            ""), SERVER_HOST_INSTITUTION_LOGO_URL(
-                                                "serverInformation.hostInstitution.logoUrl",
-                                                "htmlSetup.hostInstLogoUrl", ""), SERVER_HOST_INSTITUTION_LOGO_ALT_TEXT(
-                                                    "serverInformation.hostInstitution.logoAltText",
-                                                    "htmlSetup.hostInstLogoAlt", "");
+    SERVER_NAME("serverInformation.name", "htmlSetup.installName", "Initial TDS Installation"),
+    SERVER_LOGO_URL("serverInformation.logoUrl", "htmlSetup.installLogoUrl", "threddsIcon.png"),
+    SERVER_LOGO_ALT_TEXT("serverInformation.logoAltText", "htmlSetup.installLogoAlt", "Initial TDS Installation"),
+    SERVER_ABSTRACT("serverInformation.abstract", null, "Scientific Data"),
+    SERVER_KEYWORDS("serverInformation.keywords", null, "meteorology, atmosphere, climate, ocean, earth science"),
+    SERVER_CONTACT_NAME("serverInformation.contact.name", null, ""),
+    SERVER_CONTACT_ORGANIZATION("serverInformation.contact.organization", null, ""),
+    SERVER_CONTACT_EMAIL("serverInformation.contact.email", null, ""),
+    SERVER_CONTACT_PHONE("serverInformation.contact.phone", null, ""),
+    SERVER_HOST_INSTITUTION_NAME("serverInformation.hostInstitution.name", "htmlSetup.hostInstName", ""),
+    SERVER_HOST_INSTITUTION_WEBSITE("serverInformation.hostInstitution.webSite", "htmlSetup.hostInstUrl", ""),
+    SERVER_HOST_INSTITUTION_LOGO_URL("serverInformation.hostInstitution.logoUrl", "htmlSetup.hostInstLogoUrl", ""),
+    SERVER_HOST_INSTITUTION_LOGO_ALT_TEXT("serverInformation.hostInstitution.logoAltText", "htmlSetup.hostInstLogoAlt",
+        "");
 
     private String key;
     private String alternateKey; // deprecated
@@ -111,14 +108,18 @@ class TdsConfigMapper {
 
 
   enum HtmlConfigMappings {
-    HTML_STANDARD_CSS_URL("htmlSetup.standardCssUrl", null, ""), HTML_CATALOG_CSS_URL("htmlSetup.catalogCssUrl", null,
-        ""), HTML_DATASET_CSS_URL("htmlSetup.datasetCssUrl", null, ""), HTML_OPENDAP_CSS_URL("htmlSetup.openDapCssUrl",
-            null, "tdsDap.css"), GOOGLE_TRACKING_CODE("htmlSetup.googleTrackingCode", null, ""),
+    HTML_STANDARD_CSS_URL("htmlSetup.standardCssUrl", null, ""),
+    HTML_CATALOG_CSS_URL("htmlSetup.catalogCssUrl", null, ""),
+    HTML_DATASET_CSS_URL("htmlSetup.datasetCssUrl", null, ""),
+    HTML_OPENDAP_CSS_URL("htmlSetup.openDapCssUrl", null, "tdsDap.css"),
+    GOOGLE_TRACKING_CODE("htmlSetup.googleTrackingCode", null, ""),
 
-    HTML_FOLDER_ICON_URL("htmlSetup.folderIconUrl", null, "folder.gif"), HTML_FOLDER_ICON_ALT("htmlSetup.folderIconAlt",
-        null, "Folder"), HTML_DATASET_ICON_URL("htmlSetup.datasetIconUrl", null, ""), HTML_DATASET_ICON_ALT(
-            "htmlSetup.datasetIconAlt", null, ""), HTML_USE_REMOTE_CAT_SERVICE("htmlSetup.useRemoteCatalogService",
-                null, "true"), HTML_GENERATE_DATASET_JSON_LD("htmlSetup.generateDatasetJsonLD", null, "false");
+    HTML_FOLDER_ICON_URL("htmlSetup.folderIconUrl", null, "folder.gif"),
+    HTML_FOLDER_ICON_ALT("htmlSetup.folderIconAlt", null, "Folder"),
+    HTML_DATASET_ICON_URL("htmlSetup.datasetIconUrl", null, ""),
+    HTML_DATASET_ICON_ALT("htmlSetup.datasetIconAlt", null, ""),
+    HTML_USE_REMOTE_CAT_SERVICE("htmlSetup.useRemoteCatalogService", null, "true"),
+    HTML_GENERATE_DATASET_JSON_LD("htmlSetup.generateDatasetJsonLD", null, "false");
 
     private String key;
     private String alternateKey;
@@ -169,10 +170,12 @@ class TdsConfigMapper {
   }
 
   enum WmsConfigMappings {
-    WMS_ALLOW("WMS.allow", null, "true"), WMS_ALLOW_REMOTE("WMS.allowRemote", null, "false"), WMS_PALETTE_LOCATION_DIR(
-        "WMS.paletteLocationDir", null,
-        null), WMS_MAXIMUM_IMAGE_WIDTH("WMS.maxImageWidth", null, "2048"), WMS_MAXIMUM_IMAGE_HEIGHT(
-            "WMS.maxImageHeight", null, "2048"), WMS_CONFIG_FILE("WMS.configFile", null, null);
+    WMS_ALLOW("WMS.allow", null, "true"),
+    WMS_ALLOW_REMOTE("WMS.allowRemote", null, "false"),
+    WMS_PALETTE_LOCATION_DIR("WMS.paletteLocationDir", null, null),
+    WMS_MAXIMUM_IMAGE_WIDTH("WMS.maxImageWidth", null, "2048"),
+    WMS_MAXIMUM_IMAGE_HEIGHT("WMS.maxImageHeight", null, "2048"),
+    WMS_CONFIG_FILE("WMS.configFile", null, null);
 
     private String key;
     private String alternateKey;
