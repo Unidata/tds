@@ -80,7 +80,7 @@ public class TestOnLocalServer {
   }
 
   public static byte[] getContent(String endpoint, int expectCode, ContentType expectContentType) {
-    return getContent( null, endpoint, new int [] {expectCode}, expectContentType);
+    return getContent(null, endpoint, new int[] {expectCode}, expectContentType);
   }
 
   public static byte[] getContent(String endpoint, int expectCode, String expectContentType) {

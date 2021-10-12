@@ -123,13 +123,13 @@ public class ServletUtil {
     String filename = file.getPath();
 
     // Check for server configured (well-known) content-type
-    if ( contentType == null)
+    if (contentType == null)
       contentType = req.getServletContext().getMimeType( filename);
 
     // If not, check for a TDS known content-type
-    if ( contentType == null) {
-      ContentType tdsSpecificContentType = ContentType.findContentTypeFromFilename( filename);
-      if ( tdsSpecificContentType != null)
+    if (contentType == null) {
+      ContentType tdsSpecificContentType = ContentType.findContentTypeFromFilename(filename);
+      if (tdsSpecificContentType != null)
         contentType = tdsSpecificContentType.getContentHeader();
       else
         // Otherwise, assume it is binary.
