@@ -17,7 +17,6 @@ public enum ContentType {
   html("text/html", "UTF-8"),
   jnlp("application/x-java-jnlp-file", null),
   json("application/json", "UTF-8"),
-  json("application/json", null),
   ncstream("application/octet-stream", null),
   netcdf("application/x-netcdf", null),
   ogc_exception("application/vnd.ogc.se_xml", "UTF-8"),
@@ -37,12 +36,9 @@ public enum ContentType {
       return ContentType.json;
     else if (filename.endsWith(".xml"))
       return ContentType.xml;
-    else if (filename.endsWith(".txt")
-            || filename.endsWith(".log")
-            || filename.endsWith(".out"))
+    else if (filename.endsWith(".txt") || filename.endsWith(".log") || filename.endsWith(".out"))
       return ContentType.text;
-    else if (filename.endsWith(".nc")
-            || filename.endsWith( ".nc4"))
+    else if (filename.endsWith(".nc") || filename.endsWith( ".nc4"))
       return ContentType.netcdf;
     else if (filename.indexOf(".log.") > 0)
       return ContentType.text;
