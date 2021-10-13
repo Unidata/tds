@@ -74,7 +74,7 @@ public class NcssGridIntegrationTest {
   @Test
   public void checkGridNoVars() throws Exception {
     String endpoint = TestOnLocalServer.withHttpPath("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd");
-    TestOnLocalServer.getContent(endpoint, 400, null);
+    TestOnLocalServer.getContent(endpoint, 400, (ContentType) null);
   }
 
   @Test

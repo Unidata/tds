@@ -32,27 +32,28 @@ public class TestFileServer {
   public static List<Object[]> getTestParameters() {
     List<Object[]> result = new ArrayList<>();
 
-    result.add(
-        new Object[] {"fileServer/rdaTest/ds094.2_dt/files/flxf01.gdas.A_PCP.SFC.01Z.grb2.gbx9", ContentType.binary});
+    // TODO - Consider consolidating files and catalog.
+    // Currently uses files from various locations and served through different catalog files.
+    result.add(new Object[] {"fileServer/scanLocal/point.covjson.json", ContentType.json.toString()});
+    result.add(new Object[] {"fileServer/rdaTest/ds094.2_dt/files/flxf01.gdas.A_PCP.SFC.01Z.grb2.gbx9",
+        ContentType.binary.toString()});
     result.add(new Object[] {"fileServer/testStationFeatureCollection/files/Surface_METAR_20060325_0000.nc",
-        ContentType.netcdf});
-    result.add(new Object[] {"fileServer/scanLocal/2004050312_eta_211.nc", ContentType.netcdf});
-    result.add(new Object[] {"fileServer/scanLocal/esfgTest.html", ContentType.html});
-    result.add(new Object[] {"fileServer/testNAMfmrc/files/20060925_0600.nc", ContentType.netcdf});
-    result.add(new Object[] {"fileServer/scanCdmUnitTests/formats/netcdf3/files/ctest0.nc", ContentType.netcdf}); // make
-                                                                                                                  // sure
-                                                                                                                  // files
-                                                                                                                  // doesnt
-                                                                                                                  // get
-                                                                                                                  // removed
+        ContentType.netcdf.toString()});
+    result.add(new Object[] {"fileServer/scanLocal/2004050312_eta_211.nc", ContentType.netcdf.toString()});
+    result.add(new Object[] {"fileServer/scanLocal/esfgTest.html", ContentType.html.toString()});
+    result.add(new Object[] {"fileServer/testNAMfmrc/files/20060925_0600.nc", ContentType.netcdf.toString()});
+
+    // make sure files don't get removed
+    result.add(
+        new Object[] {"fileServer/scanCdmUnitTests/formats/netcdf3/files/ctest0.nc", ContentType.netcdf.toString()});
 
     return result;
   }
 
   String path;
-  ContentType type;
+  String type;
 
-  public TestFileServer(String path, ContentType type) {
+  public TestFileServer(String path, String type) {
     this.path = path;
     this.type = type;
   }

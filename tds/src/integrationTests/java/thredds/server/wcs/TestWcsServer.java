@@ -117,7 +117,7 @@ public class TestWcsServer {
                                                               // that ok?
     String endpoint = TestOnLocalServer.withHttpPath(
         dataset2 + "&request=GetCoverage&COVERAGE=sst&BBOX=10,0,300,80&TIME=2002-12-07T00:00:00Z&FORMAT=GeoTIFF");
-    byte[] result = TestOnLocalServer.getContent(endpoint, 200, null);
+    byte[] result = TestOnLocalServer.getContent(endpoint, 200, (ContentType) null);
   }
 
   @Test
@@ -125,14 +125,14 @@ public class TestWcsServer {
                                                                         // exist
     String endpoint = TestOnLocalServer.withHttpPath(
         dataset2 + "&request=GetCoverage&COVERAGE=bad&BBOX=10,0,300,80&TIME=2002-12-07T00:00:00Z&FORMAT=GeoTIFF");
-    byte[] result = TestOnLocalServer.getContent(endpoint, 400, null);
+    byte[] result = TestOnLocalServer.getContent(endpoint, 400, (ContentType) null);
   }
 
   @Test
   public void testGetCoverage() throws IOException {
     String endpoint = TestOnLocalServer.withHttpPath(
         dataset2 + "&request=GetCoverage&COVERAGE=sst&BBOX=10,0,300,80&TIME=2002-12-01T00:00:00Z&FORMAT=GeoTIFF");
-    byte[] result = TestOnLocalServer.getContent(endpoint, 200, null);
+    byte[] result = TestOnLocalServer.getContent(endpoint, 200, (ContentType) null);
   }
 
   private DtCoverageDataset getDtCoverageDataset(NetcdfFile ncf) throws IOException {
@@ -145,7 +145,7 @@ public class TestWcsServer {
   public void testGetCoverageNetcdf() throws IOException {
     String endpoint = TestOnLocalServer.withHttpPath(
         dataset2 + "&request=GetCoverage&COVERAGE=sst&BBOX=10,0,300,80&TIME=2002-12-01T00:00:00Z&FORMAT=NetCDF3");
-    byte[] content = TestOnLocalServer.getContent(endpoint, 200, null);
+    byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
 
     // Open the binary response in memory
     try (NetcdfFile nf = NetcdfFiles.openInMemory("test_data.nc", content)) {
@@ -221,7 +221,7 @@ public class TestWcsServer {
     File tempFile = tempFolder.newFile();
     logger.debug("write to {}", tempFile.getAbsolutePath());
 
-    TestOnLocalServer.getContent(endpoint, 400, null);
+    TestOnLocalServer.getContent(endpoint, 400, (ContentType) null);
   }
 
 
@@ -229,7 +229,7 @@ public class TestWcsServer {
   public void testVert() throws IOException {
     String endpoint = TestOnLocalServer.withHttpPath(
         dataset1 + "&request=GetCoverage&COVERAGE=Temperature&TIME=2012-04-19T00:00:00Z&FORMAT=NetCDF3&vertical=800");
-    byte[] content = TestOnLocalServer.getContent(endpoint, 200, null);
+    byte[] content = TestOnLocalServer.getContent(endpoint, 200, (ContentType) null);
 
     // Open the binary response in memory
     try (NetcdfFile nf = NetcdfFiles.openInMemory("test_data.nc", content)) {
@@ -302,7 +302,7 @@ public class TestWcsServer {
     if (bb != null)
       getURL = getURL + "&bbox=" + bb;
 
-    byte[] content = TestOnLocalServer.getContent(getURL, 200, null);
+    byte[] content = TestOnLocalServer.getContent(getURL, 200, (ContentType) null);
 
     // Open the binary response in memory
     if (isNetcdf) {

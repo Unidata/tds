@@ -83,11 +83,19 @@ public class TestOnLocalServer {
     return getContent(null, endpoint, new int[] {expectCode}, expectContentType);
   }
 
+  public static byte[] getContent(String endpoint, int expectCode, String expectContentType) {
+    return getContent(null, endpoint, new int[] {expectCode}, expectContentType);
+  }
+
   public static byte[] getContent(String endpoint, int[] expectCodes, ContentType expectContentType) {
     return getContent(null, endpoint, expectCodes, expectContentType);
   }
 
   public static byte[] getContent(Credentials cred, String endpoint, int[] expectCodes, ContentType expectContentType) {
+    return getContent(cred, endpoint, expectCodes, expectContentType.getContentHeader());
+  }
+
+  public static byte[] getContent(Credentials cred, String endpoint, int[] expectCodes, String expectContentType) {
     logger.debug("req = '{}'", endpoint);
 
     try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
@@ -122,7 +130,7 @@ public class TestOnLocalServer {
 
       if (expectContentType != null) {
         Optional<String> header = method.getResponseHeaderValue(ContentType.HEADER);
-        Assert.assertEquals(expectContentType.getContentHeader().toLowerCase(), header.get().toLowerCase());
+        Assert.assertEquals(expectContentType.toLowerCase(), header.get().toLowerCase());
       }
 
       return method.getResponseAsBytes();
