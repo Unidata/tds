@@ -92,7 +92,7 @@ public class TestOnLocalServer {
   }
 
   public static byte[] getContent(Credentials cred, String endpoint, int[] expectCodes, ContentType expectContentType) {
-    return getContent( cred, endpoint, expectCodes, expectContentType.getContentHeader());
+    return getContent(cred, endpoint, expectCodes, expectContentType.getContentHeader());
   }
   public static byte[] getContent(Credentials cred, String endpoint, int[] expectCodes, String expectContentType) {
     logger.debug("req = '{}'", endpoint);
