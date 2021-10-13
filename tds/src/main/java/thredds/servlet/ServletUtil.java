@@ -124,7 +124,7 @@ public class ServletUtil {
 
     // Check for server configured (well-known) content-type
     if (contentType == null)
-      contentType = req.getServletContext().getMimeType( filename);
+      contentType = req.getServletContext().getMimeType(filename);
 
     // If not, check for a TDS known content-type
     if (contentType == null) {

@@ -38,7 +38,7 @@ public enum ContentType {
       return ContentType.xml;
     else if (filename.endsWith(".txt") || filename.endsWith(".log") || filename.endsWith(".out"))
       return ContentType.text;
-    else if (filename.endsWith(".nc") || filename.endsWith( ".nc4"))
+    else if (filename.endsWith(".nc") || filename.endsWith(".nc4"))
       return ContentType.netcdf;
     else if (filename.indexOf(".log.") > 0)
       return ContentType.text;
