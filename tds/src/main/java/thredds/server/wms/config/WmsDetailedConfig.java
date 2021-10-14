@@ -17,6 +17,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.XMLReaders;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 import org.slf4j.Logger;
@@ -101,6 +102,7 @@ public class WmsDetailedConfig {
     WmsDetailedConfig wmsConfig = new WmsDetailedConfig();
     try {
       SAXBuilder builder = new SAXBuilder();
+      builder.setXMLReaderFactory(XMLReaders.NONVALIDATING);
       builder.setExpandEntities(false);
       Document doc = builder.build(in);
       // Load the global default settings
