@@ -236,7 +236,7 @@ Here are some additional, optional changes you can make to increase maintainabil
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
         xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0 
-                            http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.2.xsd">
+                            https://schemas.unidata.ucar.edu/thredds/InvCatalog.1.2.xsd">
 
   <datasetRoot location="/esg/data" path="esg_testroot"/>
   <datasetRoot location="/esg/arc/data/" path="esg_obs4MIPs"/>

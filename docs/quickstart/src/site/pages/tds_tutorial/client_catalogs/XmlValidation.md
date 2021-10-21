@@ -20,7 +20,7 @@ If you also want to check _validity_ in those tools, you will need to declare th
 <catalog name="Validation" xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0
-    http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.6.xsd">
+    https://schemas.unidata.ucar.edu/thredds/InvCatalog.1.0.6.xsd">
   ...
 </catalog>
 ~~~
