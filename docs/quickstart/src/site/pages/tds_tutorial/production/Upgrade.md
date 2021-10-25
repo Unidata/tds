@@ -187,7 +187,7 @@ Here are some additional, optional changes you can make to increase maintainabil
   <catalog name="ESGF Master Catalog" version="1.2"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
-        xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0 http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.2.xsd">
+        xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0 https://schemas.unidata.ucar.edu/thredds/InvCatalog.1.2.xsd">
 
     <datasetRoot location="/esg/data" path="esg_testroot"/>
     <datasetRoot location="/esg/arc/data/" path="esg_obs4MIPs"/>
