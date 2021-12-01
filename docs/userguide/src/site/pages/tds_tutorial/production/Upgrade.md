@@ -68,7 +68,7 @@ The following is no longer used:
 ## Java Web Start
 
 Java Web Start has been [deprecated as of Java 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and has been removed in [Java 11](https://www.oracle.com/technetwork/java/javase/11-relnote-issues-5012449.html){:target="_blank"}, which is the Long-term Release post-Java 8.
-Due to these changes, the netCDF-Java project no longer provide Java Web Start files as of version 5.0.0.
+Due to these changes, the netCDF-Java project no longer provide Java Web Start files as of version 5.0.
 Following suite, the TDS no longer provide any Web Start based Viewers on Dataset pages out of the box.
 
 ### Catalogs
@@ -135,7 +135,7 @@ Schema version is now `1.2`.
 
 * Feature Collection details are [here](feature_collections_ref.html)
 
-### Recommendations for 5.0 catalogs
+### Recommendations for 5.x catalogs
 
 * Put all `<datasetRoot>` elements in root catalog.
 * Put all `<catalogScan>` elements in root catalog.

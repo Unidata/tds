@@ -17,12 +17,10 @@ topnav_dropdowns:
           external_url: https://www.unidata.ucar.edu/software/netcdf-java/
         - title: GitHub
           external_url: https://github.com/Unidata/netcdf-java
-        - title: User guide
+        - title: User's guide
           external_url: https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/index.html
-        - title: Developer guide
-          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/arraystructures_ref.html
-        - title: NcML
-          external_url: https://docs.unidata.ucar.edu/thredds/ncml/2.2/index.html
+        - title: Public API
+          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.4/javadoc/index.html
 
     - title: TDS
       folderitems:
@@ -30,6 +28,8 @@ topnav_dropdowns:
           external_url: https://www.unidata.ucar.edu/software/tds/
         - title: GitHub
           external_url: https://github.com/Unidata/tds
+        - title: Documentation
+          external_url: https://docs.unidata.ucar.edu/tds/5.1/userguide/index.html
 
     - title: Rosetta
       folderitems:

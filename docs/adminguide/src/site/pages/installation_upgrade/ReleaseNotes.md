@@ -29,7 +29,7 @@ As of TDS 5, the following are considered to be minimum system requirements:
 
 ## JVM Setting Requirement Changes
 
-New to TDS 5.0, you **must** specify the location of the [TDS content directory](tds_content_directory.html) in the [JVM settings](jvm_settings.html#tds-content-directory) documentation.
+New to TDS 5, you **must** specify the location of the [TDS content directory](tds_content_directory.html) in the [JVM settings](jvm_settings.html#tds-content-directory) documentation.
 
 There is no default location for this directory in the TDS; **`tds.content.root.path` must be set, or the TDS will not start**. 
 
