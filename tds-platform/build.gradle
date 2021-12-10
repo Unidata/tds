@@ -53,7 +53,7 @@ dependencies {
 
     // tds logging
     api 'org.slf4j:slf4j-api'
-    api 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
+    api 'org.apache.logging.log4j:log4j-slf4j-impl:2.15.0'
     runtime 'ch.qos.logback:logback-classic'
 
     // Spring
@@ -109,7 +109,7 @@ dependencies {
     api "com.google.gwt:gwt-user:${depVersion.gwt}"
 
     // threddsIso
-    runtime 'EDS:tds-plugin:2.4.1'
+    runtime 'EDS:tds-plugin:2.4.2'
     runtime 'net.sf.saxon:Saxon-HE:9.7.0-8'
     runtime "jaxen:jaxen:${depVersion.jaxen}"
   }
