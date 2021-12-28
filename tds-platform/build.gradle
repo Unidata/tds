@@ -17,7 +17,7 @@ dependencies {
   api enforcedPlatform('org.springframework:spring-framework-bom:5.3.12')
   api enforcedPlatform('org.springframework.security:spring-security-bom:5.4.7')
   api platform('net.openhft:chronicle-bom:2.21ea74')
-  api enforcedPlatform("org.apache.logging.log4j:log4j-bom:2.17.0")
+  api enforcedPlatform("org.apache.logging.log4j:log4j-bom:2.17.1")
 
   constraints {
     // dependencies without explicit versions are getting their version set by one of the platforms above
