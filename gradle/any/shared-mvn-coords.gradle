@@ -31,5 +31,5 @@ ext {
   // TODO: figure out way to keep this version in sync with netcdf-java version
   // It is included in the netcdf-java-bom (via netcdf-java-platform), but we can't
   // reference that version in a gradle build script (see gradle/any/protobuf.gradle)
-  depVersion.protobuf = '3.12.4'
+  depVersion.protobuf = '3.19.3'
 }
