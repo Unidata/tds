@@ -85,5 +85,6 @@
     ]]></notes>
     <packageUrl regex="true">^pkg:maven/com\.h2database/h2@.*$</packageUrl>
     <cve>CVE-2021-23463</cve>
+    <cve>CVE-2021-42392</cve>
   </suppress>
 </suppressions>
