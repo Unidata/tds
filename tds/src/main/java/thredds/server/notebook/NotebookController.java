@@ -24,11 +24,11 @@ import javax.validation.Valid;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -55,7 +55,8 @@ public class NotebookController {
       @Valid NotebookParamsBean params, BindingResult validationResult)
       throws ServiceNotAllowed, IOException, BindException, URISyntaxException {
 
-    if (!allowedServices.isAllowed(StandardService.jupyterNotebook) || filename.isEmpty()) {
+    if (!allowedServices.isAllowed(StandardService.jupyterNotebook) || filename.isEmpty()
+        || !validateRequestedFile(filename)) {
       throw new ServiceNotAllowed(StandardService.jupyterNotebook.toString());
     }
     if (validationResult.hasErrors()) {
@@ -126,6 +127,18 @@ public class NotebookController {
     return StandardService.jupyterNotebook.getBase();
   }
 
+  private boolean validateRequestedFile(String filename) {
+    // check file extension
+    if (!Arrays.asList(".py", ".ipynb").stream().anyMatch(ext -> filename.endsWith(ext))) {
+      return false;
+    }
+    // do not allow filenames that include parent dirs
+    if (filename.contains("../")) {
+      return false;
+    }
+    return true;
+  }
+
   private Dataset getDataset(String catalogName, HttpServletRequest req)
       throws URISyntaxException, IOException, IllegalArgumentException {
     if (catalogName == null) {
@@ -166,7 +179,7 @@ public class NotebookController {
     return new JSONArray(objs);
   }
 
-  private File getNotebookFile(String filename) {
+  private File getNotebookFile(String filename) throws IOException {
     if (filename.isEmpty()) {
       return null;
     }
@@ -175,10 +188,14 @@ public class NotebookController {
 
     if (notebooksDir.exists() && notebooksDir.isDirectory()) {
       File jupyterViewer = new File(notebooksDir, filename);
+      // extra safety check
+      if (!jupyterViewer.getCanonicalPath().startsWith(notebooksDir.getCanonicalPath())) {
+        throw new AccessDeniedException(filename);
+      }
       if (jupyterViewer.exists()) {
         return jupyterViewer;
-      } ;
-    } ;
+      }
+    }
     return null;
   }
 }
