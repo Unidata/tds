@@ -223,7 +223,7 @@ public class RadarServerController implements InitializingBean {
   private String idvDatasetCatalog(String xml) {
     String ret = xml.replace("variables", "Variables");
     ret = ret.replace("timeCoverage", "TimeSpan");
-    StringBuilder sub = new StringBuilder(ret.substring(0, ret.indexOf("<geospatialCoverage>")));
+    StringBuilder sub = new StringBuilder(ret.substring(0, ret.indexOf("<geospatialCoverage")));
     sub.append("<LatLonBox>\n\t<north>90.0</north>\n\t<south>-90.0</south>");
     sub.append("\n\t<east>180.0</east>\n\t<west>-180.0</west></LatLonBox>");
     String endCoverage = "</geospatialCoverage>";
