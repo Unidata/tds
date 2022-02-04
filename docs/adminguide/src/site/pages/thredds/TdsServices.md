@@ -67,7 +67,7 @@ Consult the [Configuration Catalogs](config_catalog.html) documentation and [TDS
 |-----------------|-------------------|-------------------------------|-------------------------------|
 | Service Name         | Default Availability | Access Point   |
 |:----------------|:------------------|:------------------------------|:-------------------------------|
-| THREDDS Catalog Services | Enabled | `/thredds/catalog.{xml|html}`<br/> `/thredds/catalog/*/catalog.{xml|html}`<br/>`/thredds/*/*.{xml|html}` |
+| THREDDS Catalog Services | Enabled | `/thredds/catalog.{xml|html}`<br/> `/thredds/catalog/*/catalog.{xml|html}`<br/>`/thredds/catalog/*/*.{xml|html}` |
 | Remote THREDDS Catalog Service | *Disabled* | `/thredds/remoteCatalogService` |
 
 
