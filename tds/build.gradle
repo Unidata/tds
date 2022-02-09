@@ -227,7 +227,7 @@ war {
   dependsOn compileGwt
   from gwtDir
   destinationDirectory = new File(rootProject.getBuildDir(), "downloads")
-  archiveFileName = "thredds##${project.getVersion()}.war"
+  archiveFileName = "thredds-${project.getVersion()}.war"
 }
 
 jar {
