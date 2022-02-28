@@ -8,6 +8,8 @@ package thredds.server.ncss.validation;
 import java.text.ParseException;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+
+import com.google.common.base.Strings;
 import thredds.server.ncss.params.NcssParamsBean;
 import ucar.nc2.time.Calendar;
 import ucar.nc2.time.CalendarDate;
@@ -64,9 +66,10 @@ public class TimeParamsValidator implements ConstraintValidator<TimeParamsConstr
     String time_end = params.getTime_end();
     String time_duration = params.getTime_duration();
 
-    // all null are valid parameters
-    if (time_start == null && time_end == null && time_duration == null)
+    // all null/empty are valid parameters
+    if (nullOrEmpty(time_start) && nullOrEmpty(time_end) && nullOrEmpty(time_duration)) {
       return true;
+    }
 
     // has 2 of 3
     if (!hasValidDateRange(time_start, time_end, time_duration)) {
@@ -77,17 +80,17 @@ public class TimeParamsValidator implements ConstraintValidator<TimeParamsConstr
 
     // check the formats
     boolean isValid = true;
-    if (time_start != null) {
+    if (!nullOrEmpty(time_start)) {
       isValid = (null != validateISOString(time_start, "{thredds.server.ncSubset.validation.param.time_start}",
           constraintValidatorContext));
     }
 
-    if (time_end != null) {
+    if (!nullOrEmpty(time_end)) {
       isValid &= (null != validateISOString(time_end, "{thredds.server.ncSubset.validation.param.time_end}",
           constraintValidatorContext));
     }
 
-    if (time_duration != null) {
+    if (!nullOrEmpty(time_duration)) {
       try {
         new TimeDuration(time_duration);
 
@@ -100,7 +103,7 @@ public class TimeParamsValidator implements ConstraintValidator<TimeParamsConstr
     }
 
     // check time_start < time_end
-    if (isValid && time_start != null && time_end != null) {
+    if (isValid && !nullOrEmpty(time_start) && !nullOrEmpty(time_end)) {
       CalendarDate start = isoString2Date(time_start);
       CalendarDate end = isoString2Date(time_end);
 
@@ -138,17 +141,17 @@ public class TimeParamsValidator implements ConstraintValidator<TimeParamsConstr
    */
   private boolean hasValidDateRange(String time_start, String time_end, String time_duration) {
     // no range
-    if ((null == time_start) && (null == time_end) && (null == time_duration))
+    if(nullOrEmpty(time_start) && nullOrEmpty(time_end) && nullOrEmpty(time_duration)) {
       return false;
+    }
 
-    if ((null != time_start) && (null != time_end))
+    if (!nullOrEmpty(time_start) && !nullOrEmpty(time_end)) {
       return true;
+    }
 
-    if ((null != time_start) && (null != time_duration))
+    if ((!nullOrEmpty(time_start) || !nullOrEmpty(time_end)) && !nullOrEmpty(time_duration)) {
       return true;
-
-    if ((null != time_end) && (null != time_duration))
-      return true;
+    }
 
     // misformed range
     // errs.append("Must have 2 of 3 parameters: time_start, time_end, time_duration\n");
@@ -169,5 +172,9 @@ public class TimeParamsValidator implements ConstraintValidator<TimeParamsConstr
     if ("present".equalsIgnoreCase(isoString))
       return CalendarDate.present();
     return CalendarDateFormatter.isoStringToCalendarDate(Calendar.getDefault(), isoString);
+  }
+
+  private static boolean nullOrEmpty(String str) {
+    return Strings.isNullOrEmpty(str);
   }
 }

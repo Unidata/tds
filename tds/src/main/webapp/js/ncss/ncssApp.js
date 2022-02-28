@@ -115,9 +115,10 @@ function buildAccessUrl() {
             queryString += "&";
         }
 
-        // We intentionally do no filtering of elements, even ones with no values, because we want to display
-        // EXACTLY the URL that the form will submit.
-        queryString += `${entry[0]}=${entry[1]}`
+        var val = entry[1];
+        if (!val || val.length == 0) { continue; }
+
+        queryString += `${entry[0]}=${val}`
     };
 
     var accessUrl = encodeURI(`${datasetUrl}?${queryString}`);
