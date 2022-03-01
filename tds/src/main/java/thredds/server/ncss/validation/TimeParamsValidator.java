@@ -141,7 +141,7 @@ public class TimeParamsValidator implements ConstraintValidator<TimeParamsConstr
    */
   private boolean hasValidDateRange(String time_start, String time_end, String time_duration) {
     // no range
-    if(nullOrEmpty(time_start) && nullOrEmpty(time_end) && nullOrEmpty(time_duration)) {
+    if (nullOrEmpty(time_start) && nullOrEmpty(time_end) && nullOrEmpty(time_duration)) {
       return false;
     }
 
