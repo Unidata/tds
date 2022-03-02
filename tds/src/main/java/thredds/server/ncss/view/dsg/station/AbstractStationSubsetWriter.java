@@ -16,13 +16,8 @@ import ucar.nc2.ft.point.StationTimeSeriesFeatureImpl;
 import ucar.nc2.ft2.coverage.SubsetParams;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
-import ucar.unidata.geoloc.LatLonPoint;
-import ucar.unidata.geoloc.LatLonPoints;
-import ucar.unidata.geoloc.LatLonRect;
-import ucar.unidata.geoloc.Station;
 import javax.annotation.Nonnull;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,15 +30,20 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
 
   public AbstractStationSubsetWriter(FeatureDatasetPoint fdPoint, SubsetParams ncssParams)
       throws NcssException, IOException {
+    this(fdPoint, ncssParams, 0);
+  }
+
+  public AbstractStationSubsetWriter(FeatureDatasetPoint fdPoint, SubsetParams ncssParams, int collectionIndex)
+      throws NcssException, IOException {
     super(fdPoint, ncssParams);
 
     List<DsgFeatureCollection> featColList = fdPoint.getPointFeatureCollectionList();
-    assert featColList.size() == 1 : "Is there ever a case when this is NOT 1?";
+    assert featColList.size() > collectionIndex : "Could not find feature collection.";
     assert featColList.get(
-        0) instanceof StationTimeSeriesFeatureCollection : "This class only deals with StationTimeSeriesFeatureCollections.";
+        collectionIndex) instanceof StationTimeSeriesFeatureCollection : "This class only deals with StationTimeSeriesFeatureCollections.";
 
-    this.stationFeatureCollection = (StationTimeSeriesFeatureCollection) featColList.get(0);
-    this.wantedStations = getStationsInSubset(stationFeatureCollection, ncssParams);
+    this.stationFeatureCollection = (StationTimeSeriesFeatureCollection) featColList.get(collectionIndex);
+    this.wantedStations = StationWriterUtils.getStationsInSubset(stationFeatureCollection, ncssParams);
 
     if (this.wantedStations.isEmpty()) {
       throw new FeaturesNotFoundException("No stations found in subset.");
@@ -80,8 +80,9 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
       count += writeStationTimeSeriesFeature(subsettedStationFeat);
     }
 
-    if (count == 0)
+    if (count == 0) {
       throw new NcssException("No features are in the requested subset");
+    }
 
     writeFooter();
   }
@@ -162,73 +163,5 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
         return new PointIteratorFiltered(stationFeat.getPointFeatureIterator(), new TimeFilter(closestTime));
       }
     }
-  }
-
-
-  // LOOK could do better : "all", and maybe HashSet<Name>
-  public static List<StationFeature> getStationsInSubset(StationTimeSeriesFeatureCollection stationFeatCol,
-      SubsetParams ncssParams) throws IOException {
-
-    List<StationFeature> wantedStations;
-
-    // verify SpatialSelection has some stations
-    if (ncssParams.getStations() != null) {
-      List<String> stnNames = ncssParams.getStations();
-
-      if (stnNames.get(0).equals("all")) {
-        wantedStations = stationFeatCol.getStationFeatures();
-      } else {
-        wantedStations = stationFeatCol.getStationFeatures(stnNames);
-      }
-    } else if (ncssParams.getLatLonBoundingBox() != null) {
-      LatLonRect llrect = ncssParams.getLatLonBoundingBox();
-      wantedStations = stationFeatCol.getStationFeatures(llrect);
-
-    } else if (ncssParams.getLatLonPoint() != null) {
-      Station closestStation = findClosestStation(stationFeatCol, ncssParams.getLatLonPoint());
-      List<String> stnList = new ArrayList<>();
-      stnList.add(closestStation.getName());
-      wantedStations = stationFeatCol.getStationFeatures(stnList);
-
-    } else { // Want all.
-      wantedStations = stationFeatCol.getStationFeatures();
-    }
-
-    return wantedStations;
-  }
-
-  /*
-   * Find the station closest to the specified point.
-   * The metric is (lat-lat0)**2 + (cos(lat0)*(lon-lon0))**2
-   *
-   * @param lat latitude value
-   * 
-   * @param lon longitude value
-   * 
-   * @return name of station closest to the specified point
-   * 
-   * @throws IOException if read error
-   */
-  public static Station findClosestStation(StationTimeSeriesFeatureCollection stationFeatCol, LatLonPoint pt)
-      throws IOException {
-    double lat = pt.getLatitude();
-    double lon = pt.getLongitude();
-    double cos = Math.cos(Math.toRadians(lat));
-    List<StationFeature> stations = stationFeatCol.getStationFeatures();
-    Station min_station = stations.get(0);
-    double min_dist = Double.MAX_VALUE;
-
-    for (Station s : stations) {
-      double lat1 = s.getLatitude();
-      double lon1 = LatLonPoints.lonNormal(s.getLongitude(), lon);
-      double dy = Math.toRadians(lat - lat1);
-      double dx = cos * Math.toRadians(lon - lon1);
-      double dist = dy * dy + dx * dx;
-      if (dist < min_dist) {
-        min_dist = dist;
-        min_station = s;
-      }
-    }
-    return min_station;
   }
 }

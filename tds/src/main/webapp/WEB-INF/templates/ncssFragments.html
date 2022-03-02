@@ -87,13 +87,13 @@
             <input class="vibg_box2" type="text" name="time_end" id="time_end" size="27" required />
 
             <label class="vibg_label3" for="timeStride">Stride:</label>
-            <input class="vibg_box3" type="text" name="timeStride" id="timeStride" size="10" value="1" required />
+            <input class="vibg_box3" type="text" name="timeStride" id="timeStride" size="10" required />
         </div>
 
         <div th:replace=":: resetButtonContainer(fullTimeExt)" />
     </div>
 
-    <div id="singleTimeSubset" class="tabPane sidebarInput">
+    <div id="singleTimeSubset" class="tabPane sidebarInput" style="display:none;">
         <label for="time">Time:</label>
         <input type="text" name="time" id="time" size="27" required />
     </div>

@@ -8,8 +8,7 @@ import net.opengis.waterml.x20.CollectionDocument;
 import net.opengis.waterml.x20.CollectionType;
 import org.springframework.http.HttpHeaders;
 import thredds.server.ncss.exception.NcssException;
-import thredds.util.ContentType;
-import thredds.util.TdsPathUtils;
+import thredds.server.ncss.view.dsg.HttpHeaderWriter;
 import ucar.nc2.VariableSimpleIF;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft.StationTimeSeriesFeature;
@@ -18,7 +17,6 @@ import ucar.nc2.ft2.coverage.SubsetParams;
 import ucar.nc2.ogc.MarshallingUtil;
 import ucar.nc2.ogc.om.NcOMObservationPropertyType;
 import ucar.nc2.ogc.waterml.NcDocumentMetadataPropertyType;
-import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -31,8 +29,13 @@ public class StationSubsetWriterWaterML extends AbstractStationSubsetWriter {
   private final CollectionType collection;
 
   public StationSubsetWriterWaterML(FeatureDatasetPoint fdPoint, SubsetParams ncssParams, OutputStream out)
-      throws XMLStreamException, NcssException, IOException {
-    super(fdPoint, ncssParams);
+      throws NcssException, IOException {
+    this(fdPoint, ncssParams, out, 0);
+  }
+
+  public StationSubsetWriterWaterML(FeatureDatasetPoint fdPoint, SubsetParams ncssParams, OutputStream out,
+      int collectionIndex) throws NcssException, IOException {
+    super(fdPoint, ncssParams, collectionIndex);
 
     this.out = out;
     this.collectionDoc = CollectionDocument.Factory.newInstance();
@@ -41,16 +44,7 @@ public class StationSubsetWriterWaterML extends AbstractStationSubsetWriter {
 
   @Override
   public HttpHeaders getHttpHeaders(String datasetPath, boolean isStream) {
-    HttpHeaders httpHeaders = new HttpHeaders();
-
-    if (!isStream) {
-      httpHeaders.set("Content-Location", datasetPath);
-      String fileName = TdsPathUtils.getFileNameForResponse(datasetPath, ".xml");
-      httpHeaders.set("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-    }
-
-    httpHeaders.set(ContentType.HEADER, ContentType.xml.getContentHeader());
-    return httpHeaders;
+    return HttpHeaderWriter.getHttpHeadersForXML(datasetPath, isStream);
   }
 
   @Override

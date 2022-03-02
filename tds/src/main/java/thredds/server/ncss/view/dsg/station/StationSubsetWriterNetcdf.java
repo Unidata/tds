@@ -7,12 +7,10 @@ package thredds.server.ncss.view.dsg.station;
 import org.springframework.http.HttpHeaders;
 import thredds.server.ncss.controller.NcssDiskCache;
 import thredds.server.ncss.exception.NcssException;
-import thredds.util.ContentType;
-import thredds.util.TdsPathUtils;
+import thredds.server.ncss.view.dsg.HttpHeaderWriter;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFileWriter;
 import ucar.nc2.constants.CDM;
-import ucar.nc2.ft.DsgFeatureCollection;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft.point.StationPointFeature;
 import ucar.nc2.ft.point.writer.CFPointWriterConfig;
@@ -42,6 +40,9 @@ public class StationSubsetWriterNetcdf extends AbstractStationSubsetWriter {
       OutputStream out, NetcdfFileWriter.Version version) throws NcssException, IOException {
     super(fdPoint, ncssParams);
 
+    assert fdPoint.getPointFeatureCollectionList()
+        .size() == 1 : "Multiple feature collections cannot be written as a CF dataset";
+
     this.ncssDiskCache = ncssDiskCache;
     this.out = out;
     this.version = version;
@@ -50,11 +51,12 @@ public class StationSubsetWriterNetcdf extends AbstractStationSubsetWriter {
     List<Attribute> attribs = new ArrayList<>();
     attribs.add(new Attribute(CDM.TITLE, "Extracted data from TDS Feature Collection " + fdPoint.getLocation()));
 
-    // get the timeUnit and altUnit from the first FeatureCollection
-    assert fdPoint.getPointFeatureCollectionList().size() > 0;
-    DsgFeatureCollection fc = fdPoint.getPointFeatureCollectionList().get(0);
-    CalendarDateUnit timeUnit = fc.getTimeUnit();
-    String altUnit = fc.getAltUnits();
+    // get the timeUnit and altUnit from the FeatureCollection
+    CalendarDateUnit timeUnit = this.stationFeatureCollection.getTimeUnit();
+    if (timeUnit == null) {
+      timeUnit = CalendarDateUnit.unixDateUnit;
+    }
+    String altUnit = this.stationFeatureCollection.getAltUnits();
 
     this.cfWriter = new WriterCFStationCollection(netcdfResult.getAbsolutePath(), attribs, wantedVariables, timeUnit,
         altUnit, new CFPointWriterConfig(version));
@@ -62,21 +64,7 @@ public class StationSubsetWriterNetcdf extends AbstractStationSubsetWriter {
 
   @Override
   public HttpHeaders getHttpHeaders(String datasetPath, boolean isStream) {
-    HttpHeaders httpHeaders = new HttpHeaders();
-
-    String fileName = TdsPathUtils.getFileNameForResponse(datasetPath, version);
-    String url = ncssDiskCache.getServletCachePath() + fileName;
-
-    if (version == NetcdfFileWriter.Version.netcdf3) {
-      httpHeaders.set(ContentType.HEADER, ContentType.netcdf.getContentHeader());
-    } else if (version == NetcdfFileWriter.Version.netcdf4 || version == NetcdfFileWriter.Version.netcdf4_classic) {
-      httpHeaders.set(ContentType.HEADER, ContentType.netcdf.getContentHeader());
-    }
-
-    httpHeaders.set("Content-Location", url);
-    httpHeaders.set("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-
-    return httpHeaders;
+    return HttpHeaderWriter.getHttpHeadersForNetcdf(datasetPath, isStream, ncssDiskCache, version);
   }
 
   @Override

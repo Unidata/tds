@@ -8,7 +8,6 @@ import thredds.server.ncss.exception.NcssException;
 import thredds.server.ncss.view.dsg.DsgSubsetWriter;
 import ucar.nc2.ft.*;
 import ucar.nc2.ft2.coverage.SubsetParams;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,15 +17,20 @@ import java.util.List;
 public abstract class AbstractPointSubsetWriter extends DsgSubsetWriter {
   protected final PointFeatureCollection pointFeatureCollection;
 
-  public AbstractPointSubsetWriter(FeatureDatasetPoint fdPoint, SubsetParams ncssParams)
-      throws NcssException, IOException {
+  public AbstractPointSubsetWriter(FeatureDatasetPoint fdPoint, SubsetParams ncssParams) throws NcssException {
+    this(fdPoint, ncssParams, 0);
+  }
+
+  public AbstractPointSubsetWriter(FeatureDatasetPoint fdPoint, SubsetParams ncssParams, int collectionIndex)
+      throws NcssException {
     super(fdPoint, ncssParams);
 
     List<DsgFeatureCollection> featColList = fdPoint.getPointFeatureCollectionList();
-    assert featColList.size() == 1 : "Is there ever a case when this is NOT 1?";
-    assert featColList.get(0) instanceof PointFeatureCollection : "This class only deals with PointFeatureCollections.";
+    assert featColList.size() > collectionIndex : "Could not find feature collection.";
+    assert featColList
+        .get(collectionIndex) instanceof PointFeatureCollection : "This class only deals with PointFeatureCollections.";
 
-    this.pointFeatureCollection = (PointFeatureCollection) featColList.get(0);
+    this.pointFeatureCollection = (PointFeatureCollection) featColList.get(collectionIndex);
   }
 
   public abstract void writeHeader(PointFeature pf) throws Exception;

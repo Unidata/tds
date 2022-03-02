@@ -40,7 +40,7 @@
 
         <div th:replace="templates/ncssFragments :: latLonSubset" />
 
-        <div id="coordinateSubset" class="tabPane sidebarInput" th:if="${gcd.horizCoordSys.isProjection()}">
+        <div id="coordinateSubset" class="tabPane sidebarInput" style="display:none;" th:if="${gcd.horizCoordSys.isProjection()}">
           <h5>Bounding box (in projection coords)</h5>
 
           <div class="boundingBoxGrid">
