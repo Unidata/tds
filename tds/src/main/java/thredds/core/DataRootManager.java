@@ -151,7 +151,7 @@ public class DataRootManager implements InitializingBean {
   }
 
   /**
-   * Return the the location to which the given path maps.
+   * Return the location to which the given path maps.
    * Null is returned if the dataset does not exist, the
    * matching DatasetScan or DataRoot filters out the requested MFile, the MFile does not represent a File
    * (i.e., it is not a CrawlableDatasetFile), or an I/O error occurs
