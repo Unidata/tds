@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+  <dimension name="obs" length="45" isUnlimited="true" />
+  <dimension name="station" length="3" />
+  <dimension name="station_id_strlen" length="3" />
+  <dimension name="station_description_strlen" length="17" />
+  <dimension name="profile" length="15" />
+  <dimension name="profileId_strlen" length="3" />
+
+  <variable name="latitude" shape="station" type="double">
+    <attribute name="units" value="degrees_north" />
+    <attribute name="long_name" value="station latitude" />
+  <values>40.0 42.0 44.0</values>
+  </variable>
+
+  <variable name="longitude" shape="station" type="double">
+    <attribute name="units" value="degrees_east" />
+    <attribute name="long_name" value="station longitude" />
+  <values>-100.0 -97.0 -94.0</values>
+  </variable>
+
+  <variable name="station_id" shape="station station_id_strlen" type="char">
+    <attribute name="long_name" value="station identifier" />
+    <attribute name="cf_role" value="timeseries_id" />
+	<values>AAABBBCCC</values>
+  </variable>
+
+  <variable name="station_description" shape="station station_description_strlen" type="char">
+    <attribute name="long_name" value="station description" />
+    <attribute name="standard_name" value="platform_name" />
+	<values>DescriptionForAAADescriptionForBBBDescriptionForCCC</values>
+  </variable>
+
+  <variable name="profileId" shape="profile profileId_strlen" type="char">
+    <attribute name="long_name" value="profile identifier" />
+    <attribute name="cf_role" value="profile_id" />
+    <attribute name="missing_value" value="-9999" />
+  <values>197197197197197197197197197197197197197197197</values>
+  </variable>
+
+  <variable name="nobs" shape="profile" type="int">
+    <attribute name="long_name" value="number of obs for this profile" />
+    <attribute name="sample_dimension" value="obs" />
+  <values>3 3 3 3 3 3 3 3 3 3 3 3 3 3 3</values>
+  </variable>
+
+  <variable name="profileTime" shape="profile" type="double">
+    <attribute name="units" value="Day since 1970-01-01T00:00:00Z" />
+    <attribute name="long_name" value="nominal time of profile" />
+    <attribute name="calendar" value="proleptic_gregorian" />
+    <values>0.0 10.0 20.0 30.0 40.0 0.0 10.0 20.0 30.0 40.0 0.0 10.0 20.0 30.0 40.0</values>
+  </variable>
+
+  <variable name="stationIndex" shape="profile" type="int">
+    <attribute name="long_name" value="station index for this profile" />
+    <attribute name="instance_dimension" value="station" />
+	<values>0 0 0 0 0 1 1 1 1 1 2 2 2 2 2</values>
+  </variable>
+
+  <variable name="altitude" shape="obs" type="double">
+    <attribute name="units" value="m" />
+    <attribute name="long_name" value="obs altitude" />
+    <attribute name="standard_name" value="altitude" />
+    <attribute name="positive" value="up" />
+    <attribute name="_ChunkSizes" type="uint" value="1024" />
+  <values>100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0 100.0 106.0 112.0</values>
+  </variable>
+
+  <variable name="pr" shape="obs" type="float">
+    <attribute name="units" value="kg m-2 s-1" />
+    <attribute name="long_name" value="precipitation_flux" />
+    <attribute name="standard_name" value="precipitation_flux" />
+    <attribute name="coordinates" value="profileTime latitude longitude altitude"/>
+    <attribute name="_ChunkSizes" type="uint" value="2048" />
+	<values>1 4 7 10 13 16 19 22 25 28 31 34 37 40 43 46 49 52 55 58 61 64 67 70 73 76 79 82 85 88 91 94 97 100 103 106 109 112 115 118 121 124 127 130 133</values>
+  </variable>
+
+  <variable name="tas" shape="obs" type="float">
+    <attribute name="units" value="K" />
+    <attribute name="long_name" value="air_temperature" />
+    <attribute name="standard_name" value="air_temperature" />
+    <attribute name="coordinates" value="profileTime latitude longitude altitude"/>
+    <attribute name="_ChunkSizes" type="uint" value="2048" />
+    <values>10 40 70 100 130 160 190 220 250 280 310 340 370 400 430 460 490 520 550 580 610 640 670 700 730 760 790 820 850 880 910 940 970 1000 1030 1060 1090 1120 1150 1180 1210 1240 1270 1300 1330</values>
+  </variable>
+
+  <attribute name="Conventions" value="CF-1.6" />
+  <attribute name="history" value="Written by CFPointWriter" />
+  <attribute name="title" value="Extracted data from TDS Feature Collection" />
+  <attribute name="geospatial_lat_min" type="double" value="39.9995" />
+  <attribute name="geospatial_lat_max" type="double" value="44.0005" />
+  <attribute name="geospatial_lon_min" type="double" value="-100.0005" />
+  <attribute name="geospatial_lon_max" type="double" value="-93.9995" />
+  <attribute name="featureType" value="timeSeriesProfile" />
+  <attribute name="DSG_representation" value="Ragged array representation of time series profiles, H.5.3" />
+  <attribute name="_NCProperties" value="version=2,netcdf=4.7.4,hdf5=1.10.6" />
+  <attribute name="time_coverage_start" value="1970-01-01T00:00:00Z" />
+  <attribute name="time_coverage_end" value="1970-02-10T00:00:00Z" />
+</netcdf>

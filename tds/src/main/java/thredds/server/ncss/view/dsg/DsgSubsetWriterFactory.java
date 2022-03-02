@@ -8,13 +8,12 @@ import thredds.server.ncss.controller.NcssDiskCache;
 import thredds.server.ncss.exception.NcssException;
 import thredds.server.ncss.exception.UnsupportedResponseFormatException;
 import thredds.server.ncss.format.SupportedFormat;
+import thredds.server.ncss.view.dsg.any_point.MixedFeatureTypeSubsetWriterCSV;
+import thredds.server.ncss.view.dsg.any_point.MixedFeatureTypeSubsetWriterXML;
 import thredds.server.ncss.view.dsg.point.PointSubsetWriterCSV;
 import thredds.server.ncss.view.dsg.point.PointSubsetWriterNetcdf;
 import thredds.server.ncss.view.dsg.point.PointSubsetWriterXML;
-import thredds.server.ncss.view.dsg.station.StationSubsetWriterCSV;
-import thredds.server.ncss.view.dsg.station.StationSubsetWriterNetcdf;
-import thredds.server.ncss.view.dsg.station.StationSubsetWriterWaterML;
-import thredds.server.ncss.view.dsg.station.StationSubsetWriterXML;
+import thredds.server.ncss.view.dsg.station.*;
 import ucar.nc2.NetcdfFileWriter.Version;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.ft.FeatureDatasetPoint;
@@ -32,7 +31,6 @@ public abstract class DsgSubsetWriterFactory {
       NcssDiskCache ncssDiskCache, OutputStream out, SupportedFormat format)
       throws NcssException, XMLStreamException, IOException {
     FeatureType featureType = fdPoint.getFeatureType();
-
     if (!featureType.isPointFeatureType()) {
       throw new NcssException(String.format("Expected a point feature type, not %s", featureType));
     }
@@ -42,6 +40,10 @@ public abstract class DsgSubsetWriterFactory {
         return newPointInstance(fdPoint, ncssParams, ncssDiskCache, out, format);
       case STATION:
         return newStationInstance(fdPoint, ncssParams, ncssDiskCache, out, format);
+      case STATION_PROFILE:
+        return newStationProfileInstance(fdPoint, ncssParams, ncssDiskCache, out, format);
+      case ANY_POINT:
+        return newMixedFeatureInstance(fdPoint, ncssParams, out, format);
       default:
         throw new UnsupportedOperationException(String.format("%s feature type is not yet supported.", featureType));
     }
@@ -89,6 +91,50 @@ public abstract class DsgSubsetWriterFactory {
         return new StationSubsetWriterNetcdf(fdPoint, ncssParams, ncssDiskCache, out, Version.netcdf4);
       case WATERML2:
         return new StationSubsetWriterWaterML(fdPoint, ncssParams, out);
+      default:
+        throw new UnsupportedResponseFormatException("Unknown result type = " + format.getFormatName());
+    }
+  }
+
+  public static DsgSubsetWriter newStationProfileInstance(FeatureDatasetPoint fdPoint, SubsetParams ncssParams,
+      NcssDiskCache ncssDiskCache, OutputStream out, SupportedFormat format)
+      throws XMLStreamException, NcssException, IOException {
+    switch (format) {
+      case XML_STREAM:
+      case XML_FILE:
+        return new StationProfileSubsetWriterXML(fdPoint, ncssParams, out);
+      case CSV_STREAM:
+      case CSV_FILE:
+        return new StationProfileSubsetWriterCSV(fdPoint, ncssParams, out);
+      case NETCDF3:
+        return new StationProfileSubsetWriterNetcdf(fdPoint, ncssParams, ncssDiskCache, out, Version.netcdf3);
+      case NETCDF4:
+        return new StationProfileSubsetWriterNetcdf(fdPoint, ncssParams, ncssDiskCache, out, Version.netcdf4_classic);
+      case NETCDF4EXT:
+        return new StationProfileSubsetWriterNetcdf(fdPoint, ncssParams, ncssDiskCache, out, Version.netcdf4);
+      case WATERML2:
+        throw new UnsupportedResponseFormatException(
+            String.format("%s format not supported for %s feature type.", format, fdPoint.getFeatureType()));
+      default:
+        throw new UnsupportedResponseFormatException("Unknown result type = " + format.getFormatName());
+    }
+  }
+
+  public static DsgSubsetWriter newMixedFeatureInstance(FeatureDatasetPoint fdPoint, SubsetParams ncssParams,
+      OutputStream out, SupportedFormat format) throws XMLStreamException, NcssException, IOException {
+    switch (format) {
+      case XML_STREAM:
+      case XML_FILE:
+        return new MixedFeatureTypeSubsetWriterXML(fdPoint, ncssParams, out);
+      case CSV_STREAM:
+      case CSV_FILE:
+        return new MixedFeatureTypeSubsetWriterCSV(fdPoint, ncssParams, out);
+      case NETCDF3:
+      case NETCDF4:
+      case NETCDF4EXT:
+      case WATERML2:
+        throw new UnsupportedResponseFormatException(
+            String.format("%s format not supported for %s feature type.", format, fdPoint.getFeatureType()));
       default:
         throw new UnsupportedResponseFormatException("Unknown result type = " + format.getFormatName());
     }

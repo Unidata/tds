@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FeatureCollection>
+<stationProfileFeatureCollection>
+    <stationFeature date="0001-01-01T00:00:00Z" altitude="0">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="4D" units="">11.0</data>
+        <data name="full4" units="">11.0</data>
+    </stationFeature>
+    <stationFeature date="0001-01-01T00:00:00Z" altitude="10">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="4D" units="">111.0</data>
+        <data name="full4" units="">111.0</data>
+    </stationFeature>
+    <stationFeature date="0001-01-01T00:00:00Z" altitude="20">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="4D" units="">211.0</data>
+        <data name="full4" units="">211.0</data>
+    </stationFeature>
+    <stationFeature date="0001-01-01T00:00:00Z" altitude="30">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="4D" units="">311.0</data>
+        <data name="full4" units="">311.0</data>
+    </stationFeature>
+    <stationFeature date="0001-01-01T01:00:00Z" altitude="0">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="4D" units="">1011.0</data>
+        <data name="full4" units="">1011.0</data>
+    </stationFeature>
+    <stationFeature date="0001-01-01T01:00:00Z" altitude="10">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="4D" units="">1111.0</data>
+        <data name="full4" units="">1111.0</data>
+    </stationFeature>
+    <stationFeature date="0001-01-01T01:00:00Z" altitude="20">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="4D" units="">1211.0</data>
+        <data name="full4" units="">1211.0</data>
+    </stationFeature>
+    <stationFeature date="0001-01-01T01:00:00Z" altitude="30">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="4D" units="">1311.0</data>
+        <data name="full4" units="">1311.0</data>
+    </stationFeature>
+</stationProfileFeatureCollection>
+<stationFeatureCollection>
+    <stationFeature date="0001-01-01T00:00:00Z">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="0">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="T1noZ" units="">11.0</data>
+    </stationFeature>
+</stationFeatureCollection>
+<stationFeatureCollection>
+    <stationFeature date="1970-01-01T00:00:00Z">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="0">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="2D" units="">11.0</data>
+    </stationFeature>
+</stationFeatureCollection>
+<stationProfileFeatureCollection>
+    <stationFeature date="1970-01-01T00:00:00Z" altitude="0">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="3D" units="">11.0</data>
+        <data name="full3" units="">11.0</data>
+    </stationFeature>
+    <stationFeature date="1970-01-01T00:00:00Z" altitude="10">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="3D" units="">111.0</data>
+        <data name="full3" units="">111.0</data>
+    </stationFeature>
+    <stationFeature date="1970-01-01T00:00:00Z" altitude="20">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="3D" units="">211.0</data>
+        <data name="full3" units="">211.0</data>
+    </stationFeature>
+    <stationFeature date="1970-01-01T00:00:00Z" altitude="30">
+        <station name="GridPointRequestedAt[3.000N_5.000E]" latitude="3.000" longitude="5.000" altitude="-5">GridPointRequestedAt[3.000N_5.000E]</station>
+        <data name="3D" units="">311.0</data>
+        <data name="full3" units="">311.0</data>
+    </stationFeature>
+</stationProfileFeatureCollection>
+</FeatureCollection>

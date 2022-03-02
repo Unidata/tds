@@ -7,8 +7,7 @@ package thredds.server.ncss.view.dsg.point;
 import java.nio.charset.StandardCharsets;
 import org.springframework.http.HttpHeaders;
 import thredds.server.ncss.exception.NcssException;
-import thredds.util.ContentType;
-import thredds.util.TdsPathUtils;
+import thredds.server.ncss.view.dsg.HttpHeaderWriter;
 import ucar.ma2.Array;
 import ucar.ma2.StructureData;
 import ucar.nc2.VariableSimpleIF;
@@ -30,26 +29,19 @@ public class PointSubsetWriterCSV extends AbstractPointSubsetWriter {
   final protected PrintWriter writer;
 
   public PointSubsetWriterCSV(FeatureDatasetPoint fdPoint, SubsetParams ncssParams, OutputStream out)
-      throws NcssException, IOException {
-    super(fdPoint, ncssParams);
+      throws NcssException {
+    this(fdPoint, ncssParams, out, 0);
+  }
+
+  public PointSubsetWriterCSV(FeatureDatasetPoint fdPoint, SubsetParams ncssParams, OutputStream out,
+      int collectionIndex) throws NcssException {
+    super(fdPoint, ncssParams, collectionIndex);
     this.writer = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
   }
 
   @Override
   public HttpHeaders getHttpHeaders(String datasetPath, boolean isStream) {
-    HttpHeaders httpHeaders = new HttpHeaders();
-
-    if (!isStream) {
-      httpHeaders.set("Content-Location", datasetPath);
-      String fileName = TdsPathUtils.getFileNameForResponse(datasetPath, ".csv");
-      httpHeaders.set("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-      httpHeaders.add(ContentType.HEADER, ContentType.csv.getContentHeader());
-    } else {
-      // The problem is that the browser won't display text/csv inline.
-      httpHeaders.add(ContentType.HEADER, ContentType.text.getContentHeader());
-    }
-
-    return httpHeaders;
+    return HttpHeaderWriter.getHttpHeadersForCSV(datasetPath, isStream);
   }
 
   @Override
