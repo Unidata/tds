@@ -84,8 +84,11 @@
       reason: flagged by owasp as being vulnerable, but we are not using this dependency in the tds, so a false positive.
     ]]></notes>
     <packageUrl regex="true">^pkg:maven/com\.h2database/h2@.*$</packageUrl>
+
+    <cpe>cpe:/:a:h2database:h2:1.3.173</cpe>
     <cve>CVE-2021-23463</cve>
     <cve>CVE-2021-42392</cve>
     <cve>CVE-2022-23221</cve>
+    <cwe>94</cwe>
   </suppress>
 </suppressions>
