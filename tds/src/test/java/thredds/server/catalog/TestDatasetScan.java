@@ -185,7 +185,7 @@ public class TestDatasetScan {
   }
 
   @Test
-  public void testLatest() throws IOException, ParseException {
+  public void testLatest() throws IOException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
 
     Dataset ds = cat.findDatasetByID("NWS/NPN/6min");
@@ -226,7 +226,7 @@ public class TestDatasetScan {
   }
 
   @Test
-  public void testEsgfProblems() throws IOException, ParseException {
+  public void testEsgfProblems() throws IOException {
     String filePath = "../tds/src/test/content/thredds/testEsgfProblems.xml";
     ConfigCatalog cat = TestConfigCatalogBuilder.open("file:" + filePath);
     Assert.assertNotNull(cat);
