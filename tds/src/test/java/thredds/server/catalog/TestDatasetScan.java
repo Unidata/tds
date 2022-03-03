@@ -71,7 +71,6 @@ public class TestDatasetScan {
     ConfigCatalog cat = TestConfigCatalogBuilder.open("file:" + filePath);
     Assert.assertNotNull(cat);
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    // System.out.printf("%s%n", writer.writeXML( cat ));
 
     List<DatasetRootConfig> roots = cat.getDatasetRoots();
     for (DatasetRootConfig root : roots)
