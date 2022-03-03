@@ -74,7 +74,7 @@ public class TestDatasetScan {
 
     List<DatasetRootConfig> roots = cat.getDatasetRoots();
     for (DatasetRootConfig root : roots)
-      System.out.printf("DatasetRoot %s -> %s%n", root.path, root.location);
+      logger.debug("DatasetRoot {} -> {}", root.path, root.location);
     assertEquals("Incorrect # of catalog roots", 5, roots.size());
 
     Dataset ds = cat.findDatasetByID("scanCdmUnitTests");
@@ -86,14 +86,14 @@ public class TestDatasetScan {
     Assert.assertTrue("Does not have DatasetScan property", ds.hasProperty("DatasetScan"));
 
     DatasetScanConfig config = dss.getConfig();
-    System.out.printf("%s%n", config);
+    logger.debug(config.toString());
 
     Catalog scanCat = dss.makeCatalogForDirectory("scanCdmUnitTests", cat.getBaseURI()).makeCatalog();
     Assert.assertNotNull(scanCat);
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
 
     scanCat = dss.makeCatalogForDirectory("scanCdmUnitTests/ncss/test", cat.getBaseURI()).makeCatalog();
-    System.out.printf("%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
   }
 
   @Test
@@ -109,14 +109,14 @@ public class TestDatasetScan {
     assertEquals("all", serviceName);
 
     DatasetScanConfig config = dss.getConfig();
-    System.out.printf("%s%n", config);
+    logger.debug(config.toString());
 
     Catalog scanCat = dss.makeCatalogForDirectory("station/profiler/wind/06min", cat.getBaseURI()).makeCatalog();
     Assert.assertNotNull(scanCat);
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
     if (showCats)
-      System.out.printf("%n%s%n", writer.writeXML(scanCat));
+      logger.debug(writer.writeXML(scanCat));
     assertEquals(1, scanCat.getDatasets().size());
     Dataset root = scanCat.getDatasets().get(0);
     assertEquals(3, root.getDatasets().size());
@@ -130,7 +130,7 @@ public class TestDatasetScan {
     scanCat = dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
     Assert.assertNotNull(scanCat);
     if (showCats)
-      System.out.printf("%n%s%n", writer.writeXML(scanCat));
+      logger.debug(writer.writeXML(scanCat));
 
     assertEquals(1, scanCat.getDatasets().size());
     root = scanCat.getDatasets().get(0);
@@ -156,7 +156,7 @@ public class TestDatasetScan {
     assertEquals("all", serviceName);
 
     DatasetScanConfig config = dss.getConfig();
-    System.out.printf("%s%n", config);
+    logger.debug(config.toString());
 
     Catalog scanCat =
         dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
@@ -164,7 +164,7 @@ public class TestDatasetScan {
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
     if (showCats)
-      System.out.printf("%n%s%n", writer.writeXML(scanCat));
+      logger.debug(writer.writeXML(scanCat));
     assertEquals(1, scanCat.getDatasets().size());
     Dataset root = scanCat.getDatasets().get(0);
     assertEquals(3, root.getDatasets().size());
@@ -199,7 +199,7 @@ public class TestDatasetScan {
     assertEquals("all", serviceName);
 
     DatasetScanConfig config = dss.getConfig();
-    System.out.printf("%s%n", config);
+    logger.debug(config.toString());
 
     Catalog scanCat =
         dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
@@ -207,7 +207,7 @@ public class TestDatasetScan {
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
     if (showCats)
-      System.out.printf("%n%s%n", writer.writeXML(scanCat));
+      logger.debug(writer.writeXML(scanCat));
     assertEquals(1, scanCat.getDatasets().size());
     Dataset root = scanCat.getDatasets().get(0);
 
@@ -242,14 +242,14 @@ public class TestDatasetScan {
     assertEquals("fileservice", serviceName);
 
     DatasetScanConfig config = dss.getConfig();
-    System.out.printf("%s%n", config);
+    logger.debug(config.toString());
 
     Catalog scanCat = dss.makeCatalogForDirectory("gass-ytoc-mip", cat.getBaseURI()).makeCatalog();
     Assert.assertNotNull(scanCat);
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
     if (showCats)
-      System.out.printf("%n%s%n", writer.writeXML(scanCat));
+      logger.debug(writer.writeXML(scanCat));
     assertEquals(1, scanCat.getDatasets().size());
     Dataset root = scanCat.getDatasets().get(0);
     String sn = root.getServiceNameDefault();
