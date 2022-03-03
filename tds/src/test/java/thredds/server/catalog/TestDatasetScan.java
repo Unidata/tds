@@ -69,6 +69,7 @@ public class TestDatasetScan {
   public void testMakeCatalog() throws IOException {
     String filePath = "../tds/src/test/content/thredds/catalog.xml";
     ConfigCatalog cat = TestConfigCatalogBuilder.open("file:" + filePath);
+    Assert.assertNotNull(cat);
     CatalogXmlWriter writer = new CatalogXmlWriter();
     // System.out.printf("%s%n", writer.writeXML( cat ));
 
@@ -99,6 +100,7 @@ public class TestDatasetScan {
   @Test
   public void testReverseSort() throws IOException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
+    Assert.assertNotNull(cat);
 
     Dataset ds = cat.findDatasetByID("NWS/NPN/6min");
     Assert.assertNotNull(ds);
@@ -145,6 +147,7 @@ public class TestDatasetScan {
   @Test
   public void testTimeCoverage() throws IOException, ParseException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
+    Assert.assertNotNull(cat);
 
     Dataset ds = cat.findDatasetByID("NWS/NPN/6min");
     Assert.assertNotNull(ds);
@@ -187,6 +190,7 @@ public class TestDatasetScan {
   @Test
   public void testLatest() throws IOException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
+    Assert.assertNotNull(cat);
 
     Dataset ds = cat.findDatasetByID("NWS/NPN/6min");
     Assert.assertNotNull(ds);
