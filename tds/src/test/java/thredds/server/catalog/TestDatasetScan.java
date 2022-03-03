@@ -32,7 +32,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author caron
  * @since 1/21/2015
- * 
+ *
  *        Execution notes:
  *        If you plan to run this under Intellij IDE,
  *        you will need to modify the 'Before Launch' window
@@ -264,6 +264,4 @@ public class TestDatasetScan {
       assertEquals("fileservice", s.getName());
     }
   }
-
-
 }
