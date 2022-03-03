@@ -33,7 +33,7 @@ import static org.junit.Assert.assertEquals;
  * @author caron
  * @since 1/21/2015
  * 
- *        Excution notes:
+ *        Execution notes:
  *        If you plan to run this under Intellij IDE,
  *        you will need to modify the 'Before Launch' window
  *        in the Edit Configuration window and add the following
