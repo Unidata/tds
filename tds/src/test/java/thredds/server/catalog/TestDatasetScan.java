@@ -75,14 +75,14 @@ public class TestDatasetScan {
     List<DatasetRootConfig> roots = cat.getDatasetRoots();
     for (DatasetRootConfig root : roots)
       System.out.printf("DatasetRoot %s -> %s%n", root.path, root.location);
-    Assert.assertTrue("Incorrect # of catalog roots: expect 5 found " + roots.size(), roots.size() == 5);
+    assertEquals("Incorrect # of catalog roots", 5, roots.size());
 
     Dataset ds = cat.findDatasetByID("scanCdmUnitTests");
-    Assert.assertTrue("Null dataset", ds != null);
+    Assert.assertNotNull("Null dataset", ds);
     Assert.assertTrue("dataset not DatasetScan", ds instanceof DatasetScan);
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
-    Assert.assertTrue("Servicename default is not 'all'", serviceName.equals("all"));
+    assertEquals("Servicename default is not 'all'", "all", serviceName);
     Assert.assertTrue("has DatasetScan property", ds.hasProperty("DatasetScan"));
 
     DatasetScanConfig config = dss.getConfig();
