@@ -83,7 +83,7 @@ public class TestDatasetScan {
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
     assertEquals("Servicename default is not 'all'", "all", serviceName);
-    Assert.assertTrue("has DatasetScan property", ds.hasProperty("DatasetScan"));
+    Assert.assertTrue("Does not have DatasetScan property", ds.hasProperty("DatasetScan"));
 
     DatasetScanConfig config = dss.getConfig();
     System.out.printf("%s%n", config);
