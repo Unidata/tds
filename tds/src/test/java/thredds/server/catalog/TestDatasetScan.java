@@ -50,7 +50,7 @@ import static org.junit.Assert.assertEquals;
 public class TestDatasetScan {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  static private final boolean showCats = true;
+  private static final boolean showCats = true;
 
   @Before
   public void setup() {
