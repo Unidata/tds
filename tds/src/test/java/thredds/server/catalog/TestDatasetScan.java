@@ -51,6 +51,7 @@ public class TestDatasetScan {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private static final boolean showCats = true;
+  private static final String CATALOG = "thredds/server/catalog/TestDatasetScan.xml";
 
   @Before
   public void setup() {
@@ -98,7 +99,7 @@ public class TestDatasetScan {
 
   @Test
   public void testReverseSort() throws IOException {
-    ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
+    ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource(CATALOG);
     assertThat(cat).isNotNull();
 
     Dataset ds = cat.findDatasetByID("NWS/NPN/6min");
@@ -121,11 +122,16 @@ public class TestDatasetScan {
     Dataset root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(3);
 
-    // directories get reverse sorted
+    // directories (which appear after files) get reverse sorted
     List<Dataset> list = root.getDatasets();
+    assertThat(list.size()).isEqualTo(3);
     String name0 = list.get(0).getName();
     String name1 = list.get(1).getName();
-    assertThat(name0.compareTo(name1)).isGreaterThan(0);
+    String name2 = list.get(2).getName();
+    assertThat(name0).isEqualTo("latest.xml");
+    assertThat(name1).isEqualTo("20131102");
+    assertThat(name2).isEqualTo("20131101");
+    assertThat(name1.compareTo(name2)).isGreaterThan(0);
 
     scanCat = dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
     assertThat(scanCat).isNotNull();
@@ -138,14 +144,49 @@ public class TestDatasetScan {
 
     // files get reverse sorted
     list = root.getDatasets();
+    assertThat(list.size()).isEqualTo(3);
     name0 = list.get(0).getName();
     name1 = list.get(1).getName();
+    name2 = list.get(2).getName();
     assertThat(name0.compareTo(name1)).isGreaterThan(0);
+    assertThat(name1.compareTo(name2)).isGreaterThan(0);
+  }
+
+  @Test
+  public void shouldFilterFiles() throws IOException {
+    final ConfigCatalog catalog = TestConfigCatalogBuilder.getFromResource(CATALOG);
+    assertThat(catalog).isNotNull();
+
+    final DatasetScan datasetScan = (DatasetScan) catalog.findDatasetByID("TestDatasetScanFileFiltering");
+    assertThat(datasetScan).isNotNull();
+    final Catalog scanCatalog =
+        datasetScan.makeCatalogForDirectory("test-dataset-scan-file-filtering/", catalog.getBaseURI()).makeCatalog();
+
+    assertThat(scanCatalog.getDatasets().size()).isEqualTo(1);
+    final List<Dataset> datasets = scanCatalog.getDatasets().get(0).getDatasets();
+    assertThat(datasets.size()).isAtLeast(1);
+    assertThat(datasets.stream().allMatch(dataset -> dataset.getName().startsWith("e"))).isTrue();
+  }
+
+  @Test
+  public void shouldFilterFolders() throws IOException {
+    final ConfigCatalog catalog = TestConfigCatalogBuilder.getFromResource(CATALOG);
+    assertThat(catalog).isNotNull();
+
+    final DatasetScan datasetScan = (DatasetScan) catalog.findDatasetByID("TestDatasetScanFolderFiltering");
+    assertThat(datasetScan).isNotNull();
+    final Catalog scanCatalog =
+        datasetScan.makeCatalogForDirectory("test-dataset-scan-folder-filtering/", catalog.getBaseURI()).makeCatalog();
+
+    assertThat(scanCatalog.getDatasets().size()).isEqualTo(1);
+    final List<Dataset> datasets = scanCatalog.getDatasets().get(0).getDatasets();
+    assertThat(datasets.size()).isAtLeast(1);
+    assertThat(datasets.stream().allMatch(dataset -> dataset.getName().startsWith("n"))).isTrue();
   }
 
   @Test
   public void testTimeCoverage() throws IOException, ParseException {
-    ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
+    ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource(CATALOG);
     assertThat(cat).isNotNull();
 
     Dataset ds = cat.findDatasetByID("NWS/NPN/6min");
@@ -188,7 +229,7 @@ public class TestDatasetScan {
 
   @Test
   public void testLatest() throws IOException {
-    ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
+    ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource(CATALOG);
     assertThat(cat).isNotNull();
 
     Dataset ds = cat.findDatasetByID("NWS/NPN/6min");

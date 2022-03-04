@@ -60,6 +60,8 @@ public class TestFileServer {
 
     result.add(new Object[] {"fileServer/s3-thredds-test-data/ncml/nc/namExtract/20060925_0600.nc",
         ContentType.netcdf.toString(), "9bfc2f566b18851b02ee472f20be1acd"});
+    result.add(new Object[] {"fileServer/s3-dataset-scan/ncml/nc/namExtract/20060925_0600.nc",
+        ContentType.netcdf.toString(), "9bfc2f566b18851b02ee472f20be1acd"});
 
     // make sure files don't get removed
     result.add(new Object[] {"fileServer/scanCdmUnitTests/formats/netcdf3/files/ctest0.nc",
