@@ -4,6 +4,7 @@
  */
 package thredds.server.catalog;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
@@ -30,10 +31,9 @@ public class TdsLocalCatalog {
     CatalogBuilder builder = new CatalogBuilder();
     Catalog cat = builder.buildFromLocation(catPath, null);
     if (builder.hasFatalError()) {
-      System.out.println("Validate failed " + catPath + " = \n<" + builder.getErrorMessage() + ">");
-      assert false : builder.getErrorMessage();
+      Assert.fail("Validate failed " + catPath + " = \n<" + builder.getErrorMessage() + ">");
     } else if (showValidationMessages)
-      System.out.println("Validate ok " + catPath + " = \n<" + builder.getErrorMessage() + ">");
+      logger.debug("Validate ok " + catPath + " = \n<" + builder.getErrorMessage() + ">");
 
     return cat;
   }
@@ -41,15 +41,14 @@ public class TdsLocalCatalog {
 
   public static Catalog open(String catalogName) throws IOException {
     String catalogPath = TestOnLocalServer.withHttpPath(catalogName);
-    System.out.println("\n open= " + catalogPath);
+    logger.debug("\n open= " + catalogPath);
 
     CatalogBuilder builder = new CatalogBuilder();
     Catalog cat = builder.buildFromLocation(catalogPath, null);
     if (builder.hasFatalError()) {
-      System.out.println("Validate failed " + catalogName + " = \n<" + builder.getErrorMessage() + ">");
-      assert false : builder.getErrorMessage();
+      Assert.fail("Validate failed " + catalogName + " = \n<" + builder.getErrorMessage() + ">");
     } else if (showValidationMessages)
-      System.out.println("Validate ok " + catalogName + " = \n<" + builder.getErrorMessage() + ">");
+      logger.debug("Validate ok " + catalogName + " = \n<" + builder.getErrorMessage() + ">");
 
     return cat;
   }
@@ -63,9 +62,9 @@ public class TdsLocalCatalog {
     Catalog mainCat;
     try {
       mainCat = openDefaultCatalog();
-      assert mainCat != null;
+      Assert.assertNotNull(mainCat);
     } catch (IOException e) {
-      assert false;
+      Assert.fail();
     }
   }
 
