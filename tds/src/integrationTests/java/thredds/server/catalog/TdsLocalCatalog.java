@@ -13,7 +13,6 @@ import thredds.test.util.TestOnLocalServer;
 import thredds.client.catalog.Catalog;
 import thredds.client.catalog.builder.CatalogBuilder;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 
@@ -26,20 +25,20 @@ public class TdsLocalCatalog {
 
   public static boolean showValidationMessages = false;
 
-  public static Catalog openFromURI(URI uri) throws IOException {
+  public static Catalog openFromURI(URI uri) {
     String catPath = uri.toString();
     return openFromPath(catPath);
   }
 
 
-  public static Catalog open(String catalogName) throws IOException {
+  public static Catalog open(String catalogName) {
     String catalogPath = TestOnLocalServer.withHttpPath(catalogName);
     logger.debug("\n open= " + catalogPath);
 
     return openFromPath(catalogPath);
   }
 
-  private static Catalog openFromPath(String catalogPath) throws IOException {
+  private static Catalog openFromPath(String catalogPath) {
     CatalogBuilder builder = new CatalogBuilder();
     Catalog cat = builder.buildFromLocation(catalogPath, null);
     if (builder.hasFatalError()) {
@@ -50,12 +49,12 @@ public class TdsLocalCatalog {
     return cat;
   }
 
-  public static Catalog openDefaultCatalog() throws IOException {
+  public static Catalog openDefaultCatalog() {
     return open("/catalog.xml");
   }
 
   @Test
-  public void readCatalog() throws IOException {
+  public void readCatalog() {
     Catalog mainCat = openDefaultCatalog();
     Assert.assertNotNull(mainCat);
   }
