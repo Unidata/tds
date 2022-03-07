@@ -58,14 +58,9 @@ public class TdsLocalCatalog {
   }
 
   @Test
-  public void readCatalog() {
-    Catalog mainCat;
-    try {
-      mainCat = openDefaultCatalog();
-      Assert.assertNotNull(mainCat);
-    } catch (IOException e) {
-      Assert.fail();
-    }
+  public void readCatalog() throws IOException {
+    Catalog mainCat = openDefaultCatalog();
+    Assert.assertNotNull(mainCat);
   }
 
 }
