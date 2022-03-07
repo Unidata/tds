@@ -40,8 +40,6 @@ public class TdsLocalCatalog {
 
 
   public static Catalog open(String catalogName) throws IOException {
-    if (catalogName == null)
-      catalogName = "/catalog.xml";
     String catalogPath = TestOnLocalServer.withHttpPath(catalogName);
     System.out.println("\n open= " + catalogPath);
 
@@ -56,11 +54,15 @@ public class TdsLocalCatalog {
     return cat;
   }
 
+  public static Catalog openDefaultCatalog() throws IOException {
+    return open("/catalog.xml");
+  }
+
   @Test
   public void readCatalog() {
     Catalog mainCat;
     try {
-      mainCat = open(null);
+      mainCat = openDefaultCatalog();
       assert mainCat != null;
     } catch (IOException e) {
       assert false;

@@ -36,7 +36,7 @@ public class TestTdsNcml {
 
   @Test
   public void testNcmlInDataset() throws IOException {
-    Catalog cat = TdsLocalCatalog.open(null);
+    Catalog cat = TdsLocalCatalog.openDefaultCatalog();
 
     Dataset ds = cat.findDatasetByID("ExampleNcMLModified");
     assert (ds != null) : "cant find dataset 'ExampleNcMLModified'";
@@ -69,7 +69,7 @@ public class TestTdsNcml {
 
   @Test
   public void testNcmlInDatasetScan() throws IOException {
-    Catalog cat = TdsLocalCatalog.open(null);
+    Catalog cat = TdsLocalCatalog.openDefaultCatalog();
 
     Dataset catref = cat.findDatasetByID("ModifyDatasetScan");
     Assert.assertNotNull("cant find dataset by id 'ModifyDatasetScan'", catref);

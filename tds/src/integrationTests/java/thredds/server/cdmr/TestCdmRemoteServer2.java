@@ -33,7 +33,7 @@ public class TestCdmRemoteServer2 {
 
   @Test
   public void testCdmRemote() throws IOException {
-    Catalog cat = TdsLocalCatalog.open(null);
+    Catalog cat = TdsLocalCatalog.openDefaultCatalog();
 
     Dataset ds = cat.findDatasetByID("testClimatology");
     assert (ds != null) : "cant find dataset 'testClimatology'";
