@@ -28,14 +28,7 @@ public class TdsLocalCatalog {
 
   public static Catalog openFromURI(URI uri) throws IOException {
     String catPath = uri.toString();
-    CatalogBuilder builder = new CatalogBuilder();
-    Catalog cat = builder.buildFromLocation(catPath, null);
-    if (builder.hasFatalError()) {
-      Assert.fail("Validate failed " + catPath + " = \n<" + builder.getErrorMessage() + ">");
-    } else if (showValidationMessages)
-      logger.debug("Validate ok " + catPath + " = \n<" + builder.getErrorMessage() + ">");
-
-    return cat;
+    return openFromPath(catPath);
   }
 
 
@@ -43,12 +36,16 @@ public class TdsLocalCatalog {
     String catalogPath = TestOnLocalServer.withHttpPath(catalogName);
     logger.debug("\n open= " + catalogPath);
 
+    return openFromPath(catalogPath);
+  }
+
+  private static Catalog openFromPath(String catalogPath) throws IOException {
     CatalogBuilder builder = new CatalogBuilder();
     Catalog cat = builder.buildFromLocation(catalogPath, null);
     if (builder.hasFatalError()) {
-      Assert.fail("Validate failed " + catalogName + " = \n<" + builder.getErrorMessage() + ">");
+      Assert.fail("Validate failed " + catalogPath + " = \n<" + builder.getErrorMessage() + ">");
     } else if (showValidationMessages)
-      logger.debug("Validate ok " + catalogName + " = \n<" + builder.getErrorMessage() + ">");
+      logger.debug("Validate ok " + catalogPath + " = \n<" + builder.getErrorMessage() + ">");
 
     return cat;
   }
