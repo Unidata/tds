@@ -30,7 +30,6 @@ public class TdsLocalCatalog {
     return openFromPath(catPath);
   }
 
-
   public static Catalog open(String catalogName) {
     String catalogPath = TestOnLocalServer.withHttpPath(catalogName);
     logger.debug("\n open= " + catalogPath);
@@ -58,5 +57,4 @@ public class TdsLocalCatalog {
     Catalog mainCat = openDefaultCatalog();
     Assert.assertNotNull(mainCat);
   }
-
 }
