@@ -16,7 +16,6 @@ import thredds.client.catalog.tools.DataFactory;
 import thredds.server.catalog.TdsLocalCatalog;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
-import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
@@ -105,7 +104,7 @@ public class TestTdsNcml {
   }
 
   @Test
-  public void testAggregationExisting() throws IOException, InvalidRangeException {
+  public void testAggregationExisting() throws IOException {
     final String endpoint = TestOnLocalServer.withHttpPath("dodsC/ExampleNcML/Agg.nc");
     logger.debug("{}", endpoint);
 
@@ -141,7 +140,7 @@ public class TestTdsNcml {
   }
 
   @Test
-  public void testAddMetadataToScan() throws IOException, InvalidRangeException {
+  public void testAddMetadataToScan() throws IOException {
     final String endpoint = TestOnLocalServer.withHttpPath("cdmremote/testGridScan/GFS_CONUS_80km_20120229_1200.grib1");
     logger.debug("{}", endpoint);
 
