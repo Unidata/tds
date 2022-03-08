@@ -36,17 +36,17 @@ public class TestTdsNcml {
 
   @Test
   public void testNcmlInDataset() throws IOException {
-    Catalog cat = TdsLocalCatalog.openDefaultCatalog();
+    final Catalog cat = TdsLocalCatalog.openDefaultCatalog();
 
-    Dataset ds = cat.findDatasetByID("ExampleNcMLModified");
+    final Dataset ds = cat.findDatasetByID("ExampleNcMLModified");
     Assert.assertNotNull("cant find dataset 'ExampleNcMLModified'", ds);
     Assert.assertEquals(FeatureType.GRID, ds.getFeatureType());
 
     // ncml should not be sent to the client
     // assert null == ds.getNcmlElement();
 
-    DataFactory fac = new DataFactory();
-    Formatter log = new Formatter();
+    final DataFactory fac = new DataFactory();
+    final Formatter log = new Formatter();
 
     try (NetcdfDataset ncd = fac.openDataset(ds, false, null, log)) {
       Assert.assertNotNull(log.toString(), ncd);
@@ -60,7 +60,7 @@ public class TestTdsNcml {
       Assert.assertNotNull(ncd.findVariable("Temperature"));
       Assert.assertNull(ncd.findVariable("T"));
 
-      Variable reletiveHumidity = ncd.findVariable("ReletiveHumidity");
+      final Variable reletiveHumidity = ncd.findVariable("ReletiveHumidity");
       Assert.assertNotNull(reletiveHumidity);
       Assert.assertEquals("relatively humid", reletiveHumidity.findAttributeString("long_name", null));
       Assert.assertNull(reletiveHumidity.findAttribute("description"));
@@ -69,12 +69,12 @@ public class TestTdsNcml {
 
   @Test
   public void testNcmlInDatasetScan() throws IOException {
-    Catalog cat = TdsLocalCatalog.openDefaultCatalog();
+    final Catalog cat = TdsLocalCatalog.openDefaultCatalog();
 
-    Dataset catref = cat.findDatasetByID("ModifyDatasetScan");
+    final Dataset catref = cat.findDatasetByID("ModifyDatasetScan");
     Assert.assertNotNull("cant find dataset by id 'ModifyDatasetScan'", catref);
     catref.getDatasetsLogical(); // reads in the referenced catalog
-    Dataset ds = catref.findDatasetByName("example1.nc");
+    final Dataset ds = catref.findDatasetByName("example1.nc");
     Assert.assertNotNull("cant find dataset by name 'example1'", ds);
 
     Assert.assertEquals(FeatureType.GRID, ds.getFeatureType());
@@ -82,13 +82,13 @@ public class TestTdsNcml {
     // ncml should not be sent to the client
     Assert.assertNull(ds.getNcmlElement());
 
-    DataFactory fac = new DataFactory();
-    Formatter log = new Formatter();
+    final DataFactory fac = new DataFactory();
+    final Formatter log = new Formatter();
 
     try (NetcdfDataset ncd = fac.openDataset(ds, false, null, log)) {
       Assert.assertNotNull(log.toString(), ncd);
 
-      Variable record = ncd.findVariable("record");
+      final Variable record = ncd.findVariable("record");
       Assert.assertNotNull(record);
 
       Assert.assertEquals("value", ncd.getRootGroup().findAttributeString("name", ""));
@@ -96,9 +96,9 @@ public class TestTdsNcml {
       Assert.assertNotNull(ncd.findVariable("Temperature"));
       Assert.assertNull(ncd.findVariable("T"));
 
-      Variable reletiveHumidity = ncd.findVariable("ReletiveHumidity");
+      final Variable reletiveHumidity = ncd.findVariable("ReletiveHumidity");
       Assert.assertNotNull(reletiveHumidity);
-      Attribute att = reletiveHumidity.findAttribute("long_name");
+      final Attribute att = reletiveHumidity.findAttribute("long_name");
       Assert.assertNotNull(att);
       Assert.assertEquals("relatively humid", att.getStringValue());
     }
@@ -106,15 +106,15 @@ public class TestTdsNcml {
 
   @Test
   public void testAggExisting() throws IOException, InvalidRangeException {
-    String endpoint = TestOnLocalServer.withHttpPath("dodsC/ExampleNcML/Agg.nc");
+    final String endpoint = TestOnLocalServer.withHttpPath("dodsC/ExampleNcML/Agg.nc");
     logger.debug("{}", endpoint);
 
     try (NetcdfFile ncfile = NetcdfDatasets.openFile(endpoint, null)) {
-      Variable time = ncfile.findVariable("time");
+      final Variable time = ncfile.findVariable("time");
       Assert.assertNotNull(time);
       Assert.assertEquals(DataType.DOUBLE, time.getDataType());
 
-      String units = time.getUnitsString();
+      final String units = time.getUnitsString();
       Assert.assertNotNull(units);
       Assert.assertEquals("Hour since 2006-09-25T06:00:00Z", units);
 
@@ -128,13 +128,13 @@ public class TestTdsNcml {
       }
 
       // test attributes added in NcML
-      String testAtt = ncfile.getRootGroup().findAttributeString("ncmlAdded", null);
+      final String testAtt = ncfile.getRootGroup().findAttributeString("ncmlAdded", null);
       Assert.assertNotNull(testAtt);
       Assert.assertEquals("stuff", testAtt);
 
-      Variable lat = ncfile.findVariable("lat");
+      final Variable lat = ncfile.findVariable("lat");
       Assert.assertNotNull(lat);
-      String latTestAtt = lat.findAttributeString("ncmlAdded", null);
+      final String latTestAtt = lat.findAttributeString("ncmlAdded", null);
       Assert.assertNotNull(latTestAtt);
       Assert.assertEquals("lat_stuff", latTestAtt);
     }
@@ -142,13 +142,13 @@ public class TestTdsNcml {
 
   @Test
   public void testAddMetadataToScan() throws IOException, InvalidRangeException {
-    String endpoint = TestOnLocalServer.withHttpPath("cdmremote/testGridScan/GFS_CONUS_80km_20120229_1200.grib1");
+    final String endpoint = TestOnLocalServer.withHttpPath("cdmremote/testGridScan/GFS_CONUS_80km_20120229_1200.grib1");
     logger.debug("{}", endpoint);
 
     try (NetcdfFile ncd = NetcdfDatasets.openFile(endpoint, null)) {
       Assert.assertNotNull(ncd);
 
-      Attribute att = ncd.findGlobalAttribute("ncmlAdded");
+      final Attribute att = ncd.findGlobalAttribute("ncmlAdded");
       Assert.assertNotNull(att);
       Assert.assertEquals("stuff", att.getStringValue());
     }
