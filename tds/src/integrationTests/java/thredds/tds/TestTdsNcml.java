@@ -105,7 +105,7 @@ public class TestTdsNcml {
   }
 
   @Test
-  public void testAggExisting() throws IOException, InvalidRangeException {
+  public void testAggregationExisting() throws IOException, InvalidRangeException {
     final String endpoint = TestOnLocalServer.withHttpPath("dodsC/ExampleNcML/Agg.nc");
     logger.debug("{}", endpoint);
 
