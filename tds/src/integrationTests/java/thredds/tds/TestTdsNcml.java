@@ -60,10 +60,10 @@ public class TestTdsNcml {
       Assert.assertNotNull(ncd.findVariable("Temperature"));
       Assert.assertNull(ncd.findVariable("T"));
 
-      Variable v = ncd.findVariable("ReletiveHumidity");
-      Assert.assertNotNull(v);
-      Assert.assertEquals("relatively humid", v.findAttributeString("long_name", null));
-      Assert.assertNull(v.findAttribute("description"));
+      Variable reletiveHumidity = ncd.findVariable("ReletiveHumidity");
+      Assert.assertNotNull(reletiveHumidity);
+      Assert.assertEquals("relatively humid", reletiveHumidity.findAttributeString("long_name", null));
+      Assert.assertNull(reletiveHumidity.findAttribute("description"));
     }
   }
 
@@ -88,17 +88,17 @@ public class TestTdsNcml {
     try (NetcdfDataset ncd = fac.openDataset(ds, false, null, log)) {
       Assert.assertNotNull(log.toString(), ncd);
 
-      Variable v = ncd.findVariable("record");
-      Assert.assertNotNull(v);
+      Variable record = ncd.findVariable("record");
+      Assert.assertNotNull(record);
 
       Assert.assertEquals("value", ncd.getRootGroup().findAttributeString("name", ""));
 
       Assert.assertNotNull(ncd.findVariable("Temperature"));
       Assert.assertNull(ncd.findVariable("T"));
 
-      v = ncd.findVariable("ReletiveHumidity");
-      Assert.assertNotNull(v);
-      Attribute att = v.findAttribute("long_name");
+      Variable reletiveHumidity = ncd.findVariable("ReletiveHumidity");
+      Assert.assertNotNull(reletiveHumidity);
+      Attribute att = reletiveHumidity.findAttribute("long_name");
       Assert.assertNotNull(att);
       Assert.assertEquals("relatively humid", att.getStringValue());
     }
@@ -110,16 +110,16 @@ public class TestTdsNcml {
     logger.debug("{}", endpoint);
 
     try (NetcdfFile ncfile = NetcdfDatasets.openFile(endpoint, null)) {
-      Variable v = ncfile.findVariable("time");
-      Assert.assertNotNull(v);
-      Assert.assertEquals(DataType.DOUBLE, v.getDataType());
+      Variable time = ncfile.findVariable("time");
+      Assert.assertNotNull(time);
+      Assert.assertEquals(DataType.DOUBLE, time.getDataType());
 
-      String units = v.getUnitsString();
+      String units = time.getUnitsString();
       Assert.assertNotNull(units);
       Assert.assertEquals("Hour since 2006-09-25T06:00:00Z", units);
 
       int count = 0;
-      Array data = v.read();
+      Array data = time.read();
       logger.debug(Ncdump.printArray(data, "time", null));
 
       while (data.hasNext()) {
@@ -132,11 +132,11 @@ public class TestTdsNcml {
       Assert.assertNotNull(testAtt);
       Assert.assertEquals("stuff", testAtt);
 
-      v = ncfile.findVariable("lat");
-      Assert.assertNotNull(v);
-      testAtt = v.findAttributeString("ncmlAdded", null);
-      Assert.assertNotNull(testAtt);
-      Assert.assertEquals("lat_stuff", testAtt);
+      Variable lat = ncfile.findVariable("lat");
+      Assert.assertNotNull(lat);
+      String latTestAtt = lat.findAttributeString("ncmlAdded", null);
+      Assert.assertNotNull(latTestAtt);
+      Assert.assertEquals("lat_stuff", latTestAtt);
     }
   }
 
