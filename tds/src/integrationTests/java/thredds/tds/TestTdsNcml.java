@@ -39,8 +39,8 @@ public class TestTdsNcml {
     Catalog cat = TdsLocalCatalog.openDefaultCatalog();
 
     Dataset ds = cat.findDatasetByID("ExampleNcMLModified");
-    assert (ds != null) : "cant find dataset 'ExampleNcMLModified'";
-    assert ds.getFeatureType() == FeatureType.GRID : ds.getFeatureType();
+    Assert.assertNotNull("cant find dataset 'ExampleNcMLModified'", ds);
+    Assert.assertEquals(FeatureType.GRID, ds.getFeatureType());
 
     // ncml should not be sent to the client
     // assert null == ds.getNcmlElement();
@@ -49,21 +49,21 @@ public class TestTdsNcml {
     Formatter log = new Formatter();
 
     try (NetcdfDataset ncd = fac.openDataset(ds, false, null, log)) {
-      assert ncd != null : log.toString();
+      Assert.assertNotNull(log.toString(), ncd);
 
       // LOOK - no way to open single dataset in NcML with addRecords="true" in new API
       // Variable v = ncd.findVariable("record");
       // assert v != null;
 
-      assert ncd.getRootGroup().findAttributeString("name", "").equals("value");
+      Assert.assertEquals("value", ncd.getRootGroup().findAttributeString("name", ""));
 
-      assert ncd.findVariable("Temperature") != null;
-      assert ncd.findVariable("T") == null;
+      Assert.assertNotNull(ncd.findVariable("Temperature"));
+      Assert.assertNull(ncd.findVariable("T"));
 
       Variable v = ncd.findVariable("ReletiveHumidity");
-      assert v != null;
-      assert "relatively humid".equals(v.findAttributeString("long_name", null));
-      assert null == v.findAttribute("description");
+      Assert.assertNotNull(v);
+      Assert.assertEquals("relatively humid", v.findAttributeString("long_name", null));
+      Assert.assertNull(v.findAttribute("description"));
     }
   }
 
@@ -77,30 +77,30 @@ public class TestTdsNcml {
     Dataset ds = catref.findDatasetByName("example1.nc");
     Assert.assertNotNull("cant find dataset by name 'example1'", ds);
 
-    assert ds.getFeatureType() == FeatureType.GRID : ds.getFeatureType();
+    Assert.assertEquals(FeatureType.GRID, ds.getFeatureType());
 
     // ncml should not be sent to the client
-    assert null == ds.getNcmlElement();
+    Assert.assertNull(ds.getNcmlElement());
 
     DataFactory fac = new DataFactory();
     Formatter log = new Formatter();
 
     try (NetcdfDataset ncd = fac.openDataset(ds, false, null, log)) {
-      assert ncd != null : log.toString();
+      Assert.assertNotNull(log.toString(), ncd);
 
       Variable v = ncd.findVariable("record");
-      assert v != null;
+      Assert.assertNotNull(v);
 
-      assert ncd.getRootGroup().findAttributeString("name", "").equals("value");
+      Assert.assertEquals("value", ncd.getRootGroup().findAttributeString("name", ""));
 
-      assert ncd.findVariable("Temperature") != null;
-      assert ncd.findVariable("T") == null;
+      Assert.assertNotNull(ncd.findVariable("Temperature"));
+      Assert.assertNull(ncd.findVariable("T"));
 
       v = ncd.findVariable("ReletiveHumidity");
-      assert v != null;
+      Assert.assertNotNull(v);
       Attribute att = v.findAttribute("long_name");
-      assert att != null;
-      assert att.getStringValue().equals("relatively humid");
+      Assert.assertNotNull(att);
+      Assert.assertEquals("relatively humid", att.getStringValue());
     }
   }
 
@@ -111,12 +111,12 @@ public class TestTdsNcml {
 
     try (NetcdfFile ncfile = NetcdfDatasets.openFile(endpoint, null)) {
       Variable v = ncfile.findVariable("time");
-      assert v != null;
-      assert v.getDataType() == DataType.DOUBLE;
+      Assert.assertNotNull(v);
+      Assert.assertEquals(DataType.DOUBLE, v.getDataType());
 
       String units = v.getUnitsString();
-      assert units != null;
-      assert units.equals("Hour since 2006-09-25T06:00:00Z");
+      Assert.assertNotNull(units);
+      Assert.assertEquals("Hour since 2006-09-25T06:00:00Z", units);
 
       int count = 0;
       Array data = v.read();
@@ -129,14 +129,14 @@ public class TestTdsNcml {
 
       // test attributes added in NcML
       String testAtt = ncfile.getRootGroup().findAttributeString("ncmlAdded", null);
-      assert testAtt != null;
-      assert testAtt.equals("stuff");
+      Assert.assertNotNull(testAtt);
+      Assert.assertEquals("stuff", testAtt);
 
       v = ncfile.findVariable("lat");
-      assert v != null;
+      Assert.assertNotNull(v);
       testAtt = v.findAttributeString("ncmlAdded", null);
-      assert testAtt != null;
-      assert testAtt.equals("lat_stuff");
+      Assert.assertNotNull(testAtt);
+      Assert.assertEquals("lat_stuff", testAtt);
     }
   }
 
