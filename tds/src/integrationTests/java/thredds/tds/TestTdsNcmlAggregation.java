@@ -3,6 +3,8 @@ package thredds.tds;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.test.util.TestOnLocalServer;
@@ -14,17 +16,27 @@ import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.write.Ncdump;
 import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
+import java.util.List;
 
+@RunWith(Parameterized.class)
 @Category(NeedsCdmUnitTest.class)
 public class TestTdsNcmlAggregation {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+  @Parameterized.Parameters(name = "{0}")
+  public static Collection<String> getTestParameters() {
+    return List.of("dodsC/ExampleNcML/Agg.nc", "dodsC/S3ExampleNcML/Agg.nc");
+  }
+
+  @Parameterized.Parameter(value = 0)
+  public String path;
+
   @Test
   public void testAggregationExisting() throws IOException {
-    final String endpoint = TestOnLocalServer.withHttpPath("dodsC/ExampleNcML/Agg.nc");
+    final String endpoint = TestOnLocalServer.withHttpPath(path);
     logger.debug("{}", endpoint);
 
     try (NetcdfFile ncfile = NetcdfDatasets.openFile(endpoint, null)) {
