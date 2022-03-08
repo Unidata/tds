@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="S3 Test Catalog"
+         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns:ncml="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" version="1.2">
+
+    <dataset name="Local Dataset" ID="LocalDataset"
+             urlPath="cdmUnitTest/ncml/nc/namExtract/20060925_0600.nc"
+             dataType="Grid"
+             serviceName="all"/>
+
+    <datasetRoot path="s3-test" location="cdms3:thredds-test-data"/>
+    <dataset name="S3 Dataset" ID="S3Dataset"
+             urlPath="s3-test/ncml/nc/namExtract/20060925_0600.nc"
+             dataType="Grid"
+             serviceName="all"/>
+
+    <dataset name="S3 Example NcML Aggregation" ID="S3ExampleNcMLAgg" urlPath="S3ExampleNcML/Agg.nc">
+        <serviceName>all</serviceName>
+        <dataType>Grid</dataType>
+        <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+            <attribute name="ncmlAdded" value="stuff"/>
+            <variable name="lat">
+                <attribute name="ncmlAdded" value="lat_stuff"/>
+            </variable>
+            <aggregation dimName="time" type="joinExisting" timeUnitsChange="true">
+                <netcdf location="cdms3:thredds-test-data/ncml/nc/namExtract/20060925_0600.nc" ncoords="2"/>
+                <netcdf location="cdms3:thredds-test-data/ncml/nc/namExtract/20060925_1200.nc" ncoords="2"/>
+                <netcdf location="cdms3:thredds-test-data/ncml/nc/namExtract/20060925_1800.nc" ncoords="2"/>
+                <netcdf location="cdms3:thredds-test-data/ncml/nc/namExtract/20060926_0000.nc" ncoords="2"/>
+            </aggregation>
+        </ncml:netcdf>
+    </dataset>
+
+</catalog>

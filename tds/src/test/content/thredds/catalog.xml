@@ -236,6 +236,8 @@
   <catalogRef xlink:title="ESGF" xlink:href="testEsgfProblems.xml" name=""/>
   <catalogRef xlink:title="RDA" xlink:href="testRdaProblems.xml" name=""/>
   <catalogRef xlink:title="TDS S3" xlink:href="tds-s3.xml" name=""/>
+  <catalogRef xlink:title="Test S3" xlink:href="catalogS3.xml" name=""/>
+
 
   <catalogScan location="catalogs5" path="catalogs5" name="catalog scan with version 5 features"/>
 
