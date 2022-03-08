@@ -23,10 +23,10 @@
                 <attribute name="ncmlAdded" value="lat_stuff"/>
             </variable>
             <aggregation dimName="time" type="joinExisting" timeUnitsChange="true">
-                <netcdf location="cdms3:thredds-test-data/ncml/nc/namExtract/20060925_0600.nc" ncoords="2"/>
-                <netcdf location="cdms3:thredds-test-data/ncml/nc/namExtract/20060925_1200.nc" ncoords="2"/>
-                <netcdf location="cdms3:thredds-test-data/ncml/nc/namExtract/20060925_1800.nc" ncoords="2"/>
-                <netcdf location="cdms3:thredds-test-data/ncml/nc/namExtract/20060926_0000.nc" ncoords="2"/>
+                <netcdf location="cdms3:thredds-test-data?ncml/nc/namExtract/20060925_0600.nc" ncoords="2"/>
+                <netcdf location="cdms3:thredds-test-data?ncml/nc/namExtract/20060925_1200.nc" ncoords="2"/>
+                <netcdf location="cdms3:thredds-test-data?ncml/nc/namExtract/20060925_1800.nc" ncoords="2"/>
+                <netcdf location="cdms3:thredds-test-data?ncml/nc/namExtract/20060926_0000.nc" ncoords="2"/>
             </aggregation>
         </ncml:netcdf>
     </dataset>
