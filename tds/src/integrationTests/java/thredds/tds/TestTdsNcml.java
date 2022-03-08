@@ -14,16 +14,12 @@ import thredds.client.catalog.Catalog;
 import thredds.client.catalog.Dataset;
 import thredds.client.catalog.tools.DataFactory;
 import thredds.server.catalog.TdsLocalCatalog;
-import ucar.ma2.Array;
-import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
-import ucar.nc2.write.Ncdump;
-import ucar.unidata.util.test.Assert2;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -100,42 +96,6 @@ public class TestTdsNcml {
       final Attribute att = reletiveHumidity.findAttribute("long_name");
       Assert.assertNotNull(att);
       Assert.assertEquals("relatively humid", att.getStringValue());
-    }
-  }
-
-  @Test
-  public void testAggregationExisting() throws IOException {
-    final String endpoint = TestOnLocalServer.withHttpPath("dodsC/ExampleNcML/Agg.nc");
-    logger.debug("{}", endpoint);
-
-    try (NetcdfFile ncfile = NetcdfDatasets.openFile(endpoint, null)) {
-      final Variable time = ncfile.findVariable("time");
-      Assert.assertNotNull(time);
-      Assert.assertEquals(DataType.DOUBLE, time.getDataType());
-
-      final String units = time.getUnitsString();
-      Assert.assertNotNull(units);
-      Assert.assertEquals("Hour since 2006-09-25T06:00:00Z", units);
-
-      int count = 0;
-      Array data = time.read();
-      logger.debug(Ncdump.printArray(data, "time", null));
-
-      while (data.hasNext()) {
-        Assert2.assertNearlyEquals(data.nextInt(), (count + 1) * 3);
-        count++;
-      }
-
-      // test attributes added in NcML
-      final String testAtt = ncfile.getRootGroup().findAttributeString("ncmlAdded", null);
-      Assert.assertNotNull(testAtt);
-      Assert.assertEquals("stuff", testAtt);
-
-      final Variable lat = ncfile.findVariable("lat");
-      Assert.assertNotNull(lat);
-      final String latTestAtt = lat.findAttributeString("ncmlAdded", null);
-      Assert.assertNotNull(latTestAtt);
-      Assert.assertEquals("lat_stuff", latTestAtt);
     }
   }
 
