@@ -16,17 +16,13 @@ public class TestS3 {
         Assert.assertNotNull(catalog);
 
         final List<Dataset> datasets = catalog.getDatasetsLocal();
-        Assert.assertEquals(3, datasets.size());
+        Assert.assertEquals(2, datasets.size());
 
-        final Dataset localDataset = datasets.get(0);
-        Assert.assertEquals("Local Dataset", localDataset.getName());
-        Assert.assertEquals("cdmUnitTest/ncml/nc/namExtract/20060925_0600.nc", localDataset.getUrlPath());
-
-        final Dataset s3Dataset = datasets.get(1);
+        final Dataset s3Dataset = datasets.get(0);
         Assert.assertEquals("S3 Dataset", s3Dataset.getName());
         Assert.assertEquals("s3-test/ncml/nc/namExtract/20060925_0600.nc", s3Dataset.getUrlPath());
 
-        final Dataset aggregation = datasets.get(2);
+        final Dataset aggregation = datasets.get(1);
         Assert.assertEquals("S3 Example NcML Aggregation", aggregation.getName());
         Assert.assertEquals("S3ExampleNcML/Agg.nc", aggregation.getUrlPath());
     }
