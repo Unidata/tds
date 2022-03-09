@@ -54,14 +54,14 @@ public class TestTdsDodsServer {
   public void checkBadRequest() {
     String endpoint = TestOnLocalServer.withHttpPath(
         "/dodsC/scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2.badascii?Visibility_surface[0:1:0][0:1:0][0:1:0]");
-    TestOnLocalServer.getContent(endpoint, 400, (ContentType) null);
+    TestOnLocalServer.getContent(endpoint, 400);
   }
 
   @Test
   public void testGridArrayAscii() {
     String endpoint = TestOnLocalServer.withHttpPath(
         "/dodsC/scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2.ascii?Visibility_surface[0:1:0][0:1:0][0:1:0]");
-    byte[] result = TestOnLocalServer.getContent(endpoint, 200, (ContentType) null);
+    byte[] result = TestOnLocalServer.getContent(endpoint, 200);
     Assert.assertNotNull(result);
     String results = new String(result, StandardCharsets.UTF_8);
     assert results.contains("scanCdmUnitTests/tds/ncep/NAM_CONUS_20km_selectsurface_20100913_0000.grib2");
