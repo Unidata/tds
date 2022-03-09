@@ -8,22 +8,22 @@ import java.io.IOException;
 import java.util.List;
 
 public class TestS3 {
-    private static final String CATALOG = "../tds/src/test/content/thredds/catalogS3.xml";
+  private static final String CATALOG = "../tds/src/test/content/thredds/catalogS3.xml";
 
-    @Test
-    public void shouldCreateCatalogWithS3Data() throws IOException {
-        final Catalog catalog = TestConfigCatalogBuilder.open("file:" + CATALOG);
-        Assert.assertNotNull(catalog);
+  @Test
+  public void shouldCreateCatalogWithS3Data() throws IOException {
+    final Catalog catalog = TestConfigCatalogBuilder.open("file:" + CATALOG);
+    Assert.assertNotNull(catalog);
 
-        final List<Dataset> datasets = catalog.getDatasetsLocal();
-        Assert.assertEquals(2, datasets.size());
+    final List<Dataset> datasets = catalog.getDatasetsLocal();
+    Assert.assertEquals(2, datasets.size());
 
-        final Dataset s3Dataset = datasets.get(0);
-        Assert.assertEquals("S3 Dataset", s3Dataset.getName());
-        Assert.assertEquals("s3-test/ncml/nc/namExtract/20060925_0600.nc", s3Dataset.getUrlPath());
+    final Dataset s3Dataset = datasets.get(0);
+    Assert.assertEquals("S3 Dataset", s3Dataset.getName());
+    Assert.assertEquals("s3-test/ncml/nc/namExtract/20060925_0600.nc", s3Dataset.getUrlPath());
 
-        final Dataset aggregation = datasets.get(1);
-        Assert.assertEquals("S3 Example NcML Aggregation", aggregation.getName());
-        Assert.assertEquals("S3ExampleNcML/Agg.nc", aggregation.getUrlPath());
-    }
+    final Dataset aggregation = datasets.get(1);
+    Assert.assertEquals("S3 Example NcML Aggregation", aggregation.getName());
+    Assert.assertEquals("S3ExampleNcML/Agg.nc", aggregation.getUrlPath());
+  }
 }
