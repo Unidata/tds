@@ -79,6 +79,10 @@ public class TestOnLocalServer {
     return withProtocolAndPath("dods", path);
   }
 
+  public static byte[] getContent(String endpoint, int expectCode) {
+    return getContent(null, endpoint, new int[] {expectCode}, (String) null);
+  }
+
   public static byte[] getContent(String endpoint, int expectCode, ContentType expectContentType) {
     return getContent(null, endpoint, new int[] {expectCode}, expectContentType);
   }
