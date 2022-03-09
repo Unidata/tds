@@ -72,6 +72,24 @@ public class NcssGridIntegrationTest {
   }
 
   @Test
+  public void checkS3GridWithNonTopLevelS3Key() throws IOException {
+    String endpoint = TestOnLocalServer.withHttpPath(
+        "/ncss/grid/S3GribCollection/GFS_CONUS_80km_20120227_0000.grib1?var=Temperature_isobaric");
+
+    byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
+    openBinaryNew(content, "Temperature_isobaric");
+  }
+
+  @Test
+  public void checkS3GridWithTopLevelS3Key() throws IOException {
+    String endpoint = TestOnLocalServer.withHttpPath(
+        "/ncss/grid/S3GribCollectionNoFolders/GFS_CONUS_80km_20120227_0000.grib1?var=Temperature_isobaric");
+
+    byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
+    openBinaryNew(content, "Temperature_isobaric");
+  }
+
+  @Test
   public void checkGridNoVars() throws Exception {
     String endpoint = TestOnLocalServer.withHttpPath("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd");
     TestOnLocalServer.getContent(endpoint, 400);

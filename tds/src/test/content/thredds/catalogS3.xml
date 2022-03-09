@@ -26,4 +26,51 @@
     </ncml:netcdf>
   </dataset>
 
+  <featureCollection featureType="GRIB1" name="Local Feature Collection" path="LocalGribCollection">
+    <metadata inherited="true">
+      <serviceName>all</serviceName>
+    </metadata>
+    <collection
+      spec="${cdmUnitTest}/ncss/GFS/CONUS_80km/GFS_CONUS_80km_#yyyyMMdd_HHmm#\.grib1$"
+      timePartition="file"/>
+    <update startup="nocheck"/>
+    <tdm rewrite="test" rescan="0 0/5 * * * ? *"/>
+    <gribConfig datasetTypes="Best LatestFile Files"/>
+  </featureCollection>
+
+  <featureCollection featureType="GRIB1" name="S3 Feature Collection" path="S3GribCollection">
+    <metadata inherited="true">
+      <serviceName>all</serviceName>
+    </metadata>
+    <collection
+      spec="cdms3:thredds-test-data?ncss/GFS/CONUS_80km/GFS_CONUS_80km_#yyyyMMdd_HHmm#\.grib1$"
+      timePartition="file"/>
+    <update startup="nocheck"/>
+    <tdm rewrite="test" rescan="0 0/5 * * * ? *"/>
+    <gribConfig datasetTypes="Best LatestFile Files"/>
+  </featureCollection>
+
+  <featureCollection featureType="GRIB1" name="S3 Feature Collection With One Folder" path="S3GribCollectionOneFolder">
+    <metadata inherited="true">
+      <serviceName>all</serviceName>
+    </metadata>
+    <collection
+      spec="cdms3:thredds-test-data?CONUS_80km/GFS_CONUS_80km_#yyyyMMdd_HHmm#\.grib1$"
+      timePartition="file"/>
+    <update startup="nocheck"/>
+    <tdm rewrite="test" rescan="0 0/5 * * * ? *"/>
+    <gribConfig datasetTypes="Best LatestFile Files"/>
+  </featureCollection>
+
+  <featureCollection featureType="GRIB1" name="S3 Feature Collection Without Folders" path="S3GribCollectionNoFolders">
+    <metadata inherited="true">
+      <serviceName>all</serviceName>
+    </metadata>
+    <collection
+      spec="cdms3:thredds-test-data?GFS_CONUS_80km_#yyyyMMdd_HHmm#\.grib1$"
+      timePartition="file"/>
+    <update startup="nocheck"/>
+    <tdm rewrite="test" rescan="0 0/5 * * * ? *"/>
+    <gribConfig datasetTypes="Best LatestFile Files"/>
+  </featureCollection>
 </catalog>
