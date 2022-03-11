@@ -33,7 +33,7 @@ public class ServletUtil {
 
   /**
    * Return the file path dealing with leading and trailing path
-   * seperators (which must be a slash ("/")) for the given directory
+   * separators (which must be a slash ("/")) for the given directory
    * and file paths.
    * <p/>
    * Note: Dealing with path strings is fragile.
