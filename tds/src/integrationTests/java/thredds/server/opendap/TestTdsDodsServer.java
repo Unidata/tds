@@ -134,7 +134,7 @@ public class TestTdsDodsServer {
 
   @Test
   public void testSingleDataset() throws IOException {
-    Catalog cat = TdsLocalCatalog.open(null);
+    Catalog cat = TdsLocalCatalog.openDefaultCatalog();
 
     Dataset ds = cat.findDatasetByID("testDataset2");
     assert (ds != null) : "cant find dataset 'testDataset'";

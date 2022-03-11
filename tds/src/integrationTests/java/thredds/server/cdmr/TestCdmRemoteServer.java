@@ -38,7 +38,7 @@ public class TestCdmRemoteServer {
    */
   @Test
   public void testSingleDataset() throws IOException {
-    Catalog cat = TdsLocalCatalog.open(null);
+    Catalog cat = TdsLocalCatalog.openDefaultCatalog();
 
     Dataset ds = cat.findDatasetByID("testSingleGridDataset");
     assert (ds != null) : "cant find dataset 'testSingleGridDataset'";

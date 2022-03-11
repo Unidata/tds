@@ -26,7 +26,7 @@ public class TestDap4 {
 
   @Test
   public void testSimpleDap4GridDataset() throws IOException {
-    Catalog cat = TdsLocalCatalog.open(null); // default catalog
+    Catalog cat = TdsLocalCatalog.openDefaultCatalog();
 
     Dataset ds = cat.findDatasetByID("testDap4Dataset");
     assert (ds != null) : "cant find dataset 'testDap4Dataset'";
