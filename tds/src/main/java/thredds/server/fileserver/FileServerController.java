@@ -5,8 +5,10 @@
 
 package thredds.server.fileserver;
 
+import javax.xml.crypto.Data;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import thredds.core.DatasetManager;
 import thredds.core.TdsRequestedDataset;
 import thredds.servlet.ServletUtil;
 import thredds.util.TdsPathUtils;
@@ -34,6 +36,13 @@ public class FileServerController {
 
     if (!TdsRequestedDataset.resourceControlOk(req, res, reqPath)) { // LOOK or process in TdsRequestedDataset.getFile
                                                                      // ??
+      return;
+    }
+
+    final String location = TdsRequestedDataset.getLocationFromRequestPath(reqPath);
+
+    if (DatasetManager.isLocationObjectStore(location)) {
+      ServletUtil.returnS3Object(req, res, reqPath);
       return;
     }
 

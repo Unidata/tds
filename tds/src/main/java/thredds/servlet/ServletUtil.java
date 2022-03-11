@@ -6,9 +6,14 @@
 package thredds.servlet;
 
 import java.nio.charset.StandardCharsets;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import thredds.core.ConfigCatalogHtmlWriter;
+import thredds.core.TdsRequestedDataset;
 import thredds.util.ContentType;
 import thredds.util.RequestForwardUtils;
+import ucar.nc2.NetcdfFile;
 import ucar.nc2.util.EscapeStrings;
 import ucar.nc2.util.IO;
 import ucar.unidata.io.RandomAccessFile;
@@ -245,6 +250,24 @@ public class ServletUtil {
       if (!res.isCommitted())
         res.sendError(HttpServletResponse.SC_NOT_FOUND, "Problem sending file: " + e.getMessage());
     }
+  }
+
+  /**
+   * Write an s3 object as a file to the response stream.
+   *
+   * @param request the HttpServletRequest
+   * @param response the HttpServletResponse
+   * @param requestPath the s3 path
+   * @throws IOException if an I/O error occurs while writing the response.
+   */
+  public static void returnS3Object(HttpServletRequest request, HttpServletResponse response, String requestPath)
+      throws IOException {
+    final NetcdfFile netcdfFile = TdsRequestedDataset.getNetcdfFile(request, response, requestPath);
+    final String netcdfFileString = netcdfFile.toString();
+    response.setContentLength(netcdfFileString.length());
+
+    ServletOutputStream outputStream = response.getOutputStream();
+    IO.writeContents(netcdfFileString, outputStream);
   }
 
   /**
