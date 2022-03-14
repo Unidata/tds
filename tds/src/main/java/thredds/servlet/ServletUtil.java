@@ -6,6 +6,7 @@
 package thredds.servlet;
 
 import java.nio.charset.StandardCharsets;
+import javax.servlet.ServletContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -127,9 +128,13 @@ public class ServletUtil {
     // Set the type of the file
     String filename = file.getPath();
 
+    contentType = contentType == null ? getContentType(filename, req.getServletContext()) : contentType;
+    returnFile(req, res, file, contentType);
+  }
+
+  private static String getContentType(String filename, ServletContext servletContext) {
     // Check for server configured (well-known) content-type
-    if (contentType == null)
-      contentType = req.getServletContext().getMimeType(filename);
+    String contentType = servletContext.getMimeType(filename);
 
     // If not, check for a TDS known content-type
     if (contentType == null) {
@@ -141,7 +146,7 @@ public class ServletUtil {
         contentType = ContentType.binary.getContentHeader();
     }
 
-    returnFile(req, res, file, contentType);
+    return contentType;
   }
 
   /**
