@@ -267,6 +267,8 @@ public class ServletUtil {
    */
   public static void returnS3Object(HttpServletRequest request, HttpServletResponse response, String requestPath)
       throws IOException {
+    response.setContentType(getContentType(requestPath, request.getServletContext()));
+
     final NetcdfFile netcdfFile = TdsRequestedDataset.getNetcdfFile(request, response, requestPath);
     final String netcdfFileString = netcdfFile.toString();
     response.setContentLength(netcdfFileString.length());
