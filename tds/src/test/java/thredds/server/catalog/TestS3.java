@@ -20,7 +20,7 @@ public class TestS3 {
 
     final Dataset s3Dataset = datasets.get(0);
     Assert.assertEquals("S3 Dataset", s3Dataset.getName());
-    Assert.assertEquals("s3-test/ncml/nc/namExtract/20060925_0600.nc", s3Dataset.getUrlPath());
+    Assert.assertEquals("s3-thredds-test-data/ncml/nc/namExtract/20060925_0600.nc", s3Dataset.getUrlPath());
 
     final Dataset aggregation = datasets.get(1);
     Assert.assertEquals("S3 Example NcML Aggregation", aggregation.getName());
