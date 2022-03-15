@@ -72,7 +72,8 @@
     <gribConfig datasetTypes="Best LatestFile Files"/>
   </featureCollection>
 
-  <featureCollection featureType="GRIB1" name="S3 Feature Collection Without Folders" path="S3GribCollectionNoFolders">
+  <featureCollection featureType="GRIB1" name="S3 Feature Collection Without Folders"
+    path="S3GribCollectionWithoutFolders">
     <metadata inherited="true">
       <serviceName>all</serviceName>
     </metadata>
