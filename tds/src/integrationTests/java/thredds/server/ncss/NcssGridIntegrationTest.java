@@ -5,6 +5,7 @@
 
 package thredds.server.ncss;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
@@ -66,6 +67,26 @@ public class NcssGridIntegrationTest {
   public void checkGrid() throws Exception {
     String endpoint = TestOnLocalServer.withHttpPath(
         "/ncss/grid/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1?var=Temperature_isobaric");
+
+    byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
+    openBinaryNew(content, "Temperature_isobaric");
+  }
+
+  @Ignore("TODO Fix S3 FeatureCollection index path")
+  @Test
+  public void checkS3GridWithNonTopLevelS3Key() throws IOException {
+    String endpoint = TestOnLocalServer.withHttpPath(
+        "/ncss/grid/S3GribCollectionWithFolders/GFS_CONUS_80km_20120227_0000.grib1?var=Temperature_isobaric");
+
+    byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
+    openBinaryNew(content, "Temperature_isobaric");
+  }
+
+  @Ignore("TODO Fix S3 FeatureCollection index path")
+  @Test
+  public void checkS3GridWithTopLevelS3Key() throws IOException {
+    String endpoint = TestOnLocalServer.withHttpPath(
+        "/ncss/grid/S3GribCollectionWithoutFolders/GFS_CONUS_80km_20120227_0000.grib1?var=Temperature_isobaric");
 
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
     openBinaryNew(content, "Temperature_isobaric");
