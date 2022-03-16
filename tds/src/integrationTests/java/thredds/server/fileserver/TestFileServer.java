@@ -43,9 +43,8 @@ public class TestFileServer {
     result.add(new Object[] {"fileServer/scanLocal/esfgTest.html", ContentType.html.toString()});
     result.add(new Object[] {"fileServer/testNAMfmrc/files/20060925_0600.nc", ContentType.netcdf.toString()});
 
-    // TODO UDT-134933
-    // result.add(new Object[] {"fileServer/s3-thredds-test-data/ncml/nc/namExtract/20060925_0600.nc",
-    // ContentType.netcdf.toString()});
+    result.add(new Object[] {"fileServer/s3-thredds-test-data/ncml/nc/namExtract/20060925_0600.nc",
+        ContentType.netcdf.toString()});
 
     // make sure files don't get removed
     result.add(
