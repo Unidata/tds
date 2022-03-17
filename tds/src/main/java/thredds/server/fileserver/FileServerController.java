@@ -5,17 +5,14 @@
 
 package thredds.server.fileserver;
 
-import javax.xml.crypto.Data;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import thredds.core.DatasetManager;
 import thredds.core.TdsRequestedDataset;
 import thredds.servlet.ServletUtil;
 import thredds.util.TdsPathUtils;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -39,28 +36,7 @@ public class FileServerController {
       return;
     }
 
-    final String location = TdsRequestedDataset.getLocationFromRequestPath(reqPath);
-
-    if (DatasetManager.isLocationObjectStore(location)) {
-      ServletUtil.returnS3Object(req, res, reqPath);
-      return;
-    }
-
-    File file = getFile(reqPath);
-    ServletUtil.returnFile(null, req, res, file, null);
-  }
-
-  private File getFile(String reqPath) {
-    if (reqPath == null)
-      return null;
-
-    File file = TdsRequestedDataset.getFile(reqPath);
-    if (file == null)
-      return null;
-    if (!file.exists())
-      return null;
-
-    return file;
+    ServletUtil.writeMFileToResponse(req, res, reqPath);
   }
 
 }

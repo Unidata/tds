@@ -7,14 +7,12 @@ package thredds.servlet;
 
 import java.nio.charset.StandardCharsets;
 import javax.servlet.ServletContext;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import thredds.core.ConfigCatalogHtmlWriter;
 import thredds.core.TdsRequestedDataset;
+import thredds.inventory.MFile;
+import thredds.inventory.MFiles;
 import thredds.util.ContentType;
 import thredds.util.RequestForwardUtils;
-import ucar.nc2.NetcdfFile;
 import ucar.nc2.util.EscapeStrings;
 import ucar.nc2.util.IO;
 import ucar.unidata.io.RandomAccessFile;
@@ -258,23 +256,34 @@ public class ServletUtil {
   }
 
   /**
-   * Write an s3 object as a file to the response stream.
+   * Write an MFile to the response stream.
    *
    * @param request the HttpServletRequest
    * @param response the HttpServletResponse
-   * @param requestPath the s3 path
+   * @param requestPath the request path
    * @throws IOException if an I/O error occurs while writing the response.
    */
-  public static void returnS3Object(HttpServletRequest request, HttpServletResponse response, String requestPath)
+  public static void writeMFileToResponse(HttpServletRequest request, HttpServletResponse response, String requestPath)
       throws IOException {
-    response.setContentType(getContentType(requestPath, request.getServletContext()));
+    final String location = TdsRequestedDataset.getLocationFromRequestPath(requestPath);
+    final MFile file = MFiles.create(location);
 
-    final NetcdfFile netcdfFile = TdsRequestedDataset.getNetcdfFile(request, response, requestPath);
-    final String netcdfFileString = netcdfFile.toString();
-    response.setContentLength(netcdfFileString.length());
+    if (file == null) {
+      response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find file: " + location);
+      return;
+    }
+
+    if (file.isDirectory()) {
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+          "Expected a file name instead of a directory: " + location);
+      return;
+    }
+
+    response.setContentType(getContentType(requestPath, request.getServletContext()));
+    response.addDateHeader("Last-Modified", file.getLastModified());
 
     ServletOutputStream outputStream = response.getOutputStream();
-    IO.writeContents(netcdfFileString, outputStream);
+    file.writeToStream(outputStream);
   }
 
   /**
