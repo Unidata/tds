@@ -41,7 +41,7 @@ public class TestPartialContent {
     final String endpoint = TestOnLocalServer.withHttpPath(path);
 
     final byte[] content = TestOnLocalServer.getContent(null, endpoint,
-        new int[]{HttpServletResponse.SC_PARTIAL_CONTENT}, contentType, byteRange);
+        new int[] {HttpServletResponse.SC_PARTIAL_CONTENT}, contentType, byteRange);
     assertThat(content).isNotNull();
 
     final long expectedLength = Math.min(byteRange[1] - byteRange[0] + 1, maxSize);

@@ -103,7 +103,8 @@ public class TestOnLocalServer {
     return getContent(cred, endpoint, expectCodes, expectContentType, null);
   }
 
-  public static byte[] getContent(Credentials cred, String endpoint, int[] expectCodes, String expectContentType, long[] byteRange) {
+  public static byte[] getContent(Credentials cred, String endpoint, int[] expectCodes, String expectContentType,
+      long[] byteRange) {
     logger.debug("req = '{}'", endpoint);
 
     try (HTTPSession session = HTTPFactory.newSession(endpoint)) {

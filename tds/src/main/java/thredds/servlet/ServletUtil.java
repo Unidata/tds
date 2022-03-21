@@ -240,7 +240,7 @@ public class ServletUtil {
 
   private static boolean isRangeRequest(String rangeRequest) {
     if (rangeRequest != null) { // bytes=12-34 or bytes=12-
-        return rangeRequest.indexOf("=") > 0 && rangeRequest.indexOf("-") > 0;
+      return rangeRequest.indexOf("=") > 0 && rangeRequest.indexOf("-") > 0;
     }
 
     return false;
