@@ -295,9 +295,28 @@ public class ServletUtil {
 
     response.setContentType(getContentType(requestPath, request.getServletContext()));
     response.addDateHeader("Last-Modified", file.getLastModified());
+    response.addHeader("Accept-Ranges", "bytes");
+
+    final long startPosition = getContentStartPosition(request.getHeader("Range"));
+    final long endPosition = getContentEndPosition(request.getHeader("Range"), file.getLength());
+    final long contentLength = endPosition - startPosition;
+    addContentLengthHeader(response, contentLength);
+
+    if (request.getMethod().equals("HEAD")) {
+      return;
+    }
 
     ServletOutputStream outputStream = response.getOutputStream();
-    file.writeToStream(outputStream);
+
+    if (!isRangeRequest(request.getHeader("Range"))) {
+      file.writeToStream(outputStream);
+      return;
+    }
+
+    response.addHeader("Content-Range", "bytes " + startPosition + "-" + (endPosition - 1) + "/" + file.getLength());
+    response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
+
+    file.writeToStream(outputStream, startPosition, contentLength);
   }
 
   /**
