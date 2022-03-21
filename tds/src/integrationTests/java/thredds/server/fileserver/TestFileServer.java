@@ -7,6 +7,8 @@ package thredds.server.fileserver;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -15,6 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
+import ucar.httpservices.HTTPException;
+import ucar.httpservices.HTTPFactory;
+import ucar.httpservices.HTTPMethod;
+import ucar.httpservices.HTTPSession;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -86,6 +92,24 @@ public class TestFileServer {
     try (InputStream is = new ByteArrayInputStream(content)) {
       String observedMd5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(is);
       assertThat(observedMd5).isEqualTo(md5);
+    }
+  }
+
+  @Test
+  public void shouldReturnHead() throws HTTPException {
+    final String endpoint = TestOnLocalServer.withHttpPath(path);
+
+    try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
+      final HTTPMethod method = HTTPFactory.Head(session);
+
+      final int status = method.execute();
+      assertThat(status).isEqualTo(HttpServletResponse.SC_OK);
+
+      Optional<String> header = method.getResponseHeaderValue(ContentType.HEADER);
+      assertThat(header.isPresent()).isTrue();
+      assertThat(header.get()).isEqualTo(type);
+
+      assertThat(method.getResponseAsBytes()).isNull();
     }
   }
 }
