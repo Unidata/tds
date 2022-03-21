@@ -162,39 +162,13 @@ public class ServletUtil {
     res.addDateHeader("Last-Modified", file.lastModified());
     // res.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
 
-    // see if its a Range Request
-    boolean isRangeRequest = false;
-    long startPos = 0, endPos = Long.MAX_VALUE;
-    String rangeRequest = req.getHeader("Range");
-    if (rangeRequest != null) { // bytes=12-34 or bytes=12-
-      int pos = rangeRequest.indexOf("=");
-      if (pos > 0) {
-        int pos2 = rangeRequest.indexOf("-");
-        if (pos2 > 0) {
-          String startString = rangeRequest.substring(pos + 1, pos2);
-          String endString = rangeRequest.substring(pos2 + 1);
-          startPos = Long.parseLong(startString);
-          if (endString.length() > 0)
-            endPos = Long.parseLong(endString) + 1;
-          isRangeRequest = true;
-        }
-      }
-    }
+    final boolean isRangeRequest = isRangeRequest(req.getHeader("Range"));
 
-    // set content length
-    long fileSize = file.length();
-    long contentLength = fileSize;
-    if (isRangeRequest) {
-      endPos = Math.min(endPos, fileSize);
-      contentLength = endPos - startPos;
-    }
+    final long startPos = getContentStartPosition(req.getHeader("Range"));
+    final long endPos = getContentEndPosition(req.getHeader("Range"), file.length());
+    final long contentLength = endPos - startPos;
 
-    // when compression is turned on, ContentLength has to be overridden
-    // this is also true for HEAD, since this must be the same as GET without the body
-    if (contentLength > Integer.MAX_VALUE)
-      res.addHeader("Content-Length", Long.toString(contentLength)); // allow content length > MAX_INT
-    else
-      res.setContentLength((int) contentLength);
+    addContentLengthHeader(res, contentLength);
 
     String filename = file.getPath();
     // indicate we allow Range Requests
@@ -208,7 +182,7 @@ public class ServletUtil {
 
       if (isRangeRequest) {
         // set before content is sent
-        res.addHeader("Content-Range", "bytes " + startPos + "-" + (endPos - 1) + "/" + fileSize);
+        res.addHeader("Content-Range", "bytes " + startPos + "-" + (endPos - 1) + "/" + file.length());
         res.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
 
         try (RandomAccessFile craf = RandomAccessFile.acquire(filename)) {
@@ -253,6 +227,46 @@ public class ServletUtil {
       if (!res.isCommitted())
         res.sendError(HttpServletResponse.SC_NOT_FOUND, "Problem sending file: " + e.getMessage());
     }
+  }
+
+  private static void addContentLengthHeader(HttpServletResponse res, long contentLength) {
+    // when compression is turned on, ContentLength has to be overridden
+    // this is also true for HEAD, since this must be the same as GET without the body
+    if (contentLength > Integer.MAX_VALUE)
+      res.addHeader("Content-Length", Long.toString(contentLength)); // allow content length > MAX_INT
+    else
+      res.setContentLength((int) contentLength);
+  }
+
+  private static boolean isRangeRequest(String rangeRequest) {
+    if (rangeRequest != null) { // bytes=12-34 or bytes=12-
+        return rangeRequest.indexOf("=") > 0 && rangeRequest.indexOf("-") > 0;
+    }
+
+    return false;
+  }
+
+  private static long getContentStartPosition(String rangeRequest) {
+    final boolean isRangeRequest = isRangeRequest(rangeRequest);
+
+    if (!isRangeRequest)
+      return 0;
+
+    // bytes=12-34 or bytes=12-
+    final String startString = rangeRequest.substring(rangeRequest.indexOf("=") + 1, rangeRequest.indexOf("-"));
+    return Long.parseLong(startString);
+  }
+
+  private static long getContentEndPosition(String rangeRequest, Long fileLength) {
+    final boolean isRangeRequest = isRangeRequest(rangeRequest);
+
+    if (!isRangeRequest)
+      return fileLength;
+
+    // bytes=12-34 or bytes=12-
+    final String endString = rangeRequest.substring(rangeRequest.indexOf("-") + 1);
+    final long endPosition = endString.length() > 0 ? Long.parseLong(endString) + 1 : fileLength;
+    return Math.min(endPosition, fileLength);
   }
 
   /**
