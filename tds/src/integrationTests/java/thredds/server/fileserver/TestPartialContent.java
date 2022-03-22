@@ -35,8 +35,8 @@ public class TestPartialContent {
 
   @Test
   public void shouldReturnPartialContent() {
-    final String path = "fileServer/testNAMfmrc/files/20060925_0600.nc";
-    final long maxSize = 898948;
+    final String path = "fileServer/scanLocal/mydata1.nc";
+    final long maxSize = 66832;
     final String contentType = ContentType.netcdf.toString();
     final String endpoint = TestOnLocalServer.withHttpPath(path);
 
