@@ -13,7 +13,6 @@ import thredds.util.TdsPathUtils;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -37,21 +36,7 @@ public class FileServerController {
       return;
     }
 
-    File file = getFile(reqPath);
-    ServletUtil.returnFile(null, req, res, file, null);
-  }
-
-  private File getFile(String reqPath) {
-    if (reqPath == null)
-      return null;
-
-    File file = TdsRequestedDataset.getFile(reqPath);
-    if (file == null)
-      return null;
-    if (!file.exists())
-      return null;
-
-    return file;
+    ServletUtil.writeMFileToResponse(req, res, reqPath);
   }
 
 }

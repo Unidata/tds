@@ -100,6 +100,11 @@ public class TestOnLocalServer {
   }
 
   public static byte[] getContent(Credentials cred, String endpoint, int[] expectCodes, String expectContentType) {
+    return getContent(cred, endpoint, expectCodes, expectContentType, null);
+  }
+
+  public static byte[] getContent(Credentials cred, String endpoint, int[] expectCodes, String expectContentType,
+      long[] byteRange) {
     logger.debug("req = '{}'", endpoint);
 
     try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
@@ -112,6 +117,10 @@ public class TestOnLocalServer {
       session.setCredentialsProvider(bcp);
 
       HTTPMethod method = HTTPFactory.Get(session);
+
+      if (byteRange != null)
+        method.setRange(byteRange[0], byteRange[1]);
+
       int statusCode = method.execute();
 
       if (expectCodes == null) {
@@ -127,7 +136,7 @@ public class TestOnLocalServer {
             ok);
       }
 
-      if (statusCode != 200) {
+      if (statusCode != 200 && statusCode != 206) {
         logger.warn("statusCode = {} '{}'", statusCode, method.getResponseAsString());
         return null;
       }
