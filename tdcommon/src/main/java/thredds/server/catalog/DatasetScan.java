@@ -169,21 +169,21 @@ public class DatasetScan extends CatalogRef {
   public CatalogBuilder makeCatalogForDirectory(String orgPath, URI baseURI) throws IOException {
 
     // Get the dataset location.
-    String dataDirReletive = translatePathToReletiveLocation(orgPath, config.path);
-    if (dataDirReletive == null) {
+    String dataDirRelative = translatePathToReletiveLocation(orgPath, config.path);
+    if (dataDirRelative == null) {
       String tmpMsg =
           "makeCatalogForDirectory(): Requesting path <" + orgPath + "> must start with \"" + config.path + "\".";
       log.error(tmpMsg);
       return null;
     }
-    if (!dataDirReletive.endsWith("/"))
-      dataDirReletive += "/";
-    String parentPath = (dataDirReletive.length() > 1) ? config.path + "/" + dataDirReletive : config.path + "/";
+    if (!dataDirRelative.endsWith("/"))
+      dataDirRelative += "/";
+    String parentPath = (dataDirRelative.length() > 1) ? config.path + "/" + dataDirRelative : config.path + "/";
     String id = this.getId();
     if (id == null)
       id = config.path;
-    String parentId = (dataDirReletive.length() > 1) ? id + "/" + dataDirReletive : id + "/";
-    String dataDirComplete = (dataDirReletive.length() > 1) ? config.scanDir + "/" + dataDirReletive : config.scanDir;
+    String parentId = (dataDirRelative.length() > 1) ? id + "/" + dataDirRelative : id + "/";
+    String dataDirComplete = (dataDirRelative.length() > 1) ? config.scanDir + "/" + dataDirRelative : config.scanDir;
 
     // Setup and create catalog builder.
     CatalogBuilder catBuilder = new CatalogBuilder();
@@ -193,7 +193,7 @@ public class DatasetScan extends CatalogRef {
       catBuilder.addService(s);
 
     DatasetBuilder top = new DatasetBuilder(null);
-    String name = (dataDirReletive.length() > 1) ? dataDirReletive : getName();
+    String name = (dataDirRelative.length() > 1) ? dataDirRelative : getName();
     top.transferMetadata(this, true);
     top.setName(name);
     top.put(Dataset.Id, null); // no id for top
@@ -488,21 +488,21 @@ public class DatasetScan extends CatalogRef {
 
   public CatalogBuilder makeCatalogForLatest(String orgPath, URI baseURI) throws IOException {
     // Get the dataset location.
-    String dataDirReletive = translatePathToReletiveLocation(orgPath, config.path);
-    if (dataDirReletive == null) {
+    String dataDirRelative = translatePathToReletiveLocation(orgPath, config.path);
+    if (dataDirRelative == null) {
       String tmpMsg =
           "makeCatalogForDirectory(): Requesting path <" + orgPath + "> must start with \"" + config.path + "\".";
       log.error(tmpMsg);
       return null;
     }
-    if (!dataDirReletive.endsWith("/"))
-      dataDirReletive += "/";
-    String parentPath = (dataDirReletive.length() > 1) ? config.path + "/" + dataDirReletive : config.path + "/";
+    if (!dataDirRelative.endsWith("/"))
+      dataDirRelative += "/";
+    String parentPath = (dataDirRelative.length() > 1) ? config.path + "/" + dataDirRelative : config.path + "/";
     String id = this.getId();
     if (id == null)
       id = config.path;
-    String parentId = (dataDirReletive.length() > 1) ? id + "/" + dataDirReletive : id + "/";
-    String dataDirComplete = (dataDirReletive.length() > 1) ? config.scanDir + "/" + dataDirReletive : config.scanDir;
+    String parentId = (dataDirRelative.length() > 1) ? id + "/" + dataDirRelative : id + "/";
+    String dataDirComplete = (dataDirRelative.length() > 1) ? config.scanDir + "/" + dataDirRelative : config.scanDir;
 
     // Setup and create catalog builder.
     CatalogBuilder catBuilder = new CatalogBuilder();

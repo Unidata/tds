@@ -96,7 +96,7 @@ public class WcsRequestParser {
         String coverageIdListParam = ServletUtil.getParameterIgnoreCase(req, "Coverage");
         List<String> coverageIdList;
         if (coverageIdListParam != null)
-          coverageIdList = splitCommaSeperatedList(coverageIdListParam);
+          coverageIdList = splitCommaSeparatedList(coverageIdListParam);
         else {
           coverageIdList = new ArrayList<>();
           for (thredds.server.wcs.v1_0_0_1.WcsCoverage curCov : wcsDataset.getAvailableCoverageCollection())
@@ -328,7 +328,7 @@ public class WcsRequestParser {
     return range;
   }
 
-  private static List<String> splitCommaSeperatedList(String identifiers) {
+  private static List<String> splitCommaSeparatedList(String identifiers) {
     List<String> idList = new ArrayList<>();
     String[] idArray = identifiers.split(",");
     for (String anIdArray : idArray) {
