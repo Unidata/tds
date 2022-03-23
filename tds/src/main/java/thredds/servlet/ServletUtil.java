@@ -58,7 +58,7 @@ public class ServletUtil {
    *
    * @param servlet called from this servlet, may be null
    * @param contentPath file root path
-   * @param path file path reletive to the root
+   * @param path file path relative to the root
    * @param req the request
    * @param res the response
    * @param contentType content type, or null
