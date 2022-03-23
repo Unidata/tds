@@ -60,7 +60,7 @@ public class NcssGridController extends AbstractNcssController {
   // Compression rate used to estimate the filesize of netcdf4 compressed files
   static private final short ESTIMATED_COMPRESION_RATE = 4;
   // pattern for valid WKT lat lon point
-  // Two decimal digits seperated by whitespace, potentially starting and/or ending with
+  // Two decimal digits separated by whitespace, potentially starting and/or ending with
   // a comma
   private static final Pattern LATLON_WKT_PATTERN = Pattern.compile("[, ]?\\\\d*\\.\\\\d*\\s\\\\d*\\\\.\\\\d*,?");
 

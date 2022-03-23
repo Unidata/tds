@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * Find the dataRoot path from the request, by getting the longest match.
  * Use a TreeSet for minimum in-memory use.
- * Keep the objects in a seperate map that could be off-heap and persistent.
+ * Keep the objects in a separate map that could be off-heap and persistent.
  *
  * @author caron
  * @since 4/1/2015

@@ -33,7 +33,7 @@ From that, a `Best` time dataset is also created.
 
 ### Multiple Groups
 
-When a GRIB Collection contains multiple horizontal domains (i.e. distinct Grid Definition Sections (GDS)), each domain gets placed into a seperate group (CDM) or Dataset (TDS).
+When a GRIB Collection contains multiple horizontal domains (i.e. distinct Grid Definition Sections (GDS)), each domain gets placed into a separate group (CDM) or Dataset (TDS).
 
 ### Generated URLs
 

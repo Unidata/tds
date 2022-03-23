@@ -44,7 +44,7 @@ public class ExceptionReport {
 
         if (curException.getTextMessages() != null) {
           for (String curMessage : curException.getTextMessages()) {
-            // ToDo - somehow seperate multiple text messages.
+            // ToDo - somehow separate multiple text messages.
             exceptionElem.addContent(curMessage);
           }
         }
