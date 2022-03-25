@@ -358,7 +358,7 @@ public class ServletUtil {
    * @param req request
    * @return URL relative to the server
    */
-  public static String getRelativeURL(HttpServletRequest req) {
+  public static String getReletiveURL(HttpServletRequest req) {
     return req.getContextPath() + req.getServletPath() + req.getPathInfo();
   }
 
@@ -373,7 +373,7 @@ public class ServletUtil {
   public static void forwardToCatalogServices(HttpServletRequest req, HttpServletResponse res)
       throws IOException, ServletException {
 
-    String reqs = "catalog=" + getRelativeURL(req);
+    String reqs = "catalog=" + getReletiveURL(req);
     String query = req.getQueryString();
     if (query != null)
       reqs = reqs + "&" + query;
