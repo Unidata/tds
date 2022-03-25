@@ -344,7 +344,7 @@ public class ConfigCatalogInitialization {
     dataRootPathMatcher.extractDataRoots(catalogRelPath, cat.getDatasetsLocal(), readMode == ReadMode.always,
         fcNameMap);
 
-    // get the directory path, reletive to the rootDir
+    // get the directory path, relative to the rootDir
     int pos = catalogRelPath.lastIndexOf("/");
     String dirPath = (pos > 0) ? catalogRelPath.substring(0, pos + 1) : "";
     processDatasets(catId, readMode, dirPath, cat.getDatasetsLocal(), idSet); // recurse
@@ -363,7 +363,7 @@ public class ConfigCatalogInitialization {
   /**
    * Does the actual work of reading a catalog.
    *
-   * @param catalogRelPath reletive path starting from content root
+   * @param catalogRelPath relative path starting from content root
    * @param catalogFullPath absolute location on disk
    * @return the Catalog, or null if failure
    */
@@ -399,7 +399,7 @@ public class ConfigCatalogInitialization {
     }
   }
 
-  // dirPath = the directory path, reletive to the rootDir
+  // dirPath = the directory path, relative to the rootDir
   private void processDatasets(long catId, ReadMode readMode, String dirPath, List<Dataset> datasets, Set<String> idMap)
       throws IOException {
     if (exceedLimit)
@@ -450,7 +450,7 @@ public class ConfigCatalogInitialization {
                 + catref.getParentCatalog().getUriString() + "\"; dirPath=\"" + dirPath + "\".");
             continue;
           } else {
-            path = dirPath + href; // reletive starting from current directory
+            path = dirPath + href; // relative starting from current directory
           }
 
           CatalogExt ext = catalogTracker.get(path);
@@ -476,7 +476,7 @@ public class ConfigCatalogInitialization {
         if (!Files.isDirectory(p)) {
           // path must be relative to rootDir
           String filename = p.getFileName().toString();
-          String path = dirPath.length() == 0 ? filename : dirPath + "/" + filename; // reletive starting from current
+          String path = dirPath.length() == 0 ? filename : dirPath + "/" + filename; // relative starting from current
                                                                                      // directory
 
           CatalogExt ext = catalogTracker.get(path);
@@ -490,7 +490,7 @@ public class ConfigCatalogInitialization {
     try (DirectoryStream<Path> ds = Files.newDirectoryStream(directory)) {
       for (Path dir : ds) {
         if (Files.isDirectory(dir)) {
-          String dirPathChild = dirPath + "/" + dir.getFileName().toString(); // reletive starting from current
+          String dirPathChild = dirPath + "/" + dir.getFileName().toString(); // relative starting from current
                                                                               // directory
           readCatsInDirectory(readMode, dirPathChild, dir);
         }

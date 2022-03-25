@@ -171,7 +171,7 @@ public class DatasetManager implements InitializingBean {
     // look for a match
     DataRootManager.DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
 
-    // look for an feature collection dataset
+    // look for a feature collection dataset
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
       FeatureCollectionRef featCollection = match.dataRoot.getFeatureCollection();
       if (log.isDebugEnabled())

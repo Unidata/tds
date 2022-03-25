@@ -63,7 +63,7 @@ public class ConfigCatalogHtmlWriter {
 
 
   /**
-   * Write an Catalog to the HttpServletResponse, return the size in bytes of the catalog written to the response.
+   * Write a Catalog to the HttpServletResponse, return the size in bytes of the catalog written to the response.
    *
    * @param req the HttpServletRequest
    * @param res the HttpServletResponse.

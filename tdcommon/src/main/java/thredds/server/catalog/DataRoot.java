@@ -181,12 +181,12 @@ public class DataRoot {
       return null;
 
     // remove the matching part, the rest is the "data directory"
-    String locationReletive = reqPath.substring(rootPath.length());
-    if (isFeatureCollection && locationReletive.startsWith("/files"))
-      locationReletive = locationReletive.substring(7); // LOOK maybe only if its an fc ?? its a kludge here
+    String locationRelative = reqPath.substring(rootPath.length());
+    if (isFeatureCollection && locationRelative.startsWith("/files"))
+      locationRelative = locationRelative.substring(7); // LOOK maybe only if its an fc ?? its a kludge here
 
-    if (locationReletive.startsWith("/"))
-      locationReletive = locationReletive.substring(1);
+    if (locationRelative.startsWith("/"))
+      locationRelative = locationRelative.substring(1);
 
     if (!rootLocation.endsWith("/")) {
       if (rootLocation.startsWith("cdms3") || rootLocation.startsWith("s3")) {
@@ -196,6 +196,6 @@ public class DataRoot {
       }
     }
     // put it together
-    return (locationReletive.length() > 1) ? rootLocation + locationReletive : rootLocation;
+    return (locationRelative.length() > 1) ? rootLocation + locationRelative : rootLocation;
   }
 }

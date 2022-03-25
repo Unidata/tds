@@ -91,7 +91,7 @@ public class DatasetTrackerInMem implements DatasetTracker {
      * if (debugResourceControl)
      * System.out.println("putResourceControl " + ds.getRestrictAccess() + " for dataset " + ds.getUrlPath());
      * 
-     * // LOOK: seems like you only need to add if InvAccess.InvService.isReletive
+     * // LOOK: seems like you only need to add if InvAccess.InvService.isRelative
      * // LOOK: seems like we should use resourceControlMatcher to make sure we match .dods, etc
      * for (Access access : ds.getAccess()) {
      * if (access.getService().isRelativeBase())

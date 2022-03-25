@@ -46,7 +46,7 @@ import java.io.*;
 
 /**
  * Default handler for OPeNDAP directory requests. This class is used
- * by AbstractServlet. This code exists as a seperate class in order to alleviate
+ * by AbstractServlet. This code exists as a separate class in order to alleviate
  * code bloat in the AbstractServlet class. As such, it contains virtually no
  * state, just behaviors.
  *

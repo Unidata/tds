@@ -128,7 +128,7 @@ public class CatalogConfigReader {
       findNestedElems(root, "catalogScan", catscanElems);
       for (Element catscanElem : catscanElems) {
         String location = catscanElem.getAttributeValue("location");
-        File catDir = new File(rootDir, location); // LOOK location reletive to rootDir, could be to current dir
+        File catDir = new File(rootDir, location); // LOOK location relative to rootDir, could be to current dir
         if (!catDir.exists()) {
           log.error("Catalog scan directory {} does not exist", catDir);
           continue;

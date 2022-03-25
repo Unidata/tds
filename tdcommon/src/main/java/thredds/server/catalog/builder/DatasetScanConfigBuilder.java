@@ -372,7 +372,7 @@ public class DatasetScanConfigBuilder {
       }
     }
 
-    // Get lastModifed limit.
+    // Get lastModified limit.
     String lastModLimitVal = addLatestElem.getAttributeValue("lastModifiedLimit");
     long lastModLimit = -1;
     if (lastModLimitVal != null)

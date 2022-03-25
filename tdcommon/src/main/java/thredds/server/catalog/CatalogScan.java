@@ -35,7 +35,7 @@ public class CatalogScan extends CatalogRef {
 
   public String getLocation() {
     return location;
-  } // reletive to ${tds.content.root.path}
+  } // relative to ${tds.content.root.path}
 
   public String getWatch() {
     return watch;
@@ -92,7 +92,7 @@ public class CatalogScan extends CatalogRef {
           String pfilename = p.getFileName().toString();
           String urlPath = pfilename;
 
-          // String path = dataDirComplete.length() == 0 ? filename : dataDirComplete + "/" + filename; // reletive
+          // String path = dataDirComplete.length() == 0 ? filename : dataDirComplete + "/" + filename; // relative
           // starting from current directory
           CatalogRefBuilder catref = new CatalogRefBuilder(top);
           catref.setTitle(urlPath);

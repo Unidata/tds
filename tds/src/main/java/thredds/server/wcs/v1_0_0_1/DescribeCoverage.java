@@ -170,7 +170,7 @@ public class DescribeCoverage extends WcsRequest {
       rectifiedGridElem.addContent(new Element("axisName", gmlNS).addContent("z"));
 
     // ../spatialDomain/gml:RectifiedGrid/gml:origin [1]
-    // ../spatialDomain/gml:RectifiedGrid/gml:origin/gml:pos [1] (space seperated list of double values)
+    // ../spatialDomain/gml:RectifiedGrid/gml:origin/gml:pos [1] (space separated list of double values)
     // ../spatialDomain/gml:RectifiedGrid/gml:origin/gml:pos@dimension [0..1] (number of entries in list)
     double[] origin = new double[ndim];
     origin[0] = xaxis.getCoordMidpoint(0);
@@ -181,7 +181,7 @@ public class DescribeCoverage extends WcsRequest {
     rectifiedGridElem.addContent(
         new Element("origin", gmlNS).addContent(new Element("pos", gmlNS).addContent(genDoubleListString(origin))));
 
-    // ../spatialDomain/gml:RectifiedGrid/gml:offsetVector [1..*] (space seperated list of double values)
+    // ../spatialDomain/gml:RectifiedGrid/gml:offsetVector [1..*] (space separated list of double values)
     // ../spatialDomain/gml:RectifiedGrid/gml:offsetVector@dimension [0..1] (number of entries in list)
     double[] xoffset = new double[ndim];
     xoffset[0] = xaxis.getResolution();
@@ -242,7 +242,7 @@ public class DescribeCoverage extends WcsRequest {
     String secondPosition = lon + " " + urpt.getLatitude();
     String posDimString = Integer.toString(posDim);
 
-    // spatialDomain/Envelope/gml:pos [2] (space seperated list of double values)
+    // spatialDomain/Envelope/gml:pos [2] (space separated list of double values)
     // spatialDomain/Envelope/gml:pos@dimension [0..1] (number of entries in list)
     envelopeElem.addContent(
         new Element("pos", gmlNS).addContent(firstPosition).setAttribute(new Attribute("dimension", posDimString)));
@@ -341,11 +341,11 @@ public class DescribeCoverage extends WcsRequest {
     // supportedCRSs
     Element supportedCRSsElem = new Element("supportedCRSs", wcsNS);
 
-    // supportedCRSs/requestCRSs [1..*] (wcs) (space seperated list of strings)
+    // supportedCRSs/requestCRSs [1..*] (wcs) (space separated list of strings)
     // supportedCRSs/requestCRSs@codeSpace [0..1] (URI)
     supportedCRSsElem.addContent(new Element("requestCRSs", wcsNS).addContent(coverage.getDefaultRequestCrs()));
 
-    // supportedCRSs/responseCRSs [1..*] (wcs) (space seperated list of strings)
+    // supportedCRSs/responseCRSs [1..*] (wcs) (space separated list of strings)
     // supportedCRSs/responseCRSs@codeSpace [0..1] (URI)
     supportedCRSsElem.addContent(new Element("responseCRSs", wcsNS).addContent(coverage.getNativeCrs()));
 
@@ -357,7 +357,7 @@ public class DescribeCoverage extends WcsRequest {
     // supportedFormats@nativeFormat [0..1] (string)
     Element supportedFormatsElem = new Element("supportedFormats", wcsNS);
 
-    // supportedFormats/formats [1..*] (wcs) (space seperated list of strings)
+    // supportedFormats/formats [1..*] (wcs) (space separated list of strings)
     // supportedFormats/formats@codeSpace [0..1] (URI)
     for (Request.Format curFormat : coverage.getSupportedCoverageFormatList()) {
       supportedFormatsElem.addContent(new Element("formats", wcsNS).addContent(curFormat.toString()));

@@ -150,7 +150,7 @@ public class HtmlWriting {
    *
    * @param res the HttpServletResponse on which to write the file directory response.
    * @param dir directory
-   * @param path the URL path reletive to the base
+   * @param path the URL path relative to the base
    * @return the number of characters (Unicode code units) in the response.
    * @throws java.io.IOException if an I/O exception occurs.
    */

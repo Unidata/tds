@@ -194,7 +194,7 @@ Usage: thredds.tdm.GCpass1 [options]
     -useCacheDir
        Set the Grib index cache directory.
     -useTableVersion
-       Use Table version to make seperate variables.
+       Use Table version to make separate variables.
        Default: false
 ~~~
 

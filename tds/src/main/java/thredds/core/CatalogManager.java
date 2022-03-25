@@ -54,7 +54,7 @@ public class CatalogManager {
 
   /**
    * If a catalog exists and is allowed (not filtered out) for the given path, return
-   * the catalog as an Catalog. Otherwise, return null.
+   * the catalog as a Catalog. Otherwise, return null.
    * <p>
    * The validity of the returned catalog is not guaranteed. Use Catalog.check() to
    * check that the catalog is valid.
@@ -71,7 +71,7 @@ public class CatalogManager {
     if (workPath.startsWith("/"))
       workPath = workPath.substring(1);
 
-    // Check if its a CatalogBuilder or ConfigCatalog
+    // Check if it's a CatalogBuilder or ConfigCatalog
     Object dyno = makeDynamicCatalog(workPath, baseURI);
     if (dyno != null) {
       CatalogBuilder catBuilder;

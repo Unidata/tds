@@ -66,7 +66,7 @@ public class GCpass1 {
     @Parameter(names = {"-partition"}, description = "Partition type: none, directory, file", required = false)
     public FeatureCollectionConfig.PartitionType partitionType = FeatureCollectionConfig.PartitionType.directory;
 
-    @Parameter(names = {"-useTableVersion"}, description = "Use Table version to make seperate variables.",
+    @Parameter(names = {"-useTableVersion"}, description = "Use Table version to make separate variables.",
         required = false)
     public boolean useTableVersion = false;
 

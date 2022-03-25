@@ -429,7 +429,7 @@ public class Tdm {
    * 
    */
   private static class CommandLine {
-    @Parameter(names = {"-catalog"}, description = "name a specific catalog (reletive to content dir)",
+    @Parameter(names = {"-catalog"}, description = "name a specific catalog (relative to content dir)",
         required = false)
     public String catalog;
 
