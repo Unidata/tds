@@ -27,11 +27,6 @@ public class ConfigCatalogBuilder extends CatalogBuilder {
 
   private final String context;
 
-  public ConfigCatalogBuilder() {
-    super();
-    context = "thredds";
-  }
-
   public ConfigCatalogBuilder(String context) {
     super();
     if (context.startsWith("/"))

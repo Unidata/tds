@@ -34,6 +34,8 @@ public class ConfigCatalogCache implements CatalogReader {
   static private final Logger logger = LoggerFactory.getLogger(ConfigCatalogCache.class);
   static private final String ERROR = "*** ERROR ";
 
+  private String context;
+
   private String rootPath;
   private Cache<String, ConfigCatalog> cache;
 
@@ -44,7 +46,7 @@ public class ConfigCatalogCache implements CatalogReader {
     this.cache = CacheBuilder.newBuilder().maximumSize(maxSize).recordStats().build();
   }
 
-  public void init(String rootPath, int maxSize) {
+  public void init(String rootPath, int maxSize, String context) {
     this.rootPath = rootPath;
     this.cache = CacheBuilder.newBuilder().maximumSize(maxSize).recordStats()
         // .removalListener(MY_LISTENER)
@@ -53,6 +55,8 @@ public class ConfigCatalogCache implements CatalogReader {
             return readCatalog(key);
           }
         });
+
+    this.context = context;
   }
 
   public void put(String catKey, ConfigCatalog cat) throws IOException {
@@ -107,7 +111,7 @@ public class ConfigCatalogCache implements CatalogReader {
     }
   }
 
-  static public ConfigCatalog readCatalog(String catalogFullPath) throws IOException {
+  public ConfigCatalog readCatalog(String catalogFullPath) throws IOException {
 
     // see if it exists
     File catFile = new File(catalogFullPath);
@@ -125,7 +129,7 @@ public class ConfigCatalogCache implements CatalogReader {
       return null;
     }
 
-    ConfigCatalogBuilder builder = new ConfigCatalogBuilder();
+    ConfigCatalogBuilder builder = new ConfigCatalogBuilder(this.context);
     ConfigCatalog cat = (ConfigCatalog) builder.buildFromURI(uri); // LOOK use file and keep lastModified
     if (builder.hasFatalError()) {
       throw new IOException("invalid catalog " + catalogFullPath);

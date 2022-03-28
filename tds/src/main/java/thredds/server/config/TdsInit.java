@@ -426,7 +426,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     // Config Cat Cache
     max = ThreddsConfig.getInt("ConfigCatalog.keepInMemory", 100);
     String rootPath = tdsContext.getContentRootPathProperty() + "thredds/";
-    ccc.init(rootPath, max);
+    final String context = tdsContext.getContextPath();
+    ccc.init(rootPath, max, context);
 
     // Config Dataset Tracker
     String trackerDir = ThreddsConfig.get("ConfigCatalog.dir",
