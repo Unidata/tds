@@ -9,7 +9,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import thredds.server.catalog.builder.ConfigCatalogBuilder;
 import ucar.unidata.util.StringUtil2;
@@ -29,7 +28,6 @@ import java.util.concurrent.ExecutionException;
  * @since 3/21/2015
  */
 @Component
-@DependsOn("TdsContext")
 public class ConfigCatalogCache implements CatalogReader {
   static private final Logger logger = LoggerFactory.getLogger(ConfigCatalogCache.class);
   static private final String ERROR = "*** ERROR ";
