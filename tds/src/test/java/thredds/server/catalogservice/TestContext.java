@@ -45,11 +45,11 @@ public class TestContext {
 
   @Test
   public void shouldReturnCorrectContext() throws Exception {
-    final String myPath = "/catalog/enhancedCatalog.xml";
+    final String path = "/catalog/enhancedCatalog.xml";
     final ServletContext servletContext = webApplicationContext.getServletContext();
     assertThat(servletContext).isNotNull();
     final String context = servletContext.getContextPath();
-    RequestBuilder requestBuilder = MockMvcRequestBuilders.get(myPath).servletPath(myPath);
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.get(path).servletPath(path);
 
     final String expectedResult = "catalogRef xlink:href=\"/" + context + "/catalog/testEnhanced/catalog.xml\"";
     this.mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().is(HttpStatus.SC_OK))
