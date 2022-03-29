@@ -22,6 +22,8 @@ import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.List;
 
+import static com.google.common.truth.Truth.assertThat;
+
 /**
  * Describe
  *
@@ -31,6 +33,7 @@ import java.util.List;
 @Category(NeedsCdmUnitTest.class)
 public class TestConfigCatalogBuilder {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final String CONTEXT = "thredds";
 
   @Before
   public void setup() {
@@ -44,7 +47,7 @@ public class TestConfigCatalogBuilder {
     if (url == null)
       return null;
 
-    ConfigCatalogBuilder builder = new ConfigCatalogBuilder();
+    ConfigCatalogBuilder builder = new ConfigCatalogBuilder(CONTEXT);
     Catalog cat = builder.buildFromLocation("file:" + url.getPath(), null);
     if (builder.hasFatalError()) {
       System.out.printf("%s%n", builder.getErrorMessage());
@@ -61,8 +64,12 @@ public class TestConfigCatalogBuilder {
   }
 
   static public ConfigCatalog open(String urlString) throws IOException {
+    return open(urlString, CONTEXT);
+  }
+
+  static public ConfigCatalog open(String urlString, String context) throws IOException {
     System.out.printf("Open %s%n", urlString);
-    ConfigCatalogBuilder builder = new ConfigCatalogBuilder();
+    ConfigCatalogBuilder builder = new ConfigCatalogBuilder(context);
     Catalog cat = builder.buildFromLocation(urlString, null);
     if (builder.hasFatalError()) {
       System.out.printf("%s%n", builder.getErrorMessage());
@@ -201,7 +208,7 @@ public class TestConfigCatalogBuilder {
     URL url = cl.getResource("thredds/server/catalog/testInheritied.xml");
     assert (url != null);
 
-    ConfigCatalogBuilder catFactory = new ConfigCatalogBuilder();
+    ConfigCatalogBuilder catFactory = new ConfigCatalogBuilder(CONTEXT);
     Catalog cat = catFactory.buildFromLocation("file:" + url.getPath(), null);
     CatalogXmlWriter writer = new CatalogXmlWriter();
     System.out.printf("%s%n", writer.writeXML(cat));
@@ -214,5 +221,26 @@ public class TestConfigCatalogBuilder {
 
   }
 
+  @Test
+  public void shouldHaveCorrectContextInDatasetScan() throws IOException {
+    final String filePath = "../tds/src/test/content/thredds/catalog.xml";
+    final ConfigCatalog catalog = TestConfigCatalogBuilder.open("file:" + filePath, "nonDefaultContext");
+    assertThat(catalog).isNotNull();
 
+    final Dataset dataset = catalog.findDatasetByID("scanCdmUnitTests");
+    final DatasetScan datasetScan = (DatasetScan) dataset;
+    assertThat(datasetScan.getXlinkHref()).isEqualTo("/nonDefaultContext/catalog/scanCdmUnitTests/catalog.xml");
+  }
+
+  @Test
+  public void shouldHaveCorrectContextInFeatureCollection() throws IOException {
+    final String filePath = "../tds/src/test/content/thredds/catalogGrib.xml";
+    final ConfigCatalog catalog = TestConfigCatalogBuilder.open("file:" + filePath, "nonDefaultContext");
+    assertThat(catalog).isNotNull();
+
+    final Dataset dataset = catalog.findDatasetByName("GFS_CONUS_80km");
+    final CatalogRef featureCollection = (CatalogRef) dataset;
+    assertThat(featureCollection.getXlinkHref())
+        .isEqualTo("/nonDefaultContext/catalog/gribCollection/GFS_CONUS_80km/catalog.xml");
+  }
 }

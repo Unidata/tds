@@ -9,7 +9,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import thredds.server.catalog.builder.ConfigCatalogBuilder;
 import ucar.unidata.util.StringUtil2;
@@ -29,10 +28,11 @@ import java.util.concurrent.ExecutionException;
  * @since 3/21/2015
  */
 @Component
-@DependsOn("TdsContext")
 public class ConfigCatalogCache implements CatalogReader {
   static private final Logger logger = LoggerFactory.getLogger(ConfigCatalogCache.class);
   static private final String ERROR = "*** ERROR ";
+
+  private String context;
 
   private String rootPath;
   private Cache<String, ConfigCatalog> cache;
@@ -44,15 +44,17 @@ public class ConfigCatalogCache implements CatalogReader {
     this.cache = CacheBuilder.newBuilder().maximumSize(maxSize).recordStats().build();
   }
 
-  public void init(String rootPath, int maxSize) {
+  public void init(String rootPath, int maxSize, String context) {
     this.rootPath = rootPath;
     this.cache = CacheBuilder.newBuilder().maximumSize(maxSize).recordStats()
         // .removalListener(MY_LISTENER)
         .build(new CacheLoader<String, ConfigCatalog>() {
           public ConfigCatalog load(String key) throws IOException {
-            return readCatalog(key);
+            return readCatalog(key, context);
           }
         });
+
+    this.context = context;
   }
 
   public void put(String catKey, ConfigCatalog cat) throws IOException {
@@ -81,7 +83,7 @@ public class ConfigCatalogCache implements CatalogReader {
       return get(catKey);
     }
 
-    return readCatalog(catalogFullPath);
+    return readCatalog(catalogFullPath, context);
   }
 
 
@@ -97,7 +99,7 @@ public class ConfigCatalogCache implements CatalogReader {
        * }
        */
 
-      return cache.get(catKey, () -> readCatalog(rootPath + catKey));
+      return cache.get(catKey, () -> readCatalog(rootPath + catKey, context));
 
     } catch (ExecutionException e) {
       Throwable c = e.getCause();
@@ -108,6 +110,11 @@ public class ConfigCatalogCache implements CatalogReader {
   }
 
   static public ConfigCatalog readCatalog(String catalogFullPath) throws IOException {
+    final String defaultContext = "thredds";
+    return readCatalog(catalogFullPath, defaultContext);
+  }
+
+  static public ConfigCatalog readCatalog(String catalogFullPath, String context) throws IOException {
 
     // see if it exists
     File catFile = new File(catalogFullPath);
@@ -125,7 +132,7 @@ public class ConfigCatalogCache implements CatalogReader {
       return null;
     }
 
-    ConfigCatalogBuilder builder = new ConfigCatalogBuilder();
+    ConfigCatalogBuilder builder = new ConfigCatalogBuilder(context);
     ConfigCatalog cat = (ConfigCatalog) builder.buildFromURI(uri); // LOOK use file and keep lastModified
     if (builder.hasFatalError()) {
       throw new IOException("invalid catalog " + catalogFullPath);

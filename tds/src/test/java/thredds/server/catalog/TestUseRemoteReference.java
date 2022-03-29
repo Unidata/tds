@@ -35,7 +35,7 @@ public class TestUseRemoteReference {
     // get test catalog location
     ClassLoader cl = this.getClass().getClassLoader();
     URL url = cl.getResource(testCatalog);
-    ConfigCatalogBuilder catFactory = new ConfigCatalogBuilder();
+    ConfigCatalogBuilder catFactory = new ConfigCatalogBuilder("thredds");
     cat = catFactory.buildFromLocation("file:" + url.getPath(), null);
     // cat = catFactory.buildFromURI(url); // LOOK does this work ??
   }
