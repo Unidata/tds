@@ -44,7 +44,7 @@ permalink: installation_checklist.html
  * [Enable any other optional services](adding_ogc_iso_services.html)  like WMS or WCS.
  
 ### Continued Maintenance
-1. Be sure to periodically check to make sure you are running the [latest versions of Java, Tomcat and the TDS](keep_software_uptodate.html).
+1. Be sure to periodically check to make sure you are running the [latest supported versions of Java, Tomcat and the TDS](keep_software_uptodate.html).
 2. If you have enabled [access logging](tomcat_access_log.html) (and you should), zip up the unused access logs in `${tomcat_home}/logs/` and archive them off to another directory.
 3. Likewise, zip up the unused [TDS servlet logs](tds_logs.html) in `${tomcat_home}/content/thredds/logs` and archive them as well.
 4. Manually rotate Tomcat's [`catalina.out`](tomcat_log_files.html#things-to-know-about-catalinaout) log file when it grows too large.
