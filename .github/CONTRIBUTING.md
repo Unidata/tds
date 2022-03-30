@@ -70,9 +70,9 @@ Now you are all set!
 ### <a name="#gh-sync-ud"></a> Make sure you have the latest changes from Unidata TDS repository
 First, make sure you have the most recent changes to the TDS code by using git pull:
 
-`git pull unidata develop`
+`git pull unidata main`
 
-All work on TDS is should branch from the `develop` branch.
+All work on TDS is should branch from the `main` branch.
 Contributions will be backported to other versions as needed.
 
 ### <a name="#gh-branch"></a>Make a new branch for your work and start hacking
