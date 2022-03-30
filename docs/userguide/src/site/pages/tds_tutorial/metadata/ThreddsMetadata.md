@@ -22,7 +22,7 @@ The term is ambiguous, as it is used for two fundamentally different concepts.
 ## Introduction
 
 A *simple catalog* may contain very minimal information about its datasets, at minimum just a name, a service and a URL for each dataset. 
-An *enhanced catalog* is one in which you have added enough metadata that its possible to create a Digital Library record for import into one of the Data Discovery Centers like [IDN](http://gcmd.gsfc.nasa.gov/){:target="_blank"}.
+An *enhanced catalog* is one in which you have added enough metadata that it's possible to create a Digital Library record for import into one of the Data Discovery Centers like [IDN](http://gcmd.gsfc.nasa.gov/){:target="_blank"}.
 
 The THREDDS catalog specification allows you to add all kinds of metadata, in fact, you can put any information you want into metadata elements by using separate XML namespaces. 
 The TDS comes with an example enhanced catalog that contains a recommended set of metadata that you can use as a template. 
@@ -116,7 +116,7 @@ The example enhanced catalog lives at `${tomcat_home}/content/thredds/enhancedCa
 1. This is the standard `catalog` element for version 1.0.1. The only thing you should change is the name.
 2. You need this service in order to use the `addProxies` child element of the `datasetScan` element.
 3. This is a compound service gives access to the datasets both through OpenDAP and through HTTP file transfer.
-4. This is a collection level dataset that we added in order to demonstrate factoring out information. It's not particularly needed in this example, which only contains one nested dataset (the datasetScan at (6)), but for more complicated situations its very useful.
+4. This is a collection level dataset that we added in order to demonstrate factoring out information. It's not particularly needed in this example, which only contains one nested dataset (the datasetScan at (6)), but for more complicated situations it's very useful.
 5. The metadata element that's part of the collection dataset at (4). Because it has `inherited=true`, everything in it will apply to the collection's nested datasets. The specific fields are ones that often can be factored out in this way, but your catalog may be different.
    1. `serviceName`: indicates that all the nested datasets will use the compound service named *both*.
    2. `authority`: used to create globally unique dataset IDs. Note the use of *reverse DNS naming*, which guarantees global uniqueness.

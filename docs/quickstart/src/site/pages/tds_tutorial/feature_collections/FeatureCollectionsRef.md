@@ -57,14 +57,14 @@ All of the elements that can be used inside of a `dataset` element can be used i
 ### Example 1: Simple Case Using Defaults
 
 ~~~xml
-<featureCollection name="NCEP Polar Sterographic" featureType="GRIB2" 
+<featureCollection name="NCEP Polar Stereographic" featureType="GRIB2" 
                    path="grib/NCEP/NAM/Polar_90km"> <!-- 1 -->
   <collection name="NCEP-NAM-Polar_90km"
               spec="/data/ldm/pub/native/grid/NCEP/NAM/Polar_90km/NAM_Polar_90km_.*\.grib2$"/> <!-- 2 -->
 </featureCollection>
 ~~~
 
-1. A `GRIB2` Feature Collection dataset is defined, with the "human readable" name of "NCEP Polar Sterographic". 
+1. A `GRIB2` Feature Collection dataset is defined, with the "human readable" name of "NCEP Polar Stereographic". 
    Its URL path(s) will look like `http://server/thredds/<service>/grib/NCEP/NAM/Polar_90km/...`​
    The Dataset `ID` is automatically set to the path, so that its dataset page will be `http://server/thredds/catalog/grib/NCEP/NAM/Polar_90km/catalog.xml?dataset=grib/NCEP/NAM/Polar_90km/...`​
 2. Defines the files in the collection as any file in the directory `/data/ldm/pub/native/grid/NCEP/NAM/Polar_90km/` that matches the regular expression `NAM_Polar_90km.*\.grib2$`. 
@@ -339,7 +339,7 @@ The XML Schema definition for the update element:
 1. `never`: the collection is used as it is, and no checking is done. 
    The collection index must already exist.
    Use this for very large collections that you don't want to inadvertently scan.
-2. `nocheck`: the collection index is used if it exists, without checking whether its up-to-date. 
+2. `nocheck`: the collection index is used if it exists, without checking whether it's up-to-date. 
    If it doesn't exist, build it.
 3. `testIndexOnly`: the collection index is used if it exists and it is newer than all of its immediate children.
 4. `test` or `true`: the collection's data files are scanned and the new collection of children is compared to the old collection.
@@ -565,7 +565,7 @@ For very large collections, the `rescan` schedule should be carefully considered
 ~~~
 
 The dataset will be read in at TDS startup time by using the existing indexes (they must already exist).
-The TDM will test if its changed "once a day at 3 am", and send a trigger to the TDS if needed.
+The TDM will test if it's changed "once a day at 3 am", and send a trigger to the TDS if needed.
 
 ### Very Large GRIB Collection That Doesn't Change
 

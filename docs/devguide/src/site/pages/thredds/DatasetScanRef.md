@@ -240,7 +240,7 @@ Note that the sort is done before renaming.
 ## Adding A Link To The "Latest" Dataset
 
 You may want to have a special link that points to the *"latest"* data in the collection, especially for data that is constantly being updated, e.g., real-time data. 
-Here, *latest* means the last filename in a list sorted by name (so its only the latest if the time stamp is in the filename and the name sorts correctly by time).
+Here, *latest* means the last filename in a list sorted by name (so it's only the latest if the time stamp is in the filename and the name sorts correctly by time).
 
 The simplest way to enable this is to add the attribute `addLatest="true"` to the `datasetScan` element. The latest resolver service will be automatically added to the catalog.
 

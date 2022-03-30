@@ -247,7 +247,7 @@ The above example shows that the Saxon parser has been set, but is not being fou
 We saw this happening with the _OOSTethys_ webapp.
 
 The solution is to move the other webapp to its own Tomcat instance, or to move the required jar (e.g.: `saxon.jar`) into Tomcat's lib directory, where it is available to all webapps.
-TDS does very simple XSLT to create its web forms, so its likely that it can work with any decent XSLT library.
+TDS does very simple XSLT to create its web forms, so it's likely that it can work with any decent XSLT library.
 By default, it uses the JDK's built-in XSLT library.
 
 ### What does the TDS do at startup to read the configuration catalogs? What gets cached? Does it have a way to know a referenced catalog is unchanged? When do referenced catalogs get scanned?
@@ -427,7 +427,7 @@ NOTE: You need to restart the server before this will take effect.
 ### How do I remove Servlet `Autodeploy`?
 
 It's recommended to remove auto-detection of changes while Tomcat is running, for performance reasons.
-In a production environment, its better to explicitly redeploy the application:
+In a production environment, it's better to explicitly redeploy the application:
 
 ~~~xml
 <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="false"
