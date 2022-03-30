@@ -13,7 +13,7 @@ As of 5.0, if this file is missing, then default settings will be used.
 " %}
 
 We strongly encourage you to fill in the **Server Information** fields, but all other fields are optional, and default settings are used whenever you don't override.
-Generally, its good practice to only include the elements you want to change from the defaults.
+Generally, it's good practice to only include the elements you want to change from the defaults.
 
 When changing `threddsConfig.xml`, you must restart the thredds webapp (e.g., through the Tomcat manager application) for them to take effect.
 
@@ -175,7 +175,7 @@ However, for remote catalogs, these services must be explicitly enabled in `thre
 ~~~
 
 This controls the `OPeNDAP` data service.
-Because its easy for a user to inadvertently request very large amounts of data, the TDS limits the size of the data response. 
+Because it's easy for a user to inadvertently request very large amounts of data, the TDS limits the size of the data response. 
 In our experience legitimate requests ask for subset sizes that are well below the defaults.
 
 * `ascLimit`: maximum size of an ascii data request , in Megabytes.
@@ -482,7 +482,7 @@ These elements control where GRIB index files are written.
 
 * If `alwaysUse` is true, grib index files will always be written to the _index directory_ specified by `dir` (see [choosing a cache directory](#disk-caching-and-temporary-files)).
   If `neverUse` is true, the index directory will never be used. 
-  If neither is set, the TDS will try to write grib indexes to the same directory as the original file, and if the TDS doesnt have write permission it will then write the files to the index directory.
+  If neither is set, the TDS will try to write grib indexes to the same directory as the original file, and if the TDS doesn't have write permission it will then write the files to the index directory.
   Write permission will be determined by what rights the _Tomcat user_ has (the user that starts up Tomcat).
   For security reasons, you want to carefully limit the file permissions of the Tomcat user.
 * The policy must be set to one of `oneDirectory` or `nestedDirectory` (the default). 

@@ -396,7 +396,7 @@ It has an optional `documentation type` attribute, such as `summary`, `funding`,
 
 The `documentation` element may also contain an `XLink` to an HTML or plain text web page. 
 This allows you to point to external web references, and allows you to factor out common documentation which can be referenced from multiple places. 
-Note, it should not link to an XML page (unless its XHTML); instead use the `metadata` element in these instances. 
+Note, it should not link to an XML page (unless it's XHTML); instead use the `metadata` element in these instances. 
 
 #### Examples
 

@@ -74,7 +74,7 @@ If you do not include this option, you will be prompted for the password on TDM 
   The index files will have extensions `gbx9` and `ncx4`.
 * For each `featureCollection`, a log file is created in the TDM working directory, with name `fc.<collectionName>.log`.
   Monitor these logs to look for problems with the indexing.
-* If you start the TDS in a shell, its best to put in the background so it can run independent of the shell:
+* If you start the TDS in a shell, it's best to put in the background so it can run independent of the shell:
 
 ~~~bash
 ^Z  (this is Control-Z)
