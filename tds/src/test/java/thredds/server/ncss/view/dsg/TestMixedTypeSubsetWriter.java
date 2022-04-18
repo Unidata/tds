@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import thredds.server.ncss.format.SupportedFormat;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft2.coverage.CoverageCollection;
@@ -17,7 +15,6 @@ import ucar.nc2.ft2.coverage.writer.CoverageAsPoint;
 import ucar.unidata.geoloc.LatLonPoint;
 
 import java.io.*;
-import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
