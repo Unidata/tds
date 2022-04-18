@@ -49,8 +49,8 @@ public abstract class AbstractMixedFeatureTypeSubsetWriter extends DsgSubsetWrit
             pointFeature = pfc.hasNext() ? pfc.next() : null;
             break;
           case STATION_PROFILE:
-            ProfileFeature profile =
-                ((StationProfileFeature) ((StationProfileFeatureCollection) fc).getStationFeatures().get(0)).next();
+            ProfileFeature profile = ((ProfileFeature) ((StationProfileFeature) ((StationProfileFeatureCollection) fc)
+                .getStationFeatures().get(0)).getCollectionIterator().next());
             pointFeature = profile.hasNext() ? profile.next() : null;
             break;
           default:
