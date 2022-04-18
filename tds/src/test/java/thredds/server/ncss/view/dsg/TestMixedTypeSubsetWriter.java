@@ -72,17 +72,14 @@ public class TestMixedTypeSubsetWriter {
     File expectedResultFile = new File(
         getClass().getResource("any_point/" + format.name().toLowerCase() + "/" + expectedResultResource).toURI());
     File actualResultFile = tempFolder.newFile();
-    try {
-      try (OutputStream outFileStream = new BufferedOutputStream(new FileOutputStream(actualResultFile))) {
-        DsgSubsetWriter subsetWriterFile =
-            DsgSubsetWriterFactory.newInstance(fdPoint, subsetParams, null, outFileStream, format);
-        subsetWriterFile.write();
-      }
-      Assert.assertTrue(DsgSubsetTestUtils.compareText(expectedResultFile, actualResultFile));
-    } catch (AssertionError e) {
-      String message =
-          String.format("Files differed:\n\texpected: %s\n\tactual: %s", expectedResultFile, actualResultFile);
-      throw new AssertionError(message, e); // Rethrow with debugging message.
+
+    try (OutputStream outFileStream = new BufferedOutputStream(new FileOutputStream(actualResultFile))) {
+      DsgSubsetWriter subsetWriterFile =
+          DsgSubsetWriterFactory.newInstance(fdPoint, subsetParams, null, outFileStream, format);
+      subsetWriterFile.write();
     }
+    Assert.assertTrue(
+        String.format("Files differed:\n\texpected: %s\n\tactual: %s", expectedResultFile, actualResultFile),
+        DsgSubsetTestUtils.compareText(expectedResultFile, actualResultFile));
   }
 }

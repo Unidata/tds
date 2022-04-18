@@ -46,15 +46,20 @@ public class StationWriterUtils {
   }
 
   /**
-   * Find the station closest to the specified point.
-   * The metric is (lat-lat0)**2 + (cos(lat0)*(lon-lon0))**2
-   * 
    * @param stationFeatCol
    * @param pt
    * @return
    * @throws IOException
    */
-  public static Station findClosestStation(StationFeatureCollection stationFeatCol, LatLonPoint pt) throws IOException {
+  /**
+   * Find the station closest to the specified point.
+   * The metric is (lat-lat0)**2 + (cos(lat0)*(lon-lon0))**2
+   *
+   * @param stationFeatCol - StationFeatureCollection to be searched
+   * @param pt - target LatLonPoint
+   * @return The Station in stationFeatCol closest to pt
+   */
+  public static Station findClosestStation(StationFeatureCollection stationFeatCol, LatLonPoint pt) {
     double lat = pt.getLatitude();
     double lon = pt.getLongitude();
     double cos = Math.cos(Math.toRadians(lat));

@@ -37,18 +37,14 @@ public class HttpHeaderWriter {
     return httpHeaders;
   }
 
-  public static HttpHeaders getHttpHeadersForNetcdf(String datasetPath, boolean isStream, NcssDiskCache ncssDiskCache,
+  public static HttpHeaders getHttpHeadersForNetcdf(String datasetPath, NcssDiskCache ncssDiskCache,
       NetcdfFileWriter.Version version) {
     HttpHeaders httpHeaders = new HttpHeaders();
 
     String fileName = TdsPathUtils.getFileNameForResponse(datasetPath, version);
     String url = ncssDiskCache.getServletCachePath() + fileName;
 
-    if (version == NetcdfFileWriter.Version.netcdf3) {
-      httpHeaders.set(ContentType.HEADER, ContentType.netcdf.getContentHeader());
-    } else if (version == NetcdfFileWriter.Version.netcdf4 || version == NetcdfFileWriter.Version.netcdf4_classic) {
-      httpHeaders.set(ContentType.HEADER, ContentType.netcdf.getContentHeader());
-    }
+    httpHeaders.set(ContentType.HEADER, ContentType.netcdf.getContentHeader());
 
     httpHeaders.set("Content-Location", url);
     httpHeaders.set("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
