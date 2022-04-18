@@ -7,6 +7,7 @@ import ucar.nc2.constants.FeatureType;
 import ucar.nc2.ft.*;
 import ucar.nc2.ft2.coverage.SubsetParams;
 
+import javax.validation.constraints.Null;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,21 +42,24 @@ public abstract class AbstractMixedFeatureTypeSubsetWriter extends DsgSubsetWrit
       try {
         switch (featureType) {
           case POINT:
-            pointFeature = ((PointFeatureCollection) fc).next();
+            pointFeature = ((PointFeatureCollection) fc).hasNext() ? ((PointFeatureCollection) fc).next() : null;
             break;
           case STATION:
-            pointFeature = ((StationTimeSeriesFeatureCollection) fc).getCollectionIterator().next().iterator().next();
+            PointFeatureCollection pfc = ((StationTimeSeriesFeatureCollection) fc).getCollectionIterator().next();
+            pointFeature = pfc.hasNext() ? pfc.next() : null;
             break;
           case STATION_PROFILE:
-            pointFeature = ((StationProfileFeature) ((StationProfileFeatureCollection) fc).getStationFeatures().get(0))
-                .iterator().next().iterator().next();
+            ProfileFeature profile =
+                ((StationProfileFeature) ((StationProfileFeatureCollection) fc).getStationFeatures().get(0)).next();
+            pointFeature = profile.hasNext() ? profile.next() : null;
             break;
           default:
             throw new UnsupportedOperationException(
                 String.format("%s feature type is not yet supported.", featureType));
         }
       } catch (Exception e) {
-        throw new NcssException(e.getMessage());
+        // catch IOException and NullPointerException
+        throw new NcssException("Could not read point from feature collection " + fc.getName() + ": " + e.getMessage());
       }
       // subset wanted vars
       StructureData data = pointFeature.getDataAll();

@@ -63,7 +63,7 @@ public class PointSubsetWriterNetcdf extends AbstractPointSubsetWriter {
 
   @Override
   public HttpHeaders getHttpHeaders(String datasetPath, boolean isStream) {
-    return HttpHeaderWriter.getHttpHeadersForNetcdf(datasetPath, isStream, ncssDiskCache, version);
+    return HttpHeaderWriter.getHttpHeadersForNetcdf(datasetPath, ncssDiskCache, version);
   }
 
   @Override

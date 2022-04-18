@@ -192,25 +192,23 @@ public class DsgSubsetWriterTest {
     File expectedResultFile = new File(getClass().getResource(expectedResultResource).toURI());
     File actualResultFile = tempFolder.newFile();
 
-    try {
-      try (FeatureDatasetPoint fdPoint = openPointDataset(wantedType, datasetFile);
-          OutputStream outFileStream = new BufferedOutputStream(new FileOutputStream(actualResultFile))) {
-        DsgSubsetWriter subsetWriterFile =
-            DsgSubsetWriterFactory.newInstance(fdPoint, subsetParams, ncssDiskCache, outFileStream, format);
-        subsetWriterFile.write();
-      }
+    try (FeatureDatasetPoint fdPoint = openPointDataset(wantedType, datasetFile);
+        OutputStream outFileStream = new BufferedOutputStream(new FileOutputStream(actualResultFile))) {
+      DsgSubsetWriter subsetWriterFile =
+          DsgSubsetWriterFactory.newInstance(fdPoint, subsetParams, ncssDiskCache, outFileStream, format);
+      subsetWriterFile.write();
+    }
 
-      // outFileStream must be closed before we compare actualResultFile.
-      // That happens at the end of the try block above.
-      if (format == SupportedFormat.NETCDF3 || format == SupportedFormat.NETCDF4) {
-        Assert.assertTrue(DsgSubsetTestUtils.compareNetCDF(expectedResultFile, actualResultFile));
-      } else {
-        Assert.assertTrue(DsgSubsetTestUtils.compareText(expectedResultFile, actualResultFile));
-      }
-    } catch (AssertionError e) {
-      String message =
-          String.format("Files differed:\n\texpected: %s\n\tactual: %s", expectedResultFile, actualResultFile);
-      throw new AssertionError(message, e); // Rethrow with debugging message.
+    // outFileStream must be closed before we compare actualResultFile.
+    // That happens at the end of the try block above.
+    if (format == SupportedFormat.NETCDF3 || format == SupportedFormat.NETCDF4) {
+      Assert.assertTrue(
+          String.format("Files differed:\n\texpected: %s\n\tactual: %s", expectedResultFile, actualResultFile),
+          DsgSubsetTestUtils.compareNetCDF(expectedResultFile, actualResultFile));
+    } else {
+      Assert.assertTrue(
+          String.format("Files differed:\n\texpected: %s\n\tactual: %s", expectedResultFile, actualResultFile),
+          DsgSubsetTestUtils.compareText(expectedResultFile, actualResultFile));
     }
   }
 

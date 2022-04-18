@@ -68,9 +68,9 @@ public class StationProfileSubsetWriterNetcdf extends AbstractStationProfileSubs
         spf = ((StationProfileFeature) spf).subset(wantedRange);
       }
       name_strlen = Math.max(name_strlen, spf.getName().length());
-      if (((StationProfileFeature) spf).size() >= 0)
+      if (((StationProfileFeature) spf).size() >= 0) {
         countProfiles += ((StationProfileFeature) spf).size();
-      else {
+      } else {
         for (ProfileFeature pf : ((StationProfileFeature) spf)) {
           countProfiles++;
         }
@@ -81,7 +81,7 @@ public class StationProfileSubsetWriterNetcdf extends AbstractStationProfileSubs
 
   @Override
   public HttpHeaders getHttpHeaders(String datasetPath, boolean isStream) {
-    return HttpHeaderWriter.getHttpHeadersForNetcdf(datasetPath, isStream, ncssDiskCache, version);
+    return HttpHeaderWriter.getHttpHeadersForNetcdf(datasetPath, ncssDiskCache, version);
   }
 
   @Override

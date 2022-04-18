@@ -128,6 +128,7 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
 
           if (diff < smallestDiff) {
             closestTime = obsTime;
+            smallestDiff = diff;
           }
         }
       } finally {
