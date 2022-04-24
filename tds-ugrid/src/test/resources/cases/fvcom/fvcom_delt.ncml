@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+    location="UCF_FVCOM_DEMO.nc">
+    
+    <dimension name="face" orgName="nele"/>
+    <dimension name="node" orgName="node"/>
+    
+    <!-- X and Y Coordinates -->
+    <variable name="face_x" orgName="xc">
+        <attribute name="long_name" value="Characteristics longitude of 2D mesh triangle (e.g. circumcenter coordinate)"/>
+        <attribute name="standard_name" value="longitude"/>
+    </variable>
+    <variable name="face_y" orgName="yc">
+        <attribute name="long_name" value="Characteristics latitude of 2D mesh triangle (e.g. circumcenter coordinate)."/>
+        <attribute name="standard_name" value="latitude"/>
+    </variable>
+    <variable name="node_x" orgName="x">
+        <attribute name="long_name" value="Longitude of 2D mesh nodes."/>
+        <attribute name="standard_name" value="longitude"/>
+    </variable>
+    <variable name="node_y" orgName="y">
+        <attribute name="long_name" value="Latitude of 2D mesh nodes."/>
+        <attribute name="standard_name" value="latitude"/>
+    </variable>
+    
+    
+    <!-- Lat and Lon -->
+    <variable name="lon_face" orgName="lonc">
+        <attribute name="long_name" value="Characteristics longitude of 2D mesh triangle (e.g. circumcenter coordinate)"/>
+        <attribute name="standard_name" value="longitude"/>
+    </variable>
+    <variable name="lat_face" orgName="latc">
+        <attribute name="long_name" value="Characteristics latitude of 2D mesh triangle (e.g. circumcenter coordinate)."/>
+        <attribute name="standard_name" value="latitude"/>
+        <attribute name="_CoordinateAxisType" value="Lat"/>
+    </variable>
+    <variable name="lon_node" orgName="lon">
+        <attribute name="long_name" value="Longitude of 2D mesh nodes."/>
+        <attribute name="standard_name" value="longitude"/>
+    </variable>
+    <variable name="lat_node" orgName="lat">
+        <attribute name="long_name" value="Latitude of 2D mesh nodes."/>
+        <attribute name="standard_name" value="latitude"/>
+        <attribute name="_CoordinateAxisType" value="Lat"/>
+    </variable>
+    
+    <!-- Zeta -->
+    <variable name="zeta">
+        <remove type="attribute" name="grid"/>
+        <remove type="attribute" name="grid_location"/>
+        <attribute name="coordinates" value="time lat_node lon_node"/>
+        <attribute name="mesh" value="Mesh1 Mesh2"/>
+        <attribute name="location" value="node"/>
+    </variable>
+    <variable name="zeta_center">
+        <remove type="attribute" name="grid"/>
+        <remove type="attribute" name="grid_location"/>
+        <attribute name="coordinates" value="time lat_face lon_face"/>
+        <attribute name="mesh" value="Mesh1 Mesh2"/>
+        <attribute name="location" value="face"/>
+    </variable>
+    
+    <!-- H -->
+    <variable name="h">
+        <remove type="attribute" name="grid"/>
+        <remove type="attribute" name="grid_location"/>
+        <attribute name="coordinates" value="lat_node lon_node"/>
+        <attribute name="mesh" value="Mesh1 Mesh3"/>
+        <attribute name="location" value="node"/>
+    </variable>
+    <variable name="h_center">
+        <remove type="attribute" name="grid"/>
+        <remove type="attribute" name="grid_location"/>
+        <attribute name="coordinates" value="lat_face lon_face"/>
+        <attribute name="mesh" value="Mesh1 Mesh3"/>
+        <attribute name="location" value="face"/>
+    </variable>
+    
+    <!-- Sigma -->
+    <variable name="siglay">
+        <attribute name="standard_name" value="ocean_sigma_coordinate"/>
+    </variable>
+    <variable name="siglay_center">
+        <attribute name="standard_name" value="ocean_sigma_coordinate"/>
+    </variable>
+    <variable name="siglev">
+        <attribute name="standard_name" value="ocean_sigma_coordinate"/>
+    </variable>
+    <variable name="siglev_center">
+        <attribute name="standard_name" value="ocean_sigma_coordinate"/>
+    </variable>
+    
+    
+    
+    <!-- Data Variables -->
+    
+    <!-- Temp and Salt -->
+    <variable name="temperature_node" orgName="temp">
+        <remove type="attribute" name="grid"/>
+        <remove type="attribute" name="grid_location"/>
+        <attribute name="coordinates" value="time siglay lat_node lon_node"/>
+        <attribute name="mesh" value="Mesh4"/>
+        <attribute name="location" value="node"/>
+    </variable>
+    <variable name="salinity_node" orgName="salinity">
+        <remove type="attribute" name="grid"/>
+        <remove type="attribute" name="grid_location"/>
+        <attribute name="coordinates" value="time siglay lat_node lon_node"/>
+        <attribute name="mesh" value="Mesh4"/>
+        <attribute name="location" value="node"/>
+    </variable>
+    
+      <!-- U & V -->
+    <variable name="u_face" orgName="u">
+        <remove type="attribute" name="grid"/>
+        <remove type="attribute" name="grid_location"/>
+        <attribute name="coordinates" value="time siglay lat_face lon_face"/>
+        <attribute name="mesh" value="Mesh5"/>
+        <attribute name="location" value="face"/>
+    </variable>
+    <variable name="v_face" orgName="v">
+        <remove type="attribute" name="grid"/>
+        <remove type="attribute" name="grid_location"/>
+        <attribute name="coordinates" value="time siglay lat_face lon_face"/>
+        <attribute name="mesh" value="Mesh5"/>
+        <attribute name="location" value="face"/>
+    </variable>
+    
+    <!-- Time -->
+    <variable name="time">
+        <attribute name="units" value="days since 2008-01-01 00:00:00"/>
+    </variable>
+    
+    <variable name="Mesh1" type="int">
+        <attribute name="cf_role" value="mesh_topology"/>
+        <attribute name="long_name" value="Topology data of 2D unstructured mesh (Mesh1)"/>
+        <attribute name="topology_dimension" type="short" value="2"/>
+        <attribute name="node_coordinates" value="lat_node lon_node"/>
+        <attribute name="face_node_connectivity" value="connectivity_Mesh1"/>
+        <attribute name="face_coordinates" value="lat_face lon_face "/>
+    </variable>
+    <variable name="Mesh2" type="int">
+        <attribute name="cf_role" value="mesh_topology"/>
+        <attribute name="long_name" value="Topology data of 2D unstructured mesh (Mesh2)"/>
+        <attribute name="topology_dimension" type="short" value="2"/>
+        <attribute name="node_coordinates" value="h lat_node lon_node"/>
+        <attribute name="face_node_connectivity" value="connectivity_with_height_Mesh2" />
+        <attribute name="face_coordinates" value="h_center lat_face lon_face"/>
+    </variable>
+    <variable name="Mesh3" type="int">
+        <attribute name="cf_role" value="mesh_topology"/>
+        <attribute name="long_name" value="Topology data of 2D unstructured mesh (Mesh3)"/>
+        <attribute name="topology_dimension" type="short" value="2"/>
+        <attribute name="node_coordinates" value="zeta lat_node lon_node"/>
+        <attribute name="face_node_connectivity" value="connectivity_with_depth_Mesh3" />
+        <attribute name="face_coordinates" value="zeta_center lat_face lon_face"/>
+    </variable>
+    <variable name="Mesh4" type="int">
+        <attribute name="cf_role" value="mesh_topology"/>
+        <attribute name="long_name" value="Topology data of 2D unstructured mesh (Mesh4)"/>
+        <attribute name="topology_dimension" type="short" value="2"/>
+        <attribute name="node_coordinates" value="siglay lat_node lon_node"/>
+        <attribute name="face_node_connectivity" value="connectivity_with_siglay_Mesh4" />
+        <attribute name="face_coordinates" value="siglay_center lat_face lon_face"/>
+    </variable>
+    <variable name="Mesh5" type="int">
+        <attribute name="cf_role" value="mesh_topology"/>
+        <attribute name="long_name" value="Topology data of 2D unstructured mesh (Mesh5)"/>
+        <attribute name="topology_dimension" type="short" value="2"/>
+        <attribute name="node_coordinates" value="siglev lat_node lon_node"/>
+        <attribute name="face_node_connectivity" value="connectivity_with_siglev_Mesh5" />
+        <attribute name="face_coordinates" value="siglev_center lat_face lon_face"/>
+    </variable>
+    
+    <!-- Grids -->
+    <variable name="connectivity_Mesh1" orgName="grid1">
+        <attribute name="cf_role" value="face_node_connectivity" />
+        <remove type="attribute" name="coordinates_node"/>
+        <remove type="attribute" name="index_start"/>
+        <attribute name="long_name" value="Maps every face to its corner nodes, counter-clockwise"/>
+        <attribute name="start_index" type="short" value="1"/>
+    </variable>
+    <variable name="connectivity_with_height_Mesh2" orgName="grid2">
+        <attribute name="cf_role" value="face_node_connectivity" />
+        <remove type="attribute" name="coordinates_node"/>
+        <attribute name="long_name" value="Maps every face to its corner nodes, counter-clockwise, with respect to Height (Zeta)"/>
+        <remove type="attribute" name="index_start"/>
+        <attribute name="start_index" type="short" value="1"/>
+    </variable>
+    <variable name="connectivity_with_depth_Mesh3" orgName="grid3">
+        <attribute name="cf_role" value="face_node_connectivity" />
+        <remove type="attribute" name="coordinates_node"/>
+        <attribute name="long_name" value="Maps every face to its corner nodes, counter-clockwise, with respect to Depth (H)"/>
+        <remove type="attribute" name="index_start"/>
+        <attribute name="start_index" type="short" value="1"/>
+    </variable>
+    <variable name="connectivity_with_siglay_Mesh4" orgName="grid4">
+        <attribute name="cf_role" value="face_node_connectivity" />
+        <remove type="attribute" name="coordinates_node"/>
+        <remove type="attribute" name="coordinates_cell"/>
+        <attribute name="long_name" value="Maps every face to its corner nodes, counter-clockwise, with respect to Sigma Layer (SigLay)"/>
+        <remove type="attribute" name="index_start"/>
+        <attribute name="start_index" type="short" value="1"/>
+    </variable>
+    <variable name="connectivity_with_siglev_Mesh5" orgName="grid5">
+        <attribute name="cf_role" value="face_node_connectivity" />
+        <remove type="attribute" name="coordinates_node"/>
+        <remove type="attribute" name="coordinates_cell"/>
+        <attribute name="long_name" value="Maps every face to its corner nodes, counter-clockwise, with respect to Sigma Level (SigLev)"/>
+        <remove type="attribute" name="index_start"/>
+        <attribute name="start_index" type="short" value="1"/>
+    </variable>
+    
+    <attribute name="Conventions" value="CF-1.6-UGRID-1.0"/>
+</netcdf>
