@@ -1,0 +1,25 @@
+import javax.xml.transform.TransformerFactory
+
+description = 'Experimental UGRID support for netCDF-java'
+ext.title = 'TDS UGRID Support'
+ext.url = 'https://www.unidata.ucar.edu/software/tds/'
+
+apply from: "$rootDir/gradle/any/dependencies.gradle"
+apply from: "$rootDir/gradle/any/java-published.gradle"
+
+dependencies {
+  implementation enforcedPlatform (project(':tds-platform'))
+  testCompile enforcedPlatform (project(':tds-testing-platform'))
+
+  compile 'edu.ucar:cdm-core'
+  compile 'edu.ucar:cdm-s3'
+  implementation 'colt:colt:1.2.0'
+
+  // Testing
+  testCompile 'junit:junit'
+  testCompile project(':tds-test-utils');
+  testCompile 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
+
+  // Logging
+  compile 'org.slf4j:slf4j-api'
+}
