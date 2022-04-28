@@ -6,7 +6,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import thredds.client.catalog.*;
+import thredds.core.ConfigCatalogInitialization;
 import thredds.server.catalog.CatalogScan;
+import thredds.server.catalog.ConfigCatalogCache;
 import thredds.server.catalog.DatasetScan;
 import thredds.server.catalog.FeatureCollectionRef;
 import thredds.server.config.HtmlConfigBean;
@@ -43,17 +45,22 @@ public class CatalogViewContextParser {
   @Autowired
   private TdsServerInfoBean serverInfo;
 
+  @Autowired
+  private ConfigCatalogCache ccc;
+
   public Map<String, Object> getCatalogViewContext(Catalog cat, HttpServletRequest req, boolean isLocalCatalog) {
     Map<String, Object> model = new HashMap<>();
-    addBaseContext(model);
 
-    try {
-      if (cat.getParent() == null) {
-        model.put("rootCatalog", true);
-      }
-    } catch (Exception e) {
-      model.put("rootCatalog", false);
+    String baseUrl = getBaseCatUrl(cat.getBaseURI().toString(), req);
+    addBaseContext(model, baseUrl + "/");
+
+    String catName = cat.getBaseURI().toString();
+    String serviceStr = ServiceType.Catalog.name().toLowerCase();
+    if (catName.contains(serviceStr)) {
+      catName = catName.substring(catName.indexOf(serviceStr) + serviceStr.length() + 1);
     }
+    boolean isRoot = ccc.isRoot(catName);
+    model.put("rootCatalog", isRoot);
 
     List<CatalogItemContext> catalogItems = new ArrayList<>();
     addCatalogItems(cat, catalogItems, isLocalCatalog, 0);
@@ -64,7 +71,8 @@ public class CatalogViewContextParser {
 
   public Map<String, Object> getDatasetViewContext(Dataset ds, HttpServletRequest req, boolean isLocalCatalog) {
     Map<String, Object> model = new HashMap<>();
-    addBaseContext(model);
+    String baseUrl = getBaseCatUrl(ds.getCatalogUrl(), req);
+    addBaseContext(model, baseUrl + "/");
 
     DatasetContext context = new DatasetContext(ds, isLocalCatalog, tdsContext, req);
 
@@ -82,11 +90,40 @@ public class CatalogViewContextParser {
     return model;
   }
 
-  private void addBaseContext(Map<String, Object> model) {
+  // returns protocol, authority, context path, and catalog access string
+  private static String getBaseCatUrl(String catUrl, HttpServletRequest req) {
+    String baseUrl = getAbsoluteCatUrl(catUrl, req);
+    String serviceStr = ServiceType.Catalog.name().toLowerCase();
+    if (baseUrl.contains(serviceStr)) {
+      baseUrl = baseUrl.substring(0, baseUrl.indexOf(serviceStr) + serviceStr.length());
+    }
+    return baseUrl;
+  }
+
+  // returns fully qualified URL for a catalog
+  static String getAbsoluteCatUrl(String catUrl, HttpServletRequest req) {
+    if (catUrl.indexOf('#') > 0) {
+      catUrl = catUrl.substring(0, catUrl.lastIndexOf('#'));
+    }
+    catUrl = catUrl.replace("xml", "html");
+    // for direct datasets generated directly off of the root catalog, and maybe others, the base uri is missing
+    // the full server path. Try to do what we can.
+    if (catUrl.startsWith("/")) {
+      String reqUri = req.getRequestURL().toString();
+      if (reqUri.contains(req.getContextPath())) {
+        String baseUriString = reqUri.split(req.getContextPath())[0];
+        catUrl = baseUriString + catUrl;
+      }
+    }
+    return catUrl;
+  }
+
+  private void addBaseContext(Map<String, Object> model, String baseUrl) {
 
     String googleTrackingCode = htmlConfig.getGoogleTrackingCode();
-    if (googleTrackingCode.isEmpty())
+    if (googleTrackingCode.isEmpty()) {
       googleTrackingCode = null;
+    }
     model.put("googleTracking", googleTrackingCode);
 
     model.put("serverName", serverInfo.getName());
@@ -94,7 +131,7 @@ public class CatalogViewContextParser {
     model.put("logoAlt", serverInfo.getLogoAltText());
 
     model.put("installName", htmlConfig.getInstallName());
-    model.put("installUrl", htmlConfig.getInstallUrl());
+    model.put("installUrl", baseUrl + htmlConfig.getInstallUrl());
 
     model.put("webappName", htmlConfig.getWebappName());
     model.put("webappUrl", htmlConfig.getWebappUrl());
@@ -415,21 +452,8 @@ class DatasetContext {
     this.contentDir = tdsContext.getContentRootPathProperty();
     // Get display name and catalog url
     this.name = ds.getName();
-    String catUrl = ds.getCatalogUrl();
-    if (catUrl.indexOf('#') > 0)
-      catUrl = catUrl.substring(0, catUrl.lastIndexOf('#'));
-    catUrl = catUrl.replace("xml", "html");
-    // for direct datasets generated directly off of the root catalog, and maybe others, the base uri is missing
-    // the full server path. Try to do what we can.
-    if (catUrl.startsWith("/")) {
-      String reqUri = req.getRequestURL().toString();
-      if (reqUri.contains(req.getContextPath())) {
-        String baseUriString = reqUri.split(req.getContextPath())[0];
-        catUrl = baseUriString + catUrl;
-      }
-    }
 
-    this.catUrl = catUrl;
+    this.catUrl = CatalogViewContextParser.getAbsoluteCatUrl(ds.getCatalogUrl(), req);
     this.catName = ds.getParentCatalog().getName();
 
     setContext(ds);
@@ -516,13 +540,13 @@ class DatasetContext {
       Service s = a.getService();
       String urlString = !isLocalCatalog ? a.getStandardUrlName() : a.getUnresolvedUrlName();
       String queryString = null;
-      String catalogUrl = null;
-      String datasetId = null;
+      String catalogUrl;
+      String datasetId;
 
       ServiceType stype = s.getType();
       // Viewer services are listed as viewers
       if (stype != null) {
-        if (stype.getAccessType().equals(ServiceType.AccessType.DataViewer)) {
+        if (stype.getAccessType().equals(ServiceType.AccessType.DataViewer.getName())) {
           continue;
         }
         switch (stype) {
