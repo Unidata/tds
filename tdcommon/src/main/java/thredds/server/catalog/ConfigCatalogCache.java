@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -36,6 +37,7 @@ public class ConfigCatalogCache implements CatalogReader {
 
   private String rootPath;
   private Cache<String, ConfigCatalog> cache;
+  private List<String> rootCatalogKeys;
 
   public ConfigCatalogCache() {}
 
@@ -60,16 +62,6 @@ public class ConfigCatalogCache implements CatalogReader {
   public void put(String catKey, ConfigCatalog cat) throws IOException {
     cache.put(catKey, cat);
   }
-
-  /*
-   * public void invalidate(String catKey) throws IOException {
-   * cache.invalidate(catKey);
-   * }
-   * 
-   * public ConfigCatalog getIfPresent(String catKey) throws IOException {
-   * return cache.getIfPresent(catKey);
-   * }
-   */
 
   public void invalidateAll() {
     cache.invalidateAll();
@@ -140,4 +132,15 @@ public class ConfigCatalogCache implements CatalogReader {
     return cat;
   }
 
+  public void setRootCatalogKeys(List<String> rootCatalogKeys) {
+    this.rootCatalogKeys = rootCatalogKeys;
+  }
+
+  public List<String> getRootCatalogKeys() {
+    return this.rootCatalogKeys;
+  }
+
+  public boolean isRoot(String catName) {
+    return this.rootCatalogKeys.contains(catName);
+  }
 }

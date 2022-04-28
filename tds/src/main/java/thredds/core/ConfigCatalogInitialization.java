@@ -96,7 +96,6 @@ public class ConfigCatalogInitialization {
   private CatalogTracker catalogTracker;
   private Set<String> catPathMap; // Hash of paths, to look for duplicate catalogs
   private Map<String, String> fcNameMap; // Hash of featureCollection ids, to look for duplicates
-  private List<String> rootCatalogKeys; // needed ??
 
   // track stats
   private DatasetTracker.Callback callback;
@@ -174,7 +173,7 @@ public class ConfigCatalogInitialization {
         this.catalogTracker = new CatalogTracker(trackerDir, true, numberCatalogs, nextCatId);
         this.dataRootTracker = new DataRootTracker(trackerDir, true, callback);
         this.dataRootPathMatcher = new DataRootPathMatcher(ccc, dataRootTracker); // starting over
-        readRootCatalogs(readMode);
+        ccc.setRootCatalogKeys(readRootCatalogs(readMode));
         break;
 
       case check:
@@ -182,7 +181,7 @@ public class ConfigCatalogInitialization {
                                                                                                 // list
         this.dataRootTracker = new DataRootTracker(trackerDir, false, callback); // use existing data roots
         this.dataRootPathMatcher = new DataRootPathMatcher(ccc, dataRootTracker);
-        readRootCatalogs(readMode); // read just roots to get global services
+        ccc.setRootCatalogKeys(readRootCatalogs(readMode)); // read just roots to get global services
         checkExistingCatalogs(readMode);
         break;
 
@@ -191,7 +190,7 @@ public class ConfigCatalogInitialization {
                                                                                                 // list
         this.dataRootTracker = new DataRootTracker(trackerDir, false, callback); // use existing data roots
         this.dataRootPathMatcher = new DataRootPathMatcher(ccc, dataRootTracker);
-        readRootCatalogs(readMode); // read just roots to get global services
+        ccc.setRootCatalogKeys(readRootCatalogs(readMode)); // read just roots to get global services
         break;
     }
 
@@ -236,8 +235,8 @@ public class ConfigCatalogInitialization {
     return true; // ok
   }
 
-  private void readRootCatalogs(ReadMode readMode) {
-    rootCatalogKeys = new ArrayList<>();
+  private List<String> readRootCatalogs(ReadMode readMode) {
+    ArrayList<String> rootCatalogKeys = new ArrayList<>();
     rootCatalogKeys.add("catalog.xml"); // always first
     // add any others listed in ThreddsConfig
     for (String location : ThreddsConfig.getRootList("catalogRoot"))
@@ -254,6 +253,7 @@ public class ConfigCatalogInitialization {
         logCatalogInit.error(ERROR + "initializing catalog " + pathname + "; " + e.getMessage(), e);
       }
     }
+    return rootCatalogKeys;
   }
 
   private void checkExistingCatalogs(ReadMode readMode) {
@@ -522,7 +522,7 @@ public class ConfigCatalogInitialization {
       public void doAction(DebugCommands.Event e) {
         StringBuilder sbuff = new StringBuilder();
         synchronized (ConfigCatalogInitialization.this) {
-          for (String catPath : rootCatalogKeys) {
+          for (String catPath : ccc.getRootCatalogKeys()) {
             sbuff.append(" catalog= ").append(catPath).append("\n");
             // String filename = StringUtil2.unescape(cat.getUriString());
             // sbuff.append(" from= ").append(filename).append("\n");
