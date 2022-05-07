@@ -32,8 +32,6 @@
  */
 package ucar.nc2.dt.ugrid;
 
-import java.io.FileNotFoundException;
-
 import ucar.nc2.*;
 import ucar.nc2.dataset.*;
 import ucar.nc2.dt.GridDatatype;
@@ -57,6 +55,8 @@ import ucar.nc2.dt.ugrid.geom.LatLonRectangle2D;
 import ucar.nc2.dt.ugrid.utils.NcdsFactory;
 import ucar.nc2.dt.ugrid.utils.NcdsFactory.NcdsTemplate;
 import ucar.unidata.geoloc.ProjectionRect;
+
+import javax.annotation.Nullable;
 
 /**
  * Make a UGridDataset into a collection of Meshsets
@@ -118,15 +118,15 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
    */
   public UGridDataset(NetcdfDataset ds, Formatter parseInfo) throws IOException {
     this.ds = ds;
-    ds.enhance(NetcdfDataset.getDefaultEnhanceMode());
+    NetcdfDatasets.enhance(ds, NetcdfDataset.getDefaultEnhanceMode(), null);
     // look for Meshes
     if (parseInfo != null)
       parseInfo.format("UGridDataset looking for MeshVariables\n");
     List<Variable> vars = ds.getVariables();
     for (Variable var : vars) {
       // See how many "Mesh" are defined in the dataset
-      if ((var.findAttributeIgnoreCase(CF.CF_ROLE)) != null
-          && (var.findAttributeIgnoreCase(CF.CF_ROLE).getStringValue().equals(TOPOLOGY_VARIABLE))) {
+      if ((var.attributes().findAttributeIgnoreCase(CF.CF_ROLE)) != null
+          && (var.attributes().findAttributeIgnoreCase(CF.CF_ROLE).getStringValue().equals(TOPOLOGY_VARIABLE))) {
         VariableEnhanced varDS = (VariableEnhanced) var;
         constructMeshVariable(ds, varDS, parseInfo);
       }
@@ -143,9 +143,7 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
       }
     } else {
       Mesh m = new Mesh(ds, v);
-      if (m != null) {
-        addMesh((VariableDS) v, m, parseInfo);
-      }
+      addMesh((VariableDS) v, m, parseInfo);
     }
   }
 
@@ -163,21 +161,20 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
 
   private void setVariables(Meshset meshset) {
     for (Variable v : ds.getVariables()) {
-      if (v.findAttributeIgnoreCase("mesh") != null) {
-        if (v.findAttributeIgnoreCase("mesh").getStringValue().toLowerCase()
+      if (v.attributes().findAttributeIgnoreCase("mesh") != null) {
+        if (v.attributes().findAttributeIgnoreCase("mesh").getStringValue().toLowerCase()
             .contains(meshset.getMesh().getName().toLowerCase())) {
           MeshVariable mv = new MeshVariable(this, (VariableDS) v, meshset);
           if (!meshVariables.contains(mv)) {
             meshVariables.add(mv);
             meshset.add(mv);
-          } else {
-            mv = null;
           }
         }
       }
     }
   }
 
+  @Nullable
   public UGridDatatype getMeshVariableByName(String name) {
     UGridDatatype z = null;
     for (UGridDatatype m : meshVariables) {
@@ -201,14 +198,18 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
   }
 
   public String getTitle() {
-    String title = ds.findAttValueIgnoreCase(null, "title", null);
+    Attribute titleAttr = ds.findGlobalAttributeIgnoreCase("title");
+    String title = titleAttr != null ? titleAttr.getStringValue() : null;
     return (title == null) ? getName() : title;
   }
 
   public String getDescription() {
-    String desc = ds.findAttValueIgnoreCase(null, "description", null);
-    if (desc == null)
-      desc = ds.findAttValueIgnoreCase(null, "history", null);
+    Attribute descAttr = ds.findGlobalAttributeIgnoreCase("description");
+    String desc = descAttr != null ? descAttr.getStringValue() : null;
+    if (desc == null) {
+      Attribute histAttr = ds.findGlobalAttributeIgnoreCase("history");
+      desc = histAttr != null ? histAttr.getStringValue() : null;
+    }
     return (desc == null) ? getName() : desc;
   }
 
@@ -252,13 +253,13 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
   public Date getStartDate() {
     if (dateRangeMax == null)
       makeRanges();
-    return (dateRangeMax == null) ? null : dateRangeMax.getStart().getDate();
+    return (dateRangeMax == null) ? null : dateRangeMax.getStart().getCalendarDate().toDate();
   }
 
   public Date getEndDate() {
     if (dateRangeMax == null)
       makeRanges();
-    return (dateRangeMax == null) ? null : dateRangeMax.getEnd().getDate();
+    return (dateRangeMax == null) ? null : dateRangeMax.getEnd().getCalendarDate().toDate();
   }
 
   public LatLonRect getBoundingBox() {
@@ -322,7 +323,9 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
   }
 
   public boolean syncExtend() throws IOException {
-    return (ds != null) ? ds.syncExtend() : false;
+    // ds.syncExtend() has been deprecated. Just return false for now.
+    // return (ds != null) ? ds.syncExtend() : false;
+    return false;
   }
 
   protected FileCache fileCache;
@@ -373,7 +376,6 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
     // Create a new subsat UGridDataset and return
     try {
       NetcdfDataset ncd = NcdsFactory.getNcdsFromTemplate(NcdsTemplate.UGRID);
-
       for (Attribute a : this.getGlobalAttributes()) {
         ncd.addAttribute(null, a);
       }
@@ -434,11 +436,7 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
       }
 
       return new UGridDataset(ncd);
-    } catch (URISyntaxException e) {
-      System.out.println(e);
-    } catch (FileNotFoundException e) {
-      System.out.println(e);
-    } catch (IOException e) {
+    } catch (URISyntaxException | IOException e) {
       System.out.println(e);
     }
     return null;
@@ -507,7 +505,7 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
 
     private Mesh mesh;
     private VariableDS description_variable;
-    private List<UGridDatatype> meshVariables = new ArrayList<UGridDatatype>();
+    private List<UGridDatatype> meshVariables = new ArrayList<>();
 
     public Meshset(Mesh m, VariableDS conn) {
       this.mesh = m;

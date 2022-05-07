@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URISyntaxException;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 /**
  * Factory class with static methods for generating {@link NetcdfDataset} objects from one or more objects.
