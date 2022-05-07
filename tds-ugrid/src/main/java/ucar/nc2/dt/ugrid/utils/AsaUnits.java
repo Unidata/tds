@@ -29,9 +29,13 @@ public class AsaUnits {
      * TODO: check these values for accuracy
      * These values where obtained from google.com converter
      */
-    UNKNOWN(1, 1, "unknown"), KNOTS(0.514444444, 1.94384449, "kt"), METERS_SEC(1, 1, "m/s"), MILLIMETERS_SEC(0.001,
-        1000, "mm/s"), CENTIMETERS_SEC(0.01, 100,
-            "cm/s"), MILES_HOUR(0.44704, 2.23693629, "mph"), KILOMETERS_HOUR(0.277777778, 3.6, "km/h");
+    UNKNOWN(1, 1, "unknown"),
+    KNOTS(0.514444444, 1.94384449, "kt"),
+    METERS_SEC(1, 1, "m/s"),
+    MILLIMETERS_SEC(0.001, 1000, "mm/s"),
+    CENTIMETERS_SEC(0.01, 100, "cm/s"),
+    MILES_HOUR(0.44704, 2.23693629, "mph"),
+    KILOMETERS_HOUR(0.277777778, 3.6, "km/h");
 
     private double toMeters;
     private double fromMeters;
@@ -82,8 +86,12 @@ public class AsaUnits {
    * @author tlarocque
    */
   public enum DistanceType {
-    UNKNOWN(1, 1, "unknown"), METERS(1, 1, "m"), KILOMETERS(1000, 0.001, "km"), MILES(1609.344, 0.000621371192,
-        "mi"), FEET(0.3048, 3.2808399, "ft"), NAUTICAL_MILES(1852, 0.000539, "nm");
+    UNKNOWN(1, 1, "unknown"),
+    METERS(1, 1, "m"),
+    KILOMETERS(1000, 0.001, "km"),
+    MILES(1609.344, 0.000621371192, "mi"),
+    FEET(0.3048, 3.2808399, "ft"),
+    NAUTICAL_MILES(1852, 0.000539, "nm");
 
     private double toMeters;
     private double fromMeters;
@@ -134,8 +142,10 @@ public class AsaUnits {
    * @author kgrunenberg
    */
   public enum MassType {
-    GRAM(1, 1, "g"), KILOGRAM(1000, 0.001, "kg"), USTON(907184.74, 0.000001102311310924,
-        "ton (US Short)"), LBS(453.59237, 0.002204622621849, "lbs");
+    GRAM(1, 1, "g"),
+    KILOGRAM(1000, 0.001, "kg"),
+    USTON(907184.74, 0.000001102311310924, "ton (US Short)"),
+    LBS(453.59237, 0.002204622621849, "lbs");
 
     private double toMeters;
     private double fromMeters;

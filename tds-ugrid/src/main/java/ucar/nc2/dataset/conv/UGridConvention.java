@@ -5,15 +5,10 @@
 
 package ucar.nc2.dataset.conv;
 
-import java.util.StringTokenizer;
-import ucar.nc2.Attribute;
-import ucar.nc2.Group;
-import ucar.nc2.Variable;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.VariableEnhanced;
-import ucar.nc2.constants.CF;
-import ucar.nc2.units.SimpleUnit;
+
 
 /**
  *
@@ -28,7 +23,6 @@ public class UGridConvention extends CF1Convention {
   @Override
   protected AxisType getAxisType(NetcdfDataset ncDataset, VariableEnhanced v) {
     AxisType at = super.getAxisType(ncDataset, v);
-
     // TODO: Add nodal support
 
     return at;
