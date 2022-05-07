@@ -441,6 +441,9 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
 
   public CoverageCollection getGridCoverage(String matchPath) throws IOException {
     NetcdfDataset ncd = getNetcdfDataset(matchPath);
+    // for UGRID datasets, we need to apply the UgridConventions (coordsys builder) by hand (until we can do the
+    // right thing in netCDF-Java and register the UGRID convention builder before the CF convention builder.
+
     if (ncd == null)
       return null;
     DtCoverageDataset gds = new DtCoverageDataset(ncd);
