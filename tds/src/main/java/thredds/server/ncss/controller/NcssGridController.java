@@ -62,7 +62,7 @@ public class NcssGridController extends AbstractNcssController {
   // pattern for valid WKT lat lon point
   // Two decimal digits separated by whitespace, potentially starting and/or ending with
   // a comma
-  private static final Pattern LATLON_WKT_PATTERN = Pattern.compile("[, ]?\\\\d*\\.\\\\d*\\s\\\\d*\\\\.\\\\d*,?");
+  private static final Pattern LATLON_WKT_PATTERN = Pattern.compile(",?(-?\\d+(\\.?\\d+)?)\\s(-?\\d+(\\.?\\d+)?),?");
 
 
   @Autowired
