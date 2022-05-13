@@ -1,0 +1,34 @@
+###################################################################
+# Send POST request to https://github.com/unidata/thredds-docker
+# to trigger an update to docker image and push to dockerhub
+###################################################################
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Docker tag'
+        required: true
+        default: 'latest'
+      url:
+        description: 'TDS .war URL'
+        required: true
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout default branch
+      uses: actions/checkout@v2
+        
+    - name: Verify variables
+      run: |
+        echo TAG: ${{ github.event.inputs.tag }}
+        echo WARURL: ${{ github.event.inputs.url }}
+
+    - name: Send POST request
+      run: |
+        ./.github/helperScripts/dispatch.sh \
+        --tag ${{ github.event.inputs.tag }} \
+        --tdsurl ${{ github.event.inputs.url }} \
+        --token ${{ secrets.threddsDockerToken }}
