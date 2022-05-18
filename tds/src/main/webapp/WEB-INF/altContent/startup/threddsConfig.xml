@@ -173,7 +173,7 @@
   <!--
   <JupyterNotebookService>
     <allow>true</allow>
-    <maxAge>60<maxAge>
+    <maxAge>60</maxAge>
     <maxFiles>100</maxFiles>
   </JupyterNotebookService>
   -->
