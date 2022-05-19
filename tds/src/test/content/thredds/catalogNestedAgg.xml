@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="Test nested aggregation"
+  xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  expires="2010-04-24T00:00:00">
+
+  <service name="OpenDAP" serviceType="OpenDAP" base="/thredds/dodsC/"/>
+
+  <dataset name="Nested aggregation" ID="NestedAggregation" urlPath="NestedAggregation">
+    <metadata inherited="true"/>
+    <serviceName>OpenDAP</serviceName>
+    <dataType>Grid</dataType>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <attribute name="title" type="string" value="Example Data"/>
+      <aggregation type="union">
+        <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+          <aggregation dimName="agg1" type="joinNew">
+            <variableAgg name="Z_sfc"/>
+            <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+              location="content/testdata/2004050300_eta_211.nc"
+              coordValue="0"/>
+            <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+              location="content/testdata/2004050312_eta_211.nc"
+              coordValue="1"/>
+          </aggregation>
+        </netcdf>
+        <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+          <aggregation dimName="agg2" type="joinNew">
+            <variableAgg name="Z_sfc"/>
+            <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+              location="content/testdata/2004050400_eta_211.nc"
+              coordValue="2"/>
+            <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+              location="content/testdata/2004050412_eta_211.nc"
+              coordValue="3"/>
+          </aggregation>
+        </netcdf>
+      </aggregation>
+    </netcdf>
+  </dataset>
+</catalog>
