@@ -57,8 +57,8 @@ public class RemoteCatalogControllerTest {
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
         .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
 
-    System.out.printf("showCommandTest status=%d%n", result.getResponse().getStatus());
-    System.out.printf("%s%n", result.getResponse().getContentAsString());
+    logger.debug("showCommandTest status= " + result.getResponse().getStatus());
+    logger.debug(result.getResponse().getContentAsString());
   }
 
   @Test
@@ -69,8 +69,8 @@ public class RemoteCatalogControllerTest {
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
         .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
 
-    System.out.printf("subsetCommandTest status=%d%n", result.getResponse().getStatus());
-    System.out.printf("%s%n", result.getResponse().getContentAsString());
+    logger.debug("subsetCommandTest status= " + result.getResponse().getStatus());
+    logger.debug(result.getResponse().getContentAsString());
   }
 
   @Test
@@ -81,8 +81,8 @@ public class RemoteCatalogControllerTest {
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
         .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
 
-    System.out.printf("validateCommandTest status=%d%n", result.getResponse().getStatus());
-    System.out.printf("%s%n", result.getResponse().getContentAsString());
+    logger.debug("validateCommandTest status= " + result.getResponse().getStatus());
+    logger.debug(result.getResponse().getContentAsString());
   }
 
 }
