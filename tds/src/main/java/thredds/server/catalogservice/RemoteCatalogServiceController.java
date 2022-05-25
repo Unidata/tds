@@ -5,6 +5,7 @@
 
 package thredds.server.catalogservice;
 
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
@@ -79,6 +80,9 @@ public class RemoteCatalogServiceController {
     if (builder.hasFatalError() || catalog == null) {
       Formatter f = new Formatter();
       f.format("Error reading catalog '%s' err=%s%n", uri, builder.getErrorMessage());
+      if (!uri.toString().toLowerCase(Locale.ROOT).endsWith(".xml")) {
+        f.format("Expected catalog uri = '" + uri + "' to end with '.xml'");
+      }
       log.debug(f.toString());
       response.sendError(HttpServletResponse.SC_BAD_REQUEST, f.toString());
       return null;
