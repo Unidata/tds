@@ -3,10 +3,28 @@
   <suppress>
     <notes><![CDATA[
       file name example: spring-security-core-4.2.7.RELEASE.jar, spring-security-cweb-4.2.7.RELEASE.jar
-      reason: only valid if specifically using in combination with Spring 5.0.5 RELEASE. https://pivotal.io/security/cve-2018-1258
+      reason: (CVE-2018-1258) only valid if specifically using in combination with Spring 5.0.5 RELEASE. https://pivotal.io/security/cve-2018-1258
+      (CVE-2020-4508) false positive for spring security 5.6.x, see https://github.com/OSSIndex/vulns/issues/276
       ]]></notes>
     <gav regex="true">^org\.springframework\.security:spring-security.*$</gav>
     <cve>CVE-2018-1258</cve>
+    <cve>CVE-2020-5408</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      file name: spring-core-5.3.20.jar
+      reason: resolved CVE - only valid if using HTTPInvokerServiceExporter
+      ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+    <cve>CVE-2016-1000027</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[(
+      file name: spring-web-5.3.20.jar
+      reason: resolved CVE - only valid if using HTTPInvokerServiceExporter
+      ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-web@.*$</packageUrl>
+    <cve>CVE-2016-1000027</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -40,16 +58,6 @@
     <packageUrl regex="true">^pkg:maven/org\.codehaus\.jettison/jettison@.*$</packageUrl>
     <cve>CVE-2020-7712</cve>
   </suppress>
-  <!--suppress>
-    <notes><![CDATA[
-       file name: junit-4.13.1.jar
-       reason: Fixed in junit-4.13.1 for applications running JDK 1.7 and later. We require Java 1.8
-               at a minimum, so we're good with regards to this CVE.
-               See https://nvd.nist.gov/vuln/detail/CVE-2020-15250.
-      ]]></notes>
-    <packageUrl regex="true">^pkg:maven/junit/junit@.*$</packageUrl>
-    <vulnerabilityName>CVE-2020-15250</vulnerabilityName>
-  </suppress-->
   <suppress>
     <notes><![CDATA[
       file name example: taglibs-standard-impl-1.2.5.jar
@@ -87,6 +95,7 @@
     <packageUrl regex="true">^pkg:maven/com\.h2database/h2@.*$</packageUrl>
 
     <cpe>cpe:/:a:h2database:h2:1.3.173</cpe>
+    <cve>CVE-2018-14335</cve>
     <cve>CVE-2021-23463</cve>
     <cve>CVE-2021-42392</cve>
     <cve>CVE-2022-23221</cve>

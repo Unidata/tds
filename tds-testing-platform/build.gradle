@@ -18,7 +18,7 @@ dependencies {
     // Spring-test v5.3.4 introduced a hard dependency on servlet api v4.
     // That will be rolled back in v5.4.5, so for now, we specifically ask for
     // spring-test 5.3.3.
-    api 'org.springframework:spring-test:5.3.19'
+    api 'org.springframework:spring-test:5.3.20'
 
     // opendap
     api 'org.apache.taglibs:taglibs-standard-spec'
