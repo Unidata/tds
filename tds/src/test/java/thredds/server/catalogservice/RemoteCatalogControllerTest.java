@@ -20,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 import thredds.core.AllowedServices;
 import thredds.core.StandardService;
 import thredds.mock.web.MockTdsContextLoader;
+import thredds.util.ContentType;
 import ucar.unidata.util.test.category.NeedsContentRoot;
 import ucar.unidata.util.test.category.NeedsExternalResource;
 import java.lang.invoke.MethodHandles;
@@ -46,43 +47,109 @@ public class RemoteCatalogControllerTest {
 
   String dataset = "casestudies/ccs039/grids/netCDF/1998062912_eta.nc";
   String catalog = "https://thredds.ucar.edu/thredds/catalog/casestudies/ccs039/grids/netCDF/catalog.xml";
+
   String path = "/remoteCatalogService";
-  String htmlContent = "text/html;charset=UTF-8";
+  String htmlContent = ContentType.html.getContentHeader();
+  String xmlContent = ContentType.xml.getContentHeader();
+  String defaultContent = htmlContent;
 
   @Test
-  public void showCommandTest() throws Exception {
+  public void shouldFailForCatalogHtmlUri() throws Exception {
+    String htmlCatalog = "https://thredds.ucar.edu/thredds/catalog/casestudies/ccs039/grids/netCDF/catalog.html";
+
+    RequestBuilder rb =
+        MockMvcRequestBuilders.get(path).servletPath(path).param("command", "SHOW").param("catalog", htmlCatalog);
+
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(400)).andReturn();
+  }
+
+  @Test
+  public void showCommandWithDefaultContentType() throws Exception {
     RequestBuilder rb =
         MockMvcRequestBuilders.get(path).servletPath(path).param("command", "SHOW").param("catalog", catalog);
 
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
-        .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
+        .andExpect(MockMvcResultMatchers.content().contentType(defaultContent)).andReturn();
 
     logger.debug("showCommandTest status= " + result.getResponse().getStatus());
     logger.debug(result.getResponse().getContentAsString());
   }
 
   @Test
-  public void subsetCommandTest() throws Exception {
+  public void showCommandWithXmlContent() throws Exception {
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path).param("command", "SHOW")
+        .param("catalog", catalog).param("htmlView", "false");
+
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(xmlContent)).andReturn();
+  }
+
+  @Test
+  public void showCommandWithHtmlContent() throws Exception {
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path).param("command", "SHOW")
+        .param("catalog", catalog).param("htmlView", "true");
+
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
+  }
+
+  @Test
+  public void subsetCommandWithDefaultContentType() throws Exception {
     RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path).param("command", "SUBSET")
         .param("catalog", catalog).param("dataset", dataset);
 
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
-        .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
+        .andExpect(MockMvcResultMatchers.content().contentType(defaultContent)).andReturn();
 
     logger.debug("subsetCommandTest status= " + result.getResponse().getStatus());
     logger.debug(result.getResponse().getContentAsString());
   }
 
   @Test
-  public void validateCommandTest() throws Exception {
+  public void subsetCommandWithXmlContent() throws Exception {
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path).param("command", "SUBSET")
+        .param("catalog", catalog).param("dataset", dataset).param("htmlView", "false");
+
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(xmlContent)).andReturn();
+  }
+
+  @Test
+  public void subsetCommandWithHtmlContent() throws Exception {
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path).param("command", "SUBSET")
+        .param("catalog", catalog).param("dataset", dataset).param("htmlView", "true");
+
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
+  }
+
+  @Test
+  public void validateCommandWithDefaultContentType() throws Exception {
     RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path).param("command", "VALIDATE")
         .param("catalog", catalog).param("dataset", dataset);
 
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
-        .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
+        .andExpect(MockMvcResultMatchers.content().contentType(defaultContent)).andReturn();
 
     logger.debug("validateCommandTest status= " + result.getResponse().getStatus());
     logger.debug(result.getResponse().getContentAsString());
   }
 
+  @Test
+  public void validateCommandWithXmlContent() throws Exception {
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path).param("command", "VALIDATE")
+        .param("catalog", catalog).param("dataset", dataset).param("htmlView", "false");
+
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(xmlContent)).andReturn();
+  }
+
+  @Test
+  public void validateCommandWithHtmlContent() throws Exception {
+    RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path).param("command", "VALIDATE")
+        .param("catalog", catalog).param("dataset", dataset).param("htmlView", "true");
+
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(200))
+        .andExpect(MockMvcResultMatchers.content().contentType(htmlContent)).andReturn();
+  }
 }
