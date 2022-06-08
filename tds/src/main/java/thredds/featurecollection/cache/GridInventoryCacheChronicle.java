@@ -28,10 +28,25 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
   private static final Logger logger = LoggerFactory.getLogger(GridInventoryCacheChronicle.class);
   private static ChronicleMap<String, byte[]> cache;
 
+  private static final int DEFAULT_ENTRIES = 1000;
+  private static final int DEFAULT_BLOAT_FACTOR = 1;
+
   /**
    * Initialize the inventory cache
    *
    * @param cacheDir Path to the cache directory. This location will be created if it does not exist.
+   * @throws IOException
+   */
+  public static void init(Path cacheDir) throws IOException {
+    init(cacheDir, DEFAULT_ENTRIES, DEFAULT_BLOAT_FACTOR);
+  }
+
+  /**
+   * Initialize the inventory cache
+   *
+   * @param cacheDir Path to the cache directory. This location will be created if it does not exist.
+   * @param maxEntries number of entries in the cache, at most
+   * @param maxBloatFactor max number of times the cache size can increase
    * @throws IOException
    */
   public static void init(Path cacheDir, int maxEntries, int maxBloatFactor) throws IOException {
