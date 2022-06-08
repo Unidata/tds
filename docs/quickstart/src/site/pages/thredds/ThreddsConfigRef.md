@@ -453,18 +453,18 @@ We recommend that you use the default settings, by not specifying this option.
 ~~~xml
  <FeatureCollection>
    <dir>${tds.content.root.path}/thredds/cache/collection/</dir>
-   <maxSize>20 Mb</maxSize>
-   <jvmPercent>2</jvmPercent>
+   <maxEntries>1000</maxEntries>
+   <maxBloatFactor>1</maxBloatFactor>
  </FeatureCollection>
 ~~~
 
 * `dir`: location of Feature Collection cache, currently implemented
-with [Berkeley DB](https://www.oracle.com/technetwork/database/berkeleydb/overview/index-093405.html){:target="_blank"}. 
+  with [Chronicle Map](https://chronicle.software/open-hft/map/){:target="_blank"}.
   If not otherwise set, the TDS will use the`${tds.content.root.path}/thredds/cache/collection/` directory.
   We recommend that you use this default, by not specifying a `FeatureCollection.dir` element.
-* `maxSize`: maximum amount of memory to be used for this cache.
-* `jvmPercent`: alternately, set the memory use as a percent of JVM memory, i.e. `-Xmx` value.
-  `maxSize` will override if present. Default is 2 %.
+* `maxEntries`: the number of entries the cache is going to hold, _at most_.
+  See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
+* `maxBloatFactor`: the maximun number of times the cache is allowed to grow in size. See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
 
 ### GRIB Index Redirection
 
