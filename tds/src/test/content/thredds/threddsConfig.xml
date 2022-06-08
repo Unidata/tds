@@ -103,6 +103,11 @@
     <cachePathPolicy>OneDirectory</cachePathPolicy>
   </AggregationCache>
 
+  <FeatureCollection>
+    <maxEntries>1024</maxEntries>
+    <maxBloatFactor>2</maxBloatFactor>
+  </FeatureCollection>
+
   <ConfigCatalog>
     <reread>check</reread>
     <maxDatasets>1000</maxDatasets>
