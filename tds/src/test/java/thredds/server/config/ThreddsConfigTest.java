@@ -28,7 +28,6 @@ public class ThreddsConfigTest {
 
   @Before
   public void setUp() {
-    // threddsConfigPath ="/thredds/tds/src/test/content/thredds/threddsConfig.xml";
     threddsConfigPath = tdsContext.getContentRootPathProperty() + "/thredds/threddsConfig.xml";
     ThreddsConfig.init(threddsConfigPath);
   }
@@ -39,6 +38,8 @@ public class ThreddsConfigTest {
     assertEquals("true", ThreddsConfig.get("CatalogServices.allowRemote", null));
     assertEquals(null, ThreddsConfig.get("WMS.allow", null));
     assertEquals(52428800, ThreddsConfig.getBytes("NetcdfSubsetService.maxFileDownloadSize", -1L));
+    assertEquals(1024, ThreddsConfig.getInt("FeatureCollection.maxEntries", 1000));
+    assertEquals(2, ThreddsConfig.getInt("FeatureCollection.maxBloatFactor", 1));
   }
 
   // Tests the "cachePathPolicy" element, added in response to this message on the thredds mailing list:

@@ -34,7 +34,7 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
    * @param cacheDir Path to the cache directory. This location will be created if it does not exist.
    * @throws IOException
    */
-  public static void init(Path cacheDir) throws IOException {
+  public static void init(Path cacheDir, int maxEntries, int maxBloatFactor) throws IOException {
     if (!Files.exists(cacheDir)) {
       logger.info("Creating cache directory at {}", cacheDir.toString());
       Files.createDirectories(cacheDir);
@@ -47,8 +47,8 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
     }
     if (cache == null) {
       cache = ChronicleMapBuilder.of(String.class, byte[].class).name("GridDatasetInv")
-          .averageKey("/data/project/analysis/file.ext").averageValueSize(4096).entries(1000)
-          .createOrRecoverPersistedTo(dbFile.toFile());
+          .averageKey("/data/project/analysis/file.ext").averageValueSize(4096).entries(maxEntries)
+          .maxBloatFactor(maxBloatFactor).createOrRecoverPersistedTo(dbFile.toFile());
     }
   }
 
