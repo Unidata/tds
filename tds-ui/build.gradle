@@ -1,0 +1,20 @@
+description = 'ToolsUI for the THREDDS Data Server (TDS) is a version of ToolsUI that corresponds to ' +
+        'the version of netCDF-Java in use by the TDS, plus extras that are not included with toolsUI, ' +
+        'like the cdm-s3 subproject from netCDF-Java. This exists simply for developer convenience.'
+ext.title = 'ToolsUI for the TDS'
+ext.url = 'https://www.unidata.ucar.edu/software/tds/'
+
+apply from: "$rootDir/gradle/any/dependencies.gradle"
+apply plugin: 'application'
+
+dependencies {
+    implementation enforcedPlatform(project(':tds-platform'))
+    testCompile enforcedPlatform(project(':tds-testing-platform'))
+
+    runtime 'edu.ucar:uicdm'
+    runtime 'edu.ucar:cdm-s3'
+}
+
+application {
+    mainClass.set("ucar.nc2.ui.ToolsUI")
+}
