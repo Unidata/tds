@@ -13,6 +13,7 @@ dependencies {
 
     runtime 'edu.ucar:uicdm'
     runtime 'edu.ucar:cdm-s3'
+    runtime project(':tds-ugrid')
 }
 
 application {

@@ -17,6 +17,7 @@ include 'tds-testing-platform'
 include 'tds'
 include 'tds-ui'
 include 'tds-ugrid'
+include 'tds-ui'
 
 // Set name of the opendap servlet artifact
 project(':opendap:server').name = 'opendap-servlet'
