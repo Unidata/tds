@@ -32,6 +32,13 @@ repositories {
   maven {
     url 'https://artifacts.unidata.ucar.edu/repository/unidata-snapshots/'
   }
+  maven {
+    url 'https://artifacts.unidata.ucar.edu/repository/unidata-3rdparty/'
+    content {
+      // this repository *only* used for artifacts with group "org.bounce" (NcML editor in toolsUI)
+      includeGroup 'org.bounce'
+    }
+  }
 }
 
 //////////////////////////// Transitive dependency replacements and exclusions ////////////////////////////
