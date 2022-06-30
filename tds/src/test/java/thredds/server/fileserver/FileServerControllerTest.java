@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.lang.invoke.MethodHandles;
@@ -48,5 +49,13 @@ public class FileServerControllerTest {
     // Throws NullPointerException if header doesn't exist
     // Throws IllegalArgumentException if header value is not a valid date.
     result.getResponse().getDateHeader("Last-Modified");
+  }
+
+  @Test
+  public void shouldReturnFileWithDatasetRootInUrlPathAndLocationInNcml() throws Exception {
+    final String path = "/fileServer/localContent/ncmlLocation";
+    final RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
+
+    mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
   }
 }
