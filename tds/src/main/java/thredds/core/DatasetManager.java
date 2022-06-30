@@ -425,7 +425,7 @@ public class DatasetManager implements InitializingBean {
       }
 
       if (!opt.isPresent())
-        throw new FileNotFoundException("Not a Grid Dataset " + reqPath + " err=" + opt.getErrorMessage());
+        throw new FileNotFoundException("Error opening grid dataset " + reqPath + ". err=" + opt.getErrorMessage());
 
       if (log.isDebugEnabled())
         log.debug("  -- DatasetHandler found FeatureCollection from file= " + location);
