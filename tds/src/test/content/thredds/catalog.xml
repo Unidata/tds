@@ -223,6 +223,13 @@
 
     </datasetScan>
 
+    <dataset name="Test datasetRoot in urlPath and location" ID="ncmlLocation" urlPath="localContent/ncmlLocation">
+      <serviceName>all</serviceName>
+      <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+        location="content/testdata/testData.nc">
+      </ncml:netcdf>
+    </dataset>
+
   </dataset>
 
   <!-- END UNTESTED-->

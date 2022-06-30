@@ -86,6 +86,14 @@ public class GridDatasetControllerTest {
     }
   }
 
+  @Test
+  public void shouldReturnFileWithDatasetRootInUrlPathAndLocationInNcml() throws Exception {
+    final String path = "/ncss/grid/localContent/ncmlLocation/dataset.xml";
+    final RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
+
+    mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+  }
+
   private class FilenameMatcher extends BaseMatcher<String> {
     String suffix;
 
