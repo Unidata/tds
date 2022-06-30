@@ -390,9 +390,21 @@ public class DatasetManager implements InitializingBean {
       return gds;
     }
 
-    // otherwise assume its a local file
+    // if ncml, must handle specially.
+    // check this before checking for a datasetRoot, since the urlPath doesn't need to point to a file if there is ncml
+    String ncml = datasetTracker.findNcml(reqPath);
+    if (ncml != null) {
+      Optional<FeatureDatasetCoverage> opt = CoverageDatasetFactory.openNcmlString(ncml);
+      if (!opt.isPresent())
+        throw new FileNotFoundException("NcML is not a Grid Dataset " + reqPath + " err=" + opt.getErrorMessage());
 
-    // try to open as a FeatureDatasetCoverage. This allows GRIB to be handle specially
+      if (log.isDebugEnabled())
+        log.debug("  -- DatasetHandler found FeatureCollection from NcML");
+      return opt.get().getSingleCoverageCollection();
+    }
+
+    // otherwise, assume it's a local file with a datasetRoot in the urlPath.
+    // try to open as a FeatureDatasetCoverage. This allows GRIB to be handled specially
     String location = getLocationFromRequestPath(reqPath);
     if (location != null) {
       Optional<FeatureDatasetCoverage> opt = CoverageDatasetFactory.openCoverageDataset(location);
@@ -418,20 +430,6 @@ public class DatasetManager implements InitializingBean {
       if (log.isDebugEnabled())
         log.debug("  -- DatasetHandler found FeatureCollection from file= " + location);
       return opt.get().getSingleCoverageCollection(); // LOOK doesnt have to be single, then what is the URL?
-    }
-
-    // if ncml, must handle special, otherwise we're out of options for opening
-    // a coverage collection.
-
-    String ncml = datasetTracker.findNcml(reqPath);
-    if (ncml != null) {
-      Optional<FeatureDatasetCoverage> opt = CoverageDatasetFactory.openNcmlString(ncml);
-      if (!opt.isPresent())
-        throw new FileNotFoundException("NcML is not a Grid Dataset " + reqPath + " err=" + opt.getErrorMessage());
-
-      if (log.isDebugEnabled())
-        log.debug("  -- DatasetHandler found FeatureCollection from NcML");
-      return opt.get().getSingleCoverageCollection();
     }
 
     return null;
