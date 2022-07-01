@@ -114,6 +114,11 @@ public class DatasetManager implements InitializingBean {
     return dataRootManager.getLocationFromRequestPath(reqPath);
   }
 
+  public String getLocationFromNcml(String reqPath) {
+    final String ncml = datasetTracker.findNcml(reqPath);
+    return ncml != null ? NcmlReader.getLocationFromNcml(ncml) : null;
+  }
+
   public static boolean isLocationObjectStore(String location) {
     return location != null ? (location.startsWith("cdms3:") || location.startsWith("s3:")) : false;
   }

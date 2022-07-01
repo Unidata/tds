@@ -103,6 +103,10 @@ public class TdsRequestedDataset {
     return datasetManager.getLocationFromRequestPath(reqPath);
   }
 
+  public static String getLocationFromNcml(String reqPath) {
+    return datasetManager.getLocationFromNcml(reqPath);
+  }
+
   public static boolean useNetcdfJavaBuilders() {
     return datasetManager.useNetcdfJavaBuilders();
   }

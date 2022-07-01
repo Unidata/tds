@@ -279,7 +279,9 @@ public class ServletUtil {
    */
   public static void writeMFileToResponse(HttpServletRequest request, HttpServletResponse response, String requestPath)
       throws IOException {
-    final String location = TdsRequestedDataset.getLocationFromRequestPath(requestPath);
+    final String ncmlLocation = TdsRequestedDataset.getLocationFromNcml(requestPath);
+    final String location =
+        ncmlLocation != null ? ncmlLocation : TdsRequestedDataset.getLocationFromRequestPath(requestPath);
     final MFile file = MFiles.create(location);
 
     if (file == null) {
