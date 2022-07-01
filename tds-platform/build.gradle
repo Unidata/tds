@@ -98,7 +98,7 @@ dependencies {
     api 'org.n52.sensorweb:52n-xml-om-v20'
 
     // edal-java (ncwms)
-    def edalVersion = '1.5.0.4-SNAPSHOT'
+    def edalVersion = '1.5.0.5-SNAPSHOT'
     api "uk.ac.rdg.resc:edal-common:${edalVersion}"
     api "uk.ac.rdg.resc:edal-cdm:${edalVersion}"
     api "uk.ac.rdg.resc:edal-wms:${edalVersion}"
@@ -110,7 +110,7 @@ dependencies {
     api "com.google.gwt:gwt-user:${depVersion.gwt}"
 
     // threddsIso
-    runtime 'EDS:tds-plugin:2.4.4-SNAPSHOT'
+    runtime 'EDS:tds-plugin:2.4.5'
     runtime 'net.sf.saxon:Saxon-HE:9.7.0-8'
     runtime "jaxen:jaxen:${depVersion.jaxen}"
   }
