@@ -23,7 +23,7 @@ import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
-import static org.junit.Assert.assertNotNull;
+import static com.google.common.truth.Truth.assertThat;
 
 @Category(NeedsCdmUnitTest.class)
 public class NcssGridIntegrationTest {
@@ -32,7 +32,7 @@ public class NcssGridIntegrationTest {
   private void openBinaryNew(byte[] content, String gridName) throws IOException {
     try (NetcdfFile nf = NetcdfFiles.openInMemory("test_data.nc", content)) {
       GridDataset gdsDataset = new GridDataset(NetcdfDatasets.enhance(nf, NetcdfDataset.getDefaultEnhanceMode(), null));
-      assertNotNull(gdsDataset.findGridByName(gridName));
+      assertThat(gdsDataset.findGridByName(gridName)).isNotNull();
       logger.debug("{}", nf);
     }
   }
@@ -40,7 +40,7 @@ public class NcssGridIntegrationTest {
   private void openBinaryOld(byte[] content, String gridName) throws IOException {
     try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.nc", content)) {
       GridDataset gdsDataset = new GridDataset(new NetcdfDataset(nf));
-      assertNotNull(gdsDataset.findGridByName(gridName));
+      assertThat(gdsDataset.findGridByName(gridName)).isNotNull();
       logger.debug("{}", nf);
     }
   }
