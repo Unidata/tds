@@ -1,6 +1,8 @@
 package thredds.server.fileserver;
 
-import org.junit.Assert;
+import static com.google.common.truth.Truth.assertThat;
+
+import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -43,7 +45,7 @@ public class FileServerControllerTest {
     RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
 
     MvcResult result = mockMvc.perform(rb).andReturn();
-    Assert.assertEquals(200, result.getResponse().getStatus());
+    assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.SC_OK);
 
     // We want this statement to succeed without exception.
     // Throws NullPointerException if header doesn't exist
