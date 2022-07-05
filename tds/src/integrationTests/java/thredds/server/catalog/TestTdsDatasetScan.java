@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.client.catalog.*;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class TestTdsDatasetScan {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   @Test
-  public void testSort() throws IOException {
+  public void testSort() {
     Catalog cat = TdsLocalCatalog.open("catalog/scanCdmUnitTests/tds/ncep/catalog.xml");
 
     Dataset last = null;
@@ -34,7 +33,7 @@ public class TestTdsDatasetScan {
   }
 
   @Test
-  public void testDatasetScanForLatest() throws IOException {
+  public void testDatasetScanForLatest() {
     Catalog parent = TdsLocalCatalog.open("catalog/testGridScan/catalog.xml");
     Service latestService = parent.findService("Resolver");
     assertThat(latestService).isNotNull();
@@ -54,7 +53,7 @@ public class TestTdsDatasetScan {
   }
 
   @Test
-  public void testLatestResolver() throws IOException {
+  public void testLatestResolver() {
     Catalog cat = TdsLocalCatalog.open("catalog/testGridScan/latest.xml");
 
     List<Dataset> dss = cat.getDatasetsLocal();
@@ -70,7 +69,7 @@ public class TestTdsDatasetScan {
   }
 
   @Test
-  public void testHarvest() throws IOException {
+  public void testHarvest() {
     Catalog cat = TdsLocalCatalog.open("catalog/testEnhanced/catalog.xml");
     assertThat(cat).isNotNull();
     List<Dataset> topList = cat.getDatasetsLocal();
@@ -91,7 +90,7 @@ public class TestTdsDatasetScan {
   }
 
   @Test
-  public void testNestedDirs() throws IOException {
+  public void testNestedDirs() {
     Catalog cat = TdsLocalCatalog.open("catalog/station/profiler/wind/06min/catalog.xml");
 
     List<Dataset> topList = cat.getDatasetsLocal();
@@ -140,7 +139,7 @@ public class TestTdsDatasetScan {
    */
 
   @Test
-  public void testEncodingWithBlanks() throws IOException {
+  public void testEncodingWithBlanks() {
     Catalog cat = TdsLocalCatalog.open("catalog/scanCdmUnitTests/encoding/catalog.xml");
 
     List<Dataset> ds = cat.getDatasetsLocal();
@@ -156,7 +155,7 @@ public class TestTdsDatasetScan {
 
 
   @Test
-  public void testGlobalServices() throws IOException {
+  public void testGlobalServices() {
     String catalog = "/catalog/testStationScan.v5/catalog.xml"; // serviceName ="all" from root catalog
     Catalog cat = TdsLocalCatalog.open(catalog);
 
