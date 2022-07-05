@@ -4,7 +4,8 @@
  */
 package thredds.server.catalog;
 
-import org.junit.Assert;
+import static com.google.common.truth.Truth.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -25,7 +26,6 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.text.ParseException;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Test DatasetScan
@@ -69,27 +69,27 @@ public class TestDatasetScan {
   public void testMakeCatalog() throws IOException {
     String filePath = "../tds/src/test/content/thredds/catalog.xml";
     ConfigCatalog cat = TestConfigCatalogBuilder.open("file:" + filePath);
-    Assert.assertNotNull(cat);
+    assertThat(cat).isNotNull();
     CatalogXmlWriter writer = new CatalogXmlWriter();
 
     List<DatasetRootConfig> roots = cat.getDatasetRoots();
     for (DatasetRootConfig root : roots)
       logger.debug("DatasetRoot {} -> {}", root.path, root.location);
-    assertEquals("Incorrect # of catalog roots", 5, roots.size());
+    assertThat(roots.size()).isEqualTo(5);
 
     Dataset ds = cat.findDatasetByID("scanCdmUnitTests");
-    Assert.assertNotNull("Null dataset", ds);
-    Assert.assertTrue("dataset not DatasetScan", ds instanceof DatasetScan);
+    assertThat(ds).isNotNull();
+    assertThat(ds).isInstanceOf(DatasetScan.class);
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
-    assertEquals("Servicename default is not 'all'", "all", serviceName);
-    Assert.assertTrue("Does not have DatasetScan property", ds.hasProperty("DatasetScan"));
+    assertThat(serviceName).isEqualTo("all");
+    assertThat(ds.hasProperty("DatasetScan")).isTrue();
 
     DatasetScanConfig config = dss.getConfig();
     logger.debug(config.toString());
 
     Catalog scanCat = dss.makeCatalogForDirectory("scanCdmUnitTests", cat.getBaseURI()).makeCatalog();
-    Assert.assertNotNull(scanCat);
+    assertThat(scanCat).isNotNull();
     logger.debug(writer.writeXML(scanCat));
 
     scanCat = dss.makeCatalogForDirectory("scanCdmUnitTests/ncss/test", cat.getBaseURI()).makeCatalog();
@@ -99,116 +99,116 @@ public class TestDatasetScan {
   @Test
   public void testReverseSort() throws IOException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
-    Assert.assertNotNull(cat);
+    assertThat(cat).isNotNull();
 
     Dataset ds = cat.findDatasetByID("NWS/NPN/6min");
-    Assert.assertNotNull(ds);
-    Assert.assertTrue(ds instanceof DatasetScan);
+    assertThat(ds).isNotNull();
+    assertThat(ds).isInstanceOf(DatasetScan.class);
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
-    assertEquals("all", serviceName);
+    assertThat(serviceName).isEqualTo("all");
 
     DatasetScanConfig config = dss.getConfig();
     logger.debug(config.toString());
 
     Catalog scanCat = dss.makeCatalogForDirectory("station/profiler/wind/06min", cat.getBaseURI()).makeCatalog();
-    Assert.assertNotNull(scanCat);
+    assertThat(scanCat).isNotNull();
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
     if (showCats)
       logger.debug(writer.writeXML(scanCat));
-    assertEquals(1, scanCat.getDatasets().size());
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     Dataset root = scanCat.getDatasets().get(0);
-    assertEquals(3, root.getDatasets().size());
+    assertThat(root.getDatasets().size()).isEqualTo(3);
 
     // directories get reverse sorted
     List<Dataset> list = root.getDatasets();
     String name0 = list.get(0).getName();
     String name1 = list.get(1).getName();
-    Assert.assertTrue(name0.compareTo(name1) > 0);
+    assertThat(name0.compareTo(name1)).isGreaterThan(0);
 
     scanCat = dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
-    Assert.assertNotNull(scanCat);
+    assertThat(scanCat).isNotNull();
     if (showCats)
       logger.debug(writer.writeXML(scanCat));
 
-    assertEquals(1, scanCat.getDatasets().size());
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
-    assertEquals(3, root.getDatasets().size());
+    assertThat(root.getDatasets().size()).isEqualTo(3);
 
     // files get reverse sorted
     list = root.getDatasets();
     name0 = list.get(0).getName();
     name1 = list.get(1).getName();
-    Assert.assertTrue(name0.compareTo(name1) > 0);
+    assertThat(name0.compareTo(name1)).isGreaterThan(0);
   }
 
   @Test
   public void testTimeCoverage() throws IOException, ParseException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
-    Assert.assertNotNull(cat);
+    assertThat(cat).isNotNull();
 
     Dataset ds = cat.findDatasetByID("NWS/NPN/6min");
-    Assert.assertNotNull(ds);
-    Assert.assertTrue(ds instanceof DatasetScan);
+    assertThat(ds).isNotNull();
+    assertThat(ds).isInstanceOf(DatasetScan.class);
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
-    assertEquals("all", serviceName);
+    assertThat(serviceName).isEqualTo("all");
 
     DatasetScanConfig config = dss.getConfig();
     logger.debug(config.toString());
 
     Catalog scanCat =
         dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
-    Assert.assertNotNull(scanCat);
+    assertThat(scanCat).isNotNull();
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
     if (showCats)
       logger.debug(writer.writeXML(scanCat));
-    assertEquals(1, scanCat.getDatasets().size());
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     Dataset root = scanCat.getDatasets().get(0);
-    assertEquals(3, root.getDatasets().size());
+    assertThat(root.getDatasets().size()).isEqualTo(3);
 
     List<Dataset> list = root.getDatasets();
     Dataset ds0 = list.get(1); // first one is latest
     Dataset ds1 = list.get(2);
 
     DateRange dr0 = ds0.getTimeCoverage();
-    Assert.assertNotNull(dr0);
-    assertEquals(CalendarDateFormatter.isoStringToCalendarDate(null, "2013-11-02T23:54:00"),
-        dr0.getStart().getCalendarDate());
-    assertEquals(new TimeDuration("1 hour"), dr0.getDuration());
+    assertThat(dr0).isNotNull();
+    assertThat(dr0.getStart().getCalendarDate())
+        .isEqualTo(CalendarDateFormatter.isoStringToCalendarDate(null, "2013-11-02T23:54:00"));
+    assertThat(dr0.getDuration()).isEqualTo(new TimeDuration("1 hour"));
 
     DateRange dr1 = ds1.getTimeCoverage();
-    Assert.assertNotNull(dr1);
-    assertEquals(CalendarDateFormatter.isoStringToCalendarDate(null, "2013-11-02T23:48:00"),
-        dr1.getStart().getCalendarDate());
-    assertEquals(new TimeDuration("1 hour"), dr1.getDuration());
+    assertThat(dr1).isNotNull();
+    assertThat(dr1.getStart().getCalendarDate())
+        .isEqualTo(CalendarDateFormatter.isoStringToCalendarDate(null, "2013-11-02T23:48:00"));
+    assertThat(dr1.getDuration()).isEqualTo(new TimeDuration("1 hour"));
   }
 
   @Test
   public void testLatest() throws IOException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
-    Assert.assertNotNull(cat);
+    assertThat(cat).isNotNull();
 
     Dataset ds = cat.findDatasetByID("NWS/NPN/6min");
-    Assert.assertNotNull(ds);
-    Assert.assertTrue(ds instanceof DatasetScan);
+    assertThat(ds).isNotNull();
+    assertThat(ds).isInstanceOf(DatasetScan.class);
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
-    assertEquals("all", serviceName);
+    assertThat(serviceName).isEqualTo("all");
 
     DatasetScanConfig config = dss.getConfig();
     logger.debug(config.toString());
 
     Catalog scanCat =
         dss.makeCatalogForDirectory("station/profiler/wind/06min/20131102", cat.getBaseURI()).makeCatalog();
-    Assert.assertNotNull(scanCat);
+    assertThat(scanCat).isNotNull();
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
     if (showCats)
       logger.debug(writer.writeXML(scanCat));
-    assertEquals(1, scanCat.getDatasets().size());
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     Dataset root = scanCat.getDatasets().get(0);
 
     Service latestService = null;
@@ -216,52 +216,52 @@ public class TestDatasetScan {
       if (s.getName().equalsIgnoreCase("Resolver"))
         latestService = s;
     }
-    Assert.assertNotNull(latestService);
+    assertThat(latestService).isNotNull();
 
     Dataset latestDataset = null;
     for (Dataset nds : root.getDatasets()) {
       Service s = nds.getServiceDefault();
-      Assert.assertNotNull(s);
+      assertThat(s).isNotNull();
       if (s.equals(latestService))
         latestDataset = nds;
     }
-    Assert.assertNotNull(latestDataset);
+    assertThat(latestDataset).isNotNull();
   }
 
   @Test
   public void testEsgfProblems() throws IOException {
     String filePath = "../tds/src/test/content/thredds/testEsgfProblems.xml";
     ConfigCatalog cat = TestConfigCatalogBuilder.open("file:" + filePath);
-    Assert.assertNotNull(cat);
+    assertThat(cat).isNotNull();
 
     Dataset ds = cat.findDatasetByID("gass-ytoc-mip");
-    Assert.assertNotNull(ds);
-    Assert.assertTrue(ds instanceof DatasetScan);
+    assertThat(ds).isNotNull();
+    assertThat(ds).isInstanceOf(DatasetScan.class);
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
-    assertEquals("fileservice", serviceName);
+    assertThat(serviceName).isEqualTo("fileservice");
 
     DatasetScanConfig config = dss.getConfig();
     logger.debug(config.toString());
 
     Catalog scanCat = dss.makeCatalogForDirectory("gass-ytoc-mip", cat.getBaseURI()).makeCatalog();
-    Assert.assertNotNull(scanCat);
+    assertThat(scanCat).isNotNull();
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
     if (showCats)
       logger.debug(writer.writeXML(scanCat));
-    assertEquals(1, scanCat.getDatasets().size());
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     Dataset root = scanCat.getDatasets().get(0);
     String sn = root.getServiceNameDefault();
-    Assert.assertNotNull(sn);
-    assertEquals("fileservice", sn);
+    assertThat(sn).isNotNull();
+    assertThat(sn).isEqualTo("fileservice");
 
     for (Dataset nds : root.getDatasets()) {
       if (nds.getName().equals("latest.xml"))
         continue;
       Service s = nds.getServiceDefault();
-      Assert.assertNotNull(s);
-      assertEquals("fileservice", s.getName());
+      assertThat(s).isNotNull();
+      assertThat(s.getName()).isEqualTo("fileservice");
     }
   }
 }
