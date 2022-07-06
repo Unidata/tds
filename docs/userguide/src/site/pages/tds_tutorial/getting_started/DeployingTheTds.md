@@ -22,7 +22,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 
 #### Downloading And Renaming The TDS WAR File
 
-1. [Download](https://www.unidata.ucar.edu/downloads/tds/){:target="_blank"} the TDS WAR file from Unidata's web site (`tds-5.0.0-beta5.war` for this example).
+1. [Download](https://downloads.unidata.ucar.edu/tds/){:target="_blank"} the TDS WAR file from Unidata's web site (`tds-5.0.0-beta5.war` for this example).
 
 2. Rename the WAR file.
    

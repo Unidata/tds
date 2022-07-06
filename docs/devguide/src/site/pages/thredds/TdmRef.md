@@ -22,7 +22,7 @@ If you change the configuration, you must restart the TDM.
 
 ## Installing The TDM
 
-Get the current jar linked from the [TDS Download Page](https://www.unidata.ucar.edu/downloads/tds/){:target="_blank"}
+Get the current jar linked from the [TDS Download Page](https://downloads.unidata.ucar.edu/tds/){:target="_blank"}
 
 The TDM can be run from anywhere on the local machine, but by convention we create a directory `$tds.content.root.path}/tdm`, and run the TDM from there.
 

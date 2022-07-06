@@ -20,9 +20,9 @@ Use the [TDS Quick Start Guide](https://docs.unidata.ucar.edu/tds/{{site.docset_
 |------------|------------------|
 | File Type | Link For Download |
 |-------------|-----------------|
-| TDS WAR File | [https://www.unidata.ucar.edu/downloads/tds/](https://www.unidata.ucar.edu/downloads/tds/){:target="_blank"} |
+| TDS WAR File | [https://downloads.unidata.ucar.edu/tds/](https://downloads.unidata.ucar.edu/tds/){:target="_blank"} |
 | TDS Docker Image` | [https://hub.docker.com/r/unidata/thredds-docker/](https://hub.docker.com/r/unidata/thredds-docker/){:target="_blank"} |
-| TDM JAR File | [https://www.unidata.ucar.edu/downloads/tds/](https://www.unidata.ucar.edu/downloads/tds/){:target="_blank"} |
+| TDM JAR File | [https://downloads.unidata.ucar.edu/tds/](https://downloads.unidata.ucar.edu/tds/){:target="_blank"} |
 | TDM Docker Image | [https://hub.docker.com/r/unidata/tdm-docker](https://hub.docker.com/r/unidata/tdm-docker/){:target="_blank"} |
 
 {% include important.html content="
