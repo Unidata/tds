@@ -17,12 +17,12 @@ For more information about the TDS, see the TDS web page at
 
 You can obtain a copy of the latest released version of TDS software from
 
-* https://www.unidata.ucar.edu/downloads/tds/
+* https://downloads.unidata.ucar.edu/tds/
 
 A mailing list, thredds@unidata.ucar.edu, exists for discussion of the TDS and
 THREDDS catalogs including announcements about TDS bugs, fixes, enhancements,
-and releases. For information about how to subscribe, see the
-"Subscribe" link on this page
+and releases. To subscribe, send a blank email to <thredds-join@unidata.ucar.edu> and
+respond to the confirmation email. Mailing list archives are available at: 
 
 * https://www.unidata.ucar.edu/mailing_lists/archives/thredds/
 
@@ -39,7 +39,7 @@ data consumers find out what data is available from data providers.
 
 THREDDS Catalog documentation (including the specification) is available at
 
-* https://www.unidata.ucar.edu/software/thredds/current/tds/catalog/
+* https://docs.unidata.ucar.edu/tds/4.6/adminguide/catalog/index.html
 
 ## Licensing
 
