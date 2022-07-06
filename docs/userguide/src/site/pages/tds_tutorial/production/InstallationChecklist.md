@@ -34,7 +34,7 @@ permalink: installation_checklist.html
 8. Modify the [permissions of `${tomcat_home}`](tomcat_permissions.html) to restrict access.
 
 ### Deploying The TDS
-1. [Download the TDS WAR](https://www.unidata.ucar.edu/downloads/tds/){:target="_blank"} file.
+1. [Download the TDS WAR](https://downloads.unidata.ucar.edu/tds/){:target="_blank"} file.
 2. If needed, [rename the WAR file](deploying_the_tds.html) to `thredds.war`.
 3. [Deploy the `thredds.war`](deploying_the_tds.html) file to the `${tomcat_home}/webapps` directory.
 4. Start/restart Tomcat so that it has a chance to create initial files in [`${tomcat_home}/content/thredds`](tds_content_directory.html).

@@ -222,7 +222,7 @@ Unfortunately, though time intervals are part of the `WMS` specification, not al
 * Godiva3 (WMS) [free - distributed with TDS]
 * [NASA WorldWind](https://worldwind.arc.nasa.gov){:target="_blank"} (WMS) [free]
 * [IDV](https://www.unidata.ucar.edu/software/idv/){:target="_blank"} (WMS) [free]
-* [ToolsUI](https://www.unidata.ucar.edu/downloads/netcdf-java/){:target="_blank"} (WMS) [free]
+* [ToolsUI](https://downloads.unidata.ucar.edu/netcdf-java/){:target="_blank"} (WMS) [free]
 * [OWSlib](http://geopython.github.io/OWSLib/){:target="_blank"} (WMS and WCS) [free]
 * [Map Express](https://www.cadcorp.com/products/desktop/cadcorp-sis-desktop-express/){:target="_blank"} (`WMS` and `WCS`) [commercial / free]
 * [IDL](https://www.harrisgeospatial.com/Software-Technology/IDL){:target="_blank"} (WMS) [commercial]
