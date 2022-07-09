@@ -5,10 +5,15 @@
 
 package ucar.nc2.dataset.conv;
 
+import ucar.nc2.Attribute;
+import ucar.nc2.NetcdfFile;
 import ucar.nc2.constants.AxisType;
+import ucar.nc2.constants.CDM;
 import ucar.nc2.dataset.NetcdfDataset;
-import ucar.nc2.dataset.VariableEnhanced;
-
+import ucar.nc2.dataset.VariableDS;
+import ucar.nc2.internal.dataset.CoordSystemBuilder;
+import ucar.nc2.internal.dataset.spi.CFSubConventionProvider;
+import ucar.nc2.internal.dataset.conv.CF1Convention;
 
 /**
  *
@@ -16,16 +21,45 @@ import ucar.nc2.dataset.VariableEnhanced;
  */
 public class UGridConvention extends CF1Convention {
 
-  public UGridConvention() {
-    this.conventionName = "UGRID-1.X";
-  }
-
   @Override
-  protected AxisType getAxisType(NetcdfDataset ncDataset, VariableEnhanced v) {
-    AxisType at = super.getAxisType(ncDataset, v);
+  public AxisType getAxisType(VariableDS.Builder vb) {
+    AxisType at = super.getAxisType(vb);
     // TODO: Add nodal support
 
     return at;
+  }
+
+  private static String CONVENTION_NAME_BASE = "UGRID";
+  public static String CONVENTION_NAME = CONVENTION_NAME_BASE + "-1.X";
+
+  private UGridConvention(NetcdfDataset.Builder<?> datasetBuilder) {
+    super(datasetBuilder);
+    this.conventionName = CONVENTION_NAME;
+  }
+
+  public static class Factory implements CFSubConventionProvider {
+    @Override
+    public boolean isMine(NetcdfFile ncfile) {
+      boolean mine = false;
+      Attribute conventionAttr = ncfile.findGlobalAttributeIgnoreCase(CDM.CONVENTIONS);
+      if (conventionAttr != null) {
+        String conventionValue = conventionAttr.getStringValue();
+        if (conventionValue != null) {
+          mine = conventionValue.startsWith(CONVENTION_NAME_BASE);
+        }
+      }
+      return mine;
+    }
+
+    @Override
+    public String getConventionName() {
+      return CONVENTION_NAME;
+    }
+
+    @Override
+    public CoordSystemBuilder open(NetcdfDataset.Builder datasetBuilder) {
+      return new UGridConvention(datasetBuilder);
+    }
   }
 
   /**
@@ -69,4 +103,5 @@ public class UGridConvention extends CF1Convention {
    * }
    * }
    */
+
 }
