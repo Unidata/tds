@@ -211,5 +211,5 @@
         <attribute name="start_index" type="short" value="1"/>
     </variable>
     
-    <attribute name="Conventions" value="CF-1.6-UGRID-1.0"/>
+    <attribute name="Conventions" value="CF-1.6/UGRID-1.0"/>
 </netcdf>
