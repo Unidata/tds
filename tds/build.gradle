@@ -8,7 +8,6 @@ ext.url = 'https://www.unidata.ucar.edu/software/tds/'
 apply from: "$rootDir/gradle/any/dependencies.gradle"
 apply from: "$rootDir/gradle/any/war-published.gradle"
 apply from: "$rootDir/gradle/any/gretty.gradle"
-apply plugin: 'groovy'  // For FreshInstall Spock tests.
 
 dependencies {
   implementation enforcedPlatform (project(':tds-platform'))
@@ -113,9 +112,7 @@ dependencies {
   runtime 'org.apache.logging.log4j:log4j-web'
   testRuntime 'ch.qos.logback:logback-classic'
 
-  // These are for freshInstallTest (first two because it uses Spock).
-  testCompile 'org.spockframework:spock-core'
-  testCompile 'org.codehaus.groovy:groovy-all'
+  // This is for freshInstallTest
   testCompile 'org.xmlunit:xmlunit-core'  // For comparing catalog XML.
 }
 
@@ -275,7 +272,6 @@ def previousTestTaskFinalizer = null
 
 testInfomation.forEach { testInfo ->
   sourceSets.create(testInfo.name) {
-    groovy.srcDir file("src/${testInfo.name}/groovy")
     resources.srcDir file("src/${testInfo.name}/resources")
 
     // Need 'sourceSets.test.output' because we use TestOnLocalServer in our test.
@@ -294,7 +290,7 @@ testInfomation.forEach { testInfo ->
     // This works around an error we were seeing in org.xmlunit.builder.DiffBuilder.build():
     //    java.lang.ClassCastException: net.sf.saxon.value.ObjectValue cannot be cast to net.sf.saxon.om.NodeInfo
     //        ...
-    //        at thredds.tds.FreshTdsInstallSpec.TDS returns expected client catalog(FreshTdsInstallSpec.groovy:58)
+    //        at thredds.tds.TestFreshTdsInstall.shouldReturnExpectedClientCatalog(TestFreshTdsInstall.java:72)
     // See buildSrc/build.gradle for another example of working around JAXP weirdness.
     systemProperty TransformerFactory.name,  // See javax.xml.transform.TransformerFactory.newInstance().
         'com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl'
