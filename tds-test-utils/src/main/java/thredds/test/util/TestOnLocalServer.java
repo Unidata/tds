@@ -38,6 +38,12 @@ public class TestOnLocalServer {
    */
   public static final String server = "localhost:8081/thredds/";
 
+  static {
+    // Trust self-signed certificates when testing
+    HTTPSession.TESTING = true;
+    HTTPSession.allowSelfSignedCertificatesForTesting();
+  }
+
   /**
    * Construct a URL using the specified protocol and path. Its format will be: {@code <protocol>://<server>/<path>}.
    *
