@@ -40,7 +40,6 @@ public class TestOnLocalServer {
 
   static {
     // Trust self-signed certificates when testing
-    HTTPSession.TESTING = true;
     HTTPSession.allowSelfSignedCertificatesForTesting();
   }
 
