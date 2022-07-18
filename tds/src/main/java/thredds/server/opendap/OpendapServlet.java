@@ -61,8 +61,6 @@ public class OpendapServlet extends AbstractServlet implements InitializingBean 
 
   private String odapVersionString = "opendap/3.7";
 
-  private URI baseURI = null;
-
   private int ascLimit = 50;
   private int binLimit = 500;
 
@@ -165,15 +163,6 @@ public class OpendapServlet extends AbstractServlet implements InitializingBean 
     ReqState rs = getRequestState(request, response);
 
     try {
-      if (baseURI == null) { // first time, set baseURI
-        URI reqURI = ServletUtil.getRequestURI(request);
-        assert reqURI != null;
-        // Build base URI from request (rather than hard-coding "/thredds/dodsC/").
-        String baseUriString = request.getContextPath() + request.getServletPath() + "/";
-        baseURI = reqURI.resolve(baseUriString);
-        log.debug("doGet(): baseURI was set = {}", baseURI);
-      }
-
       String dataSet = rs.getDataSet();
       String requestSuffix = rs.getRequestSuffix();
 
