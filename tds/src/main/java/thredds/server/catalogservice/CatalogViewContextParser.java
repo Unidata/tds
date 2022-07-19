@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import thredds.client.catalog.*;
-import thredds.core.ConfigCatalogInitialization;
 import thredds.server.catalog.CatalogScan;
 import thredds.server.catalog.ConfigCatalogCache;
 import thredds.server.catalog.DatasetScan;
@@ -14,7 +13,6 @@ import thredds.server.catalog.FeatureCollectionRef;
 import thredds.server.config.HtmlConfigBean;
 import thredds.server.config.TdsContext;
 import thredds.server.config.TdsServerInfoBean;
-import thredds.server.notebook.JupyterNotebookServiceCache;
 import thredds.server.viewer.ViewerLinkProvider;
 import thredds.server.viewer.ViewerService;
 import ucar.nc2.units.DateType;
@@ -26,9 +24,7 @@ import ucar.unidata.util.StringUtil2;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class CatalogViewContextParser {
@@ -51,9 +47,10 @@ public class CatalogViewContextParser {
   public Map<String, Object> getCatalogViewContext(Catalog cat, HttpServletRequest req, boolean isLocalCatalog) {
     Map<String, Object> model = new HashMap<>();
 
-    String baseUrl = getBaseCatUrl(cat.getBaseURI().toString(), req);
-    addBaseContext(model, baseUrl + "/");
+    // add common context
+    addBaseContext(model);
 
+    // check if top level catalog
     String catName = cat.getBaseURI().toString();
     String serviceStr = ServiceType.Catalog.name().toLowerCase();
     if (catName.contains(serviceStr)) {
@@ -62,6 +59,7 @@ public class CatalogViewContextParser {
     boolean isRoot = ccc.isRoot(catName);
     model.put("rootCatalog", isRoot);
 
+    // populate catalog
     List<CatalogItemContext> catalogItems = new ArrayList<>();
     addCatalogItems(cat, catalogItems, isLocalCatalog, 0);
     model.put("items", catalogItems);
@@ -71,15 +69,16 @@ public class CatalogViewContextParser {
 
   public Map<String, Object> getDatasetViewContext(Dataset ds, HttpServletRequest req, boolean isLocalCatalog) {
     Map<String, Object> model = new HashMap<>();
-    String baseUrl = getBaseCatUrl(ds.getCatalogUrl(), req);
-    addBaseContext(model, baseUrl + "/");
 
+    // add common context
+    addBaseContext(model);
+
+    // add dataset specfic context
     DatasetContext context = new DatasetContext(ds, isLocalCatalog, tdsContext, req);
-
     populateDatasetContext(ds, context, req, isLocalCatalog);
-
     model.put("dataset", context);
 
+    // add jsonLD
     if (htmlConfig.getGenerateDatasetJsonLD()) {
       String jsonLD = JsonLD.makeDatasetJsonLD(ds, context, tdsContext);
       if (!jsonLD.isEmpty()) {
@@ -90,35 +89,7 @@ public class CatalogViewContextParser {
     return model;
   }
 
-  // returns protocol, authority, context path, and catalog access string
-  private static String getBaseCatUrl(String catUrl, HttpServletRequest req) {
-    String baseUrl = getAbsoluteCatUrl(catUrl, req);
-    String serviceStr = ServiceType.Catalog.name().toLowerCase();
-    if (baseUrl.contains(serviceStr)) {
-      baseUrl = baseUrl.substring(0, baseUrl.indexOf(serviceStr) + serviceStr.length());
-    }
-    return baseUrl;
-  }
-
-  // returns fully qualified URL for a catalog
-  static String getAbsoluteCatUrl(String catUrl, HttpServletRequest req) {
-    if (catUrl.indexOf('#') > 0) {
-      catUrl = catUrl.substring(0, catUrl.lastIndexOf('#'));
-    }
-    catUrl = catUrl.replace("xml", "html");
-    // for direct datasets generated directly off of the root catalog, and maybe others, the base uri is missing
-    // the full server path. Try to do what we can.
-    if (catUrl.startsWith("/")) {
-      String reqUri = req.getRequestURL().toString();
-      if (reqUri.contains(req.getContextPath())) {
-        String baseUriString = reqUri.split(req.getContextPath())[0];
-        catUrl = baseUriString + catUrl;
-      }
-    }
-    return catUrl;
-  }
-
-  private void addBaseContext(Map<String, Object> model, String baseUrl) {
+  private void addBaseContext(Map<String, Object> model) {
 
     String googleTrackingCode = htmlConfig.getGoogleTrackingCode();
     if (googleTrackingCode.isEmpty()) {
@@ -131,7 +102,7 @@ public class CatalogViewContextParser {
     model.put("logoAlt", serverInfo.getLogoAltText());
 
     model.put("installName", htmlConfig.getInstallName());
-    model.put("installUrl", baseUrl + htmlConfig.getInstallUrl());
+    model.put("installUrl", tdsContext.getContextPath() + "/" + ServiceType.Catalog.name().toLowerCase() + "/" + htmlConfig.getInstallUrl());
 
     model.put("webappName", htmlConfig.getWebappName());
     model.put("webappUrl", htmlConfig.getWebappUrl());
@@ -181,8 +152,9 @@ public class CatalogViewContextParser {
       context.addContextItem("href", getCatalogRefHref(catref, isLocalCatalog));
     }
 
-    if (isLocalCatalog)
+    if (isLocalCatalog) {
       context.setViewers(ds, viewerService.getViewerLinks(ds, req));
+    }
   }
 
   private String getCatalogItemHref(Dataset ds, boolean isLocalCatalog) {
@@ -269,17 +241,21 @@ public class CatalogViewContextParser {
           URI catURI = cat.getBaseURI();
           // Get the catalog name - we want a relative URL
           catHtml = catURI.getPath();
-          if (catHtml == null)
+          if (catHtml == null) {
             catHtml = cat.getUriString(); // if URI is a file
+          }
           int pos = catHtml.lastIndexOf("/");
-          if (pos != -1)
+          if (pos != -1) {
             catHtml = catHtml.substring(pos + 1);
+          }
           // change the ending to "catalog.html?"
           pos = catHtml.lastIndexOf('.');
-          if (pos < 0)
+          if (pos < 0) {
             catHtml = catHtml + "catalog.html?";
-          else
+          }
+          else {
             catHtml = catHtml.substring(0, pos) + ".html?";
+          }
         }
 
         // Write link to HTML dataset page.
@@ -293,7 +269,7 @@ public class CatalogViewContextParser {
   private String getCatalogRefHref(CatalogRef catref, boolean isLocalCatalog) {
     String href = catref.getXlinkHref();
     if (!isLocalCatalog) {
-      href = CatalogViewContextParser.makeHrefResolve((Dataset) catref, href);
+      href = CatalogViewContextParser.makeHrefResolve(catref, href);
     }
     return href;
   }
@@ -314,22 +290,28 @@ public class CatalogViewContextParser {
   private String getFolderIconSrc(Dataset ds) {
     String iconSrc = null;
     if (ds instanceof CatalogRef) {
-      if (ds instanceof CatalogScan || ds.hasProperty("CatalogScan"))
+      if (ds instanceof CatalogScan || ds.hasProperty("CatalogScan")) {
         iconSrc = "cat_folder.png";
-      else if (ds instanceof DatasetScan || ds.hasProperty("DatasetScan"))
+      }
+      else if (ds instanceof DatasetScan || ds.hasProperty("DatasetScan")) {
         iconSrc = "scan_folder.png";
-      else if (ds instanceof FeatureCollectionRef)
+      }
+      else if (ds instanceof FeatureCollectionRef) {
         iconSrc = "fc_folder.png";
-      else
+      }
+      else {
         iconSrc = "folder.png";
+      }
 
     } else { // Not a CatalogRef
-      if (ds.hasNestedDatasets())
+      if (ds.hasNestedDatasets()) {
         iconSrc = "folder.png";
+      }
     }
 
-    if (iconSrc != null)
+    if (iconSrc != null) {
       iconSrc = htmlConfig.prepareUrlStringForHtml(iconSrc);
+    }
     return iconSrc;
   }
 
@@ -340,10 +322,10 @@ public class CatalogViewContextParser {
   }
 }
 
-
+/*
+ * Context object for a Catalog item
+ */
 class CatalogItemContext {
-
-  // static private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(CatalogItemContext.class);
 
   private String displayName;
   private int level;
@@ -358,14 +340,15 @@ class CatalogItemContext {
 
     // Get data size
     double size = ds.getDataSize();
-    if ((size > 0) && !Double.isNaN(size))
+    if ((size > 0) && !Double.isNaN(size)) {
       this.dataSize = (Format.formatByteSize(size));
-
+    }
 
     // Get last modified time.
     DateType lastModDateType = ds.getLastModifiedDate();
-    if (lastModDateType != null)
+    if (lastModDateType != null) {
       this.lastModified = lastModDateType.toDateTimeString();
+    }
 
     // Store nesting level
     this.level = level;
@@ -405,14 +388,16 @@ class CatalogItemContext {
 
 }
 
-
+/*
+ * Context object for a Dataset item
+ */
 class DatasetContext {
 
-  private String contentDir;
+  private final Dataset ds;
+
+  private final boolean isLocalCatalog;
 
   private String name;
-
-  private String catUrl;
 
   private String catName;
 
@@ -449,80 +434,88 @@ class DatasetContext {
   private List<Map<String, String>> viewerLinks;
 
   public DatasetContext(Dataset ds, boolean isLocalCatalog, TdsContext tdsContext, HttpServletRequest req) {
-    this.contentDir = tdsContext.getContentRootPathProperty();
-    // Get display name and catalog url
+    this.ds = ds;
+    this.isLocalCatalog = isLocalCatalog;
     this.name = ds.getName();
-
-    this.catUrl = CatalogViewContextParser.getAbsoluteCatUrl(ds.getCatalogUrl(), req);
     this.catName = ds.getParentCatalog().getName();
 
-    setContext(ds);
-    setDocumentation(ds);
-    setAccess(ds, isLocalCatalog);
-    setContributors(ds);
-    setKeywords(ds);
-    setDates(ds);
-    setProjects(ds);
-    setCreators(ds, isLocalCatalog);
-    setPublishers(ds, isLocalCatalog);
-    setVariables(ds, isLocalCatalog);
-    setGeospatialCoverage(ds);
-    setTimeCoverage(ds);
-    setMetadata(ds, isLocalCatalog);
-    setProperties(ds, isLocalCatalog);
+    setContext();
+    setDocumentation();
+    setAccess();
+    setContributors();
+    setKeywords();
+    setDates();
+    setProjects();
+    setCreators();
+    setPublishers();
+    setVariables();
+    setGeospatialCoverage();
+    setTimeCoverage();
+    setMetadata();
+    setProperties();
 
     this.viewerLinks = new ArrayList<>();
   }
 
-  private void setContext(Dataset ds) {
+  private void setContext() {
     this.context = new HashMap<>();
 
     String dataFormat = ds.getDataFormatName();
-    if (dataFormat != null)
+    if (dataFormat != null) {
       context.put("dataFormat", dataFormat);
+    }
 
     long dataSize = ds.getDataSize();
-    if (dataSize > 0)
+    if (dataSize > 0) {
       context.put("dataSize", dataSize);
+    }
 
     String featureType = ds.getFeatureTypeName();
-    if (featureType != null)
+    if (featureType != null) {
       context.put("featureType", featureType);
+    }
 
     String collectionType = ds.getCollectionType();
-    if (collectionType != null)
+    if (collectionType != null) {
       context.put("collectionType", collectionType);
+    }
 
     boolean isHarvest = ds.isHarvest();
-    if (isHarvest)
+    if (isHarvest) {
       context.put("isHarvest", true);
+    }
 
     String authority = ds.getAuthority();
-    if (authority != null)
+    if (authority != null) {
       context.put("authority", authority);
+    }
 
     String id = ds.getId();
-    if (id != null)
+    if (id != null) {
       context.put("id", id);
+    }
 
     String restrictAccess = ds.getRestrictAccess();
-    if (restrictAccess != null)
+    if (restrictAccess != null) {
       context.put("restrictAccess", restrictAccess);
+    }
   }
 
-  private void setDocumentation(Dataset ds) {
+  private void setDocumentation() {
     java.util.List<Documentation> docs = ds.getDocumentation();
     this.documentation = new ArrayList<>(docs.size());
 
     for (Documentation doc : docs) {
       Map<String, String> docMap = new HashMap<>();
       String inlineContent = doc.getInlineContent();
-      if (inlineContent.isEmpty())
+      if (inlineContent.isEmpty()) {
         inlineContent = null;
+      }
       docMap.put("inlineContent", inlineContent);
       String type = doc.getType();
-      if (type == null)
+      if (type == null) {
         type = "";
+      }
       docMap.put("type", type);
       if (doc.hasXlink()) {
         docMap.put("href", doc.getXlinkHref());
@@ -532,7 +525,7 @@ class DatasetContext {
     }
   }
 
-  private void setAccess(Dataset ds, boolean isLocalCatalog) {
+  private void setAccess() {
     List<Access> access = ds.getAccess();
     this.access = new ArrayList<>(access.size());
 
@@ -572,8 +565,9 @@ class DatasetContext {
             catalogUrl = ds.getCatalogUrl();
             datasetId = ds.getId();
             if (catalogUrl != null && datasetId != null) {
-              if (catalogUrl.indexOf('#') > 0)
+              if (catalogUrl.indexOf('#') > 0) {
                 catalogUrl = catalogUrl.substring(0, catalogUrl.lastIndexOf('#'));
+              }
               queryString = "catalog=" + catalogUrl + "&dataset=" + datasetId;
             }
             break;
@@ -593,7 +587,7 @@ class DatasetContext {
     }
   }
 
-  private void setContributors(Dataset ds) {
+  private void setContributors() {
     java.util.List<ThreddsMetadata.Contributor> contributors = ds.getContributors();
     this.contributors = new ArrayList<>(contributors.size());
 
@@ -605,7 +599,7 @@ class DatasetContext {
     }
   }
 
-  private void setKeywords(Dataset ds) {
+  private void setKeywords() {
     java.util.List<ThreddsMetadata.Vocab> keywords = ds.getKeywords();
     this.keywords = new ArrayList<>(keywords.size());
 
@@ -617,7 +611,7 @@ class DatasetContext {
     }
   }
 
-  private void setDates(Dataset ds) {
+  private void setDates() {
     java.util.List<DateType> dates = ds.getDates();
     this.dates = new ArrayList<>(dates.size());
 
@@ -629,7 +623,7 @@ class DatasetContext {
     }
   }
 
-  private void setProjects(Dataset ds) {
+  private void setProjects() {
     java.util.List<ThreddsMetadata.Vocab> projects = ds.getProjects();
     this.projects = new ArrayList<>(projects.size());
 
@@ -641,7 +635,7 @@ class DatasetContext {
     }
   }
 
-  private void setCreators(Dataset ds, boolean isLocalCatalog) {
+  private void setCreators() {
     java.util.List<ThreddsMetadata.Source> creators = ds.getCreators();
     this.creators = new ArrayList<>(creators.size());
 
@@ -650,14 +644,15 @@ class DatasetContext {
       creatorMap.put("name", t.getName());
       creatorMap.put("email", t.getEmail());
       String href = t.getUrl();
-      if (!isLocalCatalog)
+      if (!isLocalCatalog) {
         href = CatalogViewContextParser.makeHrefResolve(ds, href);
+      }
       creatorMap.put("href", href);
       this.creators.add(creatorMap);
     }
   }
 
-  private void setPublishers(Dataset ds, boolean isLocalCatalog) {
+  private void setPublishers() {
     this.publishers = new ArrayList<>();
     java.util.List<ThreddsMetadata.Source> publishers = ds.getPublishers();
 
@@ -666,14 +661,15 @@ class DatasetContext {
       pubMap.put("name", t.getName());
       pubMap.put("email", t.getEmail());
       String href = t.getUrl();
-      if (!isLocalCatalog)
+      if (!isLocalCatalog) {
         href = CatalogViewContextParser.makeHrefResolve(ds, href);
+      }
       pubMap.put("href", href);
       this.publishers.add(pubMap);
     }
   }
 
-  private void setVariables(Dataset ds, boolean isLocalCatalog) {
+  private void setVariables() {
     List<ThreddsMetadata.VariableGroup> vars = ds.getVariables();
     this.variables = new ArrayList<>(vars.size());
 
@@ -707,7 +703,7 @@ class DatasetContext {
     }
   }
 
-  private void setGeospatialCoverage(Dataset ds) {
+  private void setGeospatialCoverage() {
     ThreddsMetadata.GeospatialCoverage gc = ds.getGeospatialCoverage();
     this.geospatialCoverage = new HashMap<>();
     if (gc != null) {
@@ -721,34 +717,39 @@ class DatasetContext {
 
       List<String> names = new ArrayList<>();
       List<ThreddsMetadata.Vocab> nlist = gc.getNames();
-      if (nlist != null)
+      if (nlist != null) {
         for (ThreddsMetadata.Vocab elem : nlist) {
           names.add(elem.getText());
         }
+      }
       this.geospatialCoverage.put("names", names);
     }
   }
 
-  private void setTimeCoverage(Dataset ds) {
+  private void setTimeCoverage() {
     DateRange tc = ds.getTimeCoverage();
     this.timeCoverage = new HashMap<>();
     if (tc != null) {
       DateType start = tc.getStart();
-      if (start != null)
+      if (start != null) {
         this.timeCoverage.put("start", start.toString());
+      }
       DateType end = tc.getEnd();
-      if (end != null)
+      if (end != null) {
         this.timeCoverage.put("end", end.toString());
+      }
       TimeDuration duration = tc.getDuration();
-      if (duration != null)
+      if (duration != null) {
         this.timeCoverage.put("duration", duration.toString());
+      }
       TimeDuration resolution = tc.getResolution();
-      if (resolution != null)
+      if (resolution != null) {
         this.timeCoverage.put("resolution", resolution.toString());
+      }
     }
   }
 
-  private void setMetadata(Dataset ds, boolean isLocalCatalog) {
+  private void setMetadata() {
     java.util.List<ThreddsMetadata.MetadataOther> metadata = ds.getMetadataOther();
     this.metadata = new ArrayList<>(metadata.size());
 
@@ -758,19 +759,21 @@ class DatasetContext {
         String type = (m.getType() == null) ? "" : m.getType();
         metadataMap.put("title", (m.getTitle() == null) ? "Type " + type : m.getTitle());
         String mdLink = m.getXlinkHref();
-        if (!isLocalCatalog)
+        if (!isLocalCatalog) {
           mdLink = CatalogViewContextParser.makeHrefResolve(ds, mdLink);
+        }
         metadataMap.put("href", mdLink);
       }
     }
   }
 
-  private void setProperties(Dataset ds, boolean isLocalCatalog) {
+  private void setProperties() {
     java.util.List<Property> propsOrg = ds.getProperties();
     java.util.List<Property> props = new ArrayList<>(ds.getProperties().size());
     for (Property p : propsOrg) {
-      if (!p.getName().startsWith("viewer")) // eliminate the viewer properties from the html view
+      if (!p.getName().startsWith("viewer")) { // eliminate the viewer properties from the html view
         props.add(p);
+      }
     }
 
     this.properties = new ArrayList<>(props.size());
@@ -787,32 +790,14 @@ class DatasetContext {
   }
 
   private String rangeString(ThreddsMetadata.GeospatialRange r) {
-    if (r == null)
-      return "";
+    if (r == null) { return ""; }
     String units = (r.getUnits() == null) ? "" : " " + r.getUnits();
     String resolution = r.hasResolution() ? " Resolution=" + r.getResolution() : "";
     return r.getStart() + " to " + (r.getStart() + r.getSize()) + resolution + units;
   }
 
-  private String makeHrefResolve(Dataset ds, String href) {
-    Catalog cat = ds.getParentCatalog();
-    if (cat != null) {
-      try {
-        java.net.URI uri = cat.resolveUri(href);
-        href = uri.toString();
-      } catch (java.net.URISyntaxException e) {
-        return "CatalogViewContextParser: error parsing URL= " + href;
-      }
-    }
-    return href;
-  }
-
   public String getName() {
     return this.name;
-  }
-
-  public String getCatUrl() {
-    return this.catUrl;
   }
 
   public String getCatName() {
@@ -927,12 +912,6 @@ class JsonLD {
     if (!summary.isEmpty()) {
       jo.put("description", StringUtils.join(summary, " "));
     }
-
-    // set url to datasets catalog
-    jo.put("url", dsContext.getCatUrl());
-
-    // geocodes ID
-    jo.put("@id", dsContext.getCatUrl());
 
     // keywords
     List<Map<String, String>> kws = dsContext.getKeywords();
