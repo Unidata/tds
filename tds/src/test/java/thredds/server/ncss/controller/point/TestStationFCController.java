@@ -48,7 +48,7 @@ public class TestStationFCController {
   @Autowired
   private WebApplicationContext wac;
 
-  private String dataset = "/ncss/point/testStationFeatureCollection/Metar_Station_Data_fc.cdmr";
+  private static final String dataset = "/ncss/point/testStationFeatureCollection/Metar_Station_Data_fc.cdmr";
   private MockMvc mockMvc;
 
   @Before
