@@ -1,8 +1,9 @@
 package thredds.server.ncss.controller.point;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,7 +29,6 @@ import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Test ncss point dataset info
@@ -84,17 +84,17 @@ public class TestPointFCController {
     Document doc = XmlUtil.getStringResponseAsDoc(result.getResponse());
 
     List<Element> vars = XmlUtil.evaluateXPath(doc, "//variable");
-    assert vars != null;
+    assertThat(vars).isNotNull();
     int nVars = vars.size();
     logger.debug("nvars = " + nVars);
-    Assert.assertEquals(this.nvars, nVars);
+    assertThat(nVars).isEqualTo(this.nvars);
 
     List<Element> elems = XmlUtil.evaluateXPath(doc, "capabilities/featureDataset");
-    assert elems != null;
-    assert elems.size() == 1;
+    assertThat(elems).isNotNull();
+    assertThat(elems.size()).isEqualTo(1);
     Element fdx = elems.get(0);
-    Assert.assertEquals(fdx.getAttributeValue("type"), this.type);
-    Assert.assertEquals(fdx.getAttributeValue("url"), path);
+    assertThat(fdx.getAttributeValue("type")).isEqualTo(type);
+    assertThat(fdx.getAttributeValue("url")).isEqualTo(path);
   }
 
   @Test

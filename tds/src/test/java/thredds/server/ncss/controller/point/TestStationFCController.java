@@ -5,6 +5,8 @@
 
 package thredds.server.ncss.controller.point;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,7 +32,6 @@ import thredds.server.ncss.format.SupportedFormat;
 import thredds.util.ContentType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.lang.invoke.MethodHandles;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test ncss on station feature collections
@@ -149,7 +150,7 @@ public class TestStationFCController {
       public void match(MvcResult result) throws Exception {
         // result.getResponse().getContentAsByteArray()
         Exception ex = result.getResolvedException();
-        assertTrue(ex instanceof FeaturesNotFoundException);
+        assertThat(ex).isInstanceOf(FeaturesNotFoundException.class);
       }
     });
   }
