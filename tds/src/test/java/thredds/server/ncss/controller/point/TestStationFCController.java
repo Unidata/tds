@@ -105,7 +105,7 @@ public class TestStationFCController {
         .param("time_end", "2013-08-26T06:00:00Z");
 
     org.springframework.test.web.servlet.MvcResult result =
-        this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(400)).andReturn();
+        this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
     logger.debug(result.getResponse().getContentAsString());
   }
 
@@ -160,7 +160,7 @@ public class TestStationFCController {
         .param("latitude", "40.019").param("accept", "netcdf") //
         .param("var", "air_temperature", "dew_point_temperature");
 
-    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(400));
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
 }
