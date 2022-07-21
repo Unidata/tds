@@ -133,7 +133,7 @@ public class TestStationFcOpenFiles {
     List<String> cacheEntries = rafCache.showCache();
 
     RequestBuilder rb = MockMvcRequestBuilders.get(dataset + req).servletPath(dataset);
-    System.out.printf("%nURL='%s'%n", dataset + req);
+    logger.debug("URL=" + dataset + req);
     ResultActions mockMvc = this.mockMvc.perform(rb);
     MvcResult result = mockMvc.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
     MockHttpServletResponse response = result.getResponse();

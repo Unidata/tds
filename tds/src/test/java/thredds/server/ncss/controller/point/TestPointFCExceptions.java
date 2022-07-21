@@ -86,7 +86,7 @@ public class TestPointFCExceptions {
         .param("west", "-107.0").param("east", "-103.0");
 
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(400)).andReturn();
-    System.out.printf("%s%n", result.getResponse().getContentAsString());
+    logger.debug(result.getResponse().getContentAsString());
   }
 
 }

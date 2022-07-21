@@ -73,20 +73,20 @@ public class TestPointFCController {
   @Test
   public void getDatasetXml() throws Exception {
     String xmlpath = path + "/dataset.xml";
-    System.out.printf("request='%s'%n", xmlpath);
+    logger.debug("request=" + xmlpath);
     RequestBuilder rb = MockMvcRequestBuilders.get(xmlpath).servletPath(xmlpath);
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(ContentType.xml.getContentHeader())).andReturn();
 
     String ress = result.getResponse().getContentAsString();
-    System.out.printf("%s%n", ress);
+    logger.debug(ress);
 
     Document doc = XmlUtil.getStringResponseAsDoc(result.getResponse());
 
     List<Element> vars = XmlUtil.evaluateXPath(doc, "//variable");
     assert vars != null;
     int nVars = vars.size();
-    System.out.printf("nvars = %s%n", nVars);
+    logger.debug("nvars = " + nVars);
     Assert.assertEquals(this.nvars, nVars);
 
     List<Element> elems = XmlUtil.evaluateXPath(doc, "capabilities/featureDataset");
@@ -100,12 +100,12 @@ public class TestPointFCController {
   @Test
   public void getDatasetHtml() throws Exception {
     String htmlpath = path + "/dataset.html";
-    System.out.printf("request='%s'%n", htmlpath);
+    logger.debug("request=" + htmlpath);
     RequestBuilder rb = MockMvcRequestBuilders.get(htmlpath).servletPath(htmlpath);
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(ContentType.html.getContentHeader())).andReturn();
 
-    System.out.printf("%s%n", result.getResponse().getContentAsString());
+    logger.debug(result.getResponse().getContentAsString());
   }
 
 }

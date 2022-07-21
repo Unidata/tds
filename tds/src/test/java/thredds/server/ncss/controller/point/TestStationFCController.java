@@ -69,7 +69,7 @@ public class TestStationFCController {
           .andExpect(MockMvcResultMatchers.content().contentType(SupportedFormat.NETCDF4.getMimeType()));
     } finally {
       long took = System.currentTimeMillis() - start;
-      System.out.printf("that took %d msecs%n", took);
+      logger.debug("that took {} msecs", took);
     }
   }
 
@@ -106,7 +106,7 @@ public class TestStationFCController {
 
     org.springframework.test.web.servlet.MvcResult result =
         this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(400)).andReturn();
-    System.out.printf("%s%n", result.getResponse().getContentAsString());
+    logger.debug(result.getResponse().getContentAsString());
   }
 
   @Test
@@ -134,7 +134,7 @@ public class TestStationFCController {
           .andExpect(MockMvcResultMatchers.content().contentType(ContentType.netcdf.getContentHeader()));
     } finally {
       long took = System.currentTimeMillis() - start;
-      System.out.printf("that took %d msecs%n", took);
+      logger.debug("that took {} msecs", took);
     }
 
   }

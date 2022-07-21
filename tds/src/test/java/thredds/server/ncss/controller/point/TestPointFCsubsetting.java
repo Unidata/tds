@@ -83,12 +83,12 @@ public class TestPointFCsubsetting {
         (format == SupportedFormat.CSV_STREAM) ? ContentType.text.getContentHeader() : format.getMimeType();
 
     RequestBuilder rb = MockMvcRequestBuilders.get(dataset + req + format.getFormatName()).servletPath(dataset);
-    System.out.printf("%nURL='%s'%n", dataset + req + format.getFormatName());
+    logger.debug("URL=" + dataset + req + format.getFormatName());
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(expectFormat)).andReturn();
 
     MockHttpServletResponse response = result.getResponse();
-    System.out.printf("getSubsettedData format=%s status = %d type=%s%n", format, response.getStatus(),
+    logger.debug("getSubsettedData format={} status = {} type={}", format, response.getStatus(),
         response.getContentType());
   }
 }
