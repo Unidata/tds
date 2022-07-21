@@ -102,7 +102,8 @@ public class CatalogViewContextParser {
     model.put("logoAlt", serverInfo.getLogoAltText());
 
     model.put("installName", htmlConfig.getInstallName());
-    model.put("installUrl", tdsContext.getContextPath() + "/" + ServiceType.Catalog.name().toLowerCase() + "/" + htmlConfig.getInstallUrl());
+    model.put("installUrl", tdsContext.getContextPath() + "/" + ServiceType.Catalog.name().toLowerCase() + "/"
+        + htmlConfig.getInstallUrl());
 
     model.put("webappName", htmlConfig.getWebappName());
     model.put("webappUrl", htmlConfig.getWebappUrl());
@@ -252,8 +253,7 @@ public class CatalogViewContextParser {
           pos = catHtml.lastIndexOf('.');
           if (pos < 0) {
             catHtml = catHtml + "catalog.html?";
-          }
-          else {
+          } else {
             catHtml = catHtml.substring(0, pos) + ".html?";
           }
         }
@@ -292,14 +292,11 @@ public class CatalogViewContextParser {
     if (ds instanceof CatalogRef) {
       if (ds instanceof CatalogScan || ds.hasProperty("CatalogScan")) {
         iconSrc = "cat_folder.png";
-      }
-      else if (ds instanceof DatasetScan || ds.hasProperty("DatasetScan")) {
+      } else if (ds instanceof DatasetScan || ds.hasProperty("DatasetScan")) {
         iconSrc = "scan_folder.png";
-      }
-      else if (ds instanceof FeatureCollectionRef) {
+      } else if (ds instanceof FeatureCollectionRef) {
         iconSrc = "fc_folder.png";
-      }
-      else {
+      } else {
         iconSrc = "folder.png";
       }
 
@@ -321,6 +318,7 @@ public class CatalogViewContextParser {
     return acc.getStandardUrlName();
   }
 }
+
 
 /*
  * Context object for a Catalog item
@@ -387,6 +385,7 @@ class CatalogItemContext {
   }
 
 }
+
 
 /*
  * Context object for a Dataset item
@@ -790,7 +789,9 @@ class DatasetContext {
   }
 
   private String rangeString(ThreddsMetadata.GeospatialRange r) {
-    if (r == null) { return ""; }
+    if (r == null) {
+      return "";
+    }
     String units = (r.getUnits() == null) ? "" : " " + r.getUnits();
     String resolution = r.hasResolution() ? " Resolution=" + r.getResolution() : "";
     return r.getStart() + " to " + (r.getStart() + r.getSize()) + resolution + units;
