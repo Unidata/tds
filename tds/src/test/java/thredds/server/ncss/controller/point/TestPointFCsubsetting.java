@@ -47,9 +47,11 @@ public class TestPointFCsubsetting {
 
   @Autowired
   private WebApplicationContext wac;
-  private String dataset = "/ncss/point/testBuoyFeatureCollection/Surface_Buoy_Point_Data_fc.cdmr";
-  private String req = "?req=point&var=ICE&var=PRECIP_amt&var=PRECIP_amt24&var=T&north=40&west=-170&east=-100&south"
-      + "=-40&time_start=2013-08-04T00:00:00Z&time_end=2013-08-05T00:00:00Z&accept=";
+
+  private static final String dataset = "/ncss/point/testBuoyFeatureCollection/Surface_Buoy_Point_Data_fc.cdmr";
+  private static final String req =
+      "?req=point&var=ICE&var=PRECIP_amt&var=PRECIP_amt24&var=T&north=40&west=-170&east=-100&south"
+          + "=-40&time_start=2013-08-04T00:00:00Z&time_end=2013-08-05T00:00:00Z&accept=";
   private MockMvc mockMvc;
 
   @SpringJUnit4ParameterizedClassRunner.Parameters
@@ -83,12 +85,12 @@ public class TestPointFCsubsetting {
         (format == SupportedFormat.CSV_STREAM) ? ContentType.text.getContentHeader() : format.getMimeType();
 
     RequestBuilder rb = MockMvcRequestBuilders.get(dataset + req + format.getFormatName()).servletPath(dataset);
-    System.out.printf("%nURL='%s'%n", dataset + req + format.getFormatName());
+    logger.debug("URL=" + dataset + req + format.getFormatName());
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(expectFormat)).andReturn();
 
     MockHttpServletResponse response = result.getResponse();
-    System.out.printf("getSubsettedData format=%s status = %d type=%s%n", format, response.getStatus(),
+    logger.debug("getSubsettedData format={} status = {} type={}", format, response.getStatus(),
         response.getContentType());
   }
 }

@@ -43,7 +43,7 @@ public class TestPointFCExceptions {
   @Autowired
   private WebApplicationContext wac;
 
-  private String dataset = "/ncss/point/testBuoyFeatureCollection/Surface_Buoy_Point_Data_fc.cdmr";
+  private static final String dataset = "/ncss/point/testBuoyFeatureCollection/Surface_Buoy_Point_Data_fc.cdmr";
 
   private MockMvc mockMvc;
 
@@ -58,7 +58,7 @@ public class TestPointFCExceptions {
         .param("latitude", "40.019").param("accept", "csv") //
         .param("var", "ICE");
 
-    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(400));
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
@@ -67,7 +67,7 @@ public class TestPointFCExceptions {
         .param("latitude", "40.019").param("accept", "netcdf") // empty - netcdf fails
         .param("var", "ICE");
 
-    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(400));
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
@@ -77,7 +77,7 @@ public class TestPointFCExceptions {
         .param("time_start", "2006-03-02T00:00:00Z").param("time_end", "2006-03-28T00:00:00Z")
         .param("var", "ICE, PRECIP_amt");
 
-    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(400));
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
@@ -86,8 +86,8 @@ public class TestPointFCExceptions {
         .param("var", "air_temperature", "dew_point_temperature").param("north", "43.0").param("south", "38.0")
         .param("west", "-107.0").param("east", "-103.0");
 
-    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is(400)).andReturn();
-    System.out.printf("%s%n", result.getResponse().getContentAsString());
+    MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
+    logger.debug(result.getResponse().getContentAsString());
   }
 
   @Test
