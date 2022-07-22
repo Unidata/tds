@@ -97,7 +97,7 @@ public class TestPointFCExceptions {
     final RequestBuilder rb =
         MockMvcRequestBuilders.get(invalidDatasetPath).servletPath(invalidDatasetPath).param("accept", "netcdf");
 
-    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isMethodNotAllowed())
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isUnprocessableEntity())
         .andExpect(MockMvcResultMatchers.content()
             .string(new StringContains("UnsupportedOperationException: Could not open as a PointDataset")));
   }

@@ -35,7 +35,7 @@ import static org.springframework.web.util.HtmlUtils.htmlEscape;
  * ServiceNotAllowed FORBIDDEN
  * FileNotFoundException NOT_FOUND
  * IOException INTERNAL_SERVER_ERROR
- * UnsupportedOperationException METHOD_NOT_ALLOWED
+ * UnsupportedOperationException UNPROCESSABLE_ENTITY
  * IllegalArgumentException BAD_REQUEST
  * BindException BAD_REQUEST
  * Throwable INTERNAL_SERVER_ERROR
@@ -111,7 +111,7 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
     return new ResponseEntity<>("UnsupportedOperationException: " + htmlEscape(ex.getMessage()), responseHeaders,
-        HttpStatus.METHOD_NOT_ALLOWED);
+        HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
