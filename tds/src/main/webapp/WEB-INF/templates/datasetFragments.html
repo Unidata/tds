@@ -5,8 +5,6 @@
 
 <body>
 
-    <div th:fragment="returnButton" class="button"><a th:href="${dataset.getCatUrl()}" th:text="'return to catalog'"></a></div>
-
     <div th:fragment="context">
         <table class="property-table">
             <tr th:each="prop : ${dataset.getAllContext()}">
