@@ -1,8 +1,9 @@
 package thredds.server.ncss.controller.point;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,7 +29,6 @@ import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Test ncss point dataset info
@@ -73,39 +73,39 @@ public class TestPointFCController {
   @Test
   public void getDatasetXml() throws Exception {
     String xmlpath = path + "/dataset.xml";
-    System.out.printf("request='%s'%n", xmlpath);
+    logger.debug("request=" + xmlpath);
     RequestBuilder rb = MockMvcRequestBuilders.get(xmlpath).servletPath(xmlpath);
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(ContentType.xml.getContentHeader())).andReturn();
 
     String ress = result.getResponse().getContentAsString();
-    System.out.printf("%s%n", ress);
+    logger.debug(ress);
 
     Document doc = XmlUtil.getStringResponseAsDoc(result.getResponse());
 
     List<Element> vars = XmlUtil.evaluateXPath(doc, "//variable");
-    assert vars != null;
+    assertThat(vars).isNotNull();
     int nVars = vars.size();
-    System.out.printf("nvars = %s%n", nVars);
-    Assert.assertEquals(this.nvars, nVars);
+    logger.debug("nvars = " + nVars);
+    assertThat(nVars).isEqualTo(this.nvars);
 
     List<Element> elems = XmlUtil.evaluateXPath(doc, "capabilities/featureDataset");
-    assert elems != null;
-    assert elems.size() == 1;
+    assertThat(elems).isNotNull();
+    assertThat(elems.size()).isEqualTo(1);
     Element fdx = elems.get(0);
-    Assert.assertEquals(fdx.getAttributeValue("type"), this.type);
-    Assert.assertEquals(fdx.getAttributeValue("url"), path);
+    assertThat(fdx.getAttributeValue("type")).isEqualTo(type);
+    assertThat(fdx.getAttributeValue("url")).isEqualTo(path);
   }
 
   @Test
   public void getDatasetHtml() throws Exception {
     String htmlpath = path + "/dataset.html";
-    System.out.printf("request='%s'%n", htmlpath);
+    logger.debug("request=" + htmlpath);
     RequestBuilder rb = MockMvcRequestBuilders.get(htmlpath).servletPath(htmlpath);
     MvcResult result = this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(ContentType.html.getContentHeader())).andReturn();
 
-    System.out.printf("%s%n", result.getResponse().getContentAsString());
+    logger.debug(result.getResponse().getContentAsString());
   }
 
 }
