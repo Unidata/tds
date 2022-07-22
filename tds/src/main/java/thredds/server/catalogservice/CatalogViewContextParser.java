@@ -400,6 +400,8 @@ class DatasetContext {
 
   private String catName;
 
+  private String catUrl;
+
   private Map<String, Object> context;
 
   private List<Map<String, String>> documentation;
@@ -437,6 +439,21 @@ class DatasetContext {
     this.isLocalCatalog = isLocalCatalog;
     this.name = ds.getName();
     this.catName = ds.getParentCatalog().getName();
+
+    String catUrl = ds.getCatalogUrl();
+    if (catUrl.indexOf('#') > 0)
+      catUrl = catUrl.substring(0, catUrl.lastIndexOf('#'));
+    catUrl = catUrl.replace("xml", "html");
+    // for direct datasets generated directly off of the root catalog, and maybe others, the base uri is missing
+    // the full server path. Try to do what we can.
+    if (catUrl.startsWith("/")) {
+      String reqUri = req.getRequestURL().toString();
+      if (reqUri.contains(req.getContextPath())) {
+        String baseUriString = reqUri.split(req.getContextPath())[0];
+        catUrl = baseUriString + catUrl;
+      }
+    }
+    this.catUrl = catUrl;
 
     setContext();
     setDocumentation();
@@ -801,6 +818,10 @@ class DatasetContext {
     return this.name;
   }
 
+  public String getCatUrl() {
+    return this.catUrl;
+  }
+
   public String getCatName() {
     return this.catName;
   }
@@ -913,6 +934,13 @@ class JsonLD {
     if (!summary.isEmpty()) {
       jo.put("description", StringUtils.join(summary, " "));
     }
+
+    // set url to datasets catalog
+    jo.put("url", dsContext.getCatUrl());
+
+    // geocodes ID
+    jo.put("@id", dsContext.getCatUrl());
+
 
     // keywords
     List<Map<String, String>> kws = dsContext.getKeywords();
