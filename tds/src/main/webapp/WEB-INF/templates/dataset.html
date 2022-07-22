@@ -59,12 +59,10 @@
 
         <div th:replace="~{templates/commonFragments :: header-container}"/>
 
-        <div th:replace="~{templates/datasetFragments :: returnButton}"/>
-
         <div class="content">
             <div class="section-header">
                 <div th:text="'Dataset: ' + ${dataset.getName()}"></div>
-                <div th:text="'Catalog: ' + ${dataset.getCatName() != null ? dataset.getCatName() : dataset.getCatUrl()}"></div>
+                <div th:text="'Catalog: ' + ${dataset.getCatName() != null ? dataset.getCatName() : ''}"></div>
             </div>
 
             <div class="section-content">
