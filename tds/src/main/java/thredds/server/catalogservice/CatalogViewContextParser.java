@@ -596,11 +596,22 @@ class DatasetContext {
       }
       Map<String, String> accessMap = new HashMap<>();
       accessMap.put("serviceTypeName", s.getServiceTypeName());
-      accessMap.put("serviceDesc", s.getDesc());
+      accessMap.put("serviceDesc", getDescription(s));
       accessMap.put("accessType", s.getAccessType());
       accessMap.put("href", queryString == null ? urlString : urlString + "?" + queryString);
       this.access.add(accessMap);
     }
+  }
+
+  private static String getDescription(Service service) {
+    if (service.getType() == ServiceType.NetcdfSubset) {
+      if (service.getBase().toLowerCase(Locale.ROOT).contains("grid")) {
+        return "A web service for subsetting CDM scientific grid datasets.";
+      } else if (service.getBase().toLowerCase(Locale.ROOT).contains("point")) {
+        return "A web service for subsetting CDM scientific point datasets.";
+      }
+    }
+    return service.getDesc();
   }
 
   private void setContributors() {
