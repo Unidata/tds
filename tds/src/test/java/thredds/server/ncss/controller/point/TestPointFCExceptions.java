@@ -5,6 +5,7 @@
 
 package thredds.server.ncss.controller.point;
 
+import org.hamcrest.core.StringContains;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -89,5 +90,16 @@ public class TestPointFCExceptions {
     logger.debug(result.getResponse().getContentAsString());
   }
 
+  @Test
+  public void invalidDataset() throws Exception {
+    final String invalidDatasetPath = "/ncss/point/scanLocal/2004050300_eta_211.nc/dataset.html";
+
+    final RequestBuilder rb =
+        MockMvcRequestBuilders.get(invalidDatasetPath).servletPath(invalidDatasetPath).param("accept", "netcdf");
+
+    this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isUnprocessableEntity())
+        .andExpect(MockMvcResultMatchers.content()
+            .string(new StringContains("UnsupportedOperationException: Could not open as a PointDataset")));
+  }
 }
 

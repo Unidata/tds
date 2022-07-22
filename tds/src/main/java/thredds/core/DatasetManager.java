@@ -348,8 +348,15 @@ public class DatasetManager implements InitializingBean {
       } else {
         ncd = NetcdfDataset.wrap(ncfile, NetcdfDataset.getDefaultEnhanceMode());
       }
-      return (FeatureDatasetPoint) FeatureDatasetFactoryManager.wrap(FeatureType.ANY_POINT, ncd, null, errlog);
 
+      final FeatureDatasetPoint featureDatasetPoint =
+          (FeatureDatasetPoint) FeatureDatasetFactoryManager.wrap(FeatureType.ANY_POINT, ncd, null, errlog);
+
+      if (featureDatasetPoint != null) {
+        return featureDatasetPoint;
+      } else {
+        throw new UnsupportedOperationException("Could not open as a PointDataset: " + errlog);
+      }
     } catch (Throwable t) {
       if (ncd == null)
         ncfile.close();
@@ -358,6 +365,10 @@ public class DatasetManager implements InitializingBean {
 
       if (t instanceof IOException)
         throw (IOException) t;
+
+      if (t instanceof UnsupportedOperationException) {
+        throw (UnsupportedOperationException) t;
+      }
 
       String msg = ncd == null ? "Problem wrapping NetcdfFile in NetcdfDataset; "
           : "Problem calling FeatureDatasetFactoryManager; ";
