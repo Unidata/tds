@@ -447,25 +447,25 @@ class DatasetContext {
     catUrl = catUrl.replace("xml", "html");
     // strip URL down to just the catalog URI path
     final String contextPathStr = tdsContext.getContextPath();
-    final String catServiceStr = "/" + ServiceType.Catalog.name().toLowerCase(Locale.ROOT) +  "/";
+    final String catServiceStr = "/" + ServiceType.Catalog.name().toLowerCase(Locale.ROOT) + "/";
     if (catUrl.indexOf(contextPathStr) >= 0) {
       catUrl = catUrl.substring(catUrl.indexOf(contextPathStr) + contextPathStr.length());
     }
     if (catUrl.indexOf(catServiceStr) >= 0) {
-        catUrl = catUrl.substring(catUrl.indexOf(catServiceStr) + catServiceStr.length());
+      catUrl = catUrl.substring(catUrl.indexOf(catServiceStr) + catServiceStr.length());
     }
     // rebuild URI relative to contextPath/catalog/
     this.catUrl = (contextPathStr + catServiceStr + catUrl).replace("//", "/");
-//    // for direct datasets generated directly off of the root catalog, and maybe others, the base uri is missing
-//    // the full server path. Try to do what we can.
-//    if (catUrl.startsWith("/")) {
-//      String reqUri = req.getRequestURL().toString();
-//      if (reqUri.contains(req.getContextPath())) {
-//        String baseUriString = reqUri.split(req.getContextPath())[0];
-//        catUrl = baseUriString + catUrl;
-//      }
-//    }
-//    this.catUrl = catUrl;
+    // // for direct datasets generated directly off of the root catalog, and maybe others, the base uri is missing
+    // // the full server path. Try to do what we can.
+    // if (catUrl.startsWith("/")) {
+    // String reqUri = req.getRequestURL().toString();
+    // if (reqUri.contains(req.getContextPath())) {
+    // String baseUriString = reqUri.split(req.getContextPath())[0];
+    // catUrl = baseUriString + catUrl;
+    // }
+    // }
+    // this.catUrl = catUrl;
 
     setContext();
     setDocumentation();
