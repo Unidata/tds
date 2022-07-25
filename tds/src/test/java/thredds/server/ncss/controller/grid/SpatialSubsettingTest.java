@@ -37,6 +37,7 @@ import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.GridDataset;
+import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonRect;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
@@ -46,6 +47,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.*;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * @author marcos
@@ -64,6 +66,7 @@ public class SpatialSubsettingTest {
   private MockMvc mockMvc;
   private RequestBuilder requestBuilder;
 
+  private SupportedFormat format;
   private String accept;
   private String pathInfo;
   private List<String> vars;
@@ -89,6 +92,7 @@ public class SpatialSubsettingTest {
   }
 
   public SpatialSubsettingTest(SupportedFormat format, String pathInfo, List<String> vars, double[] latlonRectParams) {
+    this.format = format;
     this.accept = format.getAliases().get(0);
     this.pathInfo = pathInfo;
     this.vars = vars;
@@ -125,6 +129,7 @@ public class SpatialSubsettingTest {
 
   @Test
   public void shouldGetVariablesSubset() throws Exception {
+    skipTestIfNetCDF4NotPresent();
 
     // gridDataController.getGridSubset(params, validationResult, response);
 
@@ -154,5 +159,11 @@ public class SpatialSubsettingTest {
       f.format(" %s=%s%n", name, req.getParameter(name));
     }
     System.out.printf("%s%n%s%n", req.getRequestURI(), f);
+  }
+
+  private void skipTestIfNetCDF4NotPresent() {
+    if (format == SupportedFormat.NETCDF4) {
+      assumeTrue(NetcdfClibrary.isLibraryPresent());
+    }
   }
 }

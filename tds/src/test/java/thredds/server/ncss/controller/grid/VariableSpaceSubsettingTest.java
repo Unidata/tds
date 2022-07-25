@@ -34,6 +34,7 @@ import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.grid.GeoGrid;
+import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 import java.io.IOException;
@@ -45,6 +46,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * @author marcos
@@ -63,6 +65,7 @@ public class VariableSpaceSubsettingTest {
   private MockMvc mockMvc;
   private RequestBuilder requestBuilder;
 
+  private SupportedFormat format;
   private String accept;
   private String pathInfo;
   private int[][] expectedShapes;
@@ -99,6 +102,7 @@ public class VariableSpaceSubsettingTest {
   }
 
   public VariableSpaceSubsettingTest(SupportedFormat format, int[][] result, String pathInfo, List<String> vars) {
+    this.format = format;
     this.accept = format.getAliases().get(0);
     this.expectedShapes = result;
     this.pathInfo = pathInfo;
@@ -123,6 +127,7 @@ public class VariableSpaceSubsettingTest {
 
   @Test
   public void shouldGetVariablesSubset() throws Exception {
+    skipTestIfNetCDF4NotPresent();
 
     mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(new ResultMatcher() {
       public void match(MvcResult result) throws Exception {
@@ -147,4 +152,9 @@ public class VariableSpaceSubsettingTest {
     });
   }
 
+  private void skipTestIfNetCDF4NotPresent() {
+    if (format == SupportedFormat.NETCDF4) {
+      assumeTrue(NetcdfClibrary.isLibraryPresent());
+    }
+  }
 }
