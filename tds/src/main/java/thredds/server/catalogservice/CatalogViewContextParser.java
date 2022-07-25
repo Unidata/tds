@@ -456,16 +456,6 @@ class DatasetContext {
     }
     // rebuild URI relative to contextPath/catalog/
     this.catUrl = (contextPathStr + catServiceStr + catUrl).replace("//", "/");
-    // // for direct datasets generated directly off of the root catalog, and maybe others, the base uri is missing
-    // // the full server path. Try to do what we can.
-    // if (catUrl.startsWith("/")) {
-    // String reqUri = req.getRequestURL().toString();
-    // if (reqUri.contains(req.getContextPath())) {
-    // String baseUriString = reqUri.split(req.getContextPath())[0];
-    // catUrl = baseUriString + catUrl;
-    // }
-    // }
-    // this.catUrl = catUrl;
 
     setContext();
     setDocumentation();
