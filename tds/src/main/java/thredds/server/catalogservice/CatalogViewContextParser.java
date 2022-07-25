@@ -446,13 +446,14 @@ class DatasetContext {
     }
     catUrl = catUrl.replace("xml", "html");
     // strip URL down to just the catalog URI path
-    final String contextPathStr = tdsContext.getContextPath();
+    final String contextPathStr = tdsContext.getContextPath() + "/";
     final String catServiceStr = "/" + ServiceType.Catalog.name().toLowerCase(Locale.ROOT) + "/";
-    if (catUrl.indexOf(contextPathStr) >= 0) {
-      catUrl = catUrl.substring(catUrl.indexOf(contextPathStr) + contextPathStr.length());
+    if (catUrl.lastIndexOf(contextPathStr) >= 0) {
+      catUrl = catUrl.substring(catUrl.lastIndexOf(contextPathStr) + contextPathStr.length() - 1); // leave trailing
+                                                                                                   // slash
     }
-    if (catUrl.indexOf(catServiceStr) >= 0) {
-      catUrl = catUrl.substring(catUrl.indexOf(catServiceStr) + catServiceStr.length());
+    if (catUrl.lastIndexOf(catServiceStr) >= 0) {
+      catUrl = catUrl.substring(catUrl.lastIndexOf(catServiceStr) + catServiceStr.length() - 1); // leave trailing slash
     }
     // rebuild URI relative to contextPath/catalog/
     this.catUrl = (contextPathStr + catServiceStr + catUrl).replace("//", "/");
