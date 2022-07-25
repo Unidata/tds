@@ -31,6 +31,7 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
+import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * @author mhermida
@@ -56,6 +58,7 @@ public class TemporalSpaceSubsettingTest {
   private MockMvc mockMvc;
   private MockHttpServletRequestBuilder requestBuilder;
 
+  private SupportedFormat format;
   private String pathInfo;
   private int lengthTimeDim; // Expected time dimension length
 
@@ -102,6 +105,7 @@ public class TemporalSpaceSubsettingTest {
 
   public TemporalSpaceSubsettingTest(SupportedFormat format, int expectedLengthTimeDim, String pathInfoForTest,
       String temporal, String time, String time_window, String time_start, String time_end, String time_duration) {
+    this.format = format;
     lengthTimeDim = expectedLengthTimeDim;
     pathInfo = pathInfoForTest;
     String servletPath = pathInfo;
@@ -119,6 +123,7 @@ public class TemporalSpaceSubsettingTest {
 
   @Test
   public void shouldGetTimeRange() throws Exception {
+    skipTestIfNetCDF4NotPresent();
 
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
 
@@ -144,5 +149,9 @@ public class TemporalSpaceSubsettingTest {
 
   }
 
-
+  private void skipTestIfNetCDF4NotPresent() {
+    if (format == SupportedFormat.NETCDF4) {
+      assumeTrue(NetcdfClibrary.isLibraryPresent());
+    }
+  }
 }

@@ -6,6 +6,7 @@
 package thredds.server.ncss.controller.point;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -30,6 +31,7 @@ import thredds.mock.web.MockTdsContextLoader;
 import thredds.server.ncss.exception.FeaturesNotFoundException;
 import thredds.server.ncss.format.SupportedFormat;
 import thredds.util.ContentType;
+import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.lang.invoke.MethodHandles;
 
@@ -59,6 +61,8 @@ public class TestStationFCController {
 
   @Test
   public void getClosestStationData() throws Exception {
+    skipTestIfNetCDF4NotPresent();
+
     long start = System.currentTimeMillis();
     RequestBuilder rb = MockMvcRequestBuilders.get(dataset).servletPath(dataset).param("longitude", "-105.203")
         .param("latitude", "40.019").param("accept", "netcdf4").param("time_start", "2006-03-028T00:00:00Z")
@@ -164,5 +168,8 @@ public class TestStationFCController {
     this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
+  private static void skipTestIfNetCDF4NotPresent() {
+    assumeTrue(NetcdfClibrary.isLibraryPresent());
+  }
 }
 

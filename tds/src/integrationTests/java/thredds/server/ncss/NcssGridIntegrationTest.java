@@ -17,12 +17,14 @@ import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.grid.GridDataset;
+import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 @Category(NeedsCdmUnitTest.class)
 public class NcssGridIntegrationTest {
@@ -111,6 +113,8 @@ public class NcssGridIntegrationTest {
   // this fails when _ChunkSizes are left on
   @Test
   public void testNcssFailure() throws Exception {
+    skipTestIfNetCDF4NotPresent();
+
     String filename =
         "scanCdmUnitTests/formats/netcdf4/COMPRESS_LEV2_20140201000000-GLOBCURRENT-L4-CURekm_15m-ERAWS_EEM-v02.0-fv01.0.nc";
     String endpoint = TestOnLocalServer.withHttpPath("/ncss/grid/" + filename
@@ -121,5 +125,9 @@ public class NcssGridIntegrationTest {
 
     // Open the binary response in memory
     openBinaryNew(content, "eastward_ekman_current_velocity");
+  }
+
+  private static void skipTestIfNetCDF4NotPresent() {
+    assumeTrue(NetcdfClibrary.isLibraryPresent());
   }
 }
