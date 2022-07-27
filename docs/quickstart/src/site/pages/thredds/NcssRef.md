@@ -238,12 +238,12 @@ Where:
 
 |  `{host}`                | = | server name, e.g., `thredds.ucar.edu` |
 |  `{context}`             | = | `thredds` (usually) |
-|  `{service}`             | = | `ncss/grid` or `ncss/point`, depending on if the dataset has feature type GRID or one of the Point types. |
+|  `{service}`             | = | `ncss/grid` or `ncss/point`, depending on if the dataset has feature type Grid or one of the Point types. |
 |  `{dataset}`             | = | logical path for the dataset, obtained from the catalog. |
 |  `{description}`         | = | `dataset.[xml\|html]` or  `pointDataset.[xml\|html]`  or `datasetBoundaries.xml`  or `stations.xml`. |
-|  `dataset.[xml\|html]`    | = | the dataset description in `XML` or as a web form (Point or GRID). |
+|  `dataset.[xml\|html]`    | = | the dataset description in `XML` or as a web form (Point or Grid). |
 |  `pointDataset.[xml\|html]` | = | the grid-as-point or the point dataset description in `XML` or as a web form. |
-|  `datasetBoundaries.xml`  | = | the description of the bounding boxes for GRID datasets. |
+|  `datasetBoundaries.xml`  | = | the description of the bounding boxes for Grid datasets. |
 |  `station.xml`            | = | the list of valid stations for a station dataset. |
 |  `{query}`                | = | the `KVP`s to describe the subset that you want (see below for valid combinations). |
 
