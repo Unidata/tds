@@ -308,8 +308,8 @@ entries:
               url: /netcdf_subset_service_ref.html
               output: web, pdf
 
-            - title: NCSS For GRIB Data
-              url: /ncss_grib.html
+            - title: NCSS For Grid Data
+              url: /ncss_grid.html
               output: web, pdf
 
             - title: NCSS For Point Data
