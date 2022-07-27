@@ -1,12 +1,12 @@
 ---
-title: NetCDF Subset Service For GRID Data
+title: NetCDF Subset Service For Grid Data
 last_updated: 2020-08-31
 sidebar: quickstart_sidebar
 toc: false
 permalink: ncss_grid.html
 ---
 
-## Subsetting Parameters For NCSS GRID
+## Subsetting Parameters For NCSS Grid
 
 |----------------|----------|-------------------------------|-------------|---------|
 | Parameter Name | Required | Description & Possible Values | Constraints | Default |
@@ -93,7 +93,7 @@ The interval that contains the requested value is used.
 
 If the requested value is contained in more than one interval (happens with mixed interval time coordinates), the midpoint of the interval is calculated, and the closest midpoint to the requested value is used.
 
-In addition, NCSS supports these parameters for GRIDS:
+In addition, NCSS supports these parameters for Grids:
 
 
 |----------------|----------|-------------------------------|-------------|---------|
@@ -116,7 +116,7 @@ Set this parameter to `true` to add 2D lat/lon coordinates for projected data.
 ## NCSS Grid As Point
 
 If you specify a point location with the latitude, longitude parameters, the request becomes a *grid-as-point* request. 
-Request parameters are mostly identical to regular NCSS GRID request, but what gets returned is different. 
+Request parameters are mostly identical to regular NCSS Grid request, but what gets returned is different. 
 If a netCDF file is requested, it will be written in CF / netCDF Discrete Sample Geometry format. 
 Other possible return types are the same as NCSS Point requests.
 
