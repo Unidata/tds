@@ -59,7 +59,7 @@ Example Point Dataset document:
 ## Subsetting Parameters For NCSS
 
 * [Grid datasets](ncss_grid.html)
-* [Point and Station (Discrete Sampling Geometry) datasets](ncss_point)
+* [Point and Station (Discrete Sampling Geometry) datasets](ncss_point.html)
 
 ### Variable Subsetting
 
