@@ -1,7 +1,8 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2011-2014 Applied Science Associates
+ * See LICENSE for license information.
  */
+
 package ucar.nc2.dt.ugrid;
 
 /**
