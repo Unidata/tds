@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2011-2022 Applied Science Associates and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package ucar.nc2.dt.ugrid.utils;
 
 import java.io.File;

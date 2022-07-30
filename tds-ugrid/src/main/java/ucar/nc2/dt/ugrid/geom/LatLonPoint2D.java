@@ -240,8 +240,8 @@ public abstract class LatLonPoint2D extends Point2D implements Serializable {
         this.lat = (float) (AsaMath.DEG_2_RAD * lat);
         this.lon = (float) (AsaMath.DEG_2_RAD * lon);
       } else {
-        this.lat = (float) Double.normLat(lat);
-        this.lon = (float) Double.normLon(lon);
+        this.lat = (float) LatLonPoint2D.Double.normLat(lat);
+        this.lon = (float) LatLonPoint2D.Double.normLon(lon);
         radLat = (float) (AsaMath.DEG_2_RAD * lat);
         radLon = (float) (AsaMath.DEG_2_RAD * lon);
       }

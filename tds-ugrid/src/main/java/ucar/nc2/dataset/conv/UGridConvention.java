@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) Applied Science Associates and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
  */
 
 package ucar.nc2.dataset.conv;
