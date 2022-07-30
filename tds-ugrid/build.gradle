@@ -16,9 +16,10 @@ dependencies {
   implementation 'colt:colt:1.2.0'
 
   // Testing
-  testCompile 'junit:junit'
   testCompile project(':tds-test-utils');
   testCompile 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
+  testCompile 'junit:junit'
+  testCompile 'com.google.truth:truth'
 
   // Logging
   compile 'org.slf4j:slf4j-api'

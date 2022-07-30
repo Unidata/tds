@@ -210,6 +210,7 @@
         <remove type="attribute" name="index_start"/>
         <attribute name="start_index" type="short" value="1"/>
     </variable>
-    
-    <attribute name="Conventions" value="CF-1.6/UGRID-1.0"/>
+    <!-- need to fix netCDF-Java to use ds instead of org file when wrapping dataset in NcML -->
+    <!-- attribute name="Conventions" value="CF-1.8/UGRID-1.X"/ -->
+    <attribute name="Conventions" value="UGRID-1.X"/>
 </netcdf>
