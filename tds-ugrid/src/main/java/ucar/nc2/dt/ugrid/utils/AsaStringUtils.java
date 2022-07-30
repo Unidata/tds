@@ -1,4 +1,9 @@
 /*
+ * Copyright (c) 2011-2014 Applied Science Associates
+ * See LICENSE for license information.
+ */
+
+/*
  * A collection of String utilities.
  */
 package ucar.nc2.dt.ugrid.utils;

@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2011-2014 Applied Science Associates
  */
+
 package ucar.nc2.dt.ugrid;
 
 import ucar.nc2.dt.ugrid.topology.Topology;
