@@ -26,7 +26,7 @@ This is done by adding an `allow` element to the `NetcdfSubsetService` element a
 ~~~
 
 {% include note.html content="
-Details on other configuration options for NCSS are available in the [`threddsConfig.xml`](tds_config_ref.html) documenation.
+Details on other configuration options for NCSS are available in the [`threddsConfig.xml`](tds_config_ref.html) documentation.
 "
 %}
 

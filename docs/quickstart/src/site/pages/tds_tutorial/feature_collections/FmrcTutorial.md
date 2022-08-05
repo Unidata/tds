@@ -17,7 +17,7 @@ See {% include link_file.html file="tds_tutorial/fmrc/FmrcPoster.pdf" text="this
 As of TDS 4.2, you should use the `featureCollection` element in your configuration catalog. 
 (The previous way of doing this was with a `datasetFmrc` element, which is now deprecated.)
 
-The component files of the collection must all be recognized as as a `Grid` Feature type by the CDM software.
+The component files of the collection must all be recognized as a `Grid` Feature type by the CDM software.
 
 ## Exercise: Creating Datasets Out Of The FMRC
 
@@ -166,4 +166,4 @@ Use the `update` element on large collections when you want to ensure quick resp
 Use the `recheckAfter` on lightly used collections in order to minimize server load.
 Don't use both of them on the same dataset on a real production server.
 
-More details are in the [`FeatureCollection`](feature_collections_ref.html)  reference documenation.
+More details are in the [`FeatureCollection`](feature_collections_ref.html)  reference documentation.
