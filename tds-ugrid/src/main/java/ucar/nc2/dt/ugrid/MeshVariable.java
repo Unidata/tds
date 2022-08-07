@@ -4,8 +4,9 @@
 
 package ucar.nc2.dt.ugrid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ucar.nc2.dt.ugrid.topology.Topology;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -45,6 +46,8 @@ import ucar.unidata.util.Format;
  * @author Kyle
  */
 public class MeshVariable implements UGridDatatype {
+
+  private static final Logger logger = LoggerFactory.getLogger(MeshVariable.class);
 
   private VariableDS vs;
   private UGridDataset dataset;
@@ -307,37 +310,42 @@ public class MeshVariable implements UGridDatatype {
          */
         if (cs.hasVerticalAxis()) {
           VariableDS z;
-          if (cs.getZaxis() != null) {
-            if (ncd.findCoordinateAxis(cs.getZaxis().getFullNameEscaped()) == null) {
+          CoordinateAxis zAxis = cs.getZaxis();
+          if (zAxis != null) {
+            if (ncd.findCoordinateAxis(zAxis.getFullName()) == null) {
               ncd.addCoordinateSystem(cs);
-              ncd.addCoordinateAxis(cs.getZaxis());
-              z = new VariableDS(null, cs.getZaxis().getOriginalVariable(), true);
-              z.setCachedData(cs.getZaxis().getOriginalVariable().read());
+              ncd.addCoordinateAxis(zAxis);
+              z = new VariableDS(null, zAxis.getOriginalVariable(), true);
+              z.setCachedData(zAxis.getOriginalVariable().read());
               ncd.addVariable(null, z);
             }
-            z_index = vs.findDimensionIndex(cs.getZaxis().getDimension(0).getFullName());
+            z_index = vs.findDimensionIndex(zAxis.getDimension(0).getFullName());
             z_length = vs.getDimension(z_index).getLength();
           }
-          if (cs.getHeightAxis() != null) {
-            if (ncd.findCoordinateAxis(cs.getHeightAxis().getFullNameEscaped()) == null) {
+
+          CoordinateAxis heightAxis = cs.getHeightAxis();
+          if (heightAxis != null) {
+            if (ncd.findCoordinateAxis(heightAxis.getFullName()) == null) {
               ncd.addCoordinateSystem(cs);
-              ncd.addCoordinateAxis(cs.getHeightAxis());
-              z = new VariableDS(null, cs.getHeightAxis().getOriginalVariable(), true);
-              z.setCachedData(cs.getHeightAxis().getOriginalVariable().read());
+              ncd.addCoordinateAxis(heightAxis);
+              z = new VariableDS(null, heightAxis.getOriginalVariable(), true);
+              z.setCachedData(heightAxis.getOriginalVariable().read());
               ncd.addVariable(null, z);
             }
-            z_index = vs.findDimensionIndex(cs.getHeightAxis().getDimension(0).getFullName());
+            z_index = vs.findDimensionIndex(heightAxis.getDimension(0).getFullName());
             z_length = vs.getDimension(z_index).getLength();
           }
-          if (cs.getPressureAxis() != null) {
-            if (ncd.findCoordinateAxis(cs.getPressureAxis().getFullNameEscaped()) == null) {
+
+          CoordinateAxis pressureAxis = cs.getPressureAxis();
+          if (pressureAxis != null) {
+            if (ncd.findCoordinateAxis(pressureAxis.getFullName()) == null) {
               ncd.addCoordinateSystem(cs);
-              ncd.addCoordinateAxis(cs.getPressureAxis());
-              z = new VariableDS(null, cs.getPressureAxis().getOriginalVariable(), true);
-              z.setCachedData(cs.getPressureAxis().getOriginalVariable().read());
+              ncd.addCoordinateAxis(pressureAxis);
+              z = new VariableDS(null, pressureAxis.getOriginalVariable(), true);
+              z.setCachedData(pressureAxis.getOriginalVariable().read());
               ncd.addVariable(null, z);
             }
-            z_index = vs.findDimensionIndex(cs.getPressureAxis().getDimension(0).getFullName());
+            z_index = vs.findDimensionIndex(pressureAxis.getDimension(0).getFullName());
             z_length = vs.getDimension(z_index).getLength();
           }
           ncd.finish();
@@ -347,28 +355,29 @@ public class MeshVariable implements UGridDatatype {
          */
         if (cs.isLatLon()) {
 
-          Dimension node_dim = ncd.findDimension(cs.getLatAxis().getDimension(0).getFullName());
+          CoordinateAxis latAxis = cs.getLatAxis();
+          Dimension node_dim = ncd.findDimension(latAxis.getDimension(0).getFullName());
           if (node_dim == null) {
-            node_dim = ncd.addDimension(null,
-                new Dimension(cs.getLatAxis().getDimension(0).getFullName(), unique_entities.size()));
+            node_dim =
+                ncd.addDimension(null, new Dimension(latAxis.getDimension(0).getFullName(), unique_entities.size()));
           }
           data_index = vs.findDimensionIndex(node_dim.getFullName());
           ncd.finish();
 
           int count;
           // Lat
-          Variable newLat = ncd.findVariable(cs.getLatAxis().getFullNameEscaped());
+          Variable newLat = ncd.findVariable(latAxis.getFullNameEscaped());
           if (newLat == null) {
-            newLat = new VariableDS(ugd.getNetcdfDataset(), null, null, cs.getLatAxis().getShortName(),
-                cs.getLatAxis().getOriginalDataType(), cs.getLatAxis().getDimensionsString(),
-                cs.getLatAxis().getUnitsString(), cs.getLatAxis().getDescription());
-            for (Attribute a : (List<Attribute>) cs.getLatAxis().getAttributes()) {
+            newLat = new VariableDS(ugd.getNetcdfDataset(), null, null, latAxis.getShortName(),
+                latAxis.getOriginalDataType(), latAxis.getDimensionsString(), latAxis.getUnitsString(),
+                latAxis.getDescription());
+            for (Attribute a : (List<Attribute>) latAxis.getAttributes()) {
               newLat.addAttribute(a);
             }
             newLat.setDimension(0, node_dim);
             ncd.addVariable(null, newLat);
             ncd.addCoordinateAxis(new VariableDS(null, newLat, true));
-            Array lats = Array.factory(cs.getLatAxis().getOriginalDataType(), newLat.getShape());
+            Array lats = Array.factory(latAxis.getOriginalDataType(), newLat.getShape());
             count = 0;
             for (Entity k : unique_entities) {
               lats.setObject(count, k.getGeoPoint().getLatitude());
@@ -379,18 +388,19 @@ public class MeshVariable implements UGridDatatype {
           ncd.finish();
 
           // Lon
-          Variable newLon = ncd.findVariable(cs.getLonAxis().getFullNameEscaped());
+          CoordinateAxis lonAxis = cs.getLonAxis();
+          Variable newLon = ncd.findVariable(lonAxis.getFullNameEscaped());
           if (newLon == null) {
-            newLon = new VariableDS(ugd.getNetcdfDataset(), null, null, cs.getLonAxis().getShortName(),
-                cs.getLonAxis().getOriginalDataType(), cs.getLonAxis().getDimensionsString(),
-                cs.getLonAxis().getUnitsString(), cs.getLonAxis().getDescription());
-            for (Attribute a : (List<Attribute>) cs.getLonAxis().getAttributes()) {
+            newLon = new VariableDS(ugd.getNetcdfDataset(), null, null, lonAxis.getShortName(),
+                lonAxis.getOriginalDataType(), lonAxis.getDimensionsString(), lonAxis.getUnitsString(),
+                lonAxis.getDescription());
+            for (Attribute a : (List<Attribute>) lonAxis.getAttributes()) {
               newLon.addAttribute(a);
             }
             newLon.setDimension(0, node_dim);
             ncd.addVariable(null, newLon);
             ncd.addCoordinateAxis(new VariableDS(null, newLon, true));
-            Array lons = Array.factory(cs.getLonAxis().getOriginalDataType(), newLon.getShape());
+            Array lons = Array.factory(lonAxis.getOriginalDataType(), newLon.getShape());
             count = 0;
             for (Entity k : unique_entities) {
               lons.setObject(count, k.getGeoPoint().getLongitude());
@@ -463,8 +473,9 @@ public class MeshVariable implements UGridDatatype {
     List<Cell> containedCells = meshset.getMesh().getCellsInPolygon(p);
 
     // Create a new subsat UGridDataset and return
+    NetcdfDataset ncd = null;
     try {
-      NetcdfDataset ncd = NcdsFactory.getNcdsFromTemplate(NcdsTemplate.UGRID);
+      ncd = NcdsFactory.getNcdsFromTemplate(NcdsTemplate.UGRID);
 
       for (Attribute a : dataset.getGlobalAttributes()) {
         ncd.addAttribute(null, a);
@@ -506,13 +517,14 @@ public class MeshVariable implements UGridDatatype {
       ncd.finish();
 
       return new UGridDataset(ncd);
-    } catch (URISyntaxException e) {
-      System.out.println(e);
-    } catch (FileNotFoundException e) {
-      System.out.println(e);
-    } catch (IOException e) {
-      System.out.println(e);
+    } catch (URISyntaxException | IOException e) {
+      if (ncd == null) {
+        logger.error("Unable to read NetcdfDataset UGRID template", e);
+      } else {
+        logger.error("Error creating UGridDataset", e);
+      }
     }
+
     return null;
   }
 
@@ -572,7 +584,7 @@ public class MeshVariable implements UGridDatatype {
         float[] ret1D = (float[]) vs.read(r).copyTo1DJavaArray();
         z = ret1D[0];
       } catch (InvalidRangeException ex) {
-        System.out.println(ex);
+        logger.error("Error reading data point", ex);
       }
     }
     return z;

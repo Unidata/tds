@@ -5,6 +5,10 @@
 
 package ucar.nc2.dt.ugrid;
 
+import java.io.FileNotFoundException;
+import javax.print.URIException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ucar.nc2.*;
 import ucar.nc2.dataset.*;
 import ucar.nc2.dt.GridDatatype;
@@ -36,12 +40,13 @@ import javax.annotation.Nullable;
  */
 
 public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.FeatureDataset {
+  private static final Logger logger = LoggerFactory.getLogger(UGridDataset.class);
+  // A dummy variable defining a Mesh is defined by the cf_role "mesh_topology"
+  private static final String TOPOLOGY_VARIABLE = "mesh_topology";
+
   private NetcdfDataset ds;
   private ArrayList<MeshVariable> meshVariables = new ArrayList<MeshVariable>();
   private Map<String, Meshset> meshsetHash = new HashMap<String, Meshset>();
-
-  // A dummy variable defining a Mesh is defined by the cf_role "mesh_topology"
-  private static final String TOPOLOGY_VARIABLE = "mesh_topology";
 
   /**
    * Open a netcdf dataset, using NetcdfDataset.defaultEnhanceMode plus CoordSystems
@@ -153,6 +158,7 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
     for (UGridDatatype m : meshVariables) {
       if (m.getName().equals(name)) {
         z = m;
+        break;
       }
     }
     return z;
@@ -347,8 +353,9 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
 
   public UGridDataset subset(LatLonRect bounds) {
     // Create a new subsat UGridDataset and return
+    NetcdfDataset ncd = null;
     try {
-      NetcdfDataset ncd = NcdsFactory.getNcdsFromTemplate(NcdsTemplate.UGRID);
+      ncd = NcdsFactory.getNcdsFromTemplate(NcdsTemplate.UGRID);
       for (Attribute a : this.getGlobalAttributes()) {
         ncd.addAttribute(null, a);
       }
@@ -410,7 +417,11 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
 
       return new UGridDataset(ncd);
     } catch (URISyntaxException | IOException e) {
-      System.out.println(e);
+      if (ncd == null) {
+        logger.error("Unable to read NetcdfDataset UGRID template", e);
+      } else {
+        logger.error("Error creating UGridDataset", e);
+      }
     }
     return null;
   }
@@ -501,6 +512,7 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
       for (UGridDatatype m : meshVariables) {
         if (m.getName().equals(name)) {
           z = m;
+          break;
         }
       }
       return z;
