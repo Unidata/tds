@@ -5,6 +5,8 @@
 
 package ucar.nc2.dt.ugrid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ucar.nc2.dataset.VariableDS;
 import ucar.nc2.dt.ugrid.topology.Topology;
 import cern.colt.list.IntArrayList;
@@ -33,6 +35,13 @@ import ucar.unidata.geoloc.LatLonRect;
  */
 public class Mesh {
 
+  private static final Logger logger = LoggerFactory.getLogger(Mesh.class);
+  // Standards (required)
+  private static final String DIMENSION = "topology_dimension";
+  private static final String NODE_COORDINATES = "node_coordinates";
+  private static final String FACE_COORDINATES = "face_coordinates";
+  private static final String FACE_NODE_CONNECTIVITY = "face_node_connectivity";
+
   private String name;
   private RTree rtree;
   private List<Cell> cells = new ArrayList<Cell>();
@@ -40,11 +49,7 @@ public class Mesh {
   private Topology topology = new Topology();
   private List<CoordinateSystem> coordinate_systems = new ArrayList<CoordinateSystem>();
 
-  // Standards (required)
-  private final static String DIMENSION = "topology_dimension";
-  private final static String NODE_COORDINATES = "node_coordinates";
-  private final static String FACE_COORDINATES = "face_coordinates";
-  private final static String FACE_NODE_CONNECTIVITY = "face_node_connectivity";
+
 
   public Mesh(NetcdfDataset ds, VariableEnhanced v) {
     name = v.getFullName();
@@ -64,13 +69,13 @@ public class Mesh {
 
     Attribute dims = ((VariableDS) v).attributes().findAttributeIgnoreCase(DIMENSION);
     if (dims == null) {
-      System.out.println("No '" + DIMENSION + "' attribute defined for the Mesh");
+      logger.debug("No '" + DIMENSION + "' attribute defined for the Mesh");
       return;
     }
 
     Attribute node_coord = ((VariableDS) v).attributes().findAttributeIgnoreCase(NODE_COORDINATES);
     if (node_coord == null) {
-      System.out.println("No '" + NODE_COORDINATES + "' attribute defined for the Mesh");
+      logger.debug("No '" + NODE_COORDINATES + "' attribute defined for the Mesh");
       return;
     } else {
       foundCoords.add(node_coord);
@@ -79,7 +84,7 @@ public class Mesh {
 
     Attribute face_coord = ((VariableDS) v).attributes().findAttributeIgnoreCase(FACE_COORDINATES);
     if (face_coord == null) {
-      System.out.println("No '" + FACE_COORDINATES + "' attribute defined for the Mesh");
+      logger.debug("No '" + FACE_COORDINATES + "' attribute defined for the Mesh");
       return;
     } else {
       foundCoords.add(face_coord);

@@ -60,7 +60,7 @@ public class StreamGobbler extends Thread {
               logger.info(newLine + procID + " > " + line);
               break;
             default:
-              System.out.println(procID + " > " + line);
+              logger.debug(procID + " > " + line);
               break;
           }
         }
