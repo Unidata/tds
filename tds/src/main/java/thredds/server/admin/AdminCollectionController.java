@@ -170,9 +170,12 @@ public class AdminCollectionController implements InitializingBean {
       showFeatureCollection(out, want);
 
       String uriParam = Escape.uriParam(want.getCollectionName());
-      String url = tdsContext.getContextPath() + PATH + "/" + TRIGGER + "?" + COLLECTION + "=" + uriParam + "&"
-          + TRIGGER + "=" + CollectionUpdateType.nocheck;
-      out.format("<p/><a href='%s'>Send trigger to %s</a>%n", url, Escape.html(want.getCollectionName()));
+      String url =
+          tdsContext.getContextPath() + PATH + "/" + TRIGGER + "?" + COLLECTION + "=" + uriParam + "&" + TRIGGER + "=";
+      out.format("<p/><a href='%s'>Send 'nocheck' trigger to %s</a>%n", url + CollectionUpdateType.nocheck,
+          Escape.html(want.getCollectionName()));
+      out.format("<p/><a href='%s'>Send 'test' trigger to %s</a>%n", url + CollectionUpdateType.test,
+          Escape.html(want.getCollectionName()));
 
       String url2 = tdsContext.getContextPath() + PATH + "/" + DOWNLOAD + "?" + COLLECTION + "=" + uriParam;
       out.format("<p/><a href='%s'>Download index file for %s</a>%n", url2, Escape.html(want.getCollectionName()));
