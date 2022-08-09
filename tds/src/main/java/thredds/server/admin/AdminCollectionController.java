@@ -193,7 +193,7 @@ public class AdminCollectionController implements InitializingBean {
 
     for (FeatureCollectionRef fc : fcList) {
       String uriParam = Escape.uriParam(fc.getCollectionName());
-      String url = tdsContext.getContextPath() + PATH + "?" + COLLECTION + "=" + uriParam;
+      String url = tdsContext.getContextPath() + PATH + "/" + SHOW_COLLECTION + "?" + COLLECTION + "=" + uriParam;
       out.format("<p/><a href='%s'>%s</a> (%s)%n", url, fc.getCollectionName(), fc.getName());
       InvDatasetFeatureCollection fcd = datasetManager.openFeatureCollection(fc);
 
