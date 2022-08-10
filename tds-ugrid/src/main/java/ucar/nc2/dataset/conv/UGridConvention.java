@@ -5,6 +5,7 @@
 
 package ucar.nc2.dataset.conv;
 
+import java.util.List;
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.constants.AxisType;
@@ -46,6 +47,18 @@ public class UGridConvention extends CF1Convention {
         String conventionValue = conventionAttr.getStringValue();
         if (conventionValue != null) {
           mine = conventionValue.startsWith(CONVENTION_NAME_BASE);
+        }
+      }
+      return mine;
+    }
+
+    @Override
+    public boolean isMine(List<String> convs) {
+      boolean mine = false;
+      for (String conv : convs) {
+        if (conv.startsWith(CONVENTION_NAME_BASE)) {
+          mine = true;
+          break;
         }
       }
       return mine;
