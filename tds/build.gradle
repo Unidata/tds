@@ -27,6 +27,7 @@ dependencies {
   compile project(':tdcommon')
   compile 'edu.ucar:cdm-mcidas'
   compile 'edu.ucar:waterml'
+  implementation project(':tds-ugrid')
 
   // DAP4 Dependencies (technically forward)
   compile 'edu.ucar:d4cdm'

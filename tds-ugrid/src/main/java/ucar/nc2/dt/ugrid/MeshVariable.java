@@ -1,11 +1,16 @@
 /*
- * Copyright (c) 2011-2014 Applied Science Associates
+ * Copyright (c) 2011-2022 University Corporation for Atmospheric Research/Unidata and Applied Science Associates
+ * See LICENSE for license information.
  */
 
 package ucar.nc2.dt.ugrid;
 
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ucar.nc2.dt.GridCoordSystem;
+import ucar.nc2.dt.GridDatatype;
+import ucar.nc2.dt.grid.GridCoordSys;
 import ucar.nc2.dt.ugrid.topology.Topology;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -61,6 +66,16 @@ public class MeshVariable implements UGridDatatype {
     this.dataset = dataset;
     this.mydims = vs.getDimensions();
     this.cellLocation = vs.findAttributeIgnoreCase("location").getStringValue();
+  }
+
+  @Override
+  public String getFullName() {
+    return vs.getFullName();
+  }
+
+  @Override
+  public String getShortName() {
+    return vs.getShortName();
   }
 
   public String getName() {
@@ -172,6 +187,19 @@ public class MeshVariable implements UGridDatatype {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
+  @Override
+  public GridCoordSystem getCoordinateSystem() {
+    ImmutableList<CoordinateSystem> coordSystems = vs.getCoordinateSystems();
+    if (coordSystems.size() == 0) {
+      logger.error("Mesh variable {} has no coordinate system.", vs.getFullName());
+      return null;
+    } else if (coordSystems.size() > 1) {
+      logger.warn("Mesh variable {} has more than one coordinate system. Using the first encountered.",
+          vs.getFullName());
+    }
+    return new GridCoordSys(coordSystems.get(0), null);
+  }
+
   public Meshset getMeshset() {
     return meshset;
   }
@@ -227,6 +255,11 @@ public class MeshVariable implements UGridDatatype {
 
   public Array readDataSlice(int rt_index, int e_index, int t_index, int z_index, int y_index, int x_index)
       throws IOException {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Array readSubset(List<Range> subset) throws InvalidRangeException, IOException {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -609,5 +642,20 @@ public class MeshVariable implements UGridDatatype {
 
   public int compareTo(UGridDatatype g) {
     return getNameEscaped().compareTo(g.getNameEscaped());
+  }
+
+  @Override
+  public int compareTo(GridDatatype o) {
+    return 0;
+  }
+
+  @Override
+  public boolean hasMissing() {
+    return false;
+  }
+
+  @Override
+  public boolean isMissing(double val) {
+    return false;
   }
 }

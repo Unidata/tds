@@ -75,5 +75,15 @@
 
   </featureCollection>
 
+  <featureCollection featureType="FMRC" name="USF_WSF_nc" path="testUsfWsfUgridFmrc">
+    <metadata inherited="true">
+      <dataType>Grid</dataType>
+      <dataFormat>NetCDF</dataFormat>
+      <serviceName>ugrid</serviceName>
+    </metadata>
+    <collection spec="${cdmUnitTest}/conventions/ugrid/USF_WSF/usf_fvcom_#yyyy_MM_dd#.nc$" />
+    <update startup="true" trigger="allow"/>
+    <fmrcConfig regularize="true" datasetTypes="TwoD Best Files Runs ConstantForecasts ConstantOffsets"/>
+  </featureCollection>
 
 </catalog>
