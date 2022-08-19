@@ -5,7 +5,11 @@
 
 package ucar.nc2.dt;
 
-import ucar.ma2.*;
+import ucar.ma2.Array;
+import ucar.ma2.DataType;
+import ucar.ma2.InvalidRangeException;
+import ucar.ma2.MAMath;
+import ucar.ma2.Range;
 import ucar.nc2.Dimension;
 import ucar.nc2.Attribute;
 import ucar.nc2.dataset.VariableDS;
@@ -22,7 +26,7 @@ import ucar.unidata.geoloc.LatLonPoint;
  *
  * @author caron
  */
-public interface UGridDatatype extends Comparable<UGridDatatype> {
+public interface UGridDatatype extends ucar.nc2.dt.GridDatatype {
 
   /**
    * Get the name of the Grid

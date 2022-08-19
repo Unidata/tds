@@ -5,14 +5,29 @@
 
 package ucar.nc2.dt.ugrid;
 
-import java.io.FileNotFoundException;
-import javax.print.URIException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Formatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ucar.nc2.*;
+import ucar.nc2.Attribute;
+import ucar.nc2.AttributeContainer;
+import ucar.nc2.Dimension;
+import ucar.nc2.NetcdfFile;
+import ucar.nc2.Variable;
+import ucar.nc2.VariableSimpleIF;
+import ucar.nc2.constants._Coordinate;
 import ucar.nc2.dataset.*;
+import ucar.nc2.dataset.NetcdfDataset.Enhance;
+import ucar.nc2.dataset.conv.UGridConvention;
+import ucar.nc2.dt.GridDataset;
 import ucar.nc2.dt.GridDatatype;
 import ucar.nc2.dt.UGridDatatype;
+import ucar.nc2.dt.grid.internal.spi.GridDatasetProvider;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
 import ucar.nc2.util.cache.FileCache;
@@ -21,7 +36,6 @@ import ucar.nc2.units.DateRange;
 import ucar.nc2.util.cache.FileCacheIF;
 import ucar.unidata.geoloc.LatLonRect;
 
-import java.util.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -459,7 +473,7 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
 
   @Override
   public List<GridDatatype> getGrids() {
-    return null;
+    return new ArrayList<>(meshVariables);
   }
 
   @Override
@@ -526,5 +540,47 @@ public class UGridDataset implements ucar.nc2.dt.UGridDataset, ucar.nc2.ft.Featu
       return description_variable;
     }
 
+  }
+
+  public static class Factory implements GridDatasetProvider {
+
+    @Override
+    public boolean isMine(NetcdfDataset ncd) {
+      boolean mine = false;
+      if (ncd != null) {
+        Attribute csbAttr = ncd.findGlobalAttribute(_Coordinate._CoordSysBuilder);
+        if (csbAttr != null) {
+          String csb = csbAttr.getStringValue();
+          if (csb != null) {
+            mine = csb == UGridConvention.class.getCanonicalName();
+          }
+        }
+      }
+      return mine;
+    }
+
+    @Override
+    public boolean isMine(String location, Set<Enhance> enhanceMode) {
+      boolean mine = false;
+      try (NetcdfDataset ncd =
+          NetcdfDatasets.acquireDataset(null, DatasetUrl.findDatasetUrl(location), enhanceMode, -1, null, null)) {
+        mine = isMine(ncd);
+      } catch (IOException e) {
+        logger.warn("Could not test if {} is a GridDatasetProvider", location, e);
+      }
+      return mine;
+    }
+
+    @Nullable
+    @Override
+    public GridDataset open(String location, Set<Enhance> enhanceMode) throws IOException {
+      return UGridDataset.open(location, enhanceMode);
+    }
+
+    @Nullable
+    @Override
+    public GridDataset open(NetcdfDataset ncd, Formatter parseInfo) throws IOException {
+      return new UGridDataset(ncd, parseInfo);
+    }
   }
 }

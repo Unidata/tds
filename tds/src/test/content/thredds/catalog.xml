@@ -21,6 +21,16 @@
     <service name="uddc" serviceType="UDDC" base="/thredds/uddc/"/>
   </service>
 
+  <service name="ugrid" base="" serviceType="compound">
+    <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/"/>
+    <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/"/>
+    <service name="wms" serviceType="WMS" base="/thredds/wms/"/>
+    <service name="cdmremote" serviceType="CdmRemote" base="/thredds/cdmremote/"/>
+    <service name="iso" serviceType="ISO" base="/thredds/iso/"/>
+    <service name="ncml" serviceType="NCML" base="/thredds/ncml/"/>
+    <service name="uddc" serviceType="UDDC" base="/thredds/uddc/"/>
+  </service>
+
   <service name="obstoreGrid" base="" serviceType="compound">
     <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/"/>
     <service name="wcs" serviceType="WCS" base="/thredds/wcs/"/>
