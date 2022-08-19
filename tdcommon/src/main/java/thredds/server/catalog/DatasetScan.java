@@ -225,9 +225,9 @@ public class DatasetScan extends CatalogRef {
 
     Path p = Paths.get(dataDirComplete);
     if (!Files.exists(p))
-      throw new FileNotFoundException("Directory does not exist =" + dataDirComplete);
+      throw new FileNotFoundException("Directory does not exist. URL path = " + orgPath);
     if (!Files.isDirectory(p))
-      throw new FileNotFoundException("Not a directory =" + dataDirComplete);
+      throw new FileNotFoundException("Not a directory. URL path = " + orgPath);
 
     // scan and sort the directory
     List<MFile> mfiles = getSortedFiles(p, config.getSortFilesAscending());
