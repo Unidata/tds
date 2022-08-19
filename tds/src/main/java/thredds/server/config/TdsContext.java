@@ -240,15 +240,6 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
       }
     }
 
-    /*
-     * places to look for catalogs ??
-     * List<DescendantFileSource> chain = new ArrayList<>();
-     * DescendantFileSource contentMinusPublicSource =
-     * new BasicWithExclusionsDescendantFileSource(this.threddsDirectory, Collections.singletonList("public"));
-     * chain.add(contentMinusPublicSource);
-     * this.catalogRootDirSource = new ChainedFileSource(chain);
-     */
-
     // jspRequestDispatcher = servletContext.getNamedDispatcher("jsp");
     defaultRequestDispatcher = servletContext.getNamedDispatcher("default");
 

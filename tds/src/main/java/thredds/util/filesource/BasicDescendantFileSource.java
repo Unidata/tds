@@ -34,16 +34,7 @@ public class BasicDescendantFileSource implements DescendantFileSource {
   }
 
   public BasicDescendantFileSource(String rootDirectoryPath) {
-    if (rootDirectoryPath == null)
-      throw new IllegalArgumentException("Root directory must not be null.");
-    File file = new File(rootDirectoryPath);
-    if (!file.exists())
-      throw new IllegalArgumentException("Root directory must exist: " + rootDirectoryPath + ".");
-    if (!file.isDirectory())
-      throw new IllegalArgumentException("Root directory must be a directory: " + rootDirectoryPath + ".");
-
-    this.rootDirectoryPath = StringUtils.cleanPath(file.getAbsolutePath());
-    this.rootDirectory = new File(this.rootDirectoryPath);
+    this(new File(rootDirectoryPath));
   }
 
   /**

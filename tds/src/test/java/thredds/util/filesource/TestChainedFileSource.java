@@ -83,11 +83,8 @@ public class TestChainedFileSource {
     List<DescendantFileSource> chain = new ArrayList<DescendantFileSource>();
     DescendantFileSource contentSource = new BasicDescendantFileSource(contentDir);
     DescendantFileSource publicSource = new BasicDescendantFileSource(publicDir);
-    DescendantFileSource contentMinusPublicSource =
-        new BasicWithExclusionsDescendantFileSource(contentDir, Collections.singletonList("public"));
     DescendantFileSource iddSource = new BasicDescendantFileSource(iddDir);
     DescendantFileSource mlodeSource = new BasicDescendantFileSource(mlodeDir);
-    chain.add(contentMinusPublicSource);
     chain.add(iddSource);
     chain.add(mlodeSource);
     ChainedFileSource configChain = new ChainedFileSource(chain);
