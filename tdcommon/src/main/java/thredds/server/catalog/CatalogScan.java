@@ -69,10 +69,12 @@ public class CatalogScan extends CatalogRef {
 
     // it must be a directory
     Path wantDir = absLocation.toPath();
-    if (!Files.exists(wantDir))
+    if (!Files.exists(wantDir)) {
       throw new FileNotFoundException("Requested catalog does not exist. URL path = " + relLocation);
-    if (!Files.isDirectory(wantDir))
+    }
+    if (!Files.isDirectory(wantDir)) {
       throw new FileNotFoundException("Not a directory. URL path = " + relLocation);
+    }
 
     // Setup and create catalog builder.
     CatalogBuilder catBuilder = new CatalogBuilder();
