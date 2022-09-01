@@ -132,6 +132,9 @@ public abstract class DsgSubsetWriterFactory {
       case NETCDF3:
       case NETCDF4:
       case NETCDF4EXT:
+        throw new UnsupportedResponseFormatException(String.format(
+            "Request contains variables with different feature types, which is not supported for writing in %s format. Select a different format or choose variables that either uniformly have do not have a vertical dimension.",
+            format));
       case WATERML2:
         throw new UnsupportedResponseFormatException(
             String.format("%s format not supported for %s feature type.", format, fdPoint.getFeatureType()));
