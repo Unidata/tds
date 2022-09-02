@@ -285,13 +285,13 @@ public class ServletUtil {
     final MFile file = MFiles.create(location);
 
     if (file == null) {
-      response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find file: " + location);
+      response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find file with URL path: " + requestPath);
       return;
     }
 
     if (file.isDirectory()) {
       response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-          "Expected a file name instead of a directory: " + location);
+          "Expected a file name instead of a directory for URL path: " + requestPath);
       return;
     }
 
