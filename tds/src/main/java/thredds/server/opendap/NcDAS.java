@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2022 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -129,16 +129,19 @@ public class NcDAS extends opendap.dap.DAS {
 
   private int addAttributes(opendap.dap.AttributeTable table, Variable v, Iterator iter) {
     int count = 0;
-    boolean isVbyte = (v != null && (v.getDataType() == DataType.BYTE));
-
-    // always indicate if byte is signed or not ; see JIRA issue TDS-334
-    if (isVbyte)
-      try {
-        table.appendAttribute(CDM.UNSIGNED, opendap.dap.Attribute.STRING,
-            v.getDataType().isUnsigned() ? "true" : "false");
-      } catch (DASException e) {
-        log.error("Error appending unsigned attribute ", e);
-      }
+    boolean isVbyte = false;
+    if (v != null) {
+      // special byte/ubyte variable handling
+      DataType dt = v.getDataType();
+      isVbyte = dt == DataType.BYTE;
+      // always indicate if byte is signed or not ; see JIRA issue TDS-334
+      if (isVbyte || dt == DataType.UBYTE)
+        try {
+          table.appendAttribute(CDM.UNSIGNED, opendap.dap.Attribute.STRING, isVbyte ? "false" : "true");
+        } catch (DASException e) {
+          log.error("Error appending unsigned attribute ", e);
+        }
+    }
 
     // add attribute table for this variable
     while (iter.hasNext()) {
