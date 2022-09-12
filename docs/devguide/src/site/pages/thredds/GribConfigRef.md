@@ -175,8 +175,8 @@ Currently, the CDM places all intervals in the same variable (rather than create
 When all intervals have the same size, the interval size is added to the variable name. 
 Otherwise, the phrase "mixed_intervals" is added to the variable name.
 
-Generally, the CDM places the coordinate value at the midpoint of the interval.
-For example the time interval `(0,6)` will have a coordinate value `3`.
+Generally, the CDM places the coordinate value at the end of the interval.
+For example the time interval `(0,6)` will have a coordinate value `6`.
 The CDM looks for unique intervals in constructing the variable.
 This implies that the coordinate values are not always unique, but the coordinate bounds pair are always unique.
 Application code needs to understand this to handle this situation correctly, by checking `CoordinateAxis1D.isInterval()` or `CoordinateAxis2D.isInterval()`.
