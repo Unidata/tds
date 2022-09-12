@@ -141,3 +141,36 @@ double time(time=14);
 ~~~
 
 This is a *one-dimensional* time variable, and we use a scalar to avoid introducing an unneeded dimension of length 1.
+
+## Why isn't the coordinate for a time interval strictly monotonic?
+
+An example of an interval variable is "Total_precipitation_surface_Mixed_intervals_Accumulation" in NCEP GFS GRIB data.
+We call such variable a "mixed interval" variable because it is measured over time intervals that do not have a fixed length.
+For example, the `time_bounds` associated with the `time` coordinate for this variable has values:
+~~~
+time_bounds[254][2]
+    [0], 0.0, 3.0
+    [1], 0.0, 6.0
+    [2], 0.0, 9.0
+    [3], 6.0, 9.0
+    [4], 0.0, 12.0
+    [5], 6.0, 12.0
+    [6], 0.0, 15.0
+    [7], 12.0, 15.0
+    [8], 0.0, 18.0
+    [9], 12.0, 18.0
+    ...
+~~~
+
+Although the CF convention would allow any value in the interval to be the coordinate value, we currently choose the endpoint of the interval.
+This leads to a `time` coordinate with values:
+
+~~~
+time2[254]
+    3.0, 6.0, 9.0, 9.0, 12.0, 12.0, 15.0, 15.0, 18.0, 18.0,...
+~~~
+
+So currently, as shown in this example, a mixed interval time coordinate can have repeated values.
+In the future we plan to fix this so that the time coordinate is strictly monotonic in this situation, in order to be compliant with the NUG convention.
+
+See also the documentation about the [`intvFilter` option in the GRIB config](grib_collection_config_ref.html#intvfilter-filter-on-time-interval).
