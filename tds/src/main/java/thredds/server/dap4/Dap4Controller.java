@@ -65,7 +65,8 @@ public class Dap4Controller extends DapController {
 
   @RequestMapping("**")
   public void handleRequest(HttpServletRequest req, HttpServletResponse res) throws IOException {
-    super.handleRequest(req, res);
+    throw new UnsupportedOperationException("DAP4 is not currently functional, but we are working on it!");
+    // super.handleRequest(req, res);
   }
 
   //////////////////////////////////////////////////
