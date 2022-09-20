@@ -12,6 +12,9 @@ buildscript {
   // The buildscript {} block is odd: even though we applied dependencies.gradle above, the repositories therein
   // do not get included here. Instead, we must explicitly define the repos again. Yay for duplication.
   repositories {
+    // Prefer mavenCentral to the Gradle Plugin Portal as the latter redirects to the unreliable JCenter
+    // see https://github.com/gradle/gradle/issues/15406
+    mavenCentral()
     gradlePluginPortal()
     exclusiveContent {
       forRepository {
