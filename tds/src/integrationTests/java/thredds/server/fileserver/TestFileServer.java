@@ -45,7 +45,7 @@ public class TestFileServer {
 
     // TODO - Consider consolidating files and catalog.
     // Currently uses files from various locations and served through different catalog files.
-    result.add(new Object[] {"fileServer/scanLocal/point.covjson.json", ContentType.json.getContentHeader(),
+    result.add(new Object[] {"fileServer/scanLocal/point.covjson.json", ContentType.json.toString(),
         "33fea472b71590b888e31870d745d71b"});
     result.add(new Object[] {"fileServer/rdaTest/ds094.2_dt/files/flxf01.gdas.A_PCP.SFC.01Z.grb2.gbx9",
         ContentType.binary.toString(), "f86072586ad8d66feed8cad2168f24a0"});
