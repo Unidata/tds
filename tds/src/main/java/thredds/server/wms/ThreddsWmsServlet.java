@@ -60,7 +60,17 @@ import ucar.nc2.dataset.NetcdfDataset;
 @RequestMapping("/wms")
 public class ThreddsWmsServlet extends WmsServlet {
 
-  private static final Map<String, WmsCatalogue> catalogueCache = new HashMap<>();
+  private static class CachedWmsCatalogue {
+    public final WmsCatalogue wmsCatalogue;
+    public final long lastModified;
+
+    public CachedWmsCatalogue(WmsCatalogue wmsCatalogue, long lastModified) {
+      this.wmsCatalogue = wmsCatalogue;
+      this.lastModified = lastModified;
+    }
+  }
+
+  private static final Map<String, CachedWmsCatalogue> catalogueCache = new HashMap<>();
 
   @Override
   @RequestMapping(value = "**", method = {RequestMethod.GET})
@@ -81,8 +91,8 @@ public class ThreddsWmsServlet extends WmsServlet {
     // Look - is setting this to null the right thing to do??
     String removePrefix = null;
     TdsRequestedDataset tdsDataset = new TdsRequestedDataset(httpServletRequest, removePrefix);
-    if (catalogueCache.containsKey(tdsDataset.getPath())) {
-      catalogue = catalogueCache.get(tdsDataset.getPath());
+    if (useCachedCatalogue(tdsDataset.getPath())) {
+      catalogue = catalogueCache.get(tdsDataset.getPath()).wmsCatalogue;
     } else {
       NetcdfFile ncf = TdsRequestedDataset.getNetcdfFile(httpServletRequest, httpServletResponse, tdsDataset.getPath());
       NetcdfDataset ncd;
@@ -110,7 +120,9 @@ public class ThreddsWmsServlet extends WmsServlet {
         throw new EdalLayerNotFoundException("The requested dataset is not available on this server");
       }
       catalogue = new ThreddsWmsCatalogue(ncd, tdsDataset.getPath());
-      catalogueCache.put(tdsDataset.getPath(), catalogue);
+      final CachedWmsCatalogue cachedWmsCatalogue =
+          new CachedWmsCatalogue(catalogue, TdsRequestedDataset.getLastModified(tdsDataset.getPath()));
+      catalogueCache.put(tdsDataset.getPath(), cachedWmsCatalogue);
     }
 
     /*
@@ -118,5 +130,14 @@ public class ThreddsWmsServlet extends WmsServlet {
      * super implementation which will handle things from here.
      */
     super.dispatchWmsRequest(request, params, httpServletRequest, httpServletResponse, catalogue);
+  }
+
+  private boolean useCachedCatalogue(String tdsDatasetPath) {
+    final long lastModified = TdsRequestedDataset.getLastModified(tdsDatasetPath);
+    if (catalogueCache.containsKey(tdsDatasetPath)) {
+      final long cacheLastModified = catalogueCache.get(tdsDatasetPath).lastModified;
+      return cacheLastModified >= lastModified;
+    }
+    return false;
   }
 }
