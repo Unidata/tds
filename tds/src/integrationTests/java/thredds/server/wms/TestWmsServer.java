@@ -6,6 +6,7 @@
 package thredds.server.wms;
 
 import java.nio.charset.StandardCharsets;
+import javax.servlet.http.HttpServletResponse;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -41,7 +42,7 @@ public class TestWmsServer {
   public void testCapabilites() throws IOException, JDOMException {
     String endpoint = TestOnLocalServer.withHttpPath(
         "/wms/scanCdmUnitTests/conventions/coards/sst.mnmean.nc?service=WMS&version=1.3.0&request=GetCapabilities");
-    byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.xmlwms);
+    byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.xmlwms);
     Reader in = new StringReader(new String(result, StandardCharsets.UTF_8));
     SAXBuilder sb = new SAXBuilder();
     sb.setExpandEntities(false);
@@ -64,7 +65,7 @@ public class TestWmsServer {
         TestOnLocalServer.withHttpPath("/wms/scanCdmUnitTests/conventions/cf/ipcc/tas_A1.nc?service=WMS&version=1.3.0"
             + "&request=GetMap&CRS=CRS:84&WIDTH=512&HEIGHT=512&LAYERS=tas&BBOX=0,-90,360,90&format="
             + ContentType.png.toString() + "&time=1850-01-16T12:00:00Z");
-    byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.png.toString());
+    byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.png.toString());
     // make sure we get a png back
     // first byte (unsigned) should equal 137 (decimal)
     assertThat(result[0] & 0xFF).isEqualTo(137);
@@ -78,7 +79,7 @@ public class TestWmsServer {
         TestOnLocalServer.withHttpPath("/wms/scanCdmUnitTests/conventions/cf/ipcc/tas_A1.nc?service=WMS&version=1.3.0"
             + "&request=GetLegendGraphic&Layers=tas&colorscalerange=225.0,310.0&style=default-scalar/x-Rainbow&format="
             + ContentType.png.toString());
-    byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.png.toString());
+    byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.png.toString());
     // make sure we get a png back
     // first byte (unsigned) should equal 137 (decimal)
     assertThat(result[0] & 0xFF).isEqualTo(137);
@@ -94,7 +95,7 @@ public class TestWmsServer {
           "/wms/scanCdmUnitTests/conventions/cf/ipcc/tas_A1.nc?service=WMS&version=1.3.0&request=GetLegendGraphic&Layers=tas&format="
               + ContentType.png.toString()
               + "&SLD_BODY=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22ISO-8859-1%22%3F%3E%20%3CStyledLayerDescriptor%20version%3D%221.1.0%22%20xsi%3AschemaLocation%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%20StyledLayerDescriptor.xsd%22%20xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%20xmlns%3Aogc%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%20xmlns%3Ase%3D%22http%3A%2F%2Fwww.opengis.net%2Fse%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xmlns%3Axsi%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema-instance%22%3E%20%3CNamedLayer%3E%20%3Cse%3AName%3Etas%3C%2Fse%3AName%3E%20%3CUserStyle%3E%20%3Cse%3AName%3EThesholded%20colour%20scheme%3C%2Fse%3AName%3E%20%3Cse%3ACoverageStyle%3E%20%3Cse%3ARule%3E%20%3Cse%3ARasterSymbolizer%3E%20%3Cse%3AOpacity%3E1.0%3C%2Fse%3AOpacity%3E%20%3Cse%3AColorMap%3E%20%3Cse%3ACategorize%20fallbackValue%3D%22%2300000000%22%3E%20%3Cse%3ALookupValue%3ERasterdata%3C%2Fse%3ALookupValue%3E%20%3Cse%3AValue%3E%23FF0000FF%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E275.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FF00FFFF%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E280.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FF00FF00%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E285.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FFFFFF00%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E290.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FFFFC800%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E295.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FFFFAFAF%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E300.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FFFF0000%3C%2Fse%3AValue%3E%20%3C%2Fse%3ACategorize%3E%20%3C%2Fse%3AColorMap%3E%20%3C%2Fse%3ARasterSymbolizer%3E%20%3C%2Fse%3ARule%3E%20%3C%2Fse%3ACoverageStyle%3E%20%3C%2FUserStyle%3E%20%3C%2FNamedLayer%3E%20%3C%2FStyledLayerDescriptor%3E");
-      byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.png.toString());
+      byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.png.toString());
       // make sure we get a png back
       // first byte (unsigned) should equal 137 (decimal)
       assertThat(result[0] & 0xFF).isEqualTo(137);
