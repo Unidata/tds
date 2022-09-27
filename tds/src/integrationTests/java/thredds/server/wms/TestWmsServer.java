@@ -39,7 +39,7 @@ public class TestWmsServer {
   private final Namespace NS_WMS = Namespace.getNamespace("wms", "http://www.opengis.net/wms");
 
   @Test
-  public void testCapabilites() throws IOException, JDOMException {
+  public void testCapabilities() throws IOException, JDOMException {
     String endpoint = TestOnLocalServer.withHttpPath(
         "/wms/scanCdmUnitTests/conventions/coards/sst.mnmean.nc?service=WMS&version=1.3.0&request=GetCapabilities");
     byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.xmlwms);
