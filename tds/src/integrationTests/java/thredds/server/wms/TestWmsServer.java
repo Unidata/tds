@@ -28,7 +28,8 @@ import java.util.List;
 import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-import static org.junit.Assert.assertEquals;
+
+import static com.google.common.truth.Truth.assertThat;
 
 @Category(NeedsCdmUnitTest.class)
 public class TestWmsServer {
@@ -49,12 +50,12 @@ public class TestWmsServer {
     XPathExpression<Element> xpath = XPathFactory.instance().compile("//wms:Capability/wms:Layer/wms:Layer/wms:Layer",
         Filters.element(), null, NS_WMS);
     List<Element> elements = xpath.evaluate(doc);
-    assertEquals(1, elements.size());
+    assertThat(elements.size()).isEqualTo(1);
 
     XPathExpression<Element> xpath2 = XPathFactory.instance()
         .compile("//wms:Capability/wms:Layer/wms:Layer/wms:Layer/wms:Name", Filters.element(), null, NS_WMS);
     Element emt = xpath2.evaluateFirst(doc);
-    assertEquals("sst", emt.getTextTrim());
+    assertThat(emt.getTextTrim()).isEqualTo("sst");
   }
 
   @Test
@@ -66,9 +67,9 @@ public class TestWmsServer {
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.png.toString());
     // make sure we get a png back
     // first byte (unsigned) should equal 137 (decimal)
-    assertEquals(result[0] & 0xFF, 137);
+    assertThat(result[0] & 0xFF).isEqualTo(137);
     // bytes 1, 2, and 3, when interperted as ASCII, should be P N G
-    assertEquals(new String(((byte[]) Arrays.copyOfRange(result, 1, 4)), Charset.forName("US-ASCII")), "PNG");
+    assertThat(new String(((byte[]) Arrays.copyOfRange(result, 1, 4)), Charset.forName("US-ASCII"))).isEqualTo("PNG");
   }
 
   @Test
@@ -80,9 +81,9 @@ public class TestWmsServer {
     byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.png.toString());
     // make sure we get a png back
     // first byte (unsigned) should equal 137 (decimal)
-    assertEquals(result[0] & 0xFF, 137);
+    assertThat(result[0] & 0xFF).isEqualTo(137);
     // bytes 1, 2, and 3, when interperted as ASCII, should be P N G
-    assertEquals(new String(((byte[]) Arrays.copyOfRange(result, 1, 4)), Charset.forName("US-ASCII")), "PNG");
+    assertThat(new String(((byte[]) Arrays.copyOfRange(result, 1, 4)), Charset.forName("US-ASCII"))).isEqualTo("PNG");
   }
 
   @Test
@@ -96,9 +97,9 @@ public class TestWmsServer {
       byte[] result = TestOnLocalServer.getContent(endpoint, 200, ContentType.png.toString());
       // make sure we get a png back
       // first byte (unsigned) should equal 137 (decimal)
-      assertEquals(result[0] & 0xFF, 137);
+      assertThat(result[0] & 0xFF).isEqualTo(137);
       // bytes 1, 2, and 3, when interperted as ASCII, should be P N G
-      assertEquals(new String(((byte[]) Arrays.copyOfRange(result, 1, 4)), Charset.forName("US-ASCII")), "PNG");
+      assertThat(new String(((byte[]) Arrays.copyOfRange(result, 1, 4)), Charset.forName("US-ASCII"))).isEqualTo("PNG");
     } finally {
       System.setProperty("httpservices.urlencode", "true");
     }
