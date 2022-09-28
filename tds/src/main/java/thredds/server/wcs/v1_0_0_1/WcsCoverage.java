@@ -7,6 +7,8 @@ package thredds.server.wcs.v1_0_0_1;
 import com.google.common.collect.ImmutableList;
 import thredds.server.wcs.Request;
 import ucar.ma2.InvalidRangeException;
+import ucar.ma2.DataType;
+import ucar.nc2.Attribute;
 import ucar.nc2.ft2.coverage.*;
 import ucar.nc2.ft2.coverage.writer.CFGridCoverageWriter;
 import ucar.nc2.geotiff.GeotiffWriter;
@@ -54,6 +56,7 @@ public class WcsCoverage {
     // this.supportedCoverageFormatList.add("application/x-netcdf");
     this.supportedCoverageFormatList.add(Request.Format.GeoTIFF);
     this.supportedCoverageFormatList.add(Request.Format.GeoTIFF_Float);
+    this.supportedCoverageFormatList.add(Request.Format.GeoTIFF_Palette);
     this.supportedCoverageFormatList.add(Request.Format.NetCDF3);
 
     CoverageCoordAxis zaxis = coordSys.getZAxis();
@@ -139,18 +142,44 @@ public class WcsCoverage {
 
     /////////
     try {
-      if (format == Request.Format.GeoTIFF || format == Request.Format.GeoTIFF_Float) {
+      if (format == Request.Format.GeoTIFF || format == Request.Format.GeoTIFF_Float || format == Request.Format.GeoTIFF_Palette) {
         File dir = new File(getDiskCache().getRootDirectory());
         File tifFile = File.createTempFile("WCS", ".tif", dir);
         if (log.isDebugEnabled())
-          log.debug("writeCoverageDataToFile(): tifFile=" + tifFile.getPath());
-
+          log.debug("writeCoverageDataToFile(): tifFile=" + tifFile.getPath() + " format=" + format);
         // GridCoverage subset = this.coverage.makeSubset(tRange, zRange, bboxLatLonRect, 1, 1, 1); // LOOK do you need
         // to subset it?
         GeoReferencedArray array = coverage.readData(params);
 
         try (GeotiffWriter writer = new GeotiffWriter(tifFile.getPath())) {
-          writer.writeGrid(array, format == Request.Format.GeoTIFF);
+          if (format == Request.Format.GeoTIFF_Palette) {
+            log.info("Processing Palette");
+            // Set the color table
+            Attribute flag_values_attr = coverage.findAttributeIgnoreCase("flag_values");
+            Attribute flag_colors_attr = coverage.findAttributeIgnoreCase("flag_colors");
+            if (flag_values_attr == null || flag_colors_attr == null) {
+              // FIXME: Maybe use info from supplied styling info?
+              log.error("Requested a paletted geotiff, but could not find a color table");
+              throw new WcsException(WcsException.Code.UNKNOWN, "",
+                  "No color table found for coverage [" + this.coverage.getName() + "] for format GeoTIFF_Palette.");
+            }
+            if (!flag_colors_attr.isString()) {
+              log.error("Invalid flag_colors attribute");
+              throw new WcsException(WcsException.Code.UNKNOWN, "",
+                  "Invalid flag_colors attribute for coverage [" + this.coverage.getName() + "] for format GeoTIFF_Palette.");
+            }
+
+            int[] flag_values = new int[flag_values_attr.getLength()];
+            for (int i = 0; i < flag_values.length; i++) {
+              flag_values[i] = flag_values_attr.getNumericValue(i).intValue();
+              log.info("flag_values[i]=" + flag_values[i] + " i=" + i);
+            }
+            String[] flag_colors = flag_colors_attr.getStringValue().split("\\s+");
+            log.info("flag_values count:" + flag_values.length + " flag_colors count:" + flag_colors.length);
+            writer.setColorTable(GeotiffWriter.createColorMap(flag_values, flag_colors));
+          }
+          writer.writeGrid(array, format == Request.Format.GeoTIFF,
+                           format == Request.Format.GeoTIFF_Palette ? DataType.UBYTE : null);
 
         } catch (Throwable e) {
           log.error("writeCoverageDataToFile(): Failed to write file for requested coverage <" + this.coverage.getName()
@@ -160,7 +189,6 @@ public class WcsCoverage {
         }
 
         return tifFile;
-
       } else if (format == Request.Format.NetCDF3) {
         File dir = new File(getDiskCache().getRootDirectory());
         File outFile = File.createTempFile("WCS", ".nc", dir);
