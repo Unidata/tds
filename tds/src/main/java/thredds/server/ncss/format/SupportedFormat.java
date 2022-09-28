@@ -15,10 +15,10 @@ import java.util.List;
  */
 public enum SupportedFormat {
 
-  CSV_STREAM("csv", true, false, ".csv", ContentType.csv, "text/csv"),
+  CSV_STREAM("csv", true, false, ".csv", ContentType.csv, "csv_stream", "text/csv"),
   CSV_FILE("csv_file", false, false, ".csv", ContentType.csv, "csv_file"),
 
-  XML_STREAM("xml", true, false, ".xml", ContentType.xml, "xml"),
+  XML_STREAM("xml", true, false, ".xml", ContentType.xml, "xml_stream", "xml"),
   XML_FILE("xml_file", false, false, ".xml", ContentType.xml, "xml_file"),
 
   NETCDF3("netcdf3", false, true, ".nc", ContentType.netcdf, "netcdf", "netcdf3"),
@@ -48,7 +48,6 @@ public enum SupportedFormat {
     this.fileSuffix = fileSuffix;
     this.contentType = contentType;
     List<String> aliasesList = new ArrayList<>();
-    aliasesList.add(name());
     Collections.addAll(aliasesList, aliases);
     this.aliases = Collections.unmodifiableList(aliasesList);
   }
