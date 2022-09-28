@@ -5,13 +5,20 @@
 
 package thredds.server.ncss;
 
+import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.test.util.TestOnLocalServer;
+import thredds.util.Constants;
 import thredds.util.ContentType;
+import ucar.httpservices.HTTPException;
+import ucar.httpservices.HTTPFactory;
+import ucar.httpservices.HTTPMethod;
+import ucar.httpservices.HTTPSession;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -125,6 +132,36 @@ public class NcssGridIntegrationTest {
 
     // Open the binary response in memory
     openBinaryNew(content, "eastward_ekman_current_velocity");
+  }
+
+  @Test
+  public void shouldReturnCorrectFileTypeForAcceptParameter() throws HTTPException {
+    skipTestIfNetCDF4NotPresent();
+
+    checkFileType("netcdf3", HttpServletResponse.SC_OK, ".nc");
+    checkFileType("netcdf4-classic", HttpServletResponse.SC_OK, ".nc4");
+    checkFileType("netcdf4", HttpServletResponse.SC_BAD_REQUEST, ".nc4"); // Not currently enabled in TdsInit
+  }
+
+  private void checkFileType(String acceptParameter, int expectedResponseCode, String expectedSuffix)
+      throws HTTPException {
+    final String path =
+        "/ncss/grid/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1?var=Temperature_isobaric";
+    final String endpoint = TestOnLocalServer.withHttpPath(path + "&accept=" + acceptParameter);
+
+    try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
+      final HTTPMethod method = HTTPFactory.Head(session);
+
+      final int status = method.execute();
+      assertThat(status).isEqualTo(expectedResponseCode);
+
+      if (status == HttpServletResponse.SC_OK) {
+        Optional<String> filename = method.getResponseHeaderValue(Constants.Content_Disposition);
+        assertThat(filename.isPresent()).isTrue();
+        assertThat(filename.get())
+            .isEqualTo("attachment; filename=GFS_CONUS_80km_20120227_0000.grib1" + expectedSuffix);
+      }
+    }
   }
 
   private static void skipTestIfNetCDF4NotPresent() {
