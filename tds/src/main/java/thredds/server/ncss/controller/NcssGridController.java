@@ -30,7 +30,6 @@ import thredds.server.ncss.view.dsg.DsgSubsetWriter;
 import thredds.server.ncss.view.dsg.DsgSubsetWriterFactory;
 import thredds.util.Constants;
 import thredds.util.ContentType;
-import thredds.util.TdsPathUtils;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft2.coverage.*;
@@ -120,7 +119,7 @@ public class NcssGridController extends AbstractNcssController {
     File netcdfResult = makeCFNetcdfFile(gcd, responseFile, params, version);
 
     // filename download attachment
-    String suffix = TdsPathUtils.getSuffix(version);
+    String suffix = sf.getFileSuffix();
     int pos = datasetPath.lastIndexOf("/");
     String filename = (pos >= 0) ? datasetPath.substring(pos + 1) : datasetPath;
     if (!filename.endsWith(suffix)) {
