@@ -126,7 +126,7 @@ public class NcssGridIntegrationTest {
         "scanCdmUnitTests/formats/netcdf4/COMPRESS_LEV2_20140201000000-GLOBCURRENT-L4-CURekm_15m-ERAWS_EEM-v02.0-fv01.0.nc";
     String endpoint = TestOnLocalServer.withHttpPath("/ncss/grid/" + filename
         + "?var=eastward_ekman_current_velocity&north=79.8750&west=-140&east=170&south=-79.8750&horizStride=1&"
-        + "time_start=2014-02-01T00%3A00%3A00Z&time_end=2014-02-01T00%3A00%3A00Z&timeStride=1&accept=netcdf4");
+        + "time_start=2014-02-01T00%3A00%3A00Z&time_end=2014-02-01T00%3A00%3A00Z&timeStride=1&accept=netcdf4-classic");
 
     byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
 
