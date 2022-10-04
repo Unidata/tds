@@ -182,7 +182,8 @@ public class ViewerServiceImpl implements ViewerService, InitializingBean {
       String viewerTitle = nParts > 1 ? viewerLinkParts[1] : viewerName;
 
       String description = nParts > 2 ? viewerLinkParts[2] : "";
-      ViewerLink.ViewerType viewerType = nParts > 3 ? parseViewerType(viewerLinkParts[3]) : ViewerLink.ViewerType.Unknown;
+      ViewerLink.ViewerType viewerType =
+          nParts > 3 ? parseViewerType(viewerLinkParts[3]) : ViewerLink.ViewerType.Unknown;
 
       return new ViewerLink(viewerTitle, viewerUrl, description, viewerType);
     }
