@@ -19,6 +19,10 @@
       <PatternLayout pattern="%d %c: %m%n"/>
     </File>
 
+    <File name="awssdk" fileName="${tds.log.dir}/awssdk.log" append="false">
+      <PatternLayout pattern="%d %c: %m%n"/>
+    </File>
+
     <RollingFile name="fcScan" fileName="${tds.log.dir}/featureCollection.log" filePattern="${tds.log.dir}/featureCollection.%i.log">
       <PatternLayout pattern="[%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}] %-5p %c: %m%n"/>
       <Policies>
@@ -168,6 +172,19 @@
 
     <logger name="thredds.server.metadata" level="warn" additivity="false">
       <appender-ref ref="threddsServlet"/>
+    </logger>
+
+    <!-- ASW SDK -->
+    <logger name="software.amazon.awssdk" level="debug" additivity="false">
+      <appender-ref ref="awssdk"/>
+    </logger>
+
+    <logger name="software.amazon.awssdk.request" level="debug" additivity="false">
+      <appender-ref ref="awssdk"/>
+    </logger>
+
+    <logger name="org.apache.http.wire" level="debug" additivity="false">
+      <appender-ref ref="awssdk"/>
     </logger>
 
     <!-- log issues related to loading custom color palettes -->
