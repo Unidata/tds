@@ -180,6 +180,9 @@ public class ViewerServiceImpl implements ViewerService, InitializingBean {
       // get additional viewer info
       int nParts = viewerLinkParts.length;
       String viewerTitle = nParts > 1 ? viewerLinkParts[1] : viewerName;
+      if (viewerTitle.isEmpty()) {
+        viewerTitle = viewerName;
+      }
 
       String description = nParts > 2 ? viewerLinkParts[2] : "";
       ViewerLink.ViewerType viewerType =
