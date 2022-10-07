@@ -461,3 +461,15 @@ You must restart tomcat for this to take effect.
 ### Logging is not working
 
 You must use a version of Tomcat >= 7.0.43. See [log4j2 docs](http://logging.apache.org/log4j/2.0/manual/webapp.html){:target="_blank"}.
+
+### How do I get detailed log info of Object Store requests for debugging?
+
+You can edit the `WEB-INF/classes/log4j2.xml` log settings before starting up TDS.
+For instance, you can change the log level of `software.amazon.awssdk` to `debug`.
+If you want to log a summary of every request/response you can add:
+~~~
+    <logger name="software.amazon.awssdk.request" level="debug" additivity="false">
+      <appender-ref ref="threddsServlet"/>
+    </logger>
+~~~
+Note: this is a debugging suggestion and is probably too verbose to be used in production.
