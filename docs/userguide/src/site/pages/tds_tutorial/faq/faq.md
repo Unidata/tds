@@ -472,4 +472,4 @@ If you want to log a summary of every request/response you can add:
       <appender-ref ref="threddsServlet"/>
     </logger>
 ~~~
-Note: this is a debugging suggestion and is probably too verbose to be used in production.
+Note: Do not log at "debug" level in your production environments because it is verbose and could log sensitive data!
