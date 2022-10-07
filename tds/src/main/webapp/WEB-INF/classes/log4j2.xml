@@ -171,6 +171,7 @@
     </logger>
 
     <!-- ASW SDK -->
+    <!-- Note: Do not log at "debug" level it in your production environments because it could log sensitive data! -->
     <logger name="software.amazon.awssdk" level="warn" additivity="false">
       <appender-ref ref="threddsServlet"/>
     </logger>
