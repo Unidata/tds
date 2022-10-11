@@ -46,21 +46,28 @@ public class ConfigCatalog extends Catalog {
   }
 
   // turn ConfigCatalog into a mutable CatalogBuilder so we can mutate
-  public CatalogBuilder makeCatalogBuilder() {
+  public CatalogBuilder makeCatalogBuilder(String context) {
     CatalogBuilder builder = new CatalogBuilder(this);
     for (Dataset ds : getDatasetsLocal()) {
-      builder.addDataset(makeDatasetBuilder(null, ds));
+      builder.addDataset(makeDatasetBuilder(null, ds, context));
     }
     return builder;
   }
 
-  private DatasetBuilder makeDatasetBuilder(DatasetBuilder parent, Dataset ds) {
+  /**
+   * @deprecated Use {@link #makeCatalogBuilder(String)} instead
+   */
+  public CatalogBuilder makeCatalogBuilder() {
+    return makeCatalogBuilder("thredds");
+  }
+
+  private DatasetBuilder makeDatasetBuilder(DatasetBuilder parent, Dataset ds, String context) {
 
     DatasetBuilder builder;
     if (ds instanceof CatalogScan)
-      builder = new CatalogScanBuilder(parent, (CatalogScan) ds);
+      builder = new CatalogScanBuilder(parent, (CatalogScan) ds, context);
     else if (ds instanceof FeatureCollectionRef)
-      builder = new FeatureCollectionRefBuilder(parent, (FeatureCollectionRef) ds);
+      builder = new FeatureCollectionRefBuilder(parent, (FeatureCollectionRef) ds, context);
     else if (ds instanceof CatalogRef)
       builder = new CatalogRefBuilder(parent, (CatalogRef) ds);
     else
@@ -72,7 +79,7 @@ public class ConfigCatalog extends Catalog {
 
     if (!(ds instanceof CatalogRef)) {
       for (Dataset nested : ds.getDatasetsLocal())
-        builder.addDataset(makeDatasetBuilder(builder, nested));
+        builder.addDataset(makeDatasetBuilder(builder, nested, context));
     }
 
     return builder;
