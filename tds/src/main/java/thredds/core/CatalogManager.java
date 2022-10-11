@@ -79,7 +79,7 @@ public class CatalogManager {
         catBuilder = (CatalogBuilder) dyno;
       } else {
         ConfigCatalog configCatalog = (ConfigCatalog) dyno;
-        catBuilder = configCatalog.makeCatalogBuilder(); // turn it back into mutable object
+        catBuilder = configCatalog.makeCatalogBuilder(tdsContext.getContextPath()); // turn it back into mutable object
       }
       addGlobalServices(catBuilder);
       return catBuilder.makeCatalog();
@@ -89,7 +89,7 @@ public class CatalogManager {
     ConfigCatalog configCatalog = ccc.get(workPath);
     if (configCatalog == null)
       return null;
-    CatalogBuilder catBuilder = configCatalog.makeCatalogBuilder();
+    CatalogBuilder catBuilder = configCatalog.makeCatalogBuilder(tdsContext.getContextPath());
     addGlobalServices(catBuilder);
     return catBuilder.makeCatalog();
   }

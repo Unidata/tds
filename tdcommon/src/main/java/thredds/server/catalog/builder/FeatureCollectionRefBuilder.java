@@ -35,6 +35,7 @@ package thredds.server.catalog.builder;
 import thredds.client.catalog.DatasetNode;
 import thredds.client.catalog.builder.DatasetBuilder;
 import thredds.server.catalog.FeatureCollectionRef;
+import ucar.unidata.util.StringUtil2;
 
 /**
  * Builder of FeatureCollectionRef
@@ -50,13 +51,20 @@ public class FeatureCollectionRefBuilder extends DatasetBuilder {
       String context) {
     super(parent);
     this.config = config;
-    this.context = context;
+    this.context = StringUtil2.trim(context, '/');
   }
 
-  public FeatureCollectionRefBuilder(DatasetBuilder parent, FeatureCollectionRef from) {
+  public FeatureCollectionRefBuilder(DatasetBuilder parent, FeatureCollectionRef from, String context) {
     super(parent, from);
     this.config = from.getConfig();
-    this.context = "thredds";
+    this.context = StringUtil2.trim(context, '/');
+  }
+
+  /**
+   * @deprecated Use {@link #FeatureCollectionRefBuilder(DatasetBuilder, FeatureCollectionRef, String)} instead
+   */
+  public FeatureCollectionRefBuilder(DatasetBuilder parent, FeatureCollectionRef from) {
+    this(parent, from, "thredds");
   }
 
   public FeatureCollectionRef makeDataset(DatasetNode parent) {
