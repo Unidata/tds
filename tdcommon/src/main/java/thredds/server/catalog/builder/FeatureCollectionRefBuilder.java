@@ -64,9 +64,7 @@ public class FeatureCollectionRefBuilder extends DatasetBuilder {
    * @deprecated Use {@link #FeatureCollectionRefBuilder(DatasetBuilder, FeatureCollectionRef, String)} instead
    */
   public FeatureCollectionRefBuilder(DatasetBuilder parent, FeatureCollectionRef from) {
-    super(parent, from);
-    this.config = from.getConfig();
-    this.context = "thredds";
+    this(parent, from, "thredds");
   }
 
   public FeatureCollectionRef makeDataset(DatasetNode parent) {

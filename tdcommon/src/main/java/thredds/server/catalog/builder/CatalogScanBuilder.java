@@ -38,10 +38,7 @@ public class CatalogScanBuilder extends DatasetBuilder {
    * @deprecated Use {@link #CatalogScanBuilder(DatasetBuilder, CatalogScan, String)} instead
    */
   public CatalogScanBuilder(DatasetBuilder parent, CatalogScan from) {
-    super(parent, from);
-    this.path = from.getPath();
-    this.location = from.getLocation();
-    this.watch = from.getWatch();
+    this(parent, from, "thredds");
   }
 
   public CatalogScan makeDataset(DatasetNode parent) {
