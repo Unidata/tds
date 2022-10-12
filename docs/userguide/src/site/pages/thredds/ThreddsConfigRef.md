@@ -372,15 +372,9 @@ The various cache directory locations are all under `/{tds.content.root.path}/th
 
 We recommend that you use these defaults, by not specifying them in the `threddsConfig.xml` file.
 If you need to move the cache location, move all of them by using a symbolic file link in `${tds.content.root.path}/thredds/`.
-At Unidata, we move the entire content directory by creating a symbolic link:
-
-~~~bash
-cd {tomcat_home}
-ln -s /data/thredds/content content
-~~~
 
 These various caches at times may contain large amounts of data. 
-You should choose a location that will not fill up (especially if that location affects other important locations like `/opt`, `/home`, etc).
+You should choose a location that will not fill up (especially if that location affects other important locations like `/opt`, `/usr/local`, `/home`, etc).
 If you have a large disk for your data, that may be a good location for the cache directories.
 On unix-like machines, you can run `df` to get a listing of disks on your machine.
 The listing includes size and mount location.

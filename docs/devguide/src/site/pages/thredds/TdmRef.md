@@ -52,7 +52,7 @@ Create a shell script to run the TDM, for example `runTdm.sh`:
 #### Example:
 
 ~~~bash
-/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/opt/tds/content -jar tdm-{{site.docset_version}}.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
+/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/data/content -jar tdm-{{site.docset_version}}.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
 ~~~
 
 #### Troubleshooting

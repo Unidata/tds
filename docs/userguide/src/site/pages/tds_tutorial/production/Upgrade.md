@@ -11,12 +11,12 @@ permalink: upgrade.html
 * Java 11 is required
 * Tomcat 8 (servlet 3.1)
 * On the command line when starting up Tomcat/TDS, you must specify `-Dtds.content.root.path=<content root>` where `<content root>` points to the top of the content directory.
-  Note that this is `${tomcat_home}/content/`, not`${tomcat_home}/content/thredds/`. 
+  Note, in this exmaple, that this is `/data/content/`, not`/data/content/thredds/`. 
   Don't forget the trailing slash. 
   For example:
 
   ~~~bash
-  -Dtds.content.root.path=/opt/tomcat-home/content/
+  -Dtds.content.root.path=/data/content/
   ~~~
 
 ## Overview
