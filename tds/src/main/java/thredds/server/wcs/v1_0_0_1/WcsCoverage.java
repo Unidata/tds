@@ -20,6 +20,7 @@ import ucar.unidata.geoloc.LatLonRect;
 import ucar.unidata.geoloc.Projection;
 import ucar.unidata.geoloc.ogc.EPSG_OGC_CF_Helper;
 import javax.annotation.Nonnull;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -176,7 +177,7 @@ public class WcsCoverage {
             }
             String[] flag_colors = flag_colors_attr.getStringValue().split("\\s+");
             log.info("flag_values count:" + flag_values.length + " flag_colors count:" + flag_colors.length);
-            writer.setColorTable(GeotiffWriter.createColorMap(flag_values, flag_colors));
+            writer.setColorTable(GeotiffWriter.createColorMap(flag_values, flag_colors), Color.white);
           }
           writer.writeGrid(array, format == Request.Format.GeoTIFF,
                            format == Request.Format.GeoTIFF_Palette ? DataType.UBYTE : null);
