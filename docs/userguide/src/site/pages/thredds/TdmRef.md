@@ -52,13 +52,13 @@ Create a shell script to run the TDM, for example `runTdm.sh`:
 #### Example:
 
 ~~~bash
-/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/opt/tds/content -jar tdm-{{site.docset_version}}.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
+/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/data/content -jar tdm-{{site.docset_version}}.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
 ~~~
 
 #### Troubleshooting
 
 * Make sure the `<JVM Options>`, including `-Dtds.content.root.path`, come before the `-jar <TDM jar>`
-* The `<content directory>` does not include the `/thredds` subdirectory, e.g. `/opt/tds/content` not `/opt/tds/content/thredds`.
+* The `<content directory>` does not include the `/thredds` subdirectory, e.g. `/data/content` not `/data/content/thredds`.
 * Regarding permissions:
     * You must run the TDM as a user who has read and write permission into the data directories, so it can write the index files (OR)
     * If you are using [GRIB index redirection](tds_config_ref.html#grib-index-redirection), the TDM must have read access to the data directories, and write access to the index directories.
