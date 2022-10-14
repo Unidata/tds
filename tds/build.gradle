@@ -29,13 +29,6 @@ dependencies {
   compile 'edu.ucar:waterml'
   implementation project(':tds-ugrid')
 
-  // Allow for the use of AWS Security Token Service by cdm-s3
-  // version matches that used by netCDF-Java
-  // todo: remove once this is a runtime dependency of netCDF-Java
-  runtimeOnly ('software.amazon.awssdk:sts:2.17.156') {
-    exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
-  }
-
   // DAP4 Dependencies (technically forward)
   compile 'edu.ucar:d4cdm'
   compile 'edu.ucar:d4core'
