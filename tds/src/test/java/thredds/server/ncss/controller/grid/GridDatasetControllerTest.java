@@ -99,6 +99,14 @@ public class GridDatasetControllerTest {
     mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
   }
 
+  @Test
+  public void shouldReturnFileWithFeatureCollectionPathInUrlPathAndLocationInNcml() throws Exception {
+    final String path = "/ncss/grid/testGFSfmrc/ncmlLocation/dataset.xml";
+    final RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
+
+    mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+  }
+
   private class FilenameMatcher extends BaseMatcher<String> {
     String suffix;
 
