@@ -245,7 +245,7 @@ public class DataRootPathMatcher {
     String path = fc.getPath();
 
     if (path == null) {
-      logCatalogInit.error(ERROR + "DatasetScan '" + fc.getName() + "' missing the path attribute.");
+      logCatalogInit.error(ERROR + "FeatureCollection '" + fc.getName() + "' missing the path attribute.");
       return false;
     }
 
