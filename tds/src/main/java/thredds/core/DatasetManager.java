@@ -391,9 +391,22 @@ public class DatasetManager implements InitializingBean {
     if (!resourceControlOk(req, res, reqPath))
       return null;
 
-    DataRootManager.DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
+    // if ncml, must handle specially.
+    // check this before checking for a datasetRoot or featureCollection,
+    // since the urlPath doesn't need to point to a file if there is ncml
+    String ncml = datasetTracker.findNcml(reqPath);
+    if (ncml != null) {
+      Optional<FeatureDatasetCoverage> opt = CoverageDatasetFactory.openNcmlString(ncml);
+      if (!opt.isPresent())
+        throw new FileNotFoundException("NcML is not a Grid Dataset " + reqPath + " err=" + opt.getErrorMessage());
 
-    // first look for a feature collection
+      if (log.isDebugEnabled())
+        log.debug("  -- DatasetHandler found FeatureCollection from NcML");
+      return opt.get().getSingleCoverageCollection();
+    }
+
+    // then look for a feature collection
+    DataRootManager.DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
       FeatureCollectionRef featCollection = match.dataRoot.getFeatureCollection();
       if (log.isDebugEnabled())
@@ -404,19 +417,6 @@ public class DatasetManager implements InitializingBean {
       if (gds == null)
         throw new FileNotFoundException(reqPath);
       return gds;
-    }
-
-    // if ncml, must handle specially.
-    // check this before checking for a datasetRoot, since the urlPath doesn't need to point to a file if there is ncml
-    String ncml = datasetTracker.findNcml(reqPath);
-    if (ncml != null) {
-      Optional<FeatureDatasetCoverage> opt = CoverageDatasetFactory.openNcmlString(ncml);
-      if (!opt.isPresent())
-        throw new FileNotFoundException("NcML is not a Grid Dataset " + reqPath + " err=" + opt.getErrorMessage());
-
-      if (log.isDebugEnabled())
-        log.debug("  -- DatasetHandler found FeatureCollection from NcML");
-      return opt.get().getSingleCoverageCollection();
     }
 
     // otherwise, assume it's a local file with a datasetRoot in the urlPath.
