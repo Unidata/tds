@@ -146,7 +146,7 @@ public class NcDAS extends opendap.dap.DAS {
     // add attribute table for this variable
     while (iter.hasNext()) {
       Attribute att = (Attribute) iter.next();
-      if (isVbyte && att.getShortName().equalsIgnoreCase(CDM.UNSIGNED))
+      if ((isVbyte && att.getShortName().equalsIgnoreCase(CDM.UNSIGNED)) || Attribute.isspecial(att))
         continue; // got this covered
 
       int dods_type = DODSNetcdfFile.convertToDODSType(att.getDataType());
