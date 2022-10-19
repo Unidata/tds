@@ -162,6 +162,8 @@ public class NcDAS extends opendap.dap.DAS {
            */
           table.appendAttribute(attName, dods_type, att.getStringValue());
 
+        } else if (att.getDataType() == DataType.STRING && att.getStringValue() == null) {
+          table.appendAttribute(attName, dods_type, "");
         } else {
           // cant send signed bytes
           if (att.getDataType() == DataType.BYTE) {
