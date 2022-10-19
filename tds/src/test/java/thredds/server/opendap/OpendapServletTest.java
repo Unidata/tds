@@ -21,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import thredds.mock.web.MockTdsContextLoader;
+import ucar.nc2.constants.CDM;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import javax.servlet.ServletConfig;
 
@@ -92,6 +93,21 @@ public class OpendapServletTest {
     assertThat(stringResponse).contains("nullString");
     assertThat(stringResponse).contains("globalEmptyString");
     assertThat(stringResponse).contains("globalNullString");
+  }
+
+  @Test
+  public void shouldNotContainNCPropertiesAttribute() throws IOException {
+    final String path = "/scanLocal/testEmptyAndNullAttributes.nc4.html";
+    final String mockURI = "/thredds/dodsC" + path;
+    MockHttpServletRequest request = new MockHttpServletRequest("GET", mockURI);
+    request.setContextPath("/thredds");
+    request.setPathInfo(path);
+    final MockHttpServletResponse response = new MockHttpServletResponse();
+    opendapServlet.doGet(request, response);
+    assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
+
+    final String stringResponse = response.getContentAsString();
+    assertThat(stringResponse).doesNotContain(CDM.NCPROPERTIES);
   }
 
   @Test
