@@ -30,9 +30,6 @@ public enum SupportedFormat {
 
   WATERML2("waterml2", true, false, ".xml", ContentType.xml, "waterml2");
 
-  /*
-   * First alias is used as content-type in the http headers
-   */
   private final List<String> aliases;
   private final String formatName;
   private final String fileSuffix;
