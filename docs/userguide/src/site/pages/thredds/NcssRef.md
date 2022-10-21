@@ -93,8 +93,8 @@ If none, return the time closest to the present.
 #### Output Format (`accept` Parameter)
 * `csv`: Comma-separated values, one feature per line
 * `xml`: Collection of feature elements
-* `netCDF`: CF/NetCDF-3
-* `netCDF4`: CF/NetCDF-4 classic model
+* `netCDF` or `netCDF3`: CF/NetCDF-3
+* `netCDF4` or `netCDF4-classic`: CF/NetCDF-4 classic model
 * `netCDF4ext`: NetCDF-4 extended model
 * `WaterML2`: OGC WaterML 2.0 Timeseries (station only)
 
