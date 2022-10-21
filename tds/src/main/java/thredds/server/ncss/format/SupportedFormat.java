@@ -16,17 +16,17 @@ import java.util.List;
 public enum SupportedFormat {
 
   CSV_STREAM("csv", true, false, ".csv", ContentType.csv, "csv_stream", "text/csv"),
-  CSV_FILE("csv_file", false, false, ".csv", ContentType.csv, "csv_file"),
+  CSV_FILE("csv_file", false, false, ".csv", ContentType.csv),
 
-  XML_STREAM("xml", true, false, ".xml", ContentType.xml, "xml_stream", "xml"),
-  XML_FILE("xml_file", false, false, ".xml", ContentType.xml, "xml_file"),
+  XML_STREAM("xml", true, false, ".xml", ContentType.xml, "xml_stream"),
+  XML_FILE("xml_file", false, false, ".xml", ContentType.xml),
 
-  NETCDF3("netcdf3", false, true, ".nc", ContentType.netcdf, "netcdf", "netcdf3"),
-  NETCDF4("netcdf4-classic", false, true, ".nc4", ContentType.netcdf, "netcdf4-classic"),
-  NETCDF4EXT("netcdf4", false, true, ".nc4", ContentType.netcdf, "netcdf4"),
+  NETCDF3("netcdf3", false, true, ".nc", ContentType.netcdf, "netcdf"),
+  NETCDF4("netcdf4-classic", false, true, ".nc4", ContentType.netcdf, "netcdf4"),
+  NETCDF4EXT("netcdf4", false, true, ".nc4", ContentType.netcdf),
 
-  JSON("json", false, false, ".json", ContentType.json, "json", "geojson"),
-  WKT("wkt", false, false, ".txt", ContentType.text, "wkt"),
+  JSON("json", false, false, ".json", ContentType.json, "geojson"),
+  WKT("wkt", false, false, ".txt", ContentType.text),
 
   WATERML2("waterml2", true, false, ".xml", ContentType.xml, "waterml2");
 
