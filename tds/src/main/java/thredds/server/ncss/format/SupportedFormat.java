@@ -23,7 +23,7 @@ public enum SupportedFormat {
 
   NETCDF3("netcdf3", false, true, ".nc", ContentType.netcdf, "netcdf"),
   NETCDF4("netcdf4-classic", false, true, ".nc4", ContentType.netcdf, "netcdf4"),
-  NETCDF4EXT("netcdf4", false, true, ".nc4", ContentType.netcdf),
+  NETCDF4EXT("netcdf4ext", false, true, ".nc4", ContentType.netcdf),
 
   JSON("json", false, false, ".json", ContentType.json, "geojson"),
   WKT("wkt", false, false, ".txt", ContentType.text),
