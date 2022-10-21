@@ -139,8 +139,10 @@ public class NcssGridIntegrationTest {
     skipTestIfNetCDF4NotPresent();
 
     checkFileType("netcdf3", HttpServletResponse.SC_OK, ".nc");
+    checkFileType("netcdf", HttpServletResponse.SC_OK, ".nc");
     checkFileType("netcdf4-classic", HttpServletResponse.SC_OK, ".nc4");
-    checkFileType("netcdf4", HttpServletResponse.SC_BAD_REQUEST, ".nc4"); // Not currently enabled in TdsInit
+    checkFileType("netcdf4", HttpServletResponse.SC_OK, ".nc4");
+    checkFileType("netcdf4ext", HttpServletResponse.SC_BAD_REQUEST, ".nc4"); // Not currently enabled in TdsInit
   }
 
   private void checkFileType(String acceptParameter, int expectedResponseCode, String expectedSuffix)
