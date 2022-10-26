@@ -20,27 +20,27 @@ import org.slf4j.LoggerFactory;
 import thredds.test.util.TestOnLocalServer;
 
 public class TestAccessLinks {
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Test
-    public void shouldNotContainFilePathHref() {
-        final String path = TestOnLocalServer.withHttpPath("/catalog/catalogs5/testServices.html?dataset=TESTsst");
-        final String result = new String(TestOnLocalServer.getContent(path, HttpStatus.SC_OK), StandardCharsets.UTF_8);
+  @Test
+  public void shouldNotContainFilePathHref() {
+    final String path = TestOnLocalServer.withHttpPath("/catalog/catalogs5/testServices.html?dataset=TESTsst");
+    final String result = new String(TestOnLocalServer.getContent(path, HttpStatus.SC_OK), StandardCharsets.UTF_8);
 
-        final List<String> hrefs = findHrefs(result);
-        assertThat(hrefs.size()).isGreaterThan(0);
+    final List<String> hrefs = findHrefs(result);
+    assertThat(hrefs.size()).isGreaterThan(0);
 
-        for (String href : hrefs) {
-            assertThat(href).doesNotContain("file:");
-        }
+    for (String href : hrefs) {
+      assertThat(href).doesNotContain("file:");
     }
+  }
 
-    private static List<String> findHrefs(String htmlContent) {
-        Matcher matcher = Pattern.compile("href=\".*?\"").matcher(htmlContent);
-        List<String> matches = new ArrayList<>();
-        while(matcher.find()) {
-            matches.add(matcher.group());
-        }
-        return matches;
+  private static List<String> findHrefs(String htmlContent) {
+    Matcher matcher = Pattern.compile("href=\".*?\"").matcher(htmlContent);
+    List<String> matches = new ArrayList<>();
+    while (matcher.find()) {
+      matches.add(matcher.group());
     }
+    return matches;
+  }
 }
