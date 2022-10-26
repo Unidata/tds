@@ -209,6 +209,16 @@
       </ncml:netcdf>
     </dataset>
 
+    <dataset name="Test Aggregation with joinExisting dimension that some variables don't depend on"
+      ID="aggJoinExisting" urlPath="aggJoinExisting">
+      <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+        <aggregation dimName="height_above_ground" type="joinExisting">
+          <netcdf location="${cdmUnitTest}/ncml/nc/namExtract/20060925_1800.nc"/>
+        </aggregation>
+      </netcdf>
+    </dataset>
+
     <!-- test NcML in datasetScan -->
     <datasetScan name="ModifyDatasetScan" ID="ModifyDatasetScan" path="ModifyDatasetScan" location="${cdmUnitTest}/tds/">
       <metadata inherited="true">

@@ -105,4 +105,15 @@ public class TestWmsServer {
       System.setProperty("httpservices.urlencode", "true");
     }
   }
+
+  @Test
+  public void shouldGetMapForAggregationVariableThatDoesNotDependOnAggregationDimension() {
+    final String endpoint = TestOnLocalServer.withHttpPath("/wms/aggJoinExisting?FORMAT=image/png&TRANSPARENT=TRUE"
+        + "&STYLES=default-scalar/psu-viridis&LAYERS=Visibility&TIME=2006-09-26T00:00:00.000Z&COLORSCALERANGE=-50,50"
+        + "&NUMCOLORBANDS=20&ABOVEMAXCOLOR=extend&BELOWMINCOLOR=extend&BGCOLOR=extend&LOGSCALE=false&SERVICE=WMS"
+        + "&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:4326"
+        + "&BBOX=-71.317178725829,36.796624819867,-65.279244210597,42.834559335098&WIDTH=256&HEIGHT=256");
+    final byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.png.toString());
+    assertThat(result).isNotEmpty();
+  }
 }
