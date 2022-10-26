@@ -57,7 +57,7 @@ public class CatalogScan extends CatalogRef {
     File absLocation = new File(baseDir, relLocation);
     ConfigCatalog cc = reader.getFromAbsolutePath(absLocation + "/" + filename);
     if (cc == null)
-      logger.warn("Cant find catalog from scan: " + absLocation + "/" + filename);
+      logger.warn("Cant find catalog from scan: " + relLocation + "/" + filename);
     return cc;
   }
 
