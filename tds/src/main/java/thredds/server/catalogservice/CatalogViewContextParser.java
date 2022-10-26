@@ -402,6 +402,8 @@ class DatasetContext {
 
   private String catUrl;
 
+  private String remoteCatUrl;
+
   private Map<String, Object> context;
 
   private List<Map<String, String>> documentation;
@@ -449,7 +451,8 @@ class DatasetContext {
     final String catServiceStr = "/" + ServiceType.Catalog.name().toLowerCase(Locale.ROOT) + "/";
 
     if (!isLocalCatalog) {
-      this.catUrl = (contextPathStr + "remoteCatalogService?catalog=" + catUrl);
+      this.remoteCatUrl = catUrl;
+      this.catUrl = (contextPathStr + "remoteCatalogService?catalog=" + this.remoteCatUrl);
     } else {
       if (catUrl.indexOf('#') > 0) {
         catUrl = catUrl.substring(0, catUrl.lastIndexOf('#'));
@@ -593,11 +596,6 @@ class DatasetContext {
           case NCML:
           case UDDC:
           case ISO:
-            catalogUrl = this.catUrl;
-            datasetId = ds.getId();
-            if (catalogUrl != null && datasetId != null) {
-              queryString = "catalog=" + catalogUrl + "&dataset=" + datasetId;
-            }
             break;
           case NetcdfSubset:
             urlString = urlString + "/dataset.html";
