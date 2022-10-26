@@ -111,8 +111,9 @@ public class ConfigCatalogCache implements CatalogReader {
     // see if it exists
     File catFile = new File(catalogFullPath);
     if (!catFile.exists()) {
-      int pos = catalogFullPath.indexOf("content/thredds/");
-      String filename = (pos > 0) ? catalogFullPath.substring(pos + 16) : catalogFullPath;
+      final String contentDirName = "/thredds/";
+      int pos = catalogFullPath.lastIndexOf(contentDirName);
+      String filename = (pos > 0) ? catalogFullPath.substring(pos + contentDirName.length()) : catalogFullPath;
       throw new FileNotFoundException(filename);
     }
 
