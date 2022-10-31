@@ -24,7 +24,8 @@ import thredds.server.catalog.tracker.DataRootTracker;
 public class TestPathMatcher {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   private static final String[] DATA_ROOTS = new String[] {"/thredds/dods/test/longer", "/thredds/dods/test",
-      "/thredds/dods/tester", "/thredds/dods/short", "/actionable", "myworld", "mynot", "ncmodels", "ncmodels/bzipped"};
+      "/thredds-test/dods/test", "/thredds/dods/tester", "/thredds/dods/short", "/actionable", "myworld", "mynot",
+      "ncmodels", "ncmodels/bzipped"};
 
   private final String path;
   private final String match;
@@ -38,7 +39,7 @@ public class TestPathMatcher {
   @Parameterized.Parameters(name = "{0}")
   public static Object[][] getTestParameters() {
     return new Object[][] {{"nope", null}, {"/thredds/dods/test", "/thredds/dods/test"},
-        {"/thredds/dods/test/lo", "/thredds/dods/test"},
+        {"/thredds/dods/test/lo", "/thredds/dods/test"}, {"/thredds-test/dods/test/longer", "/thredds-test/dods/test"},
         {"/thredds/dods/test/longer/donger", "/thredds/dods/test/longer"}, {"myworldly", null}, {"/my", null},
         {"mysnot", null}, {"ncmodels/canonical", "ncmodels"}};
   }
