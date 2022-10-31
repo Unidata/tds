@@ -27,19 +27,20 @@ public class TestPathMatcher {
       "/thredds/dods/tester", "/thredds/dods/short", "/actionable", "myworld", "mynot", "ncmodels", "ncmodels/bzipped"};
 
   private final String path;
-  private final boolean hasMatch;
+  private final String match;
   private static DataRootPathMatcher matcher;
 
-  public TestPathMatcher(String path, boolean hasMatch) {
+  public TestPathMatcher(String path, String match) {
     this.path = path;
-    this.hasMatch = hasMatch;
+    this.match = match;
   }
 
   @Parameterized.Parameters(name = "{0}")
   public static Object[][] getTestParameters() {
-    return new Object[][] {{"nope", false}, {"/thredds/dods/test", true}, {"/thredds/dods/test/lo", true},
-        {"/thredds/dods/test/longer/donger", true}, {"myworldly", true}, {"/my", false}, {"mysnot", false},
-        {"ncmodels/canonical", true}};
+    return new Object[][] {{"nope", null}, {"/thredds/dods/test", "/thredds/dods/test"},
+        {"/thredds/dods/test/lo", "/thredds/dods/test"},
+        {"/thredds/dods/test/longer/donger", "/thredds/dods/test/longer"}, {"myworldly", null}, {"/my", null},
+        {"mysnot", null}, {"ncmodels/canonical", "ncmodels"}};
   }
 
   @BeforeClass
@@ -55,6 +56,6 @@ public class TestPathMatcher {
   @Test
   public void shouldReturnLongestMatchingPath() {
     final String result = matcher.findLongestPathMatch(path);
-    assertThat(result != null).isEqualTo(hasMatch);
+    assertThat(result).isEqualTo(match);
   }
 }
