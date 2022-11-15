@@ -9,8 +9,8 @@ jobs:
         # test against latest 11, 14 of zulu and 11 of temurin java
         java-version: [ 11 ]
         java-vendor: [ 'zulu', 'temurin' ]
-        # test against tomcat 8.5.x and tomcat 9.x
-        servletcontainer: [ 'tomcat85', 'tomcat9' ]
+        # test against tomcat 8.5.x, tomcat 9.x, and tomcat 10.x
+        servletcontainer: [ 'tomcat85', 'tomcat9', 'tomcat10' ]
         include:
           - java-version: 14
             java-vendor: 'zulu'
@@ -18,6 +18,9 @@ jobs:
           - java-version: 14
             java-vendor: 'zulu'
             servletcontainer: 'tomcat9'
+          - java-version: 14
+            java-vendor: 'zulu'
+            servletcontainer: 'tomcat10'
     steps:
       - uses: actions/checkout@v2
       - name: Build and test with Gradle (${{ matrix.java-vendor }} ${{ matrix.java-version }})
