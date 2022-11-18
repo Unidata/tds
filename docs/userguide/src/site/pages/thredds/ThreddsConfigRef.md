@@ -413,7 +413,7 @@ We recommend that you use this default, by not specifying the `DiskCache.dir` el
 
 ~~~xml
 <AggregationCache>
-  <dir>${tds.content.root.path}/thredds/cache/agg/</dir>
+  <dir>(see the note below)</dir>
   <scour>24 hours</scour>
   <maxAge>90 days</maxAge>
   <cachePathPolicy>nestedDirectory</cachePathPolicy>
@@ -447,7 +447,7 @@ We recommend that you use the default settings, by not specifying this option.
 
 ~~~xml
 <FeatureCollection>
-  <dir>${tds.content.root.path}/thredds/cache/collection/</dir>
+  <dir>(see the note below)</dir>
   <maxEntries>1000</maxEntries>
   <maxBloatFactor>1</maxBloatFactor>
 </FeatureCollection>
@@ -472,7 +472,7 @@ We recommend that you use the default settings, by not specifying this option.
 <GribIndex>
   <alwaysUse>false</alwaysUse>
   <neverUse>false</neverUse>
-  <dir>${tds.content.root.path}/thredds/cache/grib/</dir>
+  <dir>(see the note below)</dir>
   <policy>nestedDirectory</policy>
   <scour>0 hours</scour>
   <maxAge>90 days</maxAge>
@@ -482,6 +482,7 @@ We recommend that you use the default settings, by not specifying this option.
 These elements control where GRIB index files are written.
 
 * If `alwaysUse` is true, grib index files will always be written to the _index directory_ specified by `dir` (see [choosing a cache directory](#disk-caching-and-temporary-files)).
+  If not otherwise set, the TDS will use the ${tds.content.root.path}/thredds/cache/grib/ directory
   If `neverUse` is true, the index directory will never be used. 
   If neither is set, the TDS will try to write grib indexes to the same directory as the original file, and if the TDS doesn't have write permission it will then write the files to the index directory.
   Write permission will be determined by what rights the _Tomcat user_ has (the user that starts up Tomcat).
