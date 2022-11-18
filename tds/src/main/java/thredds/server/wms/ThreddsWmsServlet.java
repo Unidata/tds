@@ -132,12 +132,18 @@ public class ThreddsWmsServlet extends WmsServlet {
     super.dispatchWmsRequest(request, params, httpServletRequest, httpServletResponse, catalogue);
   }
 
-  private boolean useCachedCatalogue(String tdsDatasetPath) {
+  // package private for testing
+  static boolean useCachedCatalogue(String tdsDatasetPath) {
     final long lastModified = TdsRequestedDataset.getLastModified(tdsDatasetPath);
-    if (catalogueCache.containsKey(tdsDatasetPath)) {
+    if (containsCachedCatalogue(tdsDatasetPath)) {
       final long cacheLastModified = catalogueCache.get(tdsDatasetPath).lastModified;
       return cacheLastModified >= lastModified;
     }
     return false;
+  }
+
+  // package private for testing
+  static boolean containsCachedCatalogue(String tdsDatasetPath) {
+    return catalogueCache.containsKey(tdsDatasetPath);
   }
 }
