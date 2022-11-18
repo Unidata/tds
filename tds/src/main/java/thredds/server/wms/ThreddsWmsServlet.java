@@ -134,8 +134,8 @@ public class ThreddsWmsServlet extends WmsServlet {
 
   // package private for testing
   static boolean useCachedCatalogue(String tdsDatasetPath) {
-    final long lastModified = TdsRequestedDataset.getLastModified(tdsDatasetPath);
     if (containsCachedCatalogue(tdsDatasetPath)) {
+      final long lastModified = TdsRequestedDataset.getLastModified(tdsDatasetPath);
       final long cacheLastModified = catalogueCache.get(tdsDatasetPath).lastModified;
       return cacheLastModified >= lastModified;
     }
