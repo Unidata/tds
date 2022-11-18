@@ -66,4 +66,22 @@
     </dataset>
 
   </dataset>
+
+  <dataset name="Test aggregation with recheck every min" ID="aggRecheckMinute" urlPath="aggRecheck/minute">
+    <serviceName>all</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <aggregation dimName="time" type="joinExisting" recheckEvery="1 min">
+        <scan location="content/testdata/" suffix="testUpdate.nc"/>
+      </aggregation>
+    </netcdf>
+  </dataset>
+
+  <dataset name="Test aggregation with recheck every millisecond" ID="aggRecheckMillisecond" urlPath="aggRecheck/millisecond">
+    <serviceName>all</serviceName>
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <aggregation dimName="time" type="joinExisting" recheckEvery="1 msec">
+        <scan location="content/testdata/" suffix="testUpdate.nc"/>
+      </aggregation>
+    </netcdf>
+  </dataset>
 </catalog>
