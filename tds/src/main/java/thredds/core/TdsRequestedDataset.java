@@ -5,6 +5,8 @@
 
 package thredds.core;
 
+import thredds.inventory.MFile;
+import thredds.inventory.MFiles;
 import thredds.servlet.ServletUtil;
 import thredds.util.TdsPathUtils;
 import ucar.nc2.NetcdfFile;
@@ -90,13 +92,18 @@ public class TdsRequestedDataset {
   }
 
   public static long getLastModified(String reqPath) {
-    File file = getFile(reqPath);
-    return (file == null) ? -1 : file.lastModified();
+    MFile file = getMFile(reqPath);
+    return (file == null) ? -1 : file.getLastModified();
   }
 
   public static File getFile(String reqPath) {
     String location = getLocationFromRequestPath(reqPath);
     return (location == null) ? null : new File(location);
+  }
+
+  private static MFile getMFile(String reqPath) {
+    String location = getLocationFromRequestPath(reqPath);
+    return (location == null) ? null : MFiles.create(location);
   }
 
   public static String getLocationFromRequestPath(String reqPath) {
