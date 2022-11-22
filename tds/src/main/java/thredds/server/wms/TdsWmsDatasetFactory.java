@@ -23,6 +23,15 @@ public class TdsWmsDatasetFactory extends CdmGridDatasetFactory {
   }
 
   /**
+   * Get time of last modification of the underlying netcdfDataset
+   *
+   * @return time of last modification in Unix time (msecs since reference), or 0 if unknown
+   */
+  long getLastModified() {
+    return netcdfDataset.getLastModified();
+  }
+
+  /**
    *
    * None of this matters really. For NcML datasets, we cannot rely on a location, as the
    * ncml is modifying the dataset in memory. So, we are ignoring location and force reset
