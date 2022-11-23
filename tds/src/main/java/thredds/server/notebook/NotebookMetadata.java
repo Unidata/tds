@@ -1,6 +1,7 @@
 package thredds.server.notebook;
 
 import org.json.*;
+import thredds.client.catalog.Catalog;
 import thredds.client.catalog.Dataset;
 
 import java.io.File;
@@ -136,12 +137,18 @@ public class NotebookMetadata {
       if (this.accept_datasetIDs.contains(ds.getID())) {
         return true;
       }
-      if (this.accept_catalogs.contains(ds.getParentCatalog().getUriString())
-          || this.accept_catalogs.contains(ds.getParentCatalog().getName())) {
-        return true;
-      }
       if (this.accept_dataset_types.contains(ds.getFeatureTypeName())) {
         return true;
+      }
+      // search up the catalog for a matching ancestor
+      Catalog parent = ds.getParentCatalog();
+      while (parent != null) {
+        String catName = parent.getName();
+        String catUrl = parent.getUriString();
+        if (this.accept_catalogs.stream().anyMatch(str -> str.equals(catUrl) || catName.contains(str))) {
+          return true;
+        }
+        parent = parent.getParentCatalog();
       }
       return false;
     }
