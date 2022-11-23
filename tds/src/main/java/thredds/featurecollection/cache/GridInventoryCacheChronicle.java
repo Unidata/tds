@@ -157,6 +157,22 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
     }
   }
 
+  /**
+   * Display cache info
+   */
+  public static void showCache(Formatter formatter) {
+    if (cache == null) {
+      formatter.format("%nFMRC GridInventoryCache: turned off%n");
+    } else {
+      formatter.format("%nFMRC GridInventoryCache:%n");
+      formatter.format("numberOfEntries=%d, ", getNumberOfEntries());
+      formatter.format("remainingAutoResizes=%d, ", getRemainingAutoResizes());
+      formatter.format("percentageFreeSpace=%d, ", getPercentageFreeSpace());
+      formatter.format("offHeapMemoryUsed=%d", getOffHeapMemoryUsed());
+      formatter.format("%n");
+    }
+  }
+
   // For testing
   static void resetCache() {
     shutdown();
