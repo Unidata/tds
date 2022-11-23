@@ -156,4 +156,26 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
       cache.close();
     }
   }
+
+  // For testing
+  static void resetCache() {
+    shutdown();
+    cache = null;
+  }
+
+  static long getNumberOfEntries() {
+    return cache.longSize();
+  }
+
+  static int getRemainingAutoResizes() {
+    return cache.remainingAutoResizes();
+  }
+
+  static int getPercentageFreeSpace() {
+    return cache.percentageFreeSpace();
+  }
+
+  static long getOffHeapMemoryUsed() {
+    return cache.offHeapMemoryUsed();
+  }
 }
