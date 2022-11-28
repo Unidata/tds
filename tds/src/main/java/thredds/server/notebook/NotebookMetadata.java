@@ -140,17 +140,11 @@ public class NotebookMetadata {
       if (this.accept_dataset_types.contains(ds.getFeatureTypeName())) {
         return true;
       }
-      // search up the catalog for a matching ancestor
+      // check for loose catalog match
       Catalog parent = ds.getParentCatalog();
-      while (parent != null) {
-        String catName = parent.getName();
-        String catUrl = parent.getUriString();
-        if (this.accept_catalogs.stream().anyMatch(str -> str.equals(catUrl) || catName.contains(str))) {
-          return true;
-        }
-        parent = parent.getParentCatalog();
-      }
-      return false;
+      String catName = parent.getName();
+      String catUrl = parent.getUriString();
+      return this.accept_catalogs.stream().anyMatch(str -> str.equals(catUrl) || catName.contains(str));
     }
   }
 
