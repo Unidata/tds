@@ -450,6 +450,7 @@ We recommend that you use the default settings, by not specifying this option.
   <dir>(see the note below)</dir>
   <maxEntries>1000</maxEntries>
   <maxBloatFactor>1</maxBloatFactor>
+  <averageValueSize>small</averageValueSize>
 </FeatureCollection>
 ~~~
 
@@ -465,6 +466,12 @@ We recommend that you use the default settings, by not specifying this option.
   If it is possible to have more FMRC files than your `maxEntries`, then this value should be increased.
   It is strongly advised not to configure this value to more than 10, as the cache works progressively slower when the actual size grows far beyond the size configured in your `maxEntries`.
   See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
+* `averageValueSize`: the average size of the cached value (the grid and variable information), which is used when allocating memory for the cache.
+  The possible values are `small`, `medium`, or `large`.
+  The default value is `small`.
+  In most cases the default value should work fine. However, if your FMRC datasets have hundreds of variables,
+  and you are experiencing issues with the cache filling up even though you have adjusted the `maxEntries` and `maxBloatFactor`,
+  then this may need to be increased to `medium`, or in very rare circumstances `large`.
 
 ### GRIB Index Redirection
 
