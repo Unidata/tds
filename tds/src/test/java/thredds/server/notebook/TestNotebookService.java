@@ -2,8 +2,6 @@ package thredds.server.notebook;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.checkerframework.checker.units.qual.C;
-import org.json.JSONObject;
 import org.junit.Test;
 import thredds.client.catalog.Catalog;
 import thredds.client.catalog.Dataset;
@@ -26,13 +24,13 @@ public class TestNotebookService {
     NotebookMetadata nbData = new NotebookMetadata(new File(test_file));
 
     // dataset that matches by ID
-    Map fldsWithId = new HashMap();
+    Map<String, Object> fldsWithId = new HashMap<>();
     fldsWithId.put(Dataset.Id, "matchById");
     Dataset matchById = new Dataset(null, "match by Id", fldsWithId, null, null);
     assertThat(nbData.isValidForDataset(matchById)).isTrue();
 
     // dataset that matches featureType
-    Map fldsWithFeatureType = new HashMap();
+    Map<String, Object> fldsWithFeatureType = new HashMap<>();
     fldsWithFeatureType.put(Dataset.FeatureType, FeatureType.GRID.name());
     Dataset matchByFeatureType = new Dataset(null, "match by feature type", fldsWithFeatureType, null, null);
     assertThat(nbData.isValidForDataset(matchByFeatureType)).isTrue();
@@ -47,10 +45,10 @@ public class TestNotebookService {
 
     // dataset that matches catalog by URL
     Dataset matchByCatalogURI = new Dataset(parentByURI, "match by parent catalog", new HashMap<>(), null, null);
-    assertThat(nbData.isValidForDataset(matchByCatalogName)).isTrue();
+    assertThat(nbData.isValidForDataset(matchByCatalogURI)).isTrue();
 
     // dataset that doesn't match any accept param
-    Map fldsNoMatch = new HashMap();
+    Map<String, Object> fldsNoMatch = new HashMap<>();
     fldsWithId.put(Dataset.Id, "noMatchById");
     fldsNoMatch.put(Dataset.FeatureType, FeatureType.POINT.name());
     Catalog otherParent = new Catalog(new URI(""), "", new HashMap<>(), null);
