@@ -143,7 +143,7 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
   @Override
   public void put(MFile mfile, GridDatasetInv inventory) throws IOException {
     if (cache != null) {
-      String xml = inventory.writeXML(new Date(mfile.getLastModified()));
+      String xml = inventory.writeCompactXML(new Date(mfile.getLastModified()));
       cache.put(mfile.getPath(), xml.getBytes(Charsets.UTF_8));
     }
   }
