@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "viewer_info": {
+      "accepts": {
+        "accept_datasetIDs": ["matchById"],
+        "accept_dataset_types": ["GRID"],
+        "accept_catalogs": ["Parent catalog by name", "/parent/catalog/by/URI"]
+      }
+    }
+  }
+}
