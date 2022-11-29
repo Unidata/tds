@@ -285,6 +285,17 @@ to something like:
 Be aware if you install a new `thredds.war` to `${tomcat_home}/webapps`, the exploded directory—including all changes you made to `log4j2.xml` will be removed and the webapp will be redeployed from the new `thredds.war`. 
 We suggest you copy `log4j2.xml` to a different location for the deployment and then copy it back over afterwards.
 
+### Issues with Forecast Model Run Collections (FMRC)
+
+If your FMRC datasets are not working properly, and you see errors involving ChronicleMap in the `fmrc.log`, for instance:
+
+~~~
+[2022-09-12T16:02:50.065+0300] ERROR ucar.nc2.ft.fmrc.Fmrc: makeFmrcInv
+com.google.common.util.concurrent.UncheckedExecutionException: java.lang.IllegalStateException: ChronicleMap{name=GridDatasetInv, file=/content/thredds/cache/collection/GridDatasetInv.dat, identityHashCode=1659873263}: Attempt to allocate #3 extra segment tier, 2 is maximum.
+~~~
+
+then you may need to adjust your [FMRC cache settings](https://docs.unidata.ucar.edu/tds/current/userguide/tds_config_ref.html#featurecollection-cache).
+
 ## Caching
 
 ### We use compressed netCDF files, and the very first access to them are quite slow, although subsequent accesses are much faster, then become slow again after a while. 
