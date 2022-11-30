@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Date;
 import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -34,8 +35,13 @@ public class TestGridInventoryCacheChronicle {
   @Rule
   public final TemporaryFolder tempFolder = new TemporaryFolder();
 
+  @BeforeClass
+  public static void resetBeforeClass() {
+    GridInventoryCacheChronicle.resetCache();
+  }
+
   @After
-  public void reset() {
+  public void resetAfterEachTest() {
     GridInventoryCacheChronicle.resetCache();
   }
 
