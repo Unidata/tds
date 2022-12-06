@@ -43,7 +43,6 @@ import java.lang.invoke.MethodHandles;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
-@Category(NeedsCdmUnitTest.class)
 public class GridDatasetControllerTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -58,6 +57,7 @@ public class GridDatasetControllerTest {
   }
 
   @Test
+  @Category(NeedsCdmUnitTest.class)
   public void getGridSubsetOnGridDataset() throws Exception {
     RequestBuilder rb = MockMvcRequestBuilders.get("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
         .servletPath("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
@@ -76,6 +76,7 @@ public class GridDatasetControllerTest {
   }
 
   @Test
+  @Category(NeedsCdmUnitTest.class)
   public void getGridSubsetOnGridDatasetNc4() throws Exception {
     skipTestIfNetCDF4NotPresent();
 
@@ -104,6 +105,7 @@ public class GridDatasetControllerTest {
   }
 
   @Test
+  @Category(NeedsCdmUnitTest.class)
   public void shouldReturnFileWithFeatureCollectionPathInUrlPathAndLocationInNcml() throws Exception {
     final String path = "/ncss/grid/testGFSfmrc/ncmlLocation/dataset.xml";
     final RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
