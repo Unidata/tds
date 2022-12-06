@@ -4,8 +4,10 @@
  */
 package thredds.server.ncss.controller.grid;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assume.assumeTrue;
 
+import java.io.FileNotFoundException;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
@@ -29,6 +31,8 @@ import thredds.mock.web.MockTdsContextLoader;
 import thredds.server.ncss.format.SupportedFormat;
 import thredds.util.Constants;
 import ucar.nc2.ffi.netcdf.NetcdfClibrary;
+import ucar.nc2.util.cache.FileCacheIF;
+import ucar.unidata.io.RandomAccessFile;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.lang.invoke.MethodHandles;
 
@@ -105,6 +109,32 @@ public class GridDatasetControllerTest {
     final RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
 
     mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+  }
+
+  @Test
+  public void shouldThrowExceptionForNotACoverageDataset() throws Exception {
+    final String path = "/ncss/grid/scanLocal/testStringEscapes.nc/dataset.html";
+    final RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
+
+    final MvcResult result =
+        mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().is4xxClientError()).andReturn();
+
+    final Exception exception = result.getResolvedException();
+    assertThat(exception).isNotNull();
+    assertThat(exception).isInstanceOf(FileNotFoundException.class);
+  }
+
+  @Test
+  public void shouldCloseCacheResourcesWhenExceptionIsThrown() throws Exception {
+    final String path = "/ncss/grid/scanLocal/testStringEscapes.nc/dataset.html";
+    final RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
+
+    final FileCacheIF rafCache = RandomAccessFile.getGlobalFileCache();
+    rafCache.clearCache(true);
+    assertThat(rafCache.showCache()).isEmpty();
+    mockMvc.perform(rb);
+    assertThat(rafCache.showCache().size()).isEqualTo(1);
+    assertThat(rafCache.showCache().get(0)).startsWith("false"); // file should not be locked
   }
 
   private class FilenameMatcher extends BaseMatcher<String> {
