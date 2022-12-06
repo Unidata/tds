@@ -142,9 +142,13 @@ public class NotebookMetadata {
       }
       // check for loose catalog match
       Catalog parent = ds.getParentCatalog();
-      if (parent == null) { return false; }
+      if (parent == null) {
+        return false;
+      }
       String catName = parent.getName();
-      if (catName == null) { return false; }
+      if (catName == null) {
+        return false;
+      }
       String catUrl = parent.getUriString();
       return this.accept_catalogs.stream().anyMatch(str -> str.equals(catUrl) || catName.contains(str));
     }
