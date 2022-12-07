@@ -11,6 +11,9 @@ dependencies {
   compile 'edu.ucar:grib'
   compile 'org.jdom:jdom2'
 
+  compile 'javax.validation:validation-api'
+  compile 'javax.annotation:javax.annotation-api'
+
   compile 'org.quartz-scheduler:quartz'
   compile 'net.openhft:chronicle-map'
   compile 'com.google.code.findbugs:jsr305'
