@@ -5,8 +5,8 @@ import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.core.util.ReadResolvable;
 import net.openhft.chronicle.hash.serialization.BytesReader;
 import net.openhft.chronicle.hash.serialization.BytesWriter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.validation.constraints.NotNull;
+import javax.annotation.Nullable;
 
 public class DatasetExtBytesMarshaller
     implements BytesWriter<DatasetExt>, BytesReader<DatasetExt>, ReadResolvable<DatasetExtBytesMarshaller> {
