@@ -1,5 +1,6 @@
 package thredds.server.serverinfo;
 
+import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -49,7 +50,7 @@ public class ServerInfoControllerTest {
   public void serverInfoHTMLRequestTest() throws Exception {
     requestBuilder = MockMvcRequestBuilders.get("/info/serverInfo.html");
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-    assertThat(mvc.getResponse().getStatus()).isEqualTo(200);
+    assertThat(mvc.getResponse().getStatus()).isEqualTo(HttpServletResponse.SC_OK);
     checkModelAndView(mvc.getModelAndView(), "thredds/server/serverinfo/serverInfo_html");
   }
 
@@ -57,7 +58,7 @@ public class ServerInfoControllerTest {
   public void serverInfoXMLRequestTest() throws Exception {
     requestBuilder = MockMvcRequestBuilders.get("/info/serverInfo.xml");
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-    assertThat(mvc.getResponse().getStatus()).isEqualTo(200);
+    assertThat(mvc.getResponse().getStatus()).isEqualTo(HttpServletResponse.SC_OK);
     checkModelAndView(mvc.getModelAndView(), "thredds/server/serverinfo/serverInfo_xml");
   }
 
@@ -65,7 +66,7 @@ public class ServerInfoControllerTest {
   public void serverVersionRequestTest() throws Exception {
     requestBuilder = MockMvcRequestBuilders.get("/info/serverVersion.txt");
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-    assertThat(mvc.getResponse().getStatus()).isEqualTo(200);
+    assertThat(mvc.getResponse().getStatus()).isEqualTo(HttpServletResponse.SC_OK);
     checkModelAndView(mvc.getModelAndView(), "thredds/server/serverinfo/serverVersion_txt");
   }
 
