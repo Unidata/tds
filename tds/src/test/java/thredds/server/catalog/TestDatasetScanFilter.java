@@ -35,14 +35,13 @@ public class TestDatasetScanFilter {
   @ClassRule
   public static final TemporaryFolder tempFolder = new TemporaryFolder();
 
-  private static File tmpTestDataDir;
   private static MFile tmpTestDataCrDs;
   private static List<String> dataFiles_FullPathNames;
   private static List<String> allFiles_FullPathNames;
 
   @BeforeClass
   public static void setupTestDataDir() throws IOException {
-    tmpTestDataDir = tempFolder.newFolder();
+    File tmpTestDataDir = tempFolder.newFolder();
     logger.debug("tmpLocalRootDataDir = {}", tmpTestDataDir);
 
     AliasTranslator.addAlias("${tmpDir}", tmpTestDataDir.getPath());
