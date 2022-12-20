@@ -30,6 +30,7 @@ import java.io.Serializable;
  * @author TPL <tlarocque@asascience.com>
  * @deprecated This class does not handle the dateline properly. Use the LatLonRectangle2D class instead.
  */
+@Deprecated
 public abstract class GeoRectangle implements Shape, Serializable {
 
   /**

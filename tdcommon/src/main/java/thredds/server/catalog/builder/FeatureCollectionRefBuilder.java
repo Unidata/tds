@@ -63,6 +63,7 @@ public class FeatureCollectionRefBuilder extends DatasetBuilder {
   /**
    * @deprecated Use {@link #FeatureCollectionRefBuilder(DatasetBuilder, FeatureCollectionRef, String)} instead
    */
+  @Deprecated
   public FeatureCollectionRefBuilder(DatasetBuilder parent, FeatureCollectionRef from) {
     this(parent, from, "thredds");
   }

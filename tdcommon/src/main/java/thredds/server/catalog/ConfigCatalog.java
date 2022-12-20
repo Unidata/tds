@@ -57,6 +57,7 @@ public class ConfigCatalog extends Catalog {
   /**
    * @deprecated Use {@link #makeCatalogBuilder(String)} instead
    */
+  @Deprecated
   public CatalogBuilder makeCatalogBuilder() {
     return makeCatalogBuilder("thredds");
   }
