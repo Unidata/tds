@@ -37,6 +37,7 @@ public class CatalogScanBuilder extends DatasetBuilder {
   /**
    * @deprecated Use {@link #CatalogScanBuilder(DatasetBuilder, CatalogScan, String)} instead
    */
+  @Deprecated
   public CatalogScanBuilder(DatasetBuilder parent, CatalogScan from) {
     this(parent, from, "thredds");
   }
