@@ -35,10 +35,6 @@ public class TestDatasetScanFilter {
   @ClassRule
   public static final TemporaryFolder tempFolder = new TemporaryFolder();
 
-  private static MFile tmpTestDataCrDs;
-  private static List<String> dataFiles_FullPathNames;
-  private static List<String> allFiles_FullPathNames;
-
   @BeforeClass
   public static void setupTestDataDir() throws IOException {
     File tmpTestDataDir = tempFolder.newFolder();
