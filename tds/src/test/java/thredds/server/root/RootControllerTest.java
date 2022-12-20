@@ -1,6 +1,8 @@
 package thredds.server.root;
 
 import static com.google.common.truth.Truth.assertThat;
+
+import javax.servlet.http.HttpServletResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -43,7 +45,7 @@ public class RootControllerTest {
     requestBuilder = MockMvcRequestBuilders.get("/");
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
     // Check that "/" is redirected
-    assertThat(mvc.getResponse().getStatus()).isEqualTo(302);
+    assertThat(mvc.getResponse().getStatus()).isEqualTo(HttpServletResponse.SC_FOUND);
     assertThat(mvc.getModelAndView().getViewName()).isEqualTo("redirect:/catalog/catalog.html");
   }
 
@@ -52,7 +54,7 @@ public class RootControllerTest {
     requestBuilder = MockMvcRequestBuilders.get("/tdsCat.css");
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
     // Check that "/" is redirected
-    assertThat(mvc.getResponse().getStatus()).isEqualTo(200);
+    assertThat(mvc.getResponse().getStatus()).isEqualTo(HttpServletResponse.SC_OK);
     String content = mvc.getResponse().getContentAsString();
     System.out.printf("content='%s'%n", content);
     // Assert.assertNotNull(mvc.getModelAndView());
