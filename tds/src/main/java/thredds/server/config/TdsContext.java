@@ -448,6 +448,38 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
     return this.configFileProperty;
   }
 
+  /**
+   * @deprecated no longer support tds.upload.dir property
+   */
+  @Deprecated
+  public File getUploadDir() {
+    return null;
+  }
+
+  /**
+   * @deprecated no longer support tds.download.dir property
+   */
+  @Deprecated
+  public File getDownloadDir() {
+    return null;
+  }
+
+  /**
+   * @deprecated no longer support tds.upload.form property
+   */
+  @Deprecated
+  public File getUploadForm() {
+    return null;
+  }
+
+  /**
+   * @deprecated no longer support tds.download.form property
+   */
+  @Deprecated
+  public File getDownloadForm() {
+    return null;
+  }
+
   public String getTdsDebugFlags() {
     return tdsDebugFlagsProperty;
   }
@@ -458,5 +490,53 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
 
   public void setContentRootPathProperty(String contentRootPathProperty) {
     this.contentRootPathProperty = contentRootPathProperty;
+  }
+
+  /**
+   * @deprecated no longer support tds.upload.dir property
+   */
+  @Deprecated
+  public void setUploadDirProperty(String uploadDirProperty) {
+    // no-op
+  }
+
+  /**
+   * @deprecated no longer support tds.download.dir property
+   */
+  @Deprecated
+  public void setDownloadDirProperty(String downloadDirProperty) {
+    // no-op
+  }
+
+  /**
+   * @deprecated no longer support tds.upload.form property
+   */
+  @Deprecated
+  public void setUploadFormProperty(String uploadFormProperty) {
+    // no-op
+  }
+
+  /**
+   * @deprecated no longer support tds.download.form property
+   */
+  @Deprecated
+  public void setDownloadFormProperty(String downloadFormProperty) {
+    // no-op
+  }
+
+  /**
+   * @deprecated no longer need this helper function
+   */
+  @Deprecated
+  public File getPropertyDir(String prop, String key, boolean create) {
+    return null;
+  }
+
+  /**
+   * @deprecated no longer need this helper function
+   */
+  @Deprecated
+  public File getPropertyFile(String prop, String key, boolean writeable) {
+    return null;
   }
 }
