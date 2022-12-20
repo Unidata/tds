@@ -53,7 +53,7 @@ public class TestInvCatalogXmlView {
 
     CatalogBuilder builder = new CatalogBuilder();
     Catalog cat = builder.buildFromString(catAsString.toString(), catURI);
-    Map model = Collections.singletonMap("catalog", cat);
+    Map<String, Catalog> model = Collections.singletonMap("catalog", cat);
 
     View view = new InvCatalogXmlView();
     try {
