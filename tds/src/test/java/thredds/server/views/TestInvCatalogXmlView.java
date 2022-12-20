@@ -40,7 +40,7 @@ public class TestInvCatalogXmlView {
         + "</catalog>";
     String catUri = "Cat.TestInvCatalogXmlView.testNoDeclaredEncoding";
 
-    URI catURI = null;
+    URI catURI;
     try {
       catURI = new URI(catUri);
     } catch (URISyntaxException e) {
