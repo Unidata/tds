@@ -69,18 +69,6 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
   @Value("${tds.content.root.path}")
   private String contentRootPathProperty; // wants a trailing slash
 
-  @Value("${tds.upload.dir}")
-  private String uploadDirProperty;
-
-  @Value("${tds.upload.form}")
-  private String uploadFormProperty;
-
-  @Value("${tds.download.dir}")
-  private String downloadDirProperty;
-
-  @Value("${tds.download.form}")
-  private String downloadFormProperty;
-
   @Value("${tds.debug.flags:}") // :} indicates an empty string if tds.debugflags prop is not set
   private String tdsDebugFlagsProperty; // space sep debug flags to enable
 
@@ -97,10 +85,6 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
   private File publicContentDirectory;
   private File startupContentDirectory;
   private File tomcatLogDir;
-  private File uploadDir = null;
-  private File downloadDir = null;
-  private File uploadForm = null;
-  private File downloadForm = null;
 
   private FileSource publicContentDirSource;
   // private FileSource catalogRootDirSource; // look for catalog files at this(ese) root(s)
@@ -253,13 +237,6 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
     defaultRequestDispatcher = servletContext.getNamedDispatcher("default");
 
     ////////////////////////////////
-
-    this.uploadDir = getPropertyDir(uploadDirProperty, "tds.upload.dir", true);
-    this.uploadForm = getPropertyFile(uploadFormProperty, "tds.upload.form", false);
-    this.downloadDir = getPropertyDir(downloadDirProperty, "tds.download.dir", true);
-    this.downloadForm = getPropertyFile(downloadFormProperty, "tds.download.form", false);
-
-    ////////////////////////////////
     // Copy default startup files, if necessary
     ////////////////////////////////
 
@@ -369,14 +346,6 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
     sb.append("\n");
     sb.append("\n  servletRootDir=   ").append(servletRootDirectory);
     sb.append("\n  contentRootDir=   ").append(contentRootDir);
-    if (this.uploadDir != null)
-      sb.append("\n  uploadDir=   ").append(uploadDir);
-    if (this.uploadForm != null)
-      sb.append("\n  uploadForm=   ").append(uploadForm);
-    if (this.downloadDir != null)
-      sb.append("\n  downloadDir=   ").append(downloadDir);
-    if (this.downloadForm != null)
-      sb.append("\n  downloadForm=   ").append(downloadForm);
     sb.append("\n  threddsDirectory= ").append(threddsDirectory);
     sb.append("\n  publicContentDir= ").append(publicContentDirectory);
     sb.append("\n  startupContentDir=").append(startupContentDirectory);
@@ -479,20 +448,36 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
     return this.configFileProperty;
   }
 
+  /**
+   * @deprecated no longer support tds.upload.dir property
+   */
+  @Deprecated
   public File getUploadDir() {
-    return this.uploadDir;
+    return null;
   }
 
+  /**
+   * @deprecated no longer support tds.download.dir property
+   */
+  @Deprecated
   public File getDownloadDir() {
-    return this.downloadDir;
+    return null;
   }
 
+  /**
+   * @deprecated no longer support tds.upload.form property
+   */
+  @Deprecated
   public File getUploadForm() {
-    return uploadForm;
+    return null;
   }
 
+  /**
+   * @deprecated no longer support tds.download.form property
+   */
+  @Deprecated
   public File getDownloadForm() {
-    return downloadForm;
+    return null;
   }
 
   public String getTdsDebugFlags() {
@@ -507,101 +492,51 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
     this.contentRootPathProperty = contentRootPathProperty;
   }
 
+  /**
+   * @deprecated no longer support tds.upload.dir property
+   */
+  @Deprecated
   public void setUploadDirProperty(String uploadDirProperty) {
-    this.uploadDirProperty = uploadDirProperty;
+    // no-op
   }
 
+  /**
+   * @deprecated no longer support tds.download.dir property
+   */
+  @Deprecated
   public void setDownloadDirProperty(String downloadDirProperty) {
-    this.downloadDirProperty = downloadDirProperty;
+    // no-op
   }
 
+  /**
+   * @deprecated no longer support tds.upload.form property
+   */
+  @Deprecated
   public void setUploadFormProperty(String uploadFormProperty) {
-    this.uploadFormProperty = uploadFormProperty;
+    // no-op
   }
 
+  /**
+   * @deprecated no longer support tds.download.form property
+   */
+  @Deprecated
   public void setDownloadFormProperty(String downloadFormProperty) {
-    this.downloadFormProperty = downloadFormProperty;
+    // no-op
   }
 
+  /**
+   * @deprecated no longer need this helper function
+   */
+  @Deprecated
   public File getPropertyDir(String prop, String key, boolean create) {
-    assert prop != null && key != null;
-    // In applicationContext-tdsConfig.xml, we have ignoreUnresolvablePlaceholders set to "true".
-    // As a result, when properties aren't defined, they will keep their placeholder String.
-    // In this case, that's "${<key>}".
-    if (prop.equals("${" + key + "}")) {
-      String msg = String.format("\"%s\" property isn't defined.", key);
-      logServerStartup.warn("TdsContext.init(): " + msg);
-      return null;
-    }
-    prop = StringUtil2.replace(prop, "\\", "/");
-    if (!prop.endsWith("/"))
-      prop += "/";
-    // Set the content directory and source.
-    File dir = new File(prop);
-    if (!dir.isAbsolute()) {
-      String msg = String.format("\"%s=%s\" value must be an absolutepath.", key, prop);
-      logServerStartup.warn("TdsContext.init(): " + msg);
-      return null;
-    }
-    // Make sure dir exists and is read/writeable
-    if (!dir.exists() && create) {
-      if (!dir.mkdirs())
-        logServerStartup
-            .warn("TdsContext.init(): " + String.format("Directory: %s=%s could not be created.", key, prop));;
-    }
-    if (!dir.exists()) {
-      logServerStartup.warn("TdsContext.init(): " + String.format("Directory: %s=%s does not exist.", key, prop));
-      return null;
-    }
-    if (!dir.isDirectory()) {
-      logServerStartup.warn("TdsContext.init(): " + String.format("Directory: %s=%s is not a directory.", key, prop));
-      return null;
-    }
-    if (!dir.canRead() || !dir.canWrite()) {
-      logServerStartup
-          .warn("TdsContext.init(): " + String.format("Directory: %s=%s must be readable and writeable.", key, prop));
-      return null;
-    }
-    return dir;
+    return null;
   }
 
+  /**
+   * @deprecated no longer need this helper function
+   */
+  @Deprecated
   public File getPropertyFile(String prop, String key, boolean writeable) {
-    assert prop != null && key != null;
-    // In applicationContext-tdsConfig.xml, we have ignoreUnresolvablePlaceholders set to "true".
-    // As a result, when properties aren't defined, they will keep their placeholder String.
-    // In this case, that's "${<key>}".
-    if (prop.equals("${" + key + "}")) {
-      String msg = String.format("\"%s\" property isn't defined.", key);
-      logServerStartup.warn("TdsContext.init(): " + msg);
-      return null;
-    }
-    prop = StringUtil2.replace(prop, "\\", "/");
-    if (!prop.endsWith("/"))
-      prop += "/";
-    // Set the content file and source.
-    File file = new File(prop);
-    if (!file.isAbsolute()) {
-      String msg = String.format("\"%s=%s\" value must be an absolutepath.", key, prop);
-      logServerStartup.warn("TdsContext.init(): " + msg);
-      return null;
-    }
-    // Make sure file exists and is readable and (optionally)writeable
-    if (!file.exists()) {
-      logServerStartup.warn("TdsContext.init(): " + String.format("Directory: %s=%s does not exist.", key, prop));
-      return null;
-    }
-    if (!file.isFile()) {
-      logServerStartup.warn("TdsContext.init(): " + String.format("File: %s=%s is not a file.", key, prop));
-      return null;
-    }
-    if (!file.canRead()) {
-      logServerStartup.warn("TdsContext.init(): " + String.format("File: %s=%s must be readable.", key, prop));
-      return null;
-    }
-    if (writeable && !file.canWrite()) {
-      logServerStartup.warn("TdsContext.init(): " + String.format("File: %s=%s must be writeable.", key, prop));
-      return null;
-    }
-    return file;
+    return null;
   }
 }
