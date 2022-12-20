@@ -21,7 +21,8 @@ import thredds.mock.web.MockTdsContextLoader;
 import thredds.server.config.TdsServerInfoBean;
 import ucar.unidata.util.test.category.NeedsContentRoot;
 import java.lang.invoke.MethodHandles;
-import static org.junit.Assert.assertEquals;
+
+import static com.google.common.truth.Truth.assertThat;
 import static org.springframework.test.web.ModelAndViewAssert.assertAndReturnModelAttributeOfType;
 import static org.springframework.test.web.ModelAndViewAssert.assertViewName;
 
@@ -48,7 +49,7 @@ public class ServerInfoControllerTest {
   public void serverInfoHTMLRequestTest() throws Exception {
     requestBuilder = MockMvcRequestBuilders.get("/info/serverInfo.html");
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-    assertEquals(200, mvc.getResponse().getStatus());
+    assertThat(mvc.getResponse().getStatus()).isEqualTo(200);
     checkModelAndView(mvc.getModelAndView(), "thredds/server/serverinfo/serverInfo_html");
   }
 
@@ -56,7 +57,7 @@ public class ServerInfoControllerTest {
   public void serverInfoXMLRequestTest() throws Exception {
     requestBuilder = MockMvcRequestBuilders.get("/info/serverInfo.xml");
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-    assertEquals(200, mvc.getResponse().getStatus());
+    assertThat(mvc.getResponse().getStatus()).isEqualTo(200);
     checkModelAndView(mvc.getModelAndView(), "thredds/server/serverinfo/serverInfo_xml");
   }
 
@@ -64,7 +65,7 @@ public class ServerInfoControllerTest {
   public void serverVersionRequestTest() throws Exception {
     requestBuilder = MockMvcRequestBuilders.get("/info/serverVersion.txt");
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-    assertEquals(200, mvc.getResponse().getStatus());
+    assertThat(mvc.getResponse().getStatus()).isEqualTo(200);
     checkModelAndView(mvc.getModelAndView(), "thredds/server/serverinfo/serverVersion_txt");
   }
 
