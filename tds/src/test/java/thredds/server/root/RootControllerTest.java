@@ -46,6 +46,7 @@ public class RootControllerTest {
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
     // Check that "/" is redirected
     assertThat(mvc.getResponse().getStatus()).isEqualTo(HttpServletResponse.SC_FOUND);
+    assertThat(mvc.getModelAndView()).isNotNull();
     assertThat(mvc.getModelAndView().getViewName()).isEqualTo("redirect:/catalog/catalog.html");
   }
 
