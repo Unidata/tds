@@ -43,7 +43,7 @@ public class TestDatasetScanFilter {
   @BeforeClass
   public static void setupTestDataDir() throws IOException {
     tmpTestDataDir = tempFolder.newFolder();
-    System.out.printf("tmpLocalRootDataDir = %s%n", tmpTestDataDir);
+    logger.debug("tmpLocalRootDataDir = {}", tmpTestDataDir);
 
     AliasTranslator.addAlias("${tmpDir}", tmpTestDataDir.getPath());
     AliasTranslator.addAlias("${cdmUnitTest}", TestDir.cdmUnitTestDir);
@@ -126,20 +126,20 @@ public class TestDatasetScanFilter {
     assertThat(serviceName).isEqualTo("all");
 
     DatasetScanConfig config = dss.getConfig();
-    System.out.printf("%s%n", config);
+    logger.debug(config.toString());
 
     Catalog scanCat = dss.makeCatalogForDirectory("testGridScan", cat.getBaseURI()).makeCatalog();
     assertThat(scanCat).isNotNull();
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     Dataset root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(1);
 
     scanCat = dss.makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI())
         .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(2);
@@ -147,7 +147,7 @@ public class TestDatasetScanFilter {
     scanCat = dss
         .makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles/20131106", cat.getBaseURI())
         .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(3);
@@ -155,7 +155,7 @@ public class TestDatasetScanFilter {
     scanCat = dss
         .makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles/20131107", cat.getBaseURI())
         .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(4);
@@ -177,7 +177,7 @@ public class TestDatasetScanFilter {
     assertThat(scanCat).isNotNull();
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     Dataset root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(1);
@@ -185,21 +185,21 @@ public class TestDatasetScanFilter {
     scanCat =
         dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI())
             .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(2);
 
     scanCat = dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131106",
         cat.getBaseURI()).makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(3);
 
     scanCat = dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131107",
         cat.getBaseURI()).makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(3);
@@ -210,7 +210,7 @@ public class TestDatasetScanFilter {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
     assertThat(cat).isNotNull();
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    System.out.printf("%n%s%n", writer.writeXML(cat));
+    logger.debug(writer.writeXML(cat));
 
     Dataset ds = cat.findDatasetByID("testExclude");
     assertThat(ds).isNotNull();
@@ -222,14 +222,14 @@ public class TestDatasetScanFilter {
     Catalog scanCat = dss.makeCatalogForDirectory("testExclude", cat.getBaseURI()).makeCatalog();
     assertThat(scanCat).isNotNull();
 
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     Dataset root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(1);
 
     scanCat = dss.makeCatalogForDirectory("testExclude/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI())
         .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(1);
@@ -237,7 +237,7 @@ public class TestDatasetScanFilter {
     scanCat =
         dss.makeCatalogForDirectory("testExclude/testDatafilesInDateTimeNestedDirs/profiles/20131106", cat.getBaseURI())
             .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
+    logger.debug(writer.writeXML(scanCat));
     assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
     assertThat(root.getDatasets().size()).isEqualTo(3);
