@@ -56,7 +56,7 @@ public class RootControllerTest {
     // Check that "/" is redirected
     assertThat(mvc.getResponse().getStatus()).isEqualTo(HttpServletResponse.SC_OK);
     String content = mvc.getResponse().getContentAsString();
-    System.out.printf("content='%s'%n", content);
+    logger.debug("content='{}'", content);
     // Assert.assertNotNull(mvc.getModelAndView());
     // assertEquals("redirect:/catalog/catalog.html", mvc.getModelAndView().getViewName());
   }
