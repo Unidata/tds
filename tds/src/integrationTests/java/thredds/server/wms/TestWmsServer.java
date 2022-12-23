@@ -116,4 +116,12 @@ public class TestWmsServer {
     final byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.png.toString());
     assertThat(result).isNotEmpty();
   }
+
+  @Test
+  public void shouldGetCapabilitiesForDatasetScanWithNcml() {
+    final String endpoint = TestOnLocalServer
+        .withHttpPath("/wms/ModifyDatasetScan/revOceanDJF2.nc?service=WMS&version=1.3.0&request=GetCapabilities");
+    final byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.xmlwms);
+    assertThat(result).isNotEmpty();
+  }
 }
