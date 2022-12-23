@@ -21,6 +21,7 @@ import ucar.nc2.Variable;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
+import ucar.nc2.dataset.VariableDS;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -58,8 +59,13 @@ public class TestTdsNcml {
 
       final Variable reletiveHumidity = ncd.findVariable("ReletiveHumidity");
       assertThat((Object) reletiveHumidity).isNotNull();
+      assertThat((Object) reletiveHumidity).isInstanceOf(VariableDS.class);
       assertThat(reletiveHumidity.findAttributeString("long_name", null)).isEqualTo("relatively humid");
       assertThat(reletiveHumidity.findAttribute("description")).isNull();
+
+      final Variable lat = ncd.findVariable("lat");
+      assertThat((Object) lat).isNotNull();
+      assertThat((Object) lat).isInstanceOf(VariableDS.class);
     }
   }
 
@@ -94,9 +100,14 @@ public class TestTdsNcml {
 
       final Variable reletiveHumidity = ncd.findVariable("ReletiveHumidity");
       assertThat((Object) reletiveHumidity).isNotNull();
+      assertThat((Object) reletiveHumidity).isInstanceOf(VariableDS.class);
       final Attribute att = reletiveHumidity.findAttribute("long_name");
       assertThat(att).isNotNull();
       assertThat(att.getStringValue()).isEqualTo("relatively humid");
+
+      final Variable lat = ncd.findVariable("lat");
+      assertThat((Object) lat).isNotNull();
+      assertThat((Object) lat).isInstanceOf(VariableDS.class);
     }
   }
 
