@@ -39,7 +39,7 @@ public class TestTdsNcml {
     assertThat(ds.getFeatureType()).isEqualTo(FeatureType.GRID);
 
     // ncml should not be sent to the client
-    // assert null == ds.getNcmlElement();
+    assertThat(ds.getNcmlElement()).isNull();
 
     final DataFactory fac = new DataFactory();
     final Formatter log = new Formatter();
