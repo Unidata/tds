@@ -34,9 +34,10 @@ For now, we will focus on the following subset of the content directory:
              Useful for debugging problems.
    * `cache/` - various cache directories
      * `agg/`
+     * `aggNew/`
      * `cdm/`
      * `collection/`
-     * `ehcache/`
+     * `edal-java/`
      * `ncss/`
      * `wcs/`
    * `templates/`
