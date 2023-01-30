@@ -704,7 +704,7 @@ public class InvDatasetFcGrib extends InvDatasetFeatureCollection {
 
   // kinda kludgey, but trying not keep URLs stable
   public GribCollectionImmutable.Dataset getSingleDatasetOrByTypeName(GribCollectionImmutable gc, String typeName) {
-    if (gc.getDatasets().size() == 1)
+    if (gc.getDatasets().size() == 1 && typeName.equalsIgnoreCase(PARTITION_DATASET))
       return gc.getDataset(0);
     for (GribCollectionImmutable.Dataset ds : gc.getDatasets())
       if (ds.getType().toString().equalsIgnoreCase(typeName))
