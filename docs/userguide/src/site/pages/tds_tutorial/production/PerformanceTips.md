@@ -57,7 +57,7 @@ This affects the number of files to keep in the [File Handle Caches](#file-handl
 
 ### Version
 
-We recommend the latest stable version of Tomcat 8 and JDK 1.8.
+See [System Requirements](install_java_tomcat.html#system-requirements).
 
 ### Compression
 
