@@ -18,8 +18,7 @@ High performance disk subsystems like RAID or SANs will significantly improve TD
 
 ## Operating System Configuration
 
-Welcome to 200x - use a 64-bit Operating System
-* 'nuff said
+You should use a 64-bit Operating System.
 
 ## Use a high-performance file system
 
