@@ -235,7 +235,7 @@ The following shows all the configuration options available in the WMS section o
 <WMS>
   <allow>true</allow>
   <allowRemote>false</allowRemote>
-  <paletteLocationDir>/WEB-INF/palettes</paletteLocationDir>
+  <paletteLocationDir>/path/to/custom/palettes</paletteLocationDir>
   <maxImageWidth>2048</maxImageWidth>
   <maxImageHeight>2048</maxImageHeight>
 </WMS>
@@ -249,7 +249,8 @@ Here is the description of the various options:
 * `paletteLocationDir`: optionally specify the location of the directory containing your own palette files, by specifying the directory
 where they are contained.
   If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
-  If you don't specify it, or specify it incorrectly, the default palettes will be used, which are in the war file under `WEB-INF/palettes`.
+  If you don't specify it, or specify it incorrectly, the default palettes will be used, which are described
+  [here](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap).
 * `maxImageWidth`: the maximum image width in pixels that this WMS service will return.
 * `maxImageHeight`: the maximum image height in pixels that this WMS service will return.
 
