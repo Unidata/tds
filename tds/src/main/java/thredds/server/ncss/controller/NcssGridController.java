@@ -57,7 +57,7 @@ import ucar.nc2.write.NetcdfFormatWriter;
 @RequestMapping("/ncss/grid")
 public class NcssGridController extends AbstractNcssController {
   // Compression rate used to estimate the filesize of netcdf4 compressed files
-  private static final short ESTIMATED_COMPRESION_RATE = 4;
+  private static final short ESTIMATED_COMPRESSION_RATE = 4;
   // pattern for valid WKT lat lon point
   // Two decimal digits separated by whitespace, potentially starting and/or ending with
   // a comma
@@ -163,7 +163,7 @@ public class NcssGridController extends AbstractNcssController {
     // Test maxFileDownloadSize
     long maxFileDownloadSize = ThreddsConfig.getBytes("NetcdfSubsetService.maxFileDownloadSize", -1L);
     if (version == NetcdfFileFormat.NETCDF4)
-      maxFileDownloadSize *= ESTIMATED_COMPRESION_RATE;
+      maxFileDownloadSize *= ESTIMATED_COMPRESSION_RATE;
 
     // write the file
     // default chunking - let user control at some point
