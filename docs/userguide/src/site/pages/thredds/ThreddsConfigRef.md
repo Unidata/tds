@@ -201,8 +201,8 @@ The following shows all the configuration options available in the WCS section o
 <WCS>
   <allow>true</allow>
   <dir>(see the note below)</dir>
-  <scour>15 min</scour>
-  <maxAge>30 min</maxAge>
+  <scour>10 min</scour>
+  <maxAge>5 min</maxAge>
 </WCS>
 ~~~
 
