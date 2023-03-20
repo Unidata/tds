@@ -140,6 +140,8 @@ public class NcssGridController extends AbstractNcssController {
     res.flushBuffer();
     res.getOutputStream().close();
     res.setStatus(HttpServletResponse.SC_OK);
+
+    netcdfResult.delete();
   }
 
   private static NetcdfFileFormat getNetcdfFileFormat(SupportedFormat supportedFormat) {
