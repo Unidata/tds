@@ -115,7 +115,7 @@ public class NcssGridController extends AbstractNcssController {
           + "Grid requests with vertCoord must have variables with same vertical levels.");
     }
 
-    String responseFile = getResponseFileName(datasetPath, version);
+    String responseFile = getResponseFileName();
     File netcdfResult = makeCFNetcdfFile(gcd, responseFile, params, version);
 
     // filename download attachment
@@ -178,7 +178,7 @@ public class NcssGridController extends AbstractNcssController {
     return new File(responseFilename);
   }
 
-  private String getResponseFileName(String requestPathInfo, NetcdfFileFormat version) {
+  private String getResponseFileName() {
     File ncFile = ncssDiskCache.getDiskCache().createUniqueFile("ncss-grid", ".nc");
 
     if (ncFile == null)
