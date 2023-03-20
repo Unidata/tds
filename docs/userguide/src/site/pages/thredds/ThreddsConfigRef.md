@@ -272,9 +272,9 @@ The following shows all the configuration options available in the `NetcdfSubset
 <NetcdfSubsetService>
   <allow>true</allow>
   <dir>(see the note below)</dir>
-  <scour>15 min</scour>
-  <maxAge>30 min</maxAge>
-  <maxFileDownloadSize>300 MB</maxFileDownloadSize>
+  <scour>10 min</scour>
+  <maxAge>5 min</maxAge>
+  <maxFileDownloadSize>-1</maxFileDownloadSize>
 </NetcdfSubsetService>
 ~~~
 
