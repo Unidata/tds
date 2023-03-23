@@ -167,16 +167,10 @@ There are additional configuration settings for default image styling including 
 
 ### Interval Time vs Full Time List in `GetCapabilities` Documents
 
-By default, the `WMS` will list all time values in a `GetCapabilities` document.
-For long time-series, this list can cause the `GetCapabilities` document to be quite large.
-Datasets/variables can be configured to use time intervals with the addition of an `intervalTime` element in the `wmsConfig.xml` file.
-For instance:
-
-~~~xml
-<intervalTime>true</intervalTime>
-~~~
-     
+By default, the `WMS` will list time intervals in a `GetCapabilities` document.
 Unfortunately, though time intervals are part of the `WMS` specification, not all `WMS` clients know how to interpret time intervals in the `GetCapabilities` document.
+If you need a list of all times instead of the time intervals, you can add `verbose=true` as a URL query parameter to your `GetCapabilities` request.
+For long time-series, this list can cause the `GetCapabilities` document to be quite large.
 
 ### Example: Modifying The `wmsConfig.xml` File
 
