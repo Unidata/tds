@@ -140,6 +140,10 @@ public class LayerSettings {
     return logScaling;
   }
 
+  /**
+   * * @deprecated Only used in capabilities_xml*.jsp, remove in v6
+   */
+  @Deprecated
   public boolean isIntervalTime() {
     return intervalTime;
   }

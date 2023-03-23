@@ -15,6 +15,7 @@ the GetFeatureInfo operation.
             <defaultPaletteName>psu-viridis</defaultPaletteName>
             <defaultNumColorBands>20</defaultNumColorBands>
             <logScaling>false</logScaling>
+            <!--Deprecated: intervalTime (does not work, to be removed in v6)-->
             <intervalTime>false</intervalTime>
         </defaults>
         <standardNames>
