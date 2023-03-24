@@ -114,6 +114,14 @@ public class GridDatasetControllerTest {
   }
 
   @Test
+  public void shouldReturnDatasetDescription() throws Exception {
+    final String path = "/ncss/grid/scanLocal/testData2.nc/dataset.xml";
+    final RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
+
+    mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+  }
+
+  @Test
   public void shouldThrowExceptionForNotACoverageDataset() throws Exception {
     final String path = "/ncss/grid/scanLocal/testStringEscapes.nc/dataset.html";
     final RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
