@@ -100,7 +100,18 @@ public class GridCoverageSubsettingTest {
             new Expected(new int[] {1, 77, 114}, new ProjectionRect(1232.510, -588.893, 2763.095, 440.527))},
         {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 2000,
             4000, -4000, -833.102753,
-            new Expected(new int[] {1, 146, 186}, new ProjectionRect(-3332.155, 1998.202, -826.330, 3962.227))},});
+            new Expected(new int[] {1, 146, 186}, new ProjectionRect(-3332.155, 1998.202, -826.330, 3962.227))},
+
+        {"/ncss/grid/scanLocal/GFS_Global_onedeg_20120515_1200.grib2.nc", "Temperature_surface", true, -90, 90, -180,
+            180, new Expected(new int[] {1, 181, 360}, new ProjectionRect(-90, 0, 90, 359))},
+        {"/ncss/grid/scanLocal/GFS_Global_onedeg_20120515_1200.grib2.nc", "Temperature_surface", true, -90, 90, 0, 360,
+            new Expected(new int[] {1, 181, 360}, new ProjectionRect(-90, 0, 90, 359))},
+        {"/ncss/grid/scanLocal/GFS_Global_onedeg_20120515_1200.grib2.nc", "Temperature_surface", true, 0, 90, -180, 180,
+            new Expected(new int[] {1, 91, 360}, new ProjectionRect(0, 0, 90, 359))},
+        {"/ncss/grid/scanLocal/GFS_Global_onedeg_20120515_1200.grib2.nc", "Temperature_surface", true, 0, 90, 0, 360,
+            new Expected(new int[] {1, 91, 360}, new ProjectionRect(0, 0, 90, 359))},
+
+    });
   }
 
   private static class Expected {
