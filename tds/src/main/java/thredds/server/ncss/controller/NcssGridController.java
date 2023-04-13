@@ -164,7 +164,7 @@ public class NcssGridController extends AbstractNcssController {
 
     // Test maxFileDownloadSize
     long maxFileDownloadSize = ThreddsConfig.getBytes("NetcdfSubsetService.maxFileDownloadSize", -1L);
-    if (version.isNetdf4format()) {
+    if (version.isNetcdf4Format()) {
       maxFileDownloadSize *= ESTIMATED_COMPRESSION_RATE;
     }
 
