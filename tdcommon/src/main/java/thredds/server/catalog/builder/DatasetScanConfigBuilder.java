@@ -36,6 +36,8 @@ import org.jdom2.Attribute;
 import org.jdom2.DataConversionException;
 import org.jdom2.Element;
 import thredds.client.catalog.Catalog;
+import thredds.inventory.MFile;
+import thredds.inventory.MFiles;
 import ucar.nc2.util.AliasTranslator;
 import thredds.server.catalog.DatasetScanConfig;
 import ucar.unidata.util.StringUtil2;
@@ -103,7 +105,7 @@ public class DatasetScanConfigBuilder {
       fatalError = true;
     } else {
       result.scanDir = AliasTranslator.translateAlias(scanDir);
-      File scanFile = new File(result.scanDir);
+      MFile scanFile = MFiles.create(result.scanDir);
       if (!scanFile.exists()) {
         errlog.format("ERROR: directory %s does not exist%n", result.scanDir);
         fatalError = true;
