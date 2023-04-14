@@ -258,6 +258,7 @@ where they are contained.
   for examples of palette files that are compatible with the TDS version 5.x WMS service.
   * More information on the format of palette files can also be found in the 
   [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#:~:text=To%20add%20new,in%20hexadecimal%20notation.).
+  * If you created palette files for TDS 4.x and would like to use them in TDS 5.x, an open source tool named [Magic Palette Converter](https://github.com/billyz313/magic-palette-converter) for THREDDS is available to assist in the conversion (special thanks to [Billy Ashmall](https://github.com/Unidata/tds/discussions/346)!)
 * `maxImageWidth`: the maximum image width in pixels that this WMS service will return.
 * `maxImageHeight`: the maximum image height in pixels that this WMS service will return.
 

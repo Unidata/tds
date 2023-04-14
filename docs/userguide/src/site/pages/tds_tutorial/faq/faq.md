@@ -170,7 +170,7 @@ If a request is forwarded to another internal service, a _1000 (Forwarded)_ or _
 The error _Inconsistent array length read_ only tells you that there was an error on the server in the middle of responding to an OPeNDAP request.
 You then must look in the `threddsServlet.log` and find the error to know why.
 
-###: Why am I getting lots of `java.util.prefs.BackingStoreException warning` messages?
+### Why am I getting lots of `java.util.prefs.BackingStoreException warning` messages?
 
 If you allow and use the TDS WMS service, you may be seeing warning messages in your Tomcat `catalina.out` log file that look something like this:
 
@@ -232,6 +232,11 @@ We hope to make this list configurable in a future release.
 
 In the meantime, if you need a CRS that isn't listed, try specifying it in the `GetMap` request.
 The underlying library that handles CRS (Geotoolkit) still supports a large number of CRS and the TDS WMS should still support any of those CRS when requested.
+
+### What happened to my custom WMS palettes?
+
+The WMS server used in TDS 5 is a major upgrade from the one used in TDS 4, and one of the changes is how the color palettes are encoded.
+Please visit the [WMS configuration documentation](tds_config_ref.html#wms-service), which includes a link to a tool that can assist in converting existing palettes into TDS 5.x compatible pallets.
 
 ### Why are TDS web forms not working?
 
