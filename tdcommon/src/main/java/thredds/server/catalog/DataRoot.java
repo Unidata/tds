@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.concurrent.Immutable;
 import java.lang.invoke.MethodHandles;
+import thredds.inventory.MFile;
+import thredds.inventory.MFiles;
 
 /**
  * A DataRoot matches URLs to the objects that can serve them.
@@ -181,12 +183,10 @@ public class DataRoot {
       return null;
 
     final String relativeLocation = getRelativeLocation(reqPath, rootPath, isFeatureCollection);
-    return isObjectStore(rootLocation) ? getObjectStoreLocation(rootLocation, relativeLocation)
-        : getLocation(rootLocation, relativeLocation);
-  }
 
-  private static boolean isObjectStore(String location) {
-    return location.startsWith("cdms3") || location.startsWith("s3");
+    final MFile rootMFile = MFiles.create(rootLocation);
+    final MFile mFile = rootMFile.getChild(relativeLocation);
+    return mFile == null ? null : mFile.getPath();
   }
 
   private static String getRelativeLocation(String reqPath, String rootPath, boolean isFeatureCollection) {
@@ -201,23 +201,5 @@ public class DataRoot {
     }
 
     return locationRelative;
-  }
-
-  private static String getLocation(String rootLocation, String relativeLocation) {
-    final String separator = rootLocation.endsWith("/") ? "" : "/";
-    return rootLocation + separator + relativeLocation;
-  }
-
-  // TODO have MFile handle this
-  private static String getObjectStoreLocation(String rootLocation, String relativeLocation) {
-    final String rootLocationWithoutFragment = rootLocation.split("#")[0];
-    final String fragment = rootLocation.contains("#") ? "#" + rootLocation.split("#")[1] : "";
-
-    if (rootLocationWithoutFragment.endsWith("/") || rootLocationWithoutFragment.endsWith("?")) {
-      return rootLocationWithoutFragment + relativeLocation + fragment;
-    }
-
-    final String separator = rootLocationWithoutFragment.contains("?") ? "/" : "?";
-    return rootLocationWithoutFragment + separator + relativeLocation + fragment;
   }
 }
