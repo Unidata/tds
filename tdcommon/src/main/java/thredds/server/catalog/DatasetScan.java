@@ -180,7 +180,7 @@ public class DatasetScan extends CatalogRef {
     if (id == null)
       id = config.path;
     String parentId = (dataDirRelative.length() > 1) ? id + "/" + dataDirRelative : id + "/";
-    String dataDirComplete = (dataDirRelative.length() > 1) ? config.scanDir + "/" + dataDirRelative : config.scanDir;
+    String dataDirComplete = getDataDir(config.scanDir, dataDirRelative);
 
     // Setup and create catalog builder.
     CatalogBuilder catBuilder = new CatalogBuilder();
@@ -275,6 +275,15 @@ public class DatasetScan extends CatalogRef {
 
     // make the catalog
     return catBuilder;
+  }
+
+  private static String getDataDir(String scanDir, String dataDirRelative) {
+    if (dataDirRelative.length() <= 1) {
+      return scanDir;
+    }
+    final MFile rootMFile = MFiles.create(scanDir);
+    final MFile mFile = rootMFile.getChild(dataDirRelative);
+    return mFile == null ? scanDir : mFile.getPath();
   }
 
   ///////////////////////
