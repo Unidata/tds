@@ -32,7 +32,10 @@ Here is a minimal catalog containing a `datasetScan` element:
 The main points are:
 
 * The `path` attribute on the `datasetScan` element is the part of the URL that identifies this `datasetScan` and is used to map URLs to a file on disk.
-* The `location` attribute on the `datasetScan` element gives the location of the dataset collection on the local file system.
+* The `location` attribute on the `datasetScan` element gives the location of the dataset collection on a local file system or in an Object Store. 
+If the location is an Object Store, then a delimiter is required so that the location can be treated as a "directory",
+for instance, `location="cdms3:my-bucket?super/long/key/#delimiter=/"`.
+For more information on Object Store files and URL syntax see [Dataset URLs](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/dataset_urls.html#object-stores).
 * The (`path`, `location`) of every `datasetScan` defines an implicit [datasetRoot](server_side_catalog_specification.html#datasetroot-element). 
    **The `datasetRoot` path therefore must be unique across all `datasetRoots` in the server.**
 
