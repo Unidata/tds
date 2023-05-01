@@ -35,6 +35,7 @@ import static com.google.common.truth.Truth.assertThat;
 public class TestWmsServer {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+  private static final double TOLERANCE = 1.0e-8;
   private final Namespace NS_WMS = Namespace.getNamespace("wms", "http://www.opengis.net/wms");
 
   @Test
@@ -128,5 +129,24 @@ public class TestWmsServer {
         .withHttpPath("/wms/ModifyDatasetScan/revOceanDJF2.nc?service=WMS&version=1.3.0&request=GetCapabilities");
     final byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.xmlwms);
     assertThat(result).isNotEmpty();
+  }
+
+  @Test
+  public void shouldApplyOffsetToData() throws IOException, JDOMException {
+    final String[] variableNames = {"variableWithOffset", "variableWithoutOffset"};
+    for (String variableName : variableNames) {
+      final String endpoint = TestOnLocalServer.withHttpPath("/wms/scanLocal/testOffset.nc?" + "LAYERS=" + variableName
+          + "&service=WMS&version=1.3.0&CRS=CRS:84&BBOX=0,0,10,10&WIDTH=100&HEIGHT=100"
+          + "&REQUEST=GetFeatureInfo&QUERY_LAYERS=" + variableName + "&i=0&j=0");
+      final byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.xmlwms);
+
+      final Reader reader = new StringReader(new String(result, StandardCharsets.UTF_8));
+      final Document doc = new SAXBuilder().build(reader);
+      final XPathExpression<Element> xpath = XPathFactory.instance().compile("//FeatureInfo/value", Filters.element());
+      final Element element = xpath.evaluateFirst(doc);
+
+      assertThat(element.getContentSize()).isEqualTo(1);
+      assertThat(Double.valueOf(element.getText())).isWithin(TOLERANCE).of(7.5);
+    }
   }
 }
