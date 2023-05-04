@@ -16,4 +16,5 @@ dependencies {
 
     testImplementation project(':tds-test-utils');
     testImplementation 'junit:junit'
+    testRuntimeOnly 'ch.qos.logback:logback-classic'
 }
