@@ -13,7 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thredds.TdsUnitTestCommon;
+import thredds.test.util.TdsUnitTestCommon;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
 import java.io.*;
@@ -368,7 +368,7 @@ public class TestCeParser extends TdsUnitTestCommon {
     int nconstraints = constraintlist.length;
     for (int i = 0; i < nconstraints; i++) {
       // Parse the DDS to produce a ServerDDS object
-      ServerDDS sdds = new ServerDDS(new test_SDFactory());
+      ServerDDS sdds = new ServerDDS(new TestSDFactory());
       StringBufferInputStream teststream = new StringBufferInputStream(testDDS);
       if (!sdds.parse(teststream))
         throw new ParseException("Cannot parse DDS");
