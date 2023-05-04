@@ -376,7 +376,6 @@ public class TestCeParser extends TdsUnitTestCommon {
       pass = false;
       String constraint = constraintlist[i];
       String expected = (generate ? null : expectlist[i]);
-      System.out.flush();
       try {
         CeParser.DEBUG = DEBUGPARSER;
         CEEvaluator ceEval = new CEEvaluator(sdds);
@@ -386,20 +385,20 @@ public class TestCeParser extends TdsUnitTestCommon {
         dumpEvaluator(ceEval, os);
         String result = ss.toString();
         if (generate) {
-          System.out.println(result);
+          logger.debug(result);
         } else {
           pass = result.equals(expected);
-          System.out.println("Testing constraint " + i + ": " + constraint);
-          System.out.println("constraint:" + constraint);
-          System.out.println("expected:  " + expected);
-          System.out.println("result:    " + result);
+          logger.debug("Testing constraint " + i + ": " + constraint);
+          logger.debug("constraint:" + constraint);
+          logger.debug("expected:  " + expected);
+          logger.debug("result:    " + result);
           if (!pass) {
-            System.out.println("***Fail: " + constraint);
+            logger.warn("***Fail: " + constraint);
           } else
-            System.out.println("***Pass:" + constraint);
+            logger.debug("***Pass:" + constraint);
         }
       } catch (Exception e) {
-        System.out.println("FAIL: TestCeParser: " + e.toString());
+        logger.warn("FAIL: TestCeParser: " + e);
       }
       if (!generate && !pass)
         break;
