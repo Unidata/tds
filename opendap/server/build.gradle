@@ -16,5 +16,6 @@ dependencies {
 
     testImplementation project(':tds-test-utils');
     testImplementation 'junit:junit'
+    testImplementation 'com.google.truth:truth'
     testRuntimeOnly 'ch.qos.logback:logback-classic'
 }

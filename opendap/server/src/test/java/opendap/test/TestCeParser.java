@@ -5,11 +5,12 @@
 
 package opendap.test;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import opendap.dap.*;
 import opendap.dap.parsers.*;
 import opendap.servers.*;
 import opendap.servers.parsers.CeParser;
-import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -403,7 +404,7 @@ public class TestCeParser extends TdsUnitTestCommon {
       if (!generate && !pass)
         break;
     }
-    Assert.assertTrue("TestCeParser", pass || generate);
+    assertThat(pass || generate).isTrue();
   }
 
 }
