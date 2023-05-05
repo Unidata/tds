@@ -14,10 +14,11 @@ import opendap.dap.*;
 import opendap.dap.parsers.*;
 import java.util.*;
 import java.io.*;
+import org.junit.Ignore;
 import org.junit.Test;
 
 // Generate random constraints
-
+@Ignore("TODO: This test class is not currently doing anything other than rerunning TestCeParser")
 public class GenerateConstraints extends TestCeParser {
   ////////////////////////////////////////////////// "
   // Define the constraint pieces for generating"
