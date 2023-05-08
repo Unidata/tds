@@ -100,7 +100,7 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-    return new ResponseEntity<>("IOException sending File " + htmlEscape(ex.getMessage()), responseHeaders,
+    return new ResponseEntity<>("IOException: " + htmlEscape(ex.getMessage()), responseHeaders,
         HttpStatus.INTERNAL_SERVER_ERROR);
   }
 

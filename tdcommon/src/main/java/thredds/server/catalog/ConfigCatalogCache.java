@@ -110,11 +110,8 @@ public class ConfigCatalogCache implements CatalogReader {
 
     // see if it exists
     File catFile = new File(catalogFullPath);
-    if (!catFile.exists()) {
-      final String contentDirName = "/thredds/";
-      int pos = catalogFullPath.lastIndexOf(contentDirName);
-      String filename = (pos > 0) ? catalogFullPath.substring(pos + contentDirName.length()) : catalogFullPath;
-      throw new FileNotFoundException(filename);
+    if (!catFile.exists() || catFile.isDirectory()) {
+      throw new FileNotFoundException(getFileName(catalogFullPath));
     }
 
     URI uri;
@@ -128,9 +125,15 @@ public class ConfigCatalogCache implements CatalogReader {
     ConfigCatalogBuilder builder = new ConfigCatalogBuilder(context);
     ConfigCatalog cat = (ConfigCatalog) builder.buildFromURI(uri); // LOOK use file and keep lastModified
     if (builder.hasFatalError()) {
-      throw new IOException("invalid catalog " + catalogFullPath);
+      throw new IOException("invalid catalog: " + getFileName(catalogFullPath));
     }
     return cat;
+  }
+
+  private static String getFileName(String catalogFullPath) {
+    final String contentDirName = "/thredds/";
+    int pos = catalogFullPath.lastIndexOf(contentDirName);
+    return (pos > 0) ? catalogFullPath.substring(pos + contentDirName.length()) : catalogFullPath;
   }
 
   public void setRootCatalogKeys(List<String> rootCatalogKeys) {
