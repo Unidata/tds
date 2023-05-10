@@ -169,24 +169,34 @@ public class ViewerServiceImpl implements ViewerService, InitializingBean {
     }
 
     private ViewerLink parseViewerPropertyValue(String viewerName, String viewerValue, Dataset ds) {
-      String viewerUrl;
-      String viewerTitle;
+      // get viewer URL
+      String[] viewerLinkParts = viewerValue.split(",");
+      String viewerUrl = viewerLinkParts[0];
+      if (viewerUrl.isEmpty()) {
+        return null;
+      }
+      viewerUrl = sub(viewerUrl, ds); // add dataset info to URL
 
-      int lastCommaLocation = viewerValue.lastIndexOf(",");
-      if (lastCommaLocation != -1) {
-        viewerUrl = viewerValue.substring(0, lastCommaLocation);
-        viewerTitle = viewerValue.substring(lastCommaLocation + 1);
-        if (viewerUrl.equals(""))
-          return null;
-        if (viewerTitle.equals(""))
-          viewerTitle = viewerName;
-      } else {
-        viewerUrl = viewerValue;
+      // get additional viewer info
+      int nParts = viewerLinkParts.length;
+      String viewerTitle = nParts > 1 ? viewerLinkParts[1] : viewerName;
+      if (viewerTitle.isEmpty()) {
         viewerTitle = viewerName;
       }
-      viewerUrl = sub(viewerUrl, ds);
 
-      return new ViewerLink(viewerTitle, viewerUrl);
+      String description = nParts > 2 ? viewerLinkParts[2] : "";
+      ViewerLink.ViewerType viewerType =
+          nParts > 3 ? parseViewerType(viewerLinkParts[3]) : ViewerLink.ViewerType.Unknown;
+
+      return new ViewerLink(viewerTitle, viewerUrl, description, viewerType);
+    }
+
+    private ViewerLink.ViewerType parseViewerType(String type) {
+      try {
+        return ViewerLink.ViewerType.valueOf(type);
+      } catch (IllegalArgumentException ex) {
+        return ViewerLink.ViewerType.Unknown;
+      }
     }
 
     private boolean hasViewerProperties(Dataset ds) {

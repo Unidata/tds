@@ -703,8 +703,15 @@ public class InvDatasetFcGrib extends InvDatasetFeatureCollection {
   }
 
   // kinda kludgey, but trying not keep URLs stable
+  /**
+   * @return Dataset if typeName matches the type of one of the collection datasets (e.g. "Best", "TwoD").
+   *         If the requested typeName is "TP" and there is only one dataset, return it (e.g. dataset is type "MRUTP").
+   *         Else return null, e.g. if typeName is the name of a dataset.
+   * @deprecated Should not be public
+   */
+  @Deprecated
   public GribCollectionImmutable.Dataset getSingleDatasetOrByTypeName(GribCollectionImmutable gc, String typeName) {
-    if (gc.getDatasets().size() == 1)
+    if (gc.getDatasets().size() == 1 && typeName.equalsIgnoreCase(PARTITION_DATASET))
       return gc.getDataset(0);
     for (GribCollectionImmutable.Dataset ds : gc.getDatasets())
       if (ds.getType().toString().equalsIgnoreCase(typeName))

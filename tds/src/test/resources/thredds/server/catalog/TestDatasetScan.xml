@@ -84,6 +84,34 @@
     </datasetScan>
   </dataset>
 
+  <datasetScan name="Test Dataset Scan File Filtering"
+    ID="TestDatasetScanFileFiltering"
+    path="test-dataset-scan-file-filtering"
+    location="${cdmUnitTest}/tds/">
+    <metadata inherited="true">
+      <serviceName>all</serviceName>
+    </metadata>
+
+    <filter>
+      <include wildcard="e*" collection="false"/>
+      <exclude wildcard="*" atomic="false" collection="true"/>
+    </filter>
+  </datasetScan>
+
+  <datasetScan name="Test Dataset Scan Folder Filtering"
+    ID="TestDatasetScanFolderFiltering"
+    path="test-dataset-scan-folder-filtering"
+    location="${cdmUnitTest}/tds/">
+    <metadata inherited="true">
+      <serviceName>all</serviceName>
+    </metadata>
+
+    <filter>
+      <exclude wildcard="*" collection="false"/>
+      <include wildcard="n*" atomic="false" collection="true"/>
+    </filter>
+  </datasetScan>
+
   <!-- test NcML in datasetScan -->
   <datasetScan name="ModifyDatasetScan" ID="ModifyDatasetScan" path="ModifyDatasetScan" location="${cdmUnitTest}/tds/">
     <metadata inherited="true">

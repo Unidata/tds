@@ -30,7 +30,6 @@ import thredds.server.ncss.view.dsg.DsgSubsetWriter;
 import thredds.server.ncss.view.dsg.DsgSubsetWriterFactory;
 import thredds.util.Constants;
 import thredds.util.ContentType;
-import thredds.util.TdsPathUtils;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.ft.FeatureDatasetPoint;
 import ucar.nc2.ft2.coverage.*;
@@ -58,7 +57,7 @@ import ucar.nc2.write.NetcdfFormatWriter;
 @RequestMapping("/ncss/grid")
 public class NcssGridController extends AbstractNcssController {
   // Compression rate used to estimate the filesize of netcdf4 compressed files
-  static private final short ESTIMATED_COMPRESION_RATE = 4;
+  private static final short ESTIMATED_COMPRESSION_RATE = 4;
   // pattern for valid WKT lat lon point
   // Two decimal digits separated by whitespace, potentially starting and/or ending with
   // a comma
@@ -105,9 +104,10 @@ public class NcssGridController extends AbstractNcssController {
 
   private void handleRequestGrid(HttpServletResponse res, NcssGridParamsBean params, String datasetPath,
       CoverageCollection gcd) throws IOException, NcssException, InvalidRangeException {
-    // Supported formats are netcdf3 (default) and netcdf4 (if available)
+    // Supported formats are netcdf3 (default) and netcdf4ext (not currently turned on in TdsInit), netcdf4 (turned
+    // on in TdsInit if C library is present)
     SupportedFormat sf = SupportedOperation.GRID_REQUEST.getSupportedFormat(params.getAccept());
-    NetcdfFileFormat version = (sf == SupportedFormat.NETCDF3) ? NetcdfFileFormat.NETCDF3 : NetcdfFileFormat.NETCDF4;
+    NetcdfFileFormat version = getNetcdfFileFormat(sf);
 
     // all variables have to have the same vertical axis if a vertical coordinate was set. LOOK can we relax this ?
     if (params.getVertCoord() != null && !checkVarsHaveSameVertAxis(gcd, params)) {
@@ -115,11 +115,11 @@ public class NcssGridController extends AbstractNcssController {
           + "Grid requests with vertCoord must have variables with same vertical levels.");
     }
 
-    String responseFile = getResponseFileName(datasetPath, version);
+    String responseFile = getResponseFileName();
     File netcdfResult = makeCFNetcdfFile(gcd, responseFile, params, version);
 
     // filename download attachment
-    String suffix = TdsPathUtils.getSuffix(version);
+    String suffix = sf.getFileSuffix();
     int pos = datasetPath.lastIndexOf("/");
     String filename = (pos >= 0) ? datasetPath.substring(pos + 1) : datasetPath;
     if (!filename.endsWith(suffix)) {
@@ -140,6 +140,22 @@ public class NcssGridController extends AbstractNcssController {
     res.flushBuffer();
     res.getOutputStream().close();
     res.setStatus(HttpServletResponse.SC_OK);
+
+    netcdfResult.delete();
+  }
+
+  private static NetcdfFileFormat getNetcdfFileFormat(SupportedFormat supportedFormat) {
+    switch (supportedFormat) {
+      case NETCDF3:
+        return NetcdfFileFormat.NETCDF3;
+      case NETCDF4:
+        return NetcdfFileFormat.NETCDF4_CLASSIC;
+      case NETCDF4EXT:
+        return NetcdfFileFormat.NETCDF4;
+      default:
+        throw new UnsupportedOperationException(
+            "Format '" + supportedFormat.getFormatName() + "' not currently supported for writing NetCDF files.");
+    }
   }
 
   private File makeCFNetcdfFile(CoverageCollection gcd, String responseFilename, NcssGridParamsBean params,
@@ -148,8 +164,9 @@ public class NcssGridController extends AbstractNcssController {
 
     // Test maxFileDownloadSize
     long maxFileDownloadSize = ThreddsConfig.getBytes("NetcdfSubsetService.maxFileDownloadSize", -1L);
-    if (version == NetcdfFileFormat.NETCDF4)
-      maxFileDownloadSize *= ESTIMATED_COMPRESION_RATE;
+    if (version.isNetcdf4Format()) {
+      maxFileDownloadSize *= ESTIMATED_COMPRESSION_RATE;
+    }
 
     // write the file
     // default chunking - let user control at some point
@@ -164,7 +181,7 @@ public class NcssGridController extends AbstractNcssController {
     return new File(responseFilename);
   }
 
-  private String getResponseFileName(String requestPathInfo, NetcdfFileFormat version) {
+  private String getResponseFileName() {
     File ncFile = ncssDiskCache.getDiskCache().createUniqueFile("ncss-grid", ".nc");
 
     if (ncFile == null)

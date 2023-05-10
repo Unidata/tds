@@ -448,23 +448,29 @@ The cache information is updated based on the `recheckEvery` field in the `joinE
 ### FeatureCollection Cache
 
 This is where persistent information is kept about FMRCs, in order to speed them up.
+This cache is currently implemented with [Chronicle Map](https://chronicle.software/open-hft/map/){:target="_blank"}.
 We recommend that you use the default settings, by not specifying this option.
 
 ~~~xml
- <FeatureCollection>
-   <dir>${tds.content.root.path}/thredds/cache/collection/</dir>
-   <maxEntries>1000</maxEntries>
-   <maxBloatFactor>1</maxBloatFactor>
- </FeatureCollection>
+<FeatureCollection>
+  <dir>${tds.content.root.path}/thredds/cache/collection/</dir>
+  <maxEntries>1000</maxEntries>
+  <maxBloatFactor>1</maxBloatFactor>
+</FeatureCollection>
 ~~~
 
-* `dir`: location of Feature Collection cache, currently implemented
-  with [Chronicle Map](https://chronicle.software/open-hft/map/){:target="_blank"}.
+* `dir`: location of Feature Collection cache.
   If not otherwise set, the TDS will use the`${tds.content.root.path}/thredds/cache/collection/` directory.
   We recommend that you use this default, by not specifying a `FeatureCollection.dir` element.
-* `maxEntries`: the number of entries the cache is going to hold, _at most_.
+* `maxEntries`: the number of entries the cache is going to hold, _at most_. Each FMRC file is one "entry" in the cache. The default value for this is 1000.
+  If the `maxBloatFactor` is set to 1 (the default), then this value is the maximum possible number of FMRC files allowed.
+  If you have more than 1000 FMRC files, then we recommend increasing the `maxEntries` value to be the maximum number of FMRC files you expect to have.
   See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
-* `maxBloatFactor`: the maximun number of times the cache is allowed to grow in size. See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
+* `maxBloatFactor`: the maximum number of times the cache is allowed to grow in size.
+  The default value for this is 1 (the cache cannot grow in size).
+  If it is possible to have more FMRC files than your `maxEntries`, then this value should be increased.
+  It is strongly advised not to configure this value to more than 10, as the cache works progressively slower when the actual size grows far beyond the size configured in your `maxEntries`.
+  See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
 
 ### GRIB Index Redirection
 

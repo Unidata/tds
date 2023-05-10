@@ -37,9 +37,12 @@ import thredds.client.catalog.builder.AccessBuilder;
 import thredds.client.catalog.builder.CatalogBuilder;
 import thredds.client.catalog.builder.CatalogRefBuilder;
 import thredds.client.catalog.builder.DatasetBuilder;
-import thredds.filesystem.MFileOS7;
+import thredds.inventory.CollectionConfig;
+import thredds.inventory.MController;
+import thredds.inventory.MControllers;
 import thredds.inventory.MFile;
 import thredds.inventory.MFileFilter;
+import thredds.inventory.MFiles;
 import thredds.inventory.filter.CompositeMFileFilter;
 import thredds.inventory.filter.LastModifiedLimit;
 import thredds.inventory.filter.RegExpMatchOnName;
@@ -48,16 +51,10 @@ import ucar.nc2.time.CalendarDate;
 import ucar.nc2.units.DateRange;
 import ucar.nc2.units.DateType;
 import ucar.nc2.units.TimeDuration;
-import ucar.nc2.util.CloseableIterator;
 import javax.annotation.concurrent.Immutable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
 /**
@@ -183,7 +180,7 @@ public class DatasetScan extends CatalogRef {
     if (id == null)
       id = config.path;
     String parentId = (dataDirRelative.length() > 1) ? id + "/" + dataDirRelative : id + "/";
-    String dataDirComplete = (dataDirRelative.length() > 1) ? config.scanDir + "/" + dataDirRelative : config.scanDir;
+    String dataDirComplete = getDataDir(config.scanDir, dataDirRelative);
 
     // Setup and create catalog builder.
     CatalogBuilder catBuilder = new CatalogBuilder();
@@ -223,16 +220,16 @@ public class DatasetScan extends CatalogRef {
 
     catBuilder.addDataset(top);
 
-    Path p = Paths.get(dataDirComplete);
-    if (!Files.exists(p)) {
+    MFile directory = MFiles.create(dataDirComplete);
+    if (!directory.exists()) {
       throw new FileNotFoundException("Directory does not exist. URL path = " + orgPath);
     }
-    if (!Files.isDirectory(p)) {
+    if (!directory.isDirectory()) {
       throw new FileNotFoundException("Not a directory. URL path = " + orgPath);
     }
 
     // scan and sort the directory
-    List<MFile> mfiles = getSortedFiles(p, config.getSortFilesAscending());
+    List<MFile> mfiles = getSortedFiles(directory, config.getSortFilesAscending());
 
     if (config.addLatest != null && config.addLatest.latestOnTop)
       top.addDataset(makeLatestProxy(top, parentId));
@@ -280,17 +277,22 @@ public class DatasetScan extends CatalogRef {
     return catBuilder;
   }
 
+  private static String getDataDir(String scanDir, String dataDirRelative) {
+    if (dataDirRelative.length() <= 1) {
+      return scanDir;
+    }
+    final MFile rootMFile = MFiles.create(scanDir);
+    final MFile mFile = rootMFile.getChild(dataDirRelative);
+    return mFile == null ? scanDir : mFile.getPath();
+  }
+
   ///////////////////////
   // Scan and sort
 
-  private List<MFile> getSortedFiles(Path p, final boolean isSortIncreasing) throws IOException {
+  private List<MFile> getSortedFiles(MFile directory, final boolean isSortIncreasing) throws IOException {
 
     // scan the directory
-    List<MFile> mfiles = new ArrayList<>();
-    try (DatasetScanMFileIterator iter = new DatasetScanMFileIterator(p)) {
-      while (iter.hasNext())
-        mfiles.add(iter.next());
-    }
+    List<MFile> mfiles = getFiles(directory);
 
     // sort them
     Collections.sort(mfiles, new Comparator<MFile>() {
@@ -308,63 +310,19 @@ public class DatasetScan extends CatalogRef {
     return mfiles;
   }
 
-  private class DatasetScanMFileIterator implements CloseableIterator<MFile> {
-    DirectoryStream<Path> dirStream;
-    Iterator<Path> dirStreamIterator;
-    MFile nextMFile;
-    // long now;
+  private List<MFile> getFiles(MFile directory) throws IOException {
+    final MController mController = MControllers.create(directory.getPath());
+    final List<MFile> mFiles = new ArrayList<>();
 
-    DatasetScanMFileIterator(Path p) throws IOException {
-      dirStream = Files.newDirectoryStream(p);
-      dirStreamIterator = dirStream.iterator();
-      // now = System.currentTimeMillis();
-    }
+    final CollectionConfig files = new CollectionConfig("files", directory.getPath(), true, fileFilters, null);
+    final Iterator<MFile> fileIterator = mController.getInventoryTop(files, true);
+    fileIterator.forEachRemaining(mFiles::add);
 
-    public boolean hasNext() {
+    final CollectionConfig dirs = new CollectionConfig("dirs", directory.getPath(), true, dirFilters, null);
+    final Iterator<MFile> dirIterator = mController.getSubdirs(dirs, true);
+    dirIterator.forEachRemaining(mFiles::add);
 
-      while (true) {
-        if (!dirStreamIterator.hasNext()) {
-          nextMFile = null;
-          return false;
-        }
-
-        try {
-          Path nextPath = dirStreamIterator.next();
-          if (Files.exists(nextPath)) {
-            BasicFileAttributes attr = Files.readAttributes(nextPath, BasicFileAttributes.class);
-            nextMFile = new MFileOS7(nextPath, attr);
-            if (accept(nextMFile))
-              return true;
-          } else {
-            log.debug(String.format("%s does not exist. Possible broken symlink.", nextPath));
-          }
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-      }
-    }
-
-    private boolean accept(MFile mfile) {
-      if (mfile.isDirectory())
-        return dirFilters == null || dirFilters.accept(mfile);
-      return fileFilters == null || fileFilters.accept(mfile);
-    }
-
-    public MFile next() {
-      if (nextMFile == null)
-        throw new NoSuchElementException();
-      return nextMFile;
-    }
-
-    public void remove() {
-      throw new UnsupportedOperationException();
-    }
-
-    // better alternative is for caller to send in callback (Visitor pattern)
-    // then we could use the try-with-resource
-    public void close() throws IOException {
-      dirStream.close();
-    }
+    return mFiles;
   }
 
   ////////////////////////////////////////////////
@@ -514,14 +472,16 @@ public class DatasetScan extends CatalogRef {
     for (Service s : this.getParentCatalog().getServices())
       catBuilder.addService(s);
 
-    Path p = Paths.get(dataDirComplete);
-    if (!Files.exists(p))
-      throw new FileNotFoundException("Directory does not exist =" + dataDirComplete);
-    if (!Files.isDirectory(p))
-      throw new FileNotFoundException("Not a directory =" + dataDirComplete);
+    MFile directory = MFiles.create(dataDirComplete);
+    if (!directory.exists()) {
+      throw new FileNotFoundException("Directory does not exist. URL path = " + orgPath);
+    }
+    if (!directory.isDirectory()) {
+      throw new FileNotFoundException("Not a directory. URL path = " + orgPath);
+    }
 
     // scan and sort the directory
-    List<MFile> mfiles = getSortedFiles(p, false); // latest on top
+    List<MFile> mfiles = getSortedFiles(directory, false); // latest on top
 
     long now = System.currentTimeMillis();
 

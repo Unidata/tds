@@ -128,16 +128,16 @@ This evens out time coordinates, and compensates for missing forecast times in t
 
 ## Persistent Caching
 
-An `fmrInv.xml` file is made which records the essential grid information from each file. 
-It is cached in a persistent [Berkeley Database (bdb)](https://en.wikipedia.org/wiki/Berkeley_DB){:target="_blank"} key/value store, so that it only has to be done the first time the file is accessed in an FMRC. 
-Each collection becomes a separate `bdb` database, and each file in the collection is an element in the database, with the filename as the key and the `fmrInv.xml` as the value. 
+The FMRC cache, currently implemented with [Chronicle Map](https://chronicle.software/open-hft/map/){:target="_blank"},
+records the essential grid information from each file in a key/value store.
+This cache is persisted to disk, and so also persists between reboots.
 When a collection is scanned, any filenames already in the database are reused. 
 Any new ones are read and added to the database. 
 Any entries in the database that no longer have a filename associated with them are deleted.
+The cache database file is located in `${tds.content.root.path}/thredds/cache/collection/GridDatasetInv.dat`.
+See also [FMRC cache settings documentation](https://docs.unidata.ucar.edu/tds/current/userguide/tds_config_ref.html#featurecollection-cache).
 
-[ToolsUI](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/toolsui_ref.html){:target="_blank"} `collections` tab allows you to delete database or individual elements.
-
-## Conversion Of `<datasetFmrc>` Yo `<featureCollection>`
+## Conversion of `<datasetFmrc>` to `<featureCollection>`
 
 There is no need to specify `forecastModelRunCollection` versus `forecastModelRunSingleCollection`, nor `timeUnitsChange`. 
 This is detected automatically.

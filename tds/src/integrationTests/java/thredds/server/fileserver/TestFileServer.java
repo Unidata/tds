@@ -45,7 +45,7 @@ public class TestFileServer {
 
     // TODO - Consider consolidating files and catalog.
     // Currently uses files from various locations and served through different catalog files.
-    result.add(new Object[] {"fileServer/scanLocal/point.covjson.json", ContentType.json.getContentHeader(),
+    result.add(new Object[] {"fileServer/scanLocal/point.covjson.json", ContentType.json.toString(),
         "33fea472b71590b888e31870d745d71b"});
     result.add(new Object[] {"fileServer/rdaTest/ds094.2_dt/files/flxf01.gdas.A_PCP.SFC.01Z.grb2.gbx9",
         ContentType.binary.toString(), "f86072586ad8d66feed8cad2168f24a0"});
@@ -59,6 +59,8 @@ public class TestFileServer {
         "9bfc2f566b18851b02ee472f20be1acd"});
 
     result.add(new Object[] {"fileServer/s3-thredds-test-data/ncml/nc/namExtract/20060925_0600.nc",
+        ContentType.netcdf.toString(), "9bfc2f566b18851b02ee472f20be1acd"});
+    result.add(new Object[] {"fileServer/s3-dataset-scan/ncml/nc/namExtract/20060925_0600.nc",
         ContentType.netcdf.toString(), "9bfc2f566b18851b02ee472f20be1acd"});
 
     // make sure files don't get removed

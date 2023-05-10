@@ -380,10 +380,11 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
           tdsContext.getThreddsDirectory().getPath() + "/cache/collection/"); // cacheDirectory is old way
     int maxEntries = ThreddsConfig.getInt("FeatureCollection.maxEntries", 1000);
     int maxBloatFactor = ThreddsConfig.getInt("FeatureCollection.maxBloatFactor", 1);
+    String averageValueSize = ThreddsConfig.get("FeatureCollection.averageValueSize", null);
 
     Path fcCacheDir = Paths.get(fcCache);
     try {
-      GridInventoryCacheChronicle.init(fcCacheDir, maxEntries, maxBloatFactor);
+      GridInventoryCacheChronicle.init(fcCacheDir, maxEntries, maxBloatFactor, averageValueSize);
       startupLog.info("TdsInit: GridDatasetInv cache= {}", fcCache);
     } catch (Exception e) {
       startupLog.error("TdsInit: Failed initialize GridDatasetInv cache= {}", fcCache, e);

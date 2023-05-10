@@ -18,8 +18,7 @@ High performance disk subsystems like RAID or SANs will significantly improve TD
 
 ## Operating System Configuration
 
-Welcome to 200x - use a 64-bit Operating System
-* 'nuff said
+You should use a 64-bit Operating System.
 
 ## Use a high-performance file system
 
@@ -57,7 +56,7 @@ This affects the number of files to keep in the [File Handle Caches](#file-handl
 
 ### Version
 
-We recommend the latest stable version of Tomcat 8 and JDK 1.8.
+See [System Requirements](install_java_tomcat.html#system-requirements).
 
 ### Compression
 

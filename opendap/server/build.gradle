@@ -6,10 +6,16 @@ apply from: "$rootDir/gradle/any/java-published.gradle"
 
 dependencies {
     implementation enforcedPlatform(project(':tds-platform'))
+    testImplementation enforcedPlatform (project(':tds-testing-platform'))
 
     compile 'edu.ucar:cdm-core'
     compile 'edu.ucar:opendap'
     compile 'org.slf4j:slf4j-api'
 
     compileOnly 'javax.servlet:javax.servlet-api'
+
+    testImplementation project(':tds-test-utils');
+    testImplementation 'junit:junit'
+    testImplementation 'com.google.truth:truth'
+    testRuntimeOnly 'ch.qos.logback:logback-classic'
 }

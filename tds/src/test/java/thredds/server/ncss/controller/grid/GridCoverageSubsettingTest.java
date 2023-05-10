@@ -31,6 +31,10 @@
  */
 package thredds.server.ncss.controller.grid;
 
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+
+import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,7 +60,6 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
 import ucar.nc2.util.IO;
-import ucar.nc2.write.Ncdump;
 import ucar.unidata.geoloc.ProjectionRect;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.io.ByteArrayInputStream;
@@ -65,8 +68,6 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.concurrent.atomic.AtomicInteger;
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ParameterizedClassRunner.class)
 @WebAppConfiguration
@@ -87,10 +88,6 @@ public class GridCoverageSubsettingTest {
   public static Collection<Object[]> getTestParameters() {
 
     return Arrays.asList(new Object[][] {
-        // { new int[]{1,2,2} , "/ncss/grid/scanCdmUnitTests/ft/grid/GFS_Global_onedeg_20081229_1800.grib2.nc",
-        // "Pressure_surface", true, 50.0, -10.0, 50, 110 }, //No vertical levels
-        // { new int[]{1,2,2} , "/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2",
-        // "Pressure_surface", true, 45.0, 15.0, -120, -90 }, //No vertical levels
         {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 700.0,
             2700.0, -2000, 666,
             new Expected(new int[] {1, 149, 198}, new ProjectionRect(-2004.745, 697.882, 663.620, 2702.542))},
@@ -103,7 +100,18 @@ public class GridCoverageSubsettingTest {
             new Expected(new int[] {1, 77, 114}, new ProjectionRect(1232.510, -588.893, 2763.095, 440.527))},
         {"/ncss/grid/scanCdmUnitTests/tds/ncep/RR_CONUS_13km_20121028_0000.grib2", "Pressure_surface", false, 2000,
             4000, -4000, -833.102753,
-            new Expected(new int[] {1, 146, 186}, new ProjectionRect(-3332.155, 1998.202, -826.330, 3962.227))},});
+            new Expected(new int[] {1, 146, 186}, new ProjectionRect(-3332.155, 1998.202, -826.330, 3962.227))},
+
+        {"/ncss/grid/scanLocal/GFS_Global_onedeg_20120515_1200.grib2.nc", "Temperature_surface", true, -90, 90, -180,
+            180, new Expected(new int[] {1, 181, 360}, new ProjectionRect(-90, 0, 90, 359))},
+        {"/ncss/grid/scanLocal/GFS_Global_onedeg_20120515_1200.grib2.nc", "Temperature_surface", true, -90, 90, 0, 360,
+            new Expected(new int[] {1, 181, 360}, new ProjectionRect(-90, 0, 90, 359))},
+        {"/ncss/grid/scanLocal/GFS_Global_onedeg_20120515_1200.grib2.nc", "Temperature_surface", true, 0, 90, -180, 180,
+            new Expected(new int[] {1, 91, 360}, new ProjectionRect(0, 0, 90, 359))},
+        {"/ncss/grid/scanLocal/GFS_Global_onedeg_20120515_1200.grib2.nc", "Temperature_surface", true, 0, 90, 0, 360,
+            new Expected(new int[] {1, 91, 360}, new ProjectionRect(0, 0, 90, 359))},
+
+    });
   }
 
   private static class Expected {
@@ -121,14 +129,14 @@ public class GridCoverageSubsettingTest {
     mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
   }
 
-  private static AtomicInteger count = new AtomicInteger();
-
-  ////////////////////////////////////////////////////////
-  private String pathInfo;
-  private Expected expect;
-  private String vars;
-  private double north, south, east, west;
-  private boolean isLatLon;
+  private final String pathInfo;
+  private final Expected expect;
+  private final String vars;
+  private final double north;
+  private final double south;
+  private final double east;
+  private final double west;
+  private final boolean isLatLon;
 
   public GridCoverageSubsettingTest(String pathInfo, String vars, boolean isLatLon, double south, double north,
       double west, double east, Expected expect) {
@@ -139,36 +147,27 @@ public class GridCoverageSubsettingTest {
     this.east = east;
     this.west = west;
     this.expect = expect;
+    this.isLatLon = isLatLon;
   }
 
   @Test
   public void shouldSubsetGrid() throws Exception {
-    if (isLatLon)
-      System.out.printf("path=%s lat=[%f,%f] lon=[%f,%f]%n", pathInfo, south, north, west, east);
-    else
-      System.out.printf("path=%s y=[%f,%f] x=[%f,%f]%n", pathInfo, north, south, west, east);
-
-
     RequestBuilder requestBuilder;
-    if (isLatLon)
+    if (isLatLon) {
       requestBuilder = MockMvcRequestBuilders.get(pathInfo).servletPath(pathInfo).param("var", vars)
           .param("north", Double.valueOf(north).toString()).param("south", Double.valueOf(south).toString())
           .param("east", Double.valueOf(east).toString()).param("west", Double.valueOf(west).toString());
-    else
+    } else {
       requestBuilder = MockMvcRequestBuilders.get(pathInfo).servletPath(pathInfo).param("var", vars)
           .param("maxy", Double.valueOf(north).toString()).param("miny", Double.valueOf(south).toString())
           .param("maxx", Double.valueOf(east).toString()).param("minx", Double.valueOf(west).toString());
-
-    System.out.printf("%n%s vars=%s%n", pathInfo, vars);
+    }
 
     MvcResult mvc = this.mockMvc.perform(requestBuilder).andReturn();
-    if (mvc.getResponse().getStatus() != 200)
-      System.out.printf("BAD %d == %s%n", mvc.getResponse().getStatus(), mvc.getResponse().getContentAsString());
-    assertEquals(200, mvc.getResponse().getStatus());
+    assertThat(mvc.getResponse().getStatus()).isEqualTo(HttpStatus.SC_OK);
 
     // Save the result
     String fileOut = tempFolder.newFile().getAbsolutePath();
-    System.out.printf("Write to %s%n", fileOut);
     try (FileOutputStream fout = new FileOutputStream(fileOut)) {
       ByteArrayInputStream bis = new ByteArrayInputStream(mvc.getResponse().getContentAsByteArray());
       IO.copy(bis, fout);
@@ -176,43 +175,19 @@ public class GridCoverageSubsettingTest {
 
     // Open the binary response in memory
     NetcdfFile nf = NetcdfFiles.open(fileOut);
-    System.out.printf("%s%n", nf);
-    Variable v = nf.getRootGroup().findVariableLocal("x");
-    assert v != null;
+    Variable v = nf.getRootGroup().findVariableLocal(isLatLon ? "lat" : "x");
+    assertThat((Object) v).isNotNull();
     Array x = v.read();
-    logger.debug(Ncdump.printArray(x));
-    System.out.printf("%n");
-    v = nf.getRootGroup().findVariableLocal("y");
-    assert v != null;
+    v = nf.getRootGroup().findVariableLocal(isLatLon ? "lon" : "y");
+    assertThat((Object) v).isNotNull();
     Array y = v.read();
-    logger.debug(Ncdump.printArray(y));
-    System.out.printf("%n");
 
     int nx = (int) x.getSize();
     int ny = (int) y.getSize();
     ProjectionRect prect = new ProjectionRect(x.getDouble(0), y.getDouble(0), x.getDouble(nx - 1), y.getDouble(ny - 1));
 
-    if (expect != null) {
-      v = nf.getRootGroup().findVariableLocal(vars);
-      System.out.printf("v.getShape()=%s%n", Arrays.toString(v.getShape()));
-      assertArrayEquals(expect.shape, v.getShape());
-
-      System.out.printf("Expected ProjectionRect=%s%n", expect.rect.toString2(6));
-      System.out.printf("Actual ProjectionRect=%s%n", prect.toString2(6));
-      assertTrue(expect.rect.nearlyEquals(prect));
-    }
-
-    // ucar.nc2.dt.grid.GridDataset gdsDataset = new ucar.nc2.dt.grid.GridDataset(new NetcdfDataset(nf));
-    // assertTrue( gdsDataset.getCalendarDateRange().isPoint());
-
-    /*
-     * int[][] shapes = new int[vars.size()][];
-     * int count = 0;
-     * GeoGrid grid = gdsDataset.findGridByShortName(varName);
-     * shapes[count++] = grid.getShape();
-     * assertArrayEquals(expectedShapes, shapes);
-     */
+    v = nf.getRootGroup().findVariableLocal(vars);
+    assertArrayEquals(expect.shape, v.getShape());
+    assertThat(expect.rect.nearlyEquals(prect)).isTrue();
   }
-
-
 }

@@ -170,7 +170,7 @@ If a request is forwarded to another internal service, a _1000 (Forwarded)_ or _
 The error _Inconsistent array length read_ only tells you that there was an error on the server in the middle of responding to an OPeNDAP request.
 You then must look in the `threddsServlet.log` and find the error to know why.
 
-###: Why am I getting lots of `java.util.prefs.BackingStoreException warning` messages?
+### Why am I getting lots of `java.util.prefs.BackingStoreException warning` messages?
 
 If you allow and use the TDS WMS service, you may be seeing warning messages in your Tomcat `catalina.out` log file that look something like this:
 
@@ -233,6 +233,11 @@ We hope to make this list configurable in a future release.
 In the meantime, if you need a CRS that isn't listed, try specifying it in the `GetMap` request.
 The underlying library that handles CRS (Geotoolkit) still supports a large number of CRS and the TDS WMS should still support any of those CRS when requested.
 
+### What happened to my custom WMS palettes?
+
+The WMS server used in TDS 5 is a major upgrade from the one used in TDS 4, and one of the changes is how the color palettes are encoded.
+Please visit the [WMS configuration documentation](tds_config_ref.html#wms-service), which includes a link to a tool that can assist in converting existing palettes into TDS 5.x compatible pallets.
+
 ### Why are TDS web forms not working?
 
 Look in `${tomcat_home}/logs/localhost.logs` for error messages like:
@@ -284,6 +289,17 @@ to something like:
 
 Be aware if you install a new `thredds.war` to `${tomcat_home}/webapps`, the exploded directory—including all changes you made to `log4j2.xml` will be removed and the webapp will be redeployed from the new `thredds.war`. 
 We suggest you copy `log4j2.xml` to a different location for the deployment and then copy it back over afterwards.
+
+### Issues with Forecast Model Run Collections (FMRC)
+
+If your FMRC datasets are not working properly, and you see errors involving ChronicleMap in the `fmrc.log`, for instance:
+
+~~~
+[2022-09-12T16:02:50.065+0300] ERROR ucar.nc2.ft.fmrc.Fmrc: makeFmrcInv
+com.google.common.util.concurrent.UncheckedExecutionException: java.lang.IllegalStateException: ChronicleMap{name=GridDatasetInv, file=/content/thredds/cache/collection/GridDatasetInv.dat, identityHashCode=1659873263}: Attempt to allocate #3 extra segment tier, 2 is maximum.
+~~~
+
+then you may need to adjust your [FMRC cache settings](https://docs.unidata.ucar.edu/tds/current/userguide/tds_config_ref.html#featurecollection-cache).
 
 ## Caching
 
@@ -461,3 +477,15 @@ You must restart tomcat for this to take effect.
 ### Logging is not working
 
 You must use a version of Tomcat >= 7.0.43. See [log4j2 docs](http://logging.apache.org/log4j/2.0/manual/webapp.html){:target="_blank"}.
+
+### How do I get detailed log info of Object Store requests for debugging?
+
+You can edit the `WEB-INF/classes/log4j2.xml` log settings before starting up TDS.
+For instance, you can change the log level of `software.amazon.awssdk` to `debug`.
+If you want to log a summary of every request/response you can add:
+~~~
+    <logger name="software.amazon.awssdk.request" level="debug" additivity="false">
+      <appender-ref ref="threddsServlet"/>
+    </logger>
+~~~
+Note: Do not log at "debug" level in your production environments because it is verbose and could log sensitive authentication data!

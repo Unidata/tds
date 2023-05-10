@@ -31,6 +31,16 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
   private static final int DEFAULT_ENTRIES = 1000;
   private static final int DEFAULT_BLOAT_FACTOR = 1;
 
+  private enum AverageValueSize {
+    small(4096), medium(16384), large(65536), defaultSize(small.size);
+
+    private final int size;
+
+    AverageValueSize(int size) {
+      this.size = size;
+    }
+  }
+
   /**
    * Initialize the inventory cache
    *
@@ -50,6 +60,36 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
    * @throws IOException
    */
   public static void init(Path cacheDir, int maxEntries, int maxBloatFactor) throws IOException {
+    init(cacheDir, maxEntries, maxBloatFactor, AverageValueSize.defaultSize.size);
+  }
+
+  /**
+   * Initialize the inventory cache
+   *
+   * @param cacheDir Path to the cache directory. This location will be created if it does not exist.
+   * @param maxEntries number of entries in the cache, at most
+   * @param maxBloatFactor max number of times the cache size can increase
+   * @param averageValueSizeName a name of one of the {@link AverageValueSize} constants or null if the default should
+   *        be used
+   * @throws IOException
+   */
+  public static void init(Path cacheDir, int maxEntries, int maxBloatFactor, String averageValueSizeName)
+      throws IOException {
+    final int averageValueSize = averageValueSizeName == null ? AverageValueSize.defaultSize.size
+        : AverageValueSize.valueOf(averageValueSizeName.toLowerCase(Locale.ROOT)).size;
+    init(cacheDir, maxEntries, maxBloatFactor, averageValueSize);
+  }
+
+  /**
+   * Initialize the inventory cache
+   *
+   * @param cacheDir Path to the cache directory. This location will be created if it does not exist.
+   * @param maxEntries number of entries in the cache, at most
+   * @param maxBloatFactor max number of times the cache size can increase
+   * @param averageValueSize the average size of a value (a grid dataset inventory) in bytes
+   * @throws IOException
+   */
+  private static void init(Path cacheDir, int maxEntries, int maxBloatFactor, int averageValueSize) throws IOException {
     if (!Files.exists(cacheDir)) {
       logger.info("Creating cache directory at {}", cacheDir.toString());
       Files.createDirectories(cacheDir);
@@ -61,8 +101,11 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
       logger.info("Creating new grid inventory cache file at {}", dbFile.toString());
     }
     if (cache == null) {
+      logger.info("Grid inventory cache built with: maxEntries={}, maxBloatFactor={}, averageValueSize={}", maxEntries,
+          maxBloatFactor, averageValueSize);
+
       cache = ChronicleMapBuilder.of(String.class, byte[].class).name("GridDatasetInv")
-          .averageKey("/data/project/analysis/file.ext").averageValueSize(4096).entries(maxEntries)
+          .averageKey("/data/project/analysis/file.ext").averageValueSize(averageValueSize).entries(maxEntries)
           .maxBloatFactor(maxBloatFactor).createOrRecoverPersistedTo(dbFile.toFile());
     }
   }
@@ -100,7 +143,7 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
   @Override
   public void put(MFile mfile, GridDatasetInv inventory) throws IOException {
     if (cache != null) {
-      String xml = inventory.writeXML(new Date(mfile.getLastModified()));
+      String xml = inventory.writeCompactXML(new Date(mfile.getLastModified()));
       cache.put(mfile.getPath(), xml.getBytes(Charsets.UTF_8));
     }
   }
@@ -112,5 +155,43 @@ public class GridInventoryCacheChronicle implements InventoryCacheProvider {
     if (cache != null) {
       cache.close();
     }
+  }
+
+  /**
+   * Display cache info
+   */
+  public static void showCache(Formatter formatter) {
+    if (cache == null) {
+      formatter.format("%nFMRC GridInventoryCache: turned off%n");
+    } else {
+      formatter.format("%nFMRC GridInventoryCache:%n");
+      formatter.format("numberOfEntries=%d, ", getNumberOfEntries());
+      formatter.format("remainingAutoResizes=%d, ", getRemainingAutoResizes());
+      formatter.format("percentageFreeSpace=%d, ", getPercentageFreeSpace());
+      formatter.format("offHeapMemoryUsed=%d", getOffHeapMemoryUsed());
+      formatter.format("%n");
+    }
+  }
+
+  // For testing
+  static void resetCache() {
+    shutdown();
+    cache = null;
+  }
+
+  static long getNumberOfEntries() {
+    return cache.longSize();
+  }
+
+  static int getRemainingAutoResizes() {
+    return cache.remainingAutoResizes();
+  }
+
+  static int getPercentageFreeSpace() {
+    return cache.percentageFreeSpace();
+  }
+
+  static long getOffHeapMemoryUsed() {
+    return cache.offHeapMemoryUsed();
   }
 }

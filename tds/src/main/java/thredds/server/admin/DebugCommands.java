@@ -8,6 +8,7 @@ package thredds.server.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import thredds.featurecollection.cache.GridInventoryCacheChronicle;
 import thredds.server.config.TdsContext;
 import thredds.servlet.ServletUtil;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -144,6 +145,9 @@ public class DebugCommands {
           f.format("%n%n");
           fc.showCache(f);
         }
+
+        f.format("%n%n");
+        GridInventoryCacheChronicle.showCache(f);
 
         e.pw.flush();
       }

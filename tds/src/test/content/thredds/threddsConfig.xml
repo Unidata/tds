@@ -106,6 +106,7 @@
   <FeatureCollection>
     <maxEntries>1024</maxEntries>
     <maxBloatFactor>2</maxBloatFactor>
+    <averageValueSize>medium</averageValueSize>
   </FeatureCollection>
 
   <ConfigCatalog>

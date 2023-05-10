@@ -26,11 +26,9 @@ jobs:
           java-vendor: ${{ matrix.java-vendor }}
           java-version: ${{ matrix.java-version }}
           build-tool: 'gradlew'
-          test-command: '-Dtds.content.root.path=$CONTENT_DIR -Dtds.download.dir=$DOWNLOAD_DIR -Dtds.upload.dir=$UPLOAD_DIR -Dtds.test.gretty.container=${{ matrix.servletcontainer }} --info --stacktrace testAll'
+          test-command: '-Dtds.content.root.path=$CONTENT_DIR -Dtds.test.gretty.container=${{ matrix.servletcontainer }} --info --stacktrace testAll'
         env:
           CONTENT_DIR: ${{ github.workspace }}/tds/src/test/content
-          DOWNLOAD_DIR: '/tmp/download'
-          UPLOAD_DIR: '/tmp/upload'
       - uses: actions/upload-artifact@v2
         if: failure()
         with:

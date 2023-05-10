@@ -60,4 +60,12 @@ public class FileServerControllerTest {
 
     mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
   }
+
+  @Test
+  public void shouldReturnFileWithFeatureCollectionPathInUrlPathAndLocationInNcml() throws Exception {
+    final String path = "/fileServer/testGFSfmrc/ncmlLocation";
+    final RequestBuilder rb = MockMvcRequestBuilders.get(path).servletPath(path);
+
+    mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+  }
 }

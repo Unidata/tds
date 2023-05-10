@@ -170,6 +170,12 @@
       <appender-ref ref="threddsServlet"/>
     </logger>
 
+    <!-- ASW SDK -->
+    <!-- Note: Do not log at "debug" level in your production environments because it could log sensitive authentication data! -->
+    <logger name="software.amazon.awssdk" level="warn" additivity="false">
+      <appender-ref ref="threddsServlet"/>
+    </logger>
+
     <!-- log issues related to loading custom color palettes -->
     <logger name="uk.ac.rdg.resc.edal.graphics.utils.ColourPalette" level="warn" additivity="false">
       <appender-ref ref="serverStartup"/>

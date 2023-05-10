@@ -43,6 +43,13 @@
     dataType="Grid"
     serviceName="all"/>
 
+  <datasetScan name="Test S3 dataset scan"
+    ID="testS3DatasetScan"
+    path="s3-dataset-scan"
+    location="cdms3:thredds-test-data#delimiter=/">
+    <serviceName>all</serviceName>
+  </datasetScan>
+
   <dataset name="S3 Example NcML Aggregation" ID="S3ExampleNcMLAgg" urlPath="S3ExampleNcML/Agg.nc">
     <serviceName>all</serviceName>
     <dataType>Grid</dataType>

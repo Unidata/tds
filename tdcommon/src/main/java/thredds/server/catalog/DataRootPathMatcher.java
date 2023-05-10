@@ -61,9 +61,13 @@ public class DataRootPathMatcher {
    * 
    * @return true if not already exist
    */
-  private boolean put(DataRootExt dateRootExt) {
-    map.put(dateRootExt.getPath(), dateRootExt);
-    return treeSet.add(dateRootExt.getPath());
+  private boolean put(DataRootExt dataRootExt) {
+    map.put(dataRootExt.getPath(), dataRootExt);
+    String path = dataRootExt.getPath();
+    if (!path.endsWith("/")) {
+      path += "/";
+    }
+    return treeSet.add(path);
   }
 
   /**
@@ -96,21 +100,24 @@ public class DataRootPathMatcher {
    * @return the value whose key is the longest that matches path, or null if none
    */
   public String findLongestPathMatch(String reqPath) {
+    if (!reqPath.endsWith("/")) {
+      reqPath += "/";
+    }
     SortedSet<String> tail = treeSet.tailSet(reqPath);
-    if (tail.isEmpty())
+    if (tail.isEmpty()) {
       return null;
-    String after = tail.first();
-    if (reqPath.startsWith(after)) // common case
-      return tail.first();
+    }
 
-    // have to check more, until no common starting chars
+    // check for common starting chars
     for (String key : tail) {
-      if (reqPath.startsWith(key))
-        return key;
+      if (reqPath.startsWith(key)) {
+        return key.endsWith("/") ? key.substring(0, key.length() - 1) : key;
+      }
 
       // terminate when there's no match at all.
-      if (StringUtil2.match(reqPath, key) == 0)
+      if (StringUtil2.match(reqPath, key) == 0) {
         break;
+      }
     }
 
     return null;
@@ -126,6 +133,7 @@ public class DataRootPathMatcher {
     String path = findLongestPathMatch(reqPath);
     if (path == null)
       return null;
+
     DataRootExt dataRootExt = map.get(path);
     if (dataRootExt == null) {
       logger.error("DataRootPathMatcher found path {} but not in map", path);
@@ -245,7 +253,7 @@ public class DataRootPathMatcher {
     String path = fc.getPath();
 
     if (path == null) {
-      logCatalogInit.error(ERROR + "DatasetScan '" + fc.getName() + "' missing the path attribute.");
+      logCatalogInit.error(ERROR + "FeatureCollection '" + fc.getName() + "' missing the path attribute.");
       return false;
     }
 

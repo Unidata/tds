@@ -59,8 +59,8 @@
   <dataset name="Test Container Authorization" ID="testcontainerauth" serviceName="all" urlPath="containerauth/testData2.nc" restrictAccess="containerauth"/>
 
   <dataset name="Test With Viewer" ID="testDataset2" serviceName="odap" urlPath="localContent/2004050412_eta_211.nc" dataType="Grid">
-    <property name="viewer" value="https://www.unidata.ucar.edu/staff/caron/,MyViewer"/>
-    <property name="viewer2" value="https://www.unidata.ucar.edu/,MyOtherViewer"/>
+    <property name="viewer" value="https://www.unidata.ucar.edu/staff/caron/,MyViewer,A viewer for my data,Application"/>
+    <property name="viewer2" value="https://www.unidata.ucar.edu/,,,Browser"/>
   </dataset>
   <dataset name="Test latlon crossing seam" ID="testCrossingSeam" serviceName="all" urlPath="localContent/GFS_Global_onedeg_20120515_1200.grib2.nc"
            dataType="Grid"/>
@@ -209,6 +209,16 @@
       </ncml:netcdf>
     </dataset>
 
+    <dataset name="Test Aggregation with joinExisting dimension that some variables don't depend on"
+      ID="aggJoinExisting" urlPath="aggJoinExisting">
+      <serviceName>all</serviceName>
+      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+        <aggregation dimName="height_above_ground" type="joinExisting">
+          <netcdf location="${cdmUnitTest}/ncml/nc/namExtract/20060925_1800.nc"/>
+        </aggregation>
+      </netcdf>
+    </dataset>
+
     <!-- test NcML in datasetScan -->
     <datasetScan name="ModifyDatasetScan" ID="ModifyDatasetScan" path="ModifyDatasetScan" location="${cdmUnitTest}/tds/">
       <metadata inherited="true">
@@ -240,6 +250,13 @@
       </ncml:netcdf>
     </dataset>
 
+    <dataset name="Test with a featureCollection path as prefix in urlPath and a location in the ncml"
+      ID="ncmlLocationFeatureCollection" urlPath="testGFSfmrc/ncmlLocation">
+      <serviceName>all</serviceName>
+      <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+        location="content/testdata/testData.nc">
+      </ncml:netcdf>
+    </dataset>
   </dataset>
 
   <!-- END UNTESTED-->
@@ -261,12 +278,5 @@
 
   <!-- urls intended to test container auth without spring -->
   <datasetRoot path="containerauth" location="content/testdata"/>
-
-  <datasetScan name="Uploaded Files" ID="upload"
-                     location="${tds.upload.dir}" path="upload/">
-	    <metadata inherited="true">
-	      <serviceName>all</serviceName>
-	    </metadata>
-  </datasetScan>
 
 </catalog>

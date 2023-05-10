@@ -22,14 +22,14 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 
 #### Downloading And Renaming The TDS WAR File
 
-1. [Download](https://downloads.unidata.ucar.edu/tds/){:target="_blank"} the TDS WAR file from Unidata's web site (`tds-5.0.0-beta5.war` for this example).
+1. [Download](https://downloads.unidata.ucar.edu/tds/){:target="_blank"} the TDS WAR file from Unidata's web site (`tds-{{site.docset_version}}.war` for this example).
 
 2. Rename the WAR file.
    
    Tomcat automatically *maps* the name of the WAR file to the address in which it is accessed.  
    E.g., a web application with WAR file `foo.war` will be accessible via this URL structure: `http://localhost:8080/foo` 
    
-   Unless you want the URL to your TDS to look like `http://localhost:8080/tds-5.0.0-beta5` (_ugly!_) you need to rename the WAR file to match what is in the TDS `META-INF/context.xml` file.  
+   Unless you want the URL to your TDS to look like `http://localhost:8080/tds-{{site.docset_version}}` (_ugly!_) you need to rename the WAR file to match what is in the TDS `META-INF/context.xml` file.  
    By default, that is `thredds`:
 
    ~~~bash
@@ -47,19 +47,19 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
    
    To solve this, we can make use of a feature in the Tomcat Servlet Container that ignores anything after **double** hashtag symbols in the name of the WAR file.  
    
-   If we rename the WAR file to `thredds##5.0.0-beta5.war`, Tomcat will see this matching the context information in the `META-INF/context.xml` file and make the TDS accessible via this URL structure: `http://localhost:8080/thredds` 
+   If we rename the WAR file to `thredds##{{site.docset_version}}.war`, Tomcat will see this matching the context information in the `META-INF/context.xml` file and make the TDS accessible via this URL structure: `http://localhost:8080/thredds` 
    (And we have the added benefit of seeing which version of the TDS is deployed when viewing the raw WAR file). 
 
    ~~~bash
    # cd /tmp
    # ls -l
    total 274828
-   -rw-r--r-- 1 root root  80027070 Oct 24 14:42 tds-5.0.0-beta5.war
+   -rw-r--r-- 1 root root  80027070 Oct 24 14:42 tds-{{site.docset_version}}.war
    
-   # mv tds-5.0.0-beta5.war thredds##5.0.0-beta5.war
+   # mv tds-{{site.docset_version}}.war thredds##{{site.docset_version}}.war
    # ls -l  
    total 274828
-   -rw-r--r-- 1 root root  80027070 Oct 24 14:42 thredds##5.0.0-beta5.war
+   -rw-r--r-- 1 root root  80027070 Oct 24 14:42 thredds##{{site.docset_version}}.war
    ~~~
 
 #### Deploying The TDS WAR File
@@ -77,7 +77,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
    drwxr-x---  5 root root 4096 Oct 24 13:29 manager
    drwxr-x---  3 root root 4096 Oct 24 13:29 ROOT
     
-   # cp /tmp/thredds##5.0.0-beta5.war .
+   # cp /tmp/thredds##{{site.docset_version}}.war .
    # ls -l
    total 78172
    drwxr-x--- 14 root root     4096 Oct 24 13:29 docs
@@ -85,12 +85,12 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
    drwxr-x---  5 root root     4096 Oct 24 13:29 host-manager
    drwxr-x---  5 root root     4096 Oct 24 13:29 manager
    drwxr-x---  3 root root     4096 Oct 24 13:29 ROOT
-   -rw-r--r--  1 root root 80027070 Oct 24 14:51 thredds##5.0.0-beta5.war
+   -rw-r--r--  1 root root 80027070 Oct 24 14:51 thredds##{{site.docset_version}}.war
    ~~~
 
 2. Confirm the TDS has been deployed.
 
-   If Tomcat is already running, wait a couple of seconds after placing the WAR file in `${tomcat_home}/webapps` and then verify the `thredds##5.0.0-beta5.war` file was unpacked:
+   If Tomcat is already running, wait a couple of seconds after placing the WAR file in `${tomcat_home}/webapps` and then verify the `thredds##{{site.docset_version}}.war` file was unpacked:
 
    ~~~bash
    # ls -l
@@ -100,8 +100,8 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
    drwxr-x---  5 root root     4096 Oct 24 13:29 host-manager
    drwxr-x---  5 root root     4096 Oct 24 13:29 manager
    drwxr-x---  3 root root     4096 Oct 24 13:29 ROOT
-   drwxr-x---  8 root root     4096 Oct 24 14:51 thredds##5.0.0-beta5
-   -rw-r--r--  1 root root 80027070 Oct 24 14:51 thredds##5.0.0-beta5.war
+   drwxr-x---  8 root root     4096 Oct 24 14:51 thredds##{{site.docset_version}}
+   -rw-r--r--  1 root root 80027070 Oct 24 14:51 thredds##{{site.docset_version}}.war
    ~~~
 
    Go to [http://localhost:8080/thredds/](http://localhost:8080/thredds/){:target="_blank"} in your browser to verify the TDS has been deployed:
@@ -109,13 +109,15 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
    {% include image.html file="tds/tutorial/getting_started/default_cat.png" alt="THREDDS Distribution Catalog" caption="THREDDS Distribution Catalog" %}
 
 
-    {%include warning.html content="
-    Be aware that the contents of the expanded web application directory (`thredds##5.0.0-beta5` in this example) is overwritten whenever a new WAR file of the _same name_ is deployed.  
+    {% capture warning_content= %}
+    Be aware that the contents of the expanded web application directory (`thredd##{{site.docset_version}}` in this example) is overwritten whenever a new WAR file of the _same name_ is deployed.
     
     In other words, the contents of a new `thredds.war` file placed into `${tomcat_home}/webapps` would completely clobber any information in an existing expanded `${tomcat_home}/webapps/thredds` directory.
     
     This is another good reason to rename the TDS WAR files by version as demonstrated prior.  
-    " %}
+    {% endcapture %}
+
+    {%include warning.html content=warning_content %}
 
 ## Creation Of TDS `$CONTENT_ROOT`
 

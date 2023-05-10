@@ -40,6 +40,7 @@ public class ThreddsConfigTest {
     assertEquals(52428800, ThreddsConfig.getBytes("NetcdfSubsetService.maxFileDownloadSize", -1L));
     assertEquals(1024, ThreddsConfig.getInt("FeatureCollection.maxEntries", 1000));
     assertEquals(2, ThreddsConfig.getInt("FeatureCollection.maxBloatFactor", 1));
+    assertEquals("medium", ThreddsConfig.get("FeatureCollection.averageValueSize", null));
   }
 
   // Tests the "cachePathPolicy" element, added in response to this message on the thredds mailing list:

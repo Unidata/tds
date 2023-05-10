@@ -23,7 +23,7 @@ In general, you can provide default values for the following properties:
  * _defaultPaletteName_: A color palette name (see the [ncWMS User Guide](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap){:target="_blank"} for options).
  * _defaultNumColorBands_: The number of colour bands to use.
  * _logScaling_: Use a logarithmic scale when generating images.
- * _intervalTime_: Use time ranges instead of lists of individual times in the capabilities documents.
+ * _intervalTime_: Deprecated, does not work.
 
 There are two main elements to the `wmsConfig.xml` file - the `<global>`, and the `<overrides>`.
 Each controls the level of granularity at which default values are chosen.

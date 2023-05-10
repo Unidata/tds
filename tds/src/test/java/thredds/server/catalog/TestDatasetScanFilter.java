@@ -4,7 +4,8 @@
  */
 package thredds.server.catalog;
 
-import org.junit.Assert;
+import static com.google.common.truth.Truth.assertThat;
+
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -27,7 +28,6 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import static org.junit.Assert.*;
 
 public class TestDatasetScanFilter {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -35,24 +35,19 @@ public class TestDatasetScanFilter {
   @ClassRule
   public static final TemporaryFolder tempFolder = new TemporaryFolder();
 
-  private static File tmpTestDataDir;
-  private static MFile tmpTestDataCrDs;
-  private static List<String> dataFiles_FullPathNames;
-  private static List<String> allFiles_FullPathNames;
-
   @BeforeClass
   public static void setupTestDataDir() throws IOException {
-    tmpTestDataDir = tempFolder.newFolder();
-    System.out.printf("tmpLocalRootDataDir = %s%n", tmpTestDataDir);
+    File tmpTestDataDir = tempFolder.newFolder();
+    logger.debug("tmpLocalRootDataDir = {}", tmpTestDataDir);
 
     AliasTranslator.addAlias("${tmpDir}", tmpTestDataDir.getPath());
     AliasTranslator.addAlias("${cdmUnitTest}", TestDir.cdmUnitTestDir);
 
     File tmpTestDir = TestFileDirUtils.addDirectory(tmpTestDataDir, "testDatafilesInDateTimeNestedDirs");
-    assertNotNull(tmpTestDir);
-    assertTrue(tmpTestDir.exists());
-    assertTrue(tmpTestDir.canRead());
-    assertTrue(tmpTestDir.canWrite());
+    assertThat(tmpTestDir).isNotNull();
+    assertThat(tmpTestDir.exists()).isTrue();
+    assertThat(tmpTestDir.canRead()).isTrue();
+    assertThat(tmpTestDir.canWrite()).isTrue();
 
     File profilesDir = TestFileDirUtils.addDirectory(tmpTestDir, "profiles");
     File firstDayDir = TestFileDirUtils.addDirectory(profilesDir, "20131106");
@@ -116,142 +111,145 @@ public class TestDatasetScanFilter {
   @Test
   public void testWildcardFilter() throws IOException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
+    assertThat(cat).isNotNull();
 
     Dataset ds = cat.findDatasetByID("testGridScan");
-    assert ds != null;
-    assert (ds instanceof DatasetScan);
+    assertThat(ds).isNotNull();
+    assertThat(ds).isInstanceOf(DatasetScan.class);
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
-    assert serviceName.equals("all");
+    assertThat(serviceName).isEqualTo("all");
 
     DatasetScanConfig config = dss.getConfig();
-    System.out.printf("%s%n", config);
+    logger.debug(config.toString());
 
     Catalog scanCat = dss.makeCatalogForDirectory("testGridScan", cat.getBaseURI()).makeCatalog();
-    assert scanCat != null;
+    assertThat(scanCat).isNotNull();
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     Dataset root = scanCat.getDatasets().get(0);
-    assert root.getDatasets().size() == 1;
+    assertThat(root.getDatasets().size()).isEqualTo(1);
 
     scanCat = dss.makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI())
         .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
-    assert root.getDatasets().size() == 2;
+    assertThat(root.getDatasets().size()).isEqualTo(2);
 
     scanCat = dss
         .makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles/20131106", cat.getBaseURI())
         .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
-    Assert.assertEquals(3, root.getDatasets().size());
+    assertThat(root.getDatasets().size()).isEqualTo(3);
 
     scanCat = dss
         .makeCatalogForDirectory("testGridScan/testDatafilesInDateTimeNestedDirs/profiles/20131107", cat.getBaseURI())
         .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
-    assert root.getDatasets().size() == 4;
+    assertThat(root.getDatasets().size()).isEqualTo(4);
   }
 
   @Test
   public void testRegexpFilter() throws IOException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
+    assertThat(cat).isNotNull();
 
     Dataset ds = cat.findDatasetByID("testGridScanReg");
-    assert ds != null;
-    assert (ds instanceof DatasetScan);
+    assertThat(ds).isNotNull();
+    assertThat(ds).isInstanceOf(DatasetScan.class);
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
-    assert serviceName.equals("all");
+    assertThat(serviceName).isEqualTo("all");
 
     Catalog scanCat = dss.makeCatalogForDirectory("testGridScanReg", cat.getBaseURI()).makeCatalog();
-    assert scanCat != null;
+    assertThat(scanCat).isNotNull();
 
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     Dataset root = scanCat.getDatasets().get(0);
-    assert root.getDatasets().size() == 1;
+    assertThat(root.getDatasets().size()).isEqualTo(1);
 
     scanCat =
         dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI())
             .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
-    assert root.getDatasets().size() == 2;
+    assertThat(root.getDatasets().size()).isEqualTo(2);
 
     scanCat = dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131106",
         cat.getBaseURI()).makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
-    Assert.assertEquals(3, root.getDatasets().size());
+    assertThat(root.getDatasets().size()).isEqualTo(3);
 
     scanCat = dss.makeCatalogForDirectory("testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131107",
         cat.getBaseURI()).makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
-    assert root.getDatasets().size() == 3;
+    assertThat(root.getDatasets().size()).isEqualTo(3);
   }
 
   @Test
   public void testExcludeDir() throws IOException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");
+    assertThat(cat).isNotNull();
     CatalogXmlWriter writer = new CatalogXmlWriter();
-    System.out.printf("%n%s%n", writer.writeXML(cat));
+    logger.debug(writer.writeXML(cat));
 
     Dataset ds = cat.findDatasetByID("testExclude");
-    assert ds != null;
-    assert (ds instanceof DatasetScan);
+    assertThat(ds).isNotNull();
+    assertThat(ds).isInstanceOf(DatasetScan.class);
     DatasetScan dss = (DatasetScan) ds;
     String serviceName = dss.getServiceNameDefault();
-    assert serviceName.equals("all");
+    assertThat(serviceName).isEqualTo("all");
 
     Catalog scanCat = dss.makeCatalogForDirectory("testExclude", cat.getBaseURI()).makeCatalog();
-    assert scanCat != null;
+    assertThat(scanCat).isNotNull();
 
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     Dataset root = scanCat.getDatasets().get(0);
-    assert root.getDatasets().size() == 1;
+    assertThat(root.getDatasets().size()).isEqualTo(1);
 
     scanCat = dss.makeCatalogForDirectory("testExclude/testDatafilesInDateTimeNestedDirs/profiles", cat.getBaseURI())
         .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
-    assert root.getDatasets().size() == 1;
+    assertThat(root.getDatasets().size()).isEqualTo(1);
 
     scanCat =
         dss.makeCatalogForDirectory("testExclude/testDatafilesInDateTimeNestedDirs/profiles/20131106", cat.getBaseURI())
             .makeCatalog();
-    System.out.printf("%n%s%n", writer.writeXML(scanCat));
-    assert scanCat.getDatasets().size() == 1;
+    logger.debug(writer.writeXML(scanCat));
+    assertThat(scanCat.getDatasets().size()).isEqualTo(1);
     root = scanCat.getDatasets().get(0);
-    Assert.assertEquals(3, root.getDatasets().size());
+    assertThat(root.getDatasets().size()).isEqualTo(3);
   }
 
   @Test
   public void testExcludeDirFails() throws IOException {
     ConfigCatalog cat = TestConfigCatalogBuilder.getFromResource("thredds/server/catalog/TestDatasetScan.xml");;
-    assert cat != null;
+    assertThat(cat).isNotNull();
 
     Dataset ds = cat.findDatasetByID("testExclude");
-    assert ds != null;
-    assert (ds instanceof DatasetScan);
+    assertThat(ds).isNotNull();
+    assertThat(ds).isInstanceOf(DatasetScan.class);
     DatasetScan dss = (DatasetScan) ds;
     CatalogBuilder catb = dss.makeCatalogForDirectory(
         "testGridScanReg/testDatafilesInDateTimeNestedDirs/profiles/20131107", cat.getBaseURI());
-    assert catb == null;
+    assertThat(catb).isNull();
   }
 
   @Test
@@ -264,6 +262,6 @@ public class TestDatasetScanFilter {
   public static void testOne(String ps, String match, boolean expect) {
     Pattern pattern = Pattern.compile(ps);
     Matcher matcher = pattern.matcher(match);
-    assertEquals("match " + ps + " against: " + match, expect, matcher.matches());
+    assertThat(matcher.matches()).isEqualTo(expect);
   }
 }

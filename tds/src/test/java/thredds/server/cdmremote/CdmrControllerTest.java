@@ -1,5 +1,6 @@
 package thredds.server.cdmremote;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.jdom2.Document;
@@ -58,6 +59,8 @@ public class CdmrControllerTest {
         {"/cdmremote/testBuoyFeatureCollection/files/Surface_Buoy_20130804_0000.nc", 5, 2, 58, "meanWind(0:1)"}, // point
         {"/cdmremote/testSurfaceSynopticFeatureCollection/files/Surface_Synoptic_20130804_0000.nc", 5, 2, 46,
             "humidity(0:1)"}, // point
+        {"/cdmremote/s3-thredds-test-data/ncml/nc/namExtract/20060925_0600.nc", 5, 12, 16,
+            "Precipitable_water(0:1,43:53,20:40)"}, // S3
     });
   }
 
@@ -141,7 +144,7 @@ public class CdmrControllerTest {
     // We want this statement to succeed without exception.
     // Throws NullPointerException if header doesn't exist
     // Throws IllegalArgumentException if header value is not a valid date.
-    result.getResponse().getDateHeader("Last-Modified");
+    assertThat(result.getResponse().getDateHeader("Last-Modified")).isGreaterThan(0);
 
     // response is a ncstream
     ByteArrayInputStream bais = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());

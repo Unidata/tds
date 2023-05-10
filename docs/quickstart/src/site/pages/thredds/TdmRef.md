@@ -39,7 +39,7 @@ Create a shell script to run the TDM, for example `runTdm.sh`:
 * `-Dtds.content.root.path=<content directory>` this passes the content directory as a system property.
   The thredds configuration catalogs and `threddsConfig.xml` are found in `<content directory>/thredds`.
   Use an absolute path.
-* `-jar tdm-5.0.jar` : execute the TDM from the jar file
+* `-jar tdm-{{site.docset_version}}.jar` : execute the TDM from the jar file
 * `-tds <tdsServers>`: (optional) list of TDS servers to notify.
    If more than one, separate with commas, with no blanks.
    Specify only the scheme, host and optional port with a trailing slash for example: `http://localhost:8081/`
@@ -52,7 +52,7 @@ Create a shell script to run the TDM, for example `runTdm.sh`:
 #### Example:
 
 ~~~bash
-/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/opt/tds/content -jar tdm-5.0.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
+/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/opt/tds/content -jar tdm-{{site.docset_version}}.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
 ~~~
 
 #### Troubleshooting
@@ -168,7 +168,7 @@ This is a utility program to examine the files in a collection before actually i
 ### Example:
 
 ~~~bash
-java -Xmx2g -classpath tdm-4.6.jar thredds.tdm.GCpass1 -spec "Q:/cdmUnitTest/gribCollections/rdavm/ds083.2/PofP/**/.*grib1" -useCacheDir "C:/temp/cache/"  > gcpass1.out
+java -Xmx2g -classpath tdm-{{site.docset_version}}.jar thredds.tdm.GCpass1 -spec "Q:/cdmUnitTest/gribCollections/rdavm/ds083.2/PofP/**/.*grib1" -useCacheDir "C:/temp/cache/"  > gcpass1.out
 ~~~
 
 ### Command Line Arguments:

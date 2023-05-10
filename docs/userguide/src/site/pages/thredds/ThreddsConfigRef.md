@@ -201,8 +201,8 @@ The following shows all the configuration options available in the WCS section o
 <WCS>
   <allow>true</allow>
   <dir>(see the note below)</dir>
-  <scour>15 min</scour>
-  <maxAge>30 min</maxAge>
+  <scour>10 min</scour>
+  <maxAge>5 min</maxAge>
 </WCS>
 ~~~
 
@@ -235,7 +235,7 @@ The following shows all the configuration options available in the WMS section o
 <WMS>
   <allow>true</allow>
   <allowRemote>false</allowRemote>
-  <paletteLocationDir>/WEB-INF/palettes</paletteLocationDir>
+  <paletteLocationDir>wmsPalettes</paletteLocationDir>
   <maxImageWidth>2048</maxImageWidth>
   <maxImageHeight>2048</maxImageHeight>
 </WMS>
@@ -248,8 +248,17 @@ Here is the description of the various options:
 * `allowRemote`: a value of `true` enables the WMS service for datasets available from a remote server.
 * `paletteLocationDir`: optionally specify the location of the directory containing your own palette files, by specifying the directory
 where they are contained.
-  If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
-  If you don't specify it, or specify it incorrectly, the default palettes will be used, which are in the war file under `WEB-INF/palettes`.
+  * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
+  * The default directory for custom palette files is `${tds.content.root.path}/thredds/wmsPalettes`. 
+  * If you don't specify a custom palette directory, or specify it incorrectly, the default directory will be used.
+  * Custom palette files will be loaded in addition to the default palettes, which are described
+  [here](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap).
+  * Note that the palette file format has changed between TDS version 4.x and TDS version 5.x. Please refer to the 
+  [EDAL-Java palette file directory](https://github.com/Reading-eScience-Centre/edal-java/tree/master/graphics/src/main/resources/palettes) 
+  for examples of palette files that are compatible with the TDS version 5.x WMS service.
+  * More information on the format of palette files can also be found in the 
+  [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#:~:text=To%20add%20new,in%20hexadecimal%20notation.).
+  * If you created palette files for TDS 4.x and would like to use them in TDS 5.x, an open source tool named [Magic Palette Converter](https://github.com/billyz313/magic-palette-converter){:target="_blank"} for THREDDS is available to assist in the conversion (special thanks to [Billy Ashmall](https://github.com/Unidata/tds/discussions/346){:target="_blank"}!)
 * `maxImageWidth`: the maximum image width in pixels that this WMS service will return.
 * `maxImageHeight`: the maximum image height in pixels that this WMS service will return.
 
@@ -270,9 +279,9 @@ The following shows all the configuration options available in the `NetcdfSubset
 <NetcdfSubsetService>
   <allow>true</allow>
   <dir>(see the note below)</dir>
-  <scour>15 min</scour>
-  <maxAge>30 min</maxAge>
-  <maxFileDownloadSize>300 MB</maxFileDownloadSize>
+  <scour>10 min</scour>
+  <maxAge>5 min</maxAge>
+  <maxFileDownloadSize>-1</maxFileDownloadSize>
 </NetcdfSubsetService>
 ~~~
 
@@ -372,15 +381,9 @@ The various cache directory locations are all under `/{tds.content.root.path}/th
 
 We recommend that you use these defaults, by not specifying them in the `threddsConfig.xml` file.
 If you need to move the cache location, move all of them by using a symbolic file link in `${tds.content.root.path}/thredds/`.
-At Unidata, we move the entire content directory by creating a symbolic link:
-
-~~~bash
-cd {tomcat_home}
-ln -s /data/thredds/content content
-~~~
 
 These various caches at times may contain large amounts of data. 
-You should choose a location that will not fill up (especially if that location affects other important locations like `/opt`, `/home`, etc).
+You should choose a location that will not fill up (especially if that location affects other important locations like `/opt`, `/usr/local`, `/home`, etc).
 If you have a large disk for your data, that may be a good location for the cache directories.
 On unix-like machines, you can run `df` to get a listing of disks on your machine.
 The listing includes size and mount location.
@@ -419,7 +422,7 @@ We recommend that you use this default, by not specifying the `DiskCache.dir` el
 
 ~~~xml
 <AggregationCache>
-  <dir>${tds.content.root.path}/thredds/cache/agg/</dir>
+  <dir>(see the note below)</dir>
   <scour>24 hours</scour>
   <maxAge>90 days</maxAge>
   <cachePathPolicy>nestedDirectory</cachePathPolicy>
@@ -448,23 +451,36 @@ The cache information is updated based on the `recheckEvery` field in the `joinE
 ### FeatureCollection Cache
 
 This is where persistent information is kept about FMRCs, in order to speed them up.
+This cache is currently implemented with [Chronicle Map](https://chronicle.software/open-hft/map/){:target="_blank"}.
 We recommend that you use the default settings, by not specifying this option.
 
 ~~~xml
- <FeatureCollection>
-  <dir>${tds.content.root.path}/thredds/cache/collection/</dir>
+<FeatureCollection>
+  <dir>(see the note below)</dir>
   <maxEntries>1000</maxEntries>
   <maxBloatFactor>1</maxBloatFactor>
+  <averageValueSize>small</averageValueSize>
 </FeatureCollection>
 ~~~
 
-* `dir`: location of Feature Collection cache, currently implemented
-  with [Chronicle Map](https://chronicle.software/open-hft/map/){:target="_blank"}.
+* `dir`: location of Feature Collection cache.
   If not otherwise set, the TDS will use the`${tds.content.root.path}/thredds/cache/collection/` directory.
   We recommend that you use this default, by not specifying a `FeatureCollection.dir` element.
-* `maxEntries`: the number of entries the cache is going to hold, _at most_.
+* `maxEntries`: the number of entries the cache is going to hold, _at most_. Each FMRC file is one "entry" in the cache. The default value for this is 1000.
+  If the `maxBloatFactor` is set to 1 (the default), then this value is the maximum possible number of FMRC files allowed.
+  If you have more than 1000 FMRC files, then we recommend increasing the `maxEntries` value to be the maximum number of FMRC files you expect to have.
   See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
-* `maxBloatFactor`: the maximun number of times the cache is allowed to grow in size. See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
+* `maxBloatFactor`: the maximum number of times the cache is allowed to grow in size.
+  The default value for this is 1 (the cache cannot grow in size).
+  If it is possible to have more FMRC files than your `maxEntries`, then this value should be increased.
+  It is strongly advised not to configure this value to more than 10, as the cache works progressively slower when the actual size grows far beyond the size configured in your `maxEntries`.
+  See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
+* `averageValueSize`: the average size of the cached value (the grid and variable information), which is used when allocating memory for the cache.
+  The possible values are `small`, `medium`, or `large`.
+  The default value is `small`.
+  In most cases the default value should work fine. However, if your FMRC datasets have hundreds of variables,
+  and you are experiencing issues with the cache filling up even though you have adjusted the `maxEntries` and `maxBloatFactor`,
+  then this may need to be increased to `medium`, or in very rare circumstances `large`.
 
 ### GRIB Index Redirection
 
@@ -472,7 +488,7 @@ We recommend that you use the default settings, by not specifying this option.
 <GribIndex>
   <alwaysUse>false</alwaysUse>
   <neverUse>false</neverUse>
-  <dir>${tds.content.root.path}/thredds/cache/grib/</dir>
+  <dir>(see the note below)</dir>
   <policy>nestedDirectory</policy>
   <scour>0 hours</scour>
   <maxAge>90 days</maxAge>
@@ -482,6 +498,7 @@ We recommend that you use the default settings, by not specifying this option.
 These elements control where GRIB index files are written.
 
 * If `alwaysUse` is true, grib index files will always be written to the _index directory_ specified by `dir` (see [choosing a cache directory](#disk-caching-and-temporary-files)).
+  If not otherwise set, the TDS will use the ${tds.content.root.path}/thredds/cache/grib/ directory
   If `neverUse` is true, the index directory will never be used. 
   If neither is set, the TDS will try to write grib indexes to the same directory as the original file, and if the TDS doesn't have write permission it will then write the files to the index directory.
   Write permission will be determined by what rights the _Tomcat user_ has (the user that starts up Tomcat).

@@ -5,7 +5,7 @@ ext {
 
   // plugin version management
   buildPlugins = [:]
-  buildPlugins.gretty = 'org.gretty:gretty:3.0.3'
+  buildPlugins.gretty = 'org.gretty:gretty:3.0.9'
   buildPlugins.shadow = 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
   buildPlugins.sonarqube = 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0'
   buildPlugins.spotless = 'com.diffplug.spotless:spotless-plugin-gradle:4.5.1'
@@ -31,5 +31,5 @@ ext {
   // TODO: figure out way to keep this version in sync with netcdf-java version
   // It is included in the netcdf-java-bom (via netcdf-java-platform), but we can't
   // reference that version in a gradle build script (see gradle/any/protobuf.gradle)
-  depVersion.protobuf = '3.19.3'
+  depVersion.protobuf = '3.21.7'
 }
