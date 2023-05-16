@@ -13,7 +13,7 @@ installed in any servlet container such as Apache Tomcat.
 
 For more information about the TDS, see the TDS web page at
 
-* https://docs.unidata.ucar.edu/tds/5.0/userguide/
+* https://docs.unidata.ucar.edu/tds/current/userguide/
 
 You can obtain a copy of the latest released version of TDS software from
 
@@ -39,11 +39,11 @@ data consumers find out what data is available from data providers.
 
 THREDDS Catalog documentation (including the specification) is available at
 
-* https://docs.unidata.ucar.edu/tds/4.6/adminguide/catalog/index.html
+* https://docs.unidata.ucar.edu/tds/current/userguide/basic_client_catalog.html
 
 ## Licensing
 
-The THREDDS Data Server is released under the BSD-3 licence, which can be found can be found [here](https://github.com/Unidata/tds/blob/master/LICENSE)
+The THREDDS Data Server is released under the BSD-3 licence, which can be found can be found [here](https://github.com/Unidata/tds/blob/main/LICENSE)
 
 Furthermore, this project includes code from third-party open-source software components:
 * [Gretty](https://github.com/akhikhl/gretty): for details, see `buildSrc/README.md`
