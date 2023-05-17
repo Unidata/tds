@@ -100,6 +100,7 @@
     <cve>CVE-2021-23463</cve>
     <cve>CVE-2021-42392</cve>
     <cve>CVE-2022-23221</cve>
+    <cve>CVE-2022-45868</cve>
     <cwe>94</cwe>
   </suppress>
   <suppress>
@@ -109,5 +110,13 @@
     ]]></notes>
   <packageUrl regex="true">^pkg:maven/commons-io/commons-io@.*$</packageUrl>
   <cve>CVE-2021-29425</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      file name: guava-31.1-jre.jar
+      reason: We do not use the vulnerable function (com.google.common.io.Files.createTempDir())
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
+    <cve>CVE-2020-8908</cve>
   </suppress>
 </suppressions>
