@@ -114,9 +114,24 @@
   <suppress>
     <notes><![CDATA[
       file name: guava-31.1-jre.jar
-      reason: We do not use the vulnerable function (com.google.common.io.Files.createTempDir())
+      reason: NetCDF-Java does not use the vulnerable function (com.google.common.io.Files.createTempDir())
     ]]></notes>
     <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
     <cve>CVE-2020-8908</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      file name: json-20230227.jar
+      reason: We do not use the vulnerable function (XML.toJSONObject)
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.json/json@.*$</packageUrl>
+    <cve>CVE-2022-45688</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      file name: screenshot_sync
+      reason: False positive.  We do not use this libary.
+    ]]></notes>
+    <cve>CVE-2021-4277</cve>
   </suppress>
 </suppressions>
