@@ -14,8 +14,8 @@ dependencies {
   // If there is a conflict (previously hidden by optimistic resolution), we should get an error when we build, and
   // at that point we can take things on a case-by-case basis.
   api enforcedPlatform("edu.ucar:netcdf-java-bom:${depVersion.netcdfJava}")
-  api enforcedPlatform('org.springframework:spring-framework-bom:5.3.23')
-  api enforcedPlatform('org.springframework.security:spring-security-bom:5.7.5')
+  api enforcedPlatform('org.springframework:spring-framework-bom:5.3.27')
+  api enforcedPlatform('org.springframework.security:spring-security-bom:5.7.8')
   api platform('net.openhft:chronicle-bom:2.23.136')
   api enforcedPlatform("org.apache.logging.log4j:log4j-bom:2.17.1")
 
@@ -80,14 +80,14 @@ dependencies {
     runtime 'org.apache.logging.log4j:log4j-web'
 
     // tds
-    api 'org.json:json:20180813'
+    api 'org.json:json:20230227'
     api 'com.coverity.security:coverity-escapers:1.1.1'
     api 'org.thymeleaf:thymeleaf-spring5:3.0.15.RELEASE'
     api 'javax.validation:validation-api:2.0.1.Final'
     api "org.hibernate.validator:hibernate-validator:${depVersion.hibernateValidator}"
     api "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
     api 'javax.el:javax.el-api:3.0.0'
-    api 'org.glassfish:javax.el:3.0.0'
+    api 'org.glassfish:jakarta.el:4.0.2'
 
     // waterml stuff
     api 'org.apache.xmlbeans:xmlbeans'
@@ -95,7 +95,7 @@ dependencies {
     api 'org.n52.sensorweb:52n-xml-om-v20'
 
     // edal-java (ncwms)
-    def edalVersion = '1.5.0.6-SNAPSHOT'
+    def edalVersion = '1.5.2'
     api "uk.ac.rdg.resc:edal-common:${edalVersion}"
     api "uk.ac.rdg.resc:edal-cdm:${edalVersion}"
     api "uk.ac.rdg.resc:edal-wms:${edalVersion}"
