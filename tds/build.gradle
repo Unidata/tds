@@ -88,7 +88,7 @@ dependencies {
   compile 'javax.validation:validation-api'
   runtime 'org.hibernate.validator:hibernate-validator'
   runtime 'javax.el:javax.el-api'
-  runtime 'org.glassfish:javax.el'
+  runtime 'org.glassfish:jakarta.el'
   annotationProcessor "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
 
   // @Resource annotation (removed post Java 8)
