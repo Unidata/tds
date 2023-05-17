@@ -27,7 +27,7 @@ ext {
   // gradle seems to have issues with the compileOnly configuration, so we need to provide the full maven
   // coordinates for javax.servlet-api if the gradle plugin in applied. If we don't, we see errors like this:
   depVersion.javaxServletApi = '3.1.0'
-  depVersion.hibernateValidator = '6.1.5.Final'
+  depVersion.hibernateValidator = '8.0.0.Final'
   // TODO: figure out way to keep this version in sync with netcdf-java version
   // It is included in the netcdf-java-bom (via netcdf-java-platform), but we can't
   // reference that version in a gradle build script (see gradle/any/protobuf.gradle)
