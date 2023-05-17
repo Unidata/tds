@@ -130,7 +130,7 @@
   <suppress>
     <notes><![CDATA[
       file name: screenshot_sync
-      reason: False positive.  We do not use this libary.
+      reason: False positive.  We do not use the fredsmith utils.
     ]]></notes>
     <cve>CVE-2021-4277</cve>
   </suppress>
