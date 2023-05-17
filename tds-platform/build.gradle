@@ -102,9 +102,6 @@ dependencies {
     api "uk.ac.rdg.resc:edal-graphics:${edalVersion}"
     api "uk.ac.rdg.resc:edal-godiva:${edalVersion}"
 
-    // 4.0.92 version used in edal-java has multiple CVEs
-    api 'com.sleepycat:je:18.3.12'
-
     // gwt version defined in gradle/any/shared-mvn-coords.gradle, accessible via gradle/any/dependencies.gradle
     api "com.google.gwt:gwt-dev:${depVersion.gwt}"
     api "com.google.gwt:gwt-user:${depVersion.gwt}"
