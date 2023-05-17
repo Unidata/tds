@@ -134,4 +134,15 @@
     ]]></notes>
     <cve>CVE-2021-4277</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+       file name: javax.el-3.0.0.jar
+       reason: This jar contains an older, insecure version of junit.  NetCDF-Java uses
+               junit-4.13.1 for applications running JDK 1.7 and later. We require Java 1.8
+               at a minimum, so we're good with regards to this CVE.
+               See https://nvd.nist.gov/vuln/detail/CVE-2020-15250.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.glassfish/javax\.el@.*$</packageUrl>
+    <vulnerabilityName>CVE-2020-15250</vulnerabilityName>
+  </suppress>
 </suppressions>
