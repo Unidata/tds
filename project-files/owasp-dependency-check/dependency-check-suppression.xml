@@ -134,27 +134,4 @@
     ]]></notes>
     <cve>CVE-2021-4277</cve>
   </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name: je-4.0.92.jar
-      reason: Loaded via edal-java.  Not used.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/com\.sleepycat/je@.*$</packageUrl>
-    <cve>CVE-2017-3604</cve>
-    <cve>CVE-2017-3605</cve>
-    <cve>CVE-2017-3606</cve>
-    <cve>CVE-2017-3607</cve>
-    <cve>CVE-2017-3608</cve>
-    <cve>CVE-2017-3609</cve>
-    <cve>CVE-2017-3610</cve>
-    <cve>CVE-2017-3611</cve>
-    <cve>CVE-2017-3612</cve>
-    <cve>CVE-2017-3613</cve>
-    <cve>CVE-2017-3614</cve>
-    <cve>CVE-2017-3615</cve>
-    <cve>CVE-2017-3616</cve>
-    <cve>CVE-2017-3617</cve>
-    <cve>CVE-2020-2981</cve>
-    <cve>CVE-2019-2708</cve>
-  </suppress>
 </suppressions>
