@@ -26,10 +26,8 @@ public class TestNcssParams {
 
   @BeforeClass
   public static void setUp() {
-    ValidatorFactory factory = Validation.byDefaultProvider()
-        .configure()
-        .messageInterpolator(new ParameterMessageInterpolator())
-        .buildValidatorFactory();
+    ValidatorFactory factory = Validation.byDefaultProvider().configure()
+        .messageInterpolator(new ParameterMessageInterpolator()).buildValidatorFactory();
     validator = factory.getValidator();
 
     Class c = NcssGridParamsBean.class;
