@@ -20,7 +20,7 @@ import thredds.server.exception.ServiceNotAllowed;
 import thredds.util.Constants;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
