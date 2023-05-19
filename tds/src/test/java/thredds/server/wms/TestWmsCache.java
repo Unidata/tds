@@ -40,7 +40,7 @@ public class TestWmsCache {
 
   @Before
   public void createTestFiles() throws IOException {
-    Files.copy(TEST_FILE, TEMP_FILE);
+    updateTestFile();
   }
 
   @After
