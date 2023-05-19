@@ -13,7 +13,7 @@ dependencies {
   compile 'edu.ucar:grib'
   compile 'org.jdom:jdom2'
 
-  compile 'javax.validation:validation-api'
+  compile 'jakarta.validation:jakarta.validation-api'
   compile 'javax.annotation:javax.annotation-api'
 
   compile 'org.quartz-scheduler:quartz'
