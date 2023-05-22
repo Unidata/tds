@@ -45,9 +45,9 @@ public class TestWmsCache {
 
   @Before
   public void createTestFiles() throws IOException {
-    File temp_file = temporaryFolder.newFile(FILENAME);
-    TEMP_FILE = temp_file.toPath();
-    TEST_PATH = "localContent/" + new File(DIR).toURI().relativize(temp_file.toURI());
+    File tempFile = temporaryFolder.newFile(FILENAME);
+    TEMP_FILE = tempFile.toPath();
+    TEST_PATH = "localContent/" + new File(DIR).toURI().relativize(tempFile.toURI());
     Files.copy(TEST_FILE, TEMP_FILE, StandardCopyOption.REPLACE_EXISTING);
   }
 
