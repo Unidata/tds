@@ -72,6 +72,10 @@ public class ThreddsWmsServlet extends WmsServlet {
 
   private static final Map<String, CachedWmsCatalogue> catalogueCache = new HashMap<>();
 
+  static void resetCache() {
+    catalogueCache.clear();
+  }
+
   @Override
   @RequestMapping(value = "**", method = {RequestMethod.GET})
   protected void dispatchWmsRequest(String request, RequestParams params, HttpServletRequest httpServletRequest,
