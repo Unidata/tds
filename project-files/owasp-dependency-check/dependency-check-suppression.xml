@@ -144,5 +144,6 @@
     ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.glassfish/javax\.el@.*$</packageUrl>
     <vulnerabilityName>CVE-2020-15250</vulnerabilityName>
+    <vulnerabilityName>CVE-2021-28170</vulnerabilityName>
   </suppress>
 </suppressions>

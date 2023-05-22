@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -25,7 +26,8 @@ public class TestNcssParams {
 
   @BeforeClass
   public static void setUp() {
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    ValidatorFactory factory = Validation.byDefaultProvider().configure()
+        .messageInterpolator(new ParameterMessageInterpolator()).buildValidatorFactory();
     validator = factory.getValidator();
 
     Class c = NcssGridParamsBean.class;

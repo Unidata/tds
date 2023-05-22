@@ -36,7 +36,7 @@ import ucar.nc2.ft.FeatureDatasetFactoryManager;
 import ucar.nc2.stream.NcStreamWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
