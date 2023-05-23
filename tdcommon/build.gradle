@@ -33,6 +33,7 @@ dependencies {
   testImplementation 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
   testImplementation 'com.google.truth:truth'
   testImplementation 'junit:junit'
+  testRuntimeOnly 'ch.qos.logback:logback-classic'
 }
 
 spotless {
