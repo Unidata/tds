@@ -50,7 +50,7 @@ JAVA_PREFS_ROOTS="-Djava.util.prefs.systemRoot=$CONTENT_ROOT/thredds/javaUtilPre
 #
 # Some commonly used JAVA_OPTS settings:
 #
-NORMAL="-d64 -Xmx4096m -Xms512m -server -ea"
+NORMAL="-d64 -Xmx4096m -Xms512m -server"
 HEAP_DUMP="-XX:+HeapDumpOnOutOfMemoryError"
 HEADLESS="-Djava.awt.headless=true"
 

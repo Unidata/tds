@@ -124,7 +124,7 @@ If you're running Tomcat on an instance of Windows OS, you will want to create a
    #
    # Some commonly used JAVA_OPTS settings:
    #
-   NORMAL="-d64 -Xmx4096m -Xms512m -server -ea"
+   NORMAL="-d64 -Xmx4096m -Xms512m -server"
    HEAP_DUMP="-XX:+HeapDumpOnOutOfMemoryError"
    HEADLESS="-Djava.awt.headless=true"
 
@@ -180,7 +180,7 @@ If you're running Tomcat on an instance of Windows OS, you will want to create a
 
    ~~~bash
    # ps -ef | grep tomcat
-   root   7988     1 13 14:17 pts/2    00:00:05 /usr/local/jdk/bin/java -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Dtds.content.root.path=/data/content -d64 -Xmx4096m -Xms512m -server -ea -XX:+HeapDumpOnOutOfMemoryError -Djava.awt.headless=true -Djava.util.prefs.systemRoot=/usr/local/tomcat/content/thredds/javaUtilPrefs -Djava.util.prefs.userRoot=/usr/local/tomcat/content/thredds/javaUtilPrefs -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -Dignore.endorsed.dirs= -classpath /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar -Dcatalina.base=/usr/local/tomcat -Dcatalina.home=/usr/local/tomcat -Djava.io.tmpdir=/usr/local/tomcat/temp org.apache.catalina.startup.Bootstrap start
+   root   7988     1 13 14:17 pts/2    00:00:05 /usr/local/jdk/bin/java -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Dtds.content.root.path=/data/content -d64 -Xmx4096m -Xms512m -server -XX:+HeapDumpOnOutOfMemoryError -Djava.awt.headless=true -Djava.util.prefs.systemRoot=/usr/local/tomcat/content/thredds/javaUtilPrefs -Djava.util.prefs.userRoot=/usr/local/tomcat/content/thredds/javaUtilPrefs -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -Dignore.endorsed.dirs= -classpath /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar -Dcatalina.base=/usr/local/tomcat -Dcatalina.home=/usr/local/tomcat -Djava.io.tmpdir=/usr/local/tomcat/temp org.apache.catalina.startup.Bootstrap start
    root   8279 23720  0 14:18 pts/2    00:00:00 grep tomcat
    ~~~
 
