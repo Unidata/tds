@@ -17,7 +17,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.server.ncss.params.NcssGridParamsBean;
-import thredds.server.ncss.params.NcssParamsBean;
 
 public class TestNcssParams {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
