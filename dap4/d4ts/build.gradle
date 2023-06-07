@@ -5,8 +5,7 @@ apply from: "$rootDir/gradle/any/gretty.gradle"
 dependencies {
     compile enforcedPlatform(project(':tds-platform'))
 
-    compile 'edu.ucar:d4core'
-    compile 'edu.ucar:d4lib'
+    compile 'edu.ucar:dap4'
     compile project(":dap4:dap4-servlet")
     providedCompile "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"
 
