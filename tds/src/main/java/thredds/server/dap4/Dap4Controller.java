@@ -5,7 +5,7 @@
 
 package thredds.server.dap4;
 
-import dap4.core.data.DSPRegistry;
+//import dap4.core.data.DSPRegistry;
 import dap4.core.util.DapContext;
 import dap4.core.util.DapException;
 import dap4.core.util.DapUtil;
@@ -29,33 +29,33 @@ import java.io.*;
 @RequestMapping("/dap4")
 public class Dap4Controller extends DapController {
 
-  //////////////////////////////////////////////////
-  // Constants
-
-  static final boolean DEBUG = false;
-
-  static final boolean PARSEDEBUG = false;
-
-  // NetcdfDataset enhancement to use: need only coord systems
-  // static Set<NetcdfDataset.Enhance> ENHANCEMENT = EnumSet.of(NetcdfDataset.Enhance.CoordSystems);
-
-  //////////////////////////////////////////////////
-  // Type Decls
-
-  static class Dap4Factory extends DSPFactory {
-
-    public Dap4Factory() {
-      // For TDS, we only need to register one DSP type: ThreddsDSP.
-      // This is because we will always serve only NetcdfFile objects.
-      // See D4TSServlet for a multiple registration case.
-      DapCache.dspregistry.register(ThreddsDSP.class, DSPRegistry.LAST);
-    }
-
-  }
-
-  static {
-    DapCache.setFactory(new Dap4Factory());
-  }
+//  //////////////////////////////////////////////////
+//  // Constants
+//
+//  static final boolean DEBUG = false;
+//
+//  static final boolean PARSEDEBUG = false;
+//
+//  // NetcdfDataset enhancement to use: need only coord systems
+//  // static Set<NetcdfDataset.Enhance> ENHANCEMENT = EnumSet.of(NetcdfDataset.Enhance.CoordSystems);
+//
+//  //////////////////////////////////////////////////
+//  // Type Decls
+//
+//  static class Dap4Factory extends DSPFactory {
+//
+//    public Dap4Factory() {
+//      // For TDS, we only need to register one DSP type: ThreddsDSP.
+//      // This is because we will always serve only NetcdfFile objects.
+//      // See D4TSServlet for a multiple registration case.
+//      DapCache.dspregistry.register(ThreddsDSP.class, DSPRegistry.LAST);
+//    }
+//
+//  }
+//
+//  static {
+//    DapCache.setFactory(new Dap4Factory());
+//  }
 
   //////////////////////////////////////////////////
   // Spring Elements

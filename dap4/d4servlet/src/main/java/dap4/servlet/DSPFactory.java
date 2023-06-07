@@ -5,13 +5,6 @@
 
 package dap4.servlet;
 
-import dap4.core.data.DSP;
-import dap4.core.util.DapContext;
-import dap4.core.util.DapException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Provide a factory for DSP instances
  */
