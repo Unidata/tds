@@ -73,16 +73,17 @@ public class TestFormBuilder extends TdsUnitTestCommon {
     setSystemProperties();
     // Turn on Session debugging
     HTTPSession.TESTING = true;
-    HTTPSession.setInterceptors(false);
+    HTTPIntercepts.setGlobalDebugInterceptors(true);
   }
 
   @Test
   public void testSimple() throws Exception {
-    HTTPSession.resetInterceptors();
+    HTTPSession session = HTTPFactory.newSession(NULLURL);
+    session.resetInterceptors();
     try {
       HTTPFormBuilder builder = buildForm(false);
       HttpEntity content = builder.build();
-      try (HTTPMethod postMethod = HTTPFactory.Post(NULLURL)) {
+      try (HTTPMethod postMethod = HTTPFactory.Post(session)) {
         postMethod.setRequestContent(content);
         // Execute, but ignore any problems
         try {
@@ -92,7 +93,7 @@ public class TestFormBuilder extends TdsUnitTestCommon {
         }
       }
       // Get the request that was used
-      HTTPUtil.InterceptRequest dbgreq = HTTPSession.debugRequestInterceptor();
+      HTTPIntercepts.DebugInterceptRequest dbgreq = session.getDebugRequestInterceptor();
       Assert.assertTrue("Could not get debug request", dbgreq != null);
       HttpEntity entity = dbgreq.getRequestEntity();
       Assert.assertTrue("Could not get debug entity", entity != null);
@@ -123,11 +124,12 @@ public class TestFormBuilder extends TdsUnitTestCommon {
     attach3file = HTTPUtil.fillTempFile("attach3.txt", ATTACHTEXT);
     attach3file.deleteOnExit();
 
-    HTTPSession.resetInterceptors();
+    HTTPSession session = HTTPFactory.newSession(NULLURL);
+    session.resetInterceptors();
     try {
       HTTPFormBuilder builder = buildForm(true);
       HttpEntity content = builder.build();
-      try (HTTPMethod postMethod = HTTPFactory.Post(NULLURL)) {
+      try (HTTPMethod postMethod = HTTPFactory.Post(session)) {
         postMethod.setRequestContent(content);
         // Execute, but ignore any problems
         try {
@@ -137,7 +139,7 @@ public class TestFormBuilder extends TdsUnitTestCommon {
         }
       }
       // Get the request that was used
-      HTTPUtil.InterceptRequest dbgreq = HTTPSession.debugRequestInterceptor();
+      HTTPIntercepts.DebugInterceptRequest dbgreq = session.getDebugRequestInterceptor();
       Assert.assertTrue("Could not get debug request", dbgreq != null);
       HttpEntity entity = dbgreq.getRequestEntity();
       Assert.assertTrue("Could not get debug entity", entity != null);
