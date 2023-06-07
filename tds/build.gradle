@@ -30,11 +30,9 @@ dependencies {
   implementation project(':tds-ugrid')
 
   // DAP4 Dependencies (technically forward)
-  compile 'edu.ucar:d4cdm'
-  compile 'edu.ucar:d4core'
-  compile 'edu.ucar:d4lib'
-
-  compile project(':dap4:dap4-servlet')
+  compile 'edu.ucar:dap4'
+//
+//  compile project(':dap4:dap4-servlet')
 
   // Server stuff
   providedCompile "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"

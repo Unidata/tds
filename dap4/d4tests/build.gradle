@@ -6,15 +6,13 @@ dependencies {
   compile enforcedPlatform(project(':tds-testing-platform'))
 
   // A lot of these dependencies should be in the testRuntime config, not testCompile.
-  testCompile 'edu.ucar:d4core'
-  testCompile 'edu.ucar:d4lib'
+  testCompile 'edu.ucar:dap4'
   testCompile project(':dap4:dap4-servlet')
 
   testCompile(project(':dap4:d4ts')) {
     exclude group: 'org.apache.logging.log4j'
   }
 
-  testCompile 'edu.ucar:d4cdm'
   testCompile 'edu.ucar:cdm-core'
   testCompile 'edu.ucar:httpservices'
 

@@ -73,9 +73,7 @@ dependencies {
     runtime 'org.apache.taglibs:taglibs-standard-impl:1.2.5'
 
     // dap4
-    api 'edu.ucar:d4core'
-    api 'edu.ucar:d4lib'
-    api 'edu.ucar:d4cdm'
+    api 'edu.ucar:dap4'
     // defined in tds-testing-platform as well, but using api config
     runtime 'org.apache.logging.log4j:log4j-web'
 
