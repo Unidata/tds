@@ -20,5 +20,3 @@ subprojects {
     // TODO: Give the subprojects real titles.
     ext.title = "DAP4: $name"
 }
-
-

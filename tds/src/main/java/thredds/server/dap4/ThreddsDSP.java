@@ -1,4 +1,4 @@
-///*
+/// *
 // * Copyright 1998-2015 the University Corporation for Atmospheric Research/Unidata
 // *
 // * Portions of this software were developed by the Unidata Program at the
@@ -31,37 +31,37 @@
 // * WITH THE ACCESS, USE OR PERFORMANCE OF THIS SOFTWARE.
 // */
 //
-//package thredds.server.dap4;
+// package thredds.server.dap4;
 //
-//import dap4.cdm.dsp.CDMDSP;
-//import dap4.core.util.DapContext;
-//import dap4.core.util.DapException;
-//import dap4.core.util.DapUtil;
-//import dap4.dap4lib.DapCodes;
-//import thredds.core.TdsRequestedDataset;
-//import ucar.nc2.NetcdfFile;
-//import java.io.File;
+// import dap4.cdm.dsp.CDMDSP;
+// import dap4.core.util.DapContext;
+// import dap4.core.util.DapException;
+// import dap4.core.util.DapUtil;
+// import dap4.dap4lib.DapCodes;
+// import thredds.core.TdsRequestedDataset;
+// import ucar.nc2.NetcdfFile;
+// import java.io.File;
 //
-///**
+/// **
 // * CDM->DAP DSP
 // * Used (for now) only on server side.
 // */
 //
-//public class ThreddsDSP extends CDMDSP {
+// public class ThreddsDSP extends CDMDSP {
 //
 //
-//  //////////////////////////////////////////////////
-//  // Instance variables
+// //////////////////////////////////////////////////
+// // Instance variables
 //
-//  //////////////////////////////////////////////////
-//  // Constructor(s)
+// //////////////////////////////////////////////////
+// // Constructor(s)
 //
-//  public ThreddsDSP() {}
+// public ThreddsDSP() {}
 //
-//  public ThreddsDSP(String path) throws DapException {
-//    super(path);
-//  }
+// public ThreddsDSP(String path) throws DapException {
+// super(path);
+// }
 //
-//  //////////////////////////////////////////////////
+// //////////////////////////////////////////////////
 //
-//}
+// }
