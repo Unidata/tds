@@ -11,7 +11,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -26,8 +25,7 @@ public class TestNcssParams {
 
   @BeforeClass
   public static void setUp() {
-    ValidatorFactory factory = Validation.byDefaultProvider().configure()
-        .messageInterpolator(new ParameterMessageInterpolator()).buildValidatorFactory();
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     validator = factory.getValidator();
 
     Class c = NcssGridParamsBean.class;
