@@ -7,16 +7,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.server.ncss.params.NcssGridParamsBean;
+import thredds.server.ncss.params.NcssParamsBean;
 
 public class TestNcssParams {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -203,6 +204,12 @@ public class TestNcssParams {
 
   }
 
+  @Test
+  public void testNoParams() {
+    NcssGridParamsBean params = new NcssGridParamsBean();
 
+    Set<ConstraintViolation<NcssGridParamsBean>> constraintViolations = validator.validate(params);
+    assertEquals(1, constraintViolations.size());
+  }
 
 }

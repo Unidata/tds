@@ -12,7 +12,7 @@ dependencies {
     compile 'edu.ucar:opendap'
     compile 'org.slf4j:slf4j-api'
 
-    compileOnly 'javax.servlet:javax.servlet-api'
+    compileOnly "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
 
     testImplementation project(':tds-test-utils');
     testImplementation 'junit:junit'

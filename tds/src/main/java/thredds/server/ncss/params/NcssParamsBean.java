@@ -62,7 +62,7 @@ public class NcssParamsBean {
 
   protected Double longitude;
 
-  public NcssParamsBean() {}
+  public NcssParamsBean() { }
 
   public NcssParamsBean(NcssParamsBean from) {
     this.accept = from.accept;

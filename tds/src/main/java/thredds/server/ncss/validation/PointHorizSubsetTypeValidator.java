@@ -4,8 +4,8 @@
  */
 package thredds.server.ncss.validation;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import thredds.server.ncss.params.NcssPointParamsBean;
 
 /**
@@ -19,7 +19,7 @@ public class PointHorizSubsetTypeValidator
   /*
    * (non-Javadoc)
    * 
-   * @see jakarta.validation.ConstraintValidator#initialize(java.lang.annotation.Annotation)
+   * @see javax.validation.ConstraintValidator#initialize(java.lang.annotation.Annotation)
    */
   @Override
   public void initialize(PointHorizSubsetTypeConstraint arg0) {
@@ -28,7 +28,7 @@ public class PointHorizSubsetTypeValidator
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see jakarta.validation.ConstraintValidator#isValid(java.lang.Object,
    * jakarta.validation.ConstraintValidatorContext)
    */

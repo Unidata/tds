@@ -7,7 +7,7 @@ import ucar.nc2.constants.FeatureType;
 import ucar.nc2.ft.*;
 import ucar.nc2.ft2.coverage.SubsetParams;
 
-import jakarta.validation.constraints.Null;
+import javax.validation.constraints.Null;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
