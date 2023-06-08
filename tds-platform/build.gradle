@@ -87,6 +87,7 @@ dependencies {
     api "org.hibernate.validator:hibernate-validator:${depVersion.hibernateValidator}"
     api "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
     api 'jakarta.el:jakarta.el-api'
+    runtime 'org.glassfish:javax.el:3.0.0'
 
     // waterml stuff
     api 'org.apache.xmlbeans:xmlbeans'
