@@ -29,8 +29,8 @@ public class PointHorizSubsetTypeValidator
   /*
    * (non-Javadoc)
    *
-   * @see jakarta.validation.ConstraintValidator#isValid(java.lang.Object,
-   * jakarta.validation.ConstraintValidatorContext)
+   * @see javax.validation.ConstraintValidator#isValid(java.lang.Object,
+   * javax.validation.ConstraintValidatorContext)
    */
   @Override
   public boolean isValid(NcssPointParamsBean params, ConstraintValidatorContext constraintValidatorContext) {
