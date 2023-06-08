@@ -13,7 +13,7 @@ dependencies {
     compile 'edu.ucar:opendap'
     compile 'org.slf4j:slf4j-api'
 
-    providedCompile "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"
+    providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
 
     runtime 'org.apache.taglibs:taglibs-standard-spec'
     runtime 'org.apache.taglibs:taglibs-standard-impl'

@@ -4,7 +4,7 @@
  */
 package thredds.server.catalogservice;
 
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 
 /**

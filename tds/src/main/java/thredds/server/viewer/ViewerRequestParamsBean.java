@@ -5,7 +5,7 @@
 
 package thredds.server.viewer;
 
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 
 public class ViewerRequestParamsBean {
 

@@ -7,7 +7,7 @@ dependencies {
 
     compile 'edu.ucar:dap4'
     compile project(":dap4:dap4-servlet")
-    providedCompile "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"
+    providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
 
     compile 'org.slf4j:slf4j-api'
 

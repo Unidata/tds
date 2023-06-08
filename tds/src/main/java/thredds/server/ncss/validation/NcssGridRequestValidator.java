@@ -7,8 +7,8 @@ package thredds.server.ncss.validation;
 
 import thredds.server.ncss.params.NcssGridParamsBean;
 import ucar.nc2.time.CalendarDate;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 /**
  * Validator for ncss GridRequest
@@ -26,7 +26,7 @@ public class NcssGridRequestValidator implements ConstraintValidator<NcssGridReq
   /*
    * (non-Javadoc)
    * 
-   * @see jakarta.validation.ConstraintValidator#initialize(java.lang.annotation.Annotation)
+   * @see javax.validation.ConstraintValidator#initialize(java.lang.annotation.Annotation)
    */
   @Override
   public void initialize(NcssGridRequestConstraint arg0) {

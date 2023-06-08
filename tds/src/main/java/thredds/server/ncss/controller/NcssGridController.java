@@ -39,7 +39,7 @@ import ucar.nc2.ft2.coverage.writer.CoverageDatasetCapabilities;
 import ucar.nc2.util.IO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;

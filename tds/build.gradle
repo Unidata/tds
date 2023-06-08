@@ -35,7 +35,7 @@ dependencies {
 //  compile project(':dap4:dap4-servlet')
 
   // Server stuff
-  providedCompile "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"
+  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
   runtime 'org.apache.taglibs:taglibs-standard-spec'
   runtime 'org.apache.taglibs:taglibs-standard-impl'
 
@@ -85,17 +85,17 @@ dependencies {
   // JSR 303 with Hibernate Validator, which is dragging in jboss logging
   compile 'jakarta.validation:jakarta.validation-api'
   compile 'org.hibernate.validator:hibernate-validator'
-  runtime 'javax.el:javax.el-api'
-  compile 'org.glassfish:jakarta.el'
+//  runtime 'javax.el:javax.el-api'
+  compile 'jakarta.el:jakarta.el-api'
   annotationProcessor "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
 
   // @Resource annotation (removed post Java 8)
-  compile 'javax.annotation:javax.annotation-api'
+  compile 'jakarta.annotation:jakarta.annotation-api'
 
   compile 'org.thymeleaf:thymeleaf-spring5'
 
   // Testing
-  testCompile "javax.servlet:javax.servlet-api:${depVersion.javaxServletApi}"
+  testCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
   testCompile 'org.springframework:spring-test'
   testCompile 'org.hamcrest:hamcrest-core'
   testCompile 'commons-io:commons-io'

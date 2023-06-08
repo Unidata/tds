@@ -43,7 +43,7 @@ import ucar.unidata.geoloc.LatLonPoint;
 import ucar.unidata.geoloc.LatLonRect;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Formatter;
 import java.util.HashMap;

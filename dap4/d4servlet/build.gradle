@@ -7,6 +7,6 @@ dependencies {
     compile 'edu.ucar:dap4'
     compile 'edu.ucar:httpservices'
 
-    compileOnly 'javax.servlet:javax.servlet-api'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
     compile 'org.slf4j:slf4j-api'
 }

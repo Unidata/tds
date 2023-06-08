@@ -14,7 +14,7 @@ dependencies {
   compile 'org.jdom:jdom2'
 
   compile 'jakarta.validation:jakarta.validation-api'
-  compile 'javax.annotation:javax.annotation-api'
+  compile 'jakarta.annotation:jakarta.annotation-api'
 
   compile 'org.quartz-scheduler:quartz'
   compile 'net.openhft:chronicle-map'
