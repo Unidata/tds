@@ -331,7 +331,7 @@ public abstract class Ceparse implements ExprParserConstants {
         }
         break;
       default:
-        assert (false);
+        throw new IllegalStateException("Unexpected tag = " + tag);
     }
     return value;
   }
