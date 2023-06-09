@@ -406,8 +406,9 @@ class ASTvalue extends AST {
       subclause = getClauseFactory().newValueClause((BaseType) components.pop(), false);
     } else if (fcn != null) {
       subclause = fcn.translate();
-    } else
-      assert (false);
+    } else {
+      throw new IllegalStateException("Unexpected state in AST::translate");
+    }
     return subclause;
   }
 }
@@ -473,7 +474,7 @@ class ASTconstant extends ASTvalue {
       }
         break;
       default:
-        assert (false);
+        throw new IllegalStateException("Unexpected tag = " + tag);
     }
     return subclause;
   }
