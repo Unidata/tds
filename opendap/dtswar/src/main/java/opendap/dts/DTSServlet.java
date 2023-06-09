@@ -40,6 +40,7 @@
 
 package opendap.dts;
 
+import javax.annotation.Nonnull;
 import opendap.dap.*;
 import opendap.dap.parsers.ParseException;
 import opendap.servers.CEEvaluator;
@@ -1644,12 +1645,9 @@ public class DTSServlet extends AbstractServlet {
       // probeRequest(System.out, rs);
 
       rs = getRequestState(request, response);
-      assert (rs != null);
-      if (rs != null) {
-        String ds = rs.getDataSet();
-        String suff = rs.getRequestSuffix();
-        isDebug = ((ds != null) && ds.equals("debug") && (suff != null) && suff.equals(""));
-      }
+      String ds = rs.getDataSet();
+      String suff = rs.getRequestSuffix();
+      isDebug = ((ds != null) && ds.equals("debug") && (suff != null) && suff.equals(""));
 
       synchronized (syncLock) {
 
@@ -1674,58 +1672,53 @@ public class DTSServlet extends AbstractServlet {
         }
       } // synch
 
-      if (rs != null) {
-        String dataSet = rs.getDataSet();
-        String requestSuffix = rs.getRequestSuffix();
-        rs.getResponse().setHeader("XDODS-Server", getServerVersion());// Make sure always set
+      String dataSet = rs.getDataSet();
+      String requestSuffix = rs.getRequestSuffix();
+      rs.getResponse().setHeader("XDODS-Server", getServerVersion());// Make sure always set
 
+      if (dataSet == null || dataSet.equals("/") || dataSet.equals("")) {
+        doGetDIR(rs);
+      } else if (dataSet.equalsIgnoreCase("/version") || dataSet.equalsIgnoreCase("/version/")) {
+        doGetVER(rs);
+      } else if (dataSet.equalsIgnoreCase("/help") || dataSet.equalsIgnoreCase("/help/")) {
+        doGetHELP(rs);
+      } else if (dataSet.equalsIgnoreCase("/" + requestSuffix)) {
+        doGetHELP(rs);
+      } else if (requestSuffix.equalsIgnoreCase("dds")) {
+        doGetDDS(rs);
+      } else if (requestSuffix.equalsIgnoreCase("das")) {
+        doGetDAS(rs);
+      } else if (requestSuffix.equalsIgnoreCase("ddx")) {
+        doGetDDX(rs);
+      } else if (requestSuffix.equalsIgnoreCase("blob")) {
+        doGetBLOB(rs);
+      } else if (requestSuffix.equalsIgnoreCase("dods")) {
+        doGetDAP2Data(rs);
+      } else if (requestSuffix.equalsIgnoreCase("asc") || requestSuffix.equalsIgnoreCase("ascii")) {
+        doGetASC(rs);
+      } else if (requestSuffix.equalsIgnoreCase("info")) {
+        doGetINFO(rs);
+      } else if (requestSuffix.equalsIgnoreCase("html") || requestSuffix.equalsIgnoreCase("htm")) {
+        doGetHTML(rs);
+      } else if (requestSuffix.equalsIgnoreCase("ver") || requestSuffix.equalsIgnoreCase("version")) {
+        doGetVER(rs);
+      } else if (requestSuffix.equalsIgnoreCase("help")) {
+        doGetHELP(rs);
 
-        if (dataSet == null || dataSet.equals("/") || dataSet.equals("")) {
-          doGetDIR(rs);
-        } else if (dataSet.equalsIgnoreCase("/version") || dataSet.equalsIgnoreCase("/version/")) {
-          doGetVER(rs);
-        } else if (dataSet.equalsIgnoreCase("/help") || dataSet.equalsIgnoreCase("/help/")) {
-          doGetHELP(rs);
-        } else if (dataSet.equalsIgnoreCase("/" + requestSuffix)) {
-          doGetHELP(rs);
-        } else if (requestSuffix.equalsIgnoreCase("dds")) {
-          doGetDDS(rs);
-        } else if (requestSuffix.equalsIgnoreCase("das")) {
-          doGetDAS(rs);
-        } else if (requestSuffix.equalsIgnoreCase("ddx")) {
-          doGetDDX(rs);
-        } else if (requestSuffix.equalsIgnoreCase("blob")) {
-          doGetBLOB(rs);
-        } else if (requestSuffix.equalsIgnoreCase("dods")) {
-          doGetDAP2Data(rs);
-        } else if (requestSuffix.equalsIgnoreCase("asc") || requestSuffix.equalsIgnoreCase("ascii")) {
-          doGetASC(rs);
-        } else if (requestSuffix.equalsIgnoreCase("info")) {
-          doGetINFO(rs);
-        } else if (requestSuffix.equalsIgnoreCase("html") || requestSuffix.equalsIgnoreCase("htm")) {
-          doGetHTML(rs);
-        } else if (requestSuffix.equalsIgnoreCase("ver") || requestSuffix.equalsIgnoreCase("version")) {
-          doGetVER(rs);
-        } else if (requestSuffix.equalsIgnoreCase("help")) {
-          doGetHELP(rs);
-
-          /*
-           * JC added
-           * } else if(dataSet.equalsIgnoreCase("catalog") && requestSuffix.equalsIgnoreCase("xml")) {
-           * doGetCatalog(rs);
-           * } else if(dataSet.equalsIgnoreCase("status")) {
-           * doGetStatus(rs);
-           * } else if(dataSet.equalsIgnoreCase("systemproperties")) {
-           * doGetSystemProps(rs);
-           * } else if(isDebug) {
-           * doDebug(rs);
-           */
-        } else if (requestSuffix.equals("")) {
-          badURL(request, response);
-        } else {
-          badURL(request, response);
-        }
-      } else {// rs == null
+        /*
+         * JC added
+         * } else if(dataSet.equalsIgnoreCase("catalog") && requestSuffix.equalsIgnoreCase("xml")) {
+         * doGetCatalog(rs);
+         * } else if(dataSet.equalsIgnoreCase("status")) {
+         * doGetStatus(rs);
+         * } else if(dataSet.equalsIgnoreCase("systemproperties")) {
+         * doGetSystemProps(rs);
+         * } else if(isDebug) {
+         * doDebug(rs);
+         */
+      } else if (requestSuffix.equals("")) {
+        badURL(request, response);
+      } else {
         badURL(request, response);
       }
 
@@ -1741,8 +1734,8 @@ public class DTSServlet extends AbstractServlet {
    * @param request
    * @return the request state
    */
+  @Nonnull
   protected ReqState getRequestState(HttpServletRequest request, HttpServletResponse response) throws DAP2Exception {
-    ReqState rs = null;
     // The url and query strings will come to us in encoded form
     // (see HTTPmethod.newMethod())
     String baseurl = request.getRequestURL().toString();
@@ -1751,9 +1744,7 @@ public class DTSServlet extends AbstractServlet {
     String query = request.getQueryString();
     query = EscapeStrings.unescapeURLQuery(query);
 
-    rs = new ReqState(this, request, response, rootpath, baseurl, query);
-
-    return rs;
+    return new ReqState(this, request, response, rootpath, baseurl, query);
   }
   // **************************************************************************
 
