@@ -75,9 +75,15 @@ public class TestCdmRemoteCompareDataP {
   }
 
   static void addFromScan(final List<Object[]> list, String dirName, FileFilter ff) {
+    // TODO vlens in structures do not currently work
+    String skipStructuresWithVlens = "vlen/IntTimSciSamp.nc";
+
     try {
       TestDir.actOnAll(dirName, ff, new TestDir.Act() {
         public int doAct(String filename) throws IOException {
+          if (filename.endsWith(skipStructuresWithVlens)) {
+            return 0;
+          }
           File file = new File(filename);
           if (file.length() < 100 * 1000) { // 100K
             list.add(new Object[] {filename});

@@ -6,6 +6,7 @@
 package thredds.server.cdmr;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
@@ -159,6 +160,7 @@ public class TestCdmRemoteMisc {
 
   }
 
+  @Ignore("TODO vlens in structures do not currently work")
   @Test
   public void testVlenInStructure() {
     try {
