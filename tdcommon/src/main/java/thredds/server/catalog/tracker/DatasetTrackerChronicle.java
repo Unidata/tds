@@ -26,6 +26,7 @@ public class DatasetTrackerChronicle implements DatasetTracker {
   // average size (bytes) of key for database, which is the path to a given dataset.
   // LOOK: is 512 a good average size? There is no length on file path, so hard to set a maximum.
   static private final int averagePathLength = 512;
+  private static final int averageValueSize = 2000;
 
   // delete old databases
   public static void cleanupBefore(String pathname, long trackerNumber) {
@@ -107,7 +108,7 @@ public class DatasetTrackerChronicle implements DatasetTracker {
 
   private void open() throws IOException {
     ChronicleMapBuilder<String, DatasetExt> builder = ChronicleMapBuilder.of(String.class, DatasetExt.class)
-        .averageValueSize(200).entries(maxDatasets).averageKeySize(averagePathLength)
+        .averageValueSize(averageValueSize).entries(maxDatasets).averageKeySize(averagePathLength)
         .valueMarshaller(DatasetExtBytesMarshaller.INSTANCE).skipCloseOnExitHook(true);
     datasetMap = builder.createPersistedTo(dbFile);
     changed = false;
