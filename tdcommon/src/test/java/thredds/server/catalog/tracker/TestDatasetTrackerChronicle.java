@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -67,12 +69,30 @@ public class TestDatasetTrackerChronicle {
     }
   }
 
-  private Dataset mockDataset(int ncmlLength, String path) {
+  @Test
+  public void shouldReturnNcml() throws IOException {
+    try (DatasetTrackerChronicle datasetTracker =
+        new DatasetTrackerChronicle(tempFolder.getRoot().getAbsolutePath(), 1, 1)) {
+      datasetTracker.trackDataset(1, mockDataset(100, "path"), null);
+
+      final XMLOutputter xmlOut = new XMLOutputter(Format.getCompactFormat());
+      final String expectedNcml = xmlOut.outputString(createNcml(100));
+      final String ncml = datasetTracker.findNcml("path");
+      assertThat(ncml).isEqualTo(expectedNcml);
+      assertThat(ncml.length()).isEqualTo(139);
+    }
+  }
+
+  private static Dataset mockDataset(int ncmlLength, String path) {
     final Dataset dataset = mock(Dataset.class);
-    final Element element = new Element("name", "namespace");
-    element.setAttribute("attribute", "a".repeat(ncmlLength));
-    when(dataset.getNcmlElement()).thenReturn(element);
+    when(dataset.getNcmlElement()).thenReturn(createNcml(ncmlLength));
     when(dataset.getUrlPath()).thenReturn(path);
     return dataset;
+  }
+
+  private static Element createNcml(int ncmlLength) {
+    final Element element = new Element("name", "namespace");
+    element.setAttribute("attribute", "a".repeat(ncmlLength));
+    return element;
   }
 }
