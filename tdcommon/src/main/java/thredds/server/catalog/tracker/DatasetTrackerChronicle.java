@@ -214,4 +214,8 @@ public class DatasetTrackerChronicle implements DatasetTracker {
     }
   }
 
+  // Package private for testing
+  long getCount() {
+    return datasetMap.longSize();
+  }
 }
