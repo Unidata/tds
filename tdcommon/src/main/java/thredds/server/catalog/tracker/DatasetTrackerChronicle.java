@@ -3,6 +3,7 @@ package thredds.server.catalog.tracker;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
 import org.jdom2.Element;
+import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import thredds.client.catalog.Access;
 import thredds.client.catalog.Dataset;
@@ -179,7 +180,7 @@ public class DatasetTrackerChronicle implements DatasetTracker {
     if (hasNcml) {
       // want the ncml string representation
       Element ncmlElem = dataset.getNcmlElement();
-      XMLOutputter xmlOut = new XMLOutputter();
+      XMLOutputter xmlOut = new XMLOutputter(Format.getCompactFormat());
       ncml = xmlOut.outputString(ncmlElem);
     }
 
