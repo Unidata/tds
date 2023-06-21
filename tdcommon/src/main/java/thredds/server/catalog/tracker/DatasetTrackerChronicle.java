@@ -3,6 +3,7 @@ package thredds.server.catalog.tracker;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
 import org.jdom2.Element;
+import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import thredds.client.catalog.Access;
 import thredds.client.catalog.Dataset;
@@ -25,7 +26,8 @@ public class DatasetTrackerChronicle implements DatasetTracker {
   static private final String datasetName = "/chronicle.datasets.dat";
   // average size (bytes) of key for database, which is the path to a given dataset.
   // LOOK: is 512 a good average size? There is no length on file path, so hard to set a maximum.
-  static private final int averagePathLength = 512;
+  private static final int averagePathLength = 512;
+  private static final int averageValueSize = 2000;
 
   // delete old databases
   public static void cleanupBefore(String pathname, long trackerNumber) {
@@ -107,7 +109,7 @@ public class DatasetTrackerChronicle implements DatasetTracker {
 
   private void open() throws IOException {
     ChronicleMapBuilder<String, DatasetExt> builder = ChronicleMapBuilder.of(String.class, DatasetExt.class)
-        .averageValueSize(200).entries(maxDatasets).averageKeySize(averagePathLength)
+        .averageValueSize(averageValueSize).entries(maxDatasets).averageKeySize(averagePathLength)
         .valueMarshaller(DatasetExtBytesMarshaller.INSTANCE).skipCloseOnExitHook(true);
     datasetMap = builder.createPersistedTo(dbFile);
     changed = false;
@@ -178,7 +180,7 @@ public class DatasetTrackerChronicle implements DatasetTracker {
     if (hasNcml) {
       // want the ncml string representation
       Element ncmlElem = dataset.getNcmlElement();
-      XMLOutputter xmlOut = new XMLOutputter();
+      XMLOutputter xmlOut = new XMLOutputter(Format.getCompactFormat());
       ncml = xmlOut.outputString(ncmlElem);
     }
 
@@ -214,4 +216,8 @@ public class DatasetTrackerChronicle implements DatasetTracker {
     }
   }
 
+  // Package private for testing
+  long getCount() {
+    return datasetMap.longSize();
+  }
 }
