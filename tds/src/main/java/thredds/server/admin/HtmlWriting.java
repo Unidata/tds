@@ -48,15 +48,12 @@ public class HtmlWriting {
     } else {
       // See https://developers.google.com/analytics/devguides/collection/gtagjs
       return new StringBuilder().append("<!-- Google Analytics (gtag.js) -->\n")
-          .append("<script async src=\"https://www.googletagmanager.com/gtag/js?id=").append(this.htmlConfig.getGoogleTrackingCode()).append("\"></script>\n")
-          .append("<script>\n")
+          .append("<script async src=\"https://www.googletagmanager.com/gtag/js?id=")
+          .append(this.htmlConfig.getGoogleTrackingCode()).append("\"></script>\n").append("<script>\n")
           .append("window.dataLayer = window.dataLayer || [];\n")
-          .append("function gtag(){dataLayer.push(arguments);}\n")
-          .append("gtag('js', new Date());\n")
+          .append("function gtag(){dataLayer.push(arguments);}\n").append("gtag('js', new Date());\n")
           .append("gtag('config', '").append(this.htmlConfig.getGoogleTrackingCode()).append("');\n")
-          .append("</script>\n")
-          .append("<!-- End Google Analytics -->\n")
-          .toString();
+          .append("</script>\n").append("<!-- End Google Analytics -->\n").toString();
     }
   }
 
