@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Provide methods to write HTML representations of a catalog, directory, or CDM dataset to an HTTP response.
  * LOOK get rid of
- * 
+ *
  * @author edavis
  */
 
@@ -46,14 +46,16 @@ public class HtmlWriting {
     if (this.htmlConfig.getGoogleTrackingCode().isEmpty()) {
       return "";
     } else {
-      // See https://developers.google.com/analytics/devguides/collection/analyticsjs/
-      return new StringBuilder().append("<!-- Google Analytics -->\n").append("<script>\n")
-          .append("(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n")
-          .append("(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n")
-          .append("m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n")
-          .append("})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n").append('\n')
-          .append("ga('create', '").append(this.htmlConfig.getGoogleTrackingCode()).append("', 'auto');\n")
-          .append("ga('send', 'pageview');\n").append("</script>\n").append("<!-- End Google Analytics -->\n")
+      // See https://developers.google.com/analytics/devguides/collection/gtagjs
+      return new StringBuilder().append("<!-- Google Analytics (gtag.js) -->\n")
+          .append("<script async src=\"https://www.googletagmanager.com/gtag/js?id=").append(this.htmlConfig.getGoogleTrackingCode()).append("\"></script>\n")
+          .append("<script>\n")
+          .append("window.dataLayer = window.dataLayer || [];\n")
+          .append("function gtag(){dataLayer.push(arguments);}\n")
+          .append("gtag('js', new Date());\n")
+          .append("gtag('config', '").append(this.htmlConfig.getGoogleTrackingCode()).append("');\n")
+          .append("</script>\n")
+          .append("<!-- End Google Analytics -->\n")
           .toString();
     }
   }
@@ -317,7 +319,7 @@ public class HtmlWriting {
    * .append( "'> Documentation</a>" );
    * sb.append("</h3>\n");
    * }
-   * 
+   *
    * // private static final String TOMCAT_CSS
    * private String getTomcatCSS() {
    * return new StringBuilder("<STYLE type='text/css'><!--")
@@ -333,7 +335,7 @@ public class HtmlWriting {
    * .append("--></STYLE>\r\n")
    * .toString();
    * }
-   * 
+   *
    */
 
   /*
@@ -344,7 +346,7 @@ public class HtmlWriting {
    * // Table setup.
    * stringBuilder
    * .append("<table width='100%'>\n");
-   * 
+   *
    * if (includeInstall) {
    * stringBuilder.append("<tr><td>\n");
    * appendInstallationInfo(stringBuilder, includeLogos);
@@ -352,7 +354,7 @@ public class HtmlWriting {
    * appendHostInstInfo(stringBuilder, includeLogos);
    * stringBuilder.append("</td></tr>\n");
    * }
-   * 
+   *
    * if (includeWebapp) {
    * stringBuilder
    * .append("<tr><td>\n");
@@ -361,7 +363,7 @@ public class HtmlWriting {
    * }
    * stringBuilder.append("</table><hr>\n");
    * }
-   * 
+   *
    * private void appendWebappInfo(StringBuilder stringBuilder, boolean includeLogo) {
    * // Include webapp info
    * String webappUrl = this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getWebappUrl());
@@ -376,7 +378,7 @@ public class HtmlWriting {
    * .append(this.tdsContext.getWebappDisplayName())
    * .append("</a>");
    * }
-   * 
+   *
    * private void appendHostInstInfo(StringBuilder stringBuilder, boolean includeLogo) {
    * // Include host institution information
    * if (this.htmlConfig.getHostInstName() != null) {
@@ -395,7 +397,7 @@ public class HtmlWriting {
    * } else
    * stringBuilder.append("Unknown Host Institution");
    * }
-   * 
+   *
    * private void appendInstallationInfo(StringBuilder stringBuilder, boolean includeLogo) {
    * // Include information on this intsallation.
    * if (this.htmlConfig.getInstallName() != null) {
@@ -424,7 +426,7 @@ public class HtmlWriting {
    * "        'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>\n" +
    * "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>";
    * }
-   * 
+   *
    * // public static final String UNIDATA_CSS
    * public String getUserCSS() {
    * return new StringBuilder()
@@ -432,8 +434,8 @@ public class HtmlWriting {
    * .append(this.htmlConfig.prepareUrlStringForHtml(this.htmlConfig.getPageCssUrl()))
    * .append("' type='text/css' >").toString();
    * }
-   * 
-   * 
+   *
+   *
    * private String getCollapsableJs() {
    * return new StringBuilder()
    * .append("<script src=\"https://code.jquery.com/jquery-1.11.2.min.js\"></script>\n")
@@ -448,7 +450,7 @@ public class HtmlWriting {
    * .append("  });\n")
    * .append("</script>\n").toString();
    * }
-   * 
+   *
    * private String getCollapsableCss() {
    * return new StringBuilder()
    * .append("<style>\n")
@@ -467,7 +469,7 @@ public class HtmlWriting {
    * .append("  }\n")
    * .append("</style>\n").toString();
    * }
-   * 
+   *
    * public StringBuilder makeCollapsable(StringBuilder sb, int level) {
    * if (level > 0) {
    * String replaceThis = "<tr";
@@ -489,20 +491,20 @@ public class HtmlWriting {
    * public void showCDM(HttpServletResponse res, NetcdfDataset ds)
    * throws IOException {
    * String cdmAsString = getCDM(ds);
-   * 
+   *
    * res.setContentLength(cdmAsString.length());
    * res.setContentType(ContentType.html.getContentHeader());
    * PrintWriter writer = res.getWriter();
-   * 
+   *
    * writer.write(cdmAsString);
    * writer.flush();
    * }
-   * 
+   *
    * private String getCDM(NetcdfDataset ds) throws IOException {
    * StringBuilder sb = new StringBuilder(10000);
-   * 
+   *
    * String name = Escape.html(ds.getLocation());
-   * 
+   *
    * // Render the page header
    * sb.append(getHtmlDoctypeAndOpenTag()); // "<html>\n" );
    * sb.append("<head>\r\n");
@@ -518,9 +520,9 @@ public class HtmlWriting {
    * sb.append("Dataset ").append(name);
    * sb.append("</h1>");
    * sb.append("<HR size='1' noshade='noshade'>");
-   * 
+   *
    * sb.append("<table width='100%' cellspacing='0' cellpadding='5' align='center'>\r\n");
-   * 
+   *
    * //////// Axis
    * sb.append("<tr>\r\n");
    * sb.append("<td align='left'><font size='+1'><strong>");
@@ -533,20 +535,20 @@ public class HtmlWriting {
    * sb.append("Units");
    * sb.append("</strong></font></td>\r\n");
    * sb.append("</tr>");
-   * 
+   *
    * // Show the coordinate axes
    * boolean shade = false;
    * for (CoordinateAxis axis : ds.getCoordinateAxes()) {
    * showAxis(axis, sb, shade);
    * shade = !shade;
    * }
-   * 
+   *
    * ///////////// Grid
    * GridDataset gds = new ucar.nc2.dt.grid.GridDataset(ds);
-   * 
+   *
    * // find projections
    * //List gridsets = gds.getGridsets();
-   * 
+   *
    * sb.append("<tr>\r\n");
    * sb.append("<td align='left'><font size='+1'><strong>");
    * sb.append("GeoGrid");
@@ -558,27 +560,27 @@ public class HtmlWriting {
    * sb.append("Units");
    * sb.append("</strong></font></td>\r\n");
    * sb.append("</tr>");
-   * 
+   *
    * // Show the grids
    * shade = false;
    * for (GridDatatype grid : gds.getGrids()) {
    * showGrid(grid, sb, shade);
    * shade = !shade;
    * }
-   * 
+   *
    * // Render the page footer
    * sb.append("</table>\r\n");
-   * 
+   *
    * sb.append("<HR size='1' noshade='noshade'>");
-   * 
+   *
    * appendSimpleFooter(sb);
-   * 
+   *
    * sb.append("</body>\r\n");
    * sb.append("</html>\r\n");
-   * 
+   *
    * return (sb.toString());
    * }
-   * 
+   *
    * private void showAxis(CoordinateAxis axis, StringBuilder sb, boolean shade) {
    * sb.append("<tr");
    * if (shade) {
@@ -586,32 +588,32 @@ public class HtmlWriting {
    * }
    * sb.append(">\r\n");
    * shade = !shade;
-   * 
+   *
    * sb.append("<td align='left'>");
    * sb.append("\r\n");
-   * 
+   *
    * StringBuilder sbuff = new StringBuilder();
    * axis.getNameAndDimensions(sbuff);
    * String name = Escape.html(sbuff.toString());
    * sb.append("&nbsp;");
    * sb.append(name);
    * sb.append("</tt></a></td>\r\n");
-   * 
+   *
    * sb.append("<td align='left'><tt>");
    * AxisType type = axis.getAxisType();
    * String stype = (type == null) ? "" : Escape.html(type.toString());
    * sb.append(stype);
    * sb.append("</tt></td>\r\n");
-   * 
+   *
    * sb.append("<td align='left'><tt>");
    * String units = axis.getUnitsString();
    * String sunits = (units == null) ? "" : units;
    * sb.append(sunits);
    * sb.append("</tt></td>\r\n");
-   * 
+   *
    * sb.append("</tr>\r\n");
    * }
-   * 
+   *
    * private void showGrid(GridDatatype grid, StringBuilder sb, boolean shade) {
    * sb.append("<tr");
    * if (shade) {
@@ -619,10 +621,10 @@ public class HtmlWriting {
    * }
    * sb.append(">\r\n");
    * shade = !shade;
-   * 
+   *
    * sb.append("<td align='left'>");
    * sb.append("\r\n");
-   * 
+   *
    * VariableEnhanced ve = grid.getVariable();
    * StringBuilder sbuff = new StringBuilder();
    * ve.getNameAndDimensions(new Formatter(sbuff), false, true);
@@ -630,19 +632,19 @@ public class HtmlWriting {
    * sb.append("&nbsp;");
    * sb.append(name);
    * sb.append("</tt></a></td>\r\n");
-   * 
+   *
    * sb.append("<td align='left'><tt>");
    * String desc = ve.getDescription();
    * String sdesc = (desc == null) ? "" : Escape.html(desc);
    * sb.append(sdesc);
    * sb.append("</tt></td>\r\n");
-   * 
+   *
    * sb.append("<td align='left'><tt>");
    * String units = ve.getUnitsString();
    * String sunits = (units == null) ? "" : units;
    * sb.append(sunits);
    * sb.append("</tt></td>\r\n");
-   * 
+   *
    * sb.append("</tr>\r\n");
    * }
    */
