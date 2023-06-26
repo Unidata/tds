@@ -507,14 +507,16 @@ public class ConfigCatalogHtmlWriter {
     if (this.htmlConfig.getGoogleTrackingCode().isEmpty()) {
       return "";
     } else {
-      // See https://developers.google.com/analytics/devguides/collection/analyticsjs/
-      return new StringBuilder().append("<!-- Google Analytics -->\n").append("<script>\n")
-          .append("(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n")
-          .append("(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n")
-          .append("m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n")
-          .append("})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n").append('\n')
-          .append("ga('create', '").append(this.htmlConfig.getGoogleTrackingCode()).append("', 'auto');\n")
-          .append("ga('send', 'pageview');\n").append("</script>\n").append("<!-- End Google Analytics -->\n")
+      // See https://developers.google.com/analytics/devguides/collection/gtagjs
+      return new StringBuilder().append("<!-- Google Analytics (gtag.js) -->\n")
+          .append("<script async src=\"https://www.googletagmanager.com/gtag/js?id=").append(this.htmlConfig.getGoogleTrackingCode()).append("\"></script>\n")
+          .append("<script>\n")
+          .append("window.dataLayer = window.dataLayer || [];\n")
+          .append("function gtag(){dataLayer.push(arguments);}\n")
+          .append("gtag('js', new Date());\n")
+          .append("gtag('config', '").append(this.htmlConfig.getGoogleTrackingCode()).append("');\n")
+          .append("</script>\n")
+          .append("<!-- End Google Analytics -->\n")
           .toString();
     }
   }
