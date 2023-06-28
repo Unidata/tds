@@ -27,7 +27,7 @@ public class DatasetTrackerChronicle implements DatasetTracker {
   // average size (bytes) of key for database, which is the path to a given dataset.
   // LOOK: is 512 a good average size? There is no length on file path, so hard to set a maximum.
   private static final int averagePathLength = 512;
-  private static final int averageValueSize = 2000;
+  private static final int averageValueSize = 200;
 
   // delete old databases
   public static void cleanupBefore(String pathname, long trackerNumber) {
