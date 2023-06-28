@@ -86,6 +86,7 @@ public class ConfigCatalogInitialization {
   private String contextPath; // thredds
   private String trackerDir; // the tracker "databases" are kept in this directory
   private long maxDatasets; // chronicle limit
+  private String averageValueSize;
 
   // on reread, construct new objects, so cant be spring beans
   private DataRootPathMatcher dataRootPathMatcher;
@@ -108,6 +109,10 @@ public class ConfigCatalogInitialization {
 
   public void setMaxDatasetToTrack(long maxDatasets) {
     this.maxDatasets = maxDatasets;
+  }
+
+  public void setDatasetTrackerAverageValueSize(String averageValueSize) {
+    this.averageValueSize = averageValueSize;
   }
 
   // called from TdsInit on spring-managed auto-wired bean
@@ -141,7 +146,7 @@ public class ConfigCatalogInitialization {
     if (!isStartup && readMode == ReadMode.always)
       trackerNumber++; // must write a new database if TDS is already running and rereading all
     if (!isDebugMode || this.datasetTracker == null)
-      this.datasetTracker = new DatasetTrackerChronicle(trackerDir, maxDatasets, trackerNumber);
+      this.datasetTracker = new DatasetTrackerChronicle(trackerDir, maxDatasets, trackerNumber, averageValueSize);
 
     boolean databaseAlreadyExists = datasetTracker.exists(); // detect if tracker database exists
     if (!databaseAlreadyExists) {
