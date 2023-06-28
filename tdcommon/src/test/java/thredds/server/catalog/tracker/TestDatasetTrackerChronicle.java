@@ -48,10 +48,10 @@ public class TestDatasetTrackerChronicle {
   @Test
   public void shouldTrackDatasetWithLongNcml() throws IOException {
     try (DatasetTrackerChronicle datasetTracker =
-        new DatasetTrackerChronicle(tempFolder.getRoot().getAbsolutePath(), 1, 1)) {
+        new DatasetTrackerChronicle(tempFolder.getRoot().getAbsolutePath(), 1, 1, "Large")) {
       assertThat(datasetTracker.getCount()).isEqualTo(0);
 
-      datasetTracker.trackDataset(1, mockDataset(1_000, "path"), null);
+      datasetTracker.trackDataset(1, mockDataset(10_000, "path"), null);
       assertThat(datasetTracker.getCount()).isEqualTo(1);
     }
   }
@@ -59,7 +59,7 @@ public class TestDatasetTrackerChronicle {
   @Test
   public void shouldTrackMultipleDatasetsWithNcml() throws IOException {
     try (DatasetTrackerChronicle datasetTracker =
-        new DatasetTrackerChronicle(tempFolder.getRoot().getAbsolutePath(), 10, 1)) {
+        new DatasetTrackerChronicle(tempFolder.getRoot().getAbsolutePath(), 10, 1, "medium")) {
       assertThat(datasetTracker.getCount()).isEqualTo(0);
 
       datasetTracker.trackDataset(1, mockDataset(100, "path1"), null);
