@@ -1,5 +1,6 @@
 package thredds.server.catalog.tracker;
 
+import java.util.Locale;
 import net.openhft.chronicle.map.ChronicleMap;
 import net.openhft.chronicle.map.ChronicleMapBuilder;
 import org.jdom2.Element;
@@ -27,7 +28,17 @@ public class DatasetTrackerChronicle implements DatasetTracker {
   // average size (bytes) of key for database, which is the path to a given dataset.
   // LOOK: is 512 a good average size? There is no length on file path, so hard to set a maximum.
   private static final int averagePathLength = 512;
-  private static final int averageValueSize = 200;
+  private final int averageValueSize;
+
+  private enum AverageValueSize {
+    small(200), medium(2_000), large(200_000), defaultSize(small.size);
+
+    private final int size;
+
+    AverageValueSize(int size) {
+      this.size = size;
+    }
+  }
 
   // delete old databases
   public static void cleanupBefore(String pathname, long trackerNumber) {
@@ -50,9 +61,19 @@ public class DatasetTrackerChronicle implements DatasetTracker {
   private ChronicleMap<String, DatasetExt> datasetMap;
 
   public DatasetTrackerChronicle(String pathname, long maxDatasets, long number) {
+    this(pathname, maxDatasets, number, AverageValueSize.defaultSize.size);
+  }
+
+  public DatasetTrackerChronicle(String pathname, long maxDatasets, long number, String averageValueSizeName) {
+    this(pathname, maxDatasets, number, averageValueSizeName == null ? AverageValueSize.defaultSize.size
+        : AverageValueSize.valueOf(averageValueSizeName.toLowerCase(Locale.ROOT)).size);
+  }
+
+  private DatasetTrackerChronicle(String pathname, long maxDatasets, long number, int averageValueSize) {
     dbFile = new File(pathname + datasetName + "." + number);
     alreadyExists = dbFile.exists();
     this.maxDatasets = maxDatasets;
+    this.averageValueSize = averageValueSize;
 
     try {
       open();
