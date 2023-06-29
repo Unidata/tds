@@ -226,6 +226,10 @@ public class OpendapServlet extends AbstractServlet implements InitializingBean 
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       parseExceptionHandler(pe, response);
 
+    } catch (IllegalArgumentException e) {
+      log.info("request= " + rs, e);
+      sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+
       // 403 - request too big
     } catch (RequestTooLargeException e) {
       // handled at the Spring level by TdsErrorHandling, so

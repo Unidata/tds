@@ -1,8 +1,6 @@
 package thredds.server.opendap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
@@ -16,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.mock.web.MockServletConfig;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -36,7 +33,7 @@ public class OpendapServletTest {
   private ServletConfig servletConfig;
 
   private OpendapServlet opendapServlet;
-  private String path = "/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120229_1200.grib1";
+  private final String path = "/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120229_1200.grib1";
 
   @Before
   public void setUp() throws Exception {
@@ -46,7 +43,7 @@ public class OpendapServletTest {
   }
 
   @Test
-  public void asciiDataRequestTest() throws UnsupportedEncodingException {
+  public void asciiDataRequestTest() {
     String mockURI = "/thredds/dodsC" + path + ".ascii";
     String mockQueryString = "Temperature_height_above_ground[0:1:0][0:1:0][41][31]";
     MockHttpServletRequest request = new MockHttpServletRequest("GET", mockURI);
@@ -55,10 +52,7 @@ public class OpendapServletTest {
     request.setPathInfo(path + ".ascii");
     MockHttpServletResponse response = new MockHttpServletResponse();
     opendapServlet.doGet(request, response);
-    assertEquals(200, response.getStatus());
-
-    // String strResponse = response.getContentAsString();
-    // System.out.printf("%s%n", strResponse);
+    assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
   }
 
   @Test
@@ -71,21 +65,16 @@ public class OpendapServletTest {
     request.setPathInfo(path + ".ascii");
     MockHttpServletResponse response = new MockHttpServletResponse();
     opendapServlet.doGet(request, response);
-    assertEquals(200, response.getStatus());
+    assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
 
     String strResponse = response.getContentAsString();
-    System.out.printf("%s%n", strResponse);
+    logger.debug(strResponse);
   }
 
   @Test
   public void shouldReturnAttributesWithEmptyAndNullValues() throws UnsupportedEncodingException {
     final String path = "/scanLocal/testEmptyAndNullAttributes.nc4.html";
-    final String mockURI = "/thredds/dodsC" + path;
-    MockHttpServletRequest request = new MockHttpServletRequest("GET", mockURI);
-    request.setContextPath("/thredds");
-    request.setPathInfo(path);
-    final MockHttpServletResponse response = new MockHttpServletResponse();
-    opendapServlet.doGet(request, response);
+    final MockHttpServletResponse response = mockGetRequest(path);
     assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
 
     final String stringResponse = response.getContentAsString();
@@ -98,12 +87,7 @@ public class OpendapServletTest {
   @Test
   public void shouldNotContainNCPropertiesAttribute() throws IOException {
     final String path = "/scanLocal/testEmptyAndNullAttributes.nc4.html";
-    final String mockURI = "/thredds/dodsC" + path;
-    MockHttpServletRequest request = new MockHttpServletRequest("GET", mockURI);
-    request.setContextPath("/thredds");
-    request.setPathInfo(path);
-    final MockHttpServletResponse response = new MockHttpServletResponse();
-    opendapServlet.doGet(request, response);
+    final MockHttpServletResponse response = mockGetRequest(path);
     assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
 
     final String stringResponse = response.getContentAsString();
@@ -120,11 +104,27 @@ public class OpendapServletTest {
     request.setPathInfo(path + ".dods");
     MockHttpServletResponse response = new MockHttpServletResponse();
     opendapServlet.doGet(request, response);
-    assertEquals(200, response.getStatus());
+    assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
     // not set by servlet mocker :: assertEquals("application/octet-stream", response.getContentType());
 
     String strResponse = response.getContentAsString();
-    System.out.printf("%s%n", strResponse);
+    logger.debug(strResponse);
   }
 
+  @Test
+  public void shouldReturnBadRequestForMalformedTime() {
+    final String path = "/testGFSfmrc/runs/GFS_CONUS_80km_nc_RUN_2012-19T00:00:00Z.html";
+    final MockHttpServletResponse response = mockGetRequest(path);
+    assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_BAD_REQUEST);
+  }
+
+  private MockHttpServletResponse mockGetRequest(String path) {
+    final String mockURI = "/thredds/dodsC" + path;
+    MockHttpServletRequest request = new MockHttpServletRequest("GET", mockURI);
+    request.setContextPath("/thredds");
+    request.setPathInfo(path);
+    final MockHttpServletResponse response = new MockHttpServletResponse();
+    opendapServlet.doGet(request, response);
+    return response;
+  }
 }
