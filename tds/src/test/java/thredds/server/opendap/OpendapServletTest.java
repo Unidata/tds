@@ -2,7 +2,6 @@ package thredds.server.opendap;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.mock.web.MockServletConfig;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -46,7 +44,7 @@ public class OpendapServletTest {
   }
 
   @Test
-  public void asciiDataRequestTest() throws UnsupportedEncodingException {
+  public void asciiDataRequestTest() {
     String mockURI = "/thredds/dodsC" + path + ".ascii";
     String mockQueryString = "Temperature_height_above_ground[0:1:0][0:1:0][41][31]";
     MockHttpServletRequest request = new MockHttpServletRequest("GET", mockURI);
@@ -56,9 +54,6 @@ public class OpendapServletTest {
     MockHttpServletResponse response = new MockHttpServletResponse();
     opendapServlet.doGet(request, response);
     assertEquals(200, response.getStatus());
-
-    // String strResponse = response.getContentAsString();
-    // System.out.printf("%s%n", strResponse);
   }
 
   @Test
