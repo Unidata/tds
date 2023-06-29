@@ -1,7 +1,6 @@
 package thredds.server.opendap;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
@@ -53,7 +52,7 @@ public class OpendapServletTest {
     request.setPathInfo(path + ".ascii");
     MockHttpServletResponse response = new MockHttpServletResponse();
     opendapServlet.doGet(request, response);
-    assertEquals(200, response.getStatus());
+    assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
   }
 
   @Test
@@ -66,7 +65,7 @@ public class OpendapServletTest {
     request.setPathInfo(path + ".ascii");
     MockHttpServletResponse response = new MockHttpServletResponse();
     opendapServlet.doGet(request, response);
-    assertEquals(200, response.getStatus());
+    assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
 
     String strResponse = response.getContentAsString();
     logger.debug(strResponse);
@@ -105,7 +104,7 @@ public class OpendapServletTest {
     request.setPathInfo(path + ".dods");
     MockHttpServletResponse response = new MockHttpServletResponse();
     opendapServlet.doGet(request, response);
-    assertEquals(200, response.getStatus());
+    assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
     // not set by servlet mocker :: assertEquals("application/octet-stream", response.getContentType());
 
     String strResponse = response.getContentAsString();
