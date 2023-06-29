@@ -75,12 +75,7 @@ public class OpendapServletTest {
   @Test
   public void shouldReturnAttributesWithEmptyAndNullValues() throws UnsupportedEncodingException {
     final String path = "/scanLocal/testEmptyAndNullAttributes.nc4.html";
-    final String mockURI = "/thredds/dodsC" + path;
-    MockHttpServletRequest request = new MockHttpServletRequest("GET", mockURI);
-    request.setContextPath("/thredds");
-    request.setPathInfo(path);
-    final MockHttpServletResponse response = new MockHttpServletResponse();
-    opendapServlet.doGet(request, response);
+    final MockHttpServletResponse response = mockGetRequest(path);
     assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
 
     final String stringResponse = response.getContentAsString();
@@ -93,12 +88,7 @@ public class OpendapServletTest {
   @Test
   public void shouldNotContainNCPropertiesAttribute() throws IOException {
     final String path = "/scanLocal/testEmptyAndNullAttributes.nc4.html";
-    final String mockURI = "/thredds/dodsC" + path;
-    MockHttpServletRequest request = new MockHttpServletRequest("GET", mockURI);
-    request.setContextPath("/thredds");
-    request.setPathInfo(path);
-    final MockHttpServletResponse response = new MockHttpServletResponse();
-    opendapServlet.doGet(request, response);
+    final MockHttpServletResponse response = mockGetRequest(path);
     assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
 
     final String stringResponse = response.getContentAsString();
