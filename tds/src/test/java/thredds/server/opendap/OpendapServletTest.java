@@ -69,7 +69,7 @@ public class OpendapServletTest {
     assertEquals(200, response.getStatus());
 
     String strResponse = response.getContentAsString();
-    System.out.printf("%s%n", strResponse);
+    logger.debug(strResponse);
   }
 
   @Test
@@ -109,7 +109,7 @@ public class OpendapServletTest {
     // not set by servlet mocker :: assertEquals("application/octet-stream", response.getContentType());
 
     String strResponse = response.getContentAsString();
-    System.out.printf("%s%n", strResponse);
+    logger.debug(strResponse);
   }
 
   @Test
