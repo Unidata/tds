@@ -127,4 +127,20 @@ public class OpendapServletTest {
     System.out.printf("%s%n", strResponse);
   }
 
+  @Test
+  public void shouldReturnBadRequestForMalformedTime() {
+    final String path = "/testGFSfmrc/runs/GFS_CONUS_80km_nc_RUN_2012-19T00:00:00Z.html";
+    final MockHttpServletResponse response = mockGetRequest(path);
+    assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_BAD_REQUEST);
+  }
+
+  private MockHttpServletResponse mockGetRequest(String path) {
+    final String mockURI = "/thredds/dodsC" + path;
+    MockHttpServletRequest request = new MockHttpServletRequest("GET", mockURI);
+    request.setContextPath("/thredds");
+    request.setPathInfo(path);
+    final MockHttpServletResponse response = new MockHttpServletResponse();
+    opendapServlet.doGet(request, response);
+    return response;
+  }
 }
