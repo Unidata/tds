@@ -34,7 +34,7 @@ public class OpendapServletTest {
   private ServletConfig servletConfig;
 
   private OpendapServlet opendapServlet;
-  private String path = "/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120229_1200.grib1";
+  private final String path = "/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120229_1200.grib1";
 
   @Before
   public void setUp() throws Exception {
