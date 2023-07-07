@@ -2,9 +2,6 @@
 <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
     location="UCF_FVCOM_DEMO.nc">
     
-    <dimension name="face" orgName="nele"/>
-    <dimension name="node" orgName="node"/>
-    
     <!-- X and Y Coordinates -->
     <variable name="face_x" orgName="xc">
         <attribute name="long_name" value="Characteristics longitude of 2D mesh triangle (e.g. circumcenter coordinate)"/>
