@@ -5,14 +5,18 @@
 
 package dap4.servlet;
 
+import dap4.core.ce.CEConstraint;
+import dap4.core.dmr.DMRPrinter;
+import dap4.core.dmr.DapDataset;
 import dap4.core.dmr.ErrorResponse;
+import dap4.core.util.DapConstants;
+import dap4.core.util.DapContext;
 import dap4.core.util.DapException;
 import dap4.core.util.DapUtil;
 import dap4.dap4lib.DapCodes;
 import dap4.dap4lib.RequestMode;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+
+import java.io.*;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -21,9 +25,9 @@ public class ChunkWriter extends OutputStream {
   //////////////////////////////////////////////////
   // Constants
 
-  static public boolean DEBUG = false;
-  static public boolean DUMPDATA = false;
-  static public boolean DEBUGHEADER = false;
+  public static boolean DEBUG = false;
+  public static boolean DUMPDATA = false;
+  public static boolean DEBUGHEADER = false;
 
   static final int MAXCHUNKSIZE = 0xFFFF;
 
@@ -31,9 +35,7 @@ public class ChunkWriter extends OutputStream {
 
   static final int SIZEOF_INTEGER = 4;
 
-  static public final byte[] CRLF8 = DapUtil.extract(DapUtil.UTF8.encode(DapUtil.CRLF));
-
-  static public final String XMLDOCUMENTHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
+  public static final byte[] CRLF8 = DapUtil.extract(DapUtil.UTF8.encode(DapUtil.CRLF));
 
   //////////////////////////////////////////////////
   // Type declarations
@@ -137,9 +139,6 @@ public class ChunkWriter extends OutputStream {
 
     dsr = dsr.substring(0, len) + DapUtil.CRLF;
 
-    // Add <?xml...?> prefix
-    dsr = XMLDOCUMENTHEADER + "\n" + dsr;
-
     // Convert the dsr to UTF-8 and then to byte[]
     byte[] dsr8 = DapUtil.extract(DapUtil.UTF8.encode(dsr));
     sendDXR(dsr8);
@@ -155,6 +154,19 @@ public class ChunkWriter extends OutputStream {
    * @param dmr The DMR string
    * @throws IOException on IO related errors
    */
+
+  public void cacheDMR(DapDataset dmr, DapContext cxt) throws IOException {
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    CEConstraint ce = (CEConstraint) cxt.get(CEConstraint.class);
+    DapRequest drq = (DapRequest) cxt.get(DapRequest.class);
+    // Get the DMR as a string
+    DMRPrinter dapprinter = new DMRPrinter(dmr, ce, pw, drq.getFormat(), cxt);
+    dapprinter.print();
+    pw.close();
+    sw.close();
+    cacheDMR(sw.toString());
+  }
 
   public void cacheDMR(String dmr) throws IOException {
     if (state != State.INITIAL)
@@ -176,9 +188,6 @@ public class ChunkWriter extends OutputStream {
 
     dmr = dmr.substring(0, len) + DapUtil.CRLF;
 
-    // Prepend the <?xml...?> prefix
-    dmr = XMLDOCUMENTHEADER + "\n" + dmr;
-
     // Convert the dmr to UTF-8 and then to byte[]
     this.dmr8 = DapUtil.extract(DapUtil.UTF8.encode(dmr));
 
@@ -199,9 +208,9 @@ public class ChunkWriter extends OutputStream {
       state = State.END;
     } else {// mode == DATA
       // Prefix with chunk header
-      int flags = DapUtil.CHUNK_DATA;
+      int flags = DapConstants.CHUNK_DATA;
       if (this.writeorder == ByteOrder.LITTLE_ENDIAN)
-        flags |= DapUtil.CHUNK_LITTLE_ENDIAN;
+        flags |= DapConstants.CHUNK_LITTLE_ENDIAN;
       chunkheader(dxr8.length, flags, this.header);
       // write the header
       output.write(DapUtil.extract(this.header));
@@ -236,7 +245,7 @@ public class ChunkWriter extends OutputStream {
       // clear any partial chunk
       chunk.clear();
       // create an error header
-      int flags = DapUtil.CHUNK_ERROR | DapUtil.CHUNK_END;
+      int flags = DapConstants.CHUNK_ERROR | DapConstants.CHUNK_END;
       chunkheader(errbody8.length, flags, header);
       output.write(DapUtil.extract(header));
       output.write(errbody8);
@@ -270,7 +279,7 @@ public class ChunkWriter extends OutputStream {
   }
 
 
-  static public void chunkheader(int length, int flags, ByteBuffer hdrbuf) throws DapException {
+  public static void chunkheader(int length, int flags, ByteBuffer hdrbuf) throws DapException {
     if (length > MAXCHUNKSIZE || length < 0)
       throw new DapException("Illegal chunk size: " + length);
     int hdr = ((flags << 24) | length);
@@ -332,7 +341,7 @@ public class ChunkWriter extends OutputStream {
     // but do not close the underlying output stream
     state = State.DATA; // pretend
 
-    int flags = DapUtil.CHUNK_END;
+    int flags = DapConstants.CHUNK_END;
     writeChunk(flags);
     state = State.END;
     this.output.flush(); // Do not close
@@ -426,7 +435,7 @@ public class ChunkWriter extends OutputStream {
       int avail = chunk.remaining();
       do {
         if (avail == 0) {
-          writeChunk(DapUtil.CHUNK_DATA);
+          writeChunk(DapConstants.CHUNK_DATA);
           avail = chunk.remaining();
         }
         int towrite = (left < avail ? left : avail);

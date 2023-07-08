@@ -582,7 +582,7 @@ class DatasetContext {
             urlString = urlString + ".html";
             break;
           case DAP4:
-            urlString = urlString + ".dmr.xml";
+            urlString = urlString + ".dsr.html";
             break;
           case WCS:
             queryString = "service=WCS&version=1.0.0&request=GetCapabilities";

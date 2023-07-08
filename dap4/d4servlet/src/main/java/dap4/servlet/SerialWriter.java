@@ -5,11 +5,10 @@
 
 package dap4.servlet;
 
-import dap4.core.data.ChecksumMode;
-import dap4.core.data.DataCursor;
 import dap4.core.dmr.DapType;
-import dap4.core.dmr.DapVariable;
 import dap4.core.dmr.TypeSort;
+import dap4.core.util.ChecksumMode;
+import dap4.core.util.DapConstants;
 import dap4.core.util.DapException;
 import dap4.core.util.DapUtil;
 import java.io.IOException;
@@ -30,9 +29,10 @@ import java.nio.ByteOrder;
  */
 
 public class SerialWriter {
-  static public boolean DEBUG = false; // make it mutable
-  static public boolean DUMPDATA = false; // make it mutable
-  static public boolean DUMPCSUM = false; // make it mutable
+
+  public static boolean DEBUG = false; // make it mutable
+  public static boolean DUMPDATA = false; // make it mutable
+  public static boolean DUMPCSUM = false; // make it mutable
 
   //////////////////////////////////////////////////
   // Constants
@@ -59,7 +59,7 @@ public class SerialWriter {
   protected java.util.zip.Checksum checksum;
   protected ChecksumMode checksummode = null;
   protected boolean serialize = true; // false=>we do not need to actually serialize
-  protected String lastchecksum = null; // checksum from last variable
+  protected long lastchecksum = 0; // checksum from last variable
 
   protected ByteBuffer crcbuffer = null;
   protected ByteBuffer countbuffer = null;
@@ -75,11 +75,11 @@ public class SerialWriter {
         .order(order);
     this.crcbuffer = ByteBuffer.allocate(4) // 4==sizeof(crc32 digest)
         .order(order);
-    if ("CRC32".equalsIgnoreCase(DapUtil.DIGESTER)) {
+    if ("CRC32".equalsIgnoreCase(DapConstants.DIGESTER)) {
       // use the one from java.util.zip.CRC32
       this.checksum = new java.util.zip.CRC32();
     } else
-      assert (false) : "No such checksum algorithm: " + DapUtil.DIGESTER;
+      assert (false) : "No such checksum algorithm: " + DapConstants.DIGESTER;
 
   }
 
@@ -90,8 +90,8 @@ public class SerialWriter {
     this.serialize = !tf;
   }
 
-  public String getLastChecksum() {
-    return this.lastchecksum.toString();
+  public long getLastChecksum() {
+    return this.lastchecksum;
   }
 
   //////////////////////////////////////////////////
@@ -106,7 +106,7 @@ public class SerialWriter {
    *         platform's native encoding.
    */
 
-  static public ByteBuffer encodeArray(DapType vtype, Object values, ByteOrder order) throws IOException {
+  public static ByteBuffer encodeArray(DapType vtype, Object values, ByteOrder order) throws IOException {
     TypeSort atomtype = vtype.getAtomicType();
     assert values != null && values.getClass().isArray();
     int count = Array.getLength(values);
@@ -225,7 +225,7 @@ public class SerialWriter {
 
   public void endVariable() throws IOException {
     depth--;
-    if (depth == 0 && this.checksummode.enabled(ChecksumMode.DAP)) {
+    if (depth == 0 && this.checksummode == ChecksumMode.TRUE) {
       long crc = this.checksum.getValue(); // get the digest value
       crc = (crc & 0x00000000FFFFFFFFL); /* crc is 32 bits */
       crcbuffer.clear();
@@ -233,14 +233,14 @@ public class SerialWriter {
       byte[] csum = crcbuffer.array();
       assert csum.length == 4;
       // convert to a string; write as a signed integer
-      this.lastchecksum = String.format("%08x", crc);
+      this.lastchecksum = crc;
       if (DEBUG) {
         System.err.print("checksum = " + this.lastchecksum);
         System.err.println();
       }
       // Write out the digest in binary form
       // Do not use writeBytes because checksum is not itself checksummed
-      outputBytes(csum, 0, DapUtil.CHECKSUMSIZE);
+      outputBytes(csum, 0, DapConstants.CHECKSUMSIZE);
     }
   }
 
@@ -296,7 +296,7 @@ public class SerialWriter {
    */
   public void writeBytes(byte[] bytes, int len) throws IOException {
     outputBytes(bytes, 0, len);
-    if (this.checksummode.enabled(ChecksumMode.DAP)) {
+    if (this.checksummode == ChecksumMode.TRUE) {
       this.checksum.update(bytes, 0, len);
       if (DUMPCSUM) {
         System.err.print("SSS ");

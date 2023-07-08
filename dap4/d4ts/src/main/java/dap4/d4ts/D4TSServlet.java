@@ -5,16 +5,13 @@
 
 package dap4.d4ts;
 
-import dap4.core.data.DSPRegistry;
 import dap4.core.util.DapContext;
 import dap4.core.util.DapException;
 import dap4.core.util.DapUtil;
 import dap4.dap4lib.DapCodes;
 import dap4.dap4lib.DapLog;
-import dap4.dap4lib.FileDSP;
-import dap4.dap4lib.netcdf.Nc4DSP;
 import dap4.servlet.*;
-import javax.servlet.ServletContext;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,30 +33,10 @@ public class D4TSServlet extends DapController {
 
   static final boolean PARSEDEBUG = false;
 
-  static protected final String RESOURCEPATH = "WEB-INF/resources";
+  static final String RESOURCEPATH = "/testfiles";
 
   //////////////////////////////////////////////////
   // Type Decls
-
-  static class D4TSFactory extends DSPFactory {
-
-    public D4TSFactory() {
-      // Register known DSP classes: order is important
-      // in event that two or more dsps can match a given file
-      // (e.q. FileDSP vs Nc4DSP).
-      // Only used in server
-      DapCache.dspregistry.register(Nc4DSP.class, DSPRegistry.LAST);
-      DapCache.dspregistry.register(SynDSP.class, DSPRegistry.LAST);
-      DapCache.dspregistry.register(FileDSP.class, DSPRegistry.LAST);
-    }
-
-  }
-
-  //////////////////////////////////////////////////
-
-  static {
-    DapCache.setFactory(new D4TSFactory());
-  }
 
   //////////////////////////////////////////////////
   // Instance variables
@@ -92,7 +69,7 @@ public class D4TSServlet extends DapController {
   @Override
   protected void doFavicon(String icopath, DapContext cxt) throws IOException {
     DapRequest drq = (DapRequest) cxt.get(DapRequest.class);
-    String favfile = getResourcePath(drq, icopath);
+    String favfile = drq.getResourcePath(icopath);
     if (favfile != null) {
       try (FileInputStream fav = new FileInputStream(favfile);) {
         byte[] content = DapUtil.readbinaryfile(fav);
@@ -121,33 +98,8 @@ public class D4TSServlet extends DapController {
   }
 
   @Override
-  public String getResourcePath(DapRequest drq, String location) throws DapException {
-    String prefix = drq.getResourceRoot();
-    if (prefix == null)
-      throw new DapException("Cannot find location resource: " + location).setCode(DapCodes.SC_NOT_FOUND);
-    location = DapUtil.canonicalpath(location);
-    String datasetfilepath = DapUtil.canonjoin(prefix, location);
-    // See if it really exists and is readable and of proper type
-    File dataset = new File(datasetfilepath);
-    if (!dataset.exists()) {
-      String msg = String.format("Requested file does not exist: prefix=%s location=%s datasetfilepath=%s", prefix,
-          location, datasetfilepath);
-      throw new DapException(msg).setCode(HttpServletResponse.SC_NOT_FOUND);
-    }
-    if (!dataset.canRead())
-      throw new DapException("Requested file not readable: " + datasetfilepath)
-          .setCode(HttpServletResponse.SC_FORBIDDEN);
-    return datasetfilepath;
-  }
-
-  @Override
   public long getBinaryWriteLimit() {
     return DEFAULTBINARYWRITELIMIT;
-  }
-
-  @Override
-  public String getServletID() {
-    return "d4ts";
   }
 
   /**
@@ -161,14 +113,59 @@ public class D4TSServlet extends DapController {
     if (this.defaultroots == null) {
       // Figure out the directory containing
       // the files to display.
-      String pageroot;
-      pageroot = getResourcePath(drq, "");
-      if (pageroot == null)
-        throw new DapException("Cannot locate resources directory");
+      String testroot = drq.getResourcePath("/");
+      if (testroot == null)
+        throw new DapException("Cannot locate dataset  directory");
       this.defaultroots = new ArrayList<>();
-      this.defaultroots.add(new Root("testfiles", pageroot));
+      this.defaultroots.add(new Root(testroot, RESOURCEPATH));
     }
     return new FrontPage(this.defaultroots, drq);
+  }
+
+  @Override
+  public String getServletID() {
+    return "/d4ts";
+  }
+
+  @Override
+  public String getWebContentRoot(DapRequest drq) throws DapException {
+    try {
+      String servletpath = getServletContext().getResource("/").getPath();
+      String path = servletpath + "WEB-INF";
+      File f = new File(path);
+      if (!f.exists() || !f.canRead() || !f.isDirectory())
+        throw new DapException("Cannot find WEB-INF").setCode(DapCodes.SC_NOT_FOUND);
+      return path;
+    } catch (IOException ioe) {
+      throw new DapException(ioe);
+    }
+  }
+
+  /**
+   * Convert a URL path for a dataset into an absolute file path
+   *
+   * @param drq dap request
+   * @param location suffix of url path
+   * @return path in a string builder so caller can extend.
+   * @throws IOException
+   */
+  public String getResourcePath(DapRequest drq, String location) throws DapException {
+    try {
+      String root = getWebContentRoot(drq);
+      if (root == null)
+        throw new DapException("Cannot find WEB-INF").setCode(DapCodes.SC_NOT_FOUND);
+      StringBuilder path = new StringBuilder(DapUtil.canonicalpath(root));
+      if (location.charAt(0) != '/')
+        path.append('/');
+      path.append(location);
+      String result = path.toString();
+      File f = new File(result);
+      if (!f.exists() || !f.canRead())
+        throw new DapException("Cannot find Resource path: " + result).setCode(DapCodes.SC_NOT_FOUND);
+      return result;
+    } catch (IOException ioe) {
+      throw new DapException(ioe).setCode(DapCodes.SC_NOT_FOUND);
+    }
   }
 
 }
