@@ -102,7 +102,7 @@ public class CatalogViewContextParser {
     model.put("logoAlt", serverInfo.getLogoAltText());
 
     model.put("installName", htmlConfig.getInstallName());
-    model.put("installUrl",  htmlConfig.prepareUrlStringForHtml(htmlConfig.getInstallUrl()));
+    model.put("installUrl", htmlConfig.prepareUrlStringForHtml(htmlConfig.getInstallUrl()));
 
     model.put("webappName", htmlConfig.getWebappName());
     model.put("webappUrl", htmlConfig.getWebappUrl());
