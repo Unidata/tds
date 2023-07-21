@@ -361,8 +361,22 @@ A Notebook configured for all gridded datasets and a dataset called `almostGridd
     "viewer_info": {
         "description": "This Notebook displays gridded data.",
         "accepts": {
-          "accept_datasetIDs": ["almostGridded],
+          "accept_datasetIDs": ["almostGridded"],
           "accept_dataset_types": ["Grid"]
+        }
+    }
+  }
+~~~
+
+The `accept_datasetIDs` can also include regular expressions. This can be useful, for instance, when configuring a
+notebook for all datasets in a `datasetScan`:
+~~~
+  "metadata": {
+  ...
+    "viewer_info": {
+        "description": "Notebook that displays all datasets in a dataset scan.",
+        "accepts": {
+          "accept_datasetIDs": ["myDatasetScanID/.*"],
         }
     }
   }
