@@ -113,13 +113,13 @@ public class NotebookMetadata {
 
   private class AcceptedDatasetTypes {
 
-    private boolean accept_all;
+    private final boolean accept_all;
 
-    private Set<String> accept_datasetIDs;
+    private final Set<String> accept_datasetIDs;
 
-    private Set<String> accept_catalogs;
+    private final Set<String> accept_catalogs;
 
-    private Set<String> accept_dataset_types;
+    private final Set<String> accept_dataset_types;
 
     public AcceptedDatasetTypes(JSONObject nb) {
       JSONObject jobj = tryGetJSONObjectFromJSON(NotebookMetadataKeys.acceptObject.key, nb);
