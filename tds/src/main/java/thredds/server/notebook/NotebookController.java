@@ -112,6 +112,11 @@ public class NotebookController {
     String catalogName = params.catalog;
     Dataset dataset = getDataset(catalogName, req);
 
+    if (dataset == null) {
+      throw new FileNotFoundException("Dataset with ID '" + new TdsRequestedDataset(req, getBase()).getPath()
+          + "' not found in catalog '" + catalogName + "'.");
+    }
+
     JSONArray notebooks = getNotebookParams(dataset);
 
     // Set content...
