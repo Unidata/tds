@@ -5,8 +5,10 @@ import static com.google.common.truth.Truth.assertThat;
 import java.nio.charset.StandardCharsets;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
+import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 public class TestNotebookServices {
   private static final String defaultViewer =
@@ -50,6 +52,7 @@ public class TestNotebookServices {
   }
 
   @Test
+  @Category(NeedsCdmUnitTest.class)
   public void shouldMatchFeatureCollectionDatasetByDatasetIdRegExp() {
     final String gribPath = "gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1";
     final String gribCatalog = "?catalog=" + gribPath + "/catalog.xml";
@@ -59,6 +62,7 @@ public class TestNotebookServices {
   }
 
   @Test
+  @Category(NeedsCdmUnitTest.class)
   public void shouldMatchFeatureCollectionBestByDatasetIdRegExp() {
     final String gribPath = "gribCollection/GFS_CONUS_80km/";
     final String gribCatalog = "?catalog=" + gribPath + "catalog.xml";
