@@ -243,6 +243,19 @@
 
     </datasetScan>
 
+    <datasetScan name="StandardizeDatasetScan" ID="StandardizeDatasetScan" path="StandardizeDatasetScan" location="content/testdata/">
+      <serviceName>all</serviceName>
+      <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="all">
+        <variable name="standardizedVar" orgName="var">
+          <attribute name="long_name" value="new var"/>
+          <attribute name="standardize"/>
+        </variable>
+      </ncml:netcdf>
+      <filter>
+        <include wildcard="testgrid1.nc" collection="false"/>
+      </filter>
+    </datasetScan>
+
     <dataset name="Test datasetRoot in urlPath and location" ID="ncmlLocation" urlPath="localContent/ncmlLocation">
       <serviceName>all</serviceName>
       <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
