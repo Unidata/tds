@@ -243,12 +243,12 @@
 
     </datasetScan>
 
-    <datasetScan name="StandardizeDatasetScan" ID="StandardizeDatasetScan" path="StandardizeDatasetScan" location="content/testdata/">
+    <datasetScan name="EnhancedDatasetScan" ID="EnhancedDatasetScan" path="EnhancedDatasetScan" location="content/testdata/">
       <serviceName>all</serviceName>
       <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="all">
-        <variable name="standardizedVar" orgName="var">
+        <variable name="enhancedVar" orgName="var">
           <attribute name="long_name" value="new var"/>
-          <attribute name="standardize"/>
+          <attribute name="valid_min" value="1" type="double"/>
         </variable>
       </ncml:netcdf>
       <filter>
