@@ -49,6 +49,18 @@
 
   <dataset name="Test Single Dataset" ID="testDataset" serviceName="odap" urlPath="localContent/testData.nc" dataType="Grid"/>
   <dataset name="Test Grid as Point" ID="testGAP" serviceName="all" urlPath="localContent/testGridAsPoint.nc" dataType="Grid"/>
+  <dataset name="Test Enhancements">
+    <dataset name="With Attribute" ID="withAttribute" serviceName="all" urlPath="localContent/testOffset.nc" dataType="Grid"/>
+    <dataset name="With NcML" ID="withNcMl" serviceName="all" urlPath="testOffsetWithNcml.nc">
+      <serviceName>all</serviceName>
+      <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="all"
+      location="content/testdata/testOffset.nc">
+        <variable name="variableWithoutOffset">
+          <attribute name="add_offset" value="-100"/>
+        </variable>
+      </ncml:netcdf>
+    </dataset>
+  </dataset>
 
   <dataset name="Test Dap4 Dataset" ID="testDap4Dataset" serviceName="dap4"
            urlPath="cdmUnitTest/ft/coverage/03061219_ruc.nc" dataType="Grid"/>
