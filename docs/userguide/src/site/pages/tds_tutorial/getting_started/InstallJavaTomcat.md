@@ -15,7 +15,7 @@ Users of OS-provided packages via package management systems for Java and/or Tom
 ## System Requirements
 
 * OpenJDK Java 11
-* Apache Tomcat 8.x (minimum) 
+* Apache Tomcat 8.x or 9.x
 
 While there are different distributors of Java and servlet containers, Unidata develops, uses and tests the THREDDS Data Server using _OpenJDK Java_ and the _Apache Tomcat_ servlet container.
 

@@ -32,8 +32,8 @@ public class TdsExtensibleTemplateResolver extends SpringResourceTemplateResolve
 
   @Override
   protected String computeResourceName(final IEngineConfiguration configuration, final String ownerTemplate,
-      final String template, final String prefix, final String suffix, final Map<String, String> templateAliases,
-      final Map<String, Object> templateResolutionAttributes) {
+      final String template, final String prefix, final String suffix, boolean forceSuffix,
+      final Map<String, String> templateAliases, final Map<String, Object> templateResolutionAttributes) {
 
     Validate.notNull(template, "Template name cannot be null");
 

@@ -47,7 +47,7 @@ opendap/src/test/data/test.*.*
 tds/src/test/content/thredds/logs
 tds/src/test/content/thredds/cache
 tds/src/test/content/thredds/state
-tds/src/test/content/thredds/notebooks/
+tds/src/test/content/thredds/notebooks/default_viewer.ipynb
 tds/src/test/content/thredds/templates/
 tds/src/test/content/README.txt
 tds/src/test/content/thredds/README.txt

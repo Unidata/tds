@@ -1,5 +1,7 @@
 package thredds.server.notebook;
 
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.json.*;
 import thredds.client.catalog.Catalog;
 import thredds.client.catalog.Dataset;
@@ -111,21 +113,25 @@ public class NotebookMetadata {
     }
   }
 
+  private static Set<Pattern> compilePatterns(Set<String> set) {
+    return set.stream().map(Pattern::compile).collect(Collectors.toSet());
+  }
+
   private class AcceptedDatasetTypes {
 
-    private boolean accept_all;
+    private final boolean accept_all;
 
-    private Set<String> accept_datasetIDs;
+    private final Set<Pattern> accept_datasetIDs;
 
-    private Set<String> accept_catalogs;
+    private final Set<String> accept_catalogs;
 
-    private Set<String> accept_dataset_types;
+    private final Set<String> accept_dataset_types;
 
     public AcceptedDatasetTypes(JSONObject nb) {
       JSONObject jobj = tryGetJSONObjectFromJSON(NotebookMetadataKeys.acceptObject.key, nb);
 
       this.accept_all = jobj.isEmpty() ? true : tryGetBoolFromJSON(NotebookMetadataKeys.acceptAll.key, jobj);
-      this.accept_datasetIDs = tryGetSetFromJSON(NotebookMetadataKeys.acceptDatasetIDs.key, jobj);
+      this.accept_datasetIDs = compilePatterns(tryGetSetFromJSON(NotebookMetadataKeys.acceptDatasetIDs.key, jobj));
       this.accept_catalogs = tryGetSetFromJSON(NotebookMetadataKeys.acceptCatalogs.key, jobj);
       this.accept_dataset_types = tryGetSetFromJSON(NotebookMetadataKeys.acceptDatasetTypes.key, jobj);
     }
@@ -134,7 +140,7 @@ public class NotebookMetadata {
       if (this.accept_all) {
         return true;
       }
-      if (this.accept_datasetIDs.contains(ds.getID())) {
+      if (ds.getID() != null && accept_datasetIDs.stream().anyMatch(p -> p.matcher(ds.getID()).matches())) {
         return true;
       }
       if (this.accept_dataset_types.contains(ds.getFeatureTypeName())) {

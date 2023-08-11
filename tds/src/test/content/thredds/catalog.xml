@@ -243,6 +243,19 @@
 
     </datasetScan>
 
+    <datasetScan name="EnhancedDatasetScan" ID="EnhancedDatasetScan" path="EnhancedDatasetScan" location="content/testdata/">
+      <serviceName>all</serviceName>
+      <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="all">
+        <variable name="enhancedVar" orgName="var">
+          <attribute name="long_name" value="new var"/>
+          <attribute name="valid_min" value="1" type="double"/>
+        </variable>
+      </ncml:netcdf>
+      <filter>
+        <include wildcard="testgrid1.nc" collection="false"/>
+      </filter>
+    </datasetScan>
+
     <dataset name="Test datasetRoot in urlPath and location" ID="ncmlLocation" urlPath="localContent/ncmlLocation">
       <serviceName>all</serviceName>
       <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"

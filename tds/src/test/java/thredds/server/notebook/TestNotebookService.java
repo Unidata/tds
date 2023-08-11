@@ -55,4 +55,23 @@ public class TestNotebookService {
     Dataset noMatch = new Dataset(otherParent, "Not a match", fldsNoMatch, null, null);
     assertThat(nbData.isValidForDataset(noMatch)).isFalse();
   }
+
+  @Test
+  public void testMatchByDatasetIdWithRegExp()
+      throws NotebookMetadata.InvalidJupyterNotebookException, FileNotFoundException {
+    final String test_file = "src/test/data/testNotebookMetadata.json";
+    NotebookMetadata nbData = new NotebookMetadata(new File(test_file));
+
+    // dataset that matches by ID
+    Map<String, Object> fldsWithId = new HashMap<>();
+    fldsWithId.put(Dataset.Id, "matchByIdRegExp/foo");
+    Dataset matchById = new Dataset(null, "match by Id with reg exp", fldsWithId, null, null);
+    assertThat(nbData.isValidForDataset(matchById)).isTrue();
+
+    // dataset that does not match
+    Map<String, Object> fldsWithNotMatchingId = new HashMap<>();
+    fldsWithNotMatchingId.put(Dataset.Id, "notMatching/matchByIdRegExp/foo");
+    Dataset notAMatch = new Dataset(null, "not a match", fldsWithNotMatchingId, null, null);
+    assertThat(nbData.isValidForDataset(notAMatch)).isFalse();
+  }
 }
