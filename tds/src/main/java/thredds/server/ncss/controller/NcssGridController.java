@@ -104,8 +104,7 @@ public class NcssGridController extends AbstractNcssController {
 
   private void handleRequestGrid(HttpServletResponse res, NcssGridParamsBean params, String datasetPath,
       CoverageCollection gcd) throws IOException, NcssException, InvalidRangeException {
-    // Supported formats are netcdf3 (default) and netcdf4ext (not currently turned on in TdsInit), netcdf4 (turned
-    // on in TdsInit if C library is present)
+    // Supported formats are netcdf3 (default) and netcdf4ext/ netcdf4 (turned on in TdsInit if C library is present)
     SupportedFormat sf = SupportedOperation.GRID_REQUEST.getSupportedFormat(params.getAccept());
     NetcdfFileFormat version = getNetcdfFileFormat(sf);
 
