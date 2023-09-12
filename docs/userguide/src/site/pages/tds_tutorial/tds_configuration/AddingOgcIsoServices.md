@@ -133,7 +133,7 @@ For instance, adding to the same compound service as above:
 
 ### Adding `Grid` DataType To Datasets
 
-Once datasets are accessible over the `WMS` and `WCS` services, a quick look at the dataset pages shows several `Viewer` links available for each dataset should include `Godiva3`.
+Once datasets are accessible over the `WMS` and `WCS` services, a quick look at the dataset pages shows several `Viewer` links available for each dataset, including `Godiva3`.
 This is not whether the dataset is recognized by the `CDM` as gridded but rather if the metadata in the catalog indicates that the dataset is a `Grid`.
 This is accomplished with the `dataType` metadata element:
 
