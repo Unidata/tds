@@ -129,12 +129,11 @@ For instance, adding to the same compound service as above:
    3. Select the `WCS` Access link
    4. Go back, select the `WMS` Access link
 
-5. Check Dataset Viewer Links for Godiva2 (ToolsUI and Godiva2 are there but IDV is not).
+5. Check Dataset Viewer Links for Godiva3.
 
 ### Adding `Grid` DataType To Datasets
 
-Once datasets are accessible over the `WMS` and `WCS` services, a quick look at the dataset pages shows several `Viewer` links available for each dataset (`ToolsUI` and `Godiva2`).
-The IDV `Viewer` link is only added for datasets with a `Grid` data type.
+Once datasets are accessible over the `WMS` and `WCS` services, a quick look at the dataset pages shows several `Viewer` links available for each dataset should include `Godiva3`.
 This is not whether the dataset is recognized by the `CDM` as gridded but rather if the metadata in the catalog indicates that the dataset is a `Grid`.
 This is accomplished with the `dataType` metadata element:
 
@@ -153,7 +152,7 @@ This is accomplished with the `dataType` metadata element:
    $ ./startup.sh
    ~~~
 
-3. Check the dataset pages for the IDV Viewer link.
+3. Check the dataset pages for the Godiva3 Viewer link.
 
 ### More `WMS` Configuration
 
@@ -174,7 +173,7 @@ For long time-series, this list can cause the `GetCapabilities` document to be q
 
 ### Example: Modifying The `wmsConfig.xml` File
 
-1. Open a dataset in Godiva2 and plot a parameter.
+1. Open a dataset in Godiva3 and plot a parameter.
 2. Notice the default color scale range is `[-50,50]`.
    Decide on a better color scale range.
 3. Open the "`WMS` Detailed Configuration" page in your browser.
@@ -186,7 +185,7 @@ For long time-series, this list can cause the `GetCapabilities` document to be q
    ~~~
 
    and change the color scale range for the target parameter in the chosen dataset.
-5. Reopen Godiva2 on the dataset and plot the target parameter.
+5. Reopen Godiva3 on the dataset and plot the target parameter.
    Check the new default color scale range.
 
 ### Styling Features And Non-Standard Requests
@@ -222,13 +221,13 @@ For long time-series, this list can cause the `GetCapabilities` document to be q
 * [IDL](https://www.harrisgeospatial.com/Software-Technology/IDL){:target="_blank"} (WMS) [commercial]
 * [gvSIG](http://www.gvsig.org/web/){:target="_blank"} (WMS and WCS) [free]
 
-#### Godiva2 `WMS` Client
+#### Godiva3 `WMS` Client
 
-The Godiva2 `WMS` client is part of the `ncWMS` code base and as such is included in the TDS distribution.
+The Godiva3 `WMS` client is part of the `ncWMS` code base and as such is included in the TDS distribution.
 It is a web application written in JavaScript using the OpenLayers library.
 
-In the TDS, you can access the Godiva2 client from the `Viewers` section of all `WMS` accessible datasets.
-The Godiva2 User Guide is available from the ncWMS site.
+In the TDS, you can access the Godiva3 client from the `Viewers` section of all `WMS` accessible datasets.
+The Godiva3 User Guide is available from the ncWMS site.
 
 {% include image.html file="tds/tutorial/tds_configuration/Godiva2_screenshot.png" alt="Godiva2" caption="" %}
 
