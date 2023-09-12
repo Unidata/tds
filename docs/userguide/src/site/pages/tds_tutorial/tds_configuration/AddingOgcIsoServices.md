@@ -230,9 +230,3 @@ In the TDS, you can access the Godiva3 client from the `Viewers` section of all 
 The Godiva3 User Guide is available from the ncWMS site.
 
 {% include image.html file="tds/tutorial/tds_configuration/Godiva2_screenshot.png" alt="Godiva2" caption="" %}
-
-<!-- 
-### OWSLib (python client) example:
-
-[tds-python-workshop `WMS` notebook](http://nbviewer.jupyter.org/github/Unidata/unidata-python-workshop/blob/master/notebooks/wms_sample.ipynb){:target="_blank"}
--->
