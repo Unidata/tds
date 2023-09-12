@@ -32,6 +32,7 @@ import thredds.mock.web.MockTdsContextLoader;
 import thredds.server.ncss.controller.AbstractNcssController;
 import thredds.server.ncss.dataservice.DatasetHandlerAdapter;
 import thredds.server.ncss.format.SupportedFormat;
+import thredds.util.TestUtils;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -129,7 +130,7 @@ public class SpatialSubsettingTest {
 
   @Test
   public void shouldGetVariablesSubset() throws Exception {
-    skipTestIfNetCDF4NotPresent();
+    TestUtils.skipTestIfNetCDF4NotPresent(format);
 
     // gridDataController.getGridSubset(params, validationResult, response);
 
@@ -159,11 +160,5 @@ public class SpatialSubsettingTest {
       f.format(" %s=%s%n", name, req.getParameter(name));
     }
     System.out.printf("%s%n%s%n", req.getRequestURI(), f);
-  }
-
-  private void skipTestIfNetCDF4NotPresent() {
-    if (format == SupportedFormat.NETCDF4) {
-      assumeTrue(NetcdfClibrary.isLibraryPresent());
-    }
   }
 }
