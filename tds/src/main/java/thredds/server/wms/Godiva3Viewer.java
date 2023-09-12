@@ -28,8 +28,10 @@
 
 package thredds.server.wms;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +41,7 @@ import thredds.client.catalog.ServiceType;
 import thredds.server.config.ThreddsConfig;
 import thredds.server.viewer.Viewer;
 import thredds.server.viewer.ViewerLinkProvider;
+import thredds.util.StringValidateEncodeUtils;
 
 /**
  * A Viewer for viewing datasets using the built-in Godiva3 client. The viewer
@@ -89,7 +92,15 @@ public class Godiva3Viewer implements Viewer {
       logger.warn("Godiva3Viewer URL=" + req.getRequestURL().toString(), e);
       return null;
     }
-    String url = req.getContextPath() + "/Godiva.html?server=" + dataURI.toString();
+    String url;
+    try {
+      url = req.getContextPath() + "/Godiva.html?server="
+          + URLEncoder.encode(dataURI.toString(), StringValidateEncodeUtils.CHARACTER_ENCODING_UTF_8);
+    } catch (UnsupportedEncodingException e) {
+      logger.warn("Godiva3Viewer URL=" + req.getRequestURL().toString(), e);
+      return null;
+
+    }
     return new ViewerLinkProvider.ViewerLink(Godiva3Viewer.title, url, "",
         ViewerLinkProvider.ViewerLink.ViewerType.Browser);
   }
