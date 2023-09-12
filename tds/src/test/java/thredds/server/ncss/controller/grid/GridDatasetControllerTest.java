@@ -30,6 +30,7 @@ import org.springframework.web.context.WebApplicationContext;
 import thredds.mock.web.MockTdsContextLoader;
 import thredds.server.ncss.format.SupportedFormat;
 import thredds.util.Constants;
+import thredds.util.TestUtils;
 import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.nc2.util.cache.FileCacheIF;
 import ucar.unidata.io.RandomAccessFile;
@@ -78,7 +79,7 @@ public class GridDatasetControllerTest {
   @Test
   @Category(NeedsCdmUnitTest.class)
   public void getGridSubsetOnGridDatasetNc4() throws Exception {
-    skipTestIfNetCDF4NotPresent();
+    TestUtils.skipTestIfNetCDF4NotPresent();
 
     RequestBuilder rb = MockMvcRequestBuilders.get("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
         .servletPath("/ncss/grid/testGFSfmrc/GFS_CONUS_80km_nc_best.ncd")
@@ -162,9 +163,5 @@ public class GridDatasetControllerTest {
       String value = (String) item;
       return value.endsWith(suffix);
     }
-  }
-
-  private static void skipTestIfNetCDF4NotPresent() {
-    assumeTrue(NetcdfClibrary.isLibraryPresent());
   }
 }

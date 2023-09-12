@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import thredds.test.util.TestOnLocalServer;
 import thredds.util.Constants;
 import thredds.util.ContentType;
+import thredds.util.TestUtils;
 import ucar.httpservices.HTTPException;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
@@ -47,32 +48,6 @@ public class NcssGridIntegrationTest {
       logger.debug("{}", nf);
     }
   }
-
-  private void openBinaryOld(byte[] content, String gridName) throws IOException {
-    try (NetcdfFile nf = NetcdfFile.openInMemory("test_data.nc", content)) {
-      GridDataset gdsDataset = new GridDataset(new NetcdfDataset(nf));
-      assertThat(gdsDataset.findGridByName(gridName)).isNotNull();
-      logger.debug("{}", nf);
-    }
-  }
-
-  /*
-   * @HttpTest(method = Method.GET, path =
-   * "ncss/grid/gribCollection/GFS_CONUS_80km/GFS_CONUS_80km_20120227_0000.grib1/GC?var=Temperature_isobaric&latitude=40&longitude=-102&vertCoord=225")
-   * public void checkGridAsPointXml() throws JDOMException, IOException {
-   * assertOk(response);
-   * String xml = response.getBody(String.class);
-   * logger.debug("xml={}", xml);
-   * Reader in = new StringReader(xml);
-   * SAXBuilder sb = new SAXBuilder();
-   * Document doc = sb.build(in);
-   * 
-   * XPathExpression<Element> xpath = XPathFactory.instance().compile("/grid/point/data[@name='Temperature_isobaric']",
-   * Filters.element());
-   * List<Element> elements = xpath.evaluate(doc);
-   * assertEquals(1, elements.size());
-   * }
-   */
 
   @Test
   public void checkGridForDifferentFormats() throws Exception {
@@ -152,7 +127,7 @@ public class NcssGridIntegrationTest {
   // this fails when _ChunkSizes are left on
   @Test
   public void testNcssFailure() throws Exception {
-    skipTestIfNetCDF4NotPresent();
+    TestUtils.skipTestIfNetCDF4NotPresent();
 
     String filename =
         "scanCdmUnitTests/formats/netcdf4/COMPRESS_LEV2_20140201000000-GLOBCURRENT-L4-CURekm_15m-ERAWS_EEM-v02.0-fv01.0.nc";
@@ -168,7 +143,7 @@ public class NcssGridIntegrationTest {
 
   @Test
   public void shouldReturnCorrectFileTypeForAcceptParameter() throws HTTPException {
-    skipTestIfNetCDF4NotPresent();
+    TestUtils.skipTestIfNetCDF4NotPresent();
 
     checkFileType("netcdf3", HttpServletResponse.SC_OK, ".nc");
     checkFileType("netcdf", HttpServletResponse.SC_OK, ".nc");
@@ -196,9 +171,5 @@ public class NcssGridIntegrationTest {
             .isEqualTo("attachment; filename=GFS_CONUS_80km_20120227_0000.grib1" + expectedSuffix);
       }
     }
-  }
-
-  private static void skipTestIfNetCDF4NotPresent() {
-    assumeTrue(NetcdfClibrary.isLibraryPresent());
   }
 }
