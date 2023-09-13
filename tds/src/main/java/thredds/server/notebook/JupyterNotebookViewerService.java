@@ -1,13 +1,18 @@
 package thredds.server.notebook;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import thredds.server.exception.MethodNotImplementedException;
 import thredds.client.catalog.Dataset;
 import thredds.core.StandardService;
 import thredds.server.viewer.Viewer;
 import thredds.server.viewer.ViewerLinkProvider;
 import thredds.server.viewer.ViewerService;
+import thredds.util.StringValidateEncodeUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
@@ -67,6 +72,7 @@ public class JupyterNotebookViewerService implements ViewerService {
   }
 
   public static class JupyterNotebookViewer implements Viewer {
+    static private final Logger logger = LoggerFactory.getLogger(JupyterNotebookViewer.class);
 
     private static final ViewerLinkProvider.ViewerLink.ViewerType type =
         ViewerLinkProvider.ViewerLink.ViewerType.JupyterNotebook;
@@ -100,8 +106,17 @@ public class JupyterNotebookViewerService implements ViewerService {
       catUrl =
           catUrl.substring(catUrl.indexOf(catalogServiceBase) + catalogServiceBase.length()).replace("html", "xml");
 
-      String url = req.getContextPath() + StandardService.jupyterNotebook.getBase() + ds.getID() + "?catalog=" + catUrl
-          + "&filename=" + notebook.getFilename();
+      String requestQuery;
+      try {
+        requestQuery = "?" + "catalog=" + URLEncoder.encode(catUrl, StringValidateEncodeUtils.CHARACTER_ENCODING_UTF_8)
+            + "&filename="
+            + URLEncoder.encode(notebook.getFilename(), StringValidateEncodeUtils.CHARACTER_ENCODING_UTF_8);
+      } catch (UnsupportedEncodingException e) {
+        logger.warn("JupyterNotebookViewer URL=" + req.getRequestURL().toString(), e);
+        return null;
+      }
+      String url = req.getContextPath() + StandardService.jupyterNotebook.getBase() + ds.getID() + requestQuery;
+
       return new ViewerLinkProvider.ViewerLink(notebook.getFilename(), url, notebook.getDescription(), type);
     }
   }
