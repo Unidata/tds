@@ -84,35 +84,34 @@ public class TestNotebookService {
     assertThat(nbData.isValidForDataset(notAMatch)).isFalse();
   }
 
-
-  private static final String DIR = "src/test/content/thredds/public/testdata/";
-
   @Rule
-  public TemporaryFolder temporaryFolder = new TemporaryFolder(new File(DIR));
+  public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
   @Test
   public void testNotebookUrlEncode()
       throws URISyntaxException, NotebookMetadata.InvalidJupyterNotebookException, IOException {
     String parentUri = "/parent/catalog/by/URI";
-    final String catalogUri = "/thredds/catalog/catalog.html";
-    String filename = "file+name.json";
-    File tempFile = temporaryFolder.newFile(filename);
+    String catalogName = "my+catalog.xml";
+    String catalogUri = "/thredds/catalog/" + catalogName;
+    String fileName = "file+name.json";
+
+    File tempFile = temporaryFolder.newFile(fileName);
     Files.copy(Paths.get(test_file), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-    NotebookMetadata nmd = new NotebookMetadata(tempFile);
+    NotebookMetadata metadata = new NotebookMetadata(tempFile);
 
     Map<String, Object> fldsWithId = new HashMap<>();
     fldsWithId.put(Dataset.Id, "matchById");
     Catalog parentCatalog = new Catalog(new URI(catalogUri), "Other parent name", new HashMap<>(), null);
     Dataset dataset = new Dataset(parentCatalog, "match by parent catalog", fldsWithId, null, null);
-
-    final MockHttpServletRequest request = new MockHttpServletRequest("GET", catalogUri);
+    MockHttpServletRequest request = new MockHttpServletRequest("GET", catalogUri);
 
     JupyterNotebookViewerService.JupyterNotebookViewer viewer =
-        new JupyterNotebookViewerService.JupyterNotebookViewer(nmd, parentUri);
+        new JupyterNotebookViewerService.JupyterNotebookViewer(metadata, parentUri);
     ViewerLinkProvider.ViewerLink link = viewer.getViewerLink(dataset, request);
     String decodedUrl = URLDecoder.decode(link.getUrl(), StringValidateEncodeUtils.CHARACTER_ENCODING_UTF_8);
 
-    assertThat(decodedUrl).contains("filename=" + filename);
+    assertThat(decodedUrl).contains("filename=" + fileName);
+    assertThat(decodedUrl).contains("catalog=" + catalogName);
 
   }
 }
