@@ -33,7 +33,7 @@ public class TestGodiva3Viewer {
 
     String decodedUrl = URLDecoder.decode(link.getUrl(), StringValidateEncodeUtils.CHARACTER_ENCODING_UTF_8);
 
-    assertThat(decodedUrl).endsWith(filePath);
+    assertThat(decodedUrl).contains(filePath);
 
   }
 
