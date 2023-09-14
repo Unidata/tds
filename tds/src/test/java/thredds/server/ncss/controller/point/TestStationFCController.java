@@ -31,6 +31,7 @@ import thredds.mock.web.MockTdsContextLoader;
 import thredds.server.ncss.exception.FeaturesNotFoundException;
 import thredds.server.ncss.format.SupportedFormat;
 import thredds.util.ContentType;
+import thredds.util.TestUtils;
 import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.lang.invoke.MethodHandles;
@@ -61,7 +62,7 @@ public class TestStationFCController {
 
   @Test
   public void getClosestStationData() throws Exception {
-    skipTestIfNetCDF4NotPresent();
+    TestUtils.skipTestIfNetCDF4NotPresent();
 
     long start = System.currentTimeMillis();
     RequestBuilder rb = MockMvcRequestBuilders.get(dataset).servletPath(dataset).param("longitude", "-105.203")
@@ -166,10 +167,6 @@ public class TestStationFCController {
         .param("var", "air_temperature", "dew_point_temperature");
 
     this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isBadRequest());
-  }
-
-  private static void skipTestIfNetCDF4NotPresent() {
-    assumeTrue(NetcdfClibrary.isLibraryPresent());
   }
 }
 

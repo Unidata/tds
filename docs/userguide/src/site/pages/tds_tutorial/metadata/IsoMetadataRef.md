@@ -1,18 +1,18 @@
 ---
-title: TDS And `ncISO` - Metadata Services
+title: TDS And ncISO - Metadata Services
 last_updated: 2020-08-26
 sidebar: user_sidebar
 toc: false
 permalink: iso_metadata.html
 ---
 
-The TDS distribution includes the [ncISO](https://www.ngdc.noaa.gov/wiki/index.php/NcISO){:target="_blank"} package from NOAA/Environmental Data Management (many thanks to Dave Neufeld and Ted Habermann).
+The TDS distribution includes the [ncISO](https://github.com/Unidata/threddsIso/){:target="_blank"} package from NOAA/Environmental Data Management (many thanks to Dave Neufeld and Ted Habermann).
 
 ## `ncISO` Services
 `ncISO` supports three new services for datasets:
 * `NCML`: an NcML representation of the dataset's structure and metadata;
 * `ISO`: an ISO 19115 metadata representation of the dataset; and
-* `UDDC`: an evaluation of how well the metadata contained in the dataset conforms to the [NetCDF Attribute Convention for Data Discovery (NACDD)](https://www.unidata.ucar.edu/software/netcdf-java/v4.6/metadata/DataDiscoveryAttConvention.html){:target="_blank"} (see the [NOAA/EDM page on NACDD](http://wiki.esipfed.org/index.php/Category:Attribute_Conventions_Dataset_Discovery){:target="_blank"}). 
+* `UDDC`: an evaluation of how well the metadata contained in the dataset conforms to the NetCDF Attribute Convention for Data Discovery (NACDD) (see the [NOAA/EDM page on NACDD](http://wiki.esipfed.org/index.php/Category:Attribute_Conventions_Dataset_Discovery){:target="_blank"}).
 
 ## Enabling `ncISO` Services
 
