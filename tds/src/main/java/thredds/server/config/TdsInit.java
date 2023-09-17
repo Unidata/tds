@@ -299,7 +299,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
 
     if (Nc4Iosp.isClibraryPresent()) { // NetCDF-4 lib could be set as an environment variable or as a JVM parameter.
       FormatsAvailabilityService.setFormatAvailability(SupportedFormat.NETCDF4, true);
-      // FormatsAvailabilityService.setFormatAvailability(SupportedFormat.NETCDF4EXT, true);
+      FormatsAvailabilityService.setFormatAvailability(SupportedFormat.NETCDF4EXT, true);
     }
 
     // how to choose the typical dataset ?

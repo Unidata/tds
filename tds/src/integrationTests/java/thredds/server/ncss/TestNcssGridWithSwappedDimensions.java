@@ -33,6 +33,8 @@ public class TestNcssGridWithSwappedDimensions {
     testCases.add(new Object[] {"time_z_lon_lat", 4, 12});
     testCases.add(new Object[] {"time_lat_lon_z", 4, 12});
     testCases.add(new Object[] {"time_lon_lat_z", 4, 12});
+    testCases.add(new Object[] {"time_ensemble_lat_lon", 4, 24});
+    testCases.add(new Object[] {"ensemble_time_lat_lon", 4, 24});
 
     return testCases;
   }

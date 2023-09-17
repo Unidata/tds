@@ -176,6 +176,14 @@ public class TestGridAsPointP {
     checkGridAsPointNetcdfNew(content, varName);
   }
 
+  @Test
+  public void checkGridAsPointNetcdf4Extended() throws JDOMException, IOException {
+    String endpoint = TestOnLocalServer.withHttpPath(ds + "?var=" + varName + query + "&accept=netcdf4ext");
+    byte[] content = TestOnLocalServer.getContent(endpoint, 200, ContentType.netcdf);
+    Assert.assertNotNull(content);
+    checkGridAsPointNetcdfNew(content, varName);
+  }
+
   private void checkGridAsPointNetcdfOld(byte[] content, String varName) throws JDOMException, IOException {
     // Open the binary response in memory
     Formatter errlog = new Formatter();
