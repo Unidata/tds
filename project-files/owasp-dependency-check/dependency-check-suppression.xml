@@ -138,4 +138,12 @@
     <vulnerabilityName>CVE-2020-15250</vulnerabilityName>
     <vulnerabilityName>CVE-2021-28170</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+      file name: quartz-2.3.2.jar
+      reason: We do not use the vulnerable function (SendQueueMessageJob.execute)
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.quartz\-scheduler/quartz@.*$</packageUrl>
+    <cve>CVE-2023-39017</cve>
+  </suppress>
 </suppressions>
