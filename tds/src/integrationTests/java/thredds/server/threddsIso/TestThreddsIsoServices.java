@@ -1,4 +1,4 @@
-package thredds.server.metadata;
+package thredds.server.threddsIso;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -10,7 +10,7 @@ import org.xmlunit.diff.Diff;
 import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
 
-public class TestMetadataServices {
+public class TestThreddsIsoServices {
   @Test
   public void shouldReturnNcml() {
     final String path = "ncml/scanLocal/testgrid1.nc";
