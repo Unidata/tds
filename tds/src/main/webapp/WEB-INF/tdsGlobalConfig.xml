@@ -16,9 +16,9 @@
         <entry key="opendap" value="true"/>
         <entry key="wcs" value="true"/>
         <entry key="wms" value="true"/>
-        <entry key="iso" value="true"/>
-        <entry key="iso_ncml" value="true"/>
-        <entry key="uddc" value="true"/>
+        <entry key="iso" value="false"/>
+        <entry key="iso_ncml" value="false"/>
+        <entry key="uddc" value="false"/>
         <entry key="jupyterNotebook" value="true"/>
       </map>
     </property>
