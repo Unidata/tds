@@ -85,7 +85,7 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-    return new ResponseEntity<>("FileNotFound: " + htmlEscape(ex.getMessage()), responseHeaders, HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>("FileNotFound: No such file or directory", responseHeaders, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(IOException.class)
