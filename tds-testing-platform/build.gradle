@@ -28,10 +28,6 @@ dependencies {
     // defined in tds-platform as well, but using runtime config
     api 'org.apache.logging.log4j:log4j-web' // api because of :dap4:d4tests)
 
-    // threddsIso
-    api 'EDS:tds-plugin:2.4.0-SNAPSHOT' // api because of :it
-    api 'net.sf.saxon:Saxon-HE:9.7.0-8' // api because of :it
-
     // tds
     api "jaxen:jaxen:${depVersion.jaxen}"  // api because of XPath operations in mock tests
 

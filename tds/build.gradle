@@ -66,6 +66,8 @@ dependencies {
 
   // Needed for XPath operations in mock tests
   testCompile 'jaxen:jaxen'
+  // Needed for XPaths in WmsDetailedConfig
+  runtime 'jaxen:jaxen'
 
   // edal ncwms related libs
   compile('uk.ac.rdg.resc:edal-common')
@@ -73,11 +75,6 @@ dependencies {
   compile ('uk.ac.rdg.resc:edal-graphics')
   compile ('uk.ac.rdg.resc:edal-wms')
   compile('uk.ac.rdg.resc:edal-godiva')
-
-  // threddsIso related libs
-  runtime 'EDS:tds-plugin'
-  runtime 'net.sf.saxon:Saxon-HE'
-  runtime 'jaxen:jaxen'
 
   // json writing
   'org.json:json'
