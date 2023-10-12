@@ -299,15 +299,16 @@ Here is the description of the various options:
   Optional; default is that there is no size limitation.
   If the file is > 2 GB, large format netCDF will be written.
 
-### ncISO Service
+### ncISO Services
 
-By default, these services are enabled, and can be disabled by including the following in the `threddsConfig.xml` file:
+By default, these services are disabled.
+Provided that you have added the [ncISO plugin](adding_ogc_iso_services.html#nciso-configuration), these services can be enabled by including the following in the `threddsConfig.xml` file:
 
 ~~~xml
 <NCISO>
-  <ncmlAllow>false</ncmlAllow>
-  <uddcAllow>false</uddcAllow>
-  <isoAllow>false</isoAllow>
+  <ncmlAllow>true</ncmlAllow>
+  <uddcAllow>true</uddcAllow>
+  <isoAllow>true</isoAllow>
 </NCISO>
 ~~~
 
