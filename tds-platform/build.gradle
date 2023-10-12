@@ -88,6 +88,7 @@ dependencies {
     api "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
     api 'jakarta.el:jakarta.el-api'
     runtime 'org.glassfish:javax.el:3.0.0'
+    runtime "jaxen:jaxen:${depVersion.jaxen}"
 
     // waterml stuff
     api 'org.apache.xmlbeans:xmlbeans'
@@ -105,11 +106,6 @@ dependencies {
     // gwt version defined in gradle/any/shared-mvn-coords.gradle, accessible via gradle/any/dependencies.gradle
     api "com.google.gwt:gwt-dev:${depVersion.gwt}"
     api "com.google.gwt:gwt-user:${depVersion.gwt}"
-
-    // threddsIso
-    runtime 'EDS:tds-plugin:2.4.6-SNAPSHOT'
-    runtime 'net.sf.saxon:Saxon-HE:9.7.0-8'
-    runtime "jaxen:jaxen:${depVersion.jaxen}"
   }
 }
 
