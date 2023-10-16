@@ -80,7 +80,7 @@ dependencies {
     runtime 'org.apache.logging.log4j:log4j-web'
 
     // tds
-    api 'org.json:json:20230227'
+    api 'org.json:json:20231013'
     api 'com.coverity.security:coverity-escapers:1.1.1'
     api 'org.thymeleaf:thymeleaf-spring5:3.1.2.RELEASE'
     api 'jakarta.validation:jakarta.validation-api'
