@@ -22,8 +22,6 @@ dependencies {
     exclude group: 'org.apache.logging.log4j'
     exclude group: 'org.apache.taglibs', module: 'taglibs-standard-spec'
     exclude group: 'org.apache.taglibs', module: 'taglibs-standard-impl'
-    exclude group: 'EDS', module: 'tds-plugin'
-    exclude group: 'net.sf.saxon', module: 'Saxon-HE'
   }
 
   testCompile 'javax.servlet:javax.servlet-api'
