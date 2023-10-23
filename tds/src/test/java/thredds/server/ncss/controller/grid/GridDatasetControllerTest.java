@@ -5,6 +5,7 @@
 package thredds.server.ncss.controller.grid;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assume.assumeTrue;
 
 import java.io.FileNotFoundException;
@@ -142,10 +143,11 @@ public class GridDatasetControllerTest {
 
     final FileCacheIF rafCache = RandomAccessFile.getGlobalFileCache();
     rafCache.clearCache(true);
-    assertThat(rafCache.showCache()).isEmpty();
+    assertWithMessage(rafCache.showCache().toString()).that(rafCache.showCache()).isEmpty();
     mockMvc.perform(rb);
-    assertThat(rafCache.showCache().size()).isEqualTo(1);
-    assertThat(rafCache.showCache().get(0)).startsWith("false"); // file should not be locked
+    assertWithMessage(rafCache.showCache().toString()).that(rafCache.showCache().size()).isEqualTo(1);
+    // file should not be locked
+    assertWithMessage(rafCache.showCache().toString()).that(rafCache.showCache().get(0)).startsWith("false");
   }
 
   private class FilenameMatcher extends BaseMatcher<String> {
