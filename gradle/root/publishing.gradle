@@ -113,7 +113,7 @@ def publishDownloadsTask = tasks.register('publishDownloads', PublishToRawRepoTa
 
 publish.dependsOn publishDownloadsTask
 
-def publishReleaseInfoAndLatestTask = tasks.register('publishReleaseInfoAndLAtest', PublishToRawRepoTask) {
+def publishReleaseInfoAndLatestTask = tasks.register('publishReleaseInfoAndLatest', PublishToRawRepoTask) {
     group = 'publishing'
     description = 'Publish release_info.json and startup/latest.xml to Nexus downloads.'
     host = 'https://artifacts.unidata.ucar.edu/'
