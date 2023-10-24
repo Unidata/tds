@@ -29,6 +29,18 @@
             "SHA256": "tdm-5.5-SNAPSHOT.jar.sha256"
           },
           "info": "THREDDS Data Manager (TDM) for the latest snapshot release (version 5.5 SNAPSHOT) "
+        },
+        "thredds_iso_jar": {
+          "baseURL": "https://artifacts.unidata.ucar.edu/repository/downloads-tds/5.5/",
+          "type": "library",
+          "package": "tds-plugin-2.4.6-SNAPSHOT-jar-with-dependencies.jar",
+          "name": "THREDDS ISO Plugin (Jar file)",
+          "hash": {
+            "MD5": "tds-plugin-2.4.6-SNAPSHOT-jar-with-dependencies.jar.md5",
+            "SHA1": "tds-plugin-2.4.6-SNAPSHOT-jar-with-dependencies.jar.sha1",
+            "SHA256": "tds-plugin-2.4.6-SNAPSHOT-jar-with-dependencies.jar.sha256"
+          },
+          "info": "THREDDS Data Manager (TDM) for the latest snapshot release (version 5.5 SNAPSHOT) "
         }
       }
     }, {
