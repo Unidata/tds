@@ -6,11 +6,12 @@ toc: false
 permalink: adding_ogc_iso_services.html
 ---
 
-## Configure TDS To Allow WCS, WMS, and `ncISO` Access
+## Configure TDS To Allow WCS, WMS, and ncISO Access
 
-Out of the box, the TDS distribution will have `WCS`, `WMS`, and `ncISO` enabled.
+Out of the box, the TDS distribution will have `WCS` and `WMS` enabled.
 If you do not wish to use these services, they must be explicitly allowed in the `threddsConfig.xml` file.
-Please see the  [threddsConfig.xml file](tds_config_ref.html#wcs-service) documentation for information on how to disable these services.
+The ncISO services are disabled by default but can be enabled by adding the plugin and updating the `threddsConfig.xml` file.
+Please see the [threddsConfig.xml file](tds_config_ref.html#wcs-service) documentation for information on how to enable/disable these services.
 The default `threddsConfig.xml` file (which should now be in your `${tds.content.root.path}/content/thredds` directory) contains commented out sections for each of these services.
 
 ### `WCS` Configuration
@@ -41,19 +42,29 @@ The following section in the `threddsConfig.xml` file controls the WMS service:
 Additional `WMS` configuration options can be set in the `threddsConfig.xml` file,
 More details are available in the `WMS` section of the [threddsConfig.xml file](tds_config_ref.html#wms-service) documentation.
 
-### `ncISO` Configuration
+### ncISO Configuration
 
-The following section in the `threddsConfig.xml` file controls the `ncIso` services:
+#### Adding the plugin
+To use the ncISO services, you must add the `tds-plugin-jar-with-dependencies.jar` artifact to your TDS for TDS versions >= 5.5.
+For TDS versions prior to 5.5 this artifact was included in the TDS war file.
+To see which versions of the plugin are compatible with your TDS version see the table [here](https://github.com/Unidata/threddsIso).
+The plugin can be downloaded on the [TDS downloads page](https://downloads.unidata.ucar.edu/tds/){:target="_blank"}.
+The downloaded ncISO plugin jar file should be placed in your `${tomcat_home}/webapps/thredds/WEB-INF/lib/` directory.
+
+#### Updating `threddsConfig.xml`
+The following section in the `threddsConfig.xml` file controls the ncISO services:
 
 ~~~xml
 <NCISO>
-  <ncmlAllow>true</ncmlAllow>
-  <uddcAllow>true</uddcAllow>
-  <isoAllow>true</isoAllow>
+  <ncmlAllow>false</ncmlAllow>
+  <uddcAllow>false</uddcAllow>
+  <isoAllow>false</isoAllow>
 </NCISO>
 ~~~
 
-Each `*Allow` element allows one of the three `ncISO` services.
+Each `*Allow` element allows one of the three ncISO services.
+
+After adding the ncISO plugin and updating your `threddsConfig.xml`, the TDS should be restarted.
 
 ### Adding `WCS` And `WMS` Services
 
@@ -70,9 +81,9 @@ Adding them to an existing compound service would look something like this:
 </service>
 ~~~
 
-### Adding `ncISO` Services
+### Adding ncISO Services
 
-Similar to above, as long as the `ncISO` services are enabled, all that is required for the TDS to provide `ncISO` services on datasets is for those datasets to reference the `ncISO` service elements.
+Similar to above, as long as the ncISO services are enabled, all that is required for the TDS to provide ncISO services on datasets is for those datasets to reference the ncISO service elements.
 For instance, adding to the same compound service as above:
 
 ~~~xml

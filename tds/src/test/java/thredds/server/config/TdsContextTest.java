@@ -1,5 +1,7 @@
 package thredds.server.config;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -25,34 +27,19 @@ public class TdsContextTest {
   @Autowired
   private TdsContext tdsContext;
 
-  /*
-   * @Test
-   * public void testInit() {
-   * System.out.printf("%s%n", tdsContext);
-   * //All the initialization was done
-   * //serverInfo, htmlConfig, wmsConfig are initialized by TdsConfigMapper after ThreddConfig reads the
-   * threddsServer.xml file
-   * assertNotNull( tdsContext.getServerInfo() );
-   * assertNotNull( tdsContext.getHtmlConfig() );
-   * assertNotNull( tdsContext.getWmsConfig() );
-   * }
-   */
-
   @Test
   public void testVersionRetrieval() {
-    String stableKey = "stable";
-    String maintKey = "maintenance";
     String version = tdsContext.getVersionInfo();
-
     Map<String, String> latestVersionInfo = tdsUpdateConfig.getLatestVersionInfo(version);
 
-    // is not empty
-    assert (!latestVersionInfo.isEmpty());
-    // contains the stable key and the stable version is not empty
-    assert (latestVersionInfo.containsKey(stableKey));
-    assert (!latestVersionInfo.get(stableKey).isEmpty());
-    // contains the dev key and the dev version is not empty
-    assert (latestVersionInfo.containsKey(maintKey));
-    assert (!latestVersionInfo.get(maintKey).isEmpty());
+    assertThat(latestVersionInfo).isNotEmpty();
+
+    String releaseKey = "release";
+    assertThat(latestVersionInfo).containsKey(releaseKey);
+    assertThat(latestVersionInfo.get(releaseKey)).isNotEmpty();
+
+    String developmentKey = "development";
+    assertThat(latestVersionInfo).containsKey(developmentKey);
+    assertThat(latestVersionInfo.get(developmentKey)).isNotEmpty();
   }
 }

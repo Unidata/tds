@@ -1,0 +1,78 @@
+{
+  "package": "tds",
+  "packageName": "THREDDS Data Server",
+  "releases": [
+    {
+      "version": "5.5",
+      "status": "beta",
+      "description": "This is the current version running at thredds.ucar.edu. It contains several bug fixes compared to version 5.4.",
+      "baseURL": "https://artifacts.unidata.ucar.edu/repository/downloads-tds/5.5/",
+      "resources": {
+        "tds_war": {
+          "type" : "web application",
+          "package": "thredds-5.5-SNAPSHOT.war",
+          "name": "TDS (Web Application Archive)",
+          "hash": {
+            "MD5": "thredds-5.5-SNAPSHOT.war.md5",
+            "SHA1": "thredds-5.5-SNAPSHOT.war.sha1",
+            "SHA256": "thredds-5.5-SNAPSHOT.war.sha256"
+          },
+          "info": "THREDDS Data Server (TDS).<br><strong>IMPORTANT:</strong> Before deploying, rename to thredds##5.5-SNAPSHOT.war or thredds.war"
+        },
+        "tdm_jar": {
+          "type": "library",
+          "package": "tdm-5.5-SNAPSHOT.jar",
+          "name": "TDM (Jar file)",
+          "hash": {
+            "MD5": "tdm-5.5-SNAPSHOT.jar.md5",
+            "SHA1": "tdm-5.5-SNAPSHOT.jar.sha1",
+            "SHA256": "tdm-5.5-SNAPSHOT.jar.sha256"
+          },
+          "info": "THREDDS Data Manager (TDM) for the latest snapshot release (version 5.5 SNAPSHOT) "
+        },
+        "thredds_iso_jar": {
+          "type": "library",
+          "package": "tds-plugin-2.4.6-SNAPSHOT-jar-with-dependencies.jar",
+          "name": "THREDDS ISO Plugin (Jar file)",
+          "hash": {
+            "MD5": "tds-plugin-2.4.6-SNAPSHOT-jar-with-dependencies.jar.md5",
+            "SHA1": "tds-plugin-2.4.6-SNAPSHOT-jar-with-dependencies.jar.sha1",
+            "SHA256": "tds-plugin-2.4.6-SNAPSHOT-jar-with-dependencies.jar.sha256"
+          },
+          "info": "THREDDS ISO Plugin for the latest snapshot release (version 2.4.6 SNAPSHOT) "
+        }
+      }
+    },
+    {
+      "version": "5.4",
+      "releaseDate": "2022-07-01",
+      "status": "current",
+      "description": "",
+      "baseURL": "https://artifacts.unidata.ucar.edu/repository/downloads-tds/5.4/",
+      "resources": {
+        "tds_war": {
+          "type" : "web application",
+          "package": "thredds-5.4.war",
+          "name": "TDS (Web Application Archive)",
+          "hash": {
+            "MD5": "thredds-5.4.war.md5",
+            "SHA1": "thredds-5.4.war.sha1",
+            "SHA256": "thredds-54.war.sha256"
+          },
+          "info": "THREDDS Data Server (TDS).<br><strong>IMPORTANT:</strong> Before deploying, rename to thredds##5.4.war or thredds.war"
+        },
+        "tdm_jar": {
+          "type": "library",
+          "package": "tdm-5.4.jar",
+          "name": "TDM (Jar file)",
+          "hash": {
+            "MD5": "tdm-5.4.md5",
+            "SHA1": "tdm-5.4.jar.sha1",
+            "SHA256": "tdm-5.4.jar.sha256"
+          },
+          "info": "THREDDS Data Manager (TDM) for the current release (version 5.4) "
+        }
+      }
+    }
+  ]
+}

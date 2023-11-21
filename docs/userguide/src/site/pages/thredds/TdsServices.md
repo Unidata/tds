@@ -21,10 +21,7 @@ The TDS has a set of **Standard Data Services** that are always available (unles
 * opendap
 * wcs
 * wms
-* iso
-* ncml
-* uddc
- 
+
 ### Available Services
 
 The TDS configures the appropriate set of standard data services for each dataType/featureType.
@@ -71,20 +68,20 @@ Consult the [Configuration Catalogs](config_catalog.html) documentation and [TDS
 | Remote THREDDS Catalog Service | *Disabled* | `/thredds/remoteCatalogService` |
 
 
-## `ncISO` Metadata Services
+## ncISO Metadata Services
 
-*`ncISO` Metadata Services* facilitate the generation of [ISO 19115 metadata representation](https://en.wikipedia.org/wiki/Geospatial_metadata){:target="_blank"} from data in [NetCDF](https://www.unidata.ucar.edu/software/netcdf/). 
+The ncISO plugin adds the *ncISO Metadata Services*, which facilitate the generation of [ISO 19115 metadata representation](https://en.wikipedia.org/wiki/Geospatial_metadata){:target="_blank"} from data in [NetCDF](https://www.unidata.ucar.edu/software/netcdf/).
 
-The three `ncISO` Metadata Services are:
+  {% include note.html content="
+  Learn how to [enable the ncISO services](adding_ogc_iso_services.html#nciso-configuration).
+  " %}
+
+The three ncISO Metadata Services are:
 
 * **ISO**
 
   The ISO Metadata Service provides [ISO 19115 metadata representation](https://www.ngdc.noaa.gov/wiki/index.php/NcISO){:target="_blank"} of a dataset's structure and metadata.
-  
-   {% include note.html content="
-  Learn how to [enable NcISO](adding_ogc_iso_services.html) in the TDS Configuration file.
-  " %}
-  
+
 * **NCML**
 
     The *NCML Metadata Service* provides NCML representation of a dataset.
@@ -103,9 +100,9 @@ The three `ncISO` Metadata Services are:
 |-----------------|-------------------|-------------------------------|
 | Service Name         | Default Availability | Access Point   |
 |:----------------|:------------------|:------------------------------|
-| ISO | Enabled | `/thredds/iso/*`  |
-| NCML | Enabled | `/thredds/ncml/*`  |
-| UDDC | Enabled | `/thredds/uddc/*`  |
+| ISO | Disabled | `/thredds/iso/*`  |
+| NCML | Disabled | `/thredds/ncml/*`  |
+| UDDC | Disabled | `/thredds/uddc/*`  |
 
 #### Catalog Service Configuration:
 (These are the exact [required](services_ref.html#tds-requirements-for-thredds-catalog-service-elements) values to enable these service.)
