@@ -66,9 +66,9 @@ public class AdminLogController {
         return null;
       }
 
-      List fileList = Arrays.asList(files);
+      List<File> fileList = Arrays.asList(files);
       Collections.sort(fileList);
-      file = (File) fileList.get(fileList.size() - 1); // last one
+      file = fileList.get(fileList.size() - 1);
 
     } else if (path.equals("access/")) {
       showFiles(tdsContext.getTomcatLogDirectory(), "access", res);
