@@ -5,6 +5,7 @@ import org.junit.Test;
 import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.ma2.Array;
+import ucar.ma2.MAMath;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
@@ -37,7 +38,7 @@ public class TestEnhancements {
       assertThat(enhancedVar.findAttribute("add_offset")).isNull();
       final Array values1 = enhancedVar.read();
       final Array values2 = orgVar.read();
-     MAMath.nearlyEquals(values1, values2);
+      MAMath.nearlyEquals(values1, values2);
     }
   }
 
