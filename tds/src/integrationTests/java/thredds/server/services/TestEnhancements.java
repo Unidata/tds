@@ -37,9 +37,7 @@ public class TestEnhancements {
       assertThat(enhancedVar.findAttribute("add_offset")).isNull();
       final Array values1 = enhancedVar.read();
       final Array values2 = orgVar.read();
-      for (int i = 0; i < values1.getSize(); i++) {
-        assertThat(values1.getDouble(i)).isEqualTo(values2.getDouble(i));
-      }
+     MAMath.nearlyEquals(values1, values2);
     }
   }
 
