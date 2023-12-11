@@ -102,7 +102,7 @@ public class CEEvaluator {
   /**
    * The Clause objects which hold the parsed selection information.
    */
-  private Vector _cv;
+  private Vector<Clause> _cv;
 
   /**
    * The factory which will be used by the parser to construct the clause
@@ -120,7 +120,7 @@ public class CEEvaluator {
    */
   public CEEvaluator(ServerDDS dds) {
     _dds = dds;
-    _cv = new Vector();
+    _cv = new Vector<>();
     _Debug = Debug.isSet("CE");
     if (_Debug)
       System.out.println("CE debugging enabled.");
@@ -140,7 +140,7 @@ public class CEEvaluator {
    */
   public CEEvaluator(ServerDDS dds, ClauseFactory clauseFactory) {
     _dds = dds;
-    _cv = new Vector();
+    _cv = new Vector<>();
     _Debug = Debug.isSet("CE");
     if (_Debug)
       System.out.println("CE debugging enabled.");
