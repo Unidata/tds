@@ -104,7 +104,7 @@ public abstract class SDSequence extends DSequence implements ServerMethods, Rel
       if (_Debug)
         System.out.println("This sequence has " + getRowCount() + " rows.");
 
-      Vector rv = new Vector();
+      Vector<BaseType> rv = new Vector<>();
 
       for (int i = 0; i < elementCount(false); i++) {
         if (_Debug)
