@@ -1391,7 +1391,7 @@ public abstract class AbstractServlet extends javax.servlet.http.HttpServlet {
       int pending = 0;
       StringBuilder preqs = new StringBuilder();
       for (int i = 0; i < n; i++) {
-        ReqState rs = (ReqState) prArr.get(i);
+        ReqState rs = prArr.get(i);
         RequestDebug reqD = (RequestDebug) rs.getUserObject();
         if (!reqD.done) {
           preqs.append("<pre>-----------------------\n");
@@ -1615,7 +1615,7 @@ public abstract class AbstractServlet extends javax.servlet.http.HttpServlet {
             reqD = new RequestDebug(reqno, Thread.currentThread().toString());
             rs.setUserObject(reqD);
             if (prArr == null)
-              prArr = new ArrayList(10000);
+              prArr = new ArrayList<>(10000);
             prArr.add((int) reqno, rs);
           }
 
@@ -1782,7 +1782,7 @@ public abstract class AbstractServlet extends javax.servlet.http.HttpServlet {
   // **************************************************************************
 
   // debug
-  private ArrayList prArr = null;
+  private ArrayList<ReqState> prArr = null;
 
   private static class RequestDebug {
     long reqno;
