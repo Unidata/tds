@@ -394,8 +394,8 @@ public class ServletUtil {
   static public void showSystemProperties(PrintStream out) {
 
     Properties sysp = System.getProperties();
-    Enumeration e = sysp.propertyNames();
-    List<String> list = Collections.list(e);
+    Set<String> propertyNames = sysp.stringPropertyNames();
+    List<String> list = new ArrayList<>(propertyNames);
     Collections.sort(list);
 
     out.println("System Properties:");
