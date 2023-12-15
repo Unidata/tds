@@ -173,9 +173,8 @@
 
   <dataset name="Ncml Tests">
 
-    <!-- UNTESTED test NcML in dataset LOOK doesnt work -->
-    <dataset name="Example NcML Modified - DODS" ID="ExampleNcMLModified" urlPath="ExampleNcML/Modified.nc">
-      <serviceName>odap</serviceName>
+    <dataset name="Example NcML Modified" ID="ExampleNcMLModified" urlPath="ExampleNcML/Modified.nc">
+      <serviceName>all</serviceName>
       <dataType>Grid</dataType>
       <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="${cdmUnitTest}/tds/example1.nc" addRecords="true">
         <attribute name="name" value="value"/>
@@ -184,6 +183,9 @@
           <attribute name="long_name" value="relatively humid"/>
           <attribute name="units" value="percent (%)"/>
           <remove type="attribute" name="description"/>
+        </variable>
+        <variable name="time">
+          <attribute name="units" value="hours since 2000-01-01 00:00:00"/>
         </variable>
       </ncml:netcdf>
     </dataset>
@@ -245,6 +247,9 @@
           <attribute name="long_name" value="relatively humid"/>
           <attribute name="units" value="percent (%)"/>
           <remove type="attribute" name="description"/>
+        </variable>
+        <variable name="time">
+          <attribute name="units" value="hours since 2000-01-01 00:00:00"/>
         </variable>
       </ncml:netcdf>
 
