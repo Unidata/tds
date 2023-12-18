@@ -12,6 +12,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import thredds.core.DataRootManager.DataRootMatch;
 import thredds.featurecollection.FeatureCollectionCache;
 import thredds.featurecollection.InvDatasetFeatureCollection;
 import thredds.server.admin.DebugCommands;
@@ -174,7 +175,7 @@ public class DatasetManager implements InitializingBean {
     }
 
     // look for a match
-    DataRootManager.DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
+    DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
 
     // look for a feature collection dataset
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
@@ -200,49 +201,12 @@ public class DatasetManager implements InitializingBean {
 
     // common case - its a file
     if (match != null) {
-      org.jdom2.Element netcdfElem = null; // find ncml if it exists
-      if (match.dataRoot != null) {
-        DatasetScan dscan = match.dataRoot.getDatasetScan();
-        // if (dscan == null) dscan = match.dataRoot.getDatasetRootProxy(); // no ncml possible in getDatasetRootProxy
-        if (dscan != null)
-          netcdfElem = dscan.getNcmlElement();
-      }
-
       String location = dataRootManager.getLocationFromRequestPath(reqPath);
       if (location == null)
         throw new FileNotFoundException(reqPath);
 
-      // if there's an ncml element, open it through NcMLReader, supplying the underlying file
-      // from NetcdfFiles.open(), therefore not being cached.
-      // This is safer given all the trouble we have with ncml and caching.
-      if (netcdfElem != null) {
-        String ncmlLocation = "DatasetScan#" + location; // LOOK some descriptive name
-        // open with openFile(), not acquireFile, so we skip the caches
-        NetcdfDataset ncd = null;
-
-        // look for addRecords attribute on the netcdf element. The new API in netCDF-Java does not handle this,
-        // so we will handle it special here.
-        Attribute addRecordsAttr = netcdfElem.getAttribute("addRecords");
-        boolean addRecords = false;
-        if (addRecordsAttr != null) {
-          addRecords = Boolean.valueOf(addRecordsAttr.getValue());
-        }
-
-        NetcdfFile ncf;
-        if (addRecords) {
-          DatasetUrl datasetUrl = DatasetUrl.findDatasetUrl(location);
-          // work around for presence of addRecords="true" on a netcdf element
-          ncf = NetcdfDatasets.openFile(datasetUrl, -1, null, NetcdfFile.IOSP_MESSAGE_ADD_RECORD_STRUCTURE);
-        } else {
-          ncf = NetcdfDatasets.openFile(location, null);
-        }
-
-        NetcdfDataset.Builder modifiedDsBuilder = NcmlReader.mergeNcml(ncf, netcdfElem);
-
-        // set new location to indicate this is a dataset from a dataset scan wrapped with NcML.
-        modifiedDsBuilder.setLocation(ncmlLocation);
-        ncd = modifiedDsBuilder.build();
-        return ncd;
+      if (hasDatasetScanNcml(match)) {
+        return openNcmlDatasetScan(location, match);
       }
 
       DatasetUrl durl = DatasetUrl.findDatasetUrl(location);
@@ -256,6 +220,44 @@ public class DatasetManager implements InitializingBean {
     if (ncfile == null)
       throw new FileNotFoundException(reqPath);
     return ncfile;
+  }
+
+  private boolean hasDatasetScanNcml(DataRootMatch match) {
+    return match.dataRoot != null && match.dataRoot.getDatasetScan() != null
+        && match.dataRoot.getDatasetScan().getNcmlElement() != null;
+  }
+
+  private NetcdfFile openNcmlDatasetScan(String location, DataRootMatch match) throws IOException {
+    org.jdom2.Element netcdfElem = match.dataRoot.getDatasetScan().getNcmlElement();
+    // if there's an ncml element, open it through NcMLReader, supplying the underlying file
+    // from NetcdfFiles.open(), therefore not being cached.
+    // This is safer given all the trouble we have with ncml and caching.
+
+    String ncmlLocation = "DatasetScan#" + location; // LOOK some descriptive name
+    // open with openFile(), not acquireFile, so we skip the caches
+
+    // look for addRecords attribute on the netcdf element. The new API in netCDF-Java does not handle this,
+    // so we will handle it special here.
+    Attribute addRecordsAttr = netcdfElem.getAttribute("addRecords");
+    boolean addRecords = false;
+    if (addRecordsAttr != null) {
+      addRecords = Boolean.valueOf(addRecordsAttr.getValue());
+    }
+
+    NetcdfFile ncf;
+    if (addRecords) {
+      DatasetUrl datasetUrl = DatasetUrl.findDatasetUrl(location);
+      // work around for presence of addRecords="true" on a netcdf element
+      ncf = NetcdfDatasets.openFile(datasetUrl, -1, null, NetcdfFile.IOSP_MESSAGE_ADD_RECORD_STRUCTURE);
+    } else {
+      ncf = NetcdfDatasets.openFile(location, null);
+    }
+
+    NetcdfDataset.Builder<?> modifiedDsBuilder = NcmlReader.mergeNcml(ncf, netcdfElem);
+
+    // set new location to indicate this is a dataset from a dataset scan wrapped with NcML.
+    modifiedDsBuilder.setLocation(ncmlLocation);
+    return modifiedDsBuilder.build();
   }
 
   /**
