@@ -223,7 +223,7 @@ public class DatasetManager implements InitializingBean {
   }
 
   private boolean hasDatasetScanNcml(DataRootMatch match) {
-    return match.dataRoot != null && match.dataRoot.getDatasetScan() != null
+    return match != null && match.dataRoot != null && match.dataRoot.getDatasetScan() != null
         && match.dataRoot.getDatasetScan().getNcmlElement() != null;
   }
 
@@ -422,8 +422,14 @@ public class DatasetManager implements InitializingBean {
     }
 
     // otherwise, assume it's a local file with a datasetRoot in the urlPath.
-    // try to open as a FeatureDatasetCoverage. This allows GRIB to be handled specially
     String location = getLocationFromRequestPath(reqPath);
+
+    // Ncml in datasetScan
+    if (location != null && hasDatasetScanNcml(match)) {
+      return openCoverageFromDatasetScanNcml(location, match, reqPath);
+    }
+
+    // try to open as a FeatureDatasetCoverage. This allows GRIB to be handled specially
     if (location != null) {
       Optional<FeatureDatasetCoverage> opt = CoverageDatasetFactory.openCoverageDataset(location);
       // hack - CoverageDatasetFactory bombs out on an object store location string during the grib check,
@@ -451,6 +457,20 @@ public class DatasetManager implements InitializingBean {
     }
 
     return null;
+  }
+
+  private CoverageCollection openCoverageFromDatasetScanNcml(String location, DataRootMatch match, String reqPath)
+      throws IOException {
+    final NetcdfFile ncf = openNcmlDatasetScan(location, match);
+    final NetcdfDataset ncd = NetcdfDatasets.enhance(ncf, NetcdfDataset.getDefaultEnhanceMode(), null);
+    final DtCoverageDataset gds = new DtCoverageDataset(ncd);
+
+    if (gds.getGrids().isEmpty()) {
+      throw new FileNotFoundException("Error opening grid dataset " + reqPath + ". err= no grids found.");
+    }
+
+    final FeatureDatasetCoverage coverage = DtCoverageAdapter.factory(gds, new Formatter());
+    return coverage.getSingleCoverageCollection();
   }
 
   public SimpleGeometryFeatureDataset openSimpleGeometryDataset(HttpServletRequest req, HttpServletResponse res,
