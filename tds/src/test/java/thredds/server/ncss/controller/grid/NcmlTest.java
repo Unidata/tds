@@ -6,6 +6,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -25,10 +26,12 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
 import java.io.IOException;
+import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@Category(NeedsCdmUnitTest.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"},
     loader = MockTdsContextLoader.class)
