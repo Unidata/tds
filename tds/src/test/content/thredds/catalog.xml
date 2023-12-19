@@ -56,7 +56,7 @@
       <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="all"
       location="content/testdata/testOffset.nc">
         <variable name="variableWithoutOffset">
-          <attribute name="add_offset" value="-100"/>
+          <attribute name="add_offset" type="float" value="-100"/>
         </variable>
       </ncml:netcdf>
     </dataset>

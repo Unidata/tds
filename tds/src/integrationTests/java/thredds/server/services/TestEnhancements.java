@@ -42,7 +42,6 @@ public class TestEnhancements {
     }
   }
 
-  @Ignore("TODO: fix services to be consistent in how they apply ncml and enhancements")
   @Test
   public void testNCSSWithEnhancementsNcML() throws IOException {
     // scale-offset set as variable attribute
