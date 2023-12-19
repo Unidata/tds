@@ -78,9 +78,9 @@ public class NcmlTest {
     final List<Element> grids = XmlUtil.evaluateXPath(doc, "//grid");
     assertThat(grids).isNotNull();
 
-    final Optional<Element> orgiVar =
+    final Optional<Element> origVar =
         grids.stream().filter(e -> e.getAttribute("name").getValue().equals("rh")).findFirst();
-    assertThat(orgiVar.isPresent()).isFalse();
+    assertThat(origVar.isPresent()).isFalse();
 
     final Optional<Element> modifiedVar =
         grids.stream().filter(e -> e.getAttribute("name").getValue().equals("ReletiveHumidity")).findFirst();
