@@ -439,12 +439,8 @@ public class DatasetManager implements InitializingBean {
         // and pass that to CoverageDataset
         DtCoverageDataset gds = new DtCoverageDataset(NetcdfDatasets.openDataset(location));
         if (!gds.getGrids().isEmpty()) {
-          Formatter errlog = new Formatter();
-          FeatureDatasetCoverage result = DtCoverageAdapter.factory(gds, errlog);
-          if (result != null)
-            opt = Optional.of(result);
-          else
-            opt = Optional.empty(errlog.toString());
+          FeatureDatasetCoverage result = DtCoverageAdapter.factory(gds, new Formatter());
+          opt = Optional.of(result);
         }
       }
 
