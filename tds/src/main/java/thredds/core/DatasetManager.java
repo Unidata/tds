@@ -357,7 +357,8 @@ public class DatasetManager implements InitializingBean {
       if (featureDatasetPoint != null) {
         return featureDatasetPoint;
       } else {
-        throw new UnsupportedOperationException("Could not open as a PointDataset: " + errlog);
+        log.error("Could not open as a PointDataset: " + errlog);
+        throw new UnsupportedOperationException("Could not open as a point dataset");
       }
     } catch (Throwable t) {
       if (ncd == null)
