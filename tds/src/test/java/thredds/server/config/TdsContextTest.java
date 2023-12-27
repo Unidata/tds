@@ -14,10 +14,11 @@ import thredds.mock.web.MockTdsContextLoader;
 import ucar.unidata.util.test.category.NeedsContentRoot;
 import java.lang.invoke.MethodHandles;
 import java.util.Map;
+import ucar.unidata.util.test.category.NeedsExternalResource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
-@Category(NeedsContentRoot.class)
+@Category({NeedsContentRoot.class, NeedsExternalResource.class})
 public class TdsContextTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
