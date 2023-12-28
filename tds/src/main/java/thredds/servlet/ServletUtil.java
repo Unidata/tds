@@ -282,6 +282,12 @@ public class ServletUtil {
     final String ncmlLocation = TdsRequestedDataset.getLocationFromNcml(requestPath);
     final String location =
         ncmlLocation != null ? ncmlLocation : TdsRequestedDataset.getLocationFromRequestPath(requestPath);
+
+    if (location == null) {
+      response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find file with URL path: " + requestPath);
+      return;
+    }
+
     final MFile file = MFiles.create(location);
 
     if (file == null) {

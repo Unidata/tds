@@ -99,7 +99,7 @@ public class TestPointFCExceptions {
 
     this.mockMvc.perform(rb).andExpect(MockMvcResultMatchers.status().isUnprocessableEntity())
         .andExpect(MockMvcResultMatchers.content()
-            .string(new StringContains("UnsupportedOperationException: Could not open as a PointDataset")));
+            .string(new StringContains("UnsupportedOperationException: Could not open as a point dataset")));
   }
 }
 
