@@ -11,6 +11,7 @@ import ucar.nc2.Variable;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -42,6 +43,24 @@ public class TestEnhancements {
     final byte[] content = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.netcdf);
 
     try (NetcdfFile netcdfFile = NetcdfFiles.openInMemory("test_data.nc", content)) {
+      checkResultWithEnhancements(netcdfFile, 100);
+    }
+  }
+
+  @Test
+  public void testOpendapWithEnhancements() throws IOException {
+    final String endpoint = TestOnLocalServer.withHttpPath("/dodsC/" + ENHANCED_FILE);
+
+    try (NetcdfFile netcdfFile = NetcdfDatasets.openFile(endpoint, null)) {
+      checkResultWithEnhancements(netcdfFile, 0);
+    }
+  }
+
+  @Test
+  public void testOpendapWithEnhancementsNcML() throws IOException {
+    final String endpoint = TestOnLocalServer.withHttpPath("/dodsC/" + NCML_ENHANCED_FILE);
+
+    try (NetcdfFile netcdfFile = NetcdfDatasets.openFile(endpoint, null)) {
       checkResultWithEnhancements(netcdfFile, 100);
     }
   }
