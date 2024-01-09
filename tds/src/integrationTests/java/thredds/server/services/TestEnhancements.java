@@ -1,11 +1,9 @@
 package thredds.server.services;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.ma2.Array;
-import ucar.ma2.MAMath;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 import ucar.nc2.Variable;
@@ -17,6 +15,7 @@ import java.io.IOException;
 import static com.google.common.truth.Truth.assertThat;
 
 public class TestEnhancements {
+  private static final double TOLERANCE = 1.0e-5;
 
   final static String ENHANCED_FILE = "localContent/testOffset.nc";
   final static String NCML_ENHANCED_FILE = "testOffsetWithNcml.nc";
@@ -31,14 +30,7 @@ public class TestEnhancements {
     final byte[] content = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.netcdf);
 
     try (NetcdfFile netcdfFile = NetcdfFiles.openInMemory("test_data.nc", content)) {
-      final Variable enhancedVar = netcdfFile.findVariable(ENHANCED_VAR_NAME);
-      final Variable orgVar = netcdfFile.findVariable(NOT_ENHANCED_VAR_NAME);
-      assertThat(enhancedVar != null).isTrue();
-      assertThat(orgVar != null).isTrue();
-      assertThat(enhancedVar.findAttribute("add_offset")).isNull();
-      final Array values1 = enhancedVar.read();
-      final Array values2 = orgVar.read();
-      MAMath.nearlyEquals(values1, values2);
+      checkResultWithEnhancements(netcdfFile, 0);
     }
   }
 
@@ -50,16 +42,20 @@ public class TestEnhancements {
     final byte[] content = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.netcdf);
 
     try (NetcdfFile netcdfFile = NetcdfFiles.openInMemory("test_data.nc", content)) {
-      final Variable enhancedVar = netcdfFile.findVariable(ENHANCED_VAR_NAME);
-      final Variable orgVar = netcdfFile.findVariable(NOT_ENHANCED_VAR_NAME);
-      assertThat(enhancedVar != null).isTrue();
-      assertThat(orgVar != null).isTrue();
-      assertThat(orgVar.findAttribute("add_offset")).isNull();
-      final Array values1 = enhancedVar.read();
-      final Array values2 = orgVar.read();
-      for (int i = 0; i < values1.getSize(); i++) {
-        assertThat(values1.getDouble(i)).isEqualTo(values2.getDouble(i) + 100);
-      }
+      checkResultWithEnhancements(netcdfFile, 100);
+    }
+  }
+
+  private void checkResultWithEnhancements(NetcdfFile netcdfFile, int expectedDiff) throws IOException {
+    final Variable enhancedVar = netcdfFile.findVariable(ENHANCED_VAR_NAME);
+    final Variable orgVar = netcdfFile.findVariable(NOT_ENHANCED_VAR_NAME);
+    assertThat(enhancedVar != null).isTrue();
+    assertThat(orgVar != null).isTrue();
+    assertThat(orgVar.findAttribute("add_offset")).isNull();
+    final Array values1 = enhancedVar.read();
+    final Array values2 = orgVar.read();
+    for (int i = 0; i < values1.getSize(); i++) {
+      assertThat(values1.getDouble(i)).isWithin(TOLERANCE).of(values2.getDouble(i) + expectedDiff);
     }
   }
 }
