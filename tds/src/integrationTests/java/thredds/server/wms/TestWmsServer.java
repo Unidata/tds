@@ -142,6 +142,17 @@ public class TestWmsServer {
     checkValue(withoutOffsetEndpoint, 7.5);
   }
 
+  @Test
+  public void shouldApplyNcmlOffsetToData() throws IOException, JDOMException {
+    final String datasetPath = "testOffsetWithNcml.nc";
+
+    final String withOffsetEndpoint = createGetFeatureInfoEndpoint(datasetPath, "variableWithOffset");
+    checkValue(withOffsetEndpoint, 7.5);
+
+    final String withoutOffsetEndpoint = createGetFeatureInfoEndpoint(datasetPath, "variableWithoutOffset");
+    checkValue(withoutOffsetEndpoint, -92.5);
+  }
+
   private String createGetFeatureInfoEndpoint(String path, String variableName) {
     return TestOnLocalServer.withHttpPath("/wms/" + path + "?LAYERS=" + variableName
         + "&service=WMS&version=1.3.0&CRS=CRS:84&BBOX=0,0,10,10&WIDTH=100&HEIGHT=100"
