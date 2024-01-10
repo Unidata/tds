@@ -39,6 +39,16 @@ public class TestS3Ncml {
   }
 
   @Test
+  public void shouldOpenAggregationWithRelativePathsOnS3() {
+    final String endpoint = TestOnLocalServer.withHttpPath(S3_NCML_PATH + "nc/namExtract/test_agg.ncml.ascii?time");
+    final byte[] content = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK);
+    final String stringContent = new String(content, StandardCharsets.UTF_8);
+
+    assertThat(stringContent).contains("time[8]");
+    assertThat(stringContent).contains("3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0");
+  }
+
+  @Test
   public void shouldOpenAggregationWithAbsolutePathsOnS3() {
     final String endpoint =
         TestOnLocalServer.withHttpPath(S3_NCML_PATH + "nc/namExtract/test_agg_absolute_paths.ncml.ascii?time");
