@@ -32,6 +32,6 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
-          name: tds_JUnit_Results_${{ github.sha }}_AdoptOpenJDK-HS-${{ matrix.java }}-matrix.servletcontainer }}
+          name: tds_JUnit_Results_${{ github.sha }}_AdoptOpenJDK-HS-${{ matrix.java }}-${{ matrix.servletcontainer }}
           path: build/reports/allTests
 
