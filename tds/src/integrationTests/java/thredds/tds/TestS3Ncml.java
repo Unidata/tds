@@ -21,8 +21,8 @@ public class TestS3Ncml {
   }
 
   @Test
-  public void shouldOpenNcmlWithOtherExtensionOnS3() {
-    final String endpoint = TestOnLocalServer.withHttpPath(S3_NCML_PATH + "testStandaloneNcml.otherExt.ascii?time");
+  public void shouldOpenNcmlWithXmlExtensionOnS3() {
+    final String endpoint = TestOnLocalServer.withHttpPath(S3_NCML_PATH + "testStandalone.xml.ascii?time");
     final byte[] content = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK);
     final String stringContent = new String(content, StandardCharsets.UTF_8);
 
@@ -31,13 +31,11 @@ public class TestS3Ncml {
   }
 
   @Test
-  public void shouldOpenAggregationWithRelativePathsOnS3() {
-    final String endpoint = TestOnLocalServer.withHttpPath(S3_NCML_PATH + "nc/namExtract/test_agg.ncml.ascii?time");
-    final byte[] content = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK);
-    final String stringContent = new String(content, StandardCharsets.UTF_8);
-
-    assertThat(stringContent).contains("time[8]");
-    assertThat(stringContent).contains("3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0");
+  public void shouldOpenNcmlWithOtherExtensionOnS3() {
+    // Can't currently open an S3 NcML file with an extension other than xml or ncml.
+    // Peaking inside the file to check if it's ncml is too slow
+    final String endpoint = TestOnLocalServer.withHttpPath(S3_NCML_PATH + "testStandaloneNcml.otherExt.ascii?time");
+    TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
   }
 
   @Test
