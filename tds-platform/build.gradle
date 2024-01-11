@@ -33,6 +33,7 @@ dependencies {
     api 'edu.ucar:cdm-misc'
     api 'edu.ucar:cdm-image'
     api 'edu.ucar:cdm-s3'
+    api 'edu.ucar:cdm-zarr'
     api 'edu.ucar:netcdf4'
     api 'edu.ucar:cdm-mcidas'
     api 'edu.ucar:waterml'
