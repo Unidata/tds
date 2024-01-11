@@ -344,7 +344,6 @@ public class LatLonRectangle2D implements Serializable {
    * arrangement of LLy, LLx,
    * URy, URx.
    * 
-   * @param rect
    * @param bounds
    */
   public void extend(double[] bounds) {

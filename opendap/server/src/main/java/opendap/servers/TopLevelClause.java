@@ -45,7 +45,7 @@ package opendap.servers;
  * <p>
  * <p/>
  * A top-level clause is a boolean expression
- * preceded by "&" in the CE, such as "lat>10.0", or "function(var1,var2)".
+ * preceded by "{@code &}" in the CE, such as "{@code lat>10.0}", or "{@code function(var1,var2)}".
  * The top-level clause may contain sub-clauses which can be evaluated
  * individually.
  * <p/>

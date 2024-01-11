@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Interface for plugging in Viewers.
  * Generally, these are implemented with jnlp files in /content/thredds/view/views/*.jnlp
- * You can customizing by adding parameters to the jnlp file, eg parm=subst&name=value.
+ * You can customizing by adding parameters to the jnlp file, eg {@code parm=subst&name=value}.
  * Then all instances of "{param}" will be replaced by subst, and
  * all instances of "{name}" will be replaced by value, etc.
  */

@@ -384,7 +384,7 @@ public abstract class TdsUnitTestCommon {
   /**
    * return true if this path appears to start with a windows drive letter
    *
-   * @param path
+   * @param path to check
    * @return true, if path has drive letter
    */
 

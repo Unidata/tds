@@ -29,7 +29,7 @@ import java.util.Stack;
 /**
  * This implements an XML-based backing store for PreferencesExt.
  * XMLStores can be chained together to provide independent collections of
- * "stored defaults", eg store1 -> store2 -> store3. In this case, a call to getXXX( key)
+ * "stored defaults", eg {@literal store1 -> store2 -> store3}. In this case, a call to getXXX( key)
  * first looks in store1, and if not found, then in store2, etc. A call to
  * putXXX(key, value) first checks to see if the (key, value) pair already exists in any of
  * the chained stores; if not, then it is added to store1.

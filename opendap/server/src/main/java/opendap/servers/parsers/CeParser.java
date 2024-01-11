@@ -1398,7 +1398,7 @@ public class CeParser extends Ceparse {
   /**
    * Instantiates the Bison-generated parser.
    * 
-   * @param yylexer The scanner that will supply tokens to the parser.
+   * @param factory The scanner that will supply tokens to the parser.
    */
 
   public CeParser(BaseTypeFactory factory) {

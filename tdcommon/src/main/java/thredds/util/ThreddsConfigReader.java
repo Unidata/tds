@@ -21,7 +21,7 @@ import java.util.StringTokenizer;
 
 /**
  * read threddsConfig.xml, make elements available
- * used by Tds & Tdm
+ * used by Tds and Tdm
  *
  * @author caron
  * @since 5/15/13

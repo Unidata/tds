@@ -15,7 +15,7 @@ import thredds.inventory.MFiles;
 
 /**
  * A DataRoot matches URLs to the objects that can serve them.
- * A DataRootPathMatcher manages a hash tree of path -> DataRoot
+ * A DataRootPathMatcher manages a hash tree of path {@literal ->} DataRoot
  * <p/>
  * Possible design:
  * catKey : which catalog defined this? not present at the moment
