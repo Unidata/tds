@@ -133,20 +133,41 @@ public class TestWmsServer {
 
   @Test
   public void shouldApplyOffsetToData() throws IOException, JDOMException {
-    final String[] variableNames = {"variableWithOffset", "variableWithoutOffset"};
-    for (String variableName : variableNames) {
-      final String endpoint = TestOnLocalServer.withHttpPath("/wms/scanLocal/testOffset.nc?" + "LAYERS=" + variableName
-          + "&service=WMS&version=1.3.0&CRS=CRS:84&BBOX=0,0,10,10&WIDTH=100&HEIGHT=100"
-          + "&REQUEST=GetFeatureInfo&QUERY_LAYERS=" + variableName + "&i=0&j=0");
-      final byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.xmlwms);
+    final String datasetPath = "scanLocal/testOffset.nc";
 
-      final Reader reader = new StringReader(new String(result, StandardCharsets.UTF_8));
-      final Document doc = new SAXBuilder().build(reader);
-      final XPathExpression<Element> xpath = XPathFactory.instance().compile("//FeatureInfo/value", Filters.element());
-      final Element element = xpath.evaluateFirst(doc);
+    final String withOffsetEndpoint = createGetFeatureInfoEndpoint(datasetPath, "variableWithOffset");
+    checkValue(withOffsetEndpoint, 7.5);
 
-      assertThat(element.getContentSize()).isEqualTo(1);
-      assertThat(Double.valueOf(element.getText())).isWithin(TOLERANCE).of(7.5);
-    }
+    final String withoutOffsetEndpoint = createGetFeatureInfoEndpoint(datasetPath, "variableWithoutOffset");
+    checkValue(withoutOffsetEndpoint, 7.5);
+  }
+
+  @Test
+  public void shouldApplyNcmlOffsetToData() throws IOException, JDOMException {
+    final String datasetPath = "testOffsetWithNcml.nc";
+
+    final String withOffsetEndpoint = createGetFeatureInfoEndpoint(datasetPath, "variableWithOffset");
+    checkValue(withOffsetEndpoint, 7.5);
+
+    final String withoutOffsetEndpoint = createGetFeatureInfoEndpoint(datasetPath, "variableWithoutOffset");
+    checkValue(withoutOffsetEndpoint, -92.5);
+  }
+
+  private String createGetFeatureInfoEndpoint(String path, String variableName) {
+    return TestOnLocalServer.withHttpPath("/wms/" + path + "?LAYERS=" + variableName
+        + "&service=WMS&version=1.3.0&CRS=CRS:84&BBOX=0,0,10,10&WIDTH=100&HEIGHT=100"
+        + "&REQUEST=GetFeatureInfo&QUERY_LAYERS=" + variableName + "&i=0&j=0");
+  }
+
+  private void checkValue(String endpoint, double expectedValue) throws IOException, JDOMException {
+    final byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.xmlwms);
+
+    final Reader reader = new StringReader(new String(result, StandardCharsets.UTF_8));
+    final Document doc = new SAXBuilder().build(reader);
+    final XPathExpression<Element> xpath = XPathFactory.instance().compile("//FeatureInfo/value", Filters.element());
+    final Element element = xpath.evaluateFirst(doc);
+
+    assertThat(element.getContentSize()).isEqualTo(1);
+    assertThat(Double.valueOf(element.getText())).isWithin(TOLERANCE).of(expectedValue);
   }
 }
