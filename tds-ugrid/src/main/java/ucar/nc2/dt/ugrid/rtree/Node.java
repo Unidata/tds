@@ -183,7 +183,7 @@ public class Node implements Serializable {
 
 
   /**
-   * Adds the the given <code>poly</code> to <code>mbr</code> as if mbr were a rectangle. Neither objects are modified.
+   * Adds the given <code>poly</code> to <code>mbr</code> as if mbr were a rectangle. Neither objects are modified.
    *
    * @param mbr
    *        the minimum bounding rectangle
@@ -201,12 +201,12 @@ public class Node implements Serializable {
 
 
   /**
-   * Adds the the given <code>rect</code> to <code>mbr</code> as if mbr were a rectangle. Neither objects are modified.
+   * Adds the given <code>rect</code> to <code>mbr</code> as if mbr were a rectangle. Neither objects are modified.
    *
    * @param mbr
    *        the minimum bounding rectangle
-   * @param poly
-   *        a polygon to be fit inside the mbr
+   * @param rect
+   *        a rectangle to be fit inside the mbr
    *
    * @return the bounding rectangle of the union between mbr and poly as polgon2d object
    */
@@ -218,12 +218,12 @@ public class Node implements Serializable {
 
 
   /**
-   * Adds the the given <code>rect</code> to <code>mbr</code> as if mbr were a rectangle. Neither objects are modified.
+   * Adds the given <code>rect</code> to <code>mbr</code> as if mbr were a rectangle. Neither objects are modified.
    *
    * @param mbr
    *        the minimum bounding rectangle
-   * @param poly
-   *        a polygon to be fit inside the mbr
+   * @param latLons
+   *        lat/lon array with a length of 4 which contains lat/lon coords in the arrangement of LLy, LLx, URy, URx.
    *
    * @return the bounding rectangle of the union between mbr and poly as polgon2d object
    */

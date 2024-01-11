@@ -21,7 +21,7 @@ import cern.colt.list.IntArrayList;
  * <br />
  * Simply pass an instance of this class to an rtree search and access the retrieved nodes' indices with
  * {@link #get(int)} and
- * {@link #getValues())}. These indices are returned as <code>Integer</code> objects.
+ * {@link #getValues()}. These indices are returned as <code>Integer</code> objects.
  * 
  * 
  * @author TPL <tplarocque@asascience.com>
@@ -76,7 +76,7 @@ public class IntProcedureEntriesList implements IntProcedure {
    * @return the <code>int</code> value of the entry at the given index
    * 
    * @throws IndexOutOfBoundsException
-   *         if index is out of range (index < 0 || index >= size())
+   *         if index is out of range ({@code index < 0 || index >= size()})
    */
   public int get(int index) throws IndexOutOfBoundsException {
     return entryList.get(index);

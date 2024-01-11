@@ -11,10 +11,10 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * Validator for ncss GridRequest
+ * {@literal Validator for ncss GridRequest
  * 1) if has either latitude or longitude, has both
  * 2) if has any of latlon bb, has all. north > south, east > west
- * 3) if has any of projection bb, has all. min < max
+ * 3) if has any of projection bb, has all. min < max}
  * <p>
  * Messages in WEB-INF/classes/ValidationMessages.properties
  *

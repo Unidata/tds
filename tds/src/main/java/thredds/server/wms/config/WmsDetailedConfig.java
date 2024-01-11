@@ -49,7 +49,7 @@ import javax.annotation.Nullable;
  * allowFeatureInfo, settings can be overridden by matching on the variable name. The order of precedence on which
  * settings are determined is as follows:
  *
- * default < standard_name match < url path match < variable name match
+ * {@literal default < standard_name match < url path match < variable name match}
  *
  */
 public class WmsDetailedConfig {

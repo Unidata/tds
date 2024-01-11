@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Wraps a netcdf variable with rank > 0, whose dimensions all
- * have coordinate variables, as an SDGrid.
+ * {@literal Wraps a netcdf variable with rank > 0, whose dimensions all
+ * have coordinate variables, as an SDGrid.}
  *
  * @author jcaron
  */

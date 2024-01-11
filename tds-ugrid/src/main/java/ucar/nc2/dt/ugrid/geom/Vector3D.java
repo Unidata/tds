@@ -34,7 +34,7 @@ public class Vector3D {
   }
 
   /**
-   * Creates a new instance of Vector3D with an origin of (0, 0, 0) and the specified u, v & w magnitudes.
+   * Creates a new instance of Vector3D with an origin of (0, 0, 0) and the specified u, v, and w magnitudes.
    * 
    * @param u
    *        The <CODE>double</CODE> u-component of the vector.
@@ -50,7 +50,7 @@ public class Vector3D {
   }
 
   /**
-   * Creates a new instance of Vector3D with the specified origin and u, v & w magnitudes.
+   * Creates a new instance of Vector3D with the specified origin and u, v, and w magnitudes.
    * 
    * @param origin
    *        the <code>Point3D</code> origin of the vector.
@@ -209,28 +209,28 @@ public class Vector3D {
   }
 
   /**
-   * Multiplies the numerical value of each component of the first vector with the values in the second vector.
+   * Multiplies the numerical value of each component of the vector by a given scalar.
    * 
-   * @param v1
-   *        the first <code>Vector3D</code>
-   * @param v2
-   *        the second <code>Vector3D</code>
+   * @param v
+   *        the <code>Vector3D</code>
+   * @param d
+   *        the value to multiply the vector by
    * 
-   * @return a <code>Vector3D</code> representing the product of the two vectors
+   * @return a <code>Vector3D</code> representing the rescaled vector
    */
   public static Vector3D mult(Vector3D v, double d) {
     return (new Vector3D(v.getU() * d, v.getV() * d, v.getW() * d));
   }
 
   /**
-   * Divides the numerical value of each component of the first vector by the values in the second vector.
+   * Divides the numerical value of each component of the vector by a given scalar.
    * 
-   * @param v1
-   *        the first <code>Vector3D</code>
-   * @param v2
-   *        the second <code>Vector3D</code>
+   * @param v
+   *        the <code>Vector3D</code>
+   * @param d
+   *        the value to divide the vector by
    * 
-   * @return a <code>Vector3D</code> representing the quotient of the two vectors
+   * @return a <code>Vector3D</code> representing the rescaled vector
    */
   public static Vector3D div(Vector3D v, double d) {
     return (new Vector3D(v.getU() / d, v.getV() / d, v.getW() / d));

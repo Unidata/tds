@@ -420,7 +420,7 @@ public abstract class LatLonPoint2D extends Point2D implements Serializable {
      *        latitude
      * @param lon
      *        longitude.
-     * @param isRadians
+     * @param isRadian true if in radians, false if in degrees
      *        true of values are radians.
      */
     public Double(double lat, double lon, boolean isRadian) {

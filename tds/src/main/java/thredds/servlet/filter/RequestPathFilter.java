@@ -23,9 +23,9 @@ import java.io.IOException;
  * <p/>
  * <p/>
  * <strong>Note:</strong>
- * Currently also rejecting strings that contain any less than ("<"),
+ * {@literal Currently also rejecting strings that contain any less than ("<"),
  * greater than (">"), or backslash ("\") characters. [May loosen this
- * restriction later.]
+ * restriction later.]}
  *
  * @author edavis
  * @see thredds.util.StringValidateEncodeUtils#validPath(String)

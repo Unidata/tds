@@ -50,7 +50,7 @@ public class AsaMath {
   private final double THREE_QUARTER_RAD_CIRCLE = (3 * Math.PI) * 0.5;
 
   /**
-   * Calculates speed from U & V
+   * Calculates speed from U and V
    * 
    * @param u
    *        the u component
@@ -63,7 +63,7 @@ public class AsaMath {
   }
 
   /**
-   * Calculates direction from U & V
+   * Calculates direction from U and V
    * 
    * @param u
    *        the u component
@@ -77,7 +77,7 @@ public class AsaMath {
   }
 
   /**
-   * Calculates both speed and direction from U & V
+   * Calculates both speed and direction from U and V
    * 
    * @param u
    *        the u component
@@ -90,7 +90,7 @@ public class AsaMath {
   }
 
   /**
-   * Calculates speeds and directions from an array of U & V pairs. The arrays MUST be of the same length.
+   * Calculates speeds and directions from an array of U and V pairs. The arrays MUST be of the same length.
    * 
    * @param us
    *        the array of u components
@@ -136,7 +136,7 @@ public class AsaMath {
   }
 
   /**
-   * Calculates Us & Vs from arrays of speeds and directions. Arrays MUST be the same length.
+   * Calculates Us and Vs from arrays of speeds and directions. Arrays MUST be the same length.
    * 
    * @param speeds
    * @param directions
@@ -422,10 +422,10 @@ public class AsaMath {
 
   /**
    * Rounds <code>value</code> to the closest multiple of {@code nearest}. The {@code roundDirection} parameter
-   * indicates which direction
+   * {@literal indicates which direction
    * to force rounding. A '0' rounds naturally (up for values > 0.5, down for values < 0.5). A number > 0 forces a round
    * up, while < 0
-   * forces a round down.
+   * forces a round down.}
    * <p>
    * Examples:
    * </p>
@@ -444,7 +444,7 @@ public class AsaMath {
    * @param nearest
    *        the value of the nearest number to round to
    * @param roundDirection
-   *        the direction to force rounding. <i>0</i> uses natural rounding, <i><0</i> always rounds up, <i>>0</i>
+   *        the direction to force rounding. {@code 0} uses natural rounding, {@code <0} always rounds up, {@code >0}
    *        always rounds down.
    * 
    * @return the rounded number

@@ -45,7 +45,7 @@ import opendap.dap.BaseType;
  * Represents a sub-clause of the selection portion of a constraint
  * expression. A sub-clause is any part of a constraint that
  * can be evaluated to a BaseType value. For instance, the constraint
- * "var1>=function(var2,var3)" would have sub clauses "var1" and
+ * "{@code var1>=function(var2,var3)}" would have sub clauses "var1" and
  * "function(var2,var3)". The latter would in turn have the sub-clauses
  * "var2" and "var3".
  * <p>
