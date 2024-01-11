@@ -20,6 +20,7 @@ public class TestEnhancements {
 
   final static String ENHANCED_FILE = "localContent/testOffset.nc";
   final static String NCML_ENHANCED_FILE = "testOffsetWithNcml.nc";
+  final static String NCML_ENHANCE_NONE_FILE = "testOffsetWithNcmlEnhanceNone.nc";
   final static String ENHANCED_VAR_NAME = "variableWithOffset";
   final static String NOT_ENHANCED_VAR_NAME = "variableWithoutOffset";
 
@@ -31,7 +32,7 @@ public class TestEnhancements {
     final byte[] content = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.netcdf);
 
     try (NetcdfFile netcdfFile = NetcdfFiles.openInMemory("test_data.nc", content)) {
-      checkResultWithEnhancements(netcdfFile, 0);
+      checkResultWithEnhancements(netcdfFile, 0, true);
     }
   }
 
@@ -43,7 +44,7 @@ public class TestEnhancements {
     final byte[] content = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.netcdf);
 
     try (NetcdfFile netcdfFile = NetcdfFiles.openInMemory("test_data.nc", content)) {
-      checkResultWithEnhancements(netcdfFile, 100);
+      checkResultWithEnhancements(netcdfFile, 100, true);
     }
   }
 
@@ -52,7 +53,8 @@ public class TestEnhancements {
     final String endpoint = TestOnLocalServer.withHttpPath("/dodsC/" + ENHANCED_FILE);
 
     try (NetcdfFile netcdfFile = NetcdfDatasets.openFile(endpoint, null)) {
-      checkResultWithEnhancements(netcdfFile, 0);
+      // Does not apply dataset attribute enhancements to data
+      checkResultWithEnhancements(netcdfFile, -100, true);
     }
   }
 
@@ -61,16 +63,28 @@ public class TestEnhancements {
     final String endpoint = TestOnLocalServer.withHttpPath("/dodsC/" + NCML_ENHANCED_FILE);
 
     try (NetcdfFile netcdfFile = NetcdfDatasets.openFile(endpoint, null)) {
-      checkResultWithEnhancements(netcdfFile, 100);
+      // Does apply NcML enhancements to data with enhance="all"
+      checkResultWithEnhancements(netcdfFile, 100, true);
     }
   }
 
-  private void checkResultWithEnhancements(NetcdfFile netcdfFile, int expectedDiff) throws IOException {
+  @Test
+  public void testOpendapWithEnhanceNoneNcML() throws IOException {
+    final String endpoint = TestOnLocalServer.withHttpPath("/dodsC/" + NCML_ENHANCE_NONE_FILE);
+
+    try (NetcdfFile netcdfFile = NetcdfDatasets.openFile(endpoint, null)) {
+      // Does not apply NcML enhancements to data with enhance="none"
+      checkResultWithEnhancements(netcdfFile, -100, false);
+    }
+  }
+
+  private void checkResultWithEnhancements(NetcdfFile netcdfFile, int expectedDiff, boolean shouldRemoveOffsetAtt)
+      throws IOException {
     final Variable enhancedVar = netcdfFile.findVariable(ENHANCED_VAR_NAME);
     final Variable orgVar = netcdfFile.findVariable(NOT_ENHANCED_VAR_NAME);
     assertThat(enhancedVar != null).isTrue();
     assertThat(orgVar != null).isTrue();
-    assertThat(orgVar.findAttribute("add_offset")).isNull();
+    assertThat(orgVar.findAttribute("add_offset") == null).isEqualTo(shouldRemoveOffsetAtt);
     final Array values1 = enhancedVar.read();
     final Array values2 = orgVar.read();
     for (int i = 0; i < values1.getSize(); i++) {
