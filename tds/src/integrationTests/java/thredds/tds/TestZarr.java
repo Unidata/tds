@@ -4,14 +4,13 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.nio.charset.StandardCharsets;
 import javax.servlet.http.HttpServletResponse;
-import org.junit.Ignore;
 import org.junit.Test;
 import thredds.test.util.TestOnLocalServer;
 
 public class TestZarr {
   final private static String ZARR_DIR_PATH = "localContent/zarr/zarr_test_data.zarr";
   final private static String ZARR_ZIP_PATH = "localContent/zarr/zarr_test_data.zip";
-  final private static String ZARR_S3_PATH = "s3-zarr/zarr_test_data.zarr";
+  final private static String ZARR_S3_PATH = "s3-zarr/zarr_test_data.zarr/";
 
   @Test
   public void shouldOpenZarrDirectory() {
@@ -23,7 +22,6 @@ public class TestZarr {
     checkWithOpendap(ZARR_ZIP_PATH);
   }
 
-  @Ignore("Still working on S3 Zarr")
   @Test
   public void shouldOpenObjectStoreZarrFile() {
     checkWithOpendap(ZARR_S3_PATH);
