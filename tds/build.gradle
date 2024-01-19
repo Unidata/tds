@@ -50,6 +50,7 @@ dependencies {
   compile 'com.google.code.findbugs:jsr305'
   compile 'com.google.guava:guava'
   compile 'joda-time:joda-time'
+  compile 'org.apache.commons:commons-lang3'
 
   // WaterML
   compile 'org.apache.xmlbeans:xmlbeans'

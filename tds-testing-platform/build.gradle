@@ -39,7 +39,6 @@ dependencies {
     api 'org.hamcrest:hamcrest-core:2.2'
 
     // only needed for it subproject
-    api 'org.apache.commons:commons-lang3:3.4' // replace?
     api 'org.xmlunit:xmlunit-core:2.7.0'  // For comparing catalog XML.
 
   }
