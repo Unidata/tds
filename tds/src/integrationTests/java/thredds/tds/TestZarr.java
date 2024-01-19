@@ -27,6 +27,13 @@ public class TestZarr {
     checkWithOpendap(ZARR_S3_PATH);
   }
 
+  @Test
+  public void shouldOpenZarrTwice() {
+    // Test it works correctly with the netcdf file cache
+    checkWithOpendap(ZARR_DIR_PATH);
+    checkWithOpendap(ZARR_DIR_PATH);
+  }
+
   private static void checkWithOpendap(String path) {
     final String endpoint = TestOnLocalServer.withHttpPath("dodsC/" + path + ".dds");
     final byte[] content = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK);
