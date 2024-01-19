@@ -19,7 +19,7 @@ jobs:
             java-vendor: 'zulu'
             servletcontainer: 'tomcat9'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Build and test with Gradle (${{ matrix.java-vendor }} ${{ matrix.java-version }})
         uses: Unidata/thredds-test-action@v2
         with:
