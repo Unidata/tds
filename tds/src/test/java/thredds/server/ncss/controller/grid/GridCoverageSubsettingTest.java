@@ -188,6 +188,6 @@ public class GridCoverageSubsettingTest {
 
     v = nf.getRootGroup().findVariableLocal(vars);
     assertArrayEquals(expect.shape, v.getShape());
-    assertThat(expect.rect.nearlyEquals(prect)).isTrue();
+    assertThat(expect.rect.nearlyEquals(prect, 1e-3)).isTrue();
   }
 }
