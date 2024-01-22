@@ -51,6 +51,16 @@ To see which versions of the plugin are compatible with your TDS version see the
 The plugin can be downloaded on the [TDS downloads page](https://downloads.unidata.ucar.edu/tds/){:target="_blank"}.
 The downloaded ncISO plugin jar file should be placed in your `${tomcat_home}/webapps/thredds/WEB-INF/lib/` directory.
 
+##### Customizing the xsl
+If you need to customize the ISO output by updating the default `UnidataDD2MI.xsl`, you must place your custom version
+in `${tomcat_home}/webapps/thredds/WEB-INF/classes/resources/xsl/nciso/UnidataDD2MI.xsl`. For example:
+
+```bash
+$ cd ${tomcat_home}/webapps/thredds/
+$ mkdir -p WEB-INF/classes/resources/xsl/nciso/
+$ cp /path/to/myCustomUnidataDD2MI.xsl WEB-INF/classes/resources/xsl/nciso/UnidataDD2MI.xsl
+```
+
 #### Updating `threddsConfig.xml`
 The following section in the `threddsConfig.xml` file controls the ncISO services:
 
