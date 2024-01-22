@@ -20,15 +20,15 @@ abstract public class Value {
   static final BigInteger MASK = new BigInteger("FFFFFFFFFFFFFFFF", 16);
 
   // default max values
-  static public final int MAXSTRINGSIZE = 10;
-  static public final int MAXOPAQUESIZE = 8;
+  public static final int MAXSTRINGSIZE = 10;
+  public static final int MAXOPAQUESIZE = 8;
 
   // For URL generation
-  static public final int MAXSEGSIZE = 8;
-  static public final int HOSTNSEG = 3;
-  static public final int PATHNSEG = 4;
+  public static final int MAXSEGSIZE = 8;
+  public static final int HOSTNSEG = 3;
+  public static final int PATHNSEG = 4;
 
-  static public enum ValueSource {
+  public static enum ValueSource {
     RANDOM, FIXED;
   }
 

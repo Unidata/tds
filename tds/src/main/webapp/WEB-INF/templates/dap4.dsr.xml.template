@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+Copyright 1998-2022 University Corporation for Atmospheric Research/Unidata.
+See LICENSE file for more info.
+-->
+<DatasetServices
+        xmlns="http://xml.opendap.org/ns/DAP/4.0/dataset-services#">
+<DapVersion>${DAP_VERSION}</DapVersion>
+<ServerSoftwareVersion>${DAP_SERVER}</ServerSoftwareVersion>
+<Dataset name="${DATASET}"/>
+<Service title="DAP4 Dataset Metadata"
+         role="http://services.opendap.org/dap4/dataset-metadata">
+  <link type="application/vnd.opendap.dap4.dataset-metadata+xml"
+        href="${URL}.dmr.xml"></link>
+</Service>
+<Service title="DAP4 Dataset Data"
+         role="http://services.opendap.org/dap4/data">
+  <link type="application/vnd.opendap.dap4.data"
+        href="${URL}.dap"></link>
+</Service>
+<Service title="DAP4 Dataset Services"
+    role="http://services.opendap.org/dap4/dataset-services">
+  <link type="application/vnd.opendap.dap4.dataset-services+xml"
+        href="${URL}.dsr.xml"></link>
+  <link type="application/vnd.opendap.dap4.dataset-services+html"
+        href="${URL}.dsr.html"></link>
+</Service>
+</DatasetServices>

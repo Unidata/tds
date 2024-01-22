@@ -31,9 +31,8 @@ dependencies {
   implementation project(':tds-ugrid')
 
   // DAP4 Dependencies (technically forward)
-  compile 'edu.ucar:dap4'
-//
-//  compile project(':dap4:dap4-servlet')
+  implementation 'edu.ucar:dap4'
+  implementation project(':dap4:d4servlet')
 
   // Server stuff
   providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
@@ -101,6 +100,7 @@ dependencies {
   testCompile 'junit:junit'
   testCompile project(':tds-test-utils');
   testCompile 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
+  testCompile 'edu.ucar:httpservices'
 
   // Logging
   compile 'org.slf4j:slf4j-api'
