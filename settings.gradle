@@ -2,9 +2,8 @@
 rootProject.name = 'thredds-data-server'
 
 // These all refer to subdirectory names.
-//include 'dap4:d4servlet'
-//include 'dap4:d4ts'
-//include 'dap4:d4tests'
+include 'dap4:d4servlet'
+include 'dap4:d4ts'
 include 'docs'
 include 'opendap:dtswar'
 include 'opendap:server'
@@ -21,4 +20,3 @@ include 'tds-ui'
 
 // Set name of the opendap servlet artifact
 project(':opendap:server').name = 'opendap-servlet'
-//project(':dap4:d4servlet').name = 'dap4-servlet'

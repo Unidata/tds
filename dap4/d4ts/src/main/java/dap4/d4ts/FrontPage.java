@@ -5,11 +5,17 @@
 
 package dap4.d4ts;
 
+import dap4.core.util.DapConstants;
 import dap4.core.util.DapException;
 import dap4.core.util.DapUtil;
 import dap4.dap4lib.DapLog;
 import dap4.servlet.DapRequest;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -25,6 +31,10 @@ public class FrontPage {
 
   static final boolean DUMPFILELIST = false;
 
+  static final String FPTEMPLATE = "/templates/dap4.frontpage.html.template";
+
+  static final String DFALTTESTSERVER = "remotetest.unidata.ucar.edu";
+
   //////////////////////////////////////////////////
   // Constants
 
@@ -33,36 +43,35 @@ public class FrontPage {
   static final protected String[] expatterns = new String[0];
 
   // Define the file sources of interest
-  static final protected FileSource[] SOURCES =
-      new FileSource[] {new FileSource(".nc", "netCDF"), new FileSource(".hdf5", "HDF5"),
-          new FileSource(".dap", "Raw Protocol Output"), new FileSource(".syn", "Synthetic")};
+  static final protected FileSource[] SOURCES = new FileSource[] {new FileSource(".nc", "netCDF")};
 
-  static public class Root {
+  public static class Root {
     public String prefix;
+
     public String dir;
+
     public List<FileSource> files;
 
     public String toString() {
       return String.format("{'%s/%s'}", this.prefix, this.dir);
     }
 
-    public Root(String dir, String prefix) {
-      this.dir = dir;
+    public Root(String prefix, String dir) {
       this.prefix = DapUtil.canonicalpath(prefix);
+      this.dir = dir;
     }
 
     public String getFullPath() {
-      return DapUtil.canonjoin(this.prefix, this.dir);
-    }
+      return this.prefix + "/" + this.dir;
+    };
 
     public void setFiles(List<FileSource> files) {
       this.files = files;
     }
   }
 
-  // Remote Test server: should match values in TestDir.java
   private static String dap4TestServerPropName = "d4ts";
-  static public String dap4TestServer = "remotetest.unidata.ucar.edu"; // mutable
+  public static String dap4TestServer = null;; // mutable
 
   static {
     String d4ts = System.getProperty(dap4TestServerPropName);
@@ -88,6 +97,7 @@ public class FrontPage {
 
   protected DapRequest drq = null;
   protected List<Root> roots = null; // root paths to the displayed files
+  protected StringBuilder frontpage = null;
 
   //////////////////////////////////////////////////
   // Constructor(s)
@@ -103,7 +113,26 @@ public class FrontPage {
       // Construct the list of usable files
       buildFileList(root);
     }
+    // Figure out the test server
+    if (this.dap4TestServer == null) {
+      try {
+        URL url = new URL(drq.getRequest().getRequestURL().toString());
+        this.dap4TestServer = url.getHost();
+        if (url.getPort() > 0)
+          this.dap4TestServer += ":" + url.getPort();
+      } catch (MalformedURLException mue) {
+        this.dap4TestServer = null;
+      }
+    }
+    if (this.dap4TestServer == null)
+      this.dap4TestServer = DFALTTESTSERVER;
 
+    // Get the template and fill in selected macros
+    try {
+      this.frontpage = initialPage(this.dap4TestServer);
+    } catch (IOException ioe) {
+      throw new DapException(ioe).setCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    }
   }
   //////////////////////////////////////////////////
 
@@ -148,7 +177,7 @@ public class FrontPage {
         });
         if (DUMPFILELIST) {
           for (File x : matches) {
-            System.err.printf("file: %s/%s%n", rootinfo.prefix, x.getName());
+            System.err.printf("file: %s/%s%n", rootinfo.dir, x.getName());
           }
         }
         FileSource clone = new FileSource(src.ext, src.tag);
@@ -160,46 +189,71 @@ public class FrontPage {
   }
 
   protected String buildPage() throws DapException {
-    StringBuilder html = new StringBuilder();
-    html.append(HTML_PREFIX);
-    html.append(HTML_HEADER1);
-
     StringBuilder rootnames = new StringBuilder();
     for (Root root : this.roots) {
       if (rootnames.length() > 0)
         rootnames.append(",");
       rootnames.append(root.dir);
     }
-    html.append(String.format(HTML_HEADER2, rootnames));
-
+    StringBuilder sources = new StringBuilder();
     for (Root root : this.roots) {
       try {
         for (FileSource src : root.files) {
-          html.append(String.format(HTML_HEADER3, src.tag));
-          html.append(TABLE_HEADER);
+          StringBuilder allrows = new StringBuilder();
           for (File file : src.files) {
             String name = file.getName();
-            StringBuilder buf = new StringBuilder();
-            buf.append(this.drq.getControllerPath());
-            buf.append('/');
-            buf.append(DapUtil.canonicalpath(root.dir));
-            buf.append('/');
-            buf.append(DapUtil.canonicalpath(name));
-            String urlpath = buf.toString();
-            String line = String.format(HTML_FORMAT, name, urlpath, urlpath, urlpath);
-            html.append(line);
+            String rootpath = root.dir;
+            if (rootpath.startsWith("/"))
+              rootpath = rootpath.substring(1);
+            String url = String.format(HTML_URL_FORMAT, this.dap4TestServer, rootpath, name);
+            StringBuilder row = new StringBuilder(HTML_ROW);
+            substitute(row, "dataset", name);
+            substitute(row, "url", url);
+            allrows.append(row);
           }
-          html.append(TABLE_FOOTER);
+          StringBuilder source = new StringBuilder(HTML_SOURCE);
+          substitute(source, "source", src.tag);
+          substitute(source, "rows", allrows.toString());
+          sources.append(source);
         }
       } catch (Exception e) {
         sendtrace(drq, e);
       }
     }
-    html.append(HTML_FOOTER);
-    return html.toString();
+    substitute(this.frontpage, "sources", sources.toString());
+    return this.frontpage.toString();
   }
 
-  static public void sendtrace(DapRequest drq, Exception e) {
+  protected StringBuilder initialPage(String testserver) throws IOException {
+    // Get the FrontPage template
+    StringBuilder page = new StringBuilder();
+    String template = drq.getWebContentPath(FPTEMPLATE);
+    try (InputStream stream = new FileInputStream(template)) {
+      int ch;
+      while ((ch = stream.read()) >= 0) {
+        page.append((char) ch);
+      }
+    }
+    // Fill in initial parameters
+    substitute(page, "dap4TestServer", testserver);
+    return page;
+  }
+
+  protected void substitute(StringBuilder buf, String macro, String value) {
+    int from = 0;
+    String tag = "${" + macro + "}";
+    int taglen = tag.length();
+    int valuelen = value.length();
+    for (;;) {
+      int index = buf.indexOf(tag, from);
+      if (index < 0)
+        break;
+      buf.replace(index, index + taglen, value);
+      from = index + valuelen;
+    }
+  }
+
+  public static void sendtrace(DapRequest drq, Exception e) {
     try {
       StringWriter sw = new StringWriter();
       PrintWriter pw = new PrintWriter(sw);
@@ -212,7 +266,7 @@ public class FrontPage {
     }
   }
 
-  static public void sendtext(DapRequest drq, String s) {
+  public static void sendtext(DapRequest drq, String s) {
     try {
       // s = s.replace("<", "&lt;");
       // s = s.replace(">", "&gt;");
@@ -258,24 +312,16 @@ public class FrontPage {
    */
 
   //////////////////////////////////////////////////
-  // HTML prefix and suffix
+  // HTML Text Pieces
   // (Remember that java does not allow Strings to cross lines)
-  static final String HTML_PREFIX =
-      "<html>\n<head>\n<title>DAP4 Test Files</title>\n<meta http-equiv=\"Content-Type\" content=\"text/html\">\n</meta>\n<body bgcolor=\"#FFFFFF\">\n";
 
-  static final String HTML_HEADER1 = "<h1>DAP4 Test Files</h1>\n";
-  static final String HTML_HEADER2 = "<h2>http://" + dap4TestServer + "/d4ts/{%s}</h2>%n<hr>%n";
-  static final String HTML_HEADER3 = "<h3>%s Based Test Files</h3>%n";
+  static final String HTML_URL_FORMAT = DapConstants.HTTPSCHEME + "//%s/d4ts/%s/%s";
 
-  static final String TABLE_HEADER = "<table>\n";
-  static final String TABLE_FOOTER = "</table>\n";
+  static final String HTML_SOURCE = "<h3>${source} Based Test Files</h3>\n<table>\n${rows}\n</table>";
 
-  static final String HTML_FOOTER = "<hr>\n</html>\n";
+  static final String HTML_ROW = String.join("\n", "<tr>", "<td halign='right'><b>${dataset}:</b></td>",
+      "<td halign='center'><a href='${url}.dmr'> DMR </a></div></td>",
+      "<td halign='center'><a href='${url}.dap'> DAP </a></div></td>",
+      "<td halign='center'><a href='${url}.dsr'> DSR </a></div></td>", "</tr>", "");
 
-  static final String HTML_FORMAT = "<tr>%n" + "<td halign='right'><b>%s:</b></td>%n"
-      + "<td halign='center'><a href='%s.dmr.xml'> DMR.XML </a></div></td>%n"
-      + "<td halign='center'><a href='%s.dap'> DAP </a></div></td>%n"
-      + "<td halign='center'><a href='%s.dsr.xml'> DSR.XML </a></div></td>%n" + "</tr>%n";
-}
-
-
+} // FrontPage

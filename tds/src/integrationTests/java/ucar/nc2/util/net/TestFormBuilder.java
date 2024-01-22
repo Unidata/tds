@@ -9,6 +9,9 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.test.util.TdsUnitTestCommon;
@@ -17,17 +20,16 @@ import ucar.unidata.util.test.TestDir;
 
 import java.io.*;
 import java.lang.invoke.MethodHandles;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Test HttpFormBuilder
  */
+
+@RunWith(Parameterized.class)
 public class TestFormBuilder extends TdsUnitTestCommon {
-  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   //////////////////////////////////////////////////
   // Constants
@@ -59,125 +61,133 @@ public class TestFormBuilder extends TdsUnitTestCommon {
   static final String NULLURL = "http://" + TestDir.remoteTestServer;
 
   //////////////////////////////////////////////////
+  // Static Fields
+
+  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+  //////////////////////////////////////////////////
+  // Test Case Class
+
+  // Encapulate the arguments for each test
+  static class TestCase {
+    public String name;
+    public boolean ismultipart;
+    public HttpEntity content;
+
+    public TestCase(String name, HttpEntity content, boolean ismultipart) {
+      this.name = name;
+      this.ismultipart = ismultipart;
+      this.content = content;
+    }
+
+    public String toString() {
+      return this.name;
+    }
+  }
+
+  //////////////////////////////////////////////////
+  // Test Generator
+
+  @Parameterized.Parameters(name = "{index}: {0}")
+  static public List<TestCase> defineTestCases() throws IOException {
+    List<TestCase> testcases = new ArrayList<>();
+    // Simple form test case
+    HTTPFormBuilder builder = buildForm(false, null);
+    HttpEntity content = builder.build();
+    TestCase tc = new TestCase("simple-form", content, false);
+    testcases.add(tc);
+
+    // Multi-part form test case
+    File attach3file = HTTPUtil.fillTempFile("attach3.txt", ATTACHTEXT);
+    attach3file.deleteOnExit();
+    builder = buildForm(true, attach3file);
+    content = builder.build();
+    tc = new TestCase("multi-part-form", content, true);
+    testcases.add(tc);
+    return testcases;
+  }
+
+  //////////////////////////////////////////////////
+  // Test Fields
+
+  TestCase tc;
+
+  //////////////////////////////////////////////////
   // Instance Variables
-
-  protected String boundary = null;
-
-  File attach3file = null;
 
   //////////////////////////////////////////////////
   // Constructor(s)
 
-  public TestFormBuilder() {
+  public TestFormBuilder(TestCase tc) {
+    this.tc = tc;
     setTitle("HTTPFormBuilder test(s)");
+    HTTPIntercepts.setGlobalDebugInterceptors(false);
+  }
+
+  //////////////////////////////////////////////////
+  // Junit test method(s)
+
+  @Before
+  public void setup() {
     setSystemProperties();
-    // Turn on Session debugging
-    HTTPSession.TESTING = true;
-    HTTPIntercepts.setGlobalDebugInterceptors(true);
   }
 
   @Test
-  public void testSimple() throws Exception {
-    HTTPSession session = HTTPFactory.newSession(NULLURL);
-    session.resetInterceptors();
+  public void test() throws Exception {
     try {
-      HTTPFormBuilder builder = buildForm(false);
-      HttpEntity content = builder.build();
-      try (HTTPMethod postMethod = HTTPFactory.Post(session)) {
-        postMethod.setRequestContent(content);
+      HTTPIntercepts.DebugInterceptRequest dbgreq = null;
+      HttpEntity entity = null;
+      try (HTTPMethod postMethod = HTTPFactory.Post(NULLURL)) {
+        HTTPSession session = postMethod.getSession();
+        session.resetInterceptors();
+        postMethod.setRequestContent(tc.content);
         // Execute, but ignore any problems
-        try {
-          postMethod.execute();
-        } catch (Exception e) {
-          // ignore
-        }
+        postMethod.execute();
+        dbgreq = session.getDebugRequestInterceptor(); // Get the request that was used
+        Assert.assertTrue("Could not get debug request", dbgreq != null);
+        entity = dbgreq.getRequestEntity();
+        Assert.assertTrue("Could not get debug entity", entity != null);
       }
-      // Get the request that was used
-      HTTPIntercepts.DebugInterceptRequest dbgreq = session.getDebugRequestInterceptor();
-      Assert.assertTrue("Could not get debug request", dbgreq != null);
-      HttpEntity entity = dbgreq.getRequestEntity();
-      Assert.assertTrue("Could not get debug entity", entity != null);
       // Extract the form info
       Header ct = entity.getContentType();
-      String body = extract(entity, ct, false);
+      String body = extract(entity, ct, tc.ismultipart);
       Assert.assertTrue("Malformed debug request", body != null);
-      if (DEBUG || prop_visual)
+      if (prop_visual)
         visual("TestFormBuilder.testsimple.RAW", body);
-      body = genericize(body, OSTEXT, null, null);
-      if (DEBUG)
-        visual("TestFormBuilder.testsimple.LOCALIZED", body);
-      String diffs = TdsUnitTestCommon.compare("TestFormBuilder.testSimpl", simplebaseline, body);
-      if (diffs != null) {
-        System.err.println("TestFormBuilder.testsimple.diffs:\n" + diffs);
-        Assert.assertTrue("TestFormBuilder.testSimple: ***FAIL", false);
-      }
-    } catch (Exception e) {
-      Assert.assertTrue("***FAIL: " + e.getCause(), false);
-      if (DEBUG)
-        e.printStackTrace();
-    }
-  }
-
-  @Test
-  public void testMultiPart() throws Exception {
-    // Try to create a tmp file
-    attach3file = HTTPUtil.fillTempFile("attach3.txt", ATTACHTEXT);
-    attach3file.deleteOnExit();
-
-    HTTPSession session = HTTPFactory.newSession(NULLURL);
-    session.resetInterceptors();
-    try {
-      HTTPFormBuilder builder = buildForm(true);
-      HttpEntity content = builder.build();
-      try (HTTPMethod postMethod = HTTPFactory.Post(session)) {
-        postMethod.setRequestContent(content);
-        // Execute, but ignore any problems
-        try {
-          postMethod.execute();
-        } catch (Exception e) {
-          // ignore
+      if (!tc.ismultipart) { // simple form
+        body = genericize(body, OSTEXT, null, null);
+        if (prop_visual)
+          visual("TestFormBuilder.testsimple.LOCALIZED", body);
+        String diffs = TdsUnitTestCommon.compare("TestFormBuilder.testSimple", simplebaseline, body);
+        if (diffs != null) {
+          System.err.println("TestFormBuilder.testsimple.diffs:\n" + diffs);
+          Assert.assertTrue("TestFormBuilder.testSimple: ***FAIL", false);
         }
-      }
-      // Get the request that was used
-      HTTPIntercepts.DebugInterceptRequest dbgreq = session.getDebugRequestInterceptor();
-      Assert.assertTrue("Could not get debug request", dbgreq != null);
-      HttpEntity entity = dbgreq.getRequestEntity();
-      Assert.assertTrue("Could not get debug entity", entity != null);
-      // Extract the form info
-      Header ct = entity.getContentType();
-      String body = extract(entity, ct, true);
-      Assert.assertTrue("Malformed debug request", body != null);
-      if (DEBUG || prop_visual)
-        visual("TestFormBuilder.testmultipart.RAW", body);
-      // Get the contenttype boundary
-      String boundary = getboundary(ct);
-      Assert.assertTrue("Missing boundary info", boundary != null);
-      String attach3 = getattach(body, "attach3");
-      Assert.assertTrue("Missing attach3 info", attach3 != null);
-      body = genericize(body, OSTEXT, boundary, attach3);
-      if (DEBUG)
-        visual("TestFormBuilder.testmultipart.LOCALIZED", body);
-      String diffs = TdsUnitTestCommon.compare("TestFormBuilder.testMultiPart", multipartbaseline, body);
-      if (diffs != null) {
-        System.err.println("TestFormBuilder.testmultipart.diffs:\n" + diffs);
-        Assert.assertTrue("TestFormBuilder.testmultipart: ***FAIL", false);
+      } else if (tc.ismultipart) { // multi-part form
+        // Get the contenttype boundary
+        String boundary = getboundary(ct);
+        Assert.assertTrue("Missing boundary info", boundary != null);
+        String attach3 = getattach(body, "attach3");
+        Assert.assertTrue("Missing attach3 info", attach3 != null);
+        body = genericize(body, OSTEXT, boundary, attach3);
+        if (prop_visual)
+          visual("TestFormBuilder.testmultipart.LOCALIZED", body);
+        String diffs = TdsUnitTestCommon.compare("TestFormBuilder.testMultiPart", multipartbaseline, body);
+        if (diffs != null) {
+          System.err.println("TestFormBuilder.testmultipart.diffs:\n" + diffs);
+          Assert.assertTrue("TestFormBuilder.testmultipart: ***FAIL", false);
+        }
+      } else {
+        assert false;
       }
     } catch (Exception e) {
-      Assert.assertTrue("***FAIL: " + e.getCause(), false);
-      if (DEBUG)
-        e.printStackTrace();
+      e.printStackTrace();
+      Assert.assertTrue("***FAIL: " + e, false);
     }
   }
 
-  protected HTTPFormBuilder buildForm(boolean multipart) throws HTTPException {
+  static HTTPFormBuilder buildForm(boolean ismultipart, File attach3file) throws HTTPException {
     HTTPFormBuilder builder = new HTTPFormBuilder();
-
-    /*
-     * StringBuffer javaInfo = new StringBuffer();
-     * javaInfo.append("Java: home: " + System.getProperty("java.home"));
-     * javaInfo.append(" version: " + System.getProperty("java.version"))
-     */
-
     builder.add("fullName", NAMEENTRY);
     builder.add("emailAddress", EMAILENTRY);
     builder.add("organization", ORGENTRY);
@@ -188,7 +198,7 @@ public class TestFormBuilder extends TdsUnitTestCommon {
     builder.add("os", OSTEXT);
     builder.add("hardware", HARDWAREENTRY);
 
-    if (multipart) {
+    if (ismultipart) {
       // Use bytes
       builder.add("attachmentOne", EXTRATEXT.getBytes(HTTPUtil.ASCII), "extra.html");
       // Use Inputstream

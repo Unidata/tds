@@ -4,9 +4,10 @@ apply from: "$rootDir/gradle/any/java-published.gradle"
 dependencies {
     implementation enforcedPlatform(project(':tds-platform'))
 
-    compile 'edu.ucar:dap4'
-    compile 'edu.ucar:httpservices'
+    implementation 'edu.ucar:dap4'
+    implementation 'edu.ucar:httpservices'
+    implementation 'edu.ucar:cdm-core'
 
     compileOnly 'jakarta.servlet:jakarta.servlet-api'
-    compile 'org.slf4j:slf4j-api'
+    compileOnly 'org.slf4j:slf4j-api'
 }
