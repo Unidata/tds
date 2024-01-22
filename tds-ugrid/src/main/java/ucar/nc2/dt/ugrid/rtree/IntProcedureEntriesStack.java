@@ -135,13 +135,13 @@ public class IntProcedureEntriesStack implements IntProcedure {
   /**
    * Retrieves the value of the top-most item on this stack
    * 
-   * @param indices
-   *        an integer indices
+   * @param index
+   *        an integer index
    * 
    * @return an <code>Integer</code> value
    * 
    * @throws IndexOutOfBoundsException
-   *         if the indices is out of range (indices < 0 || indices >= size())
+   *         if the indices is out of range ({@code indices < 0 || indices >= size()})
    */
   public Integer peek(int index) throws IndexOutOfBoundsException {
     return this.indices.get(index);

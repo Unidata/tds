@@ -62,7 +62,7 @@ public class DummySink extends DeflaterOutputStream {
    *
    * @param out the output stream
    * @param def the compressor ("deflater")
-   * @throws IllegalArgumentException if size is <= 0
+   * @throws IllegalArgumentException if size is {@code <= 0}
    */
   public DummySink(OutputStream out, Deflater def, int size) {
     super(out);

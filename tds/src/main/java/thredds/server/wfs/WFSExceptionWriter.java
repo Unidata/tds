@@ -45,7 +45,6 @@ public class WFSExceptionWriter {
    * @param text the text associated with the exception
    * @param locator the locator associated with the exception
    * @param ExceptionCode the standardized exception code
-   * @param hsr http response to write to
    */
   public WFSExceptionWriter(String text, String locator, String ExceptionCode) {
     this.text = text;

@@ -60,6 +60,15 @@
         </variable>
       </ncml:netcdf>
     </dataset>
+    <dataset name="With NcML enhance=none" ID="withNcMlEnhanceNone" serviceName="all" urlPath="testOffsetWithNcmlEnhanceNone.nc">
+      <serviceName>all</serviceName>
+      <ncml:netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" enhance="none"
+        location="content/testdata/testOffset.nc">
+        <variable name="variableWithoutOffset">
+          <attribute name="add_offset" type="float" value="-100"/>
+        </variable>
+      </ncml:netcdf>
+    </dataset>
   </dataset>
 
   <dataset name="Test Dap4 Dataset" ID="testDap4Dataset" serviceName="dap4"
@@ -302,6 +311,7 @@
   <catalogRef xlink:title="ESGF" xlink:href="testEsgfProblems.xml" name=""/>
   <catalogRef xlink:title="RDA" xlink:href="testRdaProblems.xml" name=""/>
   <catalogRef xlink:title="TDS S3" xlink:href="tds-s3.xml" name=""/>
+  <catalogRef xlink:title="TDS Zarr" xlink:href="tds-zarr.xml" name=""/>
   <catalogRef xlink:title="Test nested aggregation" xlink:href="catalogNestedAgg.xml" name=""/>
 
   <catalogScan location="catalogs5" path="catalogs5" name="catalog scan with version 5 features"/>

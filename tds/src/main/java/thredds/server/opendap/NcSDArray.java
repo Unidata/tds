@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Wraps a netcdf variable with rank > 0 as an SDArray.
- * For char arrays, use NcSDString (rank 0 or 1) or NcSDCharArray (rank > 1).
- *
+ * {@literal Wraps a netcdf variable with rank > 0 as an SDArray.
+ * For char arrays, use NcSDString (rank 0 or 1) or NcSDCharArray (rank > 1).}
+ * 
  * @author jcaron
  * @see NcSDCharArray
  */

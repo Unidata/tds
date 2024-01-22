@@ -19,6 +19,7 @@ dependencies {
   compile 'edu.ucar:cdm-misc'
   compile 'edu.ucar:cdm-image'
   compile 'edu.ucar:cdm-s3'
+  compile 'edu.ucar:cdm-zarr'
   compile 'edu.ucar:grib'
   compile 'edu.ucar:netcdf4'
   compile 'edu.ucar:httpservices'
@@ -48,6 +49,7 @@ dependencies {
   compile 'com.google.code.findbugs:jsr305'
   compile 'com.google.guava:guava'
   compile 'joda-time:joda-time'
+  compile 'org.apache.commons:commons-lang3'
 
   // WaterML
   compile 'org.apache.xmlbeans:xmlbeans'

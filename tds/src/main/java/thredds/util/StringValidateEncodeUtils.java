@@ -160,11 +160,11 @@ public class StringValidateEncodeUtils {
   private final static Pattern INVALID_CHARACTERS_FOR_ID_STRING_PATTERN = Pattern.compile("[\\p{Zs}]");
 
   /**
-   * Return true if the given String contains any less than ("<") or
-   * greater than (">") characters; otherwise return false.
+   * {@literal Return true if the given String contains any less than ("<") or
+   * greater than (">") characters; otherwise return false.}
    *
    * @param string the String to check.
-   * @return true if the given String contains any less than ("<") or greater than (">") characters
+   * @return {@literal true if the given String contains any less than ("<") or greater than (">") characters}
    */
   public static boolean containsAngleBracketCharacters(String string) {
     if (string == null)
@@ -176,11 +176,11 @@ public class StringValidateEncodeUtils {
   }
 
   /**
-   * Return true if the given String contains any ampersand ("&")
-   * characters; otherwise return false.
+   * {@literal Return true if the given String contains any ampersand ("&")
+   * characters; otherwise return false.}
    *
    * @param string the String to check.
-   * @return true if the given String contains any ampersand ("&") characters
+   * @return {@literal true if the given String contains any ampersand ("&") characters}
    */
   public static boolean containsAmpersandCharacters(String string) {
     if (string == null)

@@ -18,7 +18,7 @@ import java.io.DataOutputStream;
 import java.util.*;
 
 /**
- * Wraps a netcdf char variable with rank > 1 as an SDArray.
+ * {@literal Wraps a netcdf char variable with rank > 1 as an SDArray.}
  *
  * @author jcaron
  */

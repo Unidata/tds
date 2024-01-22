@@ -189,7 +189,7 @@ public class RTree implements SpatialIndex, Serializable {
    * </ul>
    * </p>
    *
-   * @see com.asascience.data.rtree.SpatialIndex#init(Properties)
+   * see com.asascience.data.rtree.SpatialIndex#init(Properties)
    */
   public void init(Properties props) {
     maxNodeEntries = Integer.parseInt(props.getProperty("MaxNodeEntries", "0"));
@@ -228,7 +228,7 @@ public class RTree implements SpatialIndex, Serializable {
   }
 
   /**
-   * @see com.asascience.data.rtree.SpatialIndex#add(Rectangle2D, int)
+   * see com.asascience.data.rtree.SpatialIndex#add(Rectangle2D, int)
    */
   public void add(LatLonPolygon2D r, int id) {
     // if (log.isDebugEnabled()) {
@@ -621,7 +621,7 @@ public class RTree implements SpatialIndex, Serializable {
 
 
   /**
-   * @see com.asascience.data.rtree.SpatialIndex#contains(LatLonRectangle2D, IntProcedure)
+   * see com.asascience.data.rtree.SpatialIndex#contains(LatLonRectangle2D, IntProcedure)
    */
   public void contains(LatLonPolygon2D r, IntProcedure v) {
     // find all rectangles in the tree that are contained by the passed
@@ -678,14 +678,14 @@ public class RTree implements SpatialIndex, Serializable {
 
 
   /**
-   * @see com.asascience.data.rtree.SpatialIndex#size()
+   * see com.asascience.data.rtree.SpatialIndex#size()
    */
   public int size() {
     return size;
   }
 
   /**
-   * @see com.asascience.data.rtree.SpatialIndex#getBounds()
+   * see com.asascience.data.rtree.SpatialIndex#getBounds()
    */
   public LatLonRectangle2D getBounds() {
     LatLonRectangle2D bounds = null;
@@ -698,7 +698,7 @@ public class RTree implements SpatialIndex, Serializable {
   }
 
   /**
-   * @see com.asascience.data.rtree.SpatialIndex#getVersion()
+   * see com.asascience.data.rtree.SpatialIndex#getVersion()
    */
   public String getVersion() {
     return "RTree-" + VERSION;

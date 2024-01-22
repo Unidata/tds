@@ -255,12 +255,12 @@ public interface UGridDatatype extends ucar.nc2.dt.GridDatatype {
    * This reads an arbitrary data slice, returning the data in
    * canonical order (rt-e-t-z-y-x). If any dimension does not exist, ignore it.
    *
-   * @param rt_index if < 0, get all of runtime dim; if valid index, fix slice to that value.
-   * @param e_index if < 0, get all of ensemble dim; if valid index, fix slice to that value.
-   * @param t_index if < 0, get all of time dim; if valid index, fix slice to that value.
-   * @param z_index if < 0, get all of z dim; if valid index, fix slice to that value.
-   * @param y_index if < 0, get all of y dim; if valid index, fix slice to that value.
-   * @param x_index if < 0, get all of x dim; if valid index, fix slice to that value.
+   * @param rt_index if {@code < 0}, get all of runtime dim; if valid index, fix slice to that value.
+   * @param e_index if {@code < 0}, get all of ensemble dim; if valid index, fix slice to that value.
+   * @param t_index if {@code < 0}, get all of time dim; if valid index, fix slice to that value.
+   * @param z_index if {@code < 0}, get all of z dim; if valid index, fix slice to that value.
+   * @param y_index if {@code < 0}, get all of y dim; if valid index, fix slice to that value.
+   * @param x_index if {@code < 0}, get all of x dim; if valid index, fix slice to that value.
    * @return data[rt,e,t,z,y,x], eliminating missing or fixed dimension.
    * @throws java.io.IOException on io error
    */
@@ -272,10 +272,10 @@ public interface UGridDatatype extends ucar.nc2.dt.GridDatatype {
    * canonical order (t-z-y-x). If any dimension does not exist, ignore it.
    * For backwards compatibility for grids with no runtime or ensemble dimensions.
    *
-   * @param t_index if < 0, get all of time dim; if valid index, fix slice to that value.
-   * @param z_index if < 0, get all of z dim; if valid index, fix slice to that value.
-   * @param y_index if < 0, get all of y dim; if valid index, fix slice to that value.
-   * @param x_index if < 0, get all of x dim; if valid index, fix slice to that value.
+   * @param t_index if {@code < 0}, get all of time dim; if valid index, fix slice to that value.
+   * @param z_index if {@code < 0}, get all of z dim; if valid index, fix slice to that value.
+   * @param y_index if {@code < 0}, get all of y dim; if valid index, fix slice to that value.
+   * @param x_index if {@code < 0}, get all of x dim; if valid index, fix slice to that value.
    * @return data[rt,e,t,z,y,x], eliminating missing or fixed dimension.
    * @throws java.io.IOException on io error
    */

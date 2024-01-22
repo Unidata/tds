@@ -258,8 +258,9 @@ public abstract class Point3D implements Cloneable {
    * instantiation and provide a number of formats for storing the information necessary to satisfy the various accessor
    * methods below.
    * 
-   * @see java.awt.geom.Point3D.Float
-   * @see java.awt.geom.Point3D.Double
+   * see java.awt.geom.Point3D.Float
+   * see java.awt.geom.Point3D.Double
+   * 
    * @see java.awt.Point
    */
   protected Point3D() {}

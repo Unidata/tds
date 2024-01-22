@@ -33,6 +33,7 @@ dependencies {
     api 'edu.ucar:cdm-misc'
     api 'edu.ucar:cdm-image'
     api 'edu.ucar:cdm-s3'
+    api 'edu.ucar:cdm-zarr'
     api 'edu.ucar:netcdf4'
     api 'edu.ucar:cdm-mcidas'
     api 'edu.ucar:waterml'
@@ -88,6 +89,7 @@ dependencies {
     api "org.hibernate.validator:hibernate-validator:${depVersion.hibernateValidator}"
     api "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
     api 'jakarta.el:jakarta.el-api'
+    api'org.apache.commons:commons-lang3:3.4'
     runtime 'org.glassfish:javax.el:3.0.0'
     runtime "jaxen:jaxen:${depVersion.jaxen}"
 
