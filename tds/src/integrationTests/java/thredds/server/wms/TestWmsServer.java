@@ -67,6 +67,20 @@ public class TestWmsServer {
         TestOnLocalServer.withHttpPath("/wms/scanCdmUnitTests/conventions/cf/ipcc/tas_A1.nc?service=WMS&version=1.3.0"
             + "&request=GetMap&CRS=CRS:84&WIDTH=512&HEIGHT=512&LAYERS=tas&BBOX=0,-90,360,90&format="
             + ContentType.png.toString() + "&time=1850-01-16T12:00:00Z");
+    testGetPng(endpoint);
+  }
+
+  @Test
+  @Category(NeedsCdmUnitTest.class)
+  public void testGetPngInAnotherProjection() {
+    String endpoint =
+        TestOnLocalServer.withHttpPath("/wms/scanCdmUnitTests/conventions/cf/ipcc/tas_A1.nc?service=WMS&version=1.3.0"
+            + "&request=GetMap&CRS=EPSG:3857&WIDTH=512&HEIGHT=512&LAYERS=tas&BBOX=0,-90,360,90&format="
+            + ContentType.png.toString() + "&time=1850-01-16T12:00:00Z");
+    testGetPng(endpoint);
+  }
+
+  private static void testGetPng(String endpoint) {
     byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.png.toString());
     // make sure we get a png back
     // first byte (unsigned) should equal 137 (decimal)
