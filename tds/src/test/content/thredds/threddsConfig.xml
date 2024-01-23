@@ -16,10 +16,10 @@
       <!--phone></phone-->
     </contact>
     <hostInstitution>
-      <name>Unidata</name>
+      <name>NSF Unidata</name>
       <webSite>https://www.unidata.ucar.edu/</webSite>
-      <logoUrl>unidataIcon.gif</logoUrl>
-      <logoAltText>Unidata</logoAltText>
+      <logoUrl>NSF-Unidata.png</logoUrl>
+      <logoAltText>NSF Unidata</logoAltText>
     </hostInstitution>
   </serverInformation>
 
