@@ -28,6 +28,7 @@
 
 package thredds.server.wms;
 
+import java.io.IOException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -95,6 +96,19 @@ public class ThreddsWmsServlet extends WmsServlet {
     // Look - is setting this to null the right thing to do??
     String removePrefix = null;
     TdsRequestedDataset tdsDataset = new TdsRequestedDataset(httpServletRequest, removePrefix);
+    catalogue = acquireCatalogue(httpServletRequest, httpServletResponse, tdsDataset);
+
+    /*
+     * Now that we've got a WmsCatalogue, we can pass this request to the
+     * super implementation which will handle things from here.
+     */
+    super.dispatchWmsRequest(request, params, httpServletRequest, httpServletResponse, catalogue);
+  }
+
+  private ThreddsWmsCatalogue acquireCatalogue(HttpServletRequest httpServletRequest,
+      HttpServletResponse httpServletResponse, TdsRequestedDataset tdsDataset) throws IOException {
+    ThreddsWmsCatalogue catalogue;
+
     if (useCachedCatalogue(tdsDataset.getPath())) {
       catalogue = catalogueCache.get(tdsDataset.getPath()).wmsCatalogue;
     } else {
@@ -110,11 +124,11 @@ public class ThreddsWmsServlet extends WmsServlet {
 
       /*
        * Generate a new catalogue for the given dataset
-       * 
+       *
        * In the full system, we should keep a cache of these
        * ThreddsWmsCatalogues, but in this example we just create each new one
        * on the fly.
-       * 
+       *
        * If a feature cache is required on the WMS (a Good Idea), I recommend
        * a single cache in this servlet which gets passed to each WmsCatalogue
        * upon construction (i.e. HERE). That's a TDS implementation detail
@@ -124,16 +138,11 @@ public class ThreddsWmsServlet extends WmsServlet {
         throw new EdalLayerNotFoundException("The requested dataset is not available on this server");
       }
       catalogue = new ThreddsWmsCatalogue(ncd, tdsDataset.getPath());
-      final CachedWmsCatalogue cachedWmsCatalogue =
-          new CachedWmsCatalogue((ThreddsWmsCatalogue) catalogue, ncd.getLastModified());
+      final CachedWmsCatalogue cachedWmsCatalogue = new CachedWmsCatalogue(catalogue, ncd.getLastModified());
       catalogueCache.put(tdsDataset.getPath(), cachedWmsCatalogue);
     }
 
-    /*
-     * Now that we've got a WmsCatalogue, we can pass this request to the
-     * super implementation which will handle things from here.
-     */
-    super.dispatchWmsRequest(request, params, httpServletRequest, httpServletResponse, catalogue);
+    return catalogue;
   }
 
   // package private for testing
