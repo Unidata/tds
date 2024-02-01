@@ -1,6 +1,7 @@
 package thredds.server.wms;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import javax.servlet.ServletException;
 
 import org.junit.*;
@@ -21,6 +23,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import java.lang.invoke.MethodHandles;
+import ucar.nc2.dataset.NetcdfDatasets;
+import ucar.nc2.util.cache.FileCacheIF;
 
 @Ignore("TODO: fix WMS cache - tests fail on windows (and occasionally on GH?)")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -111,6 +115,35 @@ public class TestWmsCache {
     updateTestFile();
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(AGGREGATION_RECHECK_MSEC_PATH)).isTrue();
     assertThat(ThreddsWmsServlet.useCachedCatalogue(AGGREGATION_RECHECK_MSEC_PATH)).isFalse();
+  }
+
+  @Test
+  public void shouldNotLockFileInCache() throws IOException, ServletException {
+    final String filename = "testGridAsPoint.nc";
+    final String testPath = "localContent/" + filename;
+    getCapabilities(testPath);
+    assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isTrue();
+
+    // check file is not locked in netcdf file cache
+    final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
+    final List<String> entries = cache.showCache();
+    assertThat(entries.size()).isGreaterThan(0);
+    final boolean isLocked = entries.stream().filter(e -> e.contains(filename)).anyMatch(e -> e.startsWith("true"));
+    assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
+  }
+
+  @Test
+  public void shouldNotLockAggregationInCache() throws IOException, ServletException {
+    final String testPath = "ExampleNcML/Agg.nc";
+    getCapabilities(testPath);
+    assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isTrue();
+
+    // check aggregation is not locked in netcdf file cache
+    final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
+    final List<String> entries = cache.showCache();
+    assertThat(entries.size()).isGreaterThan(0);
+    final boolean isLocked = entries.stream().filter(e -> e.contains(testPath)).anyMatch(e -> e.startsWith("true"));
+    assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
   }
 
   private void updateTestFile() throws IOException {
