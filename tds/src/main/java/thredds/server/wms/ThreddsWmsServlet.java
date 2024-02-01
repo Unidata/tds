@@ -112,15 +112,7 @@ public class ThreddsWmsServlet extends WmsServlet {
     if (useCachedCatalogue(tdsDataset.getPath())) {
       catalogue = catalogueCache.get(tdsDataset.getPath()).wmsCatalogue;
     } else {
-      NetcdfFile ncf = TdsRequestedDataset.getNetcdfFile(httpServletRequest, httpServletResponse, tdsDataset.getPath());
-      NetcdfDataset ncd;
-      if (TdsRequestedDataset.useNetcdfJavaBuilders()) {
-        ncd = NetcdfDatasets.enhance(ncf, NetcdfDataset.getDefaultEnhanceMode(), null);
-      } else {
-        ncd = NetcdfDataset.wrap(ncf, NetcdfDataset.getDefaultEnhanceMode());
-      }
-
-      String netcdfFilePath = ncf.getLocation();
+      NetcdfDataset ncd = acquireNetcdfDataset(httpServletRequest, httpServletResponse, tdsDataset);
 
       /*
        * Generate a new catalogue for the given dataset
@@ -134,7 +126,7 @@ public class ThreddsWmsServlet extends WmsServlet {
        * upon construction (i.e. HERE). That's a TDS implementation detail
        * though, hence not in this example.
        */
-      if (netcdfFilePath == null) {
+      if (ncd.getLocation() == null) {
         throw new EdalLayerNotFoundException("The requested dataset is not available on this server");
       }
       catalogue = new ThreddsWmsCatalogue(ncd, tdsDataset.getPath());
@@ -143,6 +135,16 @@ public class ThreddsWmsServlet extends WmsServlet {
     }
 
     return catalogue;
+  }
+
+  private NetcdfDataset acquireNetcdfDataset(HttpServletRequest httpServletRequest,
+      HttpServletResponse httpServletResponse, TdsRequestedDataset tdsDataset) throws IOException {
+    NetcdfFile ncf = TdsRequestedDataset.getNetcdfFile(httpServletRequest, httpServletResponse, tdsDataset.getPath());
+    if (TdsRequestedDataset.useNetcdfJavaBuilders()) {
+      return NetcdfDatasets.enhance(ncf, NetcdfDataset.getDefaultEnhanceMode(), null);
+    } else {
+      return NetcdfDataset.wrap(ncf, NetcdfDataset.getDefaultEnhanceMode());
+    }
   }
 
   // package private for testing
