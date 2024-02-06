@@ -33,7 +33,6 @@ import thredds.util.ContentType;
 
 import static com.google.common.truth.Truth.assertThat;
 
-@Ignore("TODO: fix locked files issue")
 public class TestUpdateWmsServer {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
