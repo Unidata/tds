@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import thredds.featurecollection.cache.GridInventoryCacheChronicle;
 import thredds.server.config.TdsContext;
+import thredds.server.wms.ThreddsWmsServlet;
 import thredds.servlet.ServletUtil;
 import ucar.nc2.dataset.NetcdfDataset;
 import java.io.ByteArrayOutputStream;
@@ -148,6 +149,9 @@ public class DebugCommands {
 
         f.format("%n%n");
         GridInventoryCacheChronicle.showCache(f);
+
+        f.format("%n%n");
+        ThreddsWmsServlet.showCache(f);
 
         e.pw.flush();
       }

@@ -77,7 +77,6 @@ public class ThreddsWmsServlet extends WmsServlet {
       CacheBuilder.newBuilder().maximumSize(200).recordStats().build();
   private static int cacheLoads = 0;
 
-
   @Override
   @RequestMapping(value = "**", method = {RequestMethod.GET})
   protected void dispatchWmsRequest(String request, RequestParams params, HttpServletRequest httpServletRequest,
@@ -125,6 +124,7 @@ public class ThreddsWmsServlet extends WmsServlet {
       // Create and put/ replace in cache
       ThreddsWmsCatalogue threddsWmsCatalogue = new ThreddsWmsCatalogue(ncd, tdsDatasetPath);
       catalogueCache.put(tdsDatasetPath, new CachedWmsCatalogue(threddsWmsCatalogue, lastModified));
+      cacheLoads++;
       return threddsWmsCatalogue;
     }
   }
@@ -139,19 +139,32 @@ public class ThreddsWmsServlet extends WmsServlet {
     }
   }
 
-  // package private for testing
-  static boolean useCachedCatalogue(String tdsDatasetPath) {
-    if (containsCachedCatalogue(tdsDatasetPath)) {
-      // This date last modified will be updated e.g. in the case of an aggregation with a recheckEvery
-      final long netcdfDatasetLastModified = catalogueCache.get(tdsDatasetPath).wmsCatalogue.getLastModified();
-      final long cacheLastModified = catalogueCache.get(tdsDatasetPath).lastModified;
-      return cacheLastModified >= netcdfDatasetLastModified;
+  public static void showCache(Formatter formatter) {
+    formatter.format("%nWmsCache:%n");
+    formatter.format("numberOfEntries=%d, ", getNumberOfEntries());
+    formatter.format("loads=%d, ", getCacheLoads());
+    formatter.format("evictionCount=%d ", catalogueCache.stats().evictionCount());
+    formatter.format("%nentries:%n");
+    for (Map.Entry<String, CachedWmsCatalogue> entry : catalogueCache.asMap().entrySet()) {
+      formatter.format("  %s%n", entry.getKey());
     }
-    return false;
   }
 
   // package private for testing
+  static void resetCache() {
+    catalogueCache.invalidateAll();
+    cacheLoads = 0;
+  }
+
   static boolean containsCachedCatalogue(String tdsDatasetPath) {
-    return catalogueCache.containsKey(tdsDatasetPath);
+    return catalogueCache.asMap().containsKey(tdsDatasetPath);
+  }
+
+  static long getNumberOfEntries() {
+    return catalogueCache.size();
+  }
+
+  static int getCacheLoads() {
+    return cacheLoads;
   }
 }
