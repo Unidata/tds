@@ -1,6 +1,7 @@
 package thredds.server.wms;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,9 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import javax.servlet.ServletException;
 
 import org.junit.*;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -21,8 +24,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import java.lang.invoke.MethodHandles;
+import ucar.nc2.dataset.NetcdfDatasets;
+import ucar.nc2.util.cache.FileCacheIF;
+import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
-@Ignore("TODO: fix WMS cache - tests fail on windows (and occasionally on GH?)")
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"})
@@ -58,63 +63,91 @@ public class TestWmsCache {
 
   @Test
   public void shouldCacheFile() throws IOException, ServletException {
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(TEST_PATH)).isFalse();
-    getCapabilities(TEST_PATH);
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(TEST_PATH)).isTrue();
-    assertThat(ThreddsWmsServlet.useCachedCatalogue(TEST_PATH)).isTrue();
+    assertAddedToCache(TEST_PATH);
+    assertUsedCache(TEST_PATH);
   }
 
   // TODO also test updating an S3 file (currently not implemented through MFileS3)
   @Test
   public void shouldCacheS3File() throws IOException, ServletException {
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(S3_TEST_PATH)).isFalse();
-    getCapabilities(S3_TEST_PATH);
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(S3_TEST_PATH)).isTrue();
-    assertThat(ThreddsWmsServlet.useCachedCatalogue(S3_TEST_PATH)).isTrue();
+    assertAddedToCache(S3_TEST_PATH);
+    assertUsedCache(S3_TEST_PATH);
   }
 
   @Test
   public void shouldNotUseOutdatedCacheFile() throws IOException, ServletException {
-    getCapabilities(TEST_PATH);
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(TEST_PATH)).isTrue();
-    assertThat(ThreddsWmsServlet.useCachedCatalogue(TEST_PATH)).isTrue();
-
+    assertAddedToCache(TEST_PATH);
     updateTestFile();
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(TEST_PATH)).isTrue();
-    assertThat(ThreddsWmsServlet.useCachedCatalogue(TEST_PATH)).isFalse();
+    assertAddedToCache(TEST_PATH);
   }
 
   @Test
   public void shouldUseUnchangedAggregation() throws IOException, ServletException {
-    getCapabilities(AGGREGATION_RECHECK_MINUTE_PATH);
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(AGGREGATION_RECHECK_MINUTE_PATH)).isTrue();
-    assertThat(ThreddsWmsServlet.useCachedCatalogue(AGGREGATION_RECHECK_MINUTE_PATH)).isTrue();
+    assertAddedToCache(AGGREGATION_RECHECK_MINUTE_PATH);
+    assertUsedCache(AGGREGATION_RECHECK_MINUTE_PATH);
   }
 
   @Test
   public void shouldUseRecheckedButUnchangedAggregation() throws IOException, ServletException {
-    getCapabilities(AGGREGATION_RECHECK_MSEC_PATH);
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(AGGREGATION_RECHECK_MSEC_PATH)).isTrue();
-    assertThat(ThreddsWmsServlet.useCachedCatalogue(AGGREGATION_RECHECK_MSEC_PATH)).isTrue();
+    assertAddedToCache(AGGREGATION_RECHECK_MSEC_PATH);
 
     // Will be rechecked after 1 ms
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(AGGREGATION_RECHECK_MSEC_PATH)).isTrue();
-    assertThat(ThreddsWmsServlet.useCachedCatalogue(AGGREGATION_RECHECK_MSEC_PATH)).isTrue();
+    assertUsedCache(AGGREGATION_RECHECK_MSEC_PATH);
   }
 
   @Test
   public void shouldNotUseOutdatedAggregation() throws IOException, ServletException {
-    getCapabilities(AGGREGATION_RECHECK_MSEC_PATH);
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(AGGREGATION_RECHECK_MSEC_PATH)).isTrue();
-    assertThat(ThreddsWmsServlet.useCachedCatalogue(AGGREGATION_RECHECK_MSEC_PATH)).isTrue();
-
+    assertAddedToCache(AGGREGATION_RECHECK_MSEC_PATH);
     updateTestFile();
-    assertThat(ThreddsWmsServlet.containsCachedCatalogue(AGGREGATION_RECHECK_MSEC_PATH)).isTrue();
-    assertThat(ThreddsWmsServlet.useCachedCatalogue(AGGREGATION_RECHECK_MSEC_PATH)).isFalse();
+    assertAddedToCache(AGGREGATION_RECHECK_MSEC_PATH);
+  }
+
+  @Test
+  public void shouldNotLockFileInCache() throws IOException, ServletException {
+    final String filename = "testGridAsPoint.nc";
+    final String testPath = "localContent/" + filename;
+    getCapabilities(testPath);
+    assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isTrue();
+
+    // check file is not locked in netcdf file cache
+    final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
+    final List<String> entries = cache.showCache();
+    assertThat(entries.size()).isGreaterThan(0);
+    final boolean isLocked = entries.stream().filter(e -> e.contains(filename)).anyMatch(e -> e.startsWith("true"));
+    assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
+  }
+
+  @Test
+  @Category(NeedsCdmUnitTest.class)
+  public void shouldNotLockAggregationInCache() throws IOException, ServletException {
+    final String testPath = "ExampleNcML/Agg.nc";
+    getCapabilities(testPath);
+    assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isTrue();
+
+    // check aggregation is not locked in netcdf file cache
+    final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
+    final List<String> entries = cache.showCache();
+    assertThat(entries.size()).isGreaterThan(0);
+    final boolean isLocked = entries.stream().filter(e -> e.contains(testPath)).anyMatch(e -> e.startsWith("true"));
+    assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
   }
 
   private void updateTestFile() throws IOException {
     Files.copy(TEST_FILE, TEMP_FILE, StandardCopyOption.REPLACE_EXISTING);
+  }
+
+  private void assertUsedCache(String path) throws ServletException, IOException {
+    int loads = ThreddsWmsServlet.getCacheLoads();
+    getCapabilities(path);
+    assertThat(ThreddsWmsServlet.containsCachedCatalogue(path)).isTrue();
+    assertThat(ThreddsWmsServlet.getCacheLoads()).isEqualTo(loads);
+  }
+
+  private void assertAddedToCache(String path) throws ServletException, IOException {
+    int loads = ThreddsWmsServlet.getCacheLoads();
+    getCapabilities(path);
+    assertThat(ThreddsWmsServlet.containsCachedCatalogue(path)).isTrue();
+    assertThat(ThreddsWmsServlet.getCacheLoads()).isEqualTo(loads + 1);
   }
 
   private void getCapabilities(String path) throws ServletException, IOException {
