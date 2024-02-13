@@ -166,6 +166,7 @@ public class DebugCommands {
         FileCacheIF fc = GribCdmIndex.gribCollectionCache;
         if (fc != null)
           fc.clearCache(false);
+        ThreddsWmsServlet.resetCache();
         e.pw.println("  ClearCache ok");
       }
     };
@@ -224,6 +225,13 @@ public class DebugCommands {
     };
     debugHandler.addAction(act);
 
+    act = new Action("forceWMSCache", "Force clear WMS Cache") {
+      public void doAction(Event e) {
+        ThreddsWmsServlet.resetCache();
+        e.pw.println("  WMS force clearCache done");
+      }
+    };
+    debugHandler.addAction(act);
   }
 
   protected void makeDebugActions() {

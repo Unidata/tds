@@ -150,12 +150,12 @@ public class ThreddsWmsServlet extends WmsServlet {
     }
   }
 
-  // package private for testing
-  static void resetCache() {
+  public static void resetCache() {
     catalogueCache.invalidateAll();
     cacheLoads = 0;
   }
 
+  // package private for testing
   static boolean containsCachedCatalogue(String tdsDatasetPath) {
     return catalogueCache.asMap().containsKey(tdsDatasetPath);
   }
