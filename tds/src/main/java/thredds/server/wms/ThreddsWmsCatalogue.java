@@ -423,7 +423,7 @@ public class ThreddsWmsCatalogue implements WmsCatalogue {
     return new TdsEnhancedVariableMetadata(this, metadata);
   }
 
-  public void setNetcdfDataset(NetcdfDataset ncd) {
+  void setNetcdfDataset(NetcdfDataset ncd) {
     datasetFactory.setNetcdfDataset(ncd);
   }
 }
