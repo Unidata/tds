@@ -13,6 +13,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import org.junit.*;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.lang.invoke.MethodHandles;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.util.cache.FileCacheIF;
+import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -116,6 +118,7 @@ public class TestWmsCache {
   }
 
   @Test
+  @Category(NeedsCdmUnitTest.class)
   public void shouldNotLockAggregationInCache() throws IOException, ServletException {
     final String testPath = "ExampleNcML/Agg.nc";
     getCapabilities(testPath);
