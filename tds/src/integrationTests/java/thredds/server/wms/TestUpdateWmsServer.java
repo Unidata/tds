@@ -42,7 +42,7 @@ public class TestUpdateWmsServer {
   private static final String DIR = "src/test/content/thredds/public/testdata/";
   private static final Path SRC_FILE_1 = Paths.get(DIR, "testGridAsPoint.nc");
   private static final Path SRC_FILE_2 = Paths.get(DIR, "testData.nc");
-  private static String FILENAME = "testUpdate.nc";
+  private static final String FILENAME = "testUpdate.nc";
 
   @Rule
   public TemporaryFolder temporaryFolder = new TemporaryFolder(new File(DIR));
