@@ -65,6 +65,12 @@ The following is no longer used:
 
 * By default, most services are enabled, but may still be turned off in `threddsConfig.xml`.
 
+### WMS/ Godiva
+TDS 5.x uses the [edal-java](https://github.com/Reading-eScience-Centre/edal-java) library (formerly ncWMS 1.x).
+As this is a major version change to that library, there may be some breaking changes.
+See also the [edal user guide](https://reading-escience-centre.gitbooks.io/edal-user-guide/content/) and the 
+[changes from ncWMS 1.x](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/01-ncwms1x.html#changes).
+
 ## Java Web Start
 
 Java Web Start has been [deprecated as of Java 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and has been removed in [Java 11](https://www.oracle.com/technetwork/java/javase/11-relnote-issues-5012449.html){:target="_blank"}, which is the Long-term Release post-Java 8.
