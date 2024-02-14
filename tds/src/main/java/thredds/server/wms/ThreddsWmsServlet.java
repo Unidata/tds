@@ -115,7 +115,7 @@ public class ThreddsWmsServlet extends WmsServlet {
     final CachedWmsCatalogue cachedWmsCatalogue = catalogueCache.getIfPresent(tdsDatasetPath);
     final long lastModified = ncd.getLastModified();
 
-    if (cachedWmsCatalogue != null && cachedWmsCatalogue.lastModified >= lastModified) {
+    if (cachedWmsCatalogue != null && cachedWmsCatalogue.lastModified == lastModified) {
       // Must update NetcdfDataset to ensure file resources are reacquired, as this has been closed.
       // But we don't need to recreate the ThreddsWmsCatalogue as it is up-to-date according to the last modified
       cachedWmsCatalogue.wmsCatalogue.setNetcdfDataset(ncd);
