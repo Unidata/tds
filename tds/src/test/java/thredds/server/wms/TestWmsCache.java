@@ -82,6 +82,18 @@ public class TestWmsCache {
   }
 
   @Test
+  public void shouldNotUseCacheFileWithNewerModified() throws IOException, ServletException {
+    final File testFile = new File(TEMP_FILE.toUri());
+    final long lastModified = testFile.lastModified();
+    assertAddedToCache(TEST_PATH);
+
+    // Change test file to have older last modified date
+    assertThat(testFile.setLastModified(lastModified - 1)).isTrue();
+
+    assertAddedToCache(TEST_PATH);
+  }
+
+  @Test
   public void shouldUseUnchangedAggregation() throws IOException, ServletException {
     assertAddedToCache(AGGREGATION_RECHECK_MINUTE_PATH);
     assertUsedCache(AGGREGATION_RECHECK_MINUTE_PATH);
