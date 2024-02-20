@@ -115,11 +115,12 @@ public class TestWmsCache {
   }
 
   @Test
-  public void shouldNotLockFileInCache() throws IOException, ServletException {
+  public void shouldNotLockFileInNetcdfFileCacheAfterCacheReset() throws IOException, ServletException {
     final String filename = "testGridAsPoint.nc";
     final String testPath = "localContent/" + filename;
     getCapabilities(testPath);
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isTrue();
+    ThreddsWmsServlet.resetCache();
 
     // check file is not locked in netcdf file cache
     final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
@@ -131,10 +132,11 @@ public class TestWmsCache {
 
   @Test
   @Category(NeedsCdmUnitTest.class)
-  public void shouldNotLockAggregationInCache() throws IOException, ServletException {
+  public void shouldNotLockAggregationInNetcdfFileCacheAfterCacheReset() throws IOException, ServletException {
     final String testPath = "ExampleNcML/Agg.nc";
     getCapabilities(testPath);
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isTrue();
+    ThreddsWmsServlet.resetCache();
 
     // check aggregation is not locked in netcdf file cache
     final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
