@@ -151,14 +151,14 @@ public class TestWmsCache {
   }
 
   private void assertUsedCache(String path) throws ServletException, IOException {
-    int loads = ThreddsWmsServlet.getCacheLoads();
+    long loads = ThreddsWmsServlet.getCacheLoads();
     getCapabilities(path);
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(path)).isTrue();
     assertThat(ThreddsWmsServlet.getCacheLoads()).isEqualTo(loads);
   }
 
   private void assertAddedToCache(String path) throws ServletException, IOException {
-    int loads = ThreddsWmsServlet.getCacheLoads();
+    long loads = ThreddsWmsServlet.getCacheLoads();
     getCapabilities(path);
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(path)).isTrue();
     assertThat(ThreddsWmsServlet.getCacheLoads()).isEqualTo(loads + 1);

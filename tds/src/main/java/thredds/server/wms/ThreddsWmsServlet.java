@@ -33,6 +33,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import java.io.IOException;
 import java.util.Formatter;
+import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -88,7 +89,6 @@ public class ThreddsWmsServlet extends WmsServlet {
 
   private static final Cache<String, CachedWmsCatalogue> catalogueCache =
       CacheBuilder.newBuilder().maximumSize(100).removalListener(removalListener).recordStats().build();
-  private static int cacheLoads = 0;
 
   @Override
   @RequestMapping(value = "**", method = {RequestMethod.GET})
@@ -119,28 +119,34 @@ public class ThreddsWmsServlet extends WmsServlet {
   }
 
   private ThreddsWmsCatalogue acquireCatalogue(HttpServletRequest httpServletRequest,
-      HttpServletResponse httpServletResponse, String tdsDatasetPath) throws IOException {
+      HttpServletResponse httpServletResponse, String tdsDatasetPath) throws ExecutionException {
 
-    final CachedWmsCatalogue cachedWmsCatalogue = catalogueCache.getIfPresent(tdsDatasetPath);
+    invalidateIfOutdated(tdsDatasetPath);
 
-    if (cachedWmsCatalogue != null
-        && cachedWmsCatalogue.lastModified == cachedWmsCatalogue.wmsCatalogue.getLastModified()) {
-      return cachedWmsCatalogue.wmsCatalogue;
-    } else {
+    CachedWmsCatalogue catalogue = catalogueCache.get(tdsDatasetPath, () -> {
       NetcdfDataset ncd = acquireNetcdfDataset(httpServletRequest, httpServletResponse, tdsDatasetPath);
       if (ncd.getLocation() == null) {
+        ncd.close();
         throw new EdalLayerNotFoundException("The requested dataset is not available on this server");
       }
 
       try {
         ThreddsWmsCatalogue threddsWmsCatalogue = new ThreddsWmsCatalogue(ncd, tdsDatasetPath);
-        catalogueCache.put(tdsDatasetPath, new CachedWmsCatalogue(threddsWmsCatalogue, ncd.getLastModified()));
-        cacheLoads++;
-        return threddsWmsCatalogue;
+        return new CachedWmsCatalogue(threddsWmsCatalogue, ncd.getLastModified());
       } catch (EdalException e) {
         ncd.close();
         throw e;
       }
+    });
+    return catalogue.wmsCatalogue;
+  }
+
+  private static void invalidateIfOutdated(String tdsDatasetPath) {
+    final CachedWmsCatalogue cachedWmsCatalogue = catalogueCache.getIfPresent(tdsDatasetPath);
+
+    if (cachedWmsCatalogue != null
+        && cachedWmsCatalogue.lastModified != cachedWmsCatalogue.wmsCatalogue.getLastModified()) {
+      catalogueCache.invalidate(tdsDatasetPath);
     }
   }
 
@@ -167,7 +173,6 @@ public class ThreddsWmsServlet extends WmsServlet {
 
   public static void resetCache() {
     catalogueCache.invalidateAll();
-    cacheLoads = 0;
   }
 
   // package private for testing
@@ -179,7 +184,7 @@ public class ThreddsWmsServlet extends WmsServlet {
     return catalogueCache.size();
   }
 
-  static int getCacheLoads() {
-    return cacheLoads;
+  static long getCacheLoads() {
+    return catalogueCache.stats().loadCount();
   }
 }
