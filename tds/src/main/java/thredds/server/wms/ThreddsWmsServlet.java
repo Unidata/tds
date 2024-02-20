@@ -30,12 +30,16 @@ package thredds.server.wms;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.RemovalListener;
 import java.io.IOException;
 import java.util.Formatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ucar.nc2.dataset.NetcdfDatasets;
+import uk.ac.rdg.resc.edal.exceptions.EdalException;
 import uk.ac.rdg.resc.edal.graphics.exceptions.EdalLayerNotFoundException;
 import uk.ac.rdg.resc.edal.wms.RequestParams;
 import uk.ac.rdg.resc.edal.wms.WmsCatalogue;
@@ -62,6 +66,7 @@ import ucar.nc2.dataset.NetcdfDataset;
 @Controller
 @RequestMapping("/wms")
 public class ThreddsWmsServlet extends WmsServlet {
+  private static final Logger logger = LoggerFactory.getLogger(ThreddsWmsServlet.class);
 
   private static class CachedWmsCatalogue {
     public final ThreddsWmsCatalogue wmsCatalogue;
@@ -73,8 +78,16 @@ public class ThreddsWmsServlet extends WmsServlet {
     }
   }
 
+  private static final RemovalListener<String, CachedWmsCatalogue> removalListener = notification -> {
+    try {
+      notification.getValue().wmsCatalogue.close();
+    } catch (IOException e) {
+      logger.warn("Could not close {}, exception = {}", notification.getKey(), e);
+    }
+  };
+
   private static final Cache<String, CachedWmsCatalogue> catalogueCache =
-      CacheBuilder.newBuilder().maximumSize(200).recordStats().build();
+      CacheBuilder.newBuilder().maximumSize(100).removalListener(removalListener).recordStats().build();
   private static int cacheLoads = 0;
 
   @Override
@@ -96,36 +109,38 @@ public class ThreddsWmsServlet extends WmsServlet {
     // Look - is setting this to null the right thing to do??
     String removePrefix = null;
     TdsRequestedDataset tdsDataset = new TdsRequestedDataset(httpServletRequest, removePrefix);
-    try (NetcdfDataset ncd = acquireNetcdfDataset(httpServletRequest, httpServletResponse, tdsDataset.getPath())) {
-      ThreddsWmsCatalogue catalogue = acquireCatalogue(ncd, tdsDataset.getPath());
+    ThreddsWmsCatalogue catalogue = acquireCatalogue(httpServletRequest, httpServletResponse, tdsDataset.getPath());
 
-      /*
-       * Now that we've got a WmsCatalogue, we can pass this request to the
-       * super implementation which will handle things from here.
-       */
-      super.dispatchWmsRequest(request, params, httpServletRequest, httpServletResponse, catalogue);
-    }
+    /*
+     * Now that we've got a WmsCatalogue, we can pass this request to the
+     * super implementation which will handle things from here.
+     */
+    super.dispatchWmsRequest(request, params, httpServletRequest, httpServletResponse, catalogue);
   }
 
-  private ThreddsWmsCatalogue acquireCatalogue(NetcdfDataset ncd, String tdsDatasetPath) throws IOException {
-    if (ncd.getLocation() == null) {
-      throw new EdalLayerNotFoundException("The requested dataset is not available on this server");
-    }
+  private ThreddsWmsCatalogue acquireCatalogue(HttpServletRequest httpServletRequest,
+      HttpServletResponse httpServletResponse, String tdsDatasetPath) throws IOException {
 
     final CachedWmsCatalogue cachedWmsCatalogue = catalogueCache.getIfPresent(tdsDatasetPath);
-    final long lastModified = ncd.getLastModified();
 
-    if (cachedWmsCatalogue != null && cachedWmsCatalogue.lastModified == lastModified) {
-      // Must update NetcdfDataset to ensure file resources are reacquired, as this has been closed.
-      // But we don't need to recreate the ThreddsWmsCatalogue as it is up-to-date according to the last modified
-      cachedWmsCatalogue.wmsCatalogue.setNetcdfDataset(ncd);
+    if (cachedWmsCatalogue != null
+        && cachedWmsCatalogue.lastModified == cachedWmsCatalogue.wmsCatalogue.getLastModified()) {
       return cachedWmsCatalogue.wmsCatalogue;
     } else {
-      // Create and put/ replace in cache
-      ThreddsWmsCatalogue threddsWmsCatalogue = new ThreddsWmsCatalogue(ncd, tdsDatasetPath);
-      catalogueCache.put(tdsDatasetPath, new CachedWmsCatalogue(threddsWmsCatalogue, lastModified));
-      cacheLoads++;
-      return threddsWmsCatalogue;
+      NetcdfDataset ncd = acquireNetcdfDataset(httpServletRequest, httpServletResponse, tdsDatasetPath);
+      if (ncd.getLocation() == null) {
+        throw new EdalLayerNotFoundException("The requested dataset is not available on this server");
+      }
+
+      try {
+        ThreddsWmsCatalogue threddsWmsCatalogue = new ThreddsWmsCatalogue(ncd, tdsDatasetPath);
+        catalogueCache.put(tdsDatasetPath, new CachedWmsCatalogue(threddsWmsCatalogue, ncd.getLastModified()));
+        cacheLoads++;
+        return threddsWmsCatalogue;
+      } catch (EdalException e) {
+        ncd.close();
+        throw e;
+      }
     }
   }
 
