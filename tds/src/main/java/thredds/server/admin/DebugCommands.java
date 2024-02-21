@@ -160,13 +160,13 @@ public class DebugCommands {
 
     act = new Action("clearCaches", "Clear All File Object Caches") {
       public void doAction(Event e) {
+        ThreddsWmsServlet.resetCache();
         NetcdfDataset.getNetcdfFileCache().clearCache(false);
         NetcdfDatasets.getNetcdfFileCache().clearCache(false);
         RandomAccessFile.getGlobalFileCache().clearCache(false);
         FileCacheIF fc = GribCdmIndex.gribCollectionCache;
         if (fc != null)
           fc.clearCache(false);
-        ThreddsWmsServlet.resetCache();
         e.pw.println("  ClearCache ok");
       }
     };
