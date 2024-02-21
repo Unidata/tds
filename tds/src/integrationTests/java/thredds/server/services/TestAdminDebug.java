@@ -1,5 +1,6 @@
 package thredds.server.services;
 
+import static thredds.server.util.AdminDebugUtils.*;
 import java.nio.charset.StandardCharsets;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.Credentials;
@@ -28,8 +29,6 @@ import ucar.unidata.util.test.category.NotPullRequest;
 public class TestAdminDebug {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  private static String urlPrefix = "https://localhost:8443/thredds/";
-  private static Credentials goodCred = new UsernamePasswordCredentials("tds", "secret666");
   private static Credentials badCred = new UsernamePasswordCredentials("bad", "worse");
 
   @Parameterized.Parameters(name = "{0}")

@@ -20,6 +20,8 @@ import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -29,6 +31,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
+import thredds.server.util.AdminDebugUtils;
 import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
 
@@ -46,6 +49,17 @@ public class TestUpdateWmsServer {
 
   @Rule
   public TemporaryFolder temporaryFolder = new TemporaryFolder(new File(DIR));
+
+  @BeforeClass
+  public static void disableRafCache() {
+    // Avoid file locks which prevent files from being updated on windows
+    AdminDebugUtils.disableRafCache();
+  }
+
+  @AfterClass
+  public static void enableRafCache() {
+    AdminDebugUtils.enableRafCache();
+  }
 
   @Test
   public void testUpdateFile() throws IOException, JDOMException {
