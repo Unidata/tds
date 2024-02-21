@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import javax.servlet.ServletException;
-
+import javax.servlet.http.HttpServletResponse;
 import org.junit.*;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
@@ -146,6 +146,21 @@ public class TestWmsCache {
     assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
   }
 
+  @Test
+  public void shouldNotLockFileInCacheAfterExceptionIsThrown() throws ServletException, IOException {
+    final String filename = "1day.nc";
+    final String testPath = "localContent/" + filename;
+    getCapabilities(testPath, HttpServletResponse.SC_BAD_REQUEST);
+    assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isFalse();
+
+    // check file is not locked in netcdf file cache
+    final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
+    final List<String> entries = cache.showCache();
+    assertThat(entries.size()).isGreaterThan(0);
+    final boolean isLocked = entries.stream().filter(e -> e.contains(filename)).anyMatch(e -> e.startsWith("true"));
+    assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
+  }
+
   private void updateTestFile() throws IOException {
     Files.copy(TEST_FILE, TEMP_FILE, StandardCopyOption.REPLACE_EXISTING);
   }
@@ -165,6 +180,10 @@ public class TestWmsCache {
   }
 
   private void getCapabilities(String path) throws ServletException, IOException {
+    getCapabilities(path, HttpServletResponse.SC_OK);
+  }
+
+  private void getCapabilities(String path, int expectedResponseCode) throws ServletException, IOException {
     final String uri = "/thredds/wms/" + path;
     final MockHttpServletRequest request = new MockHttpServletRequest("GET", uri);
     request.setParameter("service", "WMS");
@@ -174,6 +193,6 @@ public class TestWmsCache {
     final MockHttpServletResponse response = new MockHttpServletResponse();
 
     threddsWmsServlet.service(request, response);
-    assertThat(response.getStatus()).isEqualTo(MockHttpServletResponse.SC_OK);
+    assertThat(response.getStatus()).isEqualTo(expectedResponseCode);
   }
 }
