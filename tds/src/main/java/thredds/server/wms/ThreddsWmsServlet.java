@@ -31,6 +31,7 @@ package thredds.server.wms;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import java.io.IOException;
 import java.util.Formatter;
 import java.util.concurrent.ExecutionException;
@@ -119,26 +120,37 @@ public class ThreddsWmsServlet extends WmsServlet {
   }
 
   private ThreddsWmsCatalogue acquireCatalogue(HttpServletRequest httpServletRequest,
-      HttpServletResponse httpServletResponse, String tdsDatasetPath) throws ExecutionException {
+      HttpServletResponse httpServletResponse, String tdsDatasetPath) throws IOException {
 
     invalidateIfOutdated(tdsDatasetPath);
 
-    CachedWmsCatalogue catalogue = catalogueCache.get(tdsDatasetPath, () -> {
-      NetcdfDataset ncd = acquireNetcdfDataset(httpServletRequest, httpServletResponse, tdsDatasetPath);
-      if (ncd.getLocation() == null) {
-        ncd.close();
-        throw new EdalLayerNotFoundException("The requested dataset is not available on this server");
-      }
+    try {
+      CachedWmsCatalogue catalogue = catalogueCache.get(tdsDatasetPath, () -> {
+        NetcdfDataset ncd = acquireNetcdfDataset(httpServletRequest, httpServletResponse, tdsDatasetPath);
+        if (ncd.getLocation() == null) {
+          ncd.close();
+          throw new EdalLayerNotFoundException("The requested dataset is not available on this server");
+        }
 
-      try {
-        ThreddsWmsCatalogue threddsWmsCatalogue = new ThreddsWmsCatalogue(ncd, tdsDatasetPath);
-        return new CachedWmsCatalogue(threddsWmsCatalogue, ncd.getLastModified());
-      } catch (EdalException e) {
-        ncd.close();
+        try {
+          ThreddsWmsCatalogue threddsWmsCatalogue = new ThreddsWmsCatalogue(ncd, tdsDatasetPath);
+          return new CachedWmsCatalogue(threddsWmsCatalogue, ncd.getLastModified());
+        } catch (EdalException e) {
+          ncd.close();
+          throw e;
+        }
+      });
+
+      return catalogue.wmsCatalogue;
+    } catch (ExecutionException e) {
+      throw new IOException(e);
+    } catch (UncheckedExecutionException e) {
+      if (e.getCause() instanceof EdalException) {
+        throw new EdalException("", e.getCause());
+      } else {
         throw e;
       }
-    });
-    return catalogue.wmsCatalogue;
+    }
   }
 
   private static void invalidateIfOutdated(String tdsDatasetPath) {
