@@ -208,9 +208,8 @@ class TdsConfigMapper {
       wmsConfig.setAllow(Boolean.parseBoolean(WMS_ALLOW.getValueFromThreddsConfig()));
       wmsConfig.setAllowRemote(Boolean.parseBoolean(WMS_ALLOW_REMOTE.getValueFromThreddsConfig()));
 
-      String paletteLocation = WMS_PALETTE_LOCATION_DIR.getValueFromThreddsConfig();
-      if (paletteLocation == null)
-        paletteLocation = defaultPaletteLocation;
+      final String paletteLocation =
+          getValueFromThreddsConfigOrDefault(WMS_PALETTE_LOCATION_DIR, defaultPaletteLocation);
       wmsConfig.setPaletteLocationDir(paletteLocation);
       try {
         ColourPalette.addPaletteDirectory(new File(paletteLocation));
@@ -224,9 +223,7 @@ class TdsConfigMapper {
         }
       }
 
-      String stylesLocation = WMS_STYLES_LOCATION_DIR.getValueFromThreddsConfig();
-      if (stylesLocation == null)
-        stylesLocation = defaultStylesLocation;
+      final String stylesLocation = getValueFromThreddsConfigOrDefault(WMS_STYLES_LOCATION_DIR, defaultStylesLocation);
       wmsConfig.setStylesLocationDir(stylesLocation);
       try {
         SldTemplateStyleCatalogue.getStyleCatalogue().addStylesInDirectory(new File(stylesLocation));
@@ -236,9 +233,7 @@ class TdsConfigMapper {
         }
       }
 
-      String wmsConfigFile = WMS_CONFIG_FILE.getValueFromThreddsConfig();
-      if (wmsConfigFile == null)
-        wmsConfigFile = defaultWmsConfigFile;
+      final String wmsConfigFile = getValueFromThreddsConfigOrDefault(WMS_CONFIG_FILE, defaultWmsConfigFile);
 
       WmsDetailedConfig wdc = WmsDetailedConfig.fromLocation(wmsConfigFile);
       if (wdc == null) {
@@ -274,6 +269,14 @@ class TdsConfigMapper {
       TdsEnhancedVariableMetadata.setWmsConfig(wmsConfig);
       ThreddsWmsCatalogue.setWmsConfig(wmsConfig);
     }
+  }
+
+  private static String getValueFromThreddsConfigOrDefault(WmsConfigMappings property, String defaultValue) {
+    final String value = property.getValueFromThreddsConfig();
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 
   enum TdsUpdateConfigMappings {
