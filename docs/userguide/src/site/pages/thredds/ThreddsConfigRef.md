@@ -236,6 +236,7 @@ The following shows all the configuration options available in the WMS section o
   <allow>true</allow>
   <allowRemote>false</allowRemote>
   <paletteLocationDir>wmsPalettes</paletteLocationDir>
+  <stylesLocationDir>wmsStyles</stylesLocationDir>
   <maxImageWidth>2048</maxImageWidth>
   <maxImageHeight>2048</maxImageHeight>
 </WMS>
@@ -259,6 +260,13 @@ where they are contained.
   * More information on the format of palette files can also be found in the 
   [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#:~:text=To%20add%20new,in%20hexadecimal%20notation.).
   * If you created palette files for TDS 4.x and would like to use them in TDS 5.x, an open source tool named [Magic Palette Converter](https://github.com/billyz313/magic-palette-converter){:target="_blank"} for THREDDS is available to assist in the conversion (special thanks to [Billy Ashmall](https://github.com/Unidata/tds/discussions/346){:target="_blank"}!)
+* `stylesLocationDir`: optionally specify the location of the directory containing your own style files, by specifying the directory
+  where they are contained.
+  * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
+  * The default directory for custom styles files is `${tds.content.root.path}/thredds/wmsStyles`.
+  * If you don't specify a custom styles directory, or specify it incorrectly, the default directory will be used.
+  * More information on the format of style files can also be found in the
+    [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#styles).
 * `maxImageWidth`: the maximum image width in pixels that this WMS service will return.
 * `maxImageHeight`: the maximum image height in pixels that this WMS service will return.
 

@@ -16,6 +16,7 @@ import thredds.server.wms.TdsEnhancedVariableMetadata;
 import thredds.server.wms.ThreddsWmsCatalogue;
 import thredds.server.wms.config.WmsDetailedConfig;
 import uk.ac.rdg.resc.edal.graphics.utils.ColourPalette;
+import uk.ac.rdg.resc.edal.graphics.utils.SldTemplateStyleCatalogue;
 
 /**
  * Centralize the mapping of threddsConfig.xml configuration settings to the data objects used by
@@ -173,6 +174,7 @@ class TdsConfigMapper {
     WMS_ALLOW("WMS.allow", null, "true"),
     WMS_ALLOW_REMOTE("WMS.allowRemote", null, "false"),
     WMS_PALETTE_LOCATION_DIR("WMS.paletteLocationDir", null, null),
+    WMS_STYLES_LOCATION_DIR("WMS.stylesLocationDir", null, null),
     WMS_MAXIMUM_IMAGE_WIDTH("WMS.maxImageWidth", null, "2048"),
     WMS_MAXIMUM_IMAGE_HEIGHT("WMS.maxImageHeight", null, "2048"),
     WMS_CONFIG_FILE("WMS.configFile", null, null);
@@ -200,6 +202,7 @@ class TdsConfigMapper {
 
     static void load(WmsConfigBean wmsConfig, TdsContext tdsContext) {
       final String defaultPaletteLocation = tdsContext.getThreddsDirectory() + "/wmsPalettes";
+      final String defaultStylesLocation = tdsContext.getThreddsDirectory() + "/wmsStyles";
       final String defaultWmsConfigFile = tdsContext.getThreddsDirectory() + "/wmsConfig.xml";
 
       wmsConfig.setAllow(Boolean.parseBoolean(WMS_ALLOW.getValueFromThreddsConfig()));
@@ -218,6 +221,18 @@ class TdsConfigMapper {
         // created a custom palette directory.
         if (!paletteLocation.equals(defaultPaletteLocation)) {
           startupLog.warn("Could not find custom palette directory {}", paletteLocation, e);
+        }
+      }
+
+      String stylesLocation = WMS_STYLES_LOCATION_DIR.getValueFromThreddsConfig();
+      if (stylesLocation == null)
+        stylesLocation = defaultStylesLocation;
+      wmsConfig.setStylesLocationDir(stylesLocation);
+      try {
+        SldTemplateStyleCatalogue.getStyleCatalogue().addStylesInDirectory(new File(stylesLocation));
+      } catch (FileNotFoundException e) {
+        if (!stylesLocation.equals(defaultStylesLocation)) {
+          startupLog.warn("Could not find custom styles directory {}", stylesLocation, e);
         }
       }
 
