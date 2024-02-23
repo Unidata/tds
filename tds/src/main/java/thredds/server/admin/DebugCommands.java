@@ -180,14 +180,6 @@ public class DebugCommands {
     };
     debugHandler.addAction(act);
 
-    act = new Action("enableRAFCache", "Enable RandomAccessFile Cache") {
-      public void doAction(Event e) {
-        RandomAccessFile.getGlobalFileCache().enable();
-        e.pw.println("  Enable RandomAccessFile Cache ok");
-      }
-    };
-    debugHandler.addAction(act);
-
     act = new Action("forceRAFCache", "Force clear RandomAccessFile Cache") {
       public void doAction(Event e) {
         RandomAccessFile.getGlobalFileCache().clearCache(true);
