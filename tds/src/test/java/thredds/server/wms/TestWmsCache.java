@@ -12,6 +12,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
+import org.joda.time.DateTime;
 import org.junit.*;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
@@ -161,8 +162,9 @@ public class TestWmsCache {
     assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
   }
 
-  private void updateTestFile() throws IOException {
-    Files.copy(TEST_FILE, TEMP_FILE, StandardCopyOption.REPLACE_EXISTING);
+  private void updateTestFile() {
+    final File testFile = new File(TEMP_FILE.toUri());
+    assertThat(testFile.setLastModified(DateTime.now().getMillis())).isTrue();
   }
 
   private void assertUsedCache(String path) throws ServletException, IOException {
