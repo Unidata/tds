@@ -20,6 +20,7 @@ import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -34,6 +35,7 @@ import thredds.util.ContentType;
 
 import static com.google.common.truth.Truth.assertThat;
 
+@Ignore("File locks on windows prevent files from being updated")
 public class TestUpdateWmsServer {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
