@@ -19,6 +19,7 @@ public class WmsConfigBean {
   private boolean allow;
   private boolean allowRemote;
   private String paletteLocationDir;
+  private String stylesLocationDir;
   private int maxImageWidth;
   private int maxImageHeight;
 
@@ -47,6 +48,14 @@ public class WmsConfigBean {
 
   public void setPaletteLocationDir(String paletteLocationDir) {
     this.paletteLocationDir = paletteLocationDir;
+  }
+
+  public String getStylesLocationDir() {
+    return stylesLocationDir;
+  }
+
+  public void setStylesLocationDir(String stylesLocationDir) {
+    this.stylesLocationDir = stylesLocationDir;
   }
 
   public int getMaxImageWidth() {

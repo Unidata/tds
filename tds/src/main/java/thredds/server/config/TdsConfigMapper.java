@@ -16,6 +16,7 @@ import thredds.server.wms.TdsEnhancedVariableMetadata;
 import thredds.server.wms.ThreddsWmsCatalogue;
 import thredds.server.wms.config.WmsDetailedConfig;
 import uk.ac.rdg.resc.edal.graphics.utils.ColourPalette;
+import uk.ac.rdg.resc.edal.graphics.utils.SldTemplateStyleCatalogue;
 
 /**
  * Centralize the mapping of threddsConfig.xml configuration settings to the data objects used by
@@ -173,6 +174,7 @@ class TdsConfigMapper {
     WMS_ALLOW("WMS.allow", null, "true"),
     WMS_ALLOW_REMOTE("WMS.allowRemote", null, "false"),
     WMS_PALETTE_LOCATION_DIR("WMS.paletteLocationDir", null, null),
+    WMS_STYLES_LOCATION_DIR("WMS.stylesLocationDir", null, null),
     WMS_MAXIMUM_IMAGE_WIDTH("WMS.maxImageWidth", null, "2048"),
     WMS_MAXIMUM_IMAGE_HEIGHT("WMS.maxImageHeight", null, "2048"),
     WMS_CONFIG_FILE("WMS.configFile", null, null);
@@ -200,14 +202,14 @@ class TdsConfigMapper {
 
     static void load(WmsConfigBean wmsConfig, TdsContext tdsContext) {
       final String defaultPaletteLocation = tdsContext.getThreddsDirectory() + "/wmsPalettes";
+      final String defaultStylesLocation = tdsContext.getThreddsDirectory() + "/wmsStyles";
       final String defaultWmsConfigFile = tdsContext.getThreddsDirectory() + "/wmsConfig.xml";
 
       wmsConfig.setAllow(Boolean.parseBoolean(WMS_ALLOW.getValueFromThreddsConfig()));
       wmsConfig.setAllowRemote(Boolean.parseBoolean(WMS_ALLOW_REMOTE.getValueFromThreddsConfig()));
 
-      String paletteLocation = WMS_PALETTE_LOCATION_DIR.getValueFromThreddsConfig();
-      if (paletteLocation == null)
-        paletteLocation = defaultPaletteLocation;
+      final String paletteLocation =
+          getValueFromThreddsConfigOrDefault(WMS_PALETTE_LOCATION_DIR, defaultPaletteLocation);
       wmsConfig.setPaletteLocationDir(paletteLocation);
       try {
         ColourPalette.addPaletteDirectory(new File(paletteLocation));
@@ -221,9 +223,17 @@ class TdsConfigMapper {
         }
       }
 
-      String wmsConfigFile = WMS_CONFIG_FILE.getValueFromThreddsConfig();
-      if (wmsConfigFile == null)
-        wmsConfigFile = defaultWmsConfigFile;
+      final String stylesLocation = getValueFromThreddsConfigOrDefault(WMS_STYLES_LOCATION_DIR, defaultStylesLocation);
+      wmsConfig.setStylesLocationDir(stylesLocation);
+      try {
+        SldTemplateStyleCatalogue.getStyleCatalogue().addStylesInDirectory(new File(stylesLocation));
+      } catch (FileNotFoundException e) {
+        if (!stylesLocation.equals(defaultStylesLocation)) {
+          startupLog.warn("Could not find custom styles directory {}", stylesLocation, e);
+        }
+      }
+
+      final String wmsConfigFile = getValueFromThreddsConfigOrDefault(WMS_CONFIG_FILE, defaultWmsConfigFile);
 
       WmsDetailedConfig wdc = WmsDetailedConfig.fromLocation(wmsConfigFile);
       if (wdc == null) {
@@ -259,6 +269,14 @@ class TdsConfigMapper {
       TdsEnhancedVariableMetadata.setWmsConfig(wmsConfig);
       ThreddsWmsCatalogue.setWmsConfig(wmsConfig);
     }
+  }
+
+  private static String getValueFromThreddsConfigOrDefault(WmsConfigMappings property, String defaultValue) {
+    final String value = property.getValueFromThreddsConfig();
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 
   enum TdsUpdateConfigMappings {
