@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java-version: [ 11 ]
+        java-version: [ 17 ]
         java-vendor: [ 'zulu', 'temurin' ]
         # test against tomcat 8.5.x and tomcat 9.x
         servletcontainer: [ 'tomcat85', 'tomcat9' ]
