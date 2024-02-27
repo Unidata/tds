@@ -60,6 +60,8 @@ public class TestWmsCache {
   @After
   public void clearCache() {
     ThreddsWmsServlet.resetCache();
+    assertThat(ThreddsWmsServlet.getNumberOfEntries()).isEqualTo(0);
+    assertNoneLockedInNetcdfFileCache();
   }
 
   @Test
@@ -139,12 +141,7 @@ public class TestWmsCache {
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isTrue();
     ThreddsWmsServlet.resetCache();
 
-    // check aggregation is not locked in netcdf file cache
-    final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
-    final List<String> entries = cache.showCache();
-    assertThat(entries.size()).isGreaterThan(0);
-    final boolean isLocked = entries.stream().filter(e -> e.contains(testPath)).anyMatch(e -> e.startsWith("true"));
-    assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
+    assertNotLockedInNetcdfFileCache(testPath);
   }
 
   @Test
@@ -154,11 +151,18 @@ public class TestWmsCache {
     getCapabilities(testPath, HttpServletResponse.SC_BAD_REQUEST);
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isFalse();
 
-    // check file is not locked in netcdf file cache
+    assertNotLockedInNetcdfFileCache(filename);
+  }
+
+  private void assertNoneLockedInNetcdfFileCache() {
+    assertNotLockedInNetcdfFileCache("");
+  }
+
+  private void assertNotLockedInNetcdfFileCache(String path) {
     final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
     final List<String> entries = cache.showCache();
     assertThat(entries.size()).isGreaterThan(0);
-    final boolean isLocked = entries.stream().filter(e -> e.contains(filename)).anyMatch(e -> e.startsWith("true"));
+    final boolean isLocked = entries.stream().filter(e -> e.contains(path)).anyMatch(e -> e.startsWith("true"));
     assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
   }
 
