@@ -27,6 +27,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.lang.invoke.MethodHandles;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.util.cache.FileCacheIF;
+import ucar.unidata.io.RandomAccessFile;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -48,6 +49,24 @@ public class TestWmsCache {
 
   @Rule
   public TemporaryFolder temporaryFolder = new TemporaryFolder(new File(DIR));
+
+  // @BeforeClass happens before TdsInit so we need @Before
+  @Before
+  public void disableRafCache() {
+    // Avoid file locks which prevent files from being updated on windows
+    final FileCacheIF rafCache = RandomAccessFile.getGlobalFileCache();
+    if (rafCache != null) {
+      rafCache.disable();
+    }
+  }
+
+  @AfterClass
+  public static void enableRafCache() {
+    final FileCacheIF rafCache = RandomAccessFile.getGlobalFileCache();
+    if (rafCache != null) {
+      rafCache.enable();
+    }
+  }
 
   @Before
   public void createTestFiles() throws IOException {
