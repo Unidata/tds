@@ -6,6 +6,9 @@
 package thredds.server.wms;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -28,9 +31,13 @@ import java.util.Arrays;
 import java.util.List;
 import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
+import ucar.httpservices.HTTPException;
+import ucar.httpservices.HTTPFactory;
+import ucar.httpservices.HTTPSession;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class TestWmsServer {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -165,6 +172,42 @@ public class TestWmsServer {
 
     final String withoutOffsetEndpoint = createGetFeatureInfoEndpoint(datasetPath, "variableWithoutOffset");
     checkValue(withoutOffsetEndpoint, -92.5);
+  }
+
+  @Test
+  public void shouldGetMapInParallel() throws InterruptedException {
+    final int nRequests = 100;
+    final int nThreads = 10;
+
+    final ExecutorService executor = Executors.newFixedThreadPool(nThreads);
+    final List<Callable<Integer>> tasks = new ArrayList<>();
+    for (int i = 0; i < nRequests; i++) {
+      tasks.add(this::getMap);
+    }
+
+    final List<Future<Integer>> results = executor.invokeAll(tasks);
+    final List<Integer> resultCodes = results.stream().map(result -> {
+      try {
+        return result.get();
+      } catch (InterruptedException | ExecutionException e) {
+        throw new RuntimeException(e);
+      }
+    }).collect(Collectors.toList());
+
+    assertWithMessage("result codes = " + Arrays.toString(resultCodes.toArray()))
+        .that(resultCodes.stream().allMatch(code -> code.equals(HttpServletResponse.SC_OK))).isTrue();
+  }
+
+  private int getMap() {
+    final String endpoint = TestOnLocalServer
+        .withHttpPath("/wms/scanLocal/2004050300_eta_211.nc" + "?LAYERS=Z_sfc" + "&SERVICE=WMS" + "&VERSION=1.1.1"
+            + "&REQUEST=GetMap" + "&SRS=EPSG%3A4326" + "&BBOX=-64,26,-35,55" + "&WIDTH=256" + "&HEIGHT=256");
+
+    try (HTTPSession session = HTTPFactory.newSession(endpoint)) {
+      return HTTPFactory.Get(session).execute();
+    } catch (HTTPException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private String createGetFeatureInfoEndpoint(String path, String variableName) {

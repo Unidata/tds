@@ -11,7 +11,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import javax.servlet.ServletException;
-
+import javax.servlet.http.HttpServletResponse;
+import org.joda.time.DateTime;
 import org.junit.*;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
@@ -26,6 +27,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.lang.invoke.MethodHandles;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.util.cache.FileCacheIF;
+import ucar.unidata.io.RandomAccessFile;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -48,6 +50,24 @@ public class TestWmsCache {
   @Rule
   public TemporaryFolder temporaryFolder = new TemporaryFolder(new File(DIR));
 
+  // @BeforeClass happens before TdsInit so we need @Before
+  @Before
+  public void disableRafCache() {
+    // Avoid file locks which prevent files from being updated on windows
+    final FileCacheIF rafCache = RandomAccessFile.getGlobalFileCache();
+    if (rafCache != null) {
+      rafCache.disable();
+    }
+  }
+
+  @AfterClass
+  public static void enableRafCache() {
+    final FileCacheIF rafCache = RandomAccessFile.getGlobalFileCache();
+    if (rafCache != null) {
+      rafCache.enable();
+    }
+  }
+
   @Before
   public void createTestFiles() throws IOException {
     File tempFile = temporaryFolder.newFile(FILENAME);
@@ -59,6 +79,8 @@ public class TestWmsCache {
   @After
   public void clearCache() {
     ThreddsWmsServlet.resetCache();
+    assertThat(ThreddsWmsServlet.getNumberOfEntries()).isEqualTo(0);
+    assertNoneLockedInNetcdfFileCache();
   }
 
   @Test
@@ -115,11 +137,12 @@ public class TestWmsCache {
   }
 
   @Test
-  public void shouldNotLockFileInCache() throws IOException, ServletException {
+  public void shouldNotLockFileInNetcdfFileCacheAfterCacheReset() throws IOException, ServletException {
     final String filename = "testGridAsPoint.nc";
     final String testPath = "localContent/" + filename;
     getCapabilities(testPath);
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isTrue();
+    ThreddsWmsServlet.resetCache();
 
     // check file is not locked in netcdf file cache
     final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
@@ -131,38 +154,61 @@ public class TestWmsCache {
 
   @Test
   @Category(NeedsCdmUnitTest.class)
-  public void shouldNotLockAggregationInCache() throws IOException, ServletException {
+  public void shouldNotLockAggregationInNetcdfFileCacheAfterCacheReset() throws IOException, ServletException {
     final String testPath = "ExampleNcML/Agg.nc";
     getCapabilities(testPath);
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isTrue();
+    ThreddsWmsServlet.resetCache();
 
-    // check aggregation is not locked in netcdf file cache
+    assertNotLockedInNetcdfFileCache(testPath);
+  }
+
+  @Test
+  public void shouldNotLockFileInCacheAfterExceptionIsThrown() throws ServletException, IOException {
+    final String filename = "1day.nc";
+    final String testPath = "localContent/" + filename;
+    getCapabilities(testPath, HttpServletResponse.SC_BAD_REQUEST);
+    assertThat(ThreddsWmsServlet.containsCachedCatalogue(testPath)).isFalse();
+
+    assertNotLockedInNetcdfFileCache(filename);
+  }
+
+  private void assertNoneLockedInNetcdfFileCache() {
+    assertNotLockedInNetcdfFileCache("");
+  }
+
+  private void assertNotLockedInNetcdfFileCache(String path) {
     final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
     final List<String> entries = cache.showCache();
     assertThat(entries.size()).isGreaterThan(0);
-    final boolean isLocked = entries.stream().filter(e -> e.contains(testPath)).anyMatch(e -> e.startsWith("true"));
+    final boolean isLocked = entries.stream().filter(e -> e.contains(path)).anyMatch(e -> e.startsWith("true"));
     assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
   }
 
-  private void updateTestFile() throws IOException {
-    Files.copy(TEST_FILE, TEMP_FILE, StandardCopyOption.REPLACE_EXISTING);
+  private void updateTestFile() {
+    final File testFile = new File(TEMP_FILE.toUri());
+    assertThat(testFile.setLastModified(DateTime.now().getMillis())).isTrue();
   }
 
   private void assertUsedCache(String path) throws ServletException, IOException {
-    int loads = ThreddsWmsServlet.getCacheLoads();
+    long loads = ThreddsWmsServlet.getCacheLoads();
     getCapabilities(path);
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(path)).isTrue();
     assertThat(ThreddsWmsServlet.getCacheLoads()).isEqualTo(loads);
   }
 
   private void assertAddedToCache(String path) throws ServletException, IOException {
-    int loads = ThreddsWmsServlet.getCacheLoads();
+    long loads = ThreddsWmsServlet.getCacheLoads();
     getCapabilities(path);
     assertThat(ThreddsWmsServlet.containsCachedCatalogue(path)).isTrue();
     assertThat(ThreddsWmsServlet.getCacheLoads()).isEqualTo(loads + 1);
   }
 
   private void getCapabilities(String path) throws ServletException, IOException {
+    getCapabilities(path, HttpServletResponse.SC_OK);
+  }
+
+  private void getCapabilities(String path, int expectedResponseCode) throws ServletException, IOException {
     final String uri = "/thredds/wms/" + path;
     final MockHttpServletRequest request = new MockHttpServletRequest("GET", uri);
     request.setParameter("service", "WMS");
@@ -172,6 +218,6 @@ public class TestWmsCache {
     final MockHttpServletResponse response = new MockHttpServletResponse();
 
     threddsWmsServlet.service(request, response);
-    assertThat(response.getStatus()).isEqualTo(MockHttpServletResponse.SC_OK);
+    assertThat(response.getStatus()).isEqualTo(expectedResponseCode);
   }
 }

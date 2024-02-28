@@ -38,4 +38,19 @@ public class TdsWmsDatasetFactory extends CdmGridDatasetFactory {
     return this.netcdfDataset;
   }
 
+  /**
+   * Close resources
+   */
+  void close() throws IOException {
+    netcdfDataset.close();
+  }
+
+  /**
+   * Get time of last modification of the underlying netcdfDataset
+   *
+   * @return time of last modification in Unix time (msecs since reference), or 0 if unknown
+   */
+  long getLastModified() {
+    return netcdfDataset.getLastModified();
+  }
 }
