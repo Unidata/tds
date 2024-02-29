@@ -85,6 +85,7 @@ If it finds `setenv.sh`, it will apply the custom environment and JVM configurat
 {%include note.html content="
 If you're running Tomcat on an instance of Windows OS, you will want to create a `setenv.bat` file.
 " %}
+Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.bat" text="example" %} here.
 
 
 1. Create the `setenv.sh` file.
