@@ -212,6 +212,7 @@ class TdsConfigMapper {
           getValueFromThreddsConfigOrDefault(WMS_PALETTE_LOCATION_DIR, defaultPaletteLocation);
       wmsConfig.setPaletteLocationDir(paletteLocation);
       try {
+        startupLog.info("Loading custom WMS palette files from " + paletteLocation);
         ColourPalette.addPaletteDirectory(new File(paletteLocation));
       } catch (FileNotFoundException e) {
         // If there is an error adding a custom palette, it is logged in the server startup log by edal-java.
@@ -226,6 +227,7 @@ class TdsConfigMapper {
       final String stylesLocation = getValueFromThreddsConfigOrDefault(WMS_STYLES_LOCATION_DIR, defaultStylesLocation);
       wmsConfig.setStylesLocationDir(stylesLocation);
       try {
+        startupLog.info("Loading custom WMS style files from " + stylesLocation);
         SldTemplateStyleCatalogue.getStyleCatalogue().addStylesInDirectory(new File(stylesLocation));
       } catch (FileNotFoundException e) {
         if (!stylesLocation.equals(defaultStylesLocation)) {
