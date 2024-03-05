@@ -176,8 +176,8 @@
       <appender-ref ref="threddsServlet"/>
     </logger>
 
-    <!-- log issues related to loading custom color palettes -->
-    <logger name="uk.ac.rdg.resc.edal.graphics.utils.ColourPalette" level="warn" additivity="false">
+    <!-- log issues related to loading custom color palettes and styles -->
+    <logger name="uk.ac.rdg.resc.edal.graphics.utils" level="warn" additivity="false">
       <appender-ref ref="serverStartup"/>
     </logger>
 
