@@ -21,8 +21,10 @@ import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
 import ucar.ma2.Array;
+import ucar.ma2.InvalidRangeException;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
+import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.dt.grid.GeoGrid;
@@ -170,6 +172,31 @@ public class NcssGridIntegrationTest {
         assertThat(filename.get())
             .isEqualTo("attachment; filename=GFS_CONUS_80km_20120227_0000.grib1" + expectedSuffix);
       }
+    }
+  }
+
+  @Test
+  public void shouldNotReturnNaNsForBestGribCollectionVariable() throws IOException, InvalidRangeException {
+    // precip variable not present in 2024-03-01T19:00:00Z partition
+    final String varName = "Total_precipitation_Forecast_altitude_above_msl_1_Hour_Accumulation";
+    final String timeBeforeMissing = "2024-03-01T18:00:00Z";
+    final String timeAfterMissing = "2024-03-01T21:00:00Z";
+
+    final String endpoint = TestOnLocalServer.withHttpPath("/ncss/grid/grib/NCEP/RTMA/CONUS_2p5km/Best" + "?var="
+        + varName + "&north=40&west=-70&east=-69&south=39&horizStride=1&accept=netcdf3" + "&time_start="
+        + timeBeforeMissing + "&time_end=" + timeAfterMissing);
+
+    final byte[] content = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.netcdf);
+
+    try (NetcdfFile ncf = NetcdfFiles.openInMemory("test_data.nc", content)) {
+      final Variable var = ncf.findVariable(varName);
+      assertThat((Object) var).isNotNull();
+      // first element for all times
+      final Array array = var.read(":,0:0,0:0,0:0");
+      assertThat(array.getSize()).isEqualTo(3);
+      assertThat(array.getFloat(0)).isNotNaN();
+      assertThat(array.getFloat(1)).isNotNaN();
+      assertThat(array.getFloat(2)).isNotNaN();
     }
   }
 }
