@@ -91,4 +91,19 @@
     <collection name="gfsConus80_file" spec="${cdmUnitTest}/gribCollections/gfs_conus80/**/.*grib1$" timePartition="file"/>
   </featureCollection>
 
+  <!-- test large grib collection where precipitation variable is missing in one partition -->
+  <featureCollection name="Real Time Mesoscale Analysis 2.5 km" featureType="GRIB2" harvest="true"
+    path="grib/NCEP/RTMA/CONUS_2p5km">
+    <collection name="RTMA-CONUS_2p5km"
+      spec="${cdmUnitTest}/gribCollections/rtma/.*grib2$"
+      dateFormatMark="#RTMA_CONUS_2p5km_#yyyyMMdd_HHmm"
+      timePartition="file"
+      olderThan="5 min"/>
+    <update startup="test" trigger="allow"/>
+    <gribConfig>
+      <pdsHash>
+        <useGenType>true</useGenType>
+      </pdsHash>
+    </gribConfig>
+  </featureCollection>
 </catalog>
