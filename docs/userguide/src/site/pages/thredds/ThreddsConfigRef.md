@@ -443,7 +443,7 @@ If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cac
 We recommend that you use this default, by not specifying a `AggregationCache`.`dir` element.
 
 Every `scour` amount of time, any item that hasn't been changed since `maxAge` time will be deleted.
-If you have aggregations that never change, set `scour` to `-1` to disable the operation.
+If you have aggregations that never change, set `scour` to `-1 sec` to disable the operation.
 Otherwise, make `maxAge` longer than the longest time between changes.
 Basically, you don't want to remove active aggregations.
 
