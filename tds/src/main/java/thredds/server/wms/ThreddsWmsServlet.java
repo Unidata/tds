@@ -146,7 +146,7 @@ public class ThreddsWmsServlet extends WmsServlet {
       throw new IOException(e);
     } catch (UncheckedExecutionException e) {
       if (e.getCause() instanceof EdalException) {
-        throw new EdalException("", e.getCause());
+        throw (EdalException) e.getCause();
       } else {
         throw e;
       }
