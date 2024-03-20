@@ -146,4 +146,12 @@
     <packageUrl regex="true">^pkg:maven/org\.quartz\-scheduler/quartz@.*$</packageUrl>
     <cve>CVE-2023-39017</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+      file name: thredds-5.5-SNAPSHOT.war: spring-security-core-5.7.11.jar
+      reason: we do not use AuthenticatedVoter directly
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-core@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-22257</vulnerabilityName>
+  </suppress>
 </suppressions>
