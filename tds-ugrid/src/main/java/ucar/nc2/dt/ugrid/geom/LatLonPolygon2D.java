@@ -631,7 +631,7 @@ public abstract class LatLonPolygon2D implements Serializable {
       int countPoly1 = this.getVertexCount();
       int countPoly2 = poly.getVertexCount();
       /* If either polygon does not have vertices... */
-      if (countPoly1 == 0 || countPoly1 == 0) {
+      if (countPoly1 == 0 || countPoly2 == 0) {
         return false;
       }
 
