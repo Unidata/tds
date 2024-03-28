@@ -61,7 +61,7 @@ logos of the server and host institution)
 * all generated THREDDS catalogs that don't override this information
 
 
-The best way to use your own logo is to put it in the `${tds.content.root.path}/thredds/public/` directory, and specify it in `serverInformation` as `/thredds/<name>`, e.g.:
+The best way to use your own logo is to put it in the `${tomcat path}/webapps/thredds/` directory, and specify it in `serverInformation` as `/thredds/<name>`, e.g.:
 
 ~~~xml
 <logoUrl>/thredds/yourIcon.gif</logoUrl>
