@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thredds.test.util.TdsTestDir;
 import thredds.test.util.TestOnLocalServer;
 import thredds.util.ContentType;
 import ucar.httpservices.HTTPFactory;

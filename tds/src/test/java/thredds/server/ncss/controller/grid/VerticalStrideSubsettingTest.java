@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import thredds.test.util.TdsTestDir;
 import thredds.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
 import thredds.mock.params.GridDataParameters;
 import thredds.mock.params.GridPathParams;
