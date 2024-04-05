@@ -15,8 +15,8 @@ import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.test.util.TdsUnitTestCommon;
+import thredds.test.util.TestOnLocalServer;
 import ucar.httpservices.*;
-import ucar.unidata.util.test.TestDir;
 
 import java.io.*;
 import java.lang.invoke.MethodHandles;
@@ -58,7 +58,7 @@ public class TestFormBuilder extends TdsUnitTestCommon {
 
   // This needs to be a real site in order to get
   // the request info
-  static final String NULLURL = "http://" + TestDir.remoteTestServer;
+  static final String NULLURL = "http://" + TestOnLocalServer.server;
 
   //////////////////////////////////////////////////
   // Static Fields
