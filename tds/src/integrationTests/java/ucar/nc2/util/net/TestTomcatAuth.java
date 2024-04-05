@@ -214,8 +214,8 @@ public class TestTomcatAuth extends TdsUnitTestCommon {
   protected List<AuthDataBasic> basictests = new ArrayList<>();
 
   protected void defineTestCases() {
-    basictests.add(new AuthDataBasic("http://" + this.server + "dodsC/containerauth/testData2.nc.dds", "tds",
-        "secret666"));
+    basictests
+        .add(new AuthDataBasic("http://" + this.server + "dodsC/containerauth/testData2.nc.dds", "tds", "secret666"));
   }
 
   @Test
