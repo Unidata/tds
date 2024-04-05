@@ -12,13 +12,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.test.util.TdsUnitTestCommon;
+import thredds.test.util.TestOnLocalServer;
 import ucar.httpservices.HTTPException;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
 import ucar.nc2.dataset.DatasetUrl;
 import ucar.nc2.util.EscapeStrings;
-import ucar.unidata.util.test.TestDir;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
@@ -47,7 +47,7 @@ public class TestMisc extends TdsUnitTestCommon {
     setTitle("HTTP Session tests");
   }
 
-  static protected final String server = "http://" + TestDir.remoteTestServer;
+  static protected final String server = "http://" + TestOnLocalServer.server;
 
   static final String[] esinputs = {server + "/dts/test.01", server + "///xx/", server + "/<>^/`/",};
   static final String[] esoutputs = {server + "/dts/test.01", server + "///xx/", server + "/%3c%3e%5e/%60/",};
@@ -72,7 +72,7 @@ public class TestMisc extends TdsUnitTestCommon {
   public void testUTF8Stream() throws Exception {
     pass = true;
 
-    String catalogName = "http://" + TestDir.remoteTestServer + "/thredds/catalog.xml";
+    String catalogName = "http://" + TestOnLocalServer.server + "catalog.xml";
 
     try (HTTPMethod m = HTTPFactory.Get(catalogName)) {
       int statusCode = m.execute();
@@ -109,7 +109,7 @@ public class TestMisc extends TdsUnitTestCommon {
     String tag = "TestMisc.testGetProtocols";
     Assert.assertTrue(tag, protocheck("http://server/thredds/dodsC/", "http:"));
     Assert.assertTrue(tag,
-        protocheck("dods://" + TestDir.remoteTestServer + "/thredds/dodsC/grib/NCEP/NAM/CONUS_12km/best", "dods:"));
+        protocheck("dods://" + TestOnLocalServer.server + "dodsC/grib/NCEP/NAM/CONUS_12km/best", "dods:"));
     Assert.assertTrue(tag, protocheck("dap4://ucar.edu:8080/x/y/z", "dap4:"));
     Assert.assertTrue(tag, protocheck("dap4:https://ucar.edu:8080/x/y/z", "dap4:https:"));
     Assert.assertTrue(tag, protocheck("file:///x/y/z", "file:"));
@@ -128,7 +128,7 @@ public class TestMisc extends TdsUnitTestCommon {
 
   @Test
   public void testByteRange() {
-    String file = "http://" + TestDir.remoteTestServer + "/thredds/fileServer/scanLocal/testData.nc";
+    String file = "http://" + TestOnLocalServer.server + "fileServer/scanLocal/testData.nc";
     try {
       try (HTTPMethod m = HTTPFactory.Get(file)) {
         m.setRange(0, 9);
@@ -147,7 +147,7 @@ public class TestMisc extends TdsUnitTestCommon {
    * This test uses a single HTTPSession.
    */
 
-  static String CLOSEFILE = "http://" + TestDir.remoteTestServer + "/thredds/fileServer/scanLocal/testData.nc";
+  static String CLOSEFILE = "http://" + TestOnLocalServer.server + "fileServer/scanLocal/testData.nc";
   // "http://rdavm.ucar.edu:8443/thredds/admin/collection/trigger?trigger=never&collection=ds083.2_Grib1";
 
   @Test

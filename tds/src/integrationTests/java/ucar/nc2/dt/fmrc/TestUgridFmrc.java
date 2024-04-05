@@ -13,7 +13,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import thredds.test.util.TdsTestDir;
+import thredds.test.util.TestOnLocalServer;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
 import ucar.ma2.InvalidRangeException;
@@ -49,8 +49,8 @@ public class TestUgridFmrc {
   @Test
   @Category(NeedsCdmUnitTest.class)
   public void test2DFmrc() throws IOException, InvalidRangeException {
-    final String urlPath2d = "/thredds/cdmremote/testUsfWsfUgridFmrc/USF_WSF_nc_fmrc.ncd";
-    final String tdsLocation = "cdmremote:http://" + TdsTestDir.remoteTestServer + urlPath2d;
+    final String urlPath2d = "cdmremote/testUsfWsfUgridFmrc/USF_WSF_nc_fmrc.ncd";
+    final String tdsLocation = "cdmremote:http://" + TestOnLocalServer.server + urlPath2d;
     String testVariableName = "salinity";
     String singleRuntimeSection = ":,2,10:10000:100";
     try (NetcdfFile fmrc2d = NetcdfDatasets.openFile(tdsLocation, null)) {
@@ -80,8 +80,8 @@ public class TestUgridFmrc {
   @Category(NeedsCdmUnitTest.class)
   public void testCFOFmrc() throws IOException, InvalidRangeException {
     // 8 hour offset into a collection of runs that output hourly
-    final String urlPathCfo = "/thredds/cdmremote/testUsfWsfUgridFmrc/offset/USF_WSF_nc_Offset_8.0hr";
-    final String tdsLocation = "cdmremote:http://" + TdsTestDir.remoteTestServer + urlPathCfo;
+    final String urlPathCfo = "cdmremote/testUsfWsfUgridFmrc/offset/USF_WSF_nc_Offset_8.0hr";
+    final String tdsLocation = "cdmremote:http://" + TestOnLocalServer.server + urlPathCfo;
     String testVariableName = "salinity";
     String singleSpatialSection = "2,10:10000:100";
     // index 8 => forecast hour 8 since index 0 is forecast hour 0
@@ -113,9 +113,8 @@ public class TestUgridFmrc {
   @Category(NeedsCdmUnitTest.class)
   public void testCFTFmrc() throws IOException, InvalidRangeException {
     // 8 hour offset into a collection of runs that output hourly
-    final String urlPathCft =
-        "/thredds/cdmremote/testUsfWsfUgridFmrc/forecast/USF_WSF_nc_ConstantForecast_2019-01-28T03:00:00Z";
-    final String tdsLocation = "cdmremote:http://" + TdsTestDir.remoteTestServer + urlPathCft;
+    final String urlPathCft = "cdmremote/testUsfWsfUgridFmrc/forecast/USF_WSF_nc_ConstantForecast_2019-01-28T03:00:00Z";
+    final String tdsLocation = "cdmremote:http://" + TestOnLocalServer.server + urlPathCft;
     String testVariableName = "salinity";
     String singleSpatialSection = "2,10:10000:100";
     // Forecast time 2019-01-28T03:00:00Z should be the 4th time index into the second granule of the collection
@@ -141,8 +140,8 @@ public class TestUgridFmrc {
   @Category(NeedsCdmUnitTest.class)
   public void testFMRFmrc() throws IOException, InvalidRangeException {
     // the 2019-01-28T00:00:00Z Forecast Model Run should be the same as the second granule that makes up collection.
-    final String urlPathCft = "/thredds/cdmremote/testUsfWsfUgridFmrc/runs/USF_WSF_nc_RUN_2019-01-28T00:00:00Z";
-    final String tdsLocation = "cdmremote:http://" + TdsTestDir.remoteTestServer + urlPathCft;
+    final String urlPathCft = "cdmremote/testUsfWsfUgridFmrc/runs/USF_WSF_nc_RUN_2019-01-28T00:00:00Z";
+    final String tdsLocation = "cdmremote:http://" + TestOnLocalServer.server + urlPathCft;
     String testVariableName = "salinity";
     String testSection = ":,2,10:10000:100";
     try (NetcdfFile fmrcCfo = NetcdfDatasets.openFile(tdsLocation, null)) {

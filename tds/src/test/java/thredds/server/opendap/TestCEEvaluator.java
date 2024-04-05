@@ -14,7 +14,6 @@ import opendap.servlet.GuardedDataset;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thredds.test.util.TdsTestDir;
 import thredds.test.util.TdsUnitTestCommon;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.dataset.NetcdfDataset;

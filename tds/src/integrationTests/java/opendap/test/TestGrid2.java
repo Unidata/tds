@@ -14,7 +14,6 @@ import thredds.test.util.TestOnLocalServer;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.write.Ncdump;
-import ucar.unidata.util.test.TestDir;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -38,7 +37,7 @@ import java.lang.invoke.MethodHandles;
 public class TestGrid2 extends TdsUnitTestCommon {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  static final protected String URLPATH = "/thredds/dodsC/scanLocal/testgrid2.nc";
+  static final protected String URLPATH = "dodsC/scanLocal/testgrid2.nc";
 
   public TestGrid2() {
     setTitle("DAP Grid with repeated dimension");
@@ -48,7 +47,7 @@ public class TestGrid2 extends TdsUnitTestCommon {
   @Test
   public void testGrid2() throws Exception {
     System.out.println("TestGrid2:");
-    String url = "dods://" + TestDir.remoteTestServer + URLPATH;
+    String url = "dods://" + TestOnLocalServer.server + URLPATH;
     boolean pass = true;
     try (NetcdfDataset ncfile = NetcdfDatasets.openDataset(url)) {
       System.out.println("url: " + url);

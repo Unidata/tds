@@ -17,10 +17,10 @@ import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.test.util.TdsUnitTestCommon;
+import thredds.test.util.TestOnLocalServer;
 import ucar.httpservices.HTTPFactory;
 import ucar.httpservices.HTTPMethod;
 import ucar.httpservices.HTTPSession;
-import ucar.unidata.util.test.TestDir;
 import ucar.unidata.util.test.category.NotPullRequest;
 
 import java.io.IOException;
@@ -148,7 +148,7 @@ public class TestTomcatAuth extends TdsUnitTestCommon {
     setTitle("Authorization tests");
     // HTTPSession.debugHeaders(true);
     HTTPSession.TESTING = true;
-    this.server = TestDir.remoteTestServer;
+    this.server = TestOnLocalServer.server;
     defineTestCases();
   }
 
@@ -214,8 +214,8 @@ public class TestTomcatAuth extends TdsUnitTestCommon {
   protected List<AuthDataBasic> basictests = new ArrayList<>();
 
   protected void defineTestCases() {
-    basictests.add(new AuthDataBasic("http://" + this.server + "/thredds/dodsC/containerauth/testData2.nc.dds", "tds",
-        "secret666"));
+    basictests
+        .add(new AuthDataBasic("http://" + this.server + "dodsC/containerauth/testData2.nc.dds", "tds", "secret666"));
   }
 
   @Test
