@@ -5,15 +5,15 @@ apply from: "$rootDir/gradle/any/dependencies.gradle"
 apply from: "$rootDir/gradle/any/java-internal.gradle"
 
 dependencies {
-    implementation enforcedPlatform(project(':tds-testing-platform'))
-    implementation enforcedPlatform(project(':tds-platform'))
+  implementation enforcedPlatform(project(':tds-testing-platform'))
+  implementation enforcedPlatform(project(':tds-platform'))
 
-    implementation 'edu.ucar:cdm-core'
-    implementation 'edu.ucar:httpservices'
-    implementation 'edu.ucar:cdm-test-utils'
+  implementation 'edu.ucar:cdm-core'
+  implementation 'edu.ucar:httpservices'
+  implementation 'edu.ucar:cdm-test-utils'
 
-    implementation project(':tdcommon')
+  implementation project(':tdcommon')
 
-    implementation 'org.slf4j:slf4j-api'
-    implementation 'junit:junit'
+  implementation 'org.slf4j:slf4j-api'
+  implementation 'junit:junit'
 }

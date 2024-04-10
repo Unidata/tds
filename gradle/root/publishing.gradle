@@ -114,39 +114,39 @@ def publishDownloadsTask = tasks.register('publishDownloads', PublishToRawRepoTa
 publish.dependsOn publishDownloadsTask
 
 def publishReleaseInfoAndLatestTask = tasks.register('publishReleaseInfoAndLatest', PublishToRawRepoTask) {
-    group = 'publishing'
-    description = 'Publish release_info.json and startup/latest.xml to Nexus downloads.'
-    host = 'https://artifacts.unidata.ucar.edu/'
-    repoName = 'downloads-tds'
+  group = 'publishing'
+  description = 'Publish release_info.json and startup/latest.xml to Nexus downloads.'
+  host = 'https://artifacts.unidata.ucar.edu/'
+  repoName = 'downloads-tds'
 
-    publishSrc = new File(rootProject.getProjectDir(), "project-files/downloads/")
+  publishSrc = new File(rootProject.getProjectDir(), "project-files/downloads/")
 
-    onlyIf {
-        // Will be evaluated at task execution time, not during configuration.
-        // Fails the build if the specified properties haven't been provided.
-        username = getPropertyOrFailBuild NEXUS_USERNAME_KEY
-        password = getPropertyOrFailBuild NEXUS_PASSWORD_KEY
-        return true
-    }
+  onlyIf {
+    // Will be evaluated at task execution time, not during configuration.
+    // Fails the build if the specified properties haven't been provided.
+    username = getPropertyOrFailBuild NEXUS_USERNAME_KEY
+    password = getPropertyOrFailBuild NEXUS_PASSWORD_KEY
+    return true
+  }
 }
 
 publish.dependsOn publishReleaseInfoAndLatestTask
 
 def publishVersionInfoTask = tasks.register('publishVersionInfo', PublishToRawRepoTask) {
-    group = 'publishing'
-    description = 'Publish version-info.json to Nexus docs.'
-    host = 'https://artifacts.unidata.ucar.edu/'
-    repoName = 'docs-tds'
+  group = 'publishing'
+  description = 'Publish version-info.json to Nexus docs.'
+  host = 'https://artifacts.unidata.ucar.edu/'
+  repoName = 'docs-tds'
 
-    publishSrc = new File(rootProject.getProjectDir(), "project-files/docs/")
+  publishSrc = new File(rootProject.getProjectDir(), "project-files/docs/")
 
-    onlyIf {
-        // Will be evaluated at task execution time, not during configuration.
-        // Fails the build if the specified properties haven't been provided.
-        username = getPropertyOrFailBuild NEXUS_USERNAME_KEY
-        password = getPropertyOrFailBuild NEXUS_PASSWORD_KEY
-        return true
-    }
+  onlyIf {
+    // Will be evaluated at task execution time, not during configuration.
+    // Fails the build if the specified properties haven't been provided.
+    username = getPropertyOrFailBuild NEXUS_USERNAME_KEY
+    password = getPropertyOrFailBuild NEXUS_PASSWORD_KEY
+    return true
+  }
 }
 
 publish.dependsOn publishVersionInfoTask

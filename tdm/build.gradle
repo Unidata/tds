@@ -11,24 +11,24 @@ apply from: "$rootDir/gradle/any/java-published.gradle"
 apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
-    implementation enforcedPlatform(project(':tds-platform'))
+  implementation enforcedPlatform(project(':tds-platform'))
 
-    compile project(':tdcommon')
-    compile 'edu.ucar:httpservices'
-    compile 'edu.ucar:cdm-core'
-    compile 'edu.ucar:grib'
+  compile project(':tdcommon')
+  compile 'edu.ucar:httpservices'
+  compile 'edu.ucar:cdm-core'
+  compile 'edu.ucar:grib'
 
-    compile 'org.apache.httpcomponents:httpclient'
-    compile 'org.jdom:jdom2'
-    compile 'org.springframework:spring-beans'
-    compile 'org.springframework:spring-core'
-    compile 'org.springframework:spring-context'
-    compile 'com.google.protobuf:protobuf-java'
-    compile 'com.beust:jcommander'
-    compile 'com.google.guava:guava'
+  compile 'org.apache.httpcomponents:httpclient'
+  compile 'org.jdom:jdom2'
+  compile 'org.springframework:spring-beans'
+  compile 'org.springframework:spring-core'
+  compile 'org.springframework:spring-context'
+  compile 'com.google.protobuf:protobuf-java'
+  compile 'com.beust:jcommander'
+  compile 'com.google.guava:guava'
 
-    compile 'org.slf4j:slf4j-api'
-    runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
+  compile 'org.slf4j:slf4j-api'
+  runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
 }
 
 shadowJar {
