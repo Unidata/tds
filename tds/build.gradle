@@ -11,23 +11,23 @@ apply from: "$rootDir/gradle/any/gretty.gradle"
 
 dependencies {
   implementation enforcedPlatform (project(':tds-platform'))
-  testCompile enforcedPlatform (project(':tds-testing-platform'))
+  testImplementation enforcedPlatform (project(':tds-testing-platform'))
 
-  compile 'edu.ucar:bufr'
-  compile 'edu.ucar:cdm-core'
-  compile 'edu.ucar:cdm-radial'
-  compile 'edu.ucar:cdm-misc'
-  compile 'edu.ucar:cdm-image'
-  compile 'edu.ucar:cdm-s3'
-  compile 'edu.ucar:cdm-zarr'
-  compile 'edu.ucar:grib'
-  compile 'edu.ucar:netcdf4'
-  compile 'edu.ucar:httpservices'
-  compile 'edu.ucar:opendap'
-  compile project(':opendap:opendap-servlet')
-  compile project(':tdcommon')
-  compile 'edu.ucar:cdm-mcidas'
-  compile 'edu.ucar:waterml'
+  implementation 'edu.ucar:bufr'
+  implementation 'edu.ucar:cdm-core'
+  implementation 'edu.ucar:cdm-radial'
+  implementation 'edu.ucar:cdm-misc'
+  implementation 'edu.ucar:cdm-image'
+  implementation 'edu.ucar:cdm-s3'
+  implementation 'edu.ucar:cdm-zarr'
+  implementation 'edu.ucar:grib'
+  implementation 'edu.ucar:netcdf4'
+  implementation 'edu.ucar:httpservices'
+  implementation 'edu.ucar:opendap'
+  implementation project(':opendap:opendap-servlet')
+  implementation project(':tdcommon')
+  implementation 'edu.ucar:cdm-mcidas'
+  implementation 'edu.ucar:waterml'
   implementation project(':tds-ugrid')
 
   // DAP4 Dependencies (technically forward)
@@ -36,85 +36,85 @@ dependencies {
 
   // Server stuff
   providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
-  runtime 'org.apache.taglibs:taglibs-standard-spec'
-  runtime 'org.apache.taglibs:taglibs-standard-impl'
+  runtimeOnly 'org.apache.taglibs:taglibs-standard-spec'
+  runtimeOnly 'org.apache.taglibs:taglibs-standard-impl'
 
   // Apache httpclient libraries
-  compile 'org.apache.httpcomponents:httpclient'
-  compile 'org.apache.httpcomponents:httpcore'
+  implementation 'org.apache.httpcomponents:httpclient'
+  implementation 'org.apache.httpcomponents:httpcore'
 
-  compile 'com.coverity.security:coverity-escapers' // todo: replace with google escapers?
-  compile 'org.jdom:jdom2'
-  compile 'org.quartz-scheduler:quartz'
-  compile 'com.google.code.findbugs:jsr305'
-  compile 'com.google.guava:guava'
-  compile 'joda-time:joda-time'
-  compile 'org.apache.commons:commons-lang3'
+  implementation 'com.coverity.security:coverity-escapers' // todo: replace with google escapers?
+  implementation 'org.jdom:jdom2'
+  implementation 'org.quartz-scheduler:quartz'
+  implementation 'com.google.code.findbugs:jsr305'
+  implementation 'com.google.guava:guava'
+  implementation 'joda-time:joda-time'
+  implementation 'org.apache.commons:commons-lang3'
 
   // WaterML
-  compile 'org.apache.xmlbeans:xmlbeans'
-  compile 'org.n52.sensorweb:52n-xml-waterML-v20'
-  compile 'org.n52.sensorweb:52n-xml-om-v20'
+  implementation 'org.apache.xmlbeans:xmlbeans'
+  implementation 'org.n52.sensorweb:52n-xml-waterML-v20'
+  implementation 'org.n52.sensorweb:52n-xml-om-v20'
 
   // Spring
-  compile 'org.springframework:spring-core'
-  compile 'org.springframework:spring-context'
-  compile 'org.springframework:spring-beans'
-  compile 'org.springframework:spring-web'
-  compile 'org.springframework:spring-webmvc'
-  runtime 'org.springframework.security:spring-security-web'     // Needed for FilterChainProxy in applicationContext.xml.
-  runtime 'org.springframework.security:spring-security-config'  // Needed for "xmlns:security" schema in applicationContext.xml.
+  implementation 'org.springframework:spring-core'
+  implementation 'org.springframework:spring-context'
+  implementation 'org.springframework:spring-beans'
+  implementation 'org.springframework:spring-web'
+  implementation 'org.springframework:spring-webmvc'
+  runtimeOnly 'org.springframework.security:spring-security-web'     // Needed for FilterChainProxy in applicationContext.xml.
+  runtimeOnly 'org.springframework.security:spring-security-config'  // Needed for "xmlns:security" schema in applicationContext.xml.
 
   // Needed for XPath operations in mock tests
-  testCompile 'jaxen:jaxen'
+  testImplementation 'jaxen:jaxen'
   // Needed for XPaths in WmsDetailedConfig
-  runtime 'jaxen:jaxen'
+  runtimeOnly 'jaxen:jaxen'
 
   // edal ncwms related libs
-  compile('uk.ac.rdg.resc:edal-common')
-  compile ('uk.ac.rdg.resc:edal-cdm')
-  compile ('uk.ac.rdg.resc:edal-graphics')
-  compile ('uk.ac.rdg.resc:edal-wms')
-  compile('uk.ac.rdg.resc:edal-godiva')
+  implementation('uk.ac.rdg.resc:edal-common')
+  implementation ('uk.ac.rdg.resc:edal-cdm')
+  implementation ('uk.ac.rdg.resc:edal-graphics')
+  implementation ('uk.ac.rdg.resc:edal-wms')
+  implementation('uk.ac.rdg.resc:edal-godiva')
 
   // json writing
   'org.json:json'
 
   // JSR 303 with Hibernate Validator, which is dragging in jboss logging
-  runtime 'org.hibernate.validator:hibernate-validator'
-  runtime 'org.glassfish:javax.el'
+  runtimeOnly 'org.hibernate.validator:hibernate-validator'
+  runtimeOnly 'org.glassfish:javax.el'
   annotationProcessor "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
 
   // @Resource annotation (removed post Java 8)
-  compile 'jakarta.annotation:jakarta.annotation-api'
+  implementation 'jakarta.annotation:jakarta.annotation-api'
 
-  compile 'org.thymeleaf:thymeleaf-spring5'
+  implementation 'org.thymeleaf:thymeleaf-spring5'
 
   // Testing
-  testCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
-  testCompile 'org.springframework:spring-test'
-  testCompile 'org.hamcrest:hamcrest-core'
-  testCompile 'commons-io:commons-io'
-  testCompile 'pl.pragmatists:JUnitParams'
-  testCompile 'com.google.truth:truth'
-  testCompile 'junit:junit'
-  testCompile project(':tds-test-utils');
-  testCompile 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
-  testCompile 'edu.ucar:httpservices'
+  testImplementation "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
+  testImplementation 'org.springframework:spring-test'
+  testImplementation 'org.hamcrest:hamcrest-core'
+  testImplementation 'commons-io:commons-io'
+  testImplementation 'pl.pragmatists:JUnitParams'
+  testImplementation 'com.google.truth:truth'
+  testImplementation 'junit:junit'
+  testImplementation project(':tds-test-utils');
+  testImplementation 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
+  testImplementation 'edu.ucar:httpservices'
 
   // Logging
-  compile 'org.slf4j:slf4j-api'
-  runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
-  runtime 'org.apache.logging.log4j:log4j-web'
-  testRuntime 'ch.qos.logback:logback-classic'
+  implementation 'org.slf4j:slf4j-api'
+  runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl'
+  runtimeOnly 'org.apache.logging.log4j:log4j-web'
+  testRuntimeOnly 'ch.qos.logback:logback-classic'
 
   // This is for freshInstallTest
-  testCompile 'org.xmlunit:xmlunit-core'  // For comparing catalog XML.
+  testImplementation 'org.xmlunit:xmlunit-core'  // For comparing catalog XML.
 }
 
 // "testRuntime" extends from "runtime", meaning that "testRuntime" will get the log4j dependencies declared in
 // "runtime". However, we want logback-classic to be the logger during tests, so exclude all of the log4j stuff.
-configurations.testRuntime {
+configurations.testRuntimeOnly {
   exclude group: 'org.apache.logging.log4j'
 }
 
@@ -271,8 +271,8 @@ testInfomation.forEach { testInfo ->
     resources.srcDir file("src/${testInfo.name}/resources")
 
     // Need 'sourceSets.test.output' because we use TestOnLocalServer in our test.
-    compileClasspath += sourceSets.test.output + configurations.testCompile
-    runtimeClasspath += output + sourceSets.test.output + configurations.testRuntime
+    compileClasspath += sourceSets.test.output + configurations.testCompileClasspath
+    runtimeClasspath += output + sourceSets.test.output + configurations.testRuntimeClasspath
   }
 
   def thisTestTask = tasks.create("${testInfo.name}", Test) {

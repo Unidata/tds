@@ -9,11 +9,11 @@ apply plugin: 'application'
 
 dependencies {
   implementation enforcedPlatform(project(':tds-platform'))
-  testCompile enforcedPlatform(project(':tds-testing-platform'))
+  testImplementation enforcedPlatform(project(':tds-testing-platform'))
 
-  runtime 'edu.ucar:uicdm'
-  runtime 'edu.ucar:cdm-s3'
-  runtime project(':tds-ugrid')
+  runtimeOnly 'edu.ucar:uicdm'
+  runtimeOnly 'edu.ucar:cdm-s3'
+  runtimeOnly project(':tds-ugrid')
 }
 
 application {
