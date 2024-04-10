@@ -8,14 +8,14 @@ apply from: "$rootDir/gradle/any/dependencies.gradle"
 apply plugin: 'application'
 
 dependencies {
-    implementation enforcedPlatform(project(':tds-platform'))
-    testCompile enforcedPlatform(project(':tds-testing-platform'))
+  implementation enforcedPlatform(project(':tds-platform'))
+  testCompile enforcedPlatform(project(':tds-testing-platform'))
 
-    runtime 'edu.ucar:uicdm'
-    runtime 'edu.ucar:cdm-s3'
-    runtime project(':tds-ugrid')
+  runtime 'edu.ucar:uicdm'
+  runtime 'edu.ucar:cdm-s3'
+  runtime project(':tds-ugrid')
 }
 
 application {
-    mainClass.set("ucar.nc2.ui.ToolsUI")
+  mainClass.set("ucar.nc2.ui.ToolsUI")
 }

@@ -3,19 +3,19 @@ apply from: "$rootDir/gradle/any/war-published.gradle"
 apply from: "$rootDir/gradle/any/gretty.gradle"
 
 dependencies {
-    implementation enforcedPlatform(project(':tds-platform'))
+  implementation enforcedPlatform(project(':tds-platform'))
 
-    implementation 'edu.ucar:dap4'
-    implementation project(":dap4:d4servlet")
+  implementation 'edu.ucar:dap4'
+  implementation project(":dap4:d4servlet")
 
-    providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
+  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
 
-    compileOnly 'org.slf4j:slf4j-api'
+  compileOnly 'org.slf4j:slf4j-api'
 
-    runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
-    runtime 'org.apache.logging.log4j:log4j-web'
+  runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
+  runtime 'org.apache.logging.log4j:log4j-web'
 
-    compileOnly 'org.slf4j:slf4j-api'
+  compileOnly 'org.slf4j:slf4j-api'
 }
 
 // This specifies the resources from ":dap4" that we need to include in the d4ts war and inplaceWebapp.
@@ -57,10 +57,10 @@ war {
 }
 
 gretty {
-    httpPort = 8083
-    contextPath = '/d4ts'
+  httpPort = 8083
+  contextPath = '/d4ts'
 
-    afterEvaluate {
-        prepareInplaceWebAppFolder.with d4testsResourcesCopySpec
-    }
+  afterEvaluate {
+    prepareInplaceWebAppFolder.with d4testsResourcesCopySpec
+  }
 }

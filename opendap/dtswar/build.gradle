@@ -5,20 +5,20 @@ apply from: "$rootDir/gradle/any/dependencies.gradle"
 apply from: "$rootDir/gradle/any/war-published.gradle"
 
 dependencies {
-    implementation enforcedPlatform(project(':tds-platform'))
+  implementation enforcedPlatform(project(':tds-platform'))
 
-    compile project(':opendap:opendap-servlet')
+  compile project(':opendap:opendap-servlet')
 
-    compile 'edu.ucar:cdm-core'
-    compile 'edu.ucar:opendap'
-    compile 'org.slf4j:slf4j-api'
+  compile 'edu.ucar:cdm-core'
+  compile 'edu.ucar:opendap'
+  compile 'org.slf4j:slf4j-api'
 
-    providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
+  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
 
-    runtime 'org.apache.taglibs:taglibs-standard-spec'
-    runtime 'org.apache.taglibs:taglibs-standard-impl'
+  runtime 'org.apache.taglibs:taglibs-standard-spec'
+  runtime 'org.apache.taglibs:taglibs-standard-impl'
 
 
-    runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
-    runtime 'org.apache.logging.log4j:log4j-web'
+  runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
+  runtime 'org.apache.logging.log4j:log4j-web'
 }
