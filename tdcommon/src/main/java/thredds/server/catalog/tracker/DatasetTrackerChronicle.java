@@ -207,12 +207,19 @@ public class DatasetTrackerChronicle implements DatasetTracker {
 
     // changed = true;
     DatasetExt dsext = new DatasetExt(catId, dataset.getRestrictAccess(), ncml);
+    if (datasetMap == null) {
+      catalogInitLog.error("Catalog chronicle map not properly initialized. Can't track dataset {}", dataset);
+      return false;
+    }
     datasetMap.put(path, dsext);
     changed = true;
     return true;
   }
 
   public String findResourceControl(String path) {
+    if (datasetMap == null) {
+      return null;
+    }
     DatasetExt dext = datasetMap.get(path);
     if (dext == null)
       return null;
@@ -220,6 +227,9 @@ public class DatasetTrackerChronicle implements DatasetTracker {
   }
 
   public String findNcml(String path) {
+    if (datasetMap == null) {
+      return null;
+    }
     DatasetExt dext = datasetMap.get(path);
     if (dext == null)
       return null;
@@ -228,6 +238,9 @@ public class DatasetTrackerChronicle implements DatasetTracker {
 
   @Override
   public void showDB(Formatter f) {
+    if (datasetMap == null) {
+      return;
+    }
     f.format("ChronicleMap %s%n", dbFile.getPath());
     int count = 0;
     for (Map.Entry<String, DatasetExt> entry : datasetMap.entrySet()) {
@@ -239,6 +252,6 @@ public class DatasetTrackerChronicle implements DatasetTracker {
 
   // Package private for testing
   long getCount() {
-    return datasetMap.longSize();
+    return datasetMap != null ? datasetMap.longSize() : -1;
   }
 }
