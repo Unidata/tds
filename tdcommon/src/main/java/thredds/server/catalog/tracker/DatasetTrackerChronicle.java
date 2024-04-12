@@ -132,9 +132,6 @@ public class DatasetTrackerChronicle implements DatasetTracker {
     ChronicleMapBuilder<String, DatasetExt> builder = ChronicleMapBuilder.of(String.class, DatasetExt.class)
         .averageValueSize(averageValueSize).entries(maxDatasets).averageKeySize(averagePathLength)
         .valueMarshaller(DatasetExtBytesMarshaller.INSTANCE).skipCloseOnExitHook(true);
-    if (builder == null) {
-      throw new IOException("Failed to create Dataset catalog tracker");
-    }
     datasetMap = builder.createPersistedTo(dbFile);
     changed = false;
   }
