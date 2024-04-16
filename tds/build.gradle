@@ -30,6 +30,9 @@ dependencies {
   implementation 'edu.ucar:waterml'
   implementation project(':tds-ugrid')
 
+  implementation 'net.openhft:chronicle-map'
+  implementation 'jakarta.validation:jakarta.validation-api'
+
   // DAP4 Dependencies (technically forward)
   implementation 'edu.ucar:dap4'
   implementation project(':dap4:d4servlet')
