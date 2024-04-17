@@ -435,7 +435,7 @@ abstract public class DapController extends HttpServlet {
    * Generate an error based on the parameters
    *
    * @param drq DapRequest
-   * @param httpcode 0=>no code specified
+   * @param httpcode 0 {@literal =>} no code specified
    * @param t exception that caused the error; may be null
    * @throws IOException
    */

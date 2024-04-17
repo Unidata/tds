@@ -184,7 +184,7 @@ public class CDMWrap {
    */
 
   /**
-   * Track generic CDMNode <-> DapNode
+   * Track generic CDMNode {@literal <->} DapNode
    */
   protected void recordNode(CDMNode cdm, DapNode dap) {
     assert this.nodemap.get(cdm) == null && this.nodemap.get(dap) == null;
@@ -192,7 +192,7 @@ public class CDMWrap {
   }
 
   /**
-   * Track Variable <-> DapVariable
+   * Track Variable {@literal <->} DapVariable
    */
   protected void recordVar(Variable cdm, DapVariable dap) {
     cdm = CDMUtil.unwrap(cdm);
@@ -201,7 +201,7 @@ public class CDMWrap {
   }
 
   /**
-   * Track Variable <-> DapStructure
+   * Track Variable {@literal <->} DapStructure
    */
   protected void recordStruct(Variable cdm, DapStructure dap) {
     cdm = CDMUtil.unwrap(cdm);
@@ -210,7 +210,7 @@ public class CDMWrap {
   }
 
   /**
-   * Track Variable <-> DapSequence
+   * Track Variable {@literal <->} DapSequence
    */
   protected void recordSeq(Variable cdm, DapSequence dap) {
     cdm = CDMUtil.unwrap(cdm);
