@@ -43,3 +43,7 @@ spotless {
     targetExclude('src/main/java/thredds/server/catalog/tracker/ConfigCatalogExtProto.java')
   }
 }
+
+tasks.named('sourceJar').configure {
+  dependsOn('generateProto')
+}
