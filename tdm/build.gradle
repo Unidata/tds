@@ -32,10 +32,6 @@ dependencies {
 }
 
 shadowJar {
-  archiveBaseName = 'tdmFat'
-  setArchiveBaseName('tdmFat')
-  classifier ''
-  setArchiveClassifier ''
   doFirst {
     manifest.attributes jar.manifest.attributes
   }
