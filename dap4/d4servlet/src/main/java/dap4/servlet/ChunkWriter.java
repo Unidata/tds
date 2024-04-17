@@ -227,10 +227,10 @@ public class ChunkWriter extends OutputStream {
    * else reset the current chunk thus
    * losing any partial write.
    *
-   * @param httpcode The httpcode, 0 => ignore
-   * @param msg The <Error> <Message>, null => ignore
-   * @param cxt The <Error> <Context>, null => ignore
-   * @param other The <Error> <OtherInformation>, null => ignore
+   * @param httpcode The httpcode, 0 {@literal =>} ignore
+   * @param msg The <Error> <Message>, null {@literal =>} ignore
+   * @param cxt The <Error> <Context>, null {@literal =>} ignore
+   * @param other The <Error> <OtherInformation>, null {@literal =>} ignore
    * @throws IOException on IO related errors
    */
   public void writeError(int httpcode, String msg, String cxt, String other) throws IOException {
