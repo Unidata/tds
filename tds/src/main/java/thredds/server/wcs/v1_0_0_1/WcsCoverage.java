@@ -143,7 +143,8 @@ public class WcsCoverage {
 
     /////////
     try {
-      if (format == Request.Format.GeoTIFF || format == Request.Format.GeoTIFF_Float || format == Request.Format.GeoTIFF_Palette) {
+      if (format == Request.Format.GeoTIFF || format == Request.Format.GeoTIFF_Float
+          || format == Request.Format.GeoTIFF_Palette) {
         File dir = new File(getDiskCache().getRootDirectory());
         File tifFile = File.createTempFile("WCS", ".tif", dir);
         if (log.isDebugEnabled())
@@ -166,8 +167,8 @@ public class WcsCoverage {
             }
             if (!flag_colors_attr.isString()) {
               log.error("Invalid flag_colors attribute");
-              throw new WcsException(WcsException.Code.UNKNOWN, "",
-                  "Invalid flag_colors attribute for coverage [" + this.coverage.getName() + "] for format GeoTIFF_Palette.");
+              throw new WcsException(WcsException.Code.UNKNOWN, "", "Invalid flag_colors attribute for coverage ["
+                  + this.coverage.getName() + "] for format GeoTIFF_Palette.");
             }
 
             int[] flag_values = new int[flag_values_attr.getLength()];
@@ -180,7 +181,7 @@ public class WcsCoverage {
             writer.setColorTable(GeotiffWriter.createColorMap(flag_values, flag_colors), Color.white);
           }
           writer.writeGrid(array, format == Request.Format.GeoTIFF,
-                           format == Request.Format.GeoTIFF_Palette ? DataType.UBYTE : null);
+              format == Request.Format.GeoTIFF_Palette ? DataType.UBYTE : null);
 
         } catch (Throwable e) {
           log.error("writeCoverageDataToFile(): Failed to write file for requested coverage <" + this.coverage.getName()
