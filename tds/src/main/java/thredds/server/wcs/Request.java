@@ -22,7 +22,11 @@ public interface Request {
   }
 
   enum Format {
-    NONE(""), GeoTIFF("image/tiff"), GeoTIFF_Float("image/tiff"), NetCDF3("application/x-netcdf"), GeoTIFF_Palette("image/tiff");
+    NONE(""),
+    GeoTIFF("image/tiff"),
+    GeoTIFF_Float("image/tiff"),
+    NetCDF3("application/x-netcdf"),
+    GeoTIFF_Palette("image/tiff");
 
     private String mimeType;
 
