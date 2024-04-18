@@ -271,7 +271,7 @@ def previousTestTaskFinalizer = null
 
 testInfomation.forEach { testInfo ->
   sourceSets.create(testInfo.name) {
-    resources.srcDir file("src/${testInfo.name}/resources")
+    resources.srcDirs = [file("src/${testInfo.name}/resources")]
 
     // Need 'sourceSets.test.output' because we use TestOnLocalServer in our test.
     compileClasspath += sourceSets.test.output + configurations.testCompileClasspath
