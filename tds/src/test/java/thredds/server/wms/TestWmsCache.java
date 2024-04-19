@@ -76,6 +76,13 @@ public class TestWmsCache {
     Files.copy(TEST_FILE, TEMP_FILE, StandardCopyOption.REPLACE_EXISTING);
   }
 
+  @Before
+  public void clearNetcdfFileCache() {
+    final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
+    cache.clearCache(true);
+    assertNoneLockedInNetcdfFileCache();
+  }
+
   @After
   public void clearCache() {
     ThreddsWmsServlet.resetCache();
@@ -174,7 +181,10 @@ public class TestWmsCache {
   }
 
   private void assertNoneLockedInNetcdfFileCache() {
-    assertNotLockedInNetcdfFileCache("");
+    final FileCacheIF cache = NetcdfDatasets.getNetcdfFileCache();
+    final List<String> entries = cache.showCache();
+    final boolean isLocked = entries.stream().anyMatch(e -> e.startsWith("true"));
+    assertWithMessage(cache.showCache().toString()).that(isLocked).isFalse();
   }
 
   private void assertNotLockedInNetcdfFileCache(String path) {
