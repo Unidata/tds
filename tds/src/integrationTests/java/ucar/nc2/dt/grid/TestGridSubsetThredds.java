@@ -210,6 +210,7 @@ public class TestGridSubsetThredds {
     }
   }
 
+  @Ignore("http://esrl.noaa.gov/psd/thredds not available")
   @Test
   @Category(NeedsExternalResource.class)
   public void testScaleOffset() throws Exception {
