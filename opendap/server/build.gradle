@@ -10,6 +10,7 @@ dependencies {
 
   implementation 'edu.ucar:cdm-core'
   implementation 'edu.ucar:opendap'
+  implementation 'org.jdom:jdom2'
   implementation 'org.slf4j:slf4j-api'
 
   compileOnly 'jakarta.servlet:jakarta.servlet-api'

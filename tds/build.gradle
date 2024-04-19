@@ -104,6 +104,7 @@ dependencies {
   testImplementation project(':tds-test-utils');
   testImplementation 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
   testImplementation 'edu.ucar:httpservices'
+  testImplementation 'com.beust:jcommander'
 
   // Logging
   implementation 'org.slf4j:slf4j-api'

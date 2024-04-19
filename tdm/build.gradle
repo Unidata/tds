@@ -26,6 +26,7 @@ dependencies {
   implementation 'com.google.protobuf:protobuf-java'
   implementation 'com.beust:jcommander'
   implementation 'com.google.guava:guava'
+  implementation 'com.google.re2j:re2j'
 
   implementation 'org.slf4j:slf4j-api'
   implementation 'org.apache.logging.log4j:log4j-slf4j-impl'
