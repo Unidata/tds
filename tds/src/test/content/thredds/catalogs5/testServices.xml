@@ -7,6 +7,13 @@
   <!--- test using default -->
   <dataset name="Test Single Grid Dataset" ID="testSingleGridDataset" urlPath="cdmUnitTest/ncss/CONUS_80km_nc/GFS_CONUS_80km_20120419_0000.nc" dataType="Grid"/>
 
+  <dataset name="Test Nested Grid Dataset" ID="testNestedGridDataset">
+    <metadata inherited="true">
+      <dataType>Grid</dataType>
+    </metadata>
+    <dataset name="Test Inner Grid Dataset" ID="testInnerGridDataset" urlPath="localContent/testData.nc"/>
+  </dataset>
+
   <!--- test using global -->
   <dataset name="Test sst" ID="TESTsst" serviceName="all" urlPath="cdmUnitTest/conventions/coards/sst.mnmean.nc" dataType="Grid"/>
 
