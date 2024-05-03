@@ -58,17 +58,15 @@ public class AdminLogController {
     if (path.equals("access/current")) {
 
       File dir = tdsContext.getTomcatLogDirectory();
-      File[] files = dir.listFiles((dir1, name) -> {
-        return name.startsWith("access");
-      });
+      File[] files = dir.listFiles((dir1, name) -> name.startsWith("access"));
       if ((files == null) || (files.length == 0)) {
         res.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
       }
 
-      List fileList = Arrays.asList(files);
+      List<File> fileList = Arrays.asList(files);
       Collections.sort(fileList);
-      file = (File) fileList.get(fileList.size() - 1); // last one
+      file = fileList.get(fileList.size() - 1);
 
     } else if (path.equals("access/")) {
       showFiles(tdsContext.getTomcatLogDirectory(), "access", res);
@@ -105,9 +103,7 @@ public class AdminLogController {
   }
 
   private void showFiles(File dir, final String filter, HttpServletResponse res) throws IOException {
-    File[] files = dir.listFiles((dir1, name) -> {
-      return name.contains(filter);
-    });
+    File[] files = dir.listFiles((dir1, name) -> name.contains(filter));
 
     if ((files == null) || (files.length == 0)) {
       res.sendError(HttpServletResponse.SC_NOT_FOUND);

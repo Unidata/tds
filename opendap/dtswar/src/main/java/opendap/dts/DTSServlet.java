@@ -1448,7 +1448,7 @@ public class DTSServlet extends AbstractServlet {
       int pending = 0;
       StringBuilder preqs = new StringBuilder();
       for (int i = 0; i < n; i++) {
-        ReqState rs = (ReqState) prArr.get(i);
+        ReqState rs = prArr.get(i);
         RequestDebug reqD = (RequestDebug) rs.getUserObject();
         if (!reqD.done) {
           preqs.append("<pre>-----------------------\n");
@@ -1657,7 +1657,7 @@ public class DTSServlet extends AbstractServlet {
             reqD = new RequestDebug(reqno, Thread.currentThread().toString());
             rs.setUserObject(reqD);
             if (prArr == null)
-              prArr = new ArrayList(10000);
+              prArr = new ArrayList<>(10000);
             prArr.add((int) reqno, rs);
           }
 
@@ -1824,7 +1824,7 @@ public class DTSServlet extends AbstractServlet {
   //////////////////////////////////////////////////
   // debug
 
-  private ArrayList prArr = null;
+  private ArrayList<ReqState> prArr = null;
 
   static private class RequestDebug {
     long reqno;
