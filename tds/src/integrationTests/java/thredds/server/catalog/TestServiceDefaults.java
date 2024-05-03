@@ -5,6 +5,8 @@
 
 package thredds.server.catalog;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -40,6 +42,18 @@ public class TestServiceDefaults {
     Assert.assertNotNull(s);
     Assert.assertTrue(s.getType() == ServiceType.Compound);
     Assert.assertEquals(7, s.getNestedServices().size());
+  }
+
+  @Test
+  public void testStandardServicesForNestedDataset() {
+    String catalog = "/catalog/catalogs5/testServices.xml";
+    Catalog cat = TdsLocalCatalog.open(catalog);
+    Dataset ds = cat.findDatasetByID("testInnerGridDataset");
+    assertThat(ds.getFeatureType()).isEqualTo(FeatureType.GRID);
+
+    Service service = ds.getServiceDefault();
+    assertThat(service.getType()).isEqualTo(ServiceType.Compound);
+    assertThat(service.getNestedServices().size()).isEqualTo(7);
   }
 
   // Relies on:
@@ -80,6 +94,9 @@ public class TestServiceDefaults {
     Assert.assertEquals(ServiceType.OPENDAP, localServices.getType());
 
     for (Dataset ds : cat.getDatasetsLocal()) {
+      if (ds.getId() != null && ds.getId().equals("testNestedGridDataset")) {
+        continue;
+      }
       if (!(ds instanceof CatalogRef)) {
         Assert.assertTrue(ds.hasAccess());
 
