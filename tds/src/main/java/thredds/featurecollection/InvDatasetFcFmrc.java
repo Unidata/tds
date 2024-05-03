@@ -472,7 +472,7 @@ public class InvDatasetFcFmrc extends InvDatasetFeatureCollection {
         // the new API, that way we get any new RandomAccessFile implementations that rely
         // on the new API (e.g. S3RandomAccessFile).
         NetcdfDataset ncd = new NetcdfDataset(ncdNew.getReferencedFile(), null);
-        return ncd == null ? null : new ucar.nc2.dt.grid.GridDataset(ncd);
+        return new ucar.nc2.dt.grid.GridDataset(ncd);
       } else if (wantName.equals(hasName + FMRC)
           && wantDatasets.contains(FeatureCollectionConfig.FmrcDatasetType.TwoD)) {
         return fmrc.getDataset2D(null);
