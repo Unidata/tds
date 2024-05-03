@@ -8,8 +8,7 @@ permalink: upgrade.html
 
 ## Requirements
 
-* Java 11 is required
-* Tomcat 8 (servlet 3.1)
+* Java and tomcat versions listed [here](install_java_tomcat.html#system-requirements)
 * On the command line when starting up Tomcat/TDS, you must specify `-Dtds.content.root.path=<content root>` where `<content root>` points to the top of the content directory.
   Note, in this exmaple, that this is `/data/content/`, not`/data/content/thredds/`. 
   Don't forget the trailing slash. 
