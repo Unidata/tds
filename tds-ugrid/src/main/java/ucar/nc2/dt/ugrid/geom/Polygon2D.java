@@ -783,7 +783,7 @@ public abstract class Polygon2D implements Shape, Serializable {
 
 
     /* If either polygon does not have vertices... */
-    if (countPoly1 == 0 || countPoly1 == 0) {
+    if (countPoly1 == 0 || countPoly2 == 0) {
       return false;
     }
 
