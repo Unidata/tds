@@ -38,6 +38,18 @@ public class TestPartialContent {
     final String path = "fileServer/scanLocal/mydata1.nc";
     final long maxSize = 66832;
     final String contentType = ContentType.netcdf.toString();
+    checkPartialContent(path, maxSize, contentType);
+  }
+
+  @Test
+  public void shouldReturnPartialContentOfZip() {
+    final String path = "fileServer/scanLocal/twoFiles.zip";
+    final long maxSize = 667;
+    final String contentType = "application/zip";
+    checkPartialContent(path, maxSize, contentType);
+  }
+
+  private void checkPartialContent(String path, long maxSize, String contentType) {
     final String endpoint = TestOnLocalServer.withHttpPath(path);
 
     final byte[] content = TestOnLocalServer.getContent(null, endpoint,
