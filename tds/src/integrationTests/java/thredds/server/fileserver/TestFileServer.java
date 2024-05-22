@@ -67,6 +67,11 @@ public class TestFileServer {
     result.add(new Object[] {"fileServer/scanCdmUnitTests/formats/netcdf3/files/ctest0.nc",
         ContentType.netcdf.toString(), "4b514d280c034222e8e5b8401fee268c"});
 
+    result
+        .add(new Object[] {"fileServer/scanLocal/oneFile.zip", "application/zip", "088e88fe16b8cd4ac73b5ef540393439"});
+    result
+        .add(new Object[] {"fileServer/scanLocal/twoFiles.zip", "application/zip", "a9d6538c628654e2840de4afa5d85aad"});
+
     return result;
   }
 
