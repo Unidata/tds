@@ -56,7 +56,7 @@ public class TestPartialContent {
         new int[] {HttpServletResponse.SC_PARTIAL_CONTENT}, contentType, byteRange);
     assertThat(content).isNotNull();
 
-    final long expectedLength = Math.min(byteRange[1] - byteRange[0] + 1, maxSize);
+    final long expectedLength = Math.min(byteRange[1] - byteRange[0] + 1, maxSize - byteRange[0]);
     assertThat(content.length).isEqualTo(expectedLength);
   }
 }
