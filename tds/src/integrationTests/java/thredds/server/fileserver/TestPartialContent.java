@@ -18,7 +18,7 @@ import thredds.util.ContentType;
 public class TestPartialContent {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  @Parameterized.Parameters(name = "{0}")
+  @Parameterized.Parameters
   static public List<long[]> getTestParameters() {
     final List<long[]> result = new ArrayList<>();
 
