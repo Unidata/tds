@@ -295,7 +295,7 @@ public class ServletUtil {
       return;
     }
 
-    if (file.isDirectory()) {
+    if (file.isDirectory() && !file.isZipFile()) {
       response.sendError(HttpServletResponse.SC_BAD_REQUEST,
           "Expected a file name instead of a directory for URL path: " + requestPath);
       return;
