@@ -8,26 +8,27 @@ apply from: "$rootDir/gradle/any/protobuf.gradle"
 dependencies {
   implementation enforcedPlatform(project(':tds-platform'))
   testImplementation enforcedPlatform (project(':tds-testing-platform'))
-  compile 'edu.ucar:cdm-core'
-  compile 'edu.ucar:cdm-s3'
-  compile 'edu.ucar:grib'
-  compile 'org.jdom:jdom2'
+  implementation 'edu.ucar:cdm-core'
+  implementation 'edu.ucar:cdm-s3'
+  implementation 'edu.ucar:grib'
+  implementation 'org.jdom:jdom2'
 
-  compile 'jakarta.validation:jakarta.validation-api'
-  compile 'jakarta.annotation:jakarta.annotation-api'
+  implementation 'jakarta.validation:jakarta.validation-api'
+  implementation 'jakarta.annotation:jakarta.annotation-api'
 
-  compile 'org.quartz-scheduler:quartz'
-  compile 'net.openhft:chronicle-map'
-  compile 'com.google.code.findbugs:jsr305'
-  compile 'com.google.guava:guava'
-  compile 'com.google.protobuf:protobuf-java'
+  implementation 'org.quartz-scheduler:quartz'
+  implementation 'net.openhft:chronicle-map'
+  implementation 'com.google.code.findbugs:jsr305'
+  implementation 'com.google.guava:guava'
+  implementation 'com.google.protobuf:protobuf-java'
+  implementation 'com.google.re2j:re2j'
 
-  compile 'org.slf4j:slf4j-api'
+  implementation 'org.slf4j:slf4j-api'
 
   // Spring
-  compile 'org.springframework:spring-core'
-  compile 'org.springframework:spring-context'
-  compile 'org.springframework:spring-beans'
+  implementation 'org.springframework:spring-core'
+  implementation 'org.springframework:spring-context'
+  implementation 'org.springframework:spring-beans'
 
   // Testing
   testImplementation 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
@@ -42,4 +43,8 @@ spotless {
     // exclude proto generated files
     targetExclude('src/main/java/thredds/server/catalog/tracker/ConfigCatalogExtProto.java')
   }
+}
+
+tasks.named('sourceJar').configure {
+  dependsOn('generateProto')
 }

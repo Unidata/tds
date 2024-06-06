@@ -13,29 +13,26 @@ apply plugin: 'com.github.johnrengelman.shadow'
 dependencies {
   implementation enforcedPlatform(project(':tds-platform'))
 
-  compile project(':tdcommon')
-  compile 'edu.ucar:httpservices'
-  compile 'edu.ucar:cdm-core'
-  compile 'edu.ucar:grib'
+  implementation project(':tdcommon')
+  implementation 'edu.ucar:httpservices'
+  implementation 'edu.ucar:cdm-core'
+  implementation 'edu.ucar:grib'
 
-  compile 'org.apache.httpcomponents:httpclient'
-  compile 'org.jdom:jdom2'
-  compile 'org.springframework:spring-beans'
-  compile 'org.springframework:spring-core'
-  compile 'org.springframework:spring-context'
-  compile 'com.google.protobuf:protobuf-java'
-  compile 'com.beust:jcommander'
-  compile 'com.google.guava:guava'
+  implementation 'org.apache.httpcomponents:httpclient'
+  implementation 'org.jdom:jdom2'
+  implementation 'org.springframework:spring-beans'
+  implementation 'org.springframework:spring-core'
+  implementation 'org.springframework:spring-context'
+  implementation 'com.google.protobuf:protobuf-java'
+  implementation 'com.beust:jcommander'
+  implementation 'com.google.guava:guava'
+  implementation 'com.google.re2j:re2j'
 
-  compile 'org.slf4j:slf4j-api'
-  runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
+  implementation 'org.slf4j:slf4j-api'
+  implementation 'org.apache.logging.log4j:log4j-slf4j-impl'
 }
 
 shadowJar {
-  baseName = 'tdmFat'
-  setArchiveBaseName('tdmFat')
-  classifier ''
-  setArchiveClassifier ''
   doFirst {
     manifest.attributes jar.manifest.attributes
   }
