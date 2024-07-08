@@ -257,7 +257,7 @@ import java.nio.file.Paths
 gretty {
   httpPort = 8081
   contextPath = '/thredds'
-  jvmArgs = ['--illegal-access=permit', '--add-exports', 'java.base/jdk.internal.ref=ALL-UNNAMED']
+  jvmArgs = ['--add-exports', 'java.base/jdk.internal.ref=ALL-UNNAMED']
 }
 
 def testInfomation = [[name: 'freshInstallTest',
