@@ -48,3 +48,7 @@ spotless {
 tasks.named('sourceJar').configure {
   dependsOn('generateProto')
 }
+
+test {
+  jvmArgs = jvmArguments
+}
