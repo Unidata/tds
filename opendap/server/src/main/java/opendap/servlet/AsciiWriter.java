@@ -105,19 +105,19 @@ public class AsciiWriter {
     if (data instanceof DString) // covers DURL case
       showString(pw, ((DString) data).getValue());
     else if (data instanceof DFloat32)
-      pw.print((new Float(((DFloat32) data).getValue())).toString());
+      pw.print((Float.valueOf(((DFloat32) data).getValue())).toString());
     else if (data instanceof DFloat64)
-      pw.print((new Double(((DFloat64) data).getValue())).toString());
+      pw.print((Double.valueOf(((DFloat64) data).getValue())).toString());
     else if (data instanceof DUInt32)
-      pw.print((new Long(((DUInt32) data).getValue() & ((long) 0xFFFFFFFF))).toString());
+      pw.print((Long.valueOf(((DUInt32) data).getValue() & ((long) 0xFFFFFFFF))).toString());
     else if (data instanceof DUInt16)
-      pw.print((new Integer(((DUInt16) data).getValue() & 0xFFFF)).toString());
+      pw.print((Integer.valueOf(((DUInt16) data).getValue() & 0xFFFF)).toString());
     else if (data instanceof DInt32)
-      pw.print((new Integer(((DInt32) data).getValue())).toString());
+      pw.print((Integer.valueOf(((DInt32) data).getValue())).toString());
     else if (data instanceof DInt16)
-      pw.print((new Short(((DInt16) data).getValue())).toString());
+      pw.print((Short.valueOf(((DInt16) data).getValue())).toString());
     else if (data instanceof DByte)
-      pw.print((new Integer(((DByte) data).getValue() & 0xFF)).toString());
+      pw.print((Integer.valueOf(((DByte) data).getValue() & 0xFF)).toString());
     else
       pw.print("Not implemented type = " + data.getTypeName() + " " + data.getEncodedName() + "\n");
 

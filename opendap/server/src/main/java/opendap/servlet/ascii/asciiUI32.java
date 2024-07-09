@@ -83,7 +83,7 @@ public class asciiUI32 extends DUInt32 implements toASCII {
     if (addName)
       pw.print(", ");
 
-    pw.print((new Long(getValue() & ((long) 0xFFFFFFFF))).toString());
+    pw.print((Long.valueOf(getValue() & ((long) 0xFFFFFFFF))).toString());
 
     if (newLine)
       pw.print("\n");

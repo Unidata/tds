@@ -84,7 +84,7 @@ public class asciiI32 extends DInt32 implements toASCII {
     if (addName)
       pw.print(", ");
 
-    pw.print((new Long(getValue())).toString());
+    pw.print((Long.valueOf(getValue())).toString());
 
     if (newLine)
       pw.print("\n");

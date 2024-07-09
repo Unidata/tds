@@ -162,13 +162,13 @@ public class SDTest {
     String arg = null;
     try {
       opts = new Getopts("f:c:", args);
-      if (opts.getSwitch(new Character('f')).set) {
-        arg = opts.getSwitch(new Character('f')).val;
+      if (opts.getSwitch('f').set) {
+        arg = opts.getSwitch('f').val;
         if (Debug)
           // System.out.print("DDS File: " + ((arg != null) ? arg : "null") + "\n");
           DDSFile = arg;
       }
-      if (opts.getSwitch(new Character('c')).set) {
+      if (opts.getSwitch('c').set) {
         arg = g.getOptarg();
         if (Debug)
           // System.out.print("Constraint Expression: \"" + ((arg != null) ? arg : "null") + "\"\n");

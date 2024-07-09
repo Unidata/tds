@@ -394,8 +394,8 @@ public class CDMWrap {
     for (Map.Entry<Integer, String> entry : ecvalues.entrySet()) {
       String name = entry.getValue();
       assert (name != null);
-      int value = (int) entry.getKey();
-      dapenum.addEnumConst(dmrfactory.newEnumConst(name, new Long(value)));
+      long value = entry.getKey();
+      dapenum.addEnumConst(dmrfactory.newEnumConst(name, value));
     }
     return dapenum;
   }
