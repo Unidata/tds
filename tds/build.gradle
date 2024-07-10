@@ -38,7 +38,7 @@ dependencies {
   implementation project(':dap4:d4servlet')
 
   // Server stuff
-  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
+  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"
   runtimeOnly 'org.apache.taglibs:taglibs-standard-spec'
   runtimeOnly 'org.apache.taglibs:taglibs-standard-impl'
 
@@ -94,7 +94,7 @@ dependencies {
   implementation 'org.thymeleaf:thymeleaf-spring5'
 
   // Testing
-  testImplementation "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
+  testImplementation "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"
   testImplementation 'org.springframework:spring-test'
   testImplementation 'org.hamcrest:hamcrest-core'
   testImplementation 'commons-io:commons-io'

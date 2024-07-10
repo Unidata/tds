@@ -8,7 +8,7 @@ dependencies {
   implementation 'edu.ucar:dap4'
   implementation project(":dap4:d4servlet")
 
-  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
+  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"
 
   compileOnly 'org.slf4j:slf4j-api'
 

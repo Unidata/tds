@@ -14,7 +14,7 @@ dependencies {
   implementation 'org.jdom:jdom2'
   implementation 'org.slf4j:slf4j-api'
 
-  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
+  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"
 
   runtimeOnly 'org.apache.taglibs:taglibs-standard-spec'
   runtimeOnly 'org.apache.taglibs:taglibs-standard-impl'
