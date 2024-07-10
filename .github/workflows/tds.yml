@@ -8,8 +8,7 @@ jobs:
       matrix:
         java-version: [ 17 ]
         java-vendor: [ 'temurin' ]
-        # test against tomcat 8.5.x and tomcat 9.x
-        servletcontainer: [ 'tomcat85', 'tomcat9' ]
+        servletcontainer: [ 'tomcat10' ]
     steps:
       - uses: actions/checkout@v4
       - name: Build and test with Gradle (${{ matrix.java-vendor }} ${{ matrix.java-version }})
