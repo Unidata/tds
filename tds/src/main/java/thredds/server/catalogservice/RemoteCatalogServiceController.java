@@ -26,7 +26,7 @@ import thredds.server.config.TdsContext;
 import thredds.server.exception.ServiceNotAllowed;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Formatter;
 import java.util.HashMap;

@@ -6,8 +6,8 @@
 package thredds.server.ncss.validation;
 
 import java.util.List;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class VarParamsValidator implements ConstraintValidator<VarParamConstraint, List<String>> {
 
