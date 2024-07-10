@@ -48,7 +48,14 @@
     <attribute name="units" value="Day since 1970-01-01T00:00:00Z" />
     <attribute name="long_name" value="nominal time of profile" />
     <attribute name="calendar" value="proleptic_gregorian" />
-    <values>10.0 20.0 30.0 10.0 20.0 30.0</values>
+  <values>10.0 20.0 30.0 10.0 20.0 30.0</values>
+  </variable>
+
+  <variable name="time" shape="obs" type="double">
+    <attribute name="units" value="Day since 1970-01-01T00:00:00Z" />
+    <attribute name="long_name" value="nominal time of profile" />
+    <values>10.0 10.0 10.0 20.0 20.0 20.0 30.0 30.0 30.0
+    10.0 10.0 10.0 20.0 20.0 20.0 30.0 30.0 30.0</values>
   </variable>
 
   <variable name="stationIndex" shape="profile" type="int">
@@ -69,11 +76,11 @@
     <attribute name="units" value="K" />
     <attribute name="long_name" value="air_temperature" />
     <attribute name="standard_name" value="air_temperature" />
-    <attribute name="coordinates" value="profileTime latitude longitude altitude" />
+    <attribute name="coordinates" value="time latitude longitude altitude" />
 	<values>100 130 160 190 220 250 280 310 340 1000 1030 1060 1090 1120 1150 1180 1210 1240</values>
   </variable>
 
-  <attribute name="Conventions" value="CF-1.6" />
+  <attribute name="Conventions" value="CF-1.9" />
   <attribute name="history" value="Written by CFPointWriter" />
   <attribute name="title" value="Extracted data from TDS Feature Collection"/>
   <attribute name="geospatial_lat_min" type="double" value="39.9995" />

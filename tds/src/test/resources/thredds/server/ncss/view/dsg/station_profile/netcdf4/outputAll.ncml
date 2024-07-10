@@ -57,6 +57,15 @@
 	<values>0 0 0 0 0 1 1 1 1 1 2 2 2 2 2</values>
   </variable>
 
+  <variable name="time" shape="obs" type="double">
+    <attribute name="units" value="Day since 1970-01-01T00:00:00Z" />
+    <attribute name="long_name" value="nominal time of profile" />
+    <attribute name="_ChunkSizes" type="uint" value="1024" />
+    <values>0.0 0.0 0.0 10.0 10.0 10.0 20.0 20.0 20.0 30.0 30.0 30.0 40.0 40.0 40.0
+    0.0 0.0 0.0 10.0 10.0 10.0 20.0 20.0 20.0 30.0 30.0 30.0 40.0 40.0 40.0
+    0.0 0.0 0.0 10.0 10.0 10.0 20.0 20.0 20.0 30.0 30.0 30.0 40.0 40.0 40.0</values>
+  </variable>
+
   <variable name="altitude" shape="obs" type="double">
     <attribute name="units" value="m" />
     <attribute name="long_name" value="obs altitude" />
@@ -70,7 +79,7 @@
     <attribute name="units" value="kg m-2 s-1" />
     <attribute name="long_name" value="precipitation_flux" />
     <attribute name="standard_name" value="precipitation_flux" />
-    <attribute name="coordinates" value="profileTime latitude longitude altitude"/>
+    <attribute name="coordinates" value="time latitude longitude altitude"/>
     <attribute name="_ChunkSizes" type="uint" value="2048" />
 	<values>1 4 7 10 13 16 19 22 25 28 31 34 37 40 43 46 49 52 55 58 61 64 67 70 73 76 79 82 85 88 91 94 97 100 103 106 109 112 115 118 121 124 127 130 133</values>
   </variable>
@@ -79,12 +88,12 @@
     <attribute name="units" value="K" />
     <attribute name="long_name" value="air_temperature" />
     <attribute name="standard_name" value="air_temperature" />
-    <attribute name="coordinates" value="profileTime latitude longitude altitude"/>
+    <attribute name="coordinates" value="time latitude longitude altitude"/>
     <attribute name="_ChunkSizes" type="uint" value="2048" />
     <values>10 40 70 100 130 160 190 220 250 280 310 340 370 400 430 460 490 520 550 580 610 640 670 700 730 760 790 820 850 880 910 940 970 1000 1030 1060 1090 1120 1150 1180 1210 1240 1270 1300 1330</values>
   </variable>
 
-  <attribute name="Conventions" value="CF-1.6" />
+  <attribute name="Conventions" value="CF-1.9" />
   <attribute name="history" value="Written by CFPointWriter" />
   <attribute name="title" value="Extracted data from TDS Feature Collection" />
   <attribute name="geospatial_lat_min" type="double" value="39.9995" />
