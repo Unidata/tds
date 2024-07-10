@@ -11,8 +11,8 @@ import dap4.core.util.DapUtil;
 import dap4.dap4lib.DapLog;
 import dap4.servlet.DapRequest;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;

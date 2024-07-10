@@ -10,7 +10,7 @@ import thredds.server.viewer.ViewerLinkProvider;
 import thredds.server.viewer.ViewerService;
 import thredds.util.StringValidateEncodeUtils;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;

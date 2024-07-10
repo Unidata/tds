@@ -7,8 +7,8 @@ package dap4.servlet;
 
 import dap4.core.util.*;
 import dap4.dap4lib.RequestMode;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URISyntaxException;

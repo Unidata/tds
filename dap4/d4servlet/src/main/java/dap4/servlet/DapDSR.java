@@ -9,7 +9,7 @@ import dap4.core.util.*;
 import dap4.dap4lib.DapProtocol;
 import dap4.dap4lib.RequestMode;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;

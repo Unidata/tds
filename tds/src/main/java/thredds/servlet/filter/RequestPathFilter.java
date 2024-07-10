@@ -8,9 +8,9 @@ import com.coverity.security.Escape;
 import thredds.servlet.ServletUtil;
 import thredds.util.StringValidateEncodeUtils;
 import thredds.util.TdsPathUtils;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -31,7 +31,7 @@ import java.io.IOException;
  * @see thredds.util.StringValidateEncodeUtils#validPath(String)
  * @since 3.16.47
  */
-public class RequestPathFilter implements javax.servlet.Filter {
+public class RequestPathFilter implements jakarta.servlet.Filter {
   private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
 
   public void init(FilterConfig filterConfig) throws ServletException {}

@@ -5,7 +5,7 @@
 package thredds.server.viewer;
 
 import thredds.client.catalog.Dataset;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Interface for plugging in Viewers.

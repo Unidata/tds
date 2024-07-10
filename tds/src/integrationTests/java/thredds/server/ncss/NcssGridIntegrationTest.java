@@ -6,7 +6,7 @@
 package thredds.server.ncss;
 
 import java.util.Optional;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

@@ -18,7 +18,7 @@ dependencies {
   api enforcedPlatform('org.springframework.security:spring-security-bom:6.3.1')
   api platform('net.openhft:chronicle-bom:2.25ea62')
   api enforcedPlatform("org.apache.logging.log4j:log4j-bom:2.17.1")
-  api enforcedPlatform("jakarta.platform:jakarta.jakartaee-bom:8.0.0")
+  api enforcedPlatform("jakarta.platform:jakarta.jakartaee-bom:9.0.0")
 
 
   constraints {

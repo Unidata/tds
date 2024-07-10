@@ -44,8 +44,8 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.zip.DeflaterOutputStream;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 import opendap.dap.*;
 import opendap.servers.*;
 import opendap.dap.parsers.ParseException;
@@ -69,7 +69,7 @@ import ucar.nc2.util.EscapeStrings;
  * be where the server specific OPeNDAP server data types are
  * used via their associated class factory.
  * <p/>
- * This code relies on the <code>javax.servlet.ServletConfig</code>
+ * This code relies on the <code>jakarta.servlet.ServletConfig</code>
  * interface (in particular the <code>getInitParameter()</code> method)
  * to record detailed configuration information used by
  * the servlet and it's children.
@@ -126,7 +126,7 @@ import ucar.nc2.util.EscapeStrings;
  */
 
 
-public abstract class AbstractServlet extends javax.servlet.http.HttpServlet {
+public abstract class AbstractServlet extends jakarta.servlet.http.HttpServlet {
 
   //////////////////////////////////////////////////
   // Statics

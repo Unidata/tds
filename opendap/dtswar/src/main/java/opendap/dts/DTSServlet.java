@@ -51,12 +51,12 @@ import opendap.servlet.*;
 import opendap.util.Debug;
 import org.apache.http.HttpStatus;
 import ucar.nc2.util.EscapeStrings;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
 import java.nio.charset.StandardCharsets;
@@ -73,7 +73,7 @@ import java.util.zip.DeflaterOutputStream;
  * reduce the bulk of this file, many of these methods have been
  * in wrapper classes in this package (opendap.servlet).
  * <p>
- * This code relies on the <code>javax.servlet.ServletConfig</code>
+ * This code relies on the <code>jakarta.servlet.ServletConfig</code>
  * interface (in particular the <code>getInitParameter()</code> method)
  * to record detailed configuration information used by
  * the servlet and it's children.
@@ -135,7 +135,7 @@ import java.util.zip.DeflaterOutputStream;
  * types.
  * <p>
  * <b>Configuration:</b><br>
- * The AbstractServlet relies on the javax.servlet.ServletConfig
+ * The AbstractServlet relies on the jakarta.servlet.ServletConfig
  * interface (in particular the getInitParameter() method)
  * to retrieve configuration information used by the servlet.
  * <b>InitParameters:</b>

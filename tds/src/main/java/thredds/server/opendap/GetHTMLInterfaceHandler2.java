@@ -16,8 +16,8 @@ import opendap.servlet.www.jscriptCore;
 import opendap.servlet.www.wwwFactory;
 import opendap.servlet.www.wwwOutPut;
 import thredds.server.config.ThreddsConfig;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.*;
 
 /**

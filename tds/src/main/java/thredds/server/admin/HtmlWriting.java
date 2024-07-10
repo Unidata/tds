@@ -10,7 +10,7 @@ import thredds.server.config.HtmlConfigBean;
 import thredds.server.config.TdsContext;
 import thredds.util.ContentType;
 import ucar.nc2.time.CalendarDate;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -7,9 +7,9 @@ package thredds.servlet.filter;
 
 import org.slf4j.MDC;
 import thredds.servlet.UsageLog;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -18,7 +18,7 @@ import java.io.IOException;
  * @author edavis
  * @since 4.1
  */
-public class RequestBracketingLogMessageFilter implements javax.servlet.Filter {
+public class RequestBracketingLogMessageFilter implements jakarta.servlet.Filter {
 
   private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger("threddsServlet");
 
