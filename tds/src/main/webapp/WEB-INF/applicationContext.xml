@@ -13,7 +13,12 @@
 
 
     <!-- Enables the Spring MVC @Controller programming model  -->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+      <mvc:path-matching path-matcher="pathMatcher"/>
+    </mvc:annotation-driven>
+
+    <!-- Allow RequestMappings that start with "**" -->
+    <bean id="pathMatcher" class="org.springframework.util.AntPathMatcher"/>
 
     <!-- Application root Context: defines shared resources visible to all other web components -->
     <!-- enabling component-scan in Spring for annotated wirings -->
