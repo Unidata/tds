@@ -18,6 +18,8 @@ dependencies {
   api enforcedPlatform('org.springframework.security:spring-security-bom:6.3.1')
   api platform('net.openhft:chronicle-bom:2.25ea62')
   api enforcedPlatform("org.apache.logging.log4j:log4j-bom:2.17.1")
+  // remove log4j-jakarta-web and use log4j-jakarta-bom when that is released
+  api enforcedPlatform("org.apache.logging.log4j:log4j-jakarta-web:2.23.1")
   api enforcedPlatform("jakarta.platform:jakarta.jakartaee-bom:9.0.0")
 
 
@@ -79,7 +81,7 @@ dependencies {
     runtime 'edu.ucar:dap4'
 
     // defined in tds-testing-platform as well, but using api config
-    runtime 'org.apache.logging.log4j:log4j-web'
+    runtime 'org.apache.logging.log4j:log4j-jakarta-web'
 
     // tds
     api 'org.json:json:20231013'
