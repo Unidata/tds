@@ -71,7 +71,6 @@ public class TestGridAsPointMisc {
     }
   }
 
-  @Ignore("TODO: fix to work with new cfpointwriters")
   @Test
   public void getGridAsProfileSubsetAllSupportedFormats() throws Exception {
     for (SupportedFormat sf : SupportedOperation.GRID_AS_POINT_REQUEST.getSupportedFormats()) {

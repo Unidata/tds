@@ -60,5 +60,5 @@
     </variable>
 
     <attribute name="featureType" value="timeSeriesProfile"/>
-    <attribute name="Conventions" value="CF-1.6"/>
+    <attribute name="Conventions" value="CF-1.9"/>
 </netcdf>

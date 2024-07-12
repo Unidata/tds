@@ -86,7 +86,9 @@ public class StationProfileSubsetWriterNetcdf extends AbstractStationProfileSubs
 
   @Override
   protected void writeHeader(StationProfileFeature stn) throws Exception {
-    return;
+    ArrayList<StationFeature> asList = new ArrayList<>();
+    asList.add(stn);
+    cfWriter.writeHeader(asList);
   }
 
   @Override
@@ -95,8 +97,9 @@ public class StationProfileSubsetWriterNetcdf extends AbstractStationProfileSubs
   }
 
   @Override
-  protected void writeStationPointFeature(StationProfileFeature stn, StationPointFeature stationPointFeat) {
-    return;
+  protected void writeStationPointFeature(StationProfileFeature stn, StationPointFeature stationPointFeat)
+      throws Exception {
+    cfWriter.writeObsData(stationPointFeat);
   }
 
   @Override
