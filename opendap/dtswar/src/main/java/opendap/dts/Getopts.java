@@ -119,7 +119,7 @@ public class Getopts {
    * @param sw int value switch whose option is requested
    */
   public String getOption(int sw) {
-    Character opt = new Character((char) sw);
+    Character opt = (char) sw;
     return getOption(opt);
   }
 
@@ -192,7 +192,7 @@ public class Getopts {
     for (int i = 0; i < flags.length(); i++) {
       boolean found;
       int cc = flags.charAt(i);
-      Character c = new Character((char) cc);
+      Character c = (char) cc;
       char alpha[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
           't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
@@ -205,7 +205,7 @@ public class Getopts {
 
       found = false;
       for (int j = 0; j < alpha.length; j++) {
-        Character ch = new Character(alpha[j]);
+        Character ch = alpha[j];
         char uc = Character.toUpperCase(ch.charValue());
         if (alpha[j] == cc || uc == cc) {
           found = true;
@@ -228,7 +228,7 @@ public class Getopts {
           if (prv == ':') {
             throw new InvalidSwitch(throwstring + "Can't have consecutive ':'\n" + usage + "\n");
           } else {
-            Character cp = new Character((char) prv);
+            Character cp = (char) prv;
             OptSwitch sw = (OptSwitch) switchtab.get(cp);
             sw.SetHasValue(OptSwitch.VAL);
           }
@@ -259,7 +259,7 @@ public class Getopts {
       // more options, iterate them
       for (int j = 1; j < args[i].length(); j++) {
         cc = args[i].charAt(j);
-        Character fc = new Character(cc);
+        Character fc = cc;
         OptSwitch cs = (OptSwitch) switchtab.get(fc);
         if (cs == null) {
           // The supplied switch wasn't recognised.
