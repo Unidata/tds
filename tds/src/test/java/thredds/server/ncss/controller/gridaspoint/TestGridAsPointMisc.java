@@ -70,7 +70,7 @@ public class TestGridAsPointMisc {
       Assert.assertTrue(ct.startsWith(sf.getMimeType()));
     }
   }
-  
+
   @Test
   public void getGridAsProfileSubsetAllSupportedFormats() throws Exception {
     for (SupportedFormat sf : SupportedOperation.GRID_AS_POINT_REQUEST.getSupportedFormats()) {
