@@ -164,7 +164,7 @@ public class DsgSubsetWriterTest {
 
         {FeatureType.STATION_PROFILE, SupportedFormat.NETCDF4, subsetParamsAll, "outputAll.ncml"},
         {FeatureType.STATION_PROFILE, SupportedFormat.NETCDF4, subsetParamsProfile1, "outputSubset1.ncml"},
-        {FeatureType.STATION_PROFILE, SupportedFormat.NETCDF4, subsetParamsProfile2, "outputSubset2.ncml"},});
+        {FeatureType.STATION_PROFILE, SupportedFormat.NETCDF4, subsetParamsProfile2, "outputSubset2.ncml"}});
   }
 
   private final FeatureType wantedType;
@@ -191,7 +191,7 @@ public class DsgSubsetWriterTest {
 
     File datasetFile = new File(getClass().getResource(datasetResource).toURI());
     File expectedResultFile = new File(getClass().getResource(expectedResultResource).toURI());
-    File actualResultFile = File.createTempFile("test", null);// tempFolder.newFile();
+    File actualResultFile = tempFolder.newFile();
 
     try (FeatureDatasetPoint fdPoint = openPointDataset(wantedType, datasetFile);
         OutputStream outFileStream = new BufferedOutputStream(new FileOutputStream(actualResultFile))) {

@@ -399,8 +399,8 @@ public class DatasetManager implements InitializingBean {
     // since the urlPath doesn't need to point to a file if there is ncml
     String ncml = datasetTracker.findNcml(reqPath);
     if (ncml != null) {
-      Optional<FeatureDatasetCoverage> opt = CoverageDatasetFactory.openNcmlString(ncml);// ,
-                                                                                         // DatasetUrl.findDatasetUrl(reqPath).getTrueurl());
+      Optional<FeatureDatasetCoverage> opt =
+          CoverageDatasetFactory.openNcmlString(ncml, DatasetUrl.findDatasetUrl(reqPath).getTrueurl());
       if (!opt.isPresent())
         throw new FileNotFoundException("NcML is not a Grid Dataset " + reqPath + " err=" + opt.getErrorMessage());
 
