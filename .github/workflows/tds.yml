@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         java-version: [ 17 ]
-        java-vendor: [ 'zulu', 'temurin' ]
+        java-vendor: [ 'temurin' ]
         # test against tomcat 8.5.x and tomcat 9.x
         servletcontainer: [ 'tomcat85', 'tomcat9' ]
     steps:
