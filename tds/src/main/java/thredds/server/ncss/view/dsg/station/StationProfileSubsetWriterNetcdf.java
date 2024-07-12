@@ -97,7 +97,8 @@ public class StationProfileSubsetWriterNetcdf extends AbstractStationProfileSubs
   }
 
   @Override
-  protected void writeStationPointFeature(StationProfileFeature stn, StationPointFeature stationPointFeat) throws Exception {
+  protected void writeStationPointFeature(StationProfileFeature stn, StationPointFeature stationPointFeat)
+      throws Exception {
     cfWriter.writeObsData(stationPointFeat);
   }
 

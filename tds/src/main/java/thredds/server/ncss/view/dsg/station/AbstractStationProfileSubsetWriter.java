@@ -65,18 +65,17 @@ public abstract class AbstractStationProfileSubsetWriter extends DsgSubsetWriter
 
     for (StationFeature profileFeat : subsettedStationFeatCol.getStationFeatures()) {
       assert profileFeat instanceof StationProfileFeature : "Expected StationProfileFeature, not "
-              + profileFeat.getClass().toString();
+          + profileFeat.getClass().toString();
       // Perform temporal subset. We do this even when a time instant is specified, in which case wantedRange
       // represents a sanity check (i.e. "give me the feature closest to the specified time, but it must at least be
       // within an hour").
       if (wantedRange != null) {
-        profileFeat = ((StationProfileFeature)profileFeat).subset(wantedRange);
+        profileFeat = ((StationProfileFeature) profileFeat).subset(wantedRange);
       }
 
       if (ncssParams.getTime() != null) {
         CalendarDate wantedTime = ncssParams.getTime();
-        profileFeat = new ClosestTimeStationProfileFeatureSubset(
-                (StationProfileFeatureImpl) profileFeat, wantedTime);
+        profileFeat = new ClosestTimeStationProfileFeatureSubset((StationProfileFeatureImpl) profileFeat, wantedTime);
       }
       count += writeStationProfileTimeSeriesFeature((StationProfileFeature) profileFeat);
     }

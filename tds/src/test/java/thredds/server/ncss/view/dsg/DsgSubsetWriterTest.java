@@ -114,7 +114,7 @@ public class DsgSubsetWriterTest {
     // I like this workaround better than <clinit> because subclasses can potentially override setupClass().
     setupClass();
 
-    return Arrays.asList(new Object[][]{
+    return Arrays.asList(new Object[][] {
         // Point
         {FeatureType.POINT, SupportedFormat.CSV_FILE, subsetParamsAll, "outputAll.csv"},
         {FeatureType.POINT, SupportedFormat.CSV_FILE, subsetParamsPoint, "outputSubset.csv"},
@@ -164,8 +164,7 @@ public class DsgSubsetWriterTest {
 
         {FeatureType.STATION_PROFILE, SupportedFormat.NETCDF4, subsetParamsAll, "outputAll.ncml"},
         {FeatureType.STATION_PROFILE, SupportedFormat.NETCDF4, subsetParamsProfile1, "outputSubset1.ncml"},
-        {FeatureType.STATION_PROFILE, SupportedFormat.NETCDF4, subsetParamsProfile2, "outputSubset2.ncml"},
-    });
+        {FeatureType.STATION_PROFILE, SupportedFormat.NETCDF4, subsetParamsProfile2, "outputSubset2.ncml"},});
   }
 
   private final FeatureType wantedType;
@@ -192,7 +191,7 @@ public class DsgSubsetWriterTest {
 
     File datasetFile = new File(getClass().getResource(datasetResource).toURI());
     File expectedResultFile = new File(getClass().getResource(expectedResultResource).toURI());
-    File actualResultFile = File.createTempFile("test", null);//tempFolder.newFile();
+    File actualResultFile = File.createTempFile("test", null);// tempFolder.newFile();
 
     try (FeatureDatasetPoint fdPoint = openPointDataset(wantedType, datasetFile);
         OutputStream outFileStream = new BufferedOutputStream(new FileOutputStream(actualResultFile))) {
