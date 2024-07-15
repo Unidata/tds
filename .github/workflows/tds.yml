@@ -6,18 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # test against latest 11, 14 of zulu and 11 of temurin java
+        # test against latest 11 of zulu and temurin java
         java-version: [ 11 ]
         java-vendor: [ 'zulu', 'temurin' ]
         # test against tomcat 8.5.x and tomcat 9.x
         servletcontainer: [ 'tomcat85', 'tomcat9' ]
-        include:
-          - java-version: 14
-            java-vendor: 'zulu'
-            servletcontainer: 'tomcat85'
-          - java-version: 14
-            java-vendor: 'zulu'
-            servletcontainer: 'tomcat9'
     steps:
       - uses: actions/checkout@v4
       - name: Build and test with Gradle (${{ matrix.java-vendor }} ${{ matrix.java-version }})

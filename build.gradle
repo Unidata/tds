@@ -27,6 +27,8 @@ buildscript {
         includeModule 'edu.ucar.unidata.site', 'jekyll-plugin'
         includeModule 'edu.ucar.unidata.site', 'jekyll-gems'
         includeModule 'edu.ucar.unidata', 'unidata-nexus-gradle'
+        includeModule 'com.burgstaller', 'okhttp-digest'
+        includeModule 'org.ysb33r.gradle', 'grolifant'
       }
     }
   }
