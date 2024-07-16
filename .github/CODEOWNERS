@@ -15,7 +15,7 @@
 # users just like we do for commit author emails.
 # docs/*  docs@example.com
 
-* @haileyajohnson
+* @tdrwenski
 
 #####################
 # top level modules #
@@ -28,8 +28,8 @@
 
 **/thredds/server/radarServer2/** @dopplershift
 
-**/opendap/** @DennisHeimbigner
-**/dap4/** @DennisHeimbigner
+**/opendap/** @DennisHeimbigner @tdrwenski
+**/dap4/** @DennisHeimbigner @tdrwenski
 
 ######################
 # general file types #
