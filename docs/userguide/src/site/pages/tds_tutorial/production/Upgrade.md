@@ -70,6 +70,11 @@ As this is a major version change to that library, there may be some breaking ch
 See also the [edal user guide](https://reading-escience-centre.gitbooks.io/edal-user-guide/content/) and the 
 [changes from ncWMS 1.x](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/01-ncwms1x.html#changes).
 
+### ncISO services
+To use the ncISO services, you must add the `tds-plugin-jar-with-dependencies.jar` artifact to your TDS for TDS versions >= 5.5.
+For TDS versions prior to 5.5 this artifact was included in the TDS war file.
+See [ncISO configuration](adding_ogc_iso_services.html#nciso-configuration) for more details.
+
 ## Java Web Start
 
 Java Web Start has been [deprecated as of Java 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and has been removed in [Java 11](https://www.oracle.com/technetwork/java/javase/11-relnote-issues-5012449.html){:target="_blank"}, which is the Long-term Release post-Java 8.
