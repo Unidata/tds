@@ -99,7 +99,7 @@ dependencies {
     api 'org.n52.sensorweb:52n-xml-om-v20'
 
     // edal-java (ncwms)
-    def edalVersion = '1.5.0.6-SNAPSHOT'
+    def edalVersion = '1.5.2.0'
     api "uk.ac.rdg.resc:edal-common:${edalVersion}"
     api "uk.ac.rdg.resc:edal-cdm:${edalVersion}"
     api "uk.ac.rdg.resc:edal-wms:${edalVersion}"

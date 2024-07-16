@@ -23,7 +23,7 @@ ext {
   depVersion.slf4j = '1.7.28'
   depVersion.gwt = '2.8.2'
   depVersion.jaxen = '1.1.6'
-  depVersion.netcdfJava = '5.5.4-SNAPSHOT'
+  depVersion.netcdfJava = '5.6.0'
   // gradle seems to have issues with the compileOnly configuration, so we need to provide the full maven
   // coordinates for javax.servlet-api if the gradle plugin in applied. If we don't, we see errors like this:
   depVersion.javaxServletApi = '4.0.3'
