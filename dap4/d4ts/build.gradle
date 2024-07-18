@@ -12,8 +12,8 @@ dependencies {
 
   compileOnly 'org.slf4j:slf4j-api'
 
-  runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
-  runtime 'org.apache.logging.log4j:log4j-web'
+  runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl'
+  runtimeOnly 'org.apache.logging.log4j:log4j-web'
 
   compileOnly 'org.slf4j:slf4j-api'
 }

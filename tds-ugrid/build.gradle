@@ -9,18 +9,19 @@ apply from: "$rootDir/gradle/any/java-published.gradle"
 
 dependencies {
   implementation enforcedPlatform (project(':tds-platform'))
-  testCompile enforcedPlatform (project(':tds-testing-platform'))
+  testImplementation enforcedPlatform (project(':tds-testing-platform'))
 
-  compile 'edu.ucar:cdm-core'
-  compile 'edu.ucar:cdm-s3'
+  implementation 'edu.ucar:cdm-core'
+  implementation 'edu.ucar:cdm-s3'
   implementation 'colt:colt:1.2.0'
+  implementation 'com.google.guava:guava'
 
   // Testing
-  testCompile project(':tds-test-utils');
-  testCompile 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
-  testCompile 'junit:junit'
-  testCompile 'com.google.truth:truth'
+  testImplementation project(':tds-test-utils');
+  testImplementation 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
+  testImplementation 'junit:junit'
+  testImplementation 'com.google.truth:truth'
 
   // Logging
-  compile 'org.slf4j:slf4j-api'
+  implementation 'org.slf4j:slf4j-api'
 }

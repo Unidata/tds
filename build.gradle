@@ -101,7 +101,7 @@ ext {
 
 tasks.named('wrapper') {
   distributionType = Wrapper.DistributionType.ALL
-  gradleVersion = '6.9.1'
+  gradleVersion = '7.6.4'
 }
 
 gradle.projectsEvaluated {
