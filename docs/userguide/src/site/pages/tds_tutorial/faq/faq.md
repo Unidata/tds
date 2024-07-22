@@ -301,6 +301,17 @@ com.google.common.util.concurrent.UncheckedExecutionException: java.lang.Illegal
 
 then you may need to adjust your [FMRC cache settings](https://docs.unidata.ucar.edu/tds/current/userguide/tds_config_ref.html#featurecollection-cache).
 
+### Failed to start up with JDK 17
+
+If you are upgrading to JDK 17 and your serverStartup.log contains an error like
+~~~
+ERROR org.springframework.web.context.ContextLoader: Context initialization failed
+java.lang.ExceptionInInitializerError: null
+    at net.openhft.chronicle.core.internal.ClassUtil.getSetAccessible0Method(ClassUtil.java:32) ~[chronicle-core-2.25ea15.jar:?]
+    ...
+~~~
+You may be missing the JVM arguments need by the chronicle library. Please see `$CHRONICLE_CACHE` in [`${tomcat_home}/bin/setenv.sh`](running_tomcat.html#setting-java_home-java_opts-catalina_home-catalina_base-and-content_root)
+
 ## Caching
 
 ### We use compressed netCDF files, and the very first access to them are quite slow, although subsequent accesses are much faster, then become slow again after a while. 

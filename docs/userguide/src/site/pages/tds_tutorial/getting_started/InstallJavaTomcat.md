@@ -14,7 +14,7 @@ Users of OS-provided packages via package management systems for Java and/or Tom
 
 ## System Requirements
 
-* OpenJDK Java 11
+* OpenJDK Java 17
 * Apache Tomcat 8.x or 9.x
 
 While there are different distributors of Java and servlet containers, Unidata develops, uses and tests the THREDDS Data Server using _OpenJDK Java_ and the _Apache Tomcat_ servlet container.
@@ -29,7 +29,7 @@ The installation is being performed as the `root` user.
 For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guide](https://adoptium.net/installation.html){:target='_blank'}.
 " %}
 
-1.  [Download](https://adoptium.net/){:target="_blank"} current OpenJDK 11 (LTS) JDK version from the AdoptOpenJDK site. 
+1.  [Download](https://adoptium.net/){:target="_blank"} the required OpenJDK version from the AdoptOpenJDK site. 
 
 2.  Install the JDK.
 
@@ -39,17 +39,17 @@ For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guid
     # pwd
     /usr/local
     
-    # cp /tmp/jdk-8u192-linux-x64.tar.gz .
+    # cp /tmp/jdk-xx.tar.gz .
 
     # ls -l
     total 187268
-    -rw-r--r-- 1 root root 191757099 Oct 24 13:19 jdk-11.0.11.tar.gz
+    -rw-r--r-- 1 root root 191757099 Oct 24 13:19 jdk-xx.tar.gz
     ~~~
 
     Unpack the archive file:
 
     ~~~bash
-    # tar xvfz jdk-11.0.11.tar.gz 
+    # tar xvfz jdk-xx.tar.gz 
     ~~~
 
     This will extract the JDK in the installation directory:
@@ -57,17 +57,17 @@ For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guid
     ~~~bash
     # ls -l
     total 187272
-    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-11.0.11
-    -rw-r--r-- 1 root root 191757099 Oct 24 13:19 jdk-11.0.11.tar.gz
+    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-xx
+    -rw-r--r-- 1 root root 191757099 Oct 24 13:19 jdk-xx.tar.gz
     ~~~
 
     Remove the remaining binary `tar.gz` file when the installation is complete.
    
     ~~~bash
-    # rm jdk-11.0.11.tar.gz
+    # rm jdk-xx.tar.gz
     # ls -l
     total 187279
-    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-11.0.11
+    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-xx
     ~~~
 
     {% include important.html content="
@@ -101,7 +101,7 @@ For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomca
     # ls -l
     total 196676
     -rw-r--r-- 1 root root   9625824 Oct 24 13:27 apache-tomcat-8.5.34.tar.gz
-    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-11.0.11
+    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-xx
     ~~~
 
     Unpack the archive file:
@@ -117,7 +117,7 @@ For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomca
     total 196680
     drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-8.5.34
     -rw-r--r-- 1 root root   9625824 Oct 24 13:27 apache-tomcat-8.5.34.tar.gz
-    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-11.0.11
+    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-xx
     ~~~
 
     Remove the remaining binary `tar.gz` file when the installation is complete.
@@ -127,7 +127,7 @@ For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomca
     # ls -l
     total 187282
     drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-8.5.34
-    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-11.0.11
+    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-xx
     ~~~
 
 ## Create Symbolic Links
@@ -149,13 +149,13 @@ Windows users can consult the [Microsoft Documentation](https://docs.microsoft.c
     /usr/local
     
     # ln -s apache-tomcat-8.5.34 tomcat 
-    # ln -s jdk-11.0.11 jdk
+    # ln -s jdk-xx jdk
     # ls -l 
     total 196684
     drwxr-xr-x 9 root root      4096 Oct 24 13:29 tomcat -> apache-tomcat-8.5.34
     drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-8.5.34
-    lrwxrwxrwx 1 root root        12 Oct 24 13:59 jdk -> jdk-11.0.11
-    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-11.0.11
+    lrwxrwxrwx 1 root root        12 Oct 24 13:59 jdk -> jdk-xx
+    drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-xx
     ~~~
 
 ## Next Step
