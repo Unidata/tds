@@ -15,11 +15,6 @@ repositories {
   // uncomment for release process
 //  mavenLocal()
 
-  // chronicle-bom needs access to chronicle snapshots
-  maven {
-    url 'https://oss.sonatype.org/content/repositories/snapshots/'
-  }
-
   // All of the hosted repositories below could be replaced with:
   //     url "https://artifacts.unidata.ucar.edu/repository/unidata-all/"
   // which is a group repository that contains all other repositories. However, I prefer to list all source
@@ -38,6 +33,11 @@ repositories {
       // this repository *only* used for artifacts with group "org.bounce" (NcML editor in toolsUI)
       includeGroup 'org.bounce'
     }
+  }
+
+  // chronicle-bom needs access to chronicle snapshots
+  maven {
+    url 'https://oss.sonatype.org/content/repositories/snapshots/'
   }
 }
 
