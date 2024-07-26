@@ -41,7 +41,8 @@ export JAVA_HOME="/usr/local/jdk"
 # THIS IS CRITICAL and there is NO DEFAULT - 
 # the TDS will not start without this.
 #
-CONTENT_ROOT=-Dtds.content.root.path=/data/content
+CONTENT_ROOT=/data/content
+CONTENT_ROOT_OPT=-Dtds.content.root.path=$CONTENT_ROOT
 
 # Set java prefs related variables (used by the wms service)
 JAVA_PREFS_ROOTS="-Djava.util.prefs.systemRoot=$CONTENT_ROOT/thredds/javaUtilPrefs \
@@ -57,7 +58,7 @@ HEADLESS="-Djava.awt.headless=true"
 #
 # Standard setup.
 #
-JAVA_OPTS="$CONTENT_ROOT $NORMAL $HEAP_DUMP $HEADLESS $JAVA_PREFS_ROOTS"
+JAVA_OPTS="$CONTENT_ROOT_OPT $NORMAL $HEAP_DUMP $HEADLESS $JAVA_PREFS_ROOTS"
 
 export JAVA_OPTS
 ~~~
