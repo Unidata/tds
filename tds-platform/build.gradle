@@ -19,7 +19,10 @@ dependencies {
   api platform('net.openhft:chronicle-bom:2.25ea62')
   api enforcedPlatform("org.apache.logging.log4j:log4j-bom:2.17.1")
   // remove log4j-jakarta-web and use log4j-jakarta-bom when that is released
-  api enforcedPlatform("org.apache.logging.log4j:log4j-jakarta-web:2.23.1")
+  api enforcedPlatform("org.apache.logging.log4j:log4j-jakarta-web:2.23.1") {
+    // Use version from edal-java for h2database
+    exclude group: 'com.h2database', module: 'h2'
+  }
   api enforcedPlatform("jakarta.platform:jakarta.jakartaee-bom:9.0.0")
 
 
