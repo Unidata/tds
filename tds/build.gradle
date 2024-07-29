@@ -91,7 +91,7 @@ dependencies {
   // @Resource annotation (removed post Java 8)
   implementation 'jakarta.annotation:jakarta.annotation-api'
 
-  implementation 'org.thymeleaf:thymeleaf-spring5'
+  implementation 'org.thymeleaf:thymeleaf-spring6'
 
   // Testing
   testImplementation "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"

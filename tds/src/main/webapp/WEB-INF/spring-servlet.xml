@@ -31,7 +31,7 @@
         <property name="characterEncoding" value="UTF-8"/>
     </bean>
 
-    <bean id="defaultTemplateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+    <bean id="defaultTemplateResolver" class="org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver">
         <property name="prefix" value="/WEB-INF/"/>
         <property name="suffix" value=".html"/>
         <property name="templateMode" value="HTML"/>
@@ -40,7 +40,7 @@
         <property name="characterEncoding" value="UTF-8"/>
     </bean>
 
-    <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+    <bean id="templateEngine" class="org.thymeleaf.spring6.SpringTemplateEngine">
         <property name="templateResolvers">
             <set>
                 <ref bean="customTemplateResolver"/>
@@ -49,7 +49,7 @@
         </property>
     </bean>
 
-    <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+    <bean class="org.thymeleaf.spring6.view.ThymeleafViewResolver">
         <property name="templateEngine" ref="templateEngine"/>
         <property name="order" value="2"/>
         <property name="viewNames" value="templates/*"/>
