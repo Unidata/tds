@@ -39,6 +39,8 @@ dependencies {
 
   // Server stuff
   providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"
+  runtimeOnly "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
+  runtimeOnly "org.glassfish.web:jakarta.servlet.jsp.jstl"
   runtimeOnly 'org.apache.taglibs:taglibs-standard-spec'
   runtimeOnly 'org.apache.taglibs:taglibs-standard-impl'
 

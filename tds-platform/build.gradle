@@ -77,6 +77,8 @@ dependencies {
     // opendap
     api 'edu.ucar:opendap'
     api "jakarta.servlet:jakarta.servlet-api"
+    api "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0"
+    api "org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0"
     runtime 'org.apache.taglibs:taglibs-standard-spec:1.2.5'
     runtime 'org.apache.taglibs:taglibs-standard-impl:1.2.5'
 
