@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <!--/* Replace this "head" element with the one in commonFragments. Pass the "title" element below to the fragment. */-->
-<head th:replace="templates/commonFragments :: head(~{::title}, ~{::script}, ~{::link})">
+<head th:replace="~{templates/commonFragments :: head(~{::title}, ~{::script}, ~{::link})}">
     <title>TDS Catalog</title>
 
     <link rel="stylesheet" th:href="${contextPath} + '/tds.css'" type="text/css">
