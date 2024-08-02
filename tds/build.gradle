@@ -124,6 +124,12 @@ configurations.testRuntimeOnly {
   exclude group: 'org.apache.logging.log4j'
 }
 
+configurations.testRuntimeClasspath {
+  resolutionStrategy {
+    force "jakarta.servlet:jakarta.servlet-api:${depVersion.testJakartaServletApi}"
+  }
+}
+
 task copyWebappFilesForTests(type: Copy) {
   // Tests expect for certain webapp files to be accessible from the classpath (e.g. WEB-INF/applicationContext.xml).
   from 'src/main/webapp'
