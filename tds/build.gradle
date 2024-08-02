@@ -87,7 +87,7 @@ dependencies {
 
   // JSR 303 with Hibernate Validator, which is dragging in jboss logging
   runtimeOnly 'org.hibernate.validator:hibernate-validator'
-  runtimeOnly 'org.glassfish:javax.el'
+  runtimeOnly 'org.glassfish:jakarta.el'
   annotationProcessor "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
 
   // @Resource annotation (removed post Java 8)
