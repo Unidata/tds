@@ -9,6 +9,7 @@ java {
 // Will apply to "compileJava", "compileTestJava", "compileSourceSetJava", etc.
 tasks.withType(JavaCompile).all {
   options.encoding = 'UTF-8'
+  options.compilerArgs.add("-parameters")
 
   // show deprecation details
   //options.compilerArgs = ['-Xlint:deprecation']
