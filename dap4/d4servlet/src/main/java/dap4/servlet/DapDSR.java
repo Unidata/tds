@@ -17,6 +17,8 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 /**
  * Generate the DSR for a dataset.
  * Currently only generates a minimal DSR.
@@ -132,6 +134,8 @@ public class DapDSR {
   }
 
   protected void substitute(StringBuilder buf, String macro, String value) {
+    value = StringEscapeUtils.escapeHtml4(value);
+
     int from = 0;
     String tag = "${" + macro + "}";
     int taglen = tag.length();
