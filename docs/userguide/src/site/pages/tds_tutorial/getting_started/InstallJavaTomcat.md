@@ -15,7 +15,7 @@ Users of OS-provided packages via package management systems for Java and/or Tom
 ## System Requirements
 
 * OpenJDK Java 17
-* Apache Tomcat 8.x or 9.x
+* Apache Tomcat 10.x
 
 While there are different distributors of Java and servlet containers, Unidata develops, uses and tests the THREDDS Data Server using _OpenJDK Java_ and the _Apache Tomcat_ servlet container.
 
@@ -83,12 +83,12 @@ The following example shows Tomcat installation on a linux system.
 The installation is performed as the `root` user.
 
 {% include note.html content="
-For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-8.5-doc/setup.html#Windows){:target='_blank'}.
+For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-10.1-doc/setup.html#Windows){:target='_blank'}.
 " %}
 
-1.  [Download](http://tomcat.apache.org/download-80.cgi){:target="_blank"} current version of the Tomcat 8.5 servlet container.
+1.  [Download](https://tomcat.apache.org/download-10.cgi){:target="_blank"} current version of the Tomcat servlet container.
 
-2.  Install Tomcat as per the Apache Tomcat [installation instructions](http://tomcat.apache.org/tomcat-8.5-doc/setup.html){:target="_blank"}.
+2.  Install Tomcat as per the Apache Tomcat [installation instructions](http://tomcat.apache.org/tomcat-10.1-doc/setup.html){:target="_blank"}.
 
     Copy the binary tar.gz file into the installation directory (`/usr/local` in this example):
 
@@ -96,18 +96,18 @@ For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomca
     # pwd
     /usr/local
     
-    # cp /tmp/apache-tomcat-8.5.34.tar.gz .
+    # cp /tmp/apache-tomcat-xx.tar.gz .
 
     # ls -l
     total 196676
-    -rw-r--r-- 1 root root   9625824 Oct 24 13:27 apache-tomcat-8.5.34.tar.gz
+    -rw-r--r-- 1 root root   9625824 Oct 24 13:27 apache-tomcat-xx.tar.gz
     drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-xx
     ~~~
 
     Unpack the archive file:
 
     ~~~bash
-    # tar xvfz apache-tomcat-8.5.34.tar.gz
+    # tar xvfz apache-tomcat-xx.tar.gz
     ~~~
 
     This will create a Tomcat directory:
@@ -115,18 +115,18 @@ For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomca
     ~~~bash
     # ls -l
     total 196680
-    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-8.5.34
-    -rw-r--r-- 1 root root   9625824 Oct 24 13:27 apache-tomcat-8.5.34.tar.gz
+    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-xx
+    -rw-r--r-- 1 root root   9625824 Oct 24 13:27 apache-tomcat-xx.tar.gz
     drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-xx
     ~~~
 
     Remove the remaining binary `tar.gz` file when the installation is complete.
    
     ~~~bash
-    # rm apache-tomcat-8.5.34.tar.gz
+    # rm apache-tomcat-xx.tar.gz
     # ls -l
     total 187282
-    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-8.5.34
+    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-xx
     drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-xx
     ~~~
 
@@ -148,12 +148,12 @@ Windows users can consult the [Microsoft Documentation](https://docs.microsoft.c
     # pwd
     /usr/local
     
-    # ln -s apache-tomcat-8.5.34 tomcat 
+    # ln -s apache-tomcat-xx tomcat 
     # ln -s jdk-xx jdk
     # ls -l 
     total 196684
-    drwxr-xr-x 9 root root      4096 Oct 24 13:29 tomcat -> apache-tomcat-8.5.34
-    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-8.5.34
+    drwxr-xr-x 9 root root      4096 Oct 24 13:29 tomcat -> apache-tomcat-xx
+    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-xx
     lrwxrwxrwx 1 root root        12 Oct 24 13:59 jdk -> jdk-xx
     drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk-xx
     ~~~
