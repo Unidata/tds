@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -174,7 +175,8 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
     // at the start of this post.
     // AnnotationUtils is a Spring Framework utility class.
     // see https://spring.io/blog/2013/11/01/exception-handling-in-spring-mvc
-    if (AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class) != null)
+    // or if it is a spring ErrorResponse let the spring handlers deal with it
+    if (AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class) != null || ex instanceof ErrorResponse)
       throw ex;
 
     logger.error("uncaught exception", ex);
