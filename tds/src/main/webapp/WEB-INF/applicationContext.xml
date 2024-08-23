@@ -9,11 +9,16 @@
 							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
               http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
               http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-              http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security-5.7.xsd">
+              http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security-6.3.xsd">
 
 
     <!-- Enables the Spring MVC @Controller programming model  -->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+      <mvc:path-matching path-matcher="pathMatcher"/>
+    </mvc:annotation-driven>
+
+    <!-- Allow RequestMappings that start with "**" -->
+    <bean id="pathMatcher" class="org.springframework.util.AntPathMatcher"/>
 
     <!-- Application root Context: defines shared resources visible to all other web components -->
     <!-- enabling component-scan in Spring for annotated wirings -->
@@ -25,29 +30,27 @@
 
     <!-- servlet filters -->
     <bean id="springDelegatingFilter" class="org.springframework.security.web.FilterChainProxy">
-        <constructor-arg>
-            <list>
-                <security:filter-chain pattern="/dap4/**" filters="
-           httpHeadFilter,
-           requestQueryFilterAllowAngleBrackets,
-           requestBracketingLogMessageFilter"/>
-                <security:filter-chain pattern="/dodsC/**" filters="
-           httpHeadFilter,
-           requestQueryFilterAllowAngleBrackets,
-           requestBracketingLogMessageFilter"/>
-                <security:filter-chain pattern="/wms/**" filters="
-           httpHeadFilter,
-           requestQueryFilterAllowAngleBrackets,
-           requestBracketingLogMessageFilter"/>
-                <security:filter-chain pattern="/fileServer/**" filters="
-           requestQueryFilter,
-           requestBracketingLogMessageFilter"/>
-                <security:filter-chain pattern="/**" filters="
-           httpHeadFilter,
-           requestQueryFilter,
-           requestBracketingLogMessageFilter"/>
-            </list>
-        </constructor-arg>
+        <security:filter-chain-map request-matcher="ant">
+            <security:filter-chain pattern="/dap4/**" filters="
+               httpHeadFilter,
+               requestQueryFilterAllowAngleBrackets,
+               requestBracketingLogMessageFilter"/>
+            <security:filter-chain pattern="/dodsC/**" filters="
+               httpHeadFilter,
+               requestQueryFilterAllowAngleBrackets,
+               requestBracketingLogMessageFilter"/>
+            <security:filter-chain pattern="/wms/**" filters="
+               httpHeadFilter,
+               requestQueryFilterAllowAngleBrackets,
+               requestBracketingLogMessageFilter"/>
+            <security:filter-chain pattern="/fileServer/**" filters="
+               requestQueryFilter,
+               requestBracketingLogMessageFilter"/>
+            <security:filter-chain pattern="/**" filters="
+               httpHeadFilter,
+               requestQueryFilter,
+               requestBracketingLogMessageFilter"/>
+        </security:filter-chain-map>
     </bean>
 
     <!-- Process HEAD requests on all GETS, see http://axelfontaine.com/blog/http-head.html -->

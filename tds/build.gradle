@@ -38,7 +38,9 @@ dependencies {
   implementation project(':dap4:d4servlet')
 
   // Server stuff
-  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
+  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"
+  runtimeOnly "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
+  runtimeOnly "org.glassfish.web:jakarta.servlet.jsp.jstl"
   runtimeOnly 'org.apache.taglibs:taglibs-standard-spec'
   runtimeOnly 'org.apache.taglibs:taglibs-standard-impl'
 
@@ -85,16 +87,16 @@ dependencies {
 
   // JSR 303 with Hibernate Validator, which is dragging in jboss logging
   runtimeOnly 'org.hibernate.validator:hibernate-validator'
-  runtimeOnly 'org.glassfish:javax.el'
+  runtimeOnly 'org.glassfish:jakarta.el'
   annotationProcessor "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
 
   // @Resource annotation (removed post Java 8)
   implementation 'jakarta.annotation:jakarta.annotation-api'
 
-  implementation 'org.thymeleaf:thymeleaf-spring5'
+  implementation 'org.thymeleaf:thymeleaf-spring6'
 
   // Testing
-  testImplementation "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
+  testImplementation "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"
   testImplementation 'org.springframework:spring-test'
   testImplementation 'org.hamcrest:hamcrest-core'
   testImplementation 'commons-io:commons-io'
@@ -109,7 +111,7 @@ dependencies {
   // Logging
   implementation 'org.slf4j:slf4j-api'
   runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl'
-  runtimeOnly 'org.apache.logging.log4j:log4j-web'
+  runtimeOnly 'org.apache.logging.log4j:log4j-jakarta-web'
   testRuntimeOnly 'ch.qos.logback:logback-classic'
 
   // This is for freshInstallTest
@@ -120,6 +122,12 @@ dependencies {
 // "runtime". However, we want logback-classic to be the logger during tests, so exclude all of the log4j stuff.
 configurations.testRuntimeOnly {
   exclude group: 'org.apache.logging.log4j'
+}
+
+configurations.testRuntimeClasspath {
+  resolutionStrategy {
+    force "jakarta.servlet:jakarta.servlet-api:${depVersion.testJakartaServletApi}"
+  }
 }
 
 task copyWebappFilesForTests(type: Copy) {

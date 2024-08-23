@@ -3,7 +3,7 @@ package thredds.server.catalogservice;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.lang.invoke.MethodHandles;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import org.apache.http.HttpStatus;
 import org.hamcrest.core.StringContains;
 import org.junit.Before;

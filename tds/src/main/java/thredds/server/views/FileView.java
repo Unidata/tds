@@ -5,9 +5,9 @@
 package thredds.server.views;
 
 import org.springframework.web.servlet.view.AbstractView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletOutputStream;
 import java.util.Map;
 import java.io.File;
 import thredds.util.ContentType;

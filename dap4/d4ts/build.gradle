@@ -8,12 +8,12 @@ dependencies {
   implementation 'edu.ucar:dap4'
   implementation project(":dap4:d4servlet")
 
-  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.javaxServletApi}"
+  providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"
 
   compileOnly 'org.slf4j:slf4j-api'
 
   runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl'
-  runtimeOnly 'org.apache.logging.log4j:log4j-web'
+  runtimeOnly 'org.apache.logging.log4j:log4j-jakarta-web'
 
   compileOnly 'org.slf4j:slf4j-api'
 }

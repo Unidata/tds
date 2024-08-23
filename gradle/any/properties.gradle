@@ -55,6 +55,7 @@ ext {
 
 ext {
   jvmArguments = [
+          '--add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED',
           '--add-exports', 'java.base/jdk.internal.ref=ALL-UNNAMED',
           '--add-exports', 'java.base/sun.nio.ch=ALL-UNNAMED',
           '--add-exports', 'jdk.unsupported/sun.misc=ALL-UNNAMED',

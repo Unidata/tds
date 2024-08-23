@@ -2,7 +2,7 @@ package thredds.server.root;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.unidata.util.test.category.NeedsContentRoot;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
 
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -3,7 +3,7 @@ package thredds.tds;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.nio.charset.StandardCharsets;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.Test;
 import thredds.test.util.TestOnLocalServer;
 

@@ -21,7 +21,7 @@ import ucar.nc2.units.TimeDuration;
 import ucar.unidata.geoloc.LatLonRect;
 import ucar.unidata.util.Format;
 import ucar.unidata.util.StringUtil2;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;

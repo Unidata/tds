@@ -26,9 +26,9 @@ import thredds.util.ContentType;
 import thredds.util.TdsPathUtils;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.dt.GridDataset;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.util.Formatter;
 import java.util.List;
 

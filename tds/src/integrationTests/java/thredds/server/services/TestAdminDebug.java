@@ -37,7 +37,8 @@ public class TestAdminDebug {
     List<Object[]> result = new ArrayList<>(10);
     result.add(new Object[] {"admin/debug?General/showTdsContext"});
     result.add(new Object[] {"admin/dir/content/thredds/logs/"});
-    result.add(new Object[] {"admin/dir/logs/"});
+    // TODO serverBaseDir_tomcat10/logs does not exist as logDir can no longer be configured through gretty
+    // result.add(new Object[] {"admin/dir/logs/"});
     result.add(new Object[] {"admin/dir/catalogs/"});
     result.add(new Object[] {"admin/spring/showControllers"});
     return result;

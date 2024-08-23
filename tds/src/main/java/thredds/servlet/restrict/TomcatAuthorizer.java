@@ -5,10 +5,10 @@
 
 package thredds.servlet.restrict;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import thredds.server.config.TdsContext;

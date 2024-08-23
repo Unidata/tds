@@ -6,7 +6,7 @@
 package thredds.servlet;
 
 import java.nio.charset.StandardCharsets;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import thredds.core.ConfigCatalogHtmlWriter;
 import thredds.core.TdsRequestedDataset;
 import thredds.inventory.MFile;
@@ -16,12 +16,12 @@ import thredds.util.RequestForwardUtils;
 import ucar.nc2.util.EscapeStrings;
 import ucar.nc2.util.IO;
 import ucar.unidata.io.RandomAccessFile;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;

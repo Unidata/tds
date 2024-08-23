@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import thredds.core.TdsRequestedDataset;
 import thredds.servlet.ServletUtil;
 import thredds.util.TdsPathUtils;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**

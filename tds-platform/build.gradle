@@ -14,11 +14,16 @@ dependencies {
   // If there is a conflict (previously hidden by optimistic resolution), we should get an error when we build, and
   // at that point we can take things on a case-by-case basis.
   api enforcedPlatform("edu.ucar:netcdf-java-bom:${depVersion.netcdfJava}")
-  api enforcedPlatform('org.springframework:spring-framework-bom:5.3.39')
-  api enforcedPlatform('org.springframework.security:spring-security-bom:5.7.12')
+  api enforcedPlatform('org.springframework:spring-framework-bom:6.1.12')
+  api enforcedPlatform('org.springframework.security:spring-security-bom:6.3.1')
   api platform('net.openhft:chronicle-bom:2.25ea62')
   api enforcedPlatform("org.apache.logging.log4j:log4j-bom:2.17.1")
-  api enforcedPlatform("jakarta.platform:jakarta.jakartaee-bom:8.0.0")
+  // remove log4j-jakarta-web and use log4j-jakarta-bom when that is released
+  api platform("org.apache.logging.log4j:log4j-jakarta-web:2.23.1") {
+    // Use version from edal-java for h2database
+    exclude group: 'com.h2database', module: 'h2'
+  }
+  api enforcedPlatform("jakarta.platform:jakarta.jakartaee-bom:9.0.0")
 
 
   constraints {
@@ -72,6 +77,8 @@ dependencies {
     // opendap
     api 'edu.ucar:opendap'
     api "jakarta.servlet:jakarta.servlet-api"
+    api "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0"
+    api "org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0"
     runtime 'org.apache.taglibs:taglibs-standard-spec:1.2.5'
     runtime 'org.apache.taglibs:taglibs-standard-impl:1.2.5'
 
@@ -79,18 +86,18 @@ dependencies {
     runtime 'edu.ucar:dap4'
 
     // defined in tds-testing-platform as well, but using api config
-    runtime 'org.apache.logging.log4j:log4j-web'
+    runtime 'org.apache.logging.log4j:log4j-jakarta-web'
 
     // tds
     api 'org.json:json:20231013'
     api 'com.coverity.security:coverity-escapers:1.1.1'
-    api 'org.thymeleaf:thymeleaf-spring5:3.1.2.RELEASE'
+    api 'org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE'
     api 'jakarta.validation:jakarta.validation-api'
     api "org.hibernate.validator:hibernate-validator:${depVersion.hibernateValidator}"
     api "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
     api 'jakarta.el:jakarta.el-api'
     api'org.apache.commons:commons-lang3:3.4'
-    runtime 'org.glassfish:javax.el:3.0.0'
+    runtime 'org.glassfish:jakarta.el:4.0.2'
     runtime "jaxen:jaxen:${depVersion.jaxen}"
 
     // waterml stuff
@@ -99,7 +106,7 @@ dependencies {
     api 'org.n52.sensorweb:52n-xml-om-v20'
 
     // edal-java (ncwms)
-    def edalVersion = '1.5.2.0'
+    def edalVersion = '1.5.2.1-SNAPSHOT'
     api "uk.ac.rdg.resc:edal-common:${edalVersion}"
     api "uk.ac.rdg.resc:edal-cdm:${edalVersion}"
     api "uk.ac.rdg.resc:edal-wms:${edalVersion}"

@@ -7,7 +7,7 @@ package thredds.server.viewer;
 
 import java.util.Formatter;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import thredds.client.catalog.Dataset;
 
 public interface ViewerService {

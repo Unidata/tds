@@ -4,7 +4,7 @@
  */
 package thredds.mock.web;
 
-import javax.servlet.RequestDispatcher;
+import jakarta.servlet.RequestDispatcher;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.mock.web.MockRequestDispatcher;
 import org.springframework.mock.web.MockServletContext;
@@ -71,7 +71,7 @@ public class MockTdsServletContext extends MockServletContext {
     return new MockRequestDispatcher(path);
   }
 
-  public javax.servlet.descriptor.JspConfigDescriptor getJspConfigDescriptor() {
+  public jakarta.servlet.descriptor.JspConfigDescriptor getJspConfigDescriptor() {
     throw new UnsupportedOperationException();
   }
 

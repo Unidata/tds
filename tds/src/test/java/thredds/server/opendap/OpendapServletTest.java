@@ -4,7 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -20,7 +20,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.nc2.constants.CDM;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
-import javax.servlet.ServletConfig;
+import jakarta.servlet.ServletConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

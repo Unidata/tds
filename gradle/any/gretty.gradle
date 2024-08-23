@@ -33,10 +33,9 @@ repositories {
 }
 
 // allow servlet container to be configured by setting a system property
-// default to tomcat 8.5.x
 def servletContainerName = System.getProperty('tds.test.gretty.container')
 if (servletContainerName == null || servletContainerName.isEmpty()) {
-  servletContainerName = 'tomcat85'
+  servletContainerName = 'tomcat10'
 }
 
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
@@ -53,23 +52,6 @@ gretty {
   // We want to modify Gretty tasks but they won't be added to the project until after evaluation:
   // http://goo.gl/qlFXTD. So, our modifications must also occur after evaluation.
   afterEvaluate {
-    // Change the log directory of all tasks that start a server.
-    // Due to a bug, the normal instanceof operator won't work here. Nor will tasks.withType().
-    tasks.matching {
-      GradleUtils.instanceOf(it, AppStartTask.name)
-    }.each {
-      // LauncherConfig is only meant to be retrieved during the execution phase, hence the doFirst{}.
-      // If we try to grab it during evaluation, we get:
-      //   Error opening zip file or JAR manifest missing :
-      //   build/tmp/expandedArchives/org.jacoco.agent-0.7.7.201606060606.jar_aj7uwwfluzmrbfb6clshgf6du/jacocoagent.jar
-      it.doFirst {
-        // tomcatBaseDir is the working directory for embedded tomcat. We want to write our logs there as well.
-        File tomcatBaseDir = it.launcherConfig.baseDir
-
-        // Will be something like: "$projectDir/build/serverBaseDir_tomcat8/logs".
-        it.logDir = file("$tomcatBaseDir/logs").absolutePath
-      }
-    }
 
     // These enable HTTPS authentication, which is needed to access the TDS admin interface.
     httpsEnabled = true
@@ -96,11 +78,4 @@ gretty {
       }
     }
   }
-}
-
-configurations.runtimeClasspath {
-  // When gretty uses tomcat 9, javax.servlet-api gets added to the runtimeClasspath of the projects
-  // to which the plugin is applied. This makes sure we exclude it, which keeps it from getting included
-  // with our war artifacts.
-  exclude group: 'javax.servlet', module: 'javax.servlet-api'
 }

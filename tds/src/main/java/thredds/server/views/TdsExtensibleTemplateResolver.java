@@ -4,7 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.thymeleaf.IEngineConfiguration;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templateresource.FileTemplateResource;
 import org.thymeleaf.templateresource.ITemplateResource;
 import org.thymeleaf.util.StringUtils;

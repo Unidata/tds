@@ -6,10 +6,10 @@
 package thredds.server.opendap;
 
 import java.nio.charset.StandardCharsets;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.io.*;
 import java.util.*;
 import java.util.zip.DeflaterOutputStream;
@@ -67,7 +67,7 @@ public class OpendapServlet extends AbstractServlet implements InitializingBean 
   private boolean debugSession = false;
 
   @Override
-  public void afterPropertiesSet() throws javax.servlet.ServletException {
+  public void afterPropertiesSet() throws jakarta.servlet.ServletException {
     // Nothing to set at this point in the startup process
     // This is before TdsInit.onApplicationEvent is called
   }

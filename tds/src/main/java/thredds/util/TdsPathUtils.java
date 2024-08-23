@@ -6,7 +6,7 @@ package thredds.util;
 
 import com.google.common.base.Preconditions;
 import ucar.nc2.NetcdfFileWriter;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import ucar.nc2.write.NetcdfFileFormat;
 
 /**

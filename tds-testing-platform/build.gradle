@@ -15,14 +15,11 @@ dependencies {
   constraints {
 
     // Spring
-    // Spring-test v5.3.4 introduced a hard dependency on servlet api v4.
-    // That will be rolled back in v5.4.5, so for now, we specifically ask for
-    // spring-test 5.3.3.
-    api 'org.springframework:spring-test:5.3.32'
+    api 'org.springframework:spring-test'
 
     // dap4
     // defined in tds-platform as well, but using runtime config
-    api 'org.apache.logging.log4j:log4j-web' // api because of :dap4:d4tests)
+    api 'org.apache.logging.log4j:log4j-jakarta-web' // api because of :dap4:d4tests)
 
     // tds
     api "jaxen:jaxen:${depVersion.jaxen}"  // api because of XPath operations in mock tests

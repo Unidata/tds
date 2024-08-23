@@ -14,8 +14,8 @@ import thredds.server.config.TdsContext;
 import thredds.server.config.ThreddsConfig;
 import thredds.servlet.*;
 import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 import ucar.nc2.util.DiskCache2;
 
 /**
@@ -41,7 +41,7 @@ public class WCSController implements InitializingBean {
   }
 
   @Override
-  public void afterPropertiesSet() throws javax.servlet.ServletException {
+  public void afterPropertiesSet() throws jakarta.servlet.ServletException {
     // Nothing to set at this point in the startup process
     // This is before TdsInit.onApplicationEvent is called
   }

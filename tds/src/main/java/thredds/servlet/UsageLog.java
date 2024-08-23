@@ -6,7 +6,7 @@
 package thredds.servlet;
 
 import org.slf4j.MDC;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Formatter;
 import java.util.concurrent.atomic.AtomicLong;
 
