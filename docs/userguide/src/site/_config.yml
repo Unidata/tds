@@ -23,9 +23,8 @@ host: 127.0.0.1
 # the port where the preview is rendered. You can leave this as is unless you have other Jekyll builds using this same port that might cause conflicts. in that case, use another port such as 4006.
 port: 4005
 
-# used as a contact email and subject line for the Feedback link in the top navigation bar
-feedback_email: support-thredds@unidata.ucar.edu
-feedback_subject_line: THREDDS Data Server Documentation Feedback
+# used for the Feedback link in the top navigation bar
+feedback_link: "https://github.com/Unidata/tds/issues/new?title=Documentation%20feedback"
 
 # library used for syntax highlighting
 highlighter: rouge
