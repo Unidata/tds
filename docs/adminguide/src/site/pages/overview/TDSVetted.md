@@ -37,7 +37,10 @@ When identified, any security-related issues are addressed immediately and fixed
 ### Providing Feedback
 
 We appreciate feedback from users of the TDS!
-Send comments, suggestions, and bug reports to <{{site.feedback_email}}>. 
+Open a GitHub issue or discussion [here](https://github.com/Unidata/tds) if you have comments,
+suggestions, or bug reports.
 Please identify the version of the package.
+For server set up issues that cannot be addressed on GitHub,
+you may send your question with the relevant details to <support-thredds@unidata.ucar.edu>.
 
 To report a potential security-related issue or bug, contact: <security@unidata.ucar.edu>

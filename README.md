@@ -26,9 +26,12 @@ respond to the confirmation email. Mailing list archives are available at:
 
 * https://www.unidata.ucar.edu/mailing_lists/archives/thredds/
 
-We appreciate feedback from users of this package. Please send comments,
-suggestions, and bug reports to <support-thredds@unidata.ucar.edu>.
+We appreciate feedback from users of this package.
+Open a GitHub issue or discussion if you have comments,
+suggestions, or bug reports.
 Please identify the version of the package.
+For security or server set up issues that cannot be addressed on GitHub,
+you may send your question with the relevant details to <support-thredds@unidata.ucar.edu>.
 
 ## THREDDS Catalogs
 
