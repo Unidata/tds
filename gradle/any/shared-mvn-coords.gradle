@@ -29,7 +29,7 @@ ext {
   depVersion.jakartaServletApi = '5.0.0'
   // Spring 6.x servlet mocks require servlet 6 though it can test 5 code
   depVersion.testJakartaServletApi = '6.0.0'
-  depVersion.hibernateValidator = '7.0.0.Final'
+  depVersion.hibernateValidator = '7.0.5.Final'
   // TODO: figure out way to keep this version in sync with netcdf-java version
   // It is included in the netcdf-java-bom (via netcdf-java-platform), but we can't
   // reference that version in a gradle build script (see gradle/any/protobuf.gradle)
