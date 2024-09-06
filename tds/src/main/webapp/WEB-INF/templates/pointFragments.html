@@ -28,10 +28,10 @@
       var horizExtentWKT = /*[[${horizExtentWKT}]]*/ 'POLYGON((-90 45, 90 45, 90 -45, -90 -45, -90 45))';
 
       var fullLatLonExt = {
-          north: /*[[${#numbers.formatDecimal(boundingBox?.latMax, 0, 3)}]]*/ "45.0000",
-          south: /*[[${#numbers.formatDecimal(boundingBox?.latMin, 0, 3)}]]*/ "-45.0000",
-          west:  /*[[${#numbers.formatDecimal(boundingBox?.lonMin, 0, 3)}]]*/ "-90.0000",
-          east:  /*[[${#numbers.formatDecimal(boundingBox?.lonMax, 0, 3)}]]*/ "90.0000"
+          north: /*[[${#numbers.formatDecimal(boundingBox?.latMax, 0, 3, 'POINT')}]]*/ "45.0000",
+          south: /*[[${#numbers.formatDecimal(boundingBox?.latMin, 0, 3, 'POINT')}]]*/ "-45.0000",
+          west:  /*[[${#numbers.formatDecimal(boundingBox?.lonMin, 0, 3, 'POINT')}]]*/ "-90.0000",
+          east:  /*[[${#numbers.formatDecimal(boundingBox?.lonMax, 0, 3, 'POINT')}]]*/ "90.0000"
       };
 
       var fullTimeExt = {
