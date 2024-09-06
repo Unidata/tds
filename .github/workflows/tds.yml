@@ -20,7 +20,7 @@ jobs:
           test-command: '-Dtds.content.root.path=$CONTENT_DIR -Dtds.test.gretty.container=${{ matrix.servletcontainer }} --info --stacktrace testAll'
         env:
           CONTENT_DIR: ${{ github.workspace }}/tds/src/test/content
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: tds_JUnit_Results_${{ github.sha }}_AdoptOpenJDK-HS-${{ matrix.java }}-${{ matrix.servletcontainer }}
