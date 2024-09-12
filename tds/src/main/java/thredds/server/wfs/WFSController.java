@@ -261,8 +261,8 @@ public class WFSController extends HttpServlet {
         // Last check to see if typenames is specified, must be for GetFeature, DescribeFeatureType
         if (typeName == null) {
           return new WFSExceptionWriter(
-              "WFS server error. For the specifed request, parameter typename or typenames must be specified.", request,
-              "MissingParameterValue");
+              "WFS server error. For the specifed request, parameter typename or typenames must be specified.",
+              "request", "MissingParameterValue");
         }
       }
 
