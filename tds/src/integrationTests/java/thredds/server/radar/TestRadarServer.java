@@ -31,7 +31,15 @@ public class TestRadarServer {
         // {"/radar/radarCollections.xml"},
         {"/radarServer/nexrad/level2/IDD/dataset.xml"}, {"/radarServer/nexrad/level2/IDD/stations.xml"},
         {"/radarServer/nexrad/level2/IDD?stn=KDGX&time_start=2014-06-05T12:47:17&time_end=2014-06-05T16:07:17"},
-        {"/radarServer/nexrad/level3/IDD/stations.xml"}, {"/radarServer/terminal/level3/IDD/stations.xml"},});
+        {"/radarServer/nexrad/level3/IDD/stations.xml"}, {"/radarServer/terminal/level3/IDD/stations.xml"},
+
+
+        // s3 tests
+        {"/radarServer/s3/nexrad/level2/IDD/dataset.xml"}, {"/radarServer/s3/nexrad/level2/IDD/stations.xml"},
+        {"/radarServer/s3/nexrad/level2/IDD?stn=KDGX&time_start=2014-06-05T12:47:17&time_end=2014-06-05T16:07:17"},
+        {"/radarServer/s3/nexrad/level3/IDD/stations.xml"},
+
+    });
   }
 
   private static final String expectedContentType = "application/xml";
