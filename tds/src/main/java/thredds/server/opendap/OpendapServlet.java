@@ -203,7 +203,7 @@ public class OpendapServlet extends AbstractServlet implements InitializingBean 
       // plain ol' 404
     } catch (FileNotFoundException e) {
       // e.printStackTrace();
-      sendErrorResponse(response, HttpServletResponse.SC_NOT_FOUND, e.getMessage());
+      sendErrorResponse(response, HttpServletResponse.SC_NOT_FOUND, "FileNotFound: No such file or directory");
 
       // DAP2Exception bad url
     } catch (BadURLException e) {
