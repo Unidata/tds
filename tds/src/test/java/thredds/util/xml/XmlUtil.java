@@ -17,11 +17,13 @@ public class XmlUtil {
   private XmlUtil() {}
 
   public static Document getStringResponseAsDoc(MockHttpServletResponse response) throws JDOMException, IOException {
+    return getStringResponseAsDoc(response.getContentAsByteArray());
+  }
 
+  public static Document getStringResponseAsDoc(byte[] response) throws JDOMException, IOException {
     SAXBuilder sb = new SAXBuilder();
     sb.setExpandEntities(false);
-    String strResponse = response.getContentAsString();
-    return sb.build(new ByteArrayInputStream(strResponse.getBytes(response.getCharacterEncoding())));
+    return sb.build(new ByteArrayInputStream(response));
   }
 
   public static List<Element> evaluateXPath(Document doc, String strXpath) {

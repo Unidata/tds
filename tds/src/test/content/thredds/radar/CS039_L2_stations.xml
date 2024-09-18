@@ -6,4 +6,7 @@
     <station name="QUAD_CITIES/Davenport" value="KDVN" state="IA" country="US">
         <location3D latitude="41.6" longitude="-90.57" elevation="230" />
     </station>
+    <station name="BRANDON/Jackson" value="KDGX" state="MS" country="US">
+        <location3D latitude="32.17" longitude="-89.59" elevation="186" />
+    </station>
 </stationList>

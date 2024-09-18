@@ -14,6 +14,8 @@ import ucar.nc2.constants.CDM;
 import ucar.nc2.units.DateRange;
 import ucar.nc2.units.DateType;
 import ucar.nc2.units.TimeDuration;
+import ucar.nc2.util.AliasTranslator;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -59,7 +61,7 @@ public class RadarServerConfig {
         Element meta = dataset.getChild("metadata", catNS);
         conf.name = dataset.getAttributeValue("name");
         conf.urlPath = dataset.getAttributeValue("path");
-        conf.dataPath = getPath(dataset.getAttributeValue("location"));
+        conf.dataPath = getPath(AliasTranslator.translateAlias(dataset.getAttributeValue("location")));
         conf.dataFormat = meta.getChild("dataFormat", catNS).getValue();
         conf.stationFile = meta.getChild("stationFile", catNS).getAttributeValue("path");
         conf.doc = meta.getChild("documentation", catNS).getValue();
