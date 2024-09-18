@@ -148,7 +148,7 @@ public class RadarServerController implements InitializingBean {
       List<RadarServerConfig.RadarConfigEntry> configs =
           RadarServerConfig.readXML(contentPath + "/radar/radarCollections.xml");
       for (RadarServerConfig.RadarConfigEntry conf : configs) {
-        RadarDataInventory di = new RadarDataInventory(conf.dataPath, conf.crawlItems);
+        RadarDataInventory di = new RadarDataInventory(conf.mFile, conf.crawlItems);
         di.setName(conf.name);
         di.setDescription(conf.doc);
 
@@ -495,14 +495,14 @@ public class RadarServerController implements InitializingBean {
 
     for (RadarDataInventory.Query.QueryResultItem i : res) {
       DatasetBuilder fileDB = new DatasetBuilder(mainDB);
-      fileDB.setName(i.file.getFileName().toString());
+      fileDB.setName(i.file.getName());
       fileDB.put(Dataset.Id, String.valueOf(i.file.hashCode()));
 
       fileDB.put(Dataset.Dates, new DateType(i.time.toString(), null, "start of ob", i.time.getCalendar()));
 
       // TODO: Does this need to be converted from the on-disk path
       // to a mapped url path?
-      fileDB.put(Dataset.UrlPath, inv.getCollectionDir().relativize(i.file).toString());
+      fileDB.put(Dataset.UrlPath, inv.getCollectionDir().relativize(i.file));
       mainDB.addDataset(fileDB);
     }
 
