@@ -116,7 +116,8 @@ Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.
    #   THIS IS CRITICAL and there is NO DEFAULT - the
    #   TDS will not start without this.
    #
-   CONTENT_ROOT=-Dtds.content.root.path=/data/content
+   CONTENT_ROOT=/data/content
+   CONTENT_ROOT_OPT=-Dtds.content.root.path=$CONTENT_ROOT
 
    # Set java prefs related variables (used by the wms service, for example)
    JAVA_PREFS_ROOTS="-Djava.util.prefs.systemRoot=$CONTENT_ROOT/thredds/javaUtilPrefs \
@@ -133,7 +134,7 @@ Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.
    #
    # Standard setup.
    #
-   JAVA_OPTS="$CONTENT_ROOT $NORMAL $HEAP_DUMP $HEADLESS $JAVA_PREFS_ROOTS $CHRONICLE_CACHE"
+   JAVA_OPTS="$CONTENT_ROOT_OPT $NORMAL $HEAP_DUMP $HEADLESS $JAVA_PREFS_ROOTS $CHRONICLE_CACHE"
 
    export JAVA_OPTS
    ~~~
