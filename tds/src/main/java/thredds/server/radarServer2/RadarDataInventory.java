@@ -5,6 +5,10 @@
 
 package thredds.server.radarServer2;
 
+import thredds.inventory.CollectionConfig;
+import thredds.inventory.MController;
+import thredds.inventory.MControllers;
+import thredds.inventory.MFile;
 import ucar.nc2.constants.FeatureType;
 import ucar.nc2.dt.RadialDatasetSweep;
 import ucar.nc2.ft.FeatureDatasetFactoryManager;
@@ -33,7 +37,7 @@ public class RadarDataInventory {
 
   private static final long updateIntervalMsec = 600000;
   private EnumMap<DirType, Set<String>> items;
-  private Path collectionDir;
+  private MFile collectionDir;
   private DirectoryStructure structure;
   private String fileTimeFmt, dataFormat;
   private java.util.regex.Pattern fileTimeRegex;
@@ -46,7 +50,7 @@ public class RadarDataInventory {
   private DateRange timeCoverage;
   private RadarServerConfig.RadarConfigEntry.GeoInfo geoCoverage;
 
-  public RadarDataInventory(Path datasetRoot, int numCrawl) {
+  public RadarDataInventory(MFile datasetRoot, int numCrawl) {
     items = new EnumMap<>(DirType.class);
     collectionDir = datasetRoot;
     structure = new DirectoryStructure(collectionDir);
@@ -56,7 +60,7 @@ public class RadarDataInventory {
     nearestWindow = CalendarPeriod.of(1, CalendarPeriod.Field.Hour);
   }
 
-  public Path getCollectionDir() {
+  public MFile getCollectionDir() {
     return collectionDir;
   }
 
@@ -159,11 +163,11 @@ public class RadarDataInventory {
         return sdf;
       }
 
-      public Date getDate(Path path) {
-        Path relPath = base.relativize(path);
+      public Date getDate(MFile mFile) {
+        String relPath = base.relativize(mFile);
         StringBuilder sb = new StringBuilder("");
         for (Integer l : levels) {
-          sb.append(relPath.getName(l));
+          sb.append(Paths.get(relPath).getName(l));
         }
         try {
           SimpleDateFormat fmt = getFormat();
@@ -174,12 +178,12 @@ public class RadarDataInventory {
       }
     }
 
-    private Path base;
+    private MFile base;
 
     private List<DirEntry> order;
     private List<Integer> keyIndices;
 
-    public DirectoryStructure(Path dir) {
+    public DirectoryStructure(MFile dir) {
       base = dir;
       order = new ArrayList<>();
       keyIndices = new ArrayList<>();
@@ -194,11 +198,12 @@ public class RadarDataInventory {
     }
 
     // Get a key for a path based on station/var
-    public String getKey(Path path) {
-      Path relPath = base.relativize(path);
+    public String getKey(MFile mFile) {
+      String relPath = base.relativize(mFile);
       StringBuilder sb = new StringBuilder("");
+
       for (int ind : keyIndices) {
-        sb.append(relPath.getName(ind));
+        sb.append(Paths.get(relPath).getName(ind));
       }
       return sb.toString();
     }
@@ -251,7 +256,7 @@ public class RadarDataInventory {
     fileTimeFmt = fmt;
   }
 
-  private void findItems(Path start, int level) {
+  private void findItems(MFile start, int level) {
     // Add each entry from this level to the appropriate item box
     // and recurse
     if (level >= structure.order.size() || level >= structure.maxCrawlDepth)
@@ -268,23 +273,17 @@ public class RadarDataInventory {
     }
 
     int crawled = 0;
-    try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(start)) {
-      for (Path p : dirStream) {
-        if (Files.isDirectory(p)) {
-          String item = p.getFileName().toString();
-          values.add(item);
-          // Try to grab station info from some file
-          // TODO: Fix or remove
-          // if (entry.type == DirType.Station)
-          // updateStations(item, p);
-          if (crawled < maxCrawlItems) {
-            findItems(p, level + 1);
-            ++crawled;
-          }
-        }
+    for (MFile subDir : getSubDirs(start)) {
+      String item = subDir.getName();
+      values.add(item);
+      // Try to grab station info from some file
+      // TODO: Fix or remove
+      // if (entry.type == DirType.Station)
+      // updateStations(item, p);
+      if (crawled < maxCrawlItems) {
+        findItems(subDir, level + 1);
+        ++crawled;
       }
-    } catch (IOException e) {
-      System.out.println("findItems(): Error reading directory: " + start.toString());
     }
   }
 
@@ -354,12 +353,12 @@ public class RadarDataInventory {
 
   public class Query {
     public class QueryResultItem {
-      private QueryResultItem(Path f, CalendarDate cd) {
+      private QueryResultItem(MFile f, CalendarDate cd) {
         file = f;
         time = cd;
       }
 
-      public Path file;
+      public MFile file;
       public CalendarDate time;
     }
 
@@ -412,8 +411,8 @@ public class RadarDataInventory {
       return range == null || range.includes(d);
     }
 
-    public Collection<QueryResultItem> results() {
-      List<Path> results = new ArrayList<>();
+    public Collection<QueryResultItem> results() throws IOException {
+      List<MFile> results = new ArrayList<>();
       DirectoryStructure.DirectoryDateMatcher matcher = structure.matcher();
       results.add(structure.base);
 
@@ -432,7 +431,7 @@ public class RadarDataInventory {
       // exists. For dates, add the items that are within the filter
       for (int i = 0; i < structure.order.size(); ++i) {
         DirectoryStructure.DirEntry entry = structure.order.get(i);
-        List<Path> newResults = new ArrayList<>();
+        List<MFile> newResults = new ArrayList<>();
         List<Object> queryItem = q.get(entry.type);
         switch (entry.type) {
           // Loop over results and add subdirs that are within the
@@ -443,15 +442,11 @@ public class RadarDataInventory {
             SimpleDateFormat fmt = matcher.getFormat();
             CalendarDateRange dirRange = rangeFromFormat(fmt, range);
 
-            for (Path p : results)
-              try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(p)) {
-                for (Path sub : dirStream) {
-                  Date d = matcher.getDate(sub);
-                  if (d != null && checkDate(dirRange, CalendarDate.of(d)))
-                    newResults.add(sub);
-                }
-              } catch (IOException e) {
-                System.out.println("results(): Error reading dir: " + p.toString());
+            for (MFile mFile : results)
+              for (MFile sub : getSubDirs(mFile)) {
+                Date d = matcher.getDate(sub);
+                if (d != null && checkDate(dirRange, CalendarDate.of(d)))
+                  newResults.add(sub);
               }
             break;
 
@@ -461,10 +456,11 @@ public class RadarDataInventory {
           case Variable:
           default:
             for (Object next : queryItem) {
-              for (Path p : results) {
-                Path nextPath = p.resolve(next.toString());
-                if (Files.exists(nextPath))
-                  newResults.add(nextPath);
+              for (MFile mFile : results) {
+                MFile nextMFile = mFile.getChild(next.toString() + "/");
+                if (nextMFile != null && nextMFile.exists()) {
+                  newResults.add(nextMFile);
+                }
               }
             }
         }
@@ -473,28 +469,24 @@ public class RadarDataInventory {
 
       // Now get the contents of the remaining directories
       Collection<QueryResultItem> filteredFiles = new ArrayList<>();
-      for (Path p : results) {
-        try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(p)) {
-          for (Path f : dirStream) {
-            java.util.regex.Matcher regexMatcher = fileTimeRegex.matcher(f.toString());
-            if (!regexMatcher.find())
-              continue;
+      for (MFile dir : results) {
+        for (MFile mFile : getFiles(dir)) {
+          java.util.regex.Matcher regexMatcher = fileTimeRegex.matcher(mFile.getName());
+          if (!regexMatcher.find())
+            continue;
 
-            try {
-              SimpleDateFormat fmt = new SimpleDateFormat(fileTimeFmt);
-              fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
-              Date d = fmt.parse(regexMatcher.group());
-              if (d != null) {
-                CalendarDate cd = CalendarDate.of(d);
-                if (checkDate(range, cd))
-                  filteredFiles.add(new QueryResultItem(f, cd));
-              }
-            } catch (ParseException e) {
-              // Ignore file
+          try {
+            SimpleDateFormat fmt = new SimpleDateFormat(fileTimeFmt);
+            fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date d = fmt.parse(regexMatcher.group());
+            if (d != null) {
+              CalendarDate cd = CalendarDate.of(d);
+              if (checkDate(range, cd))
+                filteredFiles.add(new QueryResultItem(mFile, cd));
             }
+          } catch (ParseException e) {
+            // Ignore file
           }
-        } catch (IOException e) {
-          System.out.println("results(): Error getting files for: " + p.toString());
         }
       }
 
@@ -523,5 +515,27 @@ public class RadarDataInventory {
 
       return filteredFiles;
     }
+  }
+
+  private List<MFile> getSubDirs(MFile directory) {
+    final MController mController = MControllers.create(directory.getPath());
+    final List<MFile> mFiles = new ArrayList<>();
+
+    final CollectionConfig dirs = new CollectionConfig("dirs", directory.getPath(), false, null, null);
+    final Iterator<MFile> dirIterator = mController.getSubdirs(dirs, true);
+    dirIterator.forEachRemaining(mFiles::add);
+
+    return mFiles;
+  }
+
+  private List<MFile> getFiles(MFile directory) throws IOException {
+    final MController mController = MControllers.create(directory.getPath());
+    final List<MFile> mFiles = new ArrayList<>();
+
+    final CollectionConfig files = new CollectionConfig("files", directory.getPath(), false, null, null);
+    final Iterator<MFile> fileIterator = mController.getInventoryTop(files, true);
+    fileIterator.forEachRemaining(mFiles::add);
+
+    return mFiles;
   }
 }
