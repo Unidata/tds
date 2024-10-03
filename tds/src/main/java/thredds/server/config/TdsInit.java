@@ -149,7 +149,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
           configCatalogInitializer.init(readMode, (PreferencesExt) mainPrefs.node("configCatalog"));
 
           // set epsg database location for edal-java (comes from apache-sis)
-          EpsgDatabasePath.DB_PATH = (new File(tdsContext.getThreddsDirectory(), "/cache/edal-java/epsg/").getPath());
+          EpsgDatabasePath.DB_PATH =
+              (new File(tdsContext.getThreddsDirectory(), "/cache/edal-java/epsg/").toURI().toString());
           startupLog.info("EPSG database path: " + EpsgDatabasePath.DB_PATH);
           startupLog.info("TdsInit complete");
         }
