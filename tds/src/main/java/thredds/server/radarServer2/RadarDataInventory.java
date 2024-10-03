@@ -523,7 +523,9 @@ public class RadarDataInventory {
 
     final CollectionConfig dirs = new CollectionConfig("dirs", directory.getPath(), false, null, null);
     final Iterator<MFile> dirIterator = mController.getSubdirs(dirs, true);
-    dirIterator.forEachRemaining(mFiles::add);
+    if (dirIterator != null) {
+      dirIterator.forEachRemaining(mFiles::add);
+    }
 
     return mFiles;
   }
@@ -534,7 +536,9 @@ public class RadarDataInventory {
 
     final CollectionConfig files = new CollectionConfig("files", directory.getPath(), false, null, null);
     final Iterator<MFile> fileIterator = mController.getInventoryTop(files, true);
-    fileIterator.forEachRemaining(mFiles::add);
+    if (fileIterator != null) {
+      fileIterator.forEachRemaining(mFiles::add);
+    }
 
     return mFiles;
   }
