@@ -229,9 +229,17 @@ The `serviceType` and `base` values are **required** in the following examples:
 ~~~
 
 #### NetCDF Subset Service
-  
+
+For Feature Type `GRID`, use:
+
 ~~~xml
-  <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/"/>
+<service name="ncssGrid" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
+~~~
+
+For Feature Types `POINT` or `STATION`, use:
+
+~~~xml
+<service name="ncssPoint" serviceType="NetcdfSubset" base="/thredds/ncss/point/" />
 ~~~
 
 #### WCS
@@ -275,7 +283,7 @@ The `serviceType` and `base` values are **required** in the following examples:
 <service name="all" serviceType="Compound" base="">
   <service name="HTTPServer" serviceType="HTTPServer" base="/thredds/fileServer/"/>
   <service name="opendap" serviceType="OPENDAP" base="/thredds/dodsC/"/>
-  <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/"/>
+  <service name="ncssGrid" serviceType="NetcdfSubset" base="/thredds/ncss/grid/"/>
   <service name="cdmremote" serviceType="CdmRemote" base="/thredds/cdmremote/"/>
 
   <service name="wcs" serviceType="WCS" base="/thredds/wcs/"/>

@@ -111,13 +111,13 @@ Therefore, it is required that service base URLs must [exactly match the values 
 
 * NetCDF Subset Service (Grid Data)
    ~~~xml
-   <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
+   <service name="ncssGrid" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
    ~~~
 
 * NetCDF Subset Service (Point Data)
 
    ~~~xml
-   <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/point/" />
+   <service name="ncssPoint" serviceType="NetcdfSubset" base="/thredds/ncss/point/" />
    ~~~
 
 * WCS

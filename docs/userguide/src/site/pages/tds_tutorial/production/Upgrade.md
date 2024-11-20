@@ -37,7 +37,19 @@ Deprecated classes and methods have been removed, and the module structure and t
 ### Netcdf Subset Service (NCSS)
 
 NCSS queries and responses have been improved and clarified.
-Generally the previous queries are backwards compatible. See [NCSS Reference](netcdf_subset_service_ref.html) for details.
+Generally the previous queries are backwards compatible.
+See [NCSS Reference](netcdf_subset_service_ref.html) for details.
+
+Catalog (config and client) base changes:
+* NCSS service has been split and now has two different paths, depending on the feature type of data being served.
+* For `GRID`, use:
+  ~~~
+  <service name="ncssGrid" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
+  ~~~
+  and for `POINT` or `STATION`, use:
+  ~~~xml
+  <service name="ncssPoint" serviceType="NetcdfSubset" base="/thredds/ncss/point/" />
+  ~~~
 
 New functionality:
 * 2D time can now be handled for gridded datasets, with addition of `runtime` and `timeOffset` parameters.
