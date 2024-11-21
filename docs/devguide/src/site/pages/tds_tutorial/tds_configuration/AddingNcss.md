@@ -31,21 +31,28 @@ Details on other configuration options for NCSS are available in the [`threddsCo
 
 ## Serving Datasets With NCSS
 
-In your configuration catalogs, you must define the service like this:
+In your configuration catalogs, you must define the service based on the type of data being served.
+For Feature Type `GRID`, use:
 
 ~~~xml
-<service name="subsetServer" serviceType="NetcdfSubset" base="/thredds/ncss/" />
+<service name="ncssGrid" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
+~~~
+
+For Feature Types `POINT` or `STATION`, use:
+
+~~~xml
+<service name="ncssPoint" serviceType="NetcdfSubset" base="/thredds/ncss/point/" />
 ~~~
 
 Then as usual, add the service to any datasets that you want served, e.g.:
 
 ~~~xml
 <dataset name="datasetName" ID="datasetID" urlPath="/my/urlPath"> 
-   <serviceName>subsetServer</serviceName> 
+   <serviceName>ncssGrid</serviceName> 
 </dataset> 
 ~~~
 
-Note that the name of the service (`subsetServer` in this example) is arbitrary, but the `serviceType` and base must be _exactly_ as shown.
+Note that the name of the service (`ncssGrid` in this example) is arbitrary, but the `ncssGrid` and base must be _exactly_ as shown.
 
 ## Restrictions On What Files Can Be Served
 

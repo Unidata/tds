@@ -119,7 +119,7 @@ Use the service type inside of curly brackets to select which access URL to use.
   <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/"/>
   <service name="wcs" serviceType="WCS" base="/thredds/wcs/"/>
   <service name="wms" serviceType="WMS" base="/thredds/wms/"/>
-  <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/"/>
+  <service name="ncssGrid" serviceType="NetcdfSubset" base="/thredds/ncss/grid/"/>
   <service name="cdmremote" serviceType="CdmRemote" base="/thredds/cdmremote/"/>
   <service name="iso" serviceType="ISO" base="/thredds/iso/"/>
   <service name="ncml" serviceType="NCML" base="/thredds/ncml/"/>

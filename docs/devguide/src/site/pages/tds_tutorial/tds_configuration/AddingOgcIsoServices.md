@@ -65,7 +65,7 @@ Adding them to an existing compound service would look something like this:
     <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/" />
     <service name="wcs" serviceType="WCS" base="/thredds/wcs/" />
     <service name="wms" serviceType="WMS" base="/thredds/wms/" />
-    <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/" />
+    <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
     <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/" />
 </service>
 ~~~
@@ -80,7 +80,7 @@ For instance, adding to the same compound service as above:
     <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/" />
     <service name="wcs" serviceType="WCS" base="/thredds/wcs/" />
     <service name="wms" serviceType="WMS" base="/thredds/wms/" />
-    <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/" />
+    <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
     <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/" />
     <service name="ncml" serviceType="NCML" base="/thredds/ncml/" />
     <service name="uddc" serviceType="UDDC" base="/thredds/uddc/" />
