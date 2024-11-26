@@ -1,6 +1,6 @@
 ---
 title: TDS Web Map Service (WMS)
-last_updated: 2020-08-24
+last_updated: 2020-11-26
 sidebar: quickstart_sidebar
 toc: false
 permalink: adding_wms.html
@@ -43,7 +43,7 @@ Additional WMS configuration options can be set in the `threddsConfig.xml` file.
 Further WMS configuration properties are set in the wmsConfig.xml file.
 These properties are mainly related with styling of WMS images.
 Similar to the `threddsConfig.xml file`, the WMS configuration file (wmsConfig.xml) is found in the `$tds.content.root.path{}/content/thredds` directory.
-A detailed description of the wmsConfig.xml file can be found at the MyOcean "Detailed WMS Configuration" page.
+A detailed description of the wmsConfig.xml file can be on the [Customizing WMS](../adminguide/customizing_wms.html) reference page.
 
 If you are installing a new TDS, you should find a default `wmsConfig.xml` file (along with other configuration files) in your content`/thredds` directory after you first deploy the TDS.
 If you are upgrading from a TDS version before version `4.2.20100615.*`, you will have to copy the default file from `${tomcat_home}/webapps/thredds/WEB-INF/altContent/startup/wmsConfig.xml`.
