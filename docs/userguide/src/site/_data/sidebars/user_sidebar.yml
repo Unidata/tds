@@ -331,6 +331,10 @@ entries:
               url: /adding_wms.html
               output: web, pdf
 
+            - title: Customizing WMS
+              url: /customizing_wms.html
+              output: web, pdf
+
     - title: Configuring TDS With DatasetScan
       url: /tds_dataset_scan_ref.html
       output: web, pdf
