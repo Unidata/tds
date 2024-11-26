@@ -1,6 +1,6 @@
 ---
 title: TDS Configuration File Reference (`threddsConfig.xml`)
-last_updated: 2020-08-24
+last_updated: 2024-11-26
 sidebar: admin_sidebar
 toc: true
 permalink: tds_config_ref.html
@@ -61,7 +61,7 @@ logos of the server and host institution)
 * all generated THREDDS catalogs that don't override this information
 
 
-The best way to use your own logo is to put it in the `${tds.content.root.path}/thredds/public/` directory, and specify it in `serverInformation` as `/thredds/<name>`, e.g.:
+The best way to use your own logo is to put it in the `${tomcat path}/webapps/thredds/` directory, and specify it in `serverInformation` as `/thredds/<name>`, e.g.:
 
 ~~~xml
 <logoUrl>/thredds/yourIcon.gif</logoUrl>
@@ -201,8 +201,8 @@ The following shows all the configuration options available in the WCS section o
 <WCS>
   <allow>true</allow>
   <dir>(see the note below)</dir>
-  <scour>15 min</scour>
-  <maxAge>30 min</maxAge>
+  <scour>10 min</scour>
+  <maxAge>5 min</maxAge>
 </WCS>
 ~~~
 
@@ -235,7 +235,8 @@ The following shows all the configuration options available in the WMS section o
 <WMS>
   <allow>true</allow>
   <allowRemote>false</allowRemote>
-  <paletteLocationDir>/WEB-INF/palettes</paletteLocationDir>
+  <paletteLocationDir>wmsPalettes</paletteLocationDir>
+  <stylesLocationDir>wmsStyles</stylesLocationDir>
   <maxImageWidth>2048</maxImageWidth>
   <maxImageHeight>2048</maxImageHeight>
 </WMS>
@@ -248,8 +249,24 @@ Here is the description of the various options:
 * `allowRemote`: a value of `true` enables the WMS service for datasets available from a remote server.
 * `paletteLocationDir`: optionally specify the location of the directory containing your own palette files, by specifying the directory
 where they are contained.
-  If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
-  If you don't specify it, or specify it incorrectly, the default palettes will be used, which are in the war file under `WEB-INF/palettes`.
+  * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
+  * The default directory for custom palette files is `${tds.content.root.path}/thredds/wmsPalettes`. 
+  * If you don't specify a custom palette directory, or specify it incorrectly, the default directory will be used.
+  * Custom palette files will be loaded in addition to the default palettes, which are described
+  [here](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap).
+  * Note that the palette file format has changed between TDS version 4.x and TDS version 5.x. Please refer to the 
+  [EDAL-Java palette file directory](https://github.com/Reading-eScience-Centre/edal-java/tree/master/graphics/src/main/resources/palettes) 
+  for examples of palette files that are compatible with the TDS version 5.x WMS service.
+  * More information on the format of palette files can also be found in the 
+  [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#:~:text=To%20add%20new,in%20hexadecimal%20notation.).
+  * If you created palette files for TDS 4.x and would like to use them in TDS 5.x, an open source tool named [Magic Palette Converter](https://github.com/billyz313/magic-palette-converter){:target="_blank"} for THREDDS is available to assist in the conversion (special thanks to [Billy Ashmall](https://github.com/Unidata/tds/discussions/346){:target="_blank"}!)
+* `stylesLocationDir`: optionally specify the location of the directory containing your own style files, by specifying the directory
+  where they are contained.
+  * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
+  * The default directory for custom styles files is `${tds.content.root.path}/thredds/wmsStyles`.
+  * If you don't specify a custom styles directory, or specify it incorrectly, the default directory will be used.
+  * More information on the format of style files can also be found in the
+    [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#styles).
 * `maxImageWidth`: the maximum image width in pixels that this WMS service will return.
 * `maxImageHeight`: the maximum image height in pixels that this WMS service will return.
 
@@ -270,9 +287,9 @@ The following shows all the configuration options available in the `NetcdfSubset
 <NetcdfSubsetService>
   <allow>true</allow>
   <dir>(see the note below)</dir>
-  <scour>15 min</scour>
-  <maxAge>30 min</maxAge>
-  <maxFileDownloadSize>300 MB</maxFileDownloadSize>
+  <scour>10 min</scour>
+  <maxAge>5 min</maxAge>
+  <maxFileDownloadSize>-1</maxFileDownloadSize>
 </NetcdfSubsetService>
 ~~~
 
@@ -290,15 +307,16 @@ Here is the description of the various options:
   Optional; default is that there is no size limitation.
   If the file is > 2 GB, large format netCDF will be written.
 
-### ncISO Service
+### ncISO Services
 
-By default, these services are enabled, and can be disabled by including the following in the `threddsConfig.xml` file:
+By default, these services are disabled.
+Provided that you have added the [ncISO plugin](adding_ogc_iso_services.html#nciso-configuration), these services can be enabled by including the following in the `threddsConfig.xml` file:
 
 ~~~xml
 <NCISO>
-  <ncmlAllow>false</ncmlAllow>
-  <uddcAllow>false</uddcAllow>
-  <isoAllow>false</isoAllow>
+  <ncmlAllow>true</ncmlAllow>
+  <uddcAllow>true</uddcAllow>
+  <isoAllow>true</isoAllow>
 </NCISO>
 ~~~
 
@@ -380,7 +398,7 @@ ln -s /data/thredds/content content
 ~~~
 
 These various caches at times may contain large amounts of data. 
-You should choose a location that will not fill up (especially if that location affects other important locations like `/opt`, `/home`, etc).
+You should choose a location that will not fill up (especially if that location affects other important locations like `/opt`, `/usr/local`, `/home`, etc).
 If you have a large disk for your data, that may be a good location for the cache directories.
 On unix-like machines, you can run `df` to get a listing of disks on your machine.
 The listing includes size and mount location.
@@ -419,7 +437,7 @@ We recommend that you use this default, by not specifying the `DiskCache.dir` el
 
 ~~~xml
 <AggregationCache>
-  <dir>${tds.content.root.path}/thredds/cache/agg/</dir>
+  <dir>(see the note below)</dir>
   <scour>24 hours</scour>
   <maxAge>90 days</maxAge>
   <cachePathPolicy>nestedDirectory</cachePathPolicy>
@@ -431,7 +449,7 @@ If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cac
 We recommend that you use this default, by not specifying a `AggregationCache`.`dir` element.
 
 Every `scour` amount of time, any item that hasn't been changed since `maxAge` time will be deleted.
-If you have aggregations that never change, set `scour` to `-1` to disable the operation.
+If you have aggregations that never change, set `scour` to `-1 sec` to disable the operation.
 Otherwise, make `maxAge` longer than the longest time between changes.
 Basically, you don't want to remove active aggregations.
 
@@ -453,9 +471,10 @@ We recommend that you use the default settings, by not specifying this option.
 
 ~~~xml
 <FeatureCollection>
-  <dir>${tds.content.root.path}/thredds/cache/collection/</dir>
+  <dir>(see the note below)</dir>
   <maxEntries>1000</maxEntries>
   <maxBloatFactor>1</maxBloatFactor>
+  <averageValueSize>small</averageValueSize>
 </FeatureCollection>
 ~~~
 
@@ -471,6 +490,12 @@ We recommend that you use the default settings, by not specifying this option.
   If it is possible to have more FMRC files than your `maxEntries`, then this value should be increased.
   It is strongly advised not to configure this value to more than 10, as the cache works progressively slower when the actual size grows far beyond the size configured in your `maxEntries`.
   See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
+* `averageValueSize`: the average size of the cached value (the grid and variable information), which is used when allocating memory for the cache.
+  The possible values are `small`, `medium`, or `large`.
+  The default value is `small`.
+  In most cases the default value should work fine. However, if your FMRC datasets have hundreds of variables,
+  and you are experiencing issues with the cache filling up even though you have adjusted the `maxEntries` and `maxBloatFactor`,
+  then this may need to be increased to `medium`, or in very rare circumstances `large`.
 
 ### GRIB Index Redirection
 
@@ -478,7 +503,7 @@ We recommend that you use the default settings, by not specifying this option.
 <GribIndex>
   <alwaysUse>false</alwaysUse>
   <neverUse>false</neverUse>
-  <dir>${tds.content.root.path}/thredds/cache/grib/</dir>
+  <dir>(see the note below)</dir>
   <policy>nestedDirectory</policy>
   <scour>0 hours</scour>
   <maxAge>90 days</maxAge>
@@ -488,6 +513,7 @@ We recommend that you use the default settings, by not specifying this option.
 These elements control where GRIB index files are written.
 
 * If `alwaysUse` is true, grib index files will always be written to the _index directory_ specified by `dir` (see [choosing a cache directory](#disk-caching-and-temporary-files)).
+  If not otherwise set, the TDS will use the ${tds.content.root.path}/thredds/cache/grib/ directory
   If `neverUse` is true, the index directory will never be used. 
   If neither is set, the TDS will try to write grib indexes to the same directory as the original file, and if the TDS doesn't have write permission it will then write the files to the index directory.
   Write permission will be determined by what rights the _Tomcat user_ has (the user that starts up Tomcat).
