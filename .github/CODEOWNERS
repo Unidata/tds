@@ -15,7 +15,7 @@
 # users just like we do for commit author emails.
 # docs/*  docs@example.com
 
-* @tdrwenski
+* @lesserwhirls
 
 #####################
 # top level modules #
@@ -26,16 +26,16 @@
 # classpath / not module specific matches #
 ###########################################
 
-**/thredds/server/radarServer2/** @dopplershift
+**/thredds/server/radarServer2/** @dopplershift @lesserwhirls
 
-**/opendap/** @DennisHeimbigner @tdrwenski
-**/dap4/** @DennisHeimbigner @tdrwenski
+**/opendap/** @DennisHeimbigner @lesserwhirls
+**/dap4/** @DennisHeimbigner @lesserwhirls
 
 ######################
 # general file types #
 ######################
 
-*.py @dopplershift
+*.py @dopplershift @lesserwhirls
 
 ####################
 # individual files #
