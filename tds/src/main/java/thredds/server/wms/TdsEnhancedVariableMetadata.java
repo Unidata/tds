@@ -104,12 +104,12 @@ public class TdsEnhancedVariableMetadata implements EnhancedVariableMetadata {
   public PlottingStyleParameters getDefaultPlottingParameters() {
     List<Extent<Float>> scaleRanges = Collections.singletonList(layerSettings.getDefaultColorScaleRange());
     String palette = layerSettings.getDefaultPaletteName();
-    Color aboveMaxColour = null;
-    Color belowMinColour = null;
-    Color noDataColour = null;
+    Color aboveMaxColour = layerSettings.getDefaultAboveMaxColor();
+    Color belowMinColour = layerSettings.getDefaultBelowMinColor();
+    Color noDataColour = layerSettings.getDefaultNoDataColor();
+    Float opacity = layerSettings.getDefaultOpacity();
     Boolean logScaling = layerSettings.isLogScaling();
     Integer numColourBands = layerSettings.getDefaultNumColorBands();
-    Float opacity = 100f;
 
     return new PlottingStyleParameters(scaleRanges, palette, aboveMaxColour, belowMinColour, noDataColour, logScaling,
         numColourBands, opacity);

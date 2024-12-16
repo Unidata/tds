@@ -28,9 +28,12 @@
 
 package thredds.server.wms.config;
 
+import java.awt.Color;
 import org.jdom2.Element;
 import uk.ac.rdg.resc.edal.domain.Extent;
+import uk.ac.rdg.resc.edal.exceptions.EdalParseException;
 import uk.ac.rdg.resc.edal.graphics.utils.ColourPalette;
+import uk.ac.rdg.resc.edal.graphics.utils.GraphicsUtils;
 import uk.ac.rdg.resc.edal.util.Extents;
 
 /**
@@ -46,6 +49,8 @@ public class LayerSettings {
 
   private Boolean allowFeatureInfo = null;
   private Extent<Float> defaultColorScaleRange = null;
+  private Color defaultAboveMaxColor, defaultBelowMinColor, defaultNoDataColor = null;
+  private Float defaultOpacity = null;
   private String defaultPaletteName = null;
   private Boolean logScaling = null;
   private Boolean intervalTime = null;
@@ -56,6 +61,10 @@ public class LayerSettings {
       return; // Create a set of layer settings with all-null fields
     this.allowFeatureInfo = getBoolean(parentElement, "allowFeatureInfo");
     this.defaultColorScaleRange = getRange(parentElement, "defaultColorScaleRange");
+    this.defaultAboveMaxColor = getColor(parentElement, "defaultAboveMaxColor");
+    this.defaultBelowMinColor = getColor(parentElement, "defaultBelowMinColor");
+    this.defaultNoDataColor = getColor(parentElement, "defaultNoDataColor");
+    this.defaultOpacity = getFloat(parentElement, "defaultOpacity", Extents.newExtent(0f, 100f));
     this.defaultPaletteName = parentElement.getChildTextTrim("defaultPaletteName");
     // If the default palette name tag is used, it must be populated
     // TODO: can we check this against the installed palettes?
@@ -107,6 +116,36 @@ public class LayerSettings {
       return val;
   }
 
+  private static Float getFloat(Element parentElement, String childName, Extent<Float> validRange)
+      throws WmsConfigException {
+    String str = parentElement.getChildTextTrim(childName);
+    if (str == null)
+      return null;
+    float val;
+    try {
+      val = Float.parseFloat(str);
+    } catch (NumberFormatException nfe) {
+      throw new WmsConfigException(nfe);
+    }
+    if (val < validRange.getLow())
+      return validRange.getLow();
+    else if (val > validRange.getHigh())
+      return validRange.getHigh();
+    else
+      return val;
+  }
+
+  private static Color getColor(Element parentElement, String childName) throws WmsConfigException {
+    String str = parentElement.getChildTextTrim(childName);
+    if (str == null)
+      return null;
+    try {
+      return GraphicsUtils.parseColour(str);
+    } catch (EdalParseException e) {
+      throw new WmsConfigException(String.format("Invalid color value in %s", str));
+    }
+  }
+
   private static Extent<Float> getRange(Element parentElement, String childName) throws WmsConfigException {
     String str = parentElement.getChildTextTrim(childName);
     if (str == null)
@@ -130,6 +169,22 @@ public class LayerSettings {
 
   public Extent<Float> getDefaultColorScaleRange() {
     return defaultColorScaleRange;
+  }
+
+  public Color getDefaultAboveMaxColor() {
+    return defaultAboveMaxColor;
+  }
+
+  public Color getDefaultBelowMinColor() {
+    return defaultBelowMinColor;
+  }
+
+  public Color getDefaultNoDataColor() {
+    return defaultNoDataColor;
+  }
+
+  public Float getDefaultOpacity() {
+    return defaultOpacity;
   }
 
   public String getDefaultPaletteName() {
@@ -160,6 +215,14 @@ public class LayerSettings {
       this.allowFeatureInfo = newSettings.allowFeatureInfo;
     if (this.defaultColorScaleRange == null)
       this.defaultColorScaleRange = newSettings.defaultColorScaleRange;
+    if (this.defaultAboveMaxColor == null)
+      this.defaultAboveMaxColor = newSettings.defaultAboveMaxColor;
+    if (this.defaultBelowMinColor == null)
+      this.defaultBelowMinColor = newSettings.defaultBelowMinColor;
+    if (this.defaultNoDataColor == null)
+      this.defaultNoDataColor = newSettings.defaultNoDataColor;
+    if (this.defaultOpacity == null)
+      this.defaultOpacity = newSettings.defaultOpacity;
     if (this.defaultPaletteName == null)
       this.defaultPaletteName = newSettings.defaultPaletteName;
     if (this.logScaling == null)
@@ -177,8 +240,9 @@ public class LayerSettings {
   @Override
   public String toString() {
     return String.format(
-        "allowFeatureInfo = %s, defaultColorScaleRange = %s, defaultPaletteName = %s, defaultNumColorBands = %s, logScaling = %s",
-        this.allowFeatureInfo, this.defaultColorScaleRange, this.defaultPaletteName, this.defaultNumColorBands,
+        "allowFeatureInfo = %s, defaultColorScaleRange = %s, defaultAboveMaxColor = %s, defaultBelowMinColor = %s, defaultNoDataColor = %s, defaultOpacity = %s, defaultPaletteName = %s, defaultNumColorBands = %s, logScaling = %s",
+        this.allowFeatureInfo, this.defaultColorScaleRange, this.defaultAboveMaxColor, this.defaultBelowMinColor,
+        this.defaultNoDataColor, this.defaultOpacity, this.defaultPaletteName, this.defaultNumColorBands,
         this.logScaling);
   }
 }
