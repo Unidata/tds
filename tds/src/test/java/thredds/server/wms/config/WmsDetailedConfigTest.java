@@ -16,6 +16,7 @@ import uk.ac.rdg.resc.edal.metadata.Parameter;
 import uk.ac.rdg.resc.edal.metadata.VariableMetadata;
 import uk.ac.rdg.resc.edal.util.Extents;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -156,6 +157,10 @@ public class WmsDetailedConfigTest {
     assertThat(settings.getDefaultPaletteName()).isEqualTo("x-Occam");
     assertThat(settings.isAllowFeatureInfo()).isFalse();
     assertThat(settings.getDefaultColorScaleRange()).isEqualTo(Extents.newExtent(0.0f, 2920.0f));
+    assertThat(settings.getDefaultAboveMaxColor()).isEqualTo(Color.BLACK);
+    assertThat(settings.getDefaultBelowMinColor()).isEqualTo(Color.BLUE);
+    assertThat(settings.getDefaultNoDataColor()).isEqualTo(new Color(0, 0, 0, 0));
+    assertThat(settings.getDefaultOpacity()).isWithin(0.01f).of(95.0f);
   }
 
   @AfterClass
