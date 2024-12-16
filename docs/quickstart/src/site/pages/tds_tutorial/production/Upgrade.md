@@ -1,6 +1,6 @@
 ---
 title: Upgrading to TDS version 5
-last_updated: 2020-08-26
+last_updated: 2024-12-16
 sidebar: quickstart_sidebar
 toc: false
 permalink: upgrade.html
@@ -11,12 +11,12 @@ permalink: upgrade.html
 * Java 11 is required
 * Tomcat 8 (servlet 3.1)
 * On the command line when starting up Tomcat/TDS, you must specify `-Dtds.content.root.path=<content root>` where `<content root>` points to the top of the content directory.
-  Note that this is `${tomcat_home}/content/`, not`${tomcat_home}/content/thredds/`. 
+  Note, in this example, that this is `/data/content/`, not`/data/content/thredds/`. 
   Don't forget the trailing slash. 
   For example:
 
   ~~~bash
-  -Dtds.content.root.path=/opt/tomcat-home/content/
+  -Dtds.content.root.path=/data/content/
   ~~~
 
 ## Overview
@@ -77,10 +77,28 @@ The following is no longer used:
 
 * By default, most services are enabled, but may still be turned off in `threddsConfig.xml`.
 
+### WMS/ Godiva
+TDS 5.x uses the [edal-java](https://github.com/Reading-eScience-Centre/edal-java) library (formerly ncWMS 1.x).
+As this is a major version change to that library, there may be some breaking changes.
+See also the [edal user guide](https://reading-escience-centre.gitbooks.io/edal-user-guide/content/) and the 
+[changes from ncWMS 1.x](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/01-ncwms1x.html#changes).
+Starting with TDS 5.6, `wmsConfig.xml` has been extended to support four new default options:
+* defaultAboveMaxColor
+* defaultBelowMinColor
+* defaultNoDataColor
+* defaultOpacity
+
+As a result, the Document Type Definition used in the `DOCTYPE` element of the config file has been updated from `wmsConfig.dtd` to `wmsConfig_2_0.dtd`.
+
+### ncISO services
+To use the ncISO services, you must add the `tds-plugin-jar-with-dependencies.jar` artifact to your TDS for TDS versions >= 5.5.
+For TDS versions prior to 5.5 this artifact was included in the TDS war file.
+See [ncISO configuration](adding_ogc_iso_services.html#nciso-configuration) for more details.
+
 ## Java Web Start
 
 Java Web Start has been [deprecated as of Java 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and has been removed in [Java 11](https://www.oracle.com/technetwork/java/javase/11-relnote-issues-5012449.html){:target="_blank"}, which is the Long-term Release post-Java 8.
-Due to these changes, the netCDF-Java project no longer provide Java Web Start files as of version 5.0.0.
+Due to these changes, the netCDF-Java project no longer provide Java Web Start files as of version 5.0.
 Following suite, the TDS no longer provide any Web Start based Viewers on Dataset pages out of the box.
 
 ### Catalogs
@@ -147,7 +165,7 @@ Schema version is now `1.2`.
 
 * Feature Collection details are [here](feature_collections_ref.html)
 
-### Recommendations for 5.0 catalogs
+### Recommendations for 5.x catalogs
 
 * Put all `<datasetRoot>` elements in root catalog.
 * Put all `<catalogScan>` elements in root catalog.

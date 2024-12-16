@@ -38,6 +38,10 @@ import javax.annotation.Nullable;
  * <ul>
  * <li>allowFeatureInfo</li>
  * <li>defaultColorScaleRange</li>
+ * <li>defaultAboveMaxColor</li>
+ * <li>defaultBelowMinColor</li>
+ * <li>defaultNoDataColor</li>
+ * <li>defaultOpacity</li>
  * <li>defaultPaletteName</li>
  * <li>defaultNumColorBands</li>
  * <li>logScaling</li>
@@ -111,7 +115,7 @@ public class WmsDetailedConfig {
       Element defaultSettingsEl = defaultSettingsExpression.evaluateFirst(doc);
 
       // We don't have to check for a null return value since we validated
-      // the document against the DTD upon reading. Similarly we know that
+      // the document against the DTD upon reading. Similarly, we know that
       // all the default settings are non-null: null values would have caused
       // a validation error
       wmsConfig.defaultSettings = new LayerSettings(defaultSettingsEl);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE wmsConfig SYSTEM "https://schemas.unidata.ucar.edu/thredds/dtd/ncwms/wmsConfig.dtd">
+<!DOCTYPE wmsConfig SYSTEM "https://schemas.unidata.ucar.edu/thredds/dtd/ncwms/wmsConfig_2_0.dtd">
 <!--
 Detailed configuration of the WMS service.  This config file can be used to
 set default styling parameters for each dataset/variable, and to enable or disable
@@ -12,6 +12,10 @@ the GetFeatureInfo operation.
             <!-- The global defaults. All elements are mandatory -->
             <allowFeatureInfo>true</allowFeatureInfo>
             <defaultColorScaleRange>-50 50</defaultColorScaleRange>
+            <defaultAboveMaxColor>#000000</defaultAboveMaxColor>
+            <defaultBelowMinColor>#000000</defaultBelowMinColor>
+            <defaultNoDataColor>extend</defaultNoDataColor>
+            <defaultOpacity>100</defaultOpacity>
             <defaultPaletteName>psu-viridis</defaultPaletteName>
             <defaultNumColorBands>20</defaultNumColorBands>
             <logScaling>false</logScaling>
@@ -46,6 +50,10 @@ the GetFeatureInfo operation.
                      This is the most specific setting and will override any others -->
                 <variable id="Z_sfc">
                     <defaultColorScaleRange>0 2920</defaultColorScaleRange>
+                    <defaultAboveMaxColor>extend</defaultAboveMaxColor>
+                    <defaultBelowMinColor>#0000ff</defaultBelowMinColor>
+                    <defaultNoDataColor>transparent</defaultNoDataColor>
+                    <defaultOpacity>95</defaultOpacity>
                 </variable>
             </variables>
         </datasetPath>

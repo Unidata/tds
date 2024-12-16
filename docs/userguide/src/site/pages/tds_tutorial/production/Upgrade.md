@@ -1,6 +1,6 @@
 ---
 title: Upgrading to TDS version 5
-last_updated: 2020-08-26
+last_updated: 2024-12-16
 sidebar: user_sidebar
 toc: false
 permalink: upgrade.html
@@ -10,7 +10,7 @@ permalink: upgrade.html
 
 * Java and tomcat versions listed [here](install_java_tomcat.html#system-requirements)
 * On the command line when starting up Tomcat/TDS, you must specify `-Dtds.content.root.path=<content root>` where `<content root>` points to the top of the content directory.
-  Note, in this exmaple, that this is `/data/content/`, not`/data/content/thredds/`. 
+  Note, in this example, that this is `/data/content/`, not`/data/content/thredds/`. 
   Don't forget the trailing slash. 
   For example:
 
@@ -81,6 +81,13 @@ TDS 5.x uses the [edal-java](https://github.com/Reading-eScience-Centre/edal-jav
 As this is a major version change to that library, there may be some breaking changes.
 See also the [edal user guide](https://reading-escience-centre.gitbooks.io/edal-user-guide/content/) and the 
 [changes from ncWMS 1.x](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/01-ncwms1x.html#changes).
+Starting with TDS 5.6, `wmsConfig.xml` has been extended to support four new default options:
+* defaultAboveMaxColor
+* defaultBelowMinColor
+* defaultNoDataColor
+* defaultOpacity
+
+As a result, the Document Type Definition used in the `DOCTYPE` element of the config file has been updated from `wmsConfig.dtd` to `wmsConfig_2_0.dtd`.
 
 ### ncISO services
 To use the ncISO services, you must add the `tds-plugin-jar-with-dependencies.jar` artifact to your TDS for TDS versions >= 5.5.

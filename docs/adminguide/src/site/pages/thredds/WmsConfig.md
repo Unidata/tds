@@ -1,6 +1,6 @@
 ---
 title: Customizing WMS
-last_updated: 2021-08-06
+last_updated: 2024-12-16
 sidebar: admin_sidebar
 toc: false
 permalink: customizing_wms.html
@@ -16,15 +16,21 @@ An example `wmsConfig.xml` file is shipped with the TDS, which looks like:
 {{ rmd }}
 ~~~
 
+Note that as of TDS v5.6, the Document Type Definition has been updated from `wmsConfig.dtd` to `wmsConfig_2_0.dtd`.
 This file provides a way to set default values for WMS parameters when they are missing from a request.
 In general, you can provide default values for the following properties:
  * _allowFeatureInfo_: Allow _GetFeatureInfo_ requests.
  * _defaultColorScaleRange_: Range of values to when generating images.
- * _defaultPaletteName_: A color palette name (see the [ncWMS User Guide](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap){:target="_blank"} for options).
- * _defaultNumColorBands_: The number of colour bands to use.
+ * _defaultAboveMaxColor_: The color to plot values above the maximum end of the scale range.
+ * _defaultBelowMinColor_: The color to plot values below the minimum end of the scale range.
+ * _defaultNoDataColor_: The color to use for values which have no data.
+ * _defaultOpacity_: The percentage opacity of the final output image.
+ * _defaultPaletteName_: A color palette name.
+ * _defaultNumColorBands_: The number of color bands to use.
  * _logScaling_: Use a logarithmic scale when generating images.
- * _intervalTime_: Deprecated, does not work.
+ * _intervalTime_: Deprecated, is not supported in the new wms service.
 
+Details regarding these properties can be found in the [ncWMS User Guide](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap){:target="_blank"}
 There are two main elements to the `wmsConfig.xml` file - the `<global>`, and the `<overrides>`.
 Each controls the level of granularity at which default values are chosen.
 Settings in `<overrides>` take precedence over settings in `<global>`.
