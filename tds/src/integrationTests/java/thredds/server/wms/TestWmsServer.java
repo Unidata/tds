@@ -8,7 +8,6 @@ package thredds.server.wms;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -20,13 +19,9 @@ import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.invoke.MethodHandles;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 import thredds.test.util.TestOnLocalServer;
@@ -40,7 +35,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class TestWmsServer {
-  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private static final double TOLERANCE = 1.0e-8;
   private final Namespace NS_WMS = Namespace.getNamespace("wms", "http://www.opengis.net/wms");
@@ -72,8 +66,8 @@ public class TestWmsServer {
   public void testGetPng() {
     String endpoint =
         TestOnLocalServer.withHttpPath("/wms/scanCdmUnitTests/conventions/cf/ipcc/tas_A1.nc?service=WMS&version=1.3.0"
-            + "&request=GetMap&CRS=CRS:84&WIDTH=512&HEIGHT=512&LAYERS=tas&BBOX=0,-90,360,90&format="
-            + ContentType.png.toString() + "&time=1850-01-16T12:00:00Z");
+            + "&request=GetMap&CRS=CRS:84&WIDTH=512&HEIGHT=512&LAYERS=tas&BBOX=0,-90,360,90&format=" + ContentType.png
+            + "&time=1850-01-16T12:00:00Z");
     testGetPng(endpoint);
   }
 
@@ -83,17 +77,26 @@ public class TestWmsServer {
     String endpoint =
         TestOnLocalServer.withHttpPath("/wms/scanCdmUnitTests/conventions/cf/ipcc/tas_A1.nc?service=WMS&version=1.3.0"
             + "&request=GetMap&CRS=EPSG:3857&WIDTH=512&HEIGHT=512&LAYERS=tas&BBOX=0,-90,360,90&format="
-            + ContentType.png.toString() + "&time=1850-01-16T12:00:00Z");
+            + ContentType.png + "&time=1850-01-16T12:00:00Z");
     testGetPng(endpoint);
   }
 
-  private static void testGetPng(String endpoint) {
-    byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.png.toString());
-    // make sure we get a png back
-    // first byte (unsigned) should equal 137 (decimal)
-    assertThat(result[0] & 0xFF).isEqualTo(137);
-    // bytes 1, 2, and 3, when interperted as ASCII, should be P N G
-    assertThat(new String(((byte[]) Arrays.copyOfRange(result, 1, 4)), Charset.forName("US-ASCII"))).isEqualTo("PNG");
+  @Test
+  @Category(NeedsCdmUnitTest.class)
+  public void testGetMapPaletteDefault() {
+    String basePath = "/wms/scanLocal/2004050300_eta_211.nc?TRANSPARENT=TRUE&LAYERS=Z_sfc&"
+        + "TIME=2003-09-25T00%3A00%3A00.000Z&COLORSCALERANGE=0%2C2920&NUMCOLORBANDS=20&ABOVEMAXCOLOR=0x000000&"
+        + "BELOWMINCOLOR=0xFF0000FF&BGCOLOR=transparent&LOGSCALE=false&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&"
+        + "SRS=EPSG%3A4326&BBOX=-171.36,32.88,-48.48,155.76&WIDTH=256&HEIGHT=256&format=" + ContentType.png;
+
+    String endpointNoStyles = TestOnLocalServer.withHttpPath(basePath);
+    String endpointEmptyStyles = TestOnLocalServer.withHttpPath(basePath + "&STYLES=");
+    String endpointExpectedStyles = TestOnLocalServer.withHttpPath(basePath + "&STYLES=default-scalar%2Fx-Occam");
+    String endpointDiffStyles = TestOnLocalServer.withHttpPath(basePath + "&STYLES=default-scalar%2Fx-Rainbow");
+
+    assertThat(testGetPng(endpointNoStyles)).isEqualTo(testGetPng(endpointExpectedStyles));
+    assertThat(testGetPng(endpointEmptyStyles)).isEqualTo(testGetPng(endpointExpectedStyles));
+    assertThat(testGetPng(endpointDiffStyles)).isNotEqualTo(testGetPng(endpointExpectedStyles));
   }
 
   @Test
@@ -102,13 +105,9 @@ public class TestWmsServer {
     String endpoint =
         TestOnLocalServer.withHttpPath("/wms/scanCdmUnitTests/conventions/cf/ipcc/tas_A1.nc?service=WMS&version=1.3.0"
             + "&request=GetLegendGraphic&Layers=tas&colorscalerange=225.0,310.0&style=default-scalar/x-Rainbow&format="
-            + ContentType.png.toString());
-    byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.png.toString());
-    // make sure we get a png back
-    // first byte (unsigned) should equal 137 (decimal)
-    assertThat(result[0] & 0xFF).isEqualTo(137);
-    // bytes 1, 2, and 3, when interperted as ASCII, should be P N G
-    assertThat(new String(((byte[]) Arrays.copyOfRange(result, 1, 4)), Charset.forName("US-ASCII"))).isEqualTo("PNG");
+            + ContentType.png);
+
+    testGetPng(endpoint);
   }
 
   @Test
@@ -118,14 +117,9 @@ public class TestWmsServer {
     try {
       String endpoint = TestOnLocalServer.withHttpPath(
           "/wms/scanCdmUnitTests/conventions/cf/ipcc/tas_A1.nc?service=WMS&version=1.3.0&request=GetLegendGraphic&Layers=tas&format="
-              + ContentType.png.toString()
+              + ContentType.png
               + "&SLD_BODY=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22ISO-8859-1%22%3F%3E%20%3CStyledLayerDescriptor%20version%3D%221.1.0%22%20xsi%3AschemaLocation%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%20StyledLayerDescriptor.xsd%22%20xmlns%3D%22http%3A%2F%2Fwww.opengis.net%2Fsld%22%20xmlns%3Aogc%3D%22http%3A%2F%2Fwww.opengis.net%2Fogc%22%20xmlns%3Ase%3D%22http%3A%2F%2Fwww.opengis.net%2Fse%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xmlns%3Axsi%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema-instance%22%3E%20%3CNamedLayer%3E%20%3Cse%3AName%3Etas%3C%2Fse%3AName%3E%20%3CUserStyle%3E%20%3Cse%3AName%3EThesholded%20colour%20scheme%3C%2Fse%3AName%3E%20%3Cse%3ACoverageStyle%3E%20%3Cse%3ARule%3E%20%3Cse%3ARasterSymbolizer%3E%20%3Cse%3AOpacity%3E1.0%3C%2Fse%3AOpacity%3E%20%3Cse%3AColorMap%3E%20%3Cse%3ACategorize%20fallbackValue%3D%22%2300000000%22%3E%20%3Cse%3ALookupValue%3ERasterdata%3C%2Fse%3ALookupValue%3E%20%3Cse%3AValue%3E%23FF0000FF%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E275.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FF00FFFF%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E280.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FF00FF00%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E285.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FFFFFF00%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E290.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FFFFC800%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E295.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FFFFAFAF%3C%2Fse%3AValue%3E%20%3Cse%3AThreshold%3E300.0%3C%2Fse%3AThreshold%3E%20%3Cse%3AValue%3E%23FFFF0000%3C%2Fse%3AValue%3E%20%3C%2Fse%3ACategorize%3E%20%3C%2Fse%3AColorMap%3E%20%3C%2Fse%3ARasterSymbolizer%3E%20%3C%2Fse%3ARule%3E%20%3C%2Fse%3ACoverageStyle%3E%20%3C%2FUserStyle%3E%20%3C%2FNamedLayer%3E%20%3C%2FStyledLayerDescriptor%3E");
-      byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.png.toString());
-      // make sure we get a png back
-      // first byte (unsigned) should equal 137 (decimal)
-      assertThat(result[0] & 0xFF).isEqualTo(137);
-      // bytes 1, 2, and 3, when interperted as ASCII, should be P N G
-      assertThat(new String(((byte[]) Arrays.copyOfRange(result, 1, 4)), Charset.forName("US-ASCII"))).isEqualTo("PNG");
+      byte[] result = testGetPng(endpoint);
     } finally {
       System.setProperty("httpservices.urlencode", "true");
     }
@@ -192,7 +186,7 @@ public class TestWmsServer {
       } catch (InterruptedException | ExecutionException e) {
         throw new RuntimeException(e);
       }
-    }).collect(Collectors.toList());
+    }).toList();
 
     assertWithMessage("result codes = " + Arrays.toString(resultCodes.toArray()))
         .that(resultCodes.stream().allMatch(code -> code.equals(HttpServletResponse.SC_OK))).isTrue();
@@ -226,5 +220,15 @@ public class TestWmsServer {
 
     assertThat(element.getContentSize()).isEqualTo(1);
     assertThat(Double.valueOf(element.getText())).isWithin(TOLERANCE).of(expectedValue);
+  }
+
+  private static byte[] testGetPng(String endpoint) {
+    byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.png.toString());
+    // make sure we get a png back
+    // first byte (unsigned) should equal 137 (decimal)
+    assertThat(result[0] & 0xFF).isEqualTo(137);
+    // bytes 1, 2, and 3, when interpreted as ASCII, should be P N G
+    assertThat(new String(Arrays.copyOfRange(result, 1, 4), StandardCharsets.US_ASCII)).isEqualTo("PNG");
+    return result;
   }
 }
