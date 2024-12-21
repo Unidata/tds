@@ -1,6 +1,6 @@
 ---
 title: TDS Web Map Service (WMS)
-last_updated: 2021-08-06
+last_updated: 2024-12-20
 sidebar: admin_sidebar
 toc: false
 permalink: adding_wms.html
@@ -52,11 +52,17 @@ WMS clients may not be able to directly use the THREDDS catalogs to find the WMS
 Additional server level WMS configuration options can be set in the `threddsConfig.xml` file (see the [WMS Service](../adminguide/tds_config_ref.html) section of the TDS Configuration File Reference documentation). 
 Further WMS configuration properties are set in the wmsConfig.xml file.
 These properties are mainly related with styling of WMS images.
-Similar to the `threddsConfig.xml file`, the WMS configuration file (wmsConfig.xml) is found in the `${tds.content.root.path}/thredds` directory.
+Similar to the `threddsConfig.xml` file, the WMS configuration file (wmsConfig.xml) is found in the `${tds.content.root.path}/thredds` directory.
 A detailed description of the wmsConfig.xml file can be on the [Customizing WMS](customizing_wms.html) reference page.
 
 If you are installing a new TDS, you should find a default `wmsConfig.xml` file (along with other configuration files) in the `${tds.content.root.path}/thredds` directory after you first deploy the TDS.
 If a copy of the file is missing in the expected location, you can obtain a fresh copy from `${tomcat_home}/webapps/thredds/WEB-INF/altContent/startup/wmsConfig.xml`.
+
+## Godiva3 configuration
+
+Godiva3 has a few configuration options that may be useful, such as changing the map size or adding new base layers.
+Similar to the `wmsConfig.xml` file, the Godiva3 configuration file (`godiva3.properties`) is found in the `${tds.content.root.path}/thredds` directory.
+Configuration options can be found in the [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/03-config.html#server){:target="_blank"}.
 
 ## Change to CRS List in WMS GetCapabilities Documents
 
