@@ -224,6 +224,9 @@ public final class TdsContext implements ServletContextAware, InitializingBean, 
       }
     }
 
+    // set configDir for use by the godiva3 config servlet
+    servletContext.setAttribute("configDir", this.threddsDirectory.getAbsolutePath());
+
     /*
      * places to look for catalogs ??
      * List<DescendantFileSource> chain = new ArrayList<>();

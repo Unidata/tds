@@ -132,6 +132,21 @@
 
   <!-- end edal-wms screenshot servlet -->
 
+  <!-- godiva3 config servlet -->
+
+  <servlet>
+    <servlet-name>godiva3config</servlet-name>
+    <servlet-class>uk.ac.rdg.resc.godiva.server.ConfigServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>godiva3config</servlet-name>
+    <url-pattern>/getconfig</url-pattern>
+  </servlet-mapping>
+
+  <!-- end godiva3 config servlet -->
+
   <!-- ++++++++++ Setup security restrictions ++++++++++ -->
   <!-- Following does not appear to work, so commented out -->
   <!--
