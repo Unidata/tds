@@ -84,7 +84,7 @@ bg
 The TDM scans the files in the feature collection, and when it detects that the collection has changed, rewrites the index files.
 If enabled, it will send a trigger message to the TDS, and the TDS will reload that dataset.
 To enable this, you must configure the TDS with the `tdsTrigger` role, and add the user `tdm` with that role.
-Typically, you do that by editing the `${tomcat_home}/conf/tomcat-user.xml` file, e.g.:
+Typically, you do that by editing the `${tomcat_home}/conf/tomcat-users.xml` file, e.g.:
 
 ~~~xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -150,16 +150,12 @@ Point the TDM to the content directory using `-Dtds.content.root.path=<content d
    olderThan="5 min"/>
 
   <tdm rewrite="true" rescan="0 0/15 * * * ? *" trigger="allow"/>
-  <update startup="never" trigger="allow" />
 </featureCollection>
 ~~~
 
 * `<tdm>` element for the TDM
   * `rewrite="test"` tells the TDM to test for dataset changes
   * `rescan="0 0/15 * * * ? *"`  rescan directories every 15 minutes.
-* `<update>` element for the TDS
-  * `startup="never"` tells the TDS to read in the `featureCollection` when starting up, using the existing indices
-  * `trigger="allow"` enables the TDS to receive messages from the TDM when the dataset has changed
 
 ## `GCPass1`
 
