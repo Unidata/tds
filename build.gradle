@@ -100,6 +100,9 @@ ext {
 }
 
 tasks.named('wrapper') {
+  // when upgrading, be sure to run the wrapper task twice to ensure
+  // gradle-wrapper .jar, .properties, and wrapper scripts are
+  // upgraded.
   distributionType = Wrapper.DistributionType.ALL
   gradleVersion = '7.6.4'
 }
