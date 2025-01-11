@@ -14,6 +14,8 @@ on:
         description: 'TDS .war URL'
         required: true
 
+permissions: {}
+
 jobs:
   post:
     runs-on: ubuntu-latest

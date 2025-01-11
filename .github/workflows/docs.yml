@@ -4,6 +4,8 @@ on:
       - 'docs/**'
       - 'gradle/**'
 
+permissions: {}
+
 jobs:
   check-doc-build:
     name: TDS Documentation Build Check

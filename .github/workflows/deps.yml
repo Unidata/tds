@@ -1,5 +1,7 @@
 on: [pull_request]
 
+permissions: {}
+
 jobs:
   check-dependency-availability:
     name: Check fresh compile and assemble of TDS project
