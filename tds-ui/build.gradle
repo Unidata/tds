@@ -5,7 +5,7 @@ ext.title = 'ToolsUI for the TDS'
 ext.url = 'https://www.unidata.ucar.edu/software/tds/'
 
 apply from: "$rootDir/gradle/any/dependencies.gradle"
-apply plugin: 'application'
+apply from: "$rootDir/gradle/any/java-internal.gradle"
 
 dependencies {
   implementation enforcedPlatform(project(':tds-platform'))
@@ -16,6 +16,14 @@ dependencies {
   runtimeOnly project(':tds-ugrid')
 }
 
-application {
-  mainClass.set("ucar.nc2.ui.ToolsUI")
+tasks.register('runToolsUI', JavaExec) {
+  dependsOn 'classes'
+  mainClass = 'ucar.nc2.ui.ToolsUI'
+  classpath = sourceSets.main.runtimeClasspath
+}
+
+tasks.register('runTdsMonitor', JavaExec) {
+  dependsOn 'classes'
+  mainClass = 'thredds.ui.monitor.TdsMonitor'
+  classpath = sourceSets.main.runtimeClasspath
 }
