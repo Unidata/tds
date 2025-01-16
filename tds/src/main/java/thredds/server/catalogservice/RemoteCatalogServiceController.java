@@ -81,7 +81,7 @@ public class RemoteCatalogServiceController {
       Formatter f = new Formatter();
       f.format("Error reading catalog '%s' err=%s%n", uri, builder.getErrorMessage());
       if (!uri.toString().toLowerCase(Locale.ROOT).endsWith(".xml")) {
-        f.format("Expected catalog uri = '" + uri + "' to end with '.xml'");
+        f.format("Expected catalog uri = '%s' to end with '.xml'", uri);
       }
       log.debug(f.toString());
       response.sendError(HttpServletResponse.SC_BAD_REQUEST, f.toString());
