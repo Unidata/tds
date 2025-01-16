@@ -90,6 +90,11 @@ Starting with TDS 5.6, `wmsConfig.xml` has been extended to support four new def
 
 As a result, the Document Type Definition used in the `DOCTYPE` element of the config file has been updated from `wmsConfig.dtd` to `wmsConfig_2_0.dtd`.
 
+Also note, TDS 5.6 includes an updated release of edal-java.
+As part of that update, the version of the h2 database, which holds coordinate reference system definitions, was updated.
+If you are upgrading from a previous version of TDS 5, you may encounter database incompatibility errors that will prevent startup of the TDS.
+You will need to manually remove the directory `${tds.content.root.path}/hredds/cache/edal-java/epsg/.h2` which contains the previous database files.
+
 ### ncISO services
 To use the ncISO services, you must add the `tds-plugin-jar-with-dependencies.jar` artifact to your TDS for TDS versions >= 5.5.
 For TDS versions prior to 5.5 this artifact was included in the TDS war file.
