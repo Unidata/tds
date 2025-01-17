@@ -62,10 +62,10 @@ The `RemoteHostValve` compares the client hostname against one or more regular e
               deny=".*\.bandwidthhogs\.com" />
    ~~~  
 
-    {%include note.html content="
-    Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
-    " %}
-
+   {% capture remote_host_valve %}
+   Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
+   {% endcapture %}
+   {% include info.html content=remote_host_valve%}
 
 ## Restrict Access Via Web Application Deployment Descriptor
 

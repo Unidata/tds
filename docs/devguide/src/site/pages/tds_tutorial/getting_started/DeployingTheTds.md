@@ -38,10 +38,11 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
    </Context>
    ~~~
    
-   {%include note.html content="
+   {% capture context %}  
    Consult the Tomcat documentation about [web application context](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/context.html){:target='_blank'} for more information about the `META-INF/context.xml` file.
-   " %}
-   
+   {% endcapture %}  
+   {% include info.html content=context %}
+
    The down-side of renaming the WAR file to merely `thredds.war` is that a quick glance at the WAR file will not tell you (the server administrator) which version of the TDS is deployed.
   
    

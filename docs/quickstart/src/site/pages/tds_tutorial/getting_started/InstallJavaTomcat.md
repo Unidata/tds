@@ -82,9 +82,10 @@ The following example shows Tomcat installation on a linux system.
 (This type of installation will work on Mac OS systems as well.) 
 The installation is performed as the `root` user.
 
-{% include note.html content="
+{% capture tomcatinstall %}
 For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/setup.html#Windows){:target='_blank'}.
-" %}
+{% endcapture %}  
+{% include info.html content=tomcatinstall %}
 
 {%- assign tomcat_version_split = site.tomcat_version | split: '.' -%}
 {%- assign tomcat_version_split = tomcat_version_split[0] -%}

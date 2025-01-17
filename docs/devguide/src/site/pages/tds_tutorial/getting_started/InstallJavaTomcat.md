@@ -25,9 +25,10 @@ While there are different distributors of Java and servlet containers, Unidata d
 The following example shows the JDK installation on a linux system.  
 The installation is being performed as the `root` user.
 
-{% include note.html content="
-For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guide](https://https://adoptium.net/installation/){:target='_blank'}.
-" %}
+{% capture tomcatinstall %}
+For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/setup.html#Windows){:target='_blank'}.
+{% endcapture %}  
+{% include info.html content=tomcatinstall %}
 
 1.  [Download](https://adoptium.net/){:target="_blank"} current OpenJDK {{ site.java_version }} (LTS) JDK version from the Adoptium site. 
 
@@ -82,9 +83,10 @@ The following example shows Tomcat installation on a linux system.
 (This type of installation will work on Mac OS systems as well.) 
 The installation is performed as the `root` user.
 
-{% include note.html content="
+{% capture tomcatinstall %}
 For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/setup.html#Windows){:target='_blank'}.
-" %}
+{% endcapture %}  
+{% include info.html content=tomcatinstall %}
 
 {%- assign tomcat_version_split = site.tomcat_version | split: '.' -%}
 {%- assign tomcat_version_split = tomcat_version_split[0] -%}

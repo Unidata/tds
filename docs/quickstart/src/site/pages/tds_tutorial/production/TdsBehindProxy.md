@@ -210,9 +210,10 @@ The following example shows how to implement a proxy using the Apache HTTPD serv
                   protocol="AJP/1.3" />
    ~~~
 
-   {% include note.html content="
+   {% capture ajp_connector %}
    Consult the Tomcat documentation for more information about the [AJP Connector](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/ajp.html){:target='_blank'} configuration options.
-   " %}
+   {% endcapture %}  
+   {% include info.html content=ajp_connector %}
   
 2. Disable any active `Java HTTP/1.1 Connector` and the `SSL HTTP/1.1 Connector` Tomcat connectors.
 

@@ -49,11 +49,12 @@ Tomcat uses the keystore file for TLS/SSL transactions.
 
 ## Enabling TLS/SSL In Tomcat
 
-The following example demonstrates enabling TLS/SSL in the Tomcat Servlet Container on a linux system as the `root` user. 
+The following example demonstrates enabling TLS/SSL in the Tomcat Servlet Container on a linux system as the `root` user.
 
-{%include note.html content="
+{% capture cert %}
 This section assumes you have already imported your CA-signed certificate into the [keystore](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target='_blank'} file.
-" %}
+{% endcapture %}  
+{% include info.html content=cert %}
 
 1. Modify the Tomcat configuration to enable TLS/SSL:
 
@@ -84,10 +85,12 @@ This section assumes you have already imported your CA-signed certificate into t
        </SSLHostConfig>
    </Connector>
    ~~~
-   
-   {%include note.html content="
-     Tomcat also offers a `SSL/TLS HTTP/1.1 Connector` which utilizes `APR/native implementation`. Consult the [Documentation](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/http.html){:target='_blank'} to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
-   " %}
+
+   {% capture connector %}
+   Tomcat also offers a `SSL/TLS HTTP/1.1 Connector` which utilizes `APR/native implementation`.
+   Consult the [Documentation](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/http.html){:target='_blank'} to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
+   {% endcapture %}
+   {% include info.html content=connector %}
    
    Specify the keystore file in the `certificateKeystoreFile` attribute of the `Certificate` element to tell Tomcat where to find your keystore (the path will be relative to `${tomcat_home}` directory).  
    

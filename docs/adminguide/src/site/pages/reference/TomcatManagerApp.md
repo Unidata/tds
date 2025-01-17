@@ -57,10 +57,10 @@ This will be done in the following 2 steps:
    <Context privileged="true" antiResourceLocking="false" docBase="${catalina.home}/webapps/manager"/>
    ~~~
 
-   {%include note.html content="  
+   {% capture context_config %}
    For more information about web application context configuration files and their security options, please review the [Tomcat Manager App How-To](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/manager-howto.html#Introduction){:target='_blank'} documentation.
-   " %} 
-
+   {% endcapture %}  
+   {% include info.html content=context_config %}
 
 #### II. Modify `tomcat-users.xml`
 
