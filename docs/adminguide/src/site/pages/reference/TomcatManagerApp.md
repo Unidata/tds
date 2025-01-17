@@ -20,7 +20,7 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
 * Provides server status statistics for the JVM and each connector you have configured in `${tomcat_home}/conf/server.xml`.
 
 
-For more information about the Tomcat manager application, see the [Tomcat Manager App HOW-TO](https://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html){:target='_blank'} documentation.
+For more information about the Tomcat manager application, see the [Tomcat Manager App HOW-TO](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/manager-howto.html){:target='_blank'} documentation.
 
 
 ## Accessing The Manager Application
@@ -57,10 +57,10 @@ This will be done in the following 2 steps:
    <Context privileged="true" antiResourceLocking="false" docBase="${catalina.home}/webapps/manager"/>
    ~~~
 
-   {%include note.html content="  
-   For more information about web application context configuration files and their security options, please review the [Tomcat Manager App How-To](http://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html#Introduction){:target='_blank'} documentation.
-   " %} 
-
+   {% capture context_config %}
+   For more information about web application context configuration files and their security options, please review the [Tomcat Manager App How-To](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/manager-howto.html#Introduction){:target='_blank'} documentation.
+   {% endcapture %}  
+   {% include info.html content=context_config %}
 
 #### II. Modify `tomcat-users.xml`
 

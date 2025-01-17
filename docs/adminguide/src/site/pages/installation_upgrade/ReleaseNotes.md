@@ -24,8 +24,8 @@ Deprecated classes and methods have been removed, and the module structure and t
 
 As of TDS 5, the following are considered to be minimum system requirements:
 
-* Java 11 or above
-* Apache Tomcat 8.5 or above (or a servlet contain that supports servlet specification 3.1)
+* Java {{ site.java_version }} or above
+* Apache Tomcat {{ site.tomcat_version }} or above (or a servlet container that supports servlet specification {{ site.servlet_spec }})
 
 ## JVM Setting Requirement Changes
 

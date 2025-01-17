@@ -59,7 +59,7 @@ Other than the compelling security reasons, you will want to enable TLS to take 
 * [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/){:target="_blank"}
   is a free online service that analyzes the configuration of any public TLS web server. 
   Note: be sure to check the Do not show the results on the boards box if you do not want your results to be public.
-* [TLS/SSL Configuration HOW-TO](https://tomcat.apache.org/tomcat-{{site.tomcat_version}}-doc/ssl-howto.html){:target="_blank"}
+* [TLS/SSL Configuration HOW-TO](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/ssl-howto.html){:target="_blank"}
   The Apache Tomcat document detailing how to enable TLS.
 * [Tomcat Migration Guide](https://tomcat.apache.org/migration.html){:target="_blank"}
   A document detailing the various changes between Tomcat versions.

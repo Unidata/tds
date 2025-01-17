@@ -92,9 +92,10 @@ A Tomcat Realm represents a "database" of usernames, passwords, and roles assign
    supersecretpassword:bb7a2b6cf8da7122125c663fc1585808170b2027677195e0ad121f87b27320ae$1$55003acb56e907b19d29d3b4211dc98c837354690bc90579742d6747efeec4ea
    ~~~
 
-    {% include note.html content="
-    To use a different algorithm, a salt, or to limit the length of the resulting password hash, consult the [syntax options](https://tomcat.apache.org/tomcat-8.5-doc/realm-howto.html#Digested_Passwords){:target='_blank'} for the `tomcat_home/bin/digest.[bat|sh]` script.
-    " %}
+   {% capture algo %}  
+   To use a different algorithm, a salt, or to limit the length of the resulting password hash, consult the [syntax options](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/realm-howto.html#Digested_Passwords){:target='_blank'} for the `tomcat_home/bin/digest.[bat|sh]` script.
+   {% endcapture %}  
+   {% include info.html content=algo %}
   
 3. Update `${tomcat_home}/conf/tomcat-users.xml` to replace your clear-text password with the encrypted version:
    

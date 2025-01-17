@@ -38,16 +38,17 @@ This section assumes you have successfully installed the JDK and Tomcat Servlet 
    </Context>
    ~~~
    
-   {%include note.html content="
-   Consult the Tomcat documentation about [web application context](http://tomcat.apache.org/tomcat-8.5-doc/config/context.html){:target='_blank'} for more information about the `META-INF/context.xml` file.
-   " %}
-   
+   {% capture context %}  
+   Consult the Tomcat documentation about [web application context](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/context.html){:target='_blank'} for more information about the `META-INF/context.xml` file.
+   {% endcapture %}  
+   {% include info.html content=context %}
+
    The down-side of renaming the WAR file to merely `thredds.war` is that a quick glance at the WAR file will not tell you (the server administrator) which version of the TDS is deployed.
   
    
    To solve this, we can make use of a feature in the Tomcat Servlet Container that ignores anything after **double** hashtag symbols in the name of the WAR file.  
    
-   If we rename the WAR file to `thredds##{{site.docset_version}}.war`, Tomcat will see this matching the context information in the `META-INF/context.xml` file and make the TDS accessible via this URL structure: `http://localhost:8080/thredds` 
+   If we rename the WAR file to `thredds##{{ site.docset_version }}.war`, Tomcat will see this matching the context information in the `META-INF/context.xml` file and make the TDS accessible via this URL structure: `http://localhost:8080/thredds` 
    (And we have the added benefit of seeing which version of the TDS is deployed when viewing the raw WAR file). 
 
    ~~~bash

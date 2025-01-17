@@ -14,10 +14,10 @@ Users of OS-provided packages via package management systems for Java and/or Tom
 
 ## System Requirements
 
-* OpenJDK Java 11
-* Apache Tomcat 8.x
+* OpenJDK Java {{ site.java_version }}
+* Apache Tomcat {{ site.tomcat_version }} (or a servlet container that supports servlet specification {{ site.servlet_spec }})
 
-While there are different distributors of Java and servlet containers, Unidata develops, uses and tests the THREDDS Data Server using _OpenJDK Java_ and the _Apache Tomcat_ servlet container.
+While there are different distributors of Java and servlet containers, Unidata develops, uses and tests the THREDDS Data Server using _Eclipse Temurin_ and the _Apache Tomcat_ servlet container.
 
 
 ## Installing OpenJDK Java JDK
@@ -25,11 +25,12 @@ While there are different distributors of Java and servlet containers, Unidata d
 The following example shows the JDK installation on a linux system.  
 The installation is being performed as the `root` user.
 
-{% include note.html content="
-For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guide](https://adoptopenjdk.net/installation.html){:target='_blank'}.
-" %}
+{% capture tomcatinstall %}
+For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/setup.html#Windows){:target='_blank'}.
+{% endcapture %}  
+{% include info.html content=tomcatinstall %}
 
-1.  [Download](https://adoptopenjdk.net/){:target="_blank"} current OpenJDK 8 (LTS) JDK version from the AdoptOpenJDK site. 
+1.  [Download](https://adoptium.net/){:target="_blank"} current OpenJDK {{ site.java_version }} (LTS) JDK version from the Adoptium site. 
 
 2.  Install the JDK.
 
@@ -82,13 +83,17 @@ The following example shows Tomcat installation on a linux system.
 (This type of installation will work on Mac OS systems as well.) 
 The installation is performed as the `root` user.
 
-{% include note.html content="
-For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-8.5-doc/setup.html#Windows){:target='_blank'}.
-" %}
+{% capture tomcatinstall %}
+For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/setup.html#Windows){:target='_blank'}.
+{% endcapture %}  
+{% include info.html content=tomcatinstall %}
 
-1.  [Download](http://tomcat.apache.org/download-80.cgi){:target="_blank"} current version of the Tomcat 8.5 servlet container.
+{%- assign tomcat_version_split = site.tomcat_version | split: '.' -%}
+{%- assign tomcat_version_split = tomcat_version_split[0] -%}
 
-2.  Install Tomcat as per the Apache Tomcat [installation instructions](http://tomcat.apache.org/tomcat-8.5-doc/setup.html){:target="_blank"}.
+1.  [Download](https://tomcat.apache.org/download-{{ tomcat_version_split }}.cgi){:target="_blank"} current version of the Tomcat servlet container.
+
+2.  Install Tomcat as per the Apache Tomcat [installation instructions](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/setup.html){:target="_blank"}.
 
     Copy the binary tar.gz file into the installation directory (`/usr/local` in this example):
 
@@ -96,18 +101,18 @@ For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomca
     # pwd
     /usr/local
     
-    # cp /tmp/apache-tomcat-8.5.34.tar.gz .
+    # cp /tmp/apache-tomcat-{{ site.tomcat_version }}.x.tar.gz .
 
     # ls -l
     total 196676
-    -rw-r--r-- 1 root root   9625824 Oct 24 13:27 apache-tomcat-8.5.34.tar.gz
+    -rw-r--r-- 1 root root   9625824 Oct 24 13:27 apache-tomcat-{{ site.tomcat_version }}.x.tar.gz
     drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk1.8.0_192
     ~~~
 
     Unpack the archive file:
 
     ~~~bash
-    # tar xvfz apache-tomcat-8.5.34.tar.gz
+    # tar xvfz apache-tomcat-{{ site.tomcat_version }}.x.tar.gz
     ~~~
 
     This will create a Tomcat directory:
@@ -115,18 +120,18 @@ For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomca
     ~~~bash
     # ls -l
     total 196680
-    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-8.5.34
-    -rw-r--r-- 1 root root   9625824 Oct 24 13:27 apache-tomcat-8.5.34.tar.gz
+    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-{{ site.tomcat_version }}.x
+    -rw-r--r-- 1 root root   9625824 Oct 24 13:27 apache-tomcat-{{ site.tomcat_version }}.x.tar.gz
     drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk1.8.0_192
     ~~~
 
     Remove the remaining binary `tar.gz` file when the installation is complete.
    
     ~~~bash
-    # rm apache-tomcat-8.5.34.tar.gz
+    # rm apache-tomcat-{{ site.tomcat_version }}.x.tar.gz
     # ls -l
     total 187282
-    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-8.5.34
+    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-{{ site.tomcat_version }}.x
     drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk1.8.0_192
     ~~~
 
@@ -148,12 +153,12 @@ Windows users can consult the [Microsoft Documentation](https://docs.microsoft.c
     # pwd
     /usr/local
     
-    # ln -s apache-tomcat-8.5.34 tomcat 
+    # ln -s apache-tomcat-{{ site.tomcat_version }}.x tomcat 
     # ln -s jdk1.8.0_192 jdk
     # ls -l 
     total 196684
-    drwxr-xr-x 9 root root      4096 Oct 24 13:29 tomcat -> apache-tomcat-8.5.34
-    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-8.5.34
+    drwxr-xr-x 9 root root      4096 Oct 24 13:29 tomcat -> apache-tomcat-{{ site.tomcat_version }}.x
+    drwxr-xr-x 9 root root      4096 Oct 24 13:29 apache-tomcat-{{ site.tomcat_version }}.x
     lrwxrwxrwx 1 root root        12 Oct 24 13:59 jdk -> jdk1.8.0_192
     drwxr-xr-x 7 root root      4096 Oct  6 07:58 jdk1.8.0_192
     ~~~

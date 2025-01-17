@@ -93,7 +93,7 @@ The following example demonstrates enabling TLS/SSL for the Tomcat Manager Appli
    </security-constraint>
    ~~~
 
-   The Tomcat 8.x version of the Manager application deployment descriptor contains a `<security-constraint>` section for each of the four possible `ContactPaths` (as per [Manager Application](https://tomcat.apache.org/migration.html){:target="_blank"} section of the Tomcat Migration Guide).
+   The Tomcat {{ site.tomcat_version }} version of the Manager application deployment descriptor contains a `<security-constraint>` section for each of the four possible `ContactPaths` (as per [Manager Application](https://tomcat.apache.org/migration.html){:target="_blank"} section of the Tomcat Migration Guide).
 
    Add a `<user-data-constraint>` with a `<transport-guarantee>` of `CONFIDENTIAL` for the desired `ContactPaths` to to enable port-forwarding to port `8443`:
 
@@ -173,7 +173,7 @@ The following example demonstrates enabling TLS/SSL for the Tomcat Manager Appli
 * Did you restart Tomcat after you made your changes to `web.xml`?
 
 ### Resources
-* [Manager App HOW-TO](https://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html){:target="_blank"}
+* [Manager App HOW-TO](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/manager-howto.html){:target="_blank"}
   The Apache Tomcat document referencing how to use and configure the Manager application.
 * [Tomcat Migration Guide](https://tomcat.apache.org/migration.html){:target="_blank"}
   A document detailing the various changes between Tomcat versions contains a section dedicated to the Manager application.

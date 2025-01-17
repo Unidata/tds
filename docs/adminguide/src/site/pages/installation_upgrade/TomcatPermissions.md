@@ -15,7 +15,7 @@ We also recommend restricting the permissions of the Tomcat `user/group` within 
 
    ~~~bash
    # cd /usr/local
-   # chown -R tomcat:tomcat apache-tomcat-8.5.34
+   # chown -R tomcat:tomcat apache-tomcat-{{ site.tomcat_version }}.x
    # ls -l tomcat
    total 148
    drwxr-x--- 2 tomcat tomcat  4096 Oct 24 14:22 bin
@@ -82,7 +82,7 @@ We also recommend restricting the permissions of the Tomcat `user/group` within 
    
 4. Change the user/group permissions of the files and subdirectories in `${tomcat_home}/conf` directory. 
    
-   (Depending on the web applications you are running and/or your virtual host configurations, Tomcat may create a `${tomcat_home}/conf/Catalina` directory with corresponding subdirectories and files for [context](https://tomcat.apache.org/tomcat-8.5-doc/virtual-hosting-howto.html#Configuring_Your_Contexts){:target="_blank"} information.)  
+   (Depending on the web applications you are running and/or your virtual host configurations, Tomcat may create a `${tomcat_home}/conf/Catalina` directory with corresponding subdirectories and files for [context](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/virtual-hosting-howto.html#Configuring_Your_Contexts){:target="_blank"} information.)  
                                                                                                                                    
     ~~~bash
     # cd /usr/local/tomcat/conf

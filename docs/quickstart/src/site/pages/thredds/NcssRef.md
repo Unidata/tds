@@ -8,7 +8,7 @@ permalink: netcdf_subset_service_ref.html
 
 ## Overview
 
-The NetCDF Subset Service (NCSS) is a web service for subsetting [CDM scientific datasets](https://docs.unidata.ucar.edu/netcdf-java/5.4/userguide/reading_cdm.html){:target="_blank"}. 
+The NetCDF Subset Service (NCSS) is a web service for subsetting [CDM scientific datasets](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/reading_cdm.html){:target="_blank"}. 
 The subsetting is specified using earth coordinates, such as lat/lon or projection coordinates bounding boxes and date ranges, rather than index ranges that refer to the underlying data arrays. 
 The data arrays are subsetted but not re-sampled or reprojected, and preserve the resolution and accuracy of the original dataset.
 
