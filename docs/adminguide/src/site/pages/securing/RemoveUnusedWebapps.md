@@ -22,6 +22,6 @@ Tomcat "ships" with several default web applications you may want to consider re
   To use this application, you must add a user with role of `admin-gui` in `tomcat-users.xml`. 
   If you are not planning to do a lot of virtual hosting in Tomcat this application should be removed.
 * The `examples` application should probably be removed from a production server to minimize security exposure.
-* The docs are a copy of the [Online tomcat documentation](https://tomcat.apache.org/tomcat-8.5-doc/){:target="_blank"}. 
+* The docs are a copy of the [Online tomcat documentation](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/){:target="_blank"}. 
   Unless you have need for a local copy, removing docs would help to tidy-up `${tomcat_home}/webapps`.
  

@@ -106,7 +106,7 @@ pattern="%h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-A
 
 
 {%include note.html content="
-For more information on access log format configuration, see the Tomcat [Valve Component](http://tomcat.apache.org/tomcat-8.5-doc/config/valve.html){:target='_blank'} documentation.
+For more information on access log format configuration, see the Tomcat [Valve Component](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/valve.html){:target='_blank'} documentation.
 " %}
 
 

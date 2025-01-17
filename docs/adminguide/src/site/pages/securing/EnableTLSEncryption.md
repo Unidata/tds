@@ -17,7 +17,7 @@ The following must be performed to create a secure connection for a web applicat
 
 The following example demonstrates enabling Transport Layer Security in the Tomcat Servlet Container on a linux system as the `root` user. 
 
-1. [Import](https://tomcat.apache.org/tomcat-{{site.tomcat_version}}-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target="_blank"} your CA-signed certificate into the keystore file as per the [Tomcat documentation](https://tomcat.apache.org/tomcat-{{site.tomcat_version}}-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target="_blank"}.
+1. [Import](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target="_blank"} your CA-signed certificate into the keystore file as per the [Tomcat documentation](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target="_blank"}.
 
    
    {% include important.html content="
@@ -61,11 +61,11 @@ The following example demonstrates enabling Transport Layer Security in the Tomc
    
    {% capture connector %}
    Tomcat also offers a `SSL/TLS HTTP/1.1 Connector` which utilizes `APR/native implementation`. 
-   Consult the [Documentation](http://tomcat.apache.org/tomcat-{{site.tomcat_version}}-doc/config/http.html){:target='_blank'} to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
+   Consult the [Documentation](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/http.html){:target='_blank'} to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
    {% endcapture %}
    {% include info.html content=connector %}
    
-    Specify the keystore file in the `certificateKeystoreFile` attribute of the `Certificate` element to tell Tomcat where to find your keystore (the path will be relative to `${tomcat_home}` directory).  
+   Specify the keystore file in the `certificateKeystoreFile` attribute of the `Certificate` element to tell Tomcat where to find your keystore (the path will be relative to `${tomcat_home}` directory).  
    
    In this example, the keystore file is `${tomcat_home}/conf/tds-keystore`:
 

@@ -47,17 +47,17 @@ Other HTTPD servers (e.g., NGINX) have not yet been explored.
 
 ### Tomcat-Apache Proxy Documentation
 
-* [Tomcat Connectors](https://tomcat.apache.org/tomcat-8.5-doc/connectors.html){:target="_blank"}
+* [Tomcat Connectors](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/connectors.html){:target="_blank"}
   Documentation describing the difference between the Tomcat HTTP and AJP connectors.
 * `mod_proxy`
-   * [Tomcat HTTP Connector](https://tomcat.apache.org/tomcat-8.5-doc/config/http.html){:target="_blank"}
+   * [Tomcat HTTP Connector](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/http.html){:target="_blank"}
      Configuration for the Tomcat HTTP connector (for use with Apache's mod_proxy).
-   * [Tomcat Proxy Support - How To](https://tomcat.apache.org/tomcat-8.5-doc/proxy-howto.html){:target="_blank"}
+   * [Tomcat Proxy Support - How To](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/proxy-howto.html){:target="_blank"}
      Tomcat documentation showing how to use the build-in Apache module mod_proxy for Apache versions 1.3X and 2.X.
 * `mod_jk`
-  * [Tomcat AJP Connector](https://tomcat.apache.org/tomcat-8.5-doc/config/ajp.html){:target="_blank"}
+  * [Tomcat AJP Connector](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/ajp.html){:target="_blank"}
     Configuration for the Tomcat AJP connector (for use with Apache's mod_jk).
-  * [Tomcat Reverse Proxy - How To](https://tomcat.apache.org/tomcat-8.5-doc/proxy-howto.html){:target="_blank"}
+  * [Tomcat Reverse Proxy - How To](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/proxy-howto.html){:target="_blank"}
     Configurations and fine-tuning of a reverse proxy set up using the mod_jk Apache module.
     
     {%include note.html content="
@@ -211,7 +211,7 @@ The following example shows how to implement a proxy using the Apache HTTPD serv
    ~~~
 
    {% include note.html content="
-   Consult the Tomcat documentation for more information about the [AJP Connector](https://tomcat.apache.org/tomcat-8.5-doc/config/ajp.html){:target='_blank'} configuration options.
+   Consult the Tomcat documentation for more information about the [AJP Connector](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/ajp.html){:target='_blank'} configuration options.
    " %}
   
 2. Disable any active `Java HTTP/1.1 Connector` and the `SSL HTTP/1.1 Connector` Tomcat connectors.

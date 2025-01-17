@@ -8,8 +8,8 @@ permalink: system_requirements.html
 
 ## Minimum Requirements
 
-* OpenJDK Java 11 or above
-* Apache Tomcat 8.5 or above (or a servlet contain that supports servlet specification 3.1)
+* OpenJDK Java {{ site.java_version }} or above
+* Apache Tomcat {{ site.tomcat_version }} or above (or a servlet container that supports servlet specification {{ site.servlet_spec }})
 * 64-bit operating system
 * High-performance file system
 
@@ -18,7 +18,7 @@ permalink: system_requirements.html
 
 Unidata develops, tests, and runs/deploys the THREDDS Data Server using:
  
-* OpenJDK Java 
+* Eclipse Temurin 
 * Apache Tomcat servlet container
 * Linux OS
 * [ZFS](https://zfsonlinux.org/){:target="_blank"} for Linux systems

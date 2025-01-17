@@ -63,7 +63,7 @@ The `RemoteHostValve` compares the client hostname against one or more regular e
    ~~~  
 
     {%include note.html content="
-    Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-8.5-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
+    Consult the Tomcat [Remote Host Valve](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/valve.html#Remote_Host_Valve){:target='_blank'}  documentation for more information about valve syntax and options.
     " %}
 
 

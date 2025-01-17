@@ -44,7 +44,7 @@ Unidata _highly_ recommends the use of a certificate signed by a Certificate Aut
 
 ### Certificate `keystore` File
 A keystore file stores the details of the TLS/SSL certificate necessary to make the protocol secured.
-The Tomcat documentation includes a section on [importing your certificate](https://tomcat.apache.org/tomcat-8.0-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target="_blank"} into a keystore file.
+The Tomcat documentation includes a section on [importing your certificate](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target="_blank"} into a keystore file.
 Tomcat uses the keystore file for TLS/SSL transactions. 
 
 ## Enabling TLS/SSL In Tomcat
@@ -52,7 +52,7 @@ Tomcat uses the keystore file for TLS/SSL transactions.
 The following example demonstrates enabling TLS/SSL in the Tomcat Servlet Container on a linux system as the `root` user. 
 
 {%include note.html content="
-This section assumes you have already imported your CA-signed certificate into the [keystore](https://tomcat.apache.org/tomcat-8.0-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target='_blank'} file.
+This section assumes you have already imported your CA-signed certificate into the [keystore](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/ssl-howto.html#Prepare_the_Certificate_Keystore){:target='_blank'} file.
 " %}
 
 1. Modify the Tomcat configuration to enable TLS/SSL:
@@ -86,7 +86,7 @@ This section assumes you have already imported your CA-signed certificate into t
    ~~~
    
    {%include note.html content="
-     Tomcat also offers a `SSL/TLS HTTP/1.1 Connector` which utilizes `APR/native implementation`. Consult the [Documentation](http://tomcat.apache.org/tomcat-8.5-doc/config/http.html){:target='_blank'} to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
+     Tomcat also offers a `SSL/TLS HTTP/1.1 Connector` which utilizes `APR/native implementation`. Consult the [Documentation](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/config/http.html){:target='_blank'} to see if you should use this connector in lieu of the `NIO implementation SSL HTTP/1.1` connector.
    " %}
    
    Specify the keystore file in the `certificateKeystoreFile` attribute of the `Certificate` element to tell Tomcat where to find your keystore (the path will be relative to `${tomcat_home}` directory).  
@@ -251,7 +251,7 @@ Other than the compelling security reasons, you will want to enable TLS/SSL to t
 * [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/){:target="_blank"}
   is a free online service that analyzes the configuration of any public TLS/SSL web server. 
   Note: be sure to check the Do not show the results on the boards box if you do not want your results to be public.
-* [TLS/SSL Configuration HOW-TO](https://tomcat.apache.org/tomcat-8.5-doc/ssl-howto.html){:target="_blank"}
+* [TLS/SSL Configuration HOW-TO](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/ssl-howto.html){:target="_blank"}
   The Apache Tomcat document detailing how to enable TLS/SSL.
 * [Tomcat Migration Guide](https://tomcat.apache.org/migration.html){:target="_blank"}
   A document detailing the various changes between Tomcat versions.

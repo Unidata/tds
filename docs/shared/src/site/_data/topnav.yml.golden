@@ -18,9 +18,9 @@ topnav_dropdowns:
         - title: GitHub
           external_url: https://github.com/Unidata/netcdf-java
         - title: User's guide
-          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.6/userguide/index.html
+          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.7/userguide/index.html
         - title: Public API
-          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.6/javadoc/index.html
+          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.7/javadoc/index.html
 
     - title: TDS
       folderitems:
@@ -30,15 +30,6 @@ topnav_dropdowns:
           external_url: https://github.com/Unidata/tds
         - title: Documentation
           external_url: https://docs.unidata.ucar.edu/tds/current/userguide/index.html
-
-    - title: Rosetta
-      folderitems:
-        - title: Unidata Homepage
-          external_url: https://www.unidata.ucar.edu/software/rosetta/
-        - title: GitHub
-          external_url: https://github.com/Unidata/Rosetta
-        - title: User guide
-          external_url: https://docs.unidata.ucar.edu/rosetta/current/userguide/index.html
 
     - title: Siphon
       folderitems:

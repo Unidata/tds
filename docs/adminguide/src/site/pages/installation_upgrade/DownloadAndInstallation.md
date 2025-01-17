@@ -34,7 +34,7 @@ Please visit the [Support](support.html) page for information on which version o
 |------------|------------------|
 | File Type | Link For Download |
 |-------------|-----------------|
-| OpenJDK Java | [https://adoptopenjdk.net/](https://adoptopenjdk.net/){:target="_blank"} |
+| OpenJDK Java | [https://adoptium.net/](https://adoptium.net/){:target="_blank"} |
 | Apache Tomcat Servlet Container` | [http://tomcat.apache.org/](http://tomcat.apache.org/){:target="_blank"} |
 | Tomcat Docker Image | [https://hub.docker.com/r/unidata/tomcat-docker](https://hub.docker.com/r/unidata/tomcat-docker){:target="_blank"} |
 

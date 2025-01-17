@@ -98,7 +98,7 @@ A Tomcat Realm represents a "database" of usernames, passwords, and roles assign
    ~~~
 
     {% include note.html content="
-    To use a different algorithm, a salt, or to limit the length of the resulting password hash, consult the [syntax options](https://tomcat.apache.org/tomcat-8.5-doc/realm-howto.html#Digested_Passwords){:target='_blank'} for the `tomcat_home/bin/digest.[bat|sh]` script.
+    To use a different algorithm, a salt, or to limit the length of the resulting password hash, consult the [syntax options](https://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/realm-howto.html#Digested_Passwords){:target='_blank'} for the `tomcat_home/bin/digest.[bat|sh]` script.
     " %}
   
 3. Update `${tomcat_home}/conf/tomcat-users.xml` to replace your clear-text password with the encrypted version:

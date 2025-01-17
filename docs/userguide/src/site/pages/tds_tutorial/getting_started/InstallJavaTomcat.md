@@ -14,10 +14,10 @@ Users of OS-provided packages via package management systems for Java and/or Tom
 
 ## System Requirements
 
-* OpenJDK Java 17
-* Apache Tomcat 10.x
+* OpenJDK Java {{ site.java_version }}
+* Apache Tomcat {{ site.tomcat_version }} (or a servlet container that supports servlet specification {{ site.servlet_spec }})
 
-While there are different distributors of Java and servlet containers, Unidata develops, uses and tests the THREDDS Data Server using _OpenJDK Java_ and the _Apache Tomcat_ servlet container.
+While there are different distributors of Java and servlet containers, Unidata develops, uses and tests the THREDDS Data Server using _Eclipse Temurin_ and the _Apache Tomcat_ servlet container.
 
 
 ## Installing OpenJDK Java JDK
@@ -26,10 +26,10 @@ The following example shows the JDK installation on a linux system.
 The installation is being performed as the `root` user.
 
 {% include note.html content="
-For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guide](https://adoptium.net/installation.html){:target='_blank'}.
+For installation of the JDK on Windows or Mac OS, see the [JDK Installation Guide](https://https://adoptium.net/installation/){:target='_blank'}.
 " %}
 
-1.  [Download](https://adoptium.net/){:target="_blank"} the required OpenJDK version from the AdoptOpenJDK site. 
+1.  [Download](https://adoptium.net/){:target="_blank"} current OpenJDK {{ site.java_version }} (LTS) version from the Adoptium site. 
 
 2.  Install the JDK.
 
@@ -83,12 +83,15 @@ The following example shows Tomcat installation on a linux system.
 The installation is performed as the `root` user.
 
 {% include note.html content="
-For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-10.1-doc/setup.html#Windows){:target='_blank'}.
+For installation of Tomcat on Windows, see the [Tomcat Setup Guide](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/setup.html#Windows){:target='_blank'}.
 " %}
 
-1.  [Download](https://tomcat.apache.org/download-10.cgi){:target="_blank"} current version of the Tomcat servlet container.
-
-2.  Install Tomcat as per the Apache Tomcat [installation instructions](http://tomcat.apache.org/tomcat-10.1-doc/setup.html){:target="_blank"}.
+{%- assign tomcat_version_split = site.tomcat_version | split: '.' -%} 
+{%- assign tomcat_version_split = tomcat_version_split[0] -%}
+ 
+1.  [Download](https://tomcat.apache.org/download-{{ tomcat_version_split }}.cgi){:target="_blank"} current version of the Tomcat servlet container.
+ 
+2.  Install Tomcat as per the Apache Tomcat [installation instructions](http://tomcat.apache.org/tomcat-{{ site.tomcat_version }}-doc/setup.html){:target="_blank"}.
 
     Copy the binary tar.gz file into the installation directory (`/usr/local` in this example):
 
