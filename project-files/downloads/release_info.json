@@ -4,84 +4,43 @@
   "releases": [
     {
       "version": "5.6",
-      "status": "beta",
-      "description": "This is the current version running at thredds.ucar.edu. It contains several bug fixes compared to version 5.5.",
+      "releaseDate": "2025-01-21",
+      "status": "current",
+      "description": "",
       "baseURL": "https://artifacts.unidata.ucar.edu/repository/downloads-tds/5.6/",
       "resources": {
         "tds_war": {
           "type" : "web application",
-          "package": "thredds-5.6-SNAPSHOT.war",
+          "package": "thredds-5.6.war",
           "name": "TDS (Web Application Archive)",
           "hash": {
-            "MD5": "thredds-5.6-SNAPSHOT.war.md5",
-            "SHA1": "thredds-5.6-SNAPSHOT.war.sha1",
-            "SHA256": "thredds-5.6-SNAPSHOT.war.sha256"
+            "MD5": "thredds-5.6.war.md5",
+            "SHA1": "thredds-5.6.war.sha1",
+            "SHA256": "thredds-5.6.war.sha256"
           },
-          "info": "THREDDS Data Server (TDS).<br><strong>IMPORTANT:</strong> Before deploying, rename to thredds##5.6-SNAPSHOT.war or thredds.war"
+          "info": "THREDDS Data Server (TDS).<br><strong>IMPORTANT:</strong> Before deploying, rename to thredds##5.6.war or thredds.war"
         },
         "tdm_jar": {
           "type": "library",
-          "package": "tdm-5.6-SNAPSHOT.jar",
+          "package": "tdm-5.6.jar",
           "name": "TDM (Jar file)",
           "hash": {
-            "MD5": "tdm-5.6-SNAPSHOT.jar.md5",
-            "SHA1": "tdm-5.6-SNAPSHOT.jar.sha1",
-            "SHA256": "tdm-5.6-SNAPSHOT.jar.sha256"
+            "MD5": "tdm-5.6.md5",
+            "SHA1": "tdm-5.6.jar.sha1",
+            "SHA256": "tdm-5.6.jar.sha256"
           },
-          "info": "THREDDS Data Manager (TDM) for the latest snapshot release (version 5.6 SNAPSHOT) "
+          "info": "THREDDS Data Manager (TDM) for the current release (version 5.6) "
         },
         "thredds_iso_jar": {
           "type": "library",
-          "package": "tds-plugin-2.4.7-SNAPSHOT-jar-with-dependencies.jar",
+          "package": "tds-plugin-2.4.7-jar-with-dependencies.jar",
           "name": "THREDDS ISO Plugin (Jar file)",
           "hash": {
-            "MD5": "tds-plugin-2.4.7-SNAPSHOT-jar-with-dependencies.jar.md5",
-            "SHA1": "tds-plugin-2.4.7-SNAPSHOT-jar-with-dependencies.jar.sha1",
-            "SHA256": "tds-plugin-2.4.7-SNAPSHOT-jar-with-dependencies.jar.sha256"
+            "MD5": "tds-plugin-2.4.7-jar-with-dependencies.jar.md5",
+            "SHA1": "tds-plugin-2.4.7-jar-with-dependencies.jar.sha1",
+            "SHA256": "tds-plugin-2.4.7-jar-with-dependencies.jar.sha256"
           },
-          "info": "THREDDS ISO Plugin for the latest snapshot release (version 2.4.7 SNAPSHOT) "
-        }
-      }
-    },
-    {
-      "version": "5.5",
-      "releaseDate": "2024-07-16",
-      "status": "current",
-      "description": "",
-      "baseURL": "https://artifacts.unidata.ucar.edu/repository/downloads-tds/5.5/",
-      "resources": {
-        "tds_war": {
-          "type" : "web application",
-          "package": "thredds-5.5.war",
-          "name": "TDS (Web Application Archive)",
-          "hash": {
-            "MD5": "thredds-5.5.war.md5",
-            "SHA1": "thredds-5.5.war.sha1",
-            "SHA256": "thredds-5.5.war.sha256"
-          },
-          "info": "THREDDS Data Server (TDS).<br><strong>IMPORTANT:</strong> Before deploying, rename to thredds##5.5.war or thredds.war"
-        },
-        "tdm_jar": {
-          "type": "library",
-          "package": "tdm-5.5.jar",
-          "name": "TDM (Jar file)",
-          "hash": {
-            "MD5": "tdm-5.5.md5",
-            "SHA1": "tdm-5.5.jar.sha1",
-            "SHA256": "tdm-5.5.jar.sha256"
-          },
-          "info": "THREDDS Data Manager (TDM) for the current release (version 5.5) "
-        },
-        "thredds_iso_jar": {
-          "type": "library",
-          "package": "tds-plugin-2.4.6-jar-with-dependencies.jar",
-          "name": "THREDDS ISO Plugin (Jar file)",
-          "hash": {
-            "MD5": "tds-plugin-2.4.6-jar-with-dependencies.jar.md5",
-            "SHA1": "tds-plugin-2.4.6-jar-with-dependencies.jar.sha1",
-            "SHA256": "tds-plugin-2.4.6-jar-with-dependencies.jar.sha256"
-          },
-          "info": "THREDDS ISO Plugin for the current release (version 2.4.6) "
+          "info": "THREDDS ISO Plugin for the current release (version 2.4.7) "
         }
       }
     }
