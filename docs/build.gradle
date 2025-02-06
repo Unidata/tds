@@ -1,18 +1,12 @@
 plugins {
   id 'base'
-  id 'edu.ucar.unidata.site.jekyll'
 }
-
-// disable tasks added by the jekyll plugin...we need custom tasks, one for each docset
-buildJekyllSite.enabled(false)
-serveJekyllSite.enabled(false)
 
 apply from: "${rootDir}/gradle/any/properties.gradle"
 apply from: "${projectDir}/helpers.gradle"
 
 import edu.ucar.build.publishing.tasks.PublishToRawRepoTask
 import edu.ucar.build.publishing.tasks.DeleteFromNexusTask
-import edu.ucar.unidata.site.jekyll.tasks.ServeTask
 
 ////////////////////////
 // Jekyll Sites Build //
@@ -59,29 +53,73 @@ tasks.register(buildAllJekyllSitesTaskName) {
   description = 'Build all jekyll sites.'
 }
 
+String docTheme = "unidata-jekyll-docs:0.0.4"
+
+boolean isGitHub = System.getenv('GITHUB_ACTIONS') as boolean
+String imageBaseUrl = "docker.unidata.ucar.edu"
+if (isGitHub) {
+  imageBaseUrl = "ghcr.io/unidata"
+}
+String dockerImage = "${imageBaseUrl}/${docTheme}"
+
+class NullOutputStream extends OutputStream {
+  @Override
+  void write(int b) throws IOException {}
+}
+
 // setup build and publish tasks associated with each individual documentation set
 docsets.each { docset ->
   def partialTaskName = makeUpperCamelCase(docset)
-  def buildTask = tasks.register("build${partialTaskName}", edu.ucar.unidata.site.jekyll.tasks.BuildTask) {
+  Provider<Directory> siteBuildDir = layout.buildDirectory.dir("site/${docset}")
+  def buildTask = tasks.register("build${partialTaskName}", Exec) {
     group 'documentation-set'
-    script = 'jekyll'
     description "Build ${docset} jekyll site."
-    sourceDirectory.set(layout.projectDirectory.dir("${docset}/src/site"))
-    destinationDirectory.set(layout.buildDirectory.dir("site/${docset}/"))
-    dependsOn tasks.named('unpackGemJar'), copySharedJekyllFilesTask
+    ConfigurableFileTree buildDocInputs = fileTree("./${docset}/src/site")
+    buildDocInputs.exclude(".jekyll-cache")
+    inputs.files(buildDocInputs)
+    outputs.dir(siteBuildDir)
+    commandLine("docker", "run", "--rm",
+            "-e", "SRC_DIR=/tds/docs/${docset}/src/site",
+            "-v", "${rootDir}:/tds",
+            "-v", "./${relativePath(siteBuildDir.get().toString())}:/site",
+            dockerImage, "build")
+    dependsOn copySharedJekyllFilesTask
   }
 
-  tasks.register("serve${partialTaskName}", ServeTask) {
+  tasks.register("serve${partialTaskName}", Exec) {
     group 'documentation-set'
-    script = 'jekyll'
     description "Serve $docset jekyll site."
-    sourceDirectory.set(layout.projectDirectory.dir("${docset}/src/site"))
-    destinationDirectory.set(layout.buildDirectory.dir("site/${docset}/"))
-    dependsOn tasks.named('unpackGemJar')
+    commandLine("docker", "run", "--rm", "-d",
+            "--name", "tds-docs-server",
+            "-e", "SRC_DIR=/tds/docs/${docset}/src/site",
+            "-v", "${rootDir}:/tds",
+            "-p", "4005:4005",
+            dockerImage, "serve", "--livereload")
+    standardOutput = new NullOutputStream()
+    dependsOn copySharedJekyllFilesTask
+    doLast {
+      String msg = "TDS ${docset} available at http://localhost:4005"
+      String bannerBorder = new String(new char[msg.length() + 4]).replace("\0", "#");
+      println()
+      println(bannerBorder)
+      println("# $msg #")
+      println(bannerBorder)
+      println()
+    }
   }
 
   // register tasks with the aggregator build task
   tasks.named(buildAllJekyllSitesTaskName).configure({dependsOn buildTask})
+}
+
+tasks.register("stopServe", Exec) {
+  group = "documentation-set"
+  description = "Stop the local server used while live editing a tds documentation set."
+  commandLine("docker", "stop", "tds-docs-server")
+  docsets.each { docset ->
+    delete("${projectDir}/${docset}/src/site/Gemfile")
+    delete("${projectDir}/${docset}/src/site/Gemfile.lock")
+  }
 }
 
 /////////////////////////////////////////////
