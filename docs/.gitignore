@@ -1,3 +1,4 @@
 # copies of shared files used by documentation build
 **/_data/topnav.yml
 **/sitemap*.xml
+*/.jekyll-cache
