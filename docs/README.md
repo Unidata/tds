@@ -2,6 +2,10 @@
 
 All gradle commands shown below must be run from the top level of the TDS repository.
 
+## Requirements
+
+In addition to Java, Docker is now required for building the TDS docsets.
+
 ## Jekyll-based documentation
 
 All docsets are published in the Nexus raw repository `docs-tds`.
@@ -32,6 +36,9 @@ For more information, see [shared/README.md](shared/README.md).
 
 * Serve
     * same as `build*` tasks above, but using `serve*` (e.g. `./gradlew :docs:serveUserGuide`)
+    * useful for live editing, as changes to .md files will be picked up and content regenerated on the fly
+    * note that only one docset can be served at a time
+    * when finished serving a doc set, run `./gradlew :docs:stopServe` to shutdown the docker container hosting the server
 
 * Build all Jekyll-based sites (shortcut for building all jekyll-based documentation sets)
     * `./gradlew :docs:buildAllJekyllSites`

@@ -1,0 +1,94 @@
+pipeline {
+    agent  { label 'main' }
+    stages {
+        stage('Bootstrap documentation') {
+            agent {
+                docker {
+                    image 'docker.unidata.ucar.edu/thredds-test-environment:latest'
+                    // Run the container on the node specified at the
+                    // top-level of the Pipeline, in the same workspace,
+                    // rather than on a new node entirely:
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''#!/bin/bash -l
+                select-java temurin 17
+                ./gradlew :docs:copySharedJekyllFiles
+                '''
+            }
+        }
+        stage('Build adminguide') {
+            steps {
+                sh '''docker run --rm \
+                      -e SRC_DIR=/tds/docs/adminguide/src/site \
+                      -e DOCS_UID=$(id -u) \
+                      -v .:/tds \
+                      -v ./docs/build/site/adminguide:/site \
+                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.4 build
+                '''
+            }
+        }
+        stage('Build devguide') {
+            steps {
+                sh '''docker run --rm \
+                      -e SRC_DIR=/tds/docs/devguide/src/site \
+                      -e DOCS_UID=$(id -u) \
+                      -v .:/tds \
+                      -v ./docs/build/site/devguide:/site \
+                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.4 build
+                '''
+            }
+        }
+        stage('Build quickstart') {
+            steps {
+                sh '''docker run --rm \
+                      -e SRC_DIR=/tds/docs/quickstart/src/site \
+                      -e DOCS_UID=$(id -u) \
+                      -v .:/tds \
+                      -v ./docs/build/site/quickstart:/site \
+                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.4 build
+                '''
+            }
+        }
+        stage('Build userguide') {
+            steps {
+                sh '''docker run --rm \
+                      -e SRC_DIR=/tds/docs/userguide/src/site \
+                      -e DOCS_UID=$(id -u) \
+                      -v .:/tds \
+                      -v ./docs/build/site/userguide:/site \
+                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.4 build
+                '''
+            }
+        }
+        stage('Publish documentation') {
+            agent {
+                docker {
+                    image 'docker.unidata.ucar.edu/thredds-test-environment:latest'
+                    // Run the container on the node specified at the
+                    // top-level of the Pipeline, in the same workspace,
+                    // rather than on a new node entirely:
+                    reuseNode true
+                }
+            }
+            steps {
+                withCredentials([file(credentialsId: 'thredds_vault', variable: 'TV'), file(credentialsId: 'vault_pw', variable: 'AVP')]) {
+                    sh '''#!/bin/bash -l
+                    select-java temurin 17
+                    set +x
+                    ./gradlew \
+                      -Pnexus.username=`get_pw NEXUS_USER` \
+                      -Pnexus.password=`get_pw NEXUS_PW` \
+                      -x :docs:buildAdminGuide \
+                      -x :docs:buildDevGuide \
+                      -x :docs:buildQuickstart \
+                      -x :docs:buildUserGuide \
+                      -x :docs:buildAllJekyllSites \
+                      :docs:publishAllJekyllSitesAsVersioned
+                    '''
+                }
+            }
+        }
+    }
+}

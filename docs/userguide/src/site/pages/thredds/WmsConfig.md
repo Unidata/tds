@@ -10,7 +10,7 @@ Several properties related to the generation of images from the WMS service can 
 By default, this file is located in the `${tds.content.root.path}/thredds` directory.
 An example `wmsConfig.xml` file is shipped with the TDS, which looks like:
 
-{% capture rmd %}{% includefile ../tds/src/main/webapp/WEB-INF/altContent/startup/wmsConfig.xml %}{% endcapture %}
+{% capture rmd %}{% includefile ../../../../tds/src/main/webapp/WEB-INF/altContent/startup/wmsConfig.xml %}{% endcapture %}
 
 ~~~xml
 {{ rmd }}
