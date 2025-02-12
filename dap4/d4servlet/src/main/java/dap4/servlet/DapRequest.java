@@ -206,17 +206,6 @@ public class DapRequest {
   }
 
   /**
-   * Convert a URL path for a dataset into an absolute file path
-   *
-   * @param location suffix of url path
-   * @return path in a string builder so caller can extend.
-   * @throws IOException
-   */
-  public String getResourcePath(String location) throws DapException {
-    return controller.getResourcePath(this, location);
-  }
-
-  /**
    * Convert a URL path for a web-content related file into an absolute file path
    *
    * @param location suffix of url path
