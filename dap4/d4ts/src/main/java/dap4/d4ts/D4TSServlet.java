@@ -69,7 +69,7 @@ public class D4TSServlet extends DapController {
   @Override
   protected void doFavicon(String icopath, DapContext cxt) throws IOException {
     DapRequest drq = (DapRequest) cxt.get(DapRequest.class);
-    String favfile = drq.getResourcePath(icopath);
+    String favfile = getResourcePath(drq, icopath);
     if (favfile != null) {
       try (FileInputStream fav = new FileInputStream(favfile);) {
         byte[] content = DapUtil.readbinaryfile(fav);
@@ -113,7 +113,7 @@ public class D4TSServlet extends DapController {
     if (this.defaultroots == null) {
       // Figure out the directory containing
       // the files to display.
-      String testroot = drq.getResourcePath("/");
+      String testroot = getResourcePath(drq, "/");
       if (testroot == null)
         throw new DapException("Cannot locate dataset  directory");
       this.defaultroots = new ArrayList<>();
@@ -139,6 +139,16 @@ public class D4TSServlet extends DapController {
     } catch (IOException ioe) {
       throw new DapException(ioe);
     }
+  }
+
+  public CDMWrap getCDMWrap(DapRequest drq) throws IOException {
+    // Convert the url to an absolute path
+    String realpath = getResourcePath(drq, drq.getDatasetPath());
+
+    CDMWrap c4 = new CDMWrap().open(realpath); // Create the wrapper
+    if (c4 == null)
+      DapLog.debug("No such file: " + realpath);
+    return c4;
   }
 
   /**

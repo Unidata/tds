@@ -130,14 +130,16 @@ abstract public class DapController extends HttpServlet {
   abstract protected String getWebContentRoot(DapRequest drq) throws DapException;
 
   /**
-   * Convert a URL path for a dataset into an absolute file path
-   *
-   * @param drq dap request
-   * @param location suffix of url path
-   * @return path in a string builder so caller can extend.
-   * @throws IOException
+   * Obtain a wrapped CDM source (NetcdfDataset) to Provide a DAP4 API
+   * <p>
+   * This method assumes a resource on the local filesystem. Override
+   * this method to provide other request/dataset location mappings. *
+   * </p>
+   * 
+   * @param drq DapRequest
+   * @throws IOException error obtaining the dataset described by the DapRequest
    */
-  abstract protected String getResourcePath(DapRequest drq, String location) throws DapException;
+  abstract protected CDMWrap getCDMWrap(DapRequest drq) throws IOException;
 
   //////////////////////////////////////////////////////////
 
@@ -257,10 +259,8 @@ abstract public class DapController extends HttpServlet {
    */
 
   protected void doDMR(DapRequest drq, DapContext cxt) throws IOException {
-    // Convert the url to an absolute path
-    String realpath = drq.getResourcePath(drq.getDatasetPath());
 
-    CDMWrap c4 = new CDMWrap().open(realpath); // Create the wrapper
+    CDMWrap c4 = getCDMWrap(drq);
     DapDataset dmr = c4.getDMR();
     CEConstraint ce = constrainDapContext(cxt, dmr);
     ChecksumMode csummode = (ChecksumMode) cxt.get(DapConstants.CHECKSUMTAG);
@@ -310,12 +310,9 @@ abstract public class DapController extends HttpServlet {
    */
 
   protected void doData(DapRequest drq, DapContext cxt) throws IOException {
-    // Convert the url to an absolute path
-    String realpath = drq.getResourcePath(drq.getDatasetPath());
-
-    CDMWrap c4 = new CDMWrap().open(realpath);
+    CDMWrap c4 = getCDMWrap(drq);
     if (c4 == null)
-      throw new DapException("No such file: " + realpath);
+      throw new DapException("Unknown resource");
 
     DapDataset dmr = c4.getDMR();
     CEConstraint ce = constrainDapContext(cxt, dmr);

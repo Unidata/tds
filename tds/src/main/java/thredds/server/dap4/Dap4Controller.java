@@ -9,8 +9,11 @@ import dap4.core.util.DapContext;
 import dap4.core.util.DapException;
 import dap4.core.util.DapUtil;
 import dap4.dap4lib.DapCodes;
+import dap4.servlet.CDMWrap;
 import dap4.servlet.DapController;
 import dap4.servlet.DapRequest;
+import java.util.EnumSet;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,9 @@ import thredds.server.config.TdsContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.*;
+import ucar.nc2.NetcdfFile;
+import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDataset.Enhance;
 
 @Controller
 @RequestMapping("/dap4")
@@ -35,7 +41,8 @@ public class Dap4Controller extends DapController {
   static final String SERVICEID = "/dap4";
 
   // NetcdfDataset enhancement to use: need only coord systems
-  // static Set<NetcdfDataset.Enhance> ENHANCEMENT = EnumSet.of(NetcdfDataset.Enhance.CoordSystems);
+  // match dap4.servlet.CDMWrap.ENHANCEMENT
+  static Set<Enhance> ENHANCEMENT = EnumSet.of(NetcdfDataset.Enhance.CoordSystems);
 
   //////////////////////////////////////////////////
   // Instance variables
@@ -104,26 +111,16 @@ public class Dap4Controller extends DapController {
     return DapUtil.canonicalpath(rootpath);
   }
 
-  /**
-   * Convert a URL path for a dataset into an absolute file path
-   *
-   * @param location suffix of url path
-   * @return path in a string builder so caller can extend.
-   * @throws IOException
-   */
-  public String getResourcePath(DapRequest drq, String location) throws DapException {
-    assert (location.charAt(0) == '/');
-    // Remove the leading service name, if any
-    if (location.startsWith(SERVICEID))
-      location = location.substring(SERVICEID.length());
-    String path = TdsRequestedDataset.getLocationFromRequestPath(location);
-    if (path == null || path.length() == 0)
-      throw new DapException(String.format("getLocationFromRequestPath: location=|%s| path=null", location, path))
-          .setCode(DapCodes.SC_NOT_FOUND);
-    File f = new File(path);
-    if (!f.exists() || !f.canRead() || !f.isFile())
-      throw new DapException("Cannot locate resource: " + location).setCode(DapCodes.SC_NOT_FOUND);
-    return DapUtil.canonicalpath(path);
+  public CDMWrap getCDMWrap(DapRequest drq) throws IOException {
+    String datasetPath = drq.getDatasetPath();
+    String prefix = SERVICEID + "/";
+    if (datasetPath.startsWith(prefix)) {
+      datasetPath = datasetPath.substring(prefix.length());
+    }
+    NetcdfFile ncf = TdsRequestedDataset.getNetcdfFile(drq.getRequest(), drq.getResponse(), datasetPath);
+    NetcdfDataset ncd;
+    ncd = NetcdfDataset.wrap(ncf, ENHANCEMENT);
+    return new CDMWrap().open(ncd);
   }
 
 }

@@ -7,6 +7,7 @@ dependencies {
 
   implementation 'edu.ucar:dap4'
   implementation project(":dap4:d4servlet")
+  implementation 'edu.ucar:cdm-core'
 
   providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"
 
