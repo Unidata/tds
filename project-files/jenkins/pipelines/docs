@@ -25,7 +25,7 @@ pipeline {
                       -e DOCS_UID=$(id -u) \
                       -v .:/tds \
                       -v ./docs/build/site/adminguide:/site \
-                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.4 build
+                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.5 build
                 '''
             }
         }
@@ -36,7 +36,7 @@ pipeline {
                       -e DOCS_UID=$(id -u) \
                       -v .:/tds \
                       -v ./docs/build/site/devguide:/site \
-                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.4 build
+                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.5 build
                 '''
             }
         }
@@ -47,7 +47,7 @@ pipeline {
                       -e DOCS_UID=$(id -u) \
                       -v .:/tds \
                       -v ./docs/build/site/quickstart:/site \
-                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.4 build
+                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.5 build
                 '''
             }
         }
@@ -58,7 +58,7 @@ pipeline {
                       -e DOCS_UID=$(id -u) \
                       -v .:/tds \
                       -v ./docs/build/site/userguide:/site \
-                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.4 build
+                      docker.unidata.ucar.edu/unidata-jekyll-docs:0.0.5 build
                 '''
             }
         }
