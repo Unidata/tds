@@ -9,12 +9,12 @@ jobs:
     strategy:
       matrix:
         java-version: [ 17 ]
-        java-vendor: [ 'temurin' ]
+        java-vendor: [ 'temurin', 'corretto' ]
         servletcontainer: [ 'tomcat10' ]
     steps:
       - uses: actions/checkout@v4
       - name: Build and test with Gradle (${{ matrix.java-vendor }} ${{ matrix.java-version }})
-        uses: Unidata/thredds-test-action@v2
+        uses: Unidata/thredds-test-action@v3
         with:
           java-vendor: ${{ matrix.java-vendor }}
           java-version: ${{ matrix.java-version }}
