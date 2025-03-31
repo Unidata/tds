@@ -8,22 +8,6 @@ buildscript {
   repositories {
     mavenCentral()
     gradlePluginPortal()
-    exclusiveContent {
-      forRepository {
-        maven {
-          url 'https://artifacts.unidata.ucar.edu/repository/unidata-all/'
-        }
-      }
-      // only look for unidata plugin related artifacts from the unidata-all repo
-      filter {
-        includeModule 'edu.ucar.unidata', 'unidata-nexus-gradle'
-        includeModule 'com.burgstaller', 'okhttp-digest'
-      }
-    }
-  }
-
-  dependencies {
-    classpath buildPlugins.nexus
   }
 }
 
@@ -91,66 +75,6 @@ def createChecksumsTask = tasks.register('createChecksums') {
   dependsOn tasks.getByPath(':tdm:shadowJar')
 }
 
-import edu.ucar.build.publishing.tasks.PublishToRawRepoTask
-
-def publishDownloadsTask = tasks.register('publishDownloads', PublishToRawRepoTask) {
-  group = 'publishing'
-  description = 'Publish tdm.jar and thredds.war to Nexus downloads under /version/.'
-  host = 'https://artifacts.unidata.ucar.edu/'
-  repoName = 'downloads-tds'
-
-  publishSrc = new File(rootProject.getBuildDir(), "downloads")
-  destPath = "$project.cleanVersion/"
-  dependsOn createChecksumsTask
-
-  onlyIf {
-    // Will be evaluated at task execution time, not during configuration.
-    // Fails the build if the specified properties haven't been provided.
-    username = getPropertyOrFailBuild NEXUS_USERNAME_KEY
-    password = getPropertyOrFailBuild NEXUS_PASSWORD_KEY
-    return true
-  }
-}
-
-publish.dependsOn publishDownloadsTask
-
-def publishReleaseInfoAndLatestTask = tasks.register('publishReleaseInfoAndLatest', PublishToRawRepoTask) {
-  group = 'publishing'
-  description = 'Publish release_info.json and startup/latest.xml to Nexus downloads.'
-  host = 'https://artifacts.unidata.ucar.edu/'
-  repoName = 'downloads-tds'
-
-  publishSrc = new File(rootProject.getProjectDir(), "project-files/downloads/")
-
-  onlyIf {
-    // Will be evaluated at task execution time, not during configuration.
-    // Fails the build if the specified properties haven't been provided.
-    username = getPropertyOrFailBuild NEXUS_USERNAME_KEY
-    password = getPropertyOrFailBuild NEXUS_PASSWORD_KEY
-    return true
-  }
-}
-
-publish.dependsOn publishReleaseInfoAndLatestTask
-
-def publishVersionInfoTask = tasks.register('publishVersionInfo', PublishToRawRepoTask) {
-  group = 'publishing'
-  description = 'Publish version-info.json to Nexus docs.'
-  host = 'https://artifacts.unidata.ucar.edu/'
-  repoName = 'docs-tds'
-
-  publishSrc = new File(rootProject.getProjectDir(), "project-files/docs/")
-
-  onlyIf {
-    // Will be evaluated at task execution time, not during configuration.
-    // Fails the build if the specified properties haven't been provided.
-    username = getPropertyOrFailBuild NEXUS_USERNAME_KEY
-    password = getPropertyOrFailBuild NEXUS_PASSWORD_KEY
-    return true
-  }
-}
-
-publish.dependsOn publishVersionInfoTask
 
 // The "publish" tasks require credentials for our Nexus server, which they look for in Gradle properties.
 // If those properties (i.e. NEXUS_USERNAME_KEY and NEXUS_PASSWORD_KEY) haven't been provided, the build will fail.
