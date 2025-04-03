@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -76,7 +76,7 @@ public class TestCdmRemoteCompareHeadersP {
     addFromScan(result, contentRoot + "/grib2/", new FileFilter() {
       public boolean accept(File pathname) {
         String name = pathname.getName();
-        return !name.contains(".gbx") && !name.contains(".ncx");
+        return !name.contains(".gbx") && !name.contains(".ncx") && !name.endsWith("README");
       }
     });
     addFromScan(result, contentRoot + "/gini/", new SuffixFileFilter(".gini"));

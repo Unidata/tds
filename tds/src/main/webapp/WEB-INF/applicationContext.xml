@@ -110,10 +110,18 @@
         <constructor-arg type="int" value="1"/>
     </bean>
 
-    <!-- Restricted Access (using container managed security, eg Tomcat, or CAMS) -->
+    <!-- Restricted Access (using container managed security, eg Tomcat, or CAMS)
+    Changes as of 5.7:
+    By default, the TDS will use the incoming request to determine whether SSL
+    is in use. However, if you need to override this behavior, you may change
+    these values. Note, useSSL is only considered if sslPort is not -1. That is,
+    if you want useSSL to be false, you need to change the value of sslPort to
+    a value other than -1 even though it will not be used in constructing the
+    authentication endpoint used by the redirect.
+    -->
     <bean id="restrictedDatasetAuthorizer" class="thredds.servlet.restrict.TomcatAuthorizer">
         <property name="useSSL" value="false"/>
-        <property name="sslPort" value="8443"/>
+        <property name="sslPort" value="-1"/>
     </bean>
 
     <!-- ESGF

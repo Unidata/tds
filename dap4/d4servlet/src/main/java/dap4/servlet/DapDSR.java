@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, UCAR/Unidata and OPeNDAP, Inc.
+ * Copyright 2009-2025, UCAR/Unidata and OPeNDAP, Inc.
  * See the LICENSE file for more information.
  */
 
@@ -13,8 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -34,7 +35,9 @@ public class DapDSR {
   static final String DSRXMLTEMPLATE = "/templates/dap4.dsr.xml.template";
   static final String DSRHTMLTEMPLATE = "/templates/dap4.dsr.html.template";
 
-  static final String URL_FORMAT = DapConstants.HTTPSCHEME + "//%s/%s/%s";
+  static final String URL_FORMAT = "://%s/%s/%s";
+
+  org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DapDSR.class);
 
   //////////////////////////////////////////////////
   // Static Variables
@@ -103,7 +106,14 @@ public class DapDSR {
     substitute(dsr, "DAP_SERVER", DapConstants.X_DAP_SERVER);
     substitute(dsr, "DATASET", dataset);
     // Compute the URL
-    String url = String.format(URL_FORMAT, this.dap4TestServer, this.servletprefix, datasetpath);
+    String scheme = "http";
+    try {
+      // try to get scheme from incoming request
+      scheme = (new URI(this.drq.getRequest().getRequestURL().toString())).getScheme();
+    } catch (URISyntaxException e) {
+      logger.debug("error determining scheme from request url - defaulting to http");
+    }
+    String url = String.format(scheme + URL_FORMAT, this.dap4TestServer, this.servletprefix, datasetpath);
     substitute(dsr, "URL", url);
     return dsr.toString();
   }

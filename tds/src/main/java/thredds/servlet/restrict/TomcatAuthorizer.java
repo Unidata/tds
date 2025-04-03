@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2025 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -26,7 +26,7 @@ public class TomcatAuthorizer implements Authorizer {
   private TdsContext tdsContext;
 
   private boolean useSSL = false;
-  private String sslPort = "8443";
+  private String sslPort = "-1";
 
   public void setUseSSL(boolean useSSL) {
     this.useSSL = useSSL;
@@ -50,16 +50,25 @@ public class TomcatAuthorizer implements Authorizer {
       return true;
     }
 
-    // redirect for authentication / authorization
-    HttpSession session = req.getSession();
+    // create session to hold information for redirect after authentication / authorization
+    HttpSession session = req.getSession(true);
     session.setAttribute("origRequest", ServletUtil.getRequest(req));
     session.setAttribute("role", role);
 
-    String urlr = useSSL
-        ? "https://" + req.getServerName() + ":" + sslPort + tdsContext.getContextPath() + "/restrictedAccess/" + role
-        : "http://" + req.getServerName() + ":" + req.getServerPort() + tdsContext.getContextPath()
-            + "/restrictedAccess/" + role;
+    // allow users to override http vs https using bean properties in applicationContext.xml
+    // for backwards compatibility
+    final String server;
+    if (sslPort.equals("-1")) {
+      // default case: construct endpoint using incoming request details
+      server = ServletUtil.getRequestServer(req);
+    } else {
+      // sslPort was modified, indicating that bean properties in applicationContext.xml should be
+      // used
+      server = useSSL ? "https://" + req.getServerName() + ":" + sslPort
+          : "http://" + req.getServerName() + ":" + req.getServerPort();
+    }
 
+    String urlr = server + tdsContext.getContextPath() + "/restrictedAccess/" + role;
     if (log.isDebugEnabled())
       log.debug("redirect to = {}", urlr);
     res.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
