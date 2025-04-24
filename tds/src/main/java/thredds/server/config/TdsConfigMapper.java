@@ -206,6 +206,10 @@ class TdsConfigMapper {
       final String defaultWmsConfigFile = tdsContext.getThreddsDirectory() + "/wmsConfig.xml";
 
       wmsConfig.setAllow(Boolean.parseBoolean(WMS_ALLOW.getValueFromThreddsConfig()));
+      if (!wmsConfig.isAllow()) {
+        startupLog.debug("WMS service disabled, skip wmsConfig loading.");
+        return;
+      }
       wmsConfig.setAllowRemote(Boolean.parseBoolean(WMS_ALLOW_REMOTE.getValueFromThreddsConfig()));
 
       final String paletteLocation =

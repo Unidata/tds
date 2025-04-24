@@ -32,15 +32,24 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import com.google.common.util.concurrent.UncheckedExecutionException;
+import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Formatter;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import thredds.server.config.TdsContext;
+import thredds.server.config.ThreddsConfig;
 import ucar.nc2.dataset.NetcdfDatasets;
 import uk.ac.rdg.resc.edal.exceptions.EdalException;
 import uk.ac.rdg.resc.edal.graphics.exceptions.EdalLayerNotFoundException;
@@ -68,10 +77,35 @@ import ucar.nc2.dataset.NetcdfDataset;
 @SuppressWarnings("serial")
 @Controller
 @RequestMapping("/wms")
-public class ThreddsWmsServlet extends WmsServlet {
+public class ThreddsWmsServlet extends WmsServlet implements InitializingBean {
+  private static final Logger startupLog = org.slf4j.LoggerFactory.getLogger("serverStartup");
   private static final Logger logger = LoggerFactory.getLogger(ThreddsWmsServlet.class);
 
   private static final Map<String, String> defaultStyles = Collections.singletonMap("styles", "default");
+
+  private static boolean allow;
+
+  @Autowired
+  private TdsContext tdsContext;
+
+  @EventListener
+  public void init(ContextRefreshedEvent event) {
+    // The context is refreshed three times, each with a different display name.
+    // Initializing will work on any one of these, but we only need one.
+    if (event.getApplicationContext().getDisplayName().equals("Root WebApplicationContext")) {
+      allow = ThreddsConfig.getBoolean("WMS.allow", true);
+      startupLog.info("WMS:allow= " + allow);
+      if (!allow) {
+        startupLog.info("WMS service not enabled in threddsConfig.xml: ");
+      }
+    }
+  }
+
+  @Override
+  public void afterPropertiesSet() throws jakarta.servlet.ServletException {
+    // Nothing to set at this point in the startup process
+    // This is before TdsInit.onApplicationEvent is called
+  }
 
   private static class CachedWmsCatalogue {
     public final ThreddsWmsCatalogue wmsCatalogue;
@@ -93,6 +127,16 @@ public class ThreddsWmsServlet extends WmsServlet {
 
   private static final Cache<String, CachedWmsCatalogue> catalogueCache =
       CacheBuilder.newBuilder().maximumSize(100).removalListener(removalListener).recordStats().build();
+
+  @Override
+  protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+      throws ServletException, IOException {
+    if (!allow) {
+      httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "WMS service not enabled");
+      return;
+    }
+    super.doGet(httpServletRequest, httpServletResponse);
+  }
 
   @Override
   @RequestMapping(value = "**", method = {RequestMethod.GET})
