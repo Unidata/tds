@@ -17,7 +17,9 @@ dependencies {
   implementation 'jakarta.annotation:jakarta.annotation-api'
 
   implementation 'org.quartz-scheduler:quartz'
-  implementation 'net.openhft:chronicle-map'
+  implementation 'org.eclipse.store:cache'
+  implementation 'org.eclipse.serializer:persistence-binary-jdk8'
+  implementation 'org.eclipse.serializer:persistence-binary-jdk17'
   implementation 'com.google.code.findbugs:jsr305'
   implementation 'com.google.guava:guava'
   implementation 'com.google.protobuf:protobuf-java'
