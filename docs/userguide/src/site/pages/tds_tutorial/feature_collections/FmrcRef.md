@@ -128,13 +128,12 @@ This evens out time coordinates, and compensates for missing forecast times in t
 
 ## Persistent Caching
 
-The FMRC cache, currently implemented with [Chronicle Map](https://chronicle.software/open-hft/map/){:target="_blank"},
-records the essential grid information from each file in a key/value store.
+The FMRC cache records the essential grid information from each file in a key/value store.
 This cache is persisted to disk, and so also persists between reboots.
 When a collection is scanned, any filenames already in the database are reused. 
 Any new ones are read and added to the database. 
 Any entries in the database that no longer have a filename associated with them are deleted.
-The cache database file is located in `${tds.content.root.path}/thredds/cache/collection/GridDatasetInv.dat`.
+The cache store is located under `${tds.content.root.path}/thredds/cache/collection/`.
 See also [FMRC cache settings documentation](https://docs.unidata.ucar.edu/tds/current/userguide/tds_config_ref.html#featurecollection-cache).
 
 ## Conversion of `<datasetFmrc>` to `<featureCollection>`

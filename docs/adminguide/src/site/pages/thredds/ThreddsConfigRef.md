@@ -466,36 +466,21 @@ The cache information is updated based on the `recheckEvery` field in the `joinE
 ### FeatureCollection Cache
 
 This is where persistent information is kept about FMRCs, in order to speed them up.
-This cache is currently implemented with [Chronicle Map](https://chronicle.software/open-hft/map/){:target="_blank"}.
+This two-level cache is currently implemented with an entry-limited in-memory [Guava cache](https://github.com/google/guava/wiki/cachesexplained){:target="_blank"} (L1) and a persisted [EclipseStore](https://docs.eclipsestore.io/manual/storage/index.html){:target="_blank"} disk cache (L2).
 We recommend that you use the default settings, by not specifying this option.
 
 ~~~xml
 <FeatureCollection>
   <dir>(see the note below)</dir>
   <maxEntries>1000</maxEntries>
-  <maxBloatFactor>1</maxBloatFactor>
-  <averageValueSize>small</averageValueSize>
 </FeatureCollection>
 ~~~
 
 * `dir`: location of Feature Collection cache.
   If not otherwise set, the TDS will use the`${tds.content.root.path}/thredds/cache/collection/` directory.
   We recommend that you use this default, by not specifying a `FeatureCollection.dir` element.
-* `maxEntries`: the number of entries the cache is going to hold, _at most_. Each FMRC file is one "entry" in the cache. The default value for this is 1000.
-  If the `maxBloatFactor` is set to 1 (the default), then this value is the maximum possible number of FMRC files allowed.
+* `maxEntries`: the number of entries the cache is going to hold in-memory, _at most_. Each FMRC file is one "entry" in the cache. The default value for this is 1000.
   If you have more than 1000 FMRC files, then we recommend increasing the `maxEntries` value to be the maximum number of FMRC files you expect to have.
-  See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
-* `maxBloatFactor`: the maximum number of times the cache is allowed to grow in size.
-  The default value for this is 1 (the cache cannot grow in size).
-  If it is possible to have more FMRC files than your `maxEntries`, then this value should be increased.
-  It is strongly advised not to configure this value to more than 10, as the cache works progressively slower when the actual size grows far beyond the size configured in your `maxEntries`.
-  See [here](https://gerrit.googlesource.com/modules/cache-chroniclemap/+/HEAD/src/main/resources/Documentation/config.md#configuration-parameters) for more details.
-* `averageValueSize`: the average size of the cached value (the grid and variable information), which is used when allocating memory for the cache.
-  The possible values are `small`, `medium`, or `large`.
-  The default value is `small`.
-  In most cases the default value should work fine. However, if your FMRC datasets have hundreds of variables,
-  and you are experiencing issues with the cache filling up even though you have adjusted the `maxEntries` and `maxBloatFactor`,
-  then this may need to be increased to `medium`, or in very rare circumstances `large`.
 
 ### GRIB Index Redirection
 

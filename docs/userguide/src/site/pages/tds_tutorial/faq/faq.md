@@ -290,28 +290,6 @@ to something like:
 Be aware if you install a new `thredds.war` to `${tomcat_home}/webapps`, the exploded directory—including all changes you made to `log4j2.xml` will be removed and the webapp will be redeployed from the new `thredds.war`. 
 We suggest you copy `log4j2.xml` to a different location for the deployment and then copy it back over afterwards.
 
-### Issues with Forecast Model Run Collections (FMRC)
-
-If your FMRC datasets are not working properly, and you see errors involving ChronicleMap in the `fmrc.log`, for instance:
-
-~~~
-[2022-09-12T16:02:50.065+0300] ERROR ucar.nc2.ft.fmrc.Fmrc: makeFmrcInv
-com.google.common.util.concurrent.UncheckedExecutionException: java.lang.IllegalStateException: ChronicleMap{name=GridDatasetInv, file=/content/thredds/cache/collection/GridDatasetInv.dat, identityHashCode=1659873263}: Attempt to allocate #3 extra segment tier, 2 is maximum.
-~~~
-
-then you may need to adjust your [FMRC cache settings](https://docs.unidata.ucar.edu/tds/current/userguide/tds_config_ref.html#featurecollection-cache).
-
-### Failed to start up with JDK 17
-
-If you are upgrading to JDK 17 and your serverStartup.log contains an error like
-~~~
-ERROR org.springframework.web.context.ContextLoader: Context initialization failed
-java.lang.ExceptionInInitializerError: null
-    at net.openhft.chronicle.core.internal.ClassUtil.getSetAccessible0Method(ClassUtil.java:32) ~[chronicle-core-2.25ea15.jar:?]
-    ...
-~~~
-You may be missing the JVM arguments need by the chronicle library. Please see `$CHRONICLE_CACHE` in [`${tomcat_home}/bin/setenv.sh`](running_tomcat.html#setting-java_home-java_opts-catalina_home-catalina_base-and-content_root)
-
 ## Caching
 
 ### We use compressed netCDF files, and the very first access to them are quite slow, although subsequent accesses are much faster, then become slow again after a while. 
