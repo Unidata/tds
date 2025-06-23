@@ -30,7 +30,6 @@ dependencies {
   implementation 'edu.ucar:waterml'
   implementation project(':tds-ugrid')
 
-  implementation 'net.openhft:chronicle-map'
   implementation 'jakarta.validation:jakarta.validation-api'
 
   // DAP4 Dependencies (technically forward)
@@ -241,18 +240,11 @@ jar {
 
 configurations.all {
   // STAX is already included in Java 1.6+; no need for a third-party dependency.
-  /*
-    ./gradlew -q tds:dependencyInsight --configuration runtime --dependency stax-api
-    stax:stax-api:1.0.1
-    +--- org.apache.xmlbeans:xmlbeans:2.6.0
-    |    ...
-    \--- org.codehaus.jettison:jettison:1.3.7
-         \--- net.openhft:chronicle-map:2.4.15
-              ...
-   */
+  // check with:
+  // ./gradlew -q tds:dependencyInsight --configuration runtimeClasspath --dependency stax-api
   exclude group: 'stax', module: 'stax-api'
+  // exclude the  log4j 1.2 binding for SLF4J - we use log4j 2.x
   exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-  exclude group: 'net.openhft', module: 'chronicle-analytics'
 }
 
 ////////////////////////////////////// Integration Tests //////////////////////////////////////
