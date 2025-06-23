@@ -1,1 +1,1 @@
-thredds.featurecollection.cache.GridInventoryCacheChronicle
+thredds.featurecollection.cache.GridInventoryDiskPersistedCache

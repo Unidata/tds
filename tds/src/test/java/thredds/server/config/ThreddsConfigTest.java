@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2025 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.config;
 
 import org.junit.Before;
@@ -39,8 +44,6 @@ public class ThreddsConfigTest {
     assertEquals(null, ThreddsConfig.get("WMS.allow", null));
     assertEquals(52428800, ThreddsConfig.getBytes("NetcdfSubsetService.maxFileDownloadSize", -1L));
     assertEquals(1024, ThreddsConfig.getInt("FeatureCollection.maxEntries", 1000));
-    assertEquals(2, ThreddsConfig.getInt("FeatureCollection.maxBloatFactor", 1));
-    assertEquals("medium", ThreddsConfig.get("FeatureCollection.averageValueSize", null));
   }
 
   // Tests the "cachePathPolicy" element, added in response to this message on the thredds mailing list:

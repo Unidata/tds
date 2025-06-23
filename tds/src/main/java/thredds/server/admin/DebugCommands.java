@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2025 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -8,7 +8,7 @@ package thredds.server.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import thredds.featurecollection.cache.GridInventoryCacheChronicle;
+import thredds.featurecollection.cache.GridInventoryDiskPersistedCache;
 import thredds.server.config.TdsContext;
 import thredds.server.wms.ThreddsWmsServlet;
 import thredds.servlet.ServletUtil;
@@ -148,7 +148,7 @@ public class DebugCommands {
         }
 
         f.format("%n%n");
-        GridInventoryCacheChronicle.showCache(f);
+        GridInventoryDiskPersistedCache.showCache(f);
 
         f.format("%n%n");
         ThreddsWmsServlet.showCache(f);
