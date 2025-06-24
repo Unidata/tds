@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.serverinfo;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +34,8 @@ import static org.springframework.test.web.ModelAndViewAssert.assertViewName;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"},
+    loader = MockTdsContextLoader.class)
 @Category(NeedsContentRoot.class)
 public class ServerInfoControllerTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

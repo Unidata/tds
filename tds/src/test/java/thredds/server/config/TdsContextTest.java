@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.config;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -17,7 +22,8 @@ import java.util.Map;
 import ucar.unidata.util.test.category.NeedsExternalResource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"},
+    loader = MockTdsContextLoader.class)
 @Category({NeedsContentRoot.class, NeedsExternalResource.class})
 public class TdsContextTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
