@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2025 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.config;
 
 import org.junit.Before;
@@ -16,7 +21,8 @@ import java.lang.invoke.MethodHandles;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"}, loader = MockTdsContextLoader.class)
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"},
+    loader = MockTdsContextLoader.class)
 @Category(NeedsContentRoot.class)
 public class ThreddsConfigTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -39,8 +45,6 @@ public class ThreddsConfigTest {
     assertEquals(null, ThreddsConfig.get("WMS.allow", null));
     assertEquals(52428800, ThreddsConfig.getBytes("NetcdfSubsetService.maxFileDownloadSize", -1L));
     assertEquals(1024, ThreddsConfig.getInt("FeatureCollection.maxEntries", 1000));
-    assertEquals(2, ThreddsConfig.getInt("FeatureCollection.maxBloatFactor", 1));
-    assertEquals("medium", ThreddsConfig.get("FeatureCollection.averageValueSize", null));
   }
 
   // Tests the "cachePathPolicy" element, added in response to this message on the thredds mailing list:

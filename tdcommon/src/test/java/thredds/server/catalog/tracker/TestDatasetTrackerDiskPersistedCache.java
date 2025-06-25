@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2025 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.catalog.tracker;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -16,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.client.catalog.Dataset;
 
-public class TestDatasetTrackerChronicle {
+public class TestDatasetTrackerDiskPersistedCache {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   @Rule
@@ -24,8 +29,8 @@ public class TestDatasetTrackerChronicle {
 
   @Test
   public void shouldNotTrackDatasetWithoutNcmlAndRestrictions() throws IOException {
-    try (DatasetTrackerChronicle datasetTracker =
-        new DatasetTrackerChronicle(tempFolder.getRoot().getAbsolutePath(), 1, 1)) {
+    try (DatasetTrackerDiskPersistedCache datasetTracker =
+        new DatasetTrackerDiskPersistedCache(tempFolder.getRoot().getAbsolutePath(), 1)) {
       assertThat(datasetTracker.getCount()).isEqualTo(0);
 
       final Dataset dataset = Dataset.makeStandalone("path", "featureType", "dataFormat", "serviceType");
@@ -36,8 +41,8 @@ public class TestDatasetTrackerChronicle {
 
   @Test
   public void shouldTrackDatasetWithShortNcml() throws IOException {
-    try (DatasetTrackerChronicle datasetTracker =
-        new DatasetTrackerChronicle(tempFolder.getRoot().getAbsolutePath(), 1, 1)) {
+    try (DatasetTrackerDiskPersistedCache datasetTracker =
+        new DatasetTrackerDiskPersistedCache(tempFolder.getRoot().getAbsolutePath(), 1)) {
       assertThat(datasetTracker.getCount()).isEqualTo(0);
 
       datasetTracker.trackDataset(1, mockDataset(100, "path"), null);
@@ -47,10 +52,9 @@ public class TestDatasetTrackerChronicle {
 
   @Test
   public void shouldTrackDatasetWithLongNcml() throws IOException {
-    try (DatasetTrackerChronicle datasetTracker =
-        new DatasetTrackerChronicle(tempFolder.getRoot().getAbsolutePath(), 1, 1, "Large")) {
+    try (DatasetTrackerDiskPersistedCache datasetTracker =
+        new DatasetTrackerDiskPersistedCache(tempFolder.getRoot().getAbsolutePath(), 1)) {
       assertThat(datasetTracker.getCount()).isEqualTo(0);
-
       datasetTracker.trackDataset(1, mockDataset(10_000, "path"), null);
       assertThat(datasetTracker.getCount()).isEqualTo(1);
     }
@@ -58,8 +62,8 @@ public class TestDatasetTrackerChronicle {
 
   @Test
   public void shouldTrackMultipleDatasetsWithNcml() throws IOException {
-    try (DatasetTrackerChronicle datasetTracker =
-        new DatasetTrackerChronicle(tempFolder.getRoot().getAbsolutePath(), 10, 1, "medium")) {
+    try (DatasetTrackerDiskPersistedCache datasetTracker =
+        new DatasetTrackerDiskPersistedCache(tempFolder.getRoot().getAbsolutePath(), 10)) {
       assertThat(datasetTracker.getCount()).isEqualTo(0);
 
       datasetTracker.trackDataset(1, mockDataset(100, "path1"), null);
@@ -71,8 +75,8 @@ public class TestDatasetTrackerChronicle {
 
   @Test
   public void shouldReturnNcml() throws IOException {
-    try (DatasetTrackerChronicle datasetTracker =
-        new DatasetTrackerChronicle(tempFolder.getRoot().getAbsolutePath(), 1, 1)) {
+    try (DatasetTrackerDiskPersistedCache datasetTracker =
+        new DatasetTrackerDiskPersistedCache(tempFolder.getRoot().getAbsolutePath(), 1)) {
       datasetTracker.trackDataset(1, mockDataset(100, "path"), null);
 
       final XMLOutputter xmlOut = new XMLOutputter(Format.getCompactFormat());

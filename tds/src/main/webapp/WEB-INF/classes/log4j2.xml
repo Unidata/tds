@@ -111,6 +111,10 @@
       <appender-ref ref="cacheLog"/>
     </logger>
 
+    <logger name="thredds.cache.DiskPersistedCache" level="debug" additivity="false">
+      <appender-ref ref="cacheLog"/>
+    </logger>
+
     <!-- fmrc -->
     <logger name="ucar.nc2.ft.fmrc" level="info" additivity="false">
       <appender-ref ref="fmrc"/>
@@ -124,7 +128,7 @@
       <appender-ref ref="fmrc"/>
     </logger>
 
-    <logger name="thredds.featurecollection.cache.GridInventoryCacheChronicle" level="info" additivity="false">
+    <logger name="thredds.featurecollection.cache.GridInventoryDiskPersistedCache" level="info" additivity="false">
       <appender-ref ref="fmrc"/>
     </logger>
 

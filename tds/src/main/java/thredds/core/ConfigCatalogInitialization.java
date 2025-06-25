@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2025 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package thredds.core;
 
 import com.coverity.security.Escape;
@@ -85,8 +86,7 @@ public class ConfigCatalogInitialization {
   private File contentRootPath; // ${tds.content.root.path}.
   private String contextPath; // thredds
   private String trackerDir; // the tracker "databases" are kept in this directory
-  private long maxDatasets; // chronicle limit
-  private String averageValueSize;
+  private long maxDatasets; // in-memory cache limit
 
   // on reread, construct new objects, so cant be spring beans
   private DataRootPathMatcher dataRootPathMatcher;
@@ -111,9 +111,6 @@ public class ConfigCatalogInitialization {
     this.maxDatasets = maxDatasets;
   }
 
-  public void setDatasetTrackerAverageValueSize(String averageValueSize) {
-    this.averageValueSize = averageValueSize;
-  }
 
   // called from TdsInit on spring-managed auto-wired bean
   public synchronized void init(ReadMode readMode, PreferencesExt prefs) {
@@ -146,7 +143,8 @@ public class ConfigCatalogInitialization {
     if (!isStartup && readMode == ReadMode.always)
       trackerNumber++; // must write a new database if TDS is already running and rereading all
     if (!isDebugMode || this.datasetTracker == null)
-      this.datasetTracker = new DatasetTrackerChronicle(trackerDir, maxDatasets, trackerNumber, averageValueSize);
+      this.datasetTracker =
+          new DatasetTrackerDiskPersistedCache(Paths.get(trackerDir).toString(), trackerNumber, maxDatasets);
 
     boolean databaseAlreadyExists = datasetTracker.exists(); // detect if tracker database exists
     if (!databaseAlreadyExists) {
@@ -226,7 +224,7 @@ public class ConfigCatalogInitialization {
 
     // cleanup old version of the database
     if (!isStartup && readMode == ReadMode.always) {
-      DatasetTrackerChronicle.cleanupBefore(trackerDir, trackerNumber);
+      DatasetTrackerDiskPersistedCache.cleanupBefore(trackerDir, trackerNumber);
     }
 
     long took = System.currentTimeMillis() - readNow;

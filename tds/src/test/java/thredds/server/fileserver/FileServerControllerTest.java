@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.fileserver;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -18,6 +23,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import thredds.mock.web.MockTdsContextLoader;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 import java.lang.invoke.MethodHandles;
 
@@ -27,7 +33,8 @@ import java.lang.invoke.MethodHandles;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml"})
+@ContextConfiguration(locations = {"/WEB-INF/applicationContext.xml", "/WEB-INF/spring-servlet.xml"},
+    loader = MockTdsContextLoader.class)
 @Category(NeedsCdmUnitTest.class)
 public class FileServerControllerTest {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

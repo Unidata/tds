@@ -28,23 +28,6 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
-      file name: tds-5.0.0-SNAPSHOT.war: chronicle-wire-2.17.5.jar
-      reason: not a chronicle-wire vulnerability (wire package for Android and iOS)
-      ]]></notes>
-    <packageUrl regex="true">^pkg:maven/net\.openhft/chronicle\-wire@.*$</packageUrl>
-    <cve>CVE-2018-8909</cve>
-    <cve>CVE-2020-15258</cve>
-    <cve>CVE-2020-27853</cve>
-    <cve>CVE-2021-21301</cve>
-    <cve>CVE-2021-32665</cve>
-    <cve>CVE-2021-32666</cve>
-    <cve>CVE-2021-32755</cve>
-    <cve>CVE-2021-41093</cve>
-    <cve>CVE-2022-23625</cve>
-    <cve>CVE-2022-31009</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
       file name: edal-coveragejson-1.4.2.1-SNAPSHOT.jar
       reason: not an edal-java vulnerability (CVE is for a node-based CLI tool)
       ]]></notes>

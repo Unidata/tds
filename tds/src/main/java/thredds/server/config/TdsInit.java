@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2025 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -20,8 +20,8 @@ import thredds.core.ConfigCatalogInitialization;
 import thredds.core.DatasetManager;
 import thredds.core.StandardService;
 import thredds.featurecollection.CollectionUpdater;
-import thredds.featurecollection.cache.GridInventoryCacheChronicle;
 import thredds.featurecollection.InvDatasetFeatureCollection;
+import thredds.featurecollection.cache.GridInventoryDiskPersistedCache;
 import thredds.server.catalog.ConfigCatalogCache;
 import thredds.server.catalog.DatasetScan;
 import thredds.server.ncss.controller.NcssDiskCache;
@@ -380,12 +380,10 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
       fcCache = ThreddsConfig.get("FeatureCollection.cacheDirectory",
           tdsContext.getThreddsDirectory().getPath() + "/cache/collection/"); // cacheDirectory is old way
     int maxEntries = ThreddsConfig.getInt("FeatureCollection.maxEntries", 1000);
-    int maxBloatFactor = ThreddsConfig.getInt("FeatureCollection.maxBloatFactor", 1);
-    String averageValueSize = ThreddsConfig.get("FeatureCollection.averageValueSize", null);
 
     Path fcCacheDir = Paths.get(fcCache);
     try {
-      GridInventoryCacheChronicle.init(fcCacheDir, maxEntries, maxBloatFactor, averageValueSize);
+      GridInventoryDiskPersistedCache.init(fcCacheDir.resolve("store"), maxEntries);
       startupLog.info("TdsInit: GridDatasetInv cache= {}", fcCache);
     } catch (Exception e) {
       startupLog.error("TdsInit: Failed initialize GridDatasetInv cache= {}", fcCache, e);
@@ -437,7 +435,6 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     String trackerDir = ThreddsConfig.get("ConfigCatalog.dir",
         new File(tdsContext.getThreddsDirectory().getPath(), "/cache/catalog/").getPath());
     int trackerMax = ThreddsConfig.getInt("ConfigCatalog.maxDatasets", 10 * 1000);
-    String datasetTrackerAverageValueSize = ThreddsConfig.get("ConfigCatalog.averageValueSize", null);
     File trackerDirFile = new File(trackerDir);
     if (!trackerDirFile.exists()) {
       boolean ok = trackerDirFile.mkdirs();
@@ -445,7 +442,6 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     }
     configCatalogInitializer.setTrackerDir(trackerDir);
     configCatalogInitializer.setMaxDatasetToTrack(trackerMax);
-    configCatalogInitializer.setDatasetTrackerAverageValueSize(datasetTrackerAverageValueSize);
 
     // Jupyter notebook service cache
     if (allowedServices.isAllowed(StandardService.jupyterNotebook)) {
@@ -492,7 +488,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
       cdmDiskCacheTimer.cancel();
     FileCache.shutdown(); // this handles background threads for all instances of FileCache
     DiskCache2.exit(); // this handles background threads for all instances of DiskCache2
-    GridInventoryCacheChronicle.shutdown();
+    GridInventoryDiskPersistedCache.shutdown();
     executor.shutdownNow();
     /*
      * try {

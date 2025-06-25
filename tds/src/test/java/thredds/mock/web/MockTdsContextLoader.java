@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.mock.web;
 
 import org.springframework.context.ApplicationContext;
@@ -19,6 +24,7 @@ import thredds.server.config.TdsContext;
  */
 public class MockTdsContextLoader extends AbstractContextLoader {
 
+  private static ApplicationContext myContext;
   private TdsContentRootPath tdsContentRootPath;
 
   public ApplicationContext loadContext(MergedContextConfiguration mcc) throws Exception {
@@ -27,21 +33,23 @@ public class MockTdsContextLoader extends AbstractContextLoader {
 
   @Override
   public ApplicationContext loadContext(String... locations) throws Exception {
-    final MockServletContext servletContext = new MockTdsServletContext();
-    final MockServletConfig servletConfig = new MockServletConfig(servletContext);
-    final XmlWebApplicationContext webApplicationContext = new XmlWebApplicationContext();
+    if (myContext == null) {
+      final MockServletContext servletContext = new MockTdsServletContext();
+      final MockServletConfig servletConfig = new MockServletConfig(servletContext);
+      final XmlWebApplicationContext webApplicationContext = new XmlWebApplicationContext();
 
-    servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
-    webApplicationContext.setServletConfig(servletConfig);
-    webApplicationContext.setConfigLocations(locations);
-    webApplicationContext.refresh();
+      servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+      webApplicationContext.setServletConfig(servletConfig);
+      webApplicationContext.setConfigLocations(locations);
+      webApplicationContext.refresh();
 
-    TdsContext tdsContext = webApplicationContext.getBean(TdsContext.class);
-    checkContentRootPath(webApplicationContext, tdsContext);
+      TdsContext tdsContext = webApplicationContext.getBean(TdsContext.class);
+      checkContentRootPath(webApplicationContext, tdsContext);
 
-    webApplicationContext.registerShutdownHook();
-
-    return webApplicationContext;
+      webApplicationContext.registerShutdownHook();
+      myContext = webApplicationContext;
+    }
+    return myContext;
   }
 
   @Override

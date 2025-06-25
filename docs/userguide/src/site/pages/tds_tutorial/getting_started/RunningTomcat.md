@@ -129,12 +129,11 @@ Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.
    NORMAL="-d64 -Xmx4096m -Xms512m -server"
    HEAP_DUMP="-XX:+HeapDumpOnOutOfMemoryError"
    HEADLESS="-Djava.awt.headless=true"
-   CHRONICLE_CACHE="--add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-exports java.base/sun.nio.ch=ALL-UNNAMED --add-exports jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED --add-opens jdk.compiler/com.sun.tools.javac=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED"
 
    #
    # Standard setup.
    #
-   JAVA_OPTS="$CONTENT_ROOT_OPT $NORMAL $HEAP_DUMP $HEADLESS $JAVA_PREFS_ROOTS $CHRONICLE_CACHE"
+   JAVA_OPTS="$CONTENT_ROOT_OPT $NORMAL $HEAP_DUMP $HEADLESS $JAVA_PREFS_ROOTS"
 
    export JAVA_OPTS
    ~~~
@@ -155,7 +154,6 @@ Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.
     * `-Djava.awt.headless=true` is needed to prevent graphics rendering code from assuming a graphics console exists.
     Without this, WMS code will crash the server in some circumstances.
     * `-Djava.util.prefs.systemRoot=$CONTENT_ROOT/thredds/javaUtilPrefs -Djava.util.prefs.userRoot=$CONTENT_ROOT/thredds/javaUtilPrefs` allows the java.util.prefs of the TDS WMS to write system preferences to a location that is writable by the Tomcat user.
-    * The parameters in `$CHRONICLE_CACHE` are required by the [chronicle libraries](https://chronicle.software/chronicle-support-java-17/) to run with JDK 17
 
     {%include note.html content="
     For more information about the possible options/arguments available for `$JAVA_OPTS`, please consult the [Oracle Documentation](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABDJJFI){:target='_blank'}.
