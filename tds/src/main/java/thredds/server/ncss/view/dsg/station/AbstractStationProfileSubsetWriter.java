@@ -32,8 +32,8 @@ public abstract class AbstractStationProfileSubsetWriter extends DsgSubsetWriter
     List<DsgFeatureCollection> featColList = fdPoint.getPointFeatureCollectionList();
     assert featColList.size() > collectionIndex : "Could not find feature collection.";
 
-    assert featColList.get(
-        collectionIndex) instanceof StationProfileFeatureCollection : "This class only deals with StationProfileFeatureCollections.";
+    assert featColList.get(collectionIndex) instanceof StationProfileFeatureCollection
+        : "This class only deals with StationProfileFeatureCollections.";
 
     this.stationFeatureCollection = (StationProfileFeatureCollection) featColList.get(collectionIndex);
     this.wantedStations = StationWriterUtils.getStationsInSubset(stationFeatureCollection, ncssParams);
@@ -64,8 +64,8 @@ public abstract class AbstractStationProfileSubsetWriter extends DsgSubsetWriter
     int count = 0;
 
     for (StationFeature profileFeat : subsettedStationFeatCol.getStationFeatures()) {
-      assert profileFeat instanceof StationProfileFeature : "Expected StationProfileFeature, not "
-          + profileFeat.getClass().toString();
+      assert profileFeat instanceof StationProfileFeature
+          : "Expected StationProfileFeature, not " + profileFeat.getClass().toString();
       // Perform temporal subset. We do this even when a time instant is specified, in which case wantedRange
       // represents a sanity check (i.e. "give me the feature closest to the specified time, but it must at least be
       // within an hour").

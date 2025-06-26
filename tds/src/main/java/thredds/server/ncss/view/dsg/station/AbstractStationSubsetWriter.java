@@ -39,8 +39,8 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
 
     List<DsgFeatureCollection> featColList = fdPoint.getPointFeatureCollectionList();
     assert featColList.size() > collectionIndex : "Could not find feature collection.";
-    assert featColList.get(
-        collectionIndex) instanceof StationTimeSeriesFeatureCollection : "This class only deals with StationTimeSeriesFeatureCollections.";
+    assert featColList.get(collectionIndex) instanceof StationTimeSeriesFeatureCollection
+        : "This class only deals with StationTimeSeriesFeatureCollections.";
 
     this.stationFeatureCollection = (StationTimeSeriesFeatureCollection) featColList.get(collectionIndex);
     this.wantedStations = StationWriterUtils.getStationsInSubset(stationFeatureCollection, ncssParams);
@@ -90,8 +90,8 @@ public abstract class AbstractStationSubsetWriter extends DsgSubsetWriter {
   protected int writeStationTimeSeriesFeature(StationTimeSeriesFeature stationFeat) throws Exception {
     int count = 0;
     for (PointFeature pointFeat : stationFeat) {
-      assert pointFeat instanceof StationPointFeature : "Expected pointFeat to be a StationPointFeature, not a "
-          + pointFeat.getClass().getSimpleName();
+      assert pointFeat instanceof StationPointFeature
+          : "Expected pointFeat to be a StationPointFeature, not a " + pointFeat.getClass().getSimpleName();
 
       if (!headerDone) {
         writeHeader((StationPointFeature) pointFeat);

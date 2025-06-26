@@ -40,8 +40,8 @@ public class StationSubsetWriterNetcdf extends AbstractStationSubsetWriter {
       OutputStream out, NetcdfFileWriter.Version version) throws NcssException, IOException {
     super(fdPoint, ncssParams);
 
-    assert fdPoint.getPointFeatureCollectionList()
-        .size() == 1 : "Multiple feature collections cannot be written as a CF dataset";
+    assert fdPoint.getPointFeatureCollectionList().size() == 1
+        : "Multiple feature collections cannot be written as a CF dataset";
 
     this.ncssDiskCache = ncssDiskCache;
     this.out = out;
