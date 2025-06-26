@@ -36,6 +36,9 @@ dependencies {
   implementation 'edu.ucar:dap4'
   implementation project(':dap4:d4servlet')
 
+  // threddsIso
+  implementation 'EDS:nciso-common:2.4.7'
+
   // Server stuff
   providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"
   runtimeOnly "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
