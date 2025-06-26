@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gmi:MI_Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:gco="http://www.isotc211.org/2005/gco"
+  xmlns:gmd="http://www.isotc211.org/2005/gmd"
+  xmlns:gmi="http://www.isotc211.org/2005/gmi"
+  xmlns:srv="http://www.isotc211.org/2005/srv"
+  xmlns:gmx="http://www.isotc211.org/2005/gmx"
+  xmlns:gsr="http://www.isotc211.org/2005/gsr"
+  xmlns:gss="http://www.isotc211.org/2005/gss"
+  xmlns:gts="http://www.isotc211.org/2005/gts"
+  xmlns:gml="http://www.opengis.net/gml/3.2"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xsi:schemaLocation="http://www.isotc211.org/2005/gmi http://www.ngdc.noaa.gov/metadata/published/xsd/schema.xsd">
+  <gmd:fileIdentifier gco:nilReason="missing"/>
+  <gmd:language>
+    <gmd:LanguageCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#LanguageCode"
+      codeListValue="eng">eng</gmd:LanguageCode>
+  </gmd:language>
+  <gmd:characterSet>
+    <gmd:MD_CharacterSetCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode"
+      codeListValue="UTF8">UTF8</gmd:MD_CharacterSetCode>
+  </gmd:characterSet>
+  <gmd:hierarchyLevel>
+    <gmd:MD_ScopeCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#MD_ScopeCode"
+      codeListValue="dataset">dataset</gmd:MD_ScopeCode>
+  </gmd:hierarchyLevel>
+  <gmd:contact gco:nilReason="missing"/>
+  <gmd:dateStamp>
+    <gco:Date>2023-09-20</gco:Date>
+  </gmd:dateStamp>
+  <gmd:metadataStandardName>
+    <gco:CharacterString>ISO 19115-2 Geographic Information - Metadata Part 2 Extensions for imagery and gridded data</gco:CharacterString>
+  </gmd:metadataStandardName>
+  <gmd:metadataStandardVersion>
+    <gco:CharacterString>ISO 19115-2:2009(E)</gco:CharacterString>
+  </gmd:metadataStandardVersion>
+  <gmd:spatialRepresentationInfo gco:nilReason="missing"/>
+  <gmd:identificationInfo>
+    <gmd:MD_DataIdentification id="DataIdentification">
+      <gmd:citation>
+        <gmd:CI_Citation>
+          <gmd:title gco:nilReason="missing"/>
+          <gmd:date gco:nilReason="missing"/>
+          <gmd:identifier gco:nilReason="missing"/>
+        </gmd:CI_Citation>
+      </gmd:citation>
+      <gmd:abstract gco:nilReason="missing"/>
+      <gmd:pointOfContact gco:nilReason="missing"/>
+      <gmd:language>
+        <gco:CharacterString>eng</gco:CharacterString>
+      </gmd:language>
+      <gmd:topicCategory>
+        <gmd:MD_TopicCategoryCode>climatologyMeteorologyAtmosphere</gmd:MD_TopicCategoryCode>
+      </gmd:topicCategory>
+      <gmd:extent>
+        <gmd:EX_Extent id="boundingExtent">
+          <gmd:geographicElement>
+            <gmd:EX_GeographicBoundingBox id="boundingGeographicBoundingBox">
+              <gmd:extentTypeCode>
+                <gco:Boolean>1</gco:Boolean>
+              </gmd:extentTypeCode>
+              <gmd:westBoundLongitude>
+                <gco:Decimal>-15.0</gco:Decimal>
+              </gmd:westBoundLongitude>
+              <gmd:eastBoundLongitude>
+                <gco:Decimal>-1.0</gco:Decimal>
+              </gmd:eastBoundLongitude>
+              <gmd:southBoundLatitude>
+                <gco:Decimal>17.0</gco:Decimal>
+              </gmd:southBoundLatitude>
+              <gmd:northBoundLatitude>
+                <gco:Decimal>23.0</gco:Decimal>
+              </gmd:northBoundLatitude>
+            </gmd:EX_GeographicBoundingBox>
+          </gmd:geographicElement>
+        </gmd:EX_Extent>
+      </gmd:extent>
+    </gmd:MD_DataIdentification>
+  </gmd:identificationInfo>
+  <gmd:contentInfo>
+    <gmi:MI_CoverageDescription>
+      <gmd:attributeDescription gco:nilReason="unknown"/>
+      <gmd:contentType gco:nilReason="unknown"/>
+      <gmd:dimension>
+        <gmd:MD_Band>
+          <gmd:sequenceIdentifier>
+            <gco:MemberName>
+              <gco:aName>
+                <gco:CharacterString>var</gco:CharacterString>
+              </gco:aName>
+              <gco:attributeType>
+                <gco:TypeName>
+                  <gco:aName>
+                    <gco:CharacterString>double</gco:CharacterString>
+                  </gco:aName>
+                </gco:TypeName>
+              </gco:attributeType>
+            </gco:MemberName>
+          </gmd:sequenceIdentifier>
+          <gmd:descriptor gco:nilReason="missing"/>
+        </gmd:MD_Band>
+      </gmd:dimension>
+      <gmd:dimension>
+        <gmd:MD_Band>
+          <gmd:sequenceIdentifier>
+            <gco:MemberName>
+              <gco:aName>
+                <gco:CharacterString>lat</gco:CharacterString>
+              </gco:aName>
+              <gco:attributeType>
+                <gco:TypeName>
+                  <gco:aName>
+                    <gco:CharacterString>float</gco:CharacterString>
+                  </gco:aName>
+                </gco:TypeName>
+              </gco:attributeType>
+            </gco:MemberName>
+          </gmd:sequenceIdentifier>
+          <gmd:descriptor gco:nilReason="missing"/>
+        </gmd:MD_Band>
+      </gmd:dimension>
+      <gmd:dimension>
+        <gmd:MD_Band>
+          <gmd:sequenceIdentifier>
+            <gco:MemberName>
+              <gco:aName>
+                <gco:CharacterString>lon</gco:CharacterString>
+              </gco:aName>
+              <gco:attributeType>
+                <gco:TypeName>
+                  <gco:aName>
+                    <gco:CharacterString>float</gco:CharacterString>
+                  </gco:aName>
+                </gco:TypeName>
+              </gco:attributeType>
+            </gco:MemberName>
+          </gmd:sequenceIdentifier>
+          <gmd:descriptor gco:nilReason="missing"/>
+        </gmd:MD_Band>
+      </gmd:dimension>
+    </gmi:MI_CoverageDescription>
+  </gmd:contentInfo>
+  <gmd:metadataMaintenance>
+    <gmd:MD_MaintenanceInformation>
+      <gmd:maintenanceAndUpdateFrequency gco:nilReason="unknown"/>
+      <gmd:maintenanceNote>
+        <gco:CharacterString>This record was translated from NcML using UnidataDD2MI.xsl Version 2.3.4. (2023-09-20T09:43:59.594-06:00)</gco:CharacterString>
+      </gmd:maintenanceNote>
+    </gmd:MD_MaintenanceInformation>
+  </gmd:metadataMaintenance>
+</gmi:MI_Metadata>

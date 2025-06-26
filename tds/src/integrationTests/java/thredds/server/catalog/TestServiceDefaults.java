@@ -41,7 +41,7 @@ public class TestServiceDefaults {
     Service s = ds.getServiceDefault();
     Assert.assertNotNull(s);
     Assert.assertTrue(s.getType() == ServiceType.Compound);
-    Assert.assertEquals(7, s.getNestedServices().size());
+    Assert.assertEquals(10, s.getNestedServices().size());
   }
 
   @Test
@@ -53,7 +53,7 @@ public class TestServiceDefaults {
 
     Service service = ds.getServiceDefault();
     assertThat(service.getType()).isEqualTo(ServiceType.Compound);
-    assertThat(service.getNestedServices().size()).isEqualTo(7);
+    assertThat(service.getNestedServices().size()).isEqualTo(10);
   }
 
   // Relies on:
@@ -76,7 +76,7 @@ public class TestServiceDefaults {
     Assert.assertNotNull(s);
 
     Assert.assertTrue(s.getType() == ServiceType.Compound);
-    Assert.assertEquals(7, s.getNestedServices().size());
+    Assert.assertEquals(10, s.getNestedServices().size());
   }
 
   @Test
@@ -86,7 +86,7 @@ public class TestServiceDefaults {
     Assert.assertEquals(3, cat.getServices().size());
 
     check(cat, "all", 11);
-    check(cat, "GridServices", 7);
+    check(cat, "GridServices", 10);
     check(cat, "opendapOnly", 1);
 
     Service localServices = cat.findService("opendapOnly");

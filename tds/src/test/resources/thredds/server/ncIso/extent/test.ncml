@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+  <dimension name="time" length="2" isUnlimited="true" />
+  <dimension name="lat" length="3" />
+  <dimension name="lon" length="3" />
+  <dimension name="depth" length="2" />
+
+  <variable name="lat" shape="lat" type="float">
+    <attribute name="units" type="String" value="degrees_north" />
+    <values>41.0 40.0 39.0</values>
+  </variable>
+
+  <variable name="lon" shape="lon" type="float">
+    <attribute name="units" type="String" value="degrees_east" />
+    <values>-109.0 -107.0 -105.0</values>
+  </variable>
+
+  <variable name="time" shape="time" type="int">
+    <attribute name="units" type="String" value="hours since 2015-01-01T00:00:00Z" />
+    <values>6 18</values>
+  </variable>
+
+  <variable name="depth" shape="depth" type="float">
+    <attribute name="units" type="String" value="meters" />
+    <attribute name="positive" type="String" value="up" />
+    <values>0.0 -10.0</values>
+  </variable>
+
+  <variable name="temp" shape="time lat lon depth" type="double">
+    <attribute name="long_name" type="String" value="air temperature" />
+    <attribute name="standard_name" type="String" value="air_temperature" />
+    <attribute name="units" type="String" value="degrees_Celsius" />
+  </variable>
+</netcdf>
