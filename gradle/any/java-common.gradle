@@ -5,13 +5,13 @@ apply from: "$rootDir/gradle/any/archiving.gradle"
 apply plugin: 'maven-publish'
 
 def sourceJar = tasks.register('sourceJar', Jar) {
-  classifier 'sources'
+  setArchiveClassifier 'sources'
   from sourceSets.main.allJava
 }
 
 def javadocJar = tasks.register('javadocJar', Jar) {
   dependsOn javadoc
-  classifier 'javadoc'
+  setArchiveClassifier 'javadoc'
   from files(javadoc.destinationDir)
 }
 

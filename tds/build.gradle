@@ -136,7 +136,7 @@ task copyWebappFilesForTests(type: Copy) {
   // Tests expect for certain webapp files to be accessible from the classpath (e.g. WEB-INF/applicationContext.xml).
   from 'src/main/webapp'
   from 'src/main/webapp/WEB-INF/classes'
-  into sourceSets.test.java.outputDir
+  into sourceSets.test.java.destinationDirectory
 }
 
 processTestResources {

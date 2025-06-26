@@ -2,7 +2,7 @@ if (!name.equals(rootProject.name)) {
   throw new GradleException("This script plugin should only be applied to the root project, not '$name'.")
 }
 
-apply plugin: 'com.diffplug.gradle.spotless'
+apply plugin: 'com.diffplug.spotless'
 
 spotless {
   format 'misc', {
