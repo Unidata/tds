@@ -17,14 +17,14 @@ The ncISO plugin provides three new services for datasets:
 
 ## Enabling ncISO Services
 
-The ncISO services are disabled by default.
-Provided that you have added the [ncISO plugin](adding_ogc_iso_services.html#nciso-configuration), these services can be enabled for locally served datasets by including the following in the `threddsConfig.xml` file:
+The `ncISO` services are enabled by default.
+These services can be disabled for locally served datasets by including the following in the `threddsConfig.xml` file:
 
 ~~~xml
 <NCISO>
-  <ncmlAllow>true</ncmlAllow>
-  <uddcAllow>true</uddcAllow>
-  <isoAllow>true</isoAllow>
+  <ncmlAllow>false</ncmlAllow>
+  <uddcAllow>false</uddcAllow>
+  <isoAllow>false</isoAllow>
 </NCISO>
 ~~~
 

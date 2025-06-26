@@ -95,11 +95,6 @@ As part of that update, the version of the h2 database, which holds coordinate r
 If you are upgrading from a previous version of TDS 5, you may encounter database incompatibility errors that will prevent startup of the TDS.
 You will need to manually remove the directory `${tds.content.root.path}/hredds/cache/edal-java/epsg/.h2` which contains the previous database files.
 
-### ncISO services
-To use the ncISO services, you must add the `tds-plugin-jar-with-dependencies.jar` artifact to your TDS for TDS versions >= 5.5.
-For TDS versions prior to 5.5 this artifact was included in the TDS war file.
-See [ncISO configuration](adding_ogc_iso_services.html#nciso-configuration) for more details.
-
 ## Java Web Start
 
 Java Web Start has been [deprecated as of Java 9](https://www.oracle.com/technetwork/java/javase/9-deprecated-features-3745636.html#JDK-8184998){:target="_blank"}, and has been removed in [Java 11](https://www.oracle.com/technetwork/java/javase/11-relnote-issues-5012449.html){:target="_blank"}, which is the Long-term Release post-Java 8.

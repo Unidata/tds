@@ -14,7 +14,7 @@ The TDS distribution includes the [ncISO](https://www.ngdc.noaa.gov/wiki/index.p
 * `ISO`: an ISO 19115 metadata representation of the dataset; and
 * `UDDC`: an evaluation of how well the metadata contained in the dataset conforms to the [NetCDF Attribute Convention for Data Discovery (NACDD)](https://www.unidata.ucar.edu/software/netcdf-java/v4.6/metadata/DataDiscoveryAttConvention.html){:target="_blank"} (see the [NOAA/EDM page on NACDD](http://wiki.esipfed.org/index.php/Category:Attribute_Conventions_Dataset_Discovery){:target="_blank"}). 
 
-## Enabling `ncISO` Services
+## Enabling ncISO Services
 
 The `ncISO` services are enabled by default. 
 These services can be disabled for locally served datasets by including the following in the `threddsConfig.xml` file:
