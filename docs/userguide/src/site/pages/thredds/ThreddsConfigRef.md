@@ -309,14 +309,13 @@ Here is the description of the various options:
 
 ### ncISO Services
 
-By default, these services are disabled.
-Provided that you have added the [ncISO plugin](adding_ogc_iso_services.html#nciso-configuration), these services can be enabled by including the following in the `threddsConfig.xml` file:
+By default, these services are enabled, and can be disabled by including the following in the `threddsConfig.xml` file:
 
 ~~~xml
 <NCISO>
-  <ncmlAllow>true</ncmlAllow>
-  <uddcAllow>true</uddcAllow>
-  <isoAllow>true</isoAllow>
+  <ncmlAllow>false</ncmlAllow>
+  <uddcAllow>false</uddcAllow>
+  <isoAllow>false</isoAllow>
 </NCISO>
 ~~~
 

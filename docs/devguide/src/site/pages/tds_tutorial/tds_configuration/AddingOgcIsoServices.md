@@ -9,7 +9,7 @@ permalink: adding_ogc_iso_services.html
 ## Configure TDS To Allow WCS, WMS, and `ncISO` Access
 
 Out of the box, the TDS distribution will have `WCS`, `WMS`, and `ncISO` enabled.
-If you do not wish to use these services, they must be explicitly allowed in the `threddsConfig.xml` file.
+If you do not wish to use these services, they must be explicitly disabled in the `threddsConfig.xml` file.
 Please see the  [threddsConfig.xml file](tds_config_ref.html#wcs-service) documentation for information on how to disable these services.
 The default `threddsConfig.xml` file (which should now be in your `${tds.content.root.path}/content/thredds` directory) contains commented out sections for each of these services.
 
