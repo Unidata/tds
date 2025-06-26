@@ -101,7 +101,6 @@ gradle.projectsEvaluated {
     description = 'Runs all subproject Test tasks'
     dependsOn subprojectTestTasks
     // If we run testAll, generate coverage report after all of the tests run
-    finalizedBy jacocoRootReport
   }
 
   task rootTestReport(type: TestReport, group: 'Reports') {
@@ -117,7 +116,7 @@ gradle.projectsEvaluated {
     //     ":grib:test" --finalizedBy--> ":rootTestReport" --dependsOn--> "all_subproject_Tests"
     // In other words, all subproject tests would get run, no matter what.
     // Passing File arguments to reportOn() instead doesn't create that dependency.
-    reportOn subprojectTestTasks*.binResultsDir
+    reportOn subprojectTestTasks*.binaryResultsDirectory
 
     // Wait until all Test tasks have run. This creates a task *ordering*, not a dependency.
     mustRunAfter subprojectTestTasks

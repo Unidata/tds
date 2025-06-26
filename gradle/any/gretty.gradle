@@ -16,7 +16,6 @@ buildscript {
 
 apply from: "$rootDir/gradle/any/properties.gradle"
 apply plugin: 'org.gretty'
-apply plugin: 'jacoco'
 
 // when applying the gretty buildScript to a project, make sure that project has access to the gretty tomcat runners
 repositories {
@@ -58,24 +57,5 @@ gretty {
     sslKeyStorePath = "$rootDir/gradle/gretty/tomcat/keystore"
     sslKeyStorePassword = 'secret666'
     realmConfigFile = "$rootDir/gradle/gretty/tomcat/tomcat-users.xml"
-
-    // Write separate Jacoco execution data for the client and server components of the integration test.
-    if (project.extensions.findByName('jacoco')) {  // Is the Jacoco plugin applied to the project?
-      tasks.matching {
-        GradleUtils.instanceOf(it, AppBeforeIntegrationTestTask.name)
-      }.each {
-        def integTestTaskName = it.integrationTestTask
-        Task integTestTask = tasks.findByName(integTestTaskName)
-
-        if (integTestTask) {  // Integration task exists.
-          // Report on the AppBeforeIntegrationTestTask and integTestTask.
-          tasks.jacocoTestReport.executionData it, integTestTask
-
-          // "jacoco" extension will be applied to these tasks if the Jacoco plugin is applied to the project.
-          it.jacoco.destinationFile = file("$buildDir/jacoco/${integTestTaskName}_server.exec")
-          integTestTask.jacoco.destinationFile = file("$buildDir/jacoco/${integTestTaskName}_client.exec")
-        }
-      }
-    }
   }
 }

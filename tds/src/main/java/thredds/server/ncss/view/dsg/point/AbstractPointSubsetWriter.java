@@ -27,8 +27,8 @@ public abstract class AbstractPointSubsetWriter extends DsgSubsetWriter {
 
     List<DsgFeatureCollection> featColList = fdPoint.getPointFeatureCollectionList();
     assert featColList.size() > collectionIndex : "Could not find feature collection.";
-    assert featColList
-        .get(collectionIndex) instanceof PointFeatureCollection : "This class only deals with PointFeatureCollections.";
+    assert featColList.get(collectionIndex) instanceof PointFeatureCollection
+        : "This class only deals with PointFeatureCollections.";
 
     this.pointFeatureCollection = (PointFeatureCollection) featColList.get(collectionIndex);
   }

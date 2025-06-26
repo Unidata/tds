@@ -39,8 +39,8 @@ public class PointSubsetWriterNetcdf extends AbstractPointSubsetWriter {
       OutputStream out, Version version) throws NcssException, IOException {
     super(fdPoint, ncssParams);
 
-    assert fdPoint.getPointFeatureCollectionList()
-        .size() == 1 : "Multiple feature collections cannot be written as a CF dataset";
+    assert fdPoint.getPointFeatureCollectionList().size() == 1
+        : "Multiple feature collections cannot be written as a CF dataset";
 
     this.ncssDiskCache = ncssDiskCache;
     this.out = out;

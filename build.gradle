@@ -87,7 +87,7 @@ tasks.named('wrapper') {
   // gradle-wrapper .jar, .properties, and wrapper scripts are
   // upgraded.
   distributionType = Wrapper.DistributionType.ALL
-  gradleVersion = '7.6.4'
+  gradleVersion = '8.14.2'
 }
 
 gradle.projectsEvaluated {
@@ -98,8 +98,6 @@ gradle.projectsEvaluated {
 
 // Set up properties needed for all testing, adds "testAll" task to root
 apply from: "$rootDir/gradle/root/testing.gradle"
-// Generates coverage report for testAll
-apply from: "$rootDir/gradle/root/coverage.gradle"
 // Manages credentials for publishing
 apply from: "$rootDir/gradle/root/publishing.gradle"
 // Adds "sonarqube" task to the root project

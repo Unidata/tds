@@ -11,7 +11,6 @@ Most of what we need in the `any/` directory can be found in these two script pl
   Uses the following plugins:
      * `java-internal.gradle`
      * `testing.gradle`
-     * `coverage.gradle`
   3. `java.gradle`: Not directly applied to any project, but inherited by `java-published.gradle` and `war.gradle`
   Uses the following plugins:
      * `java-test-only.gradle`
