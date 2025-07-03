@@ -79,7 +79,11 @@
       <appender-ref ref="serverStartup"/>
     </logger>
 
-    <logger name="thredds.core.ConfigCatalogInitialization" level="debug" additivity="false">
+    <logger name="ucar.nc2.ffi.netcdf.NetcdfClibrary" level="info" additivity="false">
+      <appender-ref ref="serverStartup"/>
+    </logger>
+
+    <logger name="thredds.core.ConfigCatalogInitialization" level="info" additivity="false">
       <appender-ref ref="catalogInit"/>
     </logger>
 
@@ -111,7 +115,7 @@
       <appender-ref ref="cacheLog"/>
     </logger>
 
-    <logger name="thredds.cache.DiskPersistedCache" level="debug" additivity="false">
+    <logger name="thredds.cache.DiskPersistedCache" level="info" additivity="false">
       <appender-ref ref="cacheLog"/>
     </logger>
 

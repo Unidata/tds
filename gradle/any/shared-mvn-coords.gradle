@@ -22,7 +22,7 @@ ext {
   depVersion.gwt = '2.8.2'
   // needs to match version used in threddsIso
   depVersion.jaxen = '1.1.6'
-  depVersion.netcdfJava = '5.8.0'
+  depVersion.netcdfJava = '5.9.0-SNAPSHOT'
   // gradle seems to have issues with the compileOnly configuration, so we need to provide the full maven
   // coordinates for jakarta.servlet-api if the gradle plugin in applied. If we don't, we see errors like this:
   depVersion.jakartaServletApi = '5.0.0'

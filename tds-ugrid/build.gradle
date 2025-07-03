@@ -14,6 +14,7 @@ dependencies {
   implementation 'edu.ucar:cdm-core'
   implementation 'edu.ucar:cdm-s3'
   implementation 'colt:colt:1.2.0'
+  implementation 'com.google.code.findbugs:jsr305'
   implementation 'com.google.guava:guava'
 
   // Testing
