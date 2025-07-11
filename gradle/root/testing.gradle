@@ -102,25 +102,6 @@ gradle.projectsEvaluated {
     dependsOn subprojectTestTasks
     // If we run testAll, generate coverage report after all of the tests run
   }
-
-  task rootTestReport(type: TestReport, group: 'Reports') {
-    description = 'Generates an aggregate test report'
-    destinationDir = file("$buildDir/reports/allTests")
-
-    // All Test tasks will be finalized by this task. As a result, this task needn't be invoked directly.
-    subprojectTestTasks*.finalizedBy it
-
-    // We could also do "reportOn subprojectTestTasks" here, but that would cause this task to be dependent on
-    // all subproject Tests. So, we couldn't do something like ":grib:test" and expect only GRIB tests to run
-    // because:
-    //     ":grib:test" --finalizedBy--> ":rootTestReport" --dependsOn--> "all_subproject_Tests"
-    // In other words, all subproject tests would get run, no matter what.
-    // Passing File arguments to reportOn() instead doesn't create that dependency.
-    reportOn subprojectTestTasks*.binaryResultsDirectory
-
-    // Wait until all Test tasks have run. This creates a task *ordering*, not a dependency.
-    mustRunAfter subprojectTestTasks
-  }
 }
 
 apply plugin: 'base'  // Gives us the "clean" task for removing rootTestReport's output.
