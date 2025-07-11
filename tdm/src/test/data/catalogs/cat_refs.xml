@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  name="THREDDS Top Catalog, points to other THREDDS catalogs"
+  version="1.0.1">
+
+  <dataset name="CatalogRefs">
+    <catalogRef xlink:title="Server 1 (don't scan)" name="" xlink:href="http://motherlode.ucar.edu:8080/thredds/catalog.xml" />
+    <catalogRef xlink:title="relative catalog" name="" xlink:href="subdir/gribbby-cat.xml" />
+  </dataset>
+</catalog>

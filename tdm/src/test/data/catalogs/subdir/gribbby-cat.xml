@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  name="Unidata THREDDS Data Server - NCEP models"
+  version="1.0.7">
+
+  <dataset name="GRIB stuff">
+    <dataset name="Look ma, I'm GRIB!">
+      <featureCollection name="Pick me, pick me" featureType="GRIB2" path="grib/barf">
+        <collection name="GRIB-barf"
+          spec="./.*grib2$"
+          timePartition="file"
+          dateFormatMark="#baaaaarf_#yyyyMMdd_HHmm"
+          olderThan="5 min"/>
+        <tdm rewrite="test" rescan="0 16/15 * * * ? *"/>
+        <gribConfig>
+          <filesSort increasing="false" />
+        </gribConfig>
+      </featureCollection>
+    </dataset>
+  </dataset>
+</catalog>

@@ -12,6 +12,7 @@ apply plugin: 'com.gradleup.shadow'
 
 dependencies {
   implementation enforcedPlatform(project(':tds-platform'))
+  testImplementation enforcedPlatform (project(':tds-testing-platform'))
 
   implementation project(':tdcommon')
   implementation 'edu.ucar:httpservices'
@@ -30,6 +31,15 @@ dependencies {
 
   implementation 'org.slf4j:slf4j-api'
   implementation 'org.apache.logging.log4j:log4j-slf4j2-impl'
+
+  testImplementation 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
+  testImplementation 'com.google.truth:truth'
+  testImplementation 'junit:junit'
+  testImplementation 'ch.qos.logback:logback-classic'
+}
+
+configurations.testRuntimeOnly {
+  exclude group: 'org.apache.logging.log4j'
 }
 
 shadowJar {

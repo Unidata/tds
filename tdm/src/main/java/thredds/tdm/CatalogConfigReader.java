@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013-2025 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.tdm;
 
 import org.jdom2.Element;
@@ -109,13 +114,16 @@ public class CatalogConfigReader {
       findNestedElems(root, "catalogRef", catrefElems);
       for (Element catrefElem : catrefElems) {
         String href = catrefElem.getAttributeValue("href", Catalog.xlinkNS);
-        File refCat = new File(catFile.getParent(), href);
-        Resource catRnested = new FileSystemResource(refCat);
-        if (!catRnested.exists()) {
-          log.error("Relative catalog {} does not exist", refCat);
-          continue;
+        // do not try to use remote catalogRefs
+        if (!(href.startsWith("https:") || href.startsWith("http:"))) {
+          File refCat = new File(catFile.getParent(), href);
+          Resource catRnested = new FileSystemResource(refCat);
+          if (!catRnested.exists()) {
+            log.error("Relative catalog {} does not exist", refCat);
+            continue;
+          }
+          readCatalog(catRnested);
         }
-        readCatalog(catRnested);
       }
     } catch (IllegalStateException e) {
       e.printStackTrace();
