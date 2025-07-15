@@ -97,7 +97,7 @@ dependencies {
     api "org.hibernate.validator:hibernate-validator:${depVersion.hibernateValidator}"
     api "org.hibernate.validator:hibernate-validator-annotation-processor:${depVersion.hibernateValidator}"
     api 'jakarta.el:jakarta.el-api'
-    api'org.apache.commons:commons-lang3:3.4'
+    api'org.apache.commons:commons-lang3:3.18.0'
     runtime 'org.glassfish:jakarta.el:4.0.2'
     runtime "jaxen:jaxen:${depVersion.jaxen}"
 
