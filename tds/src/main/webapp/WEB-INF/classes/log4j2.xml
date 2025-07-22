@@ -35,15 +35,7 @@
       <DefaultRolloverStrategy max="10"/>
     </RollingFile>
 
-    <!-- RollingFile name="fc" fileName="${tds.log.dir}/fc.$${map:collectionName}.log" filePattern="${tds.log.dir}/fc.$${map:collectionName}.%i.log">
-      <PatternLayout pattern="%d{yyyy-MM-dd'T'HH:mm:ss.SSS Z} %-5p - %m%n"/>
-      <Policies>
-        <SizeBasedTriggeringPolicy size="1 MB"/>
-      </Policies>
-      <DefaultRolloverStrategy max="10"/>
-    </RollingFile -->
-
-    <RollingFile name="threddsServlet" fileName="${tds.log.dir}/threddsServlet.log" filePattern="${tds.log.dir}/threddsServlet.%d{yyyy-MM-dd-HH}.log" immediateFlush="false">
+    <RollingFile name="threddsServlet" fileName="${tds.log.dir}/threddsServlet.log" filePattern="${tds.log.dir}/threddsServlet.%d{yyyy-MM-dd-HH}.log">
       <PatternLayout pattern="%d{yyyy-MM-dd'T'HH:mm:ss.SSS Z} [%10r][%8X{ID}] %-5p - %c - %m%n"/>
       <Policies>
         <TimeBasedTriggeringPolicy/>
