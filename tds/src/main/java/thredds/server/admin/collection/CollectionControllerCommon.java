@@ -1,41 +1,42 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 2025 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
-package thredds.server.admin;
+package thredds.server.admin.collection;
 
-import java.io.*;
-import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import com.coverity.security.Escape;
+import com.google.common.eventbus.EventBus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import com.coverity.security.Escape;
-import com.google.common.escape.Escaper;
-import com.google.common.eventbus.EventBus;
-import com.google.common.net.UrlEscapers;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.Formatter;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import org.quartz.JobKey;
+import org.quartz.SchedulerException;
 import org.quartz.TriggerKey;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.stereotype.Component;
 import thredds.core.DataRootManager;
 import thredds.core.DatasetManager;
 import thredds.featurecollection.CollectionUpdater;
-import thredds.featurecollection.InvDatasetFeatureCollection;
 import thredds.featurecollection.FeatureCollectionConfig;
 import thredds.featurecollection.FeatureCollectionType;
-import thredds.inventory.*;
+import thredds.featurecollection.InvDatasetFeatureCollection;
+import thredds.inventory.CollectionUpdateEvent;
+import thredds.inventory.CollectionUpdateType;
+import thredds.server.admin.DebugCommands;
 import thredds.server.catalog.FeatureCollectionRef;
 import thredds.server.config.TdsContext;
 import thredds.servlet.ServletUtil;
@@ -44,48 +45,44 @@ import ucar.nc2.grib.collection.GribCdmIndex;
 import ucar.nc2.util.IO;
 import ucar.unidata.util.StringUtil2;
 
-/**
- * Allow external triggers for rereading Feature collections
- *
- * @author caron
- * @since May 4, 2010
- */
-@Controller
-@RequestMapping(value = {"/admin/collection"})
-public class AdminCollectionController implements InitializingBean {
-  private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AdminCollectionController.class);
+@Component
+public class CollectionControllerCommon implements InitializingBean {
+
+  private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
 
   private static final String PATH = "/admin/collection";
   private static final String COLLECTION = "collection";
-  private static final String SHOW_COLLECTION = "showCollection";
-  private static final String SHOW = "showStatus";
-  private static final String SHOW_CSV = "showStatus.csv";
-  private static final String DOWNLOAD = "download";
-  private static final String DOWNLOAD_ALL = "downloadAll";
-  private static final String TRIGGER = "trigger";
+  static final String SHOW_COLLECTION = "showCollection";
+  static final String SHOW = "showStatus";
+  static final String SHOW_CSV = "showStatus.csv";
+  static final String DOWNLOAD = "download";
+  static final String DOWNLOAD_ALL = "downloadAll";
+  static final String TRIGGER = "trigger";
 
-  @Autowired
-  DebugCommands debugCommands;
+  final DebugCommands debugCommands;
 
-  @Autowired
-  DataRootManager dataRootManager;
+  final DataRootManager dataRootManager;
 
-  @Autowired
-  private TdsContext tdsContext;
+  private final TdsContext tdsContext;
 
-  @Autowired
-  private DatasetManager datasetManager;
+  private final DatasetManager datasetManager;
 
-  @Autowired
-  @Qualifier("fcTriggerEventBus")
-  private EventBus eventBus;
+  private final EventBus eventBus;
 
-  @Autowired
-  CollectionUpdater collectionUpdater;
+  final CollectionUpdater collectionUpdater;
+
+  public CollectionControllerCommon(DebugCommands debugCommands, DataRootManager dataRootManager, TdsContext tdsContext,
+      DatasetManager datasetManager, @Qualifier("fcTriggerEventBus") EventBus eventBus,
+      CollectionUpdater collectionUpdater) {
+    this.debugCommands = debugCommands;
+    this.dataRootManager = dataRootManager;
+    this.tdsContext = tdsContext;
+    this.datasetManager = datasetManager;
+    this.eventBus = eventBus;
+    this.collectionUpdater = collectionUpdater;
+  }
 
   public void afterPropertiesSet() {
-    Escaper urlParamEscaper = UrlEscapers.urlFormParameterEscaper();
-
     DebugCommands.Category debugHandler = debugCommands.findCategory("Collections");
     DebugCommands.Action act;
 
@@ -93,7 +90,7 @@ public class AdminCollectionController implements InitializingBean {
       public void doAction(DebugCommands.Event e) {
         // get sorted list of collections
         List<FeatureCollectionRef> fcList = dataRootManager.getFeatureCollections();
-        Collections.sort(fcList, (o1, o2) -> o1.getCollectionName().compareTo(o2.getCollectionName()));
+        fcList.sort(Comparator.comparing(FeatureCollectionRef::getCollectionName));
 
         for (FeatureCollectionRef fc : fcList) {
           String uriParam = Escape.uriParam(fc.getCollectionName());
@@ -125,37 +122,32 @@ public class AdminCollectionController implements InitializingBean {
         try {
           e.pw.println(scheduler.getMetaData());
 
-          List<String> groups = scheduler.getJobGroupNames();
-          List<String> triggers = scheduler.getTriggerGroupNames();
-
           // enumerate each job group
           for (String group : scheduler.getJobGroupNames()) {
             e.pw.println("Group " + group);
 
             // enumerate each job in group
-            for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.<JobKey>groupEquals(group))) {
+            for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.groupEquals(group))) {
               e.pw.println("  Job " + jobKey.getName());
               e.pw.println("    " + scheduler.getJobDetail(jobKey));
             }
 
             // enumerate each trigger in group
-            for (TriggerKey triggerKey : scheduler.getTriggerKeys(GroupMatcher.<TriggerKey>groupEquals(group))) {
+            for (TriggerKey triggerKey : scheduler.getTriggerKeys(GroupMatcher.groupEquals(group))) {
               e.pw.println("  Trigger " + triggerKey.getName());
               e.pw.println("    " + scheduler.getTrigger(triggerKey));
             }
           }
-        } catch (Exception e1) {
-          e.pw.println("Error on scheduler " + e1.getMessage());
-          log.error("Error on scheduler " + e1.getMessage());
+        } catch (SchedulerException se) {
+          e.pw.println("Error on scheduler " + se.getMessage());
+          log.error("Error on scheduler {}", se.getMessage());
         }
       }
     };
     debugHandler.addAction(act);
-
   }
 
-  @RequestMapping(value = "/" + SHOW_COLLECTION, method = RequestMethod.GET)
-  protected ResponseEntity<String> showCollection(@RequestParam String collection) throws Exception {
+  ResponseEntity<String> showCollection(String collection) {
     Formatter out = new Formatter();
 
     FeatureCollectionRef want = dataRootManager.findFeatureCollection(collection);
@@ -186,21 +178,23 @@ public class AdminCollectionController implements InitializingBean {
     return new ResponseEntity<>(out.toString(), responseHeaders, status);
   }
 
-  @RequestMapping(value = {"/" + SHOW})
-  protected ResponseEntity<String> showCollectionStatus() throws Exception {
+  ResponseEntity<String> showCollectionStatus() {
     Formatter out = new Formatter();
 
     // get sorted list of collections
     List<FeatureCollectionRef> fcList = dataRootManager.getFeatureCollections();
-    Collections.sort(fcList, (o1, o2) -> o1.getCollectionName().compareTo(o2.getCollectionName()));
+    fcList.sort(Comparator.comparing(FeatureCollectionRef::getCollectionName));
 
     for (FeatureCollectionRef fc : fcList) {
       String uriParam = Escape.uriParam(fc.getCollectionName());
       String url = tdsContext.getContextPath() + PATH + "/" + SHOW_COLLECTION + "?" + COLLECTION + "=" + uriParam;
       out.format("<p/><a href='%s'>%s</a> (%s)%n", url, fc.getCollectionName(), fc.getName());
-      InvDatasetFeatureCollection fcd = datasetManager.openFeatureCollection(fc);
-
-      out.format("<pre>%s</pre>%n", fcd.showStatusShort("txt"));
+      try {
+        InvDatasetFeatureCollection fcd = datasetManager.openFeatureCollection(fc);
+        out.format("<pre>%s</pre>%n", fcd.showStatusShort("txt"));
+      } catch (IOException e) {
+        out.format("<pre> %s</pre>%n", e.getMessage());
+      }
     }
 
     HttpHeaders responseHeaders = new HttpHeaders();
@@ -208,26 +202,25 @@ public class AdminCollectionController implements InitializingBean {
     return new ResponseEntity<>(out.toString(), responseHeaders, HttpStatus.OK);
   }
 
-  @RequestMapping(value = {"/" + SHOW_CSV})
-  protected ResponseEntity<String> showCollectionStatusCsv() throws Exception {
+  ResponseEntity<String> showCollectionStatusCsv() {
     Formatter out = new Formatter();
 
     // get sorted list of collections
     List<FeatureCollectionRef> fcList = dataRootManager.getFeatureCollections();
-    Collections.sort(fcList, (o1, o2) -> {
-      int compareType = o1.getConfig().type.toString().compareTo(o1.getConfig().type.toString());
-      if (compareType != 0)
-        return compareType;
-      return o1.getCollectionName().compareTo(o2.getCollectionName());
-    });
+    fcList.sort(Comparator.comparing((FeatureCollectionRef o) -> o.getConfig().type.toString())
+        .thenComparing(FeatureCollectionRef::getCollectionName));
 
     out.format("%s, %s, %s, %s, %s, %s, %s, %s, %s%n", "collection", "ed", "type", "group", "nrecords", "ndups", "%",
         "nmiss", "%");
     for (FeatureCollectionRef fc : fcList) {
       if (fc.getConfig().type != FeatureCollectionType.GRIB1 && fc.getConfig().type != FeatureCollectionType.GRIB2)
         continue;
-      InvDatasetFeatureCollection fcd = datasetManager.openFeatureCollection(fc);
-      out.format("%s", fcd.showStatusShort("csv"));
+      try {
+        InvDatasetFeatureCollection fcd = datasetManager.openFeatureCollection(fc);
+        out.format("%s", fcd.showStatusShort("csv"));
+      } catch (IOException ioe) {
+        out.format("<pre> %s</pre>%n", ioe.getMessage());
+      }
     }
 
     HttpHeaders responseHeaders = new HttpHeaders();
@@ -235,9 +228,7 @@ public class AdminCollectionController implements InitializingBean {
     return new ResponseEntity<>(out.toString(), responseHeaders, HttpStatus.OK);
   }
 
-  @RequestMapping(value = {"/trigger"}) // LOOK should require collection and trigger type params
-  protected ResponseEntity<String> triggerFeatureCollection(HttpServletRequest req, HttpServletResponse res)
-      throws Exception {
+  ResponseEntity<String> triggerFeatureCollection(HttpServletRequest req, HttpServletResponse res) {
     Formatter out = new Formatter();
 
     CollectionUpdateType triggerType = null;
@@ -280,9 +271,9 @@ public class AdminCollectionController implements InitializingBean {
     return new ResponseEntity<>(out.toString(), responseHeaders, HttpStatus.OK);
   }
 
-  @RequestMapping(value = {"/" + DOWNLOAD_ALL})
   protected void downloadAll(HttpServletRequest req, HttpServletResponse res) throws IOException {
     File tempFile = File.createTempFile("CollectionIndex", ".zip");
+    tempFile.deleteOnExit();
     try (FileOutputStream fos = new FileOutputStream(tempFile.getPath())) {
       ZipOutputStream zout = new ZipOutputStream(fos);
       for (FeatureCollectionRef fc : dataRootManager.getFeatureCollections()) {
@@ -295,15 +286,12 @@ public class AdminCollectionController implements InitializingBean {
         zout.closeEntry();
       }
       zout.close();
-      fos.close();
     }
 
     ServletUtil.returnFile(req, res, tempFile, ContentType.binary.toString());
-    // tempFile.delete();
   }
 
-  @RequestMapping(value = {"/" + DOWNLOAD})
-  protected ResponseEntity<String> downloadIndex(HttpServletRequest req, HttpServletResponse res) throws Exception {
+  protected ResponseEntity<String> downloadIndex(HttpServletRequest req, HttpServletResponse res) throws IOException {
     String collectName = StringUtil2.unescape(req.getParameter(COLLECTION)); // this is the collection name
     FeatureCollectionRef want = dataRootManager.findFeatureCollection(collectName);
 
@@ -324,17 +312,21 @@ public class AdminCollectionController implements InitializingBean {
     return null;
   }
 
-  private void showFeatureCollection(Formatter out, FeatureCollectionRef fc) throws IOException {
+  private void showFeatureCollection(Formatter out, FeatureCollectionRef fc) {
     FeatureCollectionConfig config = fc.getConfig(); // LOOK
     if (config != null) {
       Formatter f = new Formatter();
       config.show(f);
-      out.format("%n<pre>%s%n</pre>", f.toString());
+      out.format("%n<pre>%s%n</pre>", f);
     }
 
-    InvDatasetFeatureCollection fcd = datasetManager.openFeatureCollection(fc);
-    out.format("%n<pre>%n");
-    fcd.showStatus(out);
-    out.format("%n</pre>%n");
+    try {
+      InvDatasetFeatureCollection fcd = datasetManager.openFeatureCollection(fc);
+      out.format("%n<pre>%n");
+      fcd.showStatus(out);
+      out.format("%n</pre>%n");
+    } catch (IOException ioe) {
+      out.format("<pre> %s</pre>%n", ioe.getMessage());
+    }
   }
 }
