@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -10,10 +10,16 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.impl.client.BasicCredentialsProvider;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.UUID;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -22,6 +28,8 @@ import thredds.featurecollection.FeatureCollectionConfig;
 import thredds.featurecollection.FeatureCollectionType;
 import thredds.inventory.CollectionUpdateEvent;
 import thredds.inventory.CollectionUpdateType;
+import thredds.tdm.TriggerableServer.ServerBuilder;
+import thredds.util.LocalApiSigner;
 import thredds.util.ThreddsConfigReader;
 import ucar.httpservices.HTTPException;
 import ucar.httpservices.HTTPFactory;
@@ -40,7 +48,6 @@ import java.net.ConnectException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -54,11 +61,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 12/13/13
  */
 public class Tdm {
-  private static org.slf4j.Logger tdmLogger = org.slf4j.LoggerFactory.getLogger(Tdm.class);
-  private static org.slf4j.Logger detailLogger = org.slf4j.LoggerFactory.getLogger("tdmDetail");
+  private static final org.slf4j.Logger tdmLogger = org.slf4j.LoggerFactory.getLogger(Tdm.class);
+  private static final org.slf4j.Logger detailLogger = org.slf4j.LoggerFactory.getLogger("tdmDetail");
   private static final boolean debug = false;
   private static final boolean debugOpenFiles = false;
   private static final boolean debugTasks = true;
+  private static final String localApiKey = UUID.randomUUID().toString();
+  private static final LocalApiSigner localApiSigner = new LocalApiSigner(localApiKey);
 
   private EventBus eventBus;
 
@@ -72,36 +81,34 @@ public class Tdm {
   private String user, pass;
   private boolean sendTriggers;
   private String[] serverNames;
-  private List<Server> servers;
+  private List<TriggerableServer> servers;
 
   private java.util.concurrent.ExecutorService executor;
   private Resource catalog;
   private boolean showOnly = false; // if true, just show dirs and exit
-
   private boolean forceOnStartup = false; // if true, just show dirs and exit
 
   List<Resource> catalogRoots = new ArrayList<>();
 
-  private static class Server {
-    String name;
-    HTTPSession session;
-
-    private Server(String name, HTTPSession session) {
-      this.name = name;
-      this.session = session;
-      System.out.printf("Server added %s%n", name);
-      tdmLogger.info("TDS server added " + name);
-    }
-  }
-
   public void setContentDir(String contentDir) throws IOException {
-    System.out.printf("contentDir=%s%n", contentDir);
     this.contentDir = Paths.get(contentDir);
-    this.contentThreddsDir = Paths.get(contentDir, "thredds");
-    this.threddsConfig = Paths.get(contentDir, "thredds", "threddsConfig.xml");
-    this.contentTdmDir = Paths.get(contentDir, "tdm");
-    this.catalog = new FileSystemResource(contentThreddsDir.toString() + "/catalog.xml");
-    System.out.printf("catalog=%s%n", catalog.getFile().getPath());
+    System.out.printf("contentDir=%s%n", contentDir);
+    contentThreddsDir = this.contentDir.resolve("thredds");
+    threddsConfig = contentThreddsDir.resolve("threddsConfig.xml");
+    contentTdmDir = this.contentDir.resolve("tdm");
+    Path LocalApiKeyFile = contentTdmDir.resolve("localapi.key");
+
+    // remove previous ID file
+    if (Files.exists(LocalApiKeyFile)) {
+      LocalApiKeyFile.toFile().delete();
+    }
+
+    try {
+      Files.writeString(LocalApiKeyFile, localApiKey, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+    } catch (IOException e) {
+      System.err.printf("Error writing TDM localApi key file: %s.%n", e);
+      System.err.println("Any triggers to localhost will fail.");
+    }
   }
 
   public void setShowOnly(boolean showOnly) {
@@ -128,31 +135,33 @@ public class Tdm {
   }
 
 
-  public void setCatalog(String catName) {
+  public void setCatalog(String catName) throws IOException {
     this.catalog = new FileSystemResource(catName);
+    System.out.printf("catalog=%s%n", catalog.getFile().getPath());
   }
 
   public void setServerNames(String[] serverNames) {
     this.serverNames = serverNames;
   }
 
-  public void initServers() throws HTTPException {
+  public void initServers() {
     if (serverNames == null) {
       servers = new ArrayList<>(); // empty list
       return;
     }
 
-    this.servers = new ArrayList<>(this.serverNames.length);
-    for (String name : this.serverNames) {
-      HTTPSession session = HTTPFactory.newSession(name);
-      if (user != null && pass != null) {
-        Credentials bp = new UsernamePasswordCredentials(user, pass);
-        BasicCredentialsProvider bcp = new BasicCredentialsProvider();
-        bcp.setCredentials(AuthScope.ANY, bp);
-        session.setCredentialsProvider(bcp);
+    AtomicBoolean error = new AtomicBoolean(false);
+    this.servers = Arrays.stream(this.serverNames).map(name -> {
+      try {
+        return ServerBuilder.create(name).user(user).pass(pass).build();
+      } catch (HTTPException | IllegalArgumentException e) {
+        System.err.printf("Error creating server %s: %s %n", name, e.getMessage());
+        error.set(true);
+        return null;
       }
-      session.setUserAgent("TDM");
-      servers.add(new Server(name, session));
+    }).toList();
+    if (error.get()) {
+      System.exit(1);
     }
   }
 
@@ -216,7 +225,7 @@ public class Tdm {
 
       System.out.printf("%nTriggers:%n");
       for (String name : result)
-        System.out.printf(" %s%n", makeTriggerUrl(name));
+        System.out.printf(" trigger?%s%s%n", TriggerableServer.PARTIAL_TRIGGER_QUERY, name);
 
       executor.shutdown();
       collectionUpdater.shutdown();
@@ -231,23 +240,12 @@ public class Tdm {
       if (forceOnStartup) // on startup, force rewrite of indexes
         config.tdmConfig.startupType = CollectionUpdateType.always;
 
-      detailLogger.info("FeatureCollection config=" + config);
+      detailLogger.info("FeatureCollection config={}", config);
 
       // now wire for events
       fcMap.put(config.getCollectionName(), new Listener(config));
       collectionUpdater.scheduleTasks(config, null);
     }
-
-    /*
-     * show whats up
-     * Formatter f = new Formatter();
-     * f.format("Feature Collections found:%n");
-     * for (FeatureCollectionConfig fc : fcList) {
-     * CollectionManager dcm = fc.getDatasetCollectionManager();
-     * f.format("  %s == %s%n%s%n%n", fc, fc.getClass().getName(), dcm);
-     * }
-     * System.out.printf("%s%n", f.toString());
-     */
   }
 
   // called by eventBus
@@ -255,7 +253,7 @@ public class Tdm {
   public void processEvent(CollectionUpdateEvent event) {
     Listener fc = fcMap.get(event.getCollectionName());
     if (fc == null) {
-      tdmLogger.error("Unknown collection name from event bus " + event);
+      tdmLogger.error("Unknown collection name from event bus {}", event);
       return;
     }
     fc.processEvent(event.getType());
@@ -263,7 +261,7 @@ public class Tdm {
 
   Map<String, Listener> fcMap = new HashMap<>();
 
-  // these objects recieve events from quartz schedular via the EventBus
+  // these objects receive events from quartz schedular via the EventBus
   // one listener for each fc.
   private class Listener {
     FeatureCollectionConfig config;
@@ -282,10 +280,6 @@ public class Tdm {
       detailLogger.debug("Tdm event type '{}' scheduled for {}", event, config.getCollectionName());
       executor.execute(new IndexTask(config, this, event));
     }
-  }
-
-  private String makeTriggerUrl(String name) {
-    return "thredds/admin/collection/trigger?trigger=never&collection=" + name;
   }
 
   private AtomicInteger indexTaskCount = new AtomicInteger();
@@ -324,13 +318,10 @@ public class Tdm {
         }
 
         if (changed && config.tdmConfig.triggerOk && sendTriggers) { // send a trigger if enabled
-          String path = makeTriggerUrl(name);
-          sendTriggers(path);
+          sendTriggers(name);
         }
       } catch (Throwable e) {
-        tdmLogger.error("Tdm.IndexTask " + name, e);
-        e.printStackTrace();
-
+        tdmLogger.error("Tdm.IndexTask {}: {}", name, e);
       } finally {
         // tell liz that task is done
         if (!liz.inUse.getAndSet(false))
@@ -350,20 +341,25 @@ public class Tdm {
 
     }
 
-    private void sendTriggers(String path) {
-      for (Server server : servers) {
-        String url = server.name + path;
-        try (HTTPMethod m = HTTPFactory.Get(server.session, url)) {
-          detailLogger.debug("send trigger to {}", url);
+    private void sendTriggers(String collectionName) {
+      for (TriggerableServer server : servers) {
+        String triggerEndpoint = server.getCollectionTrigger(collectionName);
+
+        try (HTTPMethod m = HTTPFactory.Get(server.session, triggerEndpoint)) {
+          detailLogger.debug("send trigger to {}", triggerEndpoint);
+          if (server.local) {
+            m.setRequestHeader(LocalApiSigner.LOCAL_API_SIGNATURE_HEADER_V1,
+                localApiSigner.generateSignatureGet(triggerEndpoint));
+          }
           int status = m.execute();
 
           if (status != 200) {
-            tdmLogger.warn("FAIL send trigger to {} status = {}", url, status);
-            detailLogger.warn("FAIL send trigger to {} status = {}", url, status);
+            tdmLogger.warn("FAIL send trigger to {} status = {}", triggerEndpoint, status);
+            detailLogger.warn("FAIL send trigger to {} status = {}", triggerEndpoint, status);
           } else {
             int taskNo = indexTaskCount.get();
-            tdmLogger.info("{} trigger sent {} status = {}", taskNo, url, status);
-            detailLogger.debug("return from {} status = {}", url, status);
+            tdmLogger.info("{} trigger sent {} status = {}", taskNo, triggerEndpoint, status);
+            detailLogger.debug("return from {} status = {}", triggerEndpoint, status);
           }
 
         } catch (HTTPException e) {
@@ -371,47 +367,12 @@ public class Tdm {
           if (cause instanceof ConnectException) {
             detailLogger.warn("server {} not running", server.name);
           } else {
-            tdmLogger.error("FAIL send trigger to " + url + " failed", cause);
-            detailLogger.error("FAIL send trigger to " + url + " failed", cause);
+            tdmLogger.error("FAIL send trigger to {} failed: {}", triggerEndpoint, cause);
+            detailLogger.error("FAIL send trigger to {} failed: {}", triggerEndpoint, cause);
           }
         }
       }
     }
-
-    /*
-     * private void doManage(String deleteAfterS) throws IOException {
-     * TimeDuration deleteAfter = null;
-     * if (deleteAfterS != null) {
-     * try {
-     * deleteAfter = new TimeDuration(deleteAfterS);
-     * } catch (Exception e) {
-     * logger.error(dcm.getCollectionName() + ": Invalid time unit for deleteAfter = {}", deleteAfter);
-     * return;
-     * }
-     * }
-     * 
-     * // awkward
-     * double val = deleteAfter.getValue();
-     * CalendarPeriod.Field unit = CalendarPeriod.fromUnitString(deleteAfter.getTimeUnit().getUnitString());
-     * CalendarPeriod period = CalendarPeriod.of(1, unit);
-     * CalendarDate now = CalendarDate.of(new Date());
-     * CalendarDate last = now.add(-val, unit);
-     * 
-     * try (CloseableIterator<MFile> iter = dcm.getFileIterator()) {
-     * while (iter.hasNext()) {
-     * MFile mfile = iter.next();
-     * CalendarDate cd = dcm.extractDate(mfile);
-     * int n = period.subtract(cd, now);
-     * if (cd.isBefore(last)) {
-     * logger.info("delete={} age = {}", mfile.getPath(), n + " " + unit);
-     * } else {
-     * logger.debug("dont delete={} age = {}", mfile.getPath(), n + " " + unit);
-     * }
-     * }
-     * }
-     * }
-     */
-
   }
 
 
@@ -468,7 +429,7 @@ public class Tdm {
 
   }
 
-  public static void main(String args[]) throws IOException, InterruptedException {
+  public static void main(String[] args) throws IOException, InterruptedException {
     try (FileSystemXmlApplicationContext springContext =
         new FileSystemXmlApplicationContext("classpath:resources/application-config.xml")) {
       Tdm app = (Tdm) springContext.getBean("TDM");
@@ -492,7 +453,7 @@ public class Tdm {
       // GribCollection.getDiskCache2().setNeverUseCache(true);
 
       String progName = Tdm.class.getName();
-
+      boolean needPassword = false;
       try {
         CommandLine cmdLine = new CommandLine(progName, args);
         if (cmdLine.help) {
@@ -502,6 +463,9 @@ public class Tdm {
 
         if (cmdLine.catalog != null) {
           app.setCatalog(cmdLine.catalog);
+        } else {
+
+          app.setCatalog(app.contentThreddsDir.resolve("catalog.xml").toString());
         }
 
         if (cmdLine.cred != null) { // LOOK could be http://user:password@server
@@ -528,6 +492,8 @@ public class Tdm {
           } else {
             String[] tdss = cmdLine.tds.split(","); // comma separated
             app.setServerNames(tdss);
+            // do we need to ask for a password because a non-local TDS is in the list of TDSs to trigger?
+            needPassword = Arrays.stream(tdss).anyMatch(server -> !server.contains("://localhost"));
             app.sendTriggers = true;
           }
         }
@@ -537,7 +503,7 @@ public class Tdm {
         System.err.printf("Try \"%s --help\" for more information.%n", progName);
       }
 
-      if (!app.showOnly && app.pass == null && app.sendTriggers) {
+      if (!app.showOnly && app.pass == null && app.sendTriggers && needPassword) {
         Scanner scanner = new Scanner(System.in, CDM.UTF8);
         String passw;
         while (true) {
@@ -560,6 +526,7 @@ public class Tdm {
         app.start();
       } else {
         System.out.printf("%nEXIT DUE TO ERRORS");
+        System.exit(1);
       }
     }
   }

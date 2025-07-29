@@ -1,6 +1,6 @@
 ---
 title: Running Tomcat
-last_updated: 2020-08-24
+last_updated: 2025-07-29
 sidebar: user_sidebar
 toc: false
 permalink: running_tomcat.html
@@ -98,7 +98,7 @@ Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.
    ~~~
    
    Add the following information to you `setenv.sh` file and save it:
-
+   <a name="setenv.sh"></a>
    ~~~bash
    #!/bin/sh
    #
@@ -118,6 +118,11 @@ Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.
    #
    CONTENT_ROOT=/data/content
    CONTENT_ROOT_OPT=-Dtds.content.root.path=$CONTENT_ROOT
+   
+   # If running the TDM on the same machine as the TDS, you must set this to 
+   # enable the use of the local API for receiving triggers. Otherwise, remove
+   # this variable and its reference from JAVA_OPTS
+   PUBLIC_API_KEY="-Dtds.local.api.key=$CONTENT_ROOT/tdm/localapi.key"
 
    # Set java prefs related variables (used by the wms service, for example)
    JAVA_PREFS_ROOTS="-Djava.util.prefs.systemRoot=$CONTENT_ROOT/thredds/javaUtilPrefs \
@@ -133,7 +138,7 @@ Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.
    #
    # Standard setup.
    #
-   JAVA_OPTS="$CONTENT_ROOT_OPT $NORMAL $HEAP_DUMP $HEADLESS $JAVA_PREFS_ROOTS"
+   JAVA_OPTS="$CONTENT_ROOT_OPT $NORMAL $HEAP_DUMP $HEADLESS $JAVA_PREFS_ROOTS $PUBLIC_API_KEY"
 
    export JAVA_OPTS
    ~~~
@@ -154,6 +159,8 @@ Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.
     * `-Djava.awt.headless=true` is needed to prevent graphics rendering code from assuming a graphics console exists.
     Without this, WMS code will crash the server in some circumstances.
     * `-Djava.util.prefs.systemRoot=$CONTENT_ROOT/thredds/javaUtilPrefs -Djava.util.prefs.userRoot=$CONTENT_ROOT/thredds/javaUtilPrefs` allows the java.util.prefs of the TDS WMS to write system preferences to a location that is writable by the Tomcat user.
+    * `-Dtds.local.api.key=$CONTENT_ROOT/tdm/localapi.key` enable the TDS local API for recievein triggers from A TDM running on the same machine (assumes the TDM jar is located at `$CONTENT_ROOT/tdm/`)
+    Ok to leave out if not running the TDM locally.
 
     {%include note.html content="
     For more information about the possible options/arguments available for `$JAVA_OPTS`, please consult the [Oracle Documentation](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html#BABDJJFI){:target='_blank'}.

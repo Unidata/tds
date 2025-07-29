@@ -19,7 +19,7 @@ permalink: installation_checklist.html
 ### Install And Configure Tomcat
 
 1. [Install Tomcat](install_java_tomcat.html#installing-the-tomcat-servlet-container)
-2. Create a [`setenv.sh` file](running_tomcat.html#setting-java_home-java_opts-catalina_base-and-content_root) in `${tomcat_home}/bin` to set JVM options and the TDS `$CONTENT_ROOT`.
+2. Create a [`setenv.sh` file](running_tomcat.html#setenv.sh) in `${tomcat_home}/bin` to set JVM options and the TDS `$CONTENT_ROOT`.
 3. Make the following modifications to `${tomcat_home}/conf/server.xml`:
  * Enable [digested password support](digested_passwords.html#configure-tomcat-to-use-digested-passwords) by modifying the `UserDatabaseRealm`.
  * Enable [TLS/SSL in tomcat](enable_tls_encryption.html#enabling-tlsssl-in-tomcat) using you CA certificate.
