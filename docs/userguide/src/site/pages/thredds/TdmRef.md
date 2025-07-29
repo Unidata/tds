@@ -1,6 +1,6 @@
 ---
 title: THREDDS Data Manager (TDM)
-last_updated: 2020-08-21
+last_updated: 2025-07-29
 sidebar: user_sidebar
 toc: false
 permalink: tdm_ref.html
@@ -44,7 +44,7 @@ Create a shell script to run the TDM, for example `runTdm.sh`:
    If more than one, separate with commas, with no blanks.
    Specify only the scheme, host and optional port with a trailing slash for example: `http://localhost:8081/`
 * `-cred <user:passwd>`: (optional) if you send notifications, the TDS will authenticate using this user name and password.
-  If you do not include this option, you will be prompted for the password on startup, and the user name will be set to `tdm`.
+  If you do not include this option and specify non-localhost TDS endpoints to trigger, you will be prompted for the password on startup, and the user name will be set to `tdm`.
 * `-showOnly`: (optional) if this is present, just show the featureCollections that will be indexed and exit.
 * `-log level`: (optional) set the log4j logging level = `DEBUG`, `INFO` (default), `WARN`, `ERROR`
 
@@ -52,7 +52,7 @@ Create a shell script to run the TDM, for example `runTdm.sh`:
 #### Example:
 
 ~~~bash
-/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/data/content -jar tdm-{{site.docset_version}}.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
+/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/data/content -jar tdm-{{site.docset_version}}.jar -tds "https://my.tds.org/,http://localhost:3001/"
 ~~~
 
 #### Troubleshooting
@@ -65,7 +65,7 @@ Create a shell script to run the TDM, for example `runTdm.sh`:
 
 ## Running The TDM:
 
-* Upon server startup, if `-tds` was used, but `-cred` was not, you will be prompted for the password for the `tdm` user password. 
+* Upon server startup, if `-tds` was used, but `-cred` was not, you will be prompted for the password for the `tdm` user password if sending triggers to non-localhost endpoints. 
   This allows you to start up the TDM without putting the password into a startup script.
   Note that user `tdm` should be given only the role of `tdsTrigger`, which only gives rights to [trigger collection](#sending-triggers-to-the-tds) reloading.
 * The TDM will write index files into the data directories or index directories. 
@@ -83,7 +83,27 @@ bg
 
 The TDM scans the files in the feature collection, and when it detects that the collection has changed, rewrites the index files.
 If enabled, it will send a trigger message to the TDS, and the TDS will reload that dataset.
-To enable this, you must configure the TDS with the `tdsTrigger` role, and add the user `tdm` with that role.
+When the TDS and TDM are running on the same machine, the TDS will send triggers to the `/local/collection` endpoint.
+For remote TDSs, the TDM will send triggers to the `/admin/collection` endpoint, which requires the server to be configured with TLS and tomcat authentication.
+
+If you don't want to allow external triggers, for example if your datasets are static, simply don't enable the `tdsTrigger` role in Tomcat.
+You can also set `trigger="false"` in the `update` element in your catalog:
+
+~~~xml
+<update startup="never" trigger="false" />
+~~~
+
+### Local Triggers
+
+To send triggers to a TDS running on the same machine, refer to the TDS with the `-tds` flag using the hostname `localhost`.
+Upon startup, the TDM will generate a local API key file (`localapi.key`) in the directory containing the tdm jar.
+The TDM will sign local requests using this key contained within this file.
+The TDS will need to be able to read the local key file to verify requests on the server side.
+You will need to tell the TDS where the keyfile lives by setting the `tds.local.api.key` property in the [setenv.sh file](running_tomcat.html#setenv.sh).
+
+### Remote Triggers
+
+To send triggers to a remote TDS, you must configure the remote TDS with the `tdsTrigger` role, and add the user `tdm` with that role.
 Typically, you do that by editing the `${tomcat_home}/conf/tomcat-users.xml` file, e.g.:
 
 ~~~xml
@@ -99,13 +119,6 @@ Typically, you do that by editing the `${tomcat_home}/conf/tomcat-users.xml` fil
 {%include warning.html content="
 For security, make sure the `tdm` user has only the `tdsTrigger` role.
 "%}
-
-If you don't want to allow external triggers, for example if your datasets are static, simply don't enable the `tdsTrigger` role in Tomcat.
-You can also set `trigger="false"` in the `update` element in your catalog:
-
-~~~xml
-<update startup="never" trigger="false" />
-~~~
 
 ## Catalog Configuration Examples
 

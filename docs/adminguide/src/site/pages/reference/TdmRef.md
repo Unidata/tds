@@ -1,6 +1,6 @@
 ---
 title: THREDDS Data Manager (TDM)
-last_updated: 2020-10-02
+last_updated: 2025-07-29
 sidebar: admin_sidebar
 toc: false
 permalink: tdm_ref.html
@@ -8,7 +8,7 @@ permalink: tdm_ref.html
 
 ## Overview
 
-The THREDDS Data Manager (TDM) creates indexes for GRIB featureCollections, in a process separate from the TDS. 
+The THREDDS Data Manager (TDM) creates indexes for GRIB featureCollections, in a process separate from the TDS.
 This allows lengthy file scanning and reindexing to happen in the background.
 The TDS uses the existing indices until notified that new ones are ready.
 
@@ -24,53 +24,51 @@ If you change the configuration, you must restart the TDM.
 
 Get the current jar linked from the [TDS Download Page](https://downloads.unidata.ucar.edu/tds/){:target="_blank"}
 
-
 The TDM can be run from anywhere on the local machine, but by convention we create a directory `$tds.content.root.path}/tdm`, and run the TDM from there.
 
-Create a shell script to run the TDM; for example `runTdm.sh`:
+Create a shell script to run the TDM, for example `runTdm.sh`:
 
-~~~
+~~~bash
 <JAVA> <JVM options> -Dtds.content.root.path=<content directory> -jar <TDM jar> [-tds <tdsServers>] [-cred <user:passwd>] [-showOnly] [-log level]
 ~~~
 
-|-----------|-------------|-------------|
-| Parameter | Required | Description |
-| `<JAVA>`  | required | Large data collections need a lot of memory, so use a 64-bit JVM. |
-| `<JVM options>` | required | **More is better**.  Example: `Xmx4g*` to give the TDM 4 Gbytes of memory. |
-| `-Dtds.content.root.path=<content directory>` | This passes the [content directory](tds_content_directory.html) as a system property.  
-The thredds configuration catalogs and `threddsConfig.xml` are found in `<content directory>/thredds/`. 
-Use an absolute path. |
-| `-jar tdm-{{site.docset_version}}.jar` | required | Execute the TDM from the jar file. |
-| `-tds <tdsServers>` | optional | The list of TDS servers to notify. 
-If more than one, separate with commas, with no blanks. 
-Specify only the scheme, host and optional port with a trailing slash for example: `http://localhost:8081/` |
-| `-cred <user:passwd>` | optional | If you send notifications, the TDS will authenticate using this user name and password. 
-If you do not include this option, you will be prompted for the password on TDM startup, and the user name will be set to tdm. |
-| `-showOnly` | optional | If this is present, display the [featureCollections](feature_collections_overview.html) that will be indexed and then exit. |
-| `-log level` | optional | set the `log4j` logging level. Options are: `DEBUG`, `INFO` (default), `WARN`, and `ERROR`. |
+* `<JAVA>` Large collections need a lot of memory, so use a 64-bit JVM
+* `<JVM options>`
+    * `-Xmx4g*` to give it 4 Gbytes of memory (for example).
+      **More is better**.
+* `-Dtds.content.root.path=<content directory>` this passes the content directory as a system property.
+  The thredds configuration catalogs and `threddsConfig.xml` are found in `<content directory>/thredds`.
+  Use an absolute path.
+* `-jar tdm-{{site.docset_version}}.jar` : execute the TDM from the jar file
+* `-tds <tdsServers>`: (optional) list of TDS servers to notify.
+  If more than one, separate with commas, with no blanks.
+  Specify only the scheme, host and optional port with a trailing slash for example: `http://localhost:8081/`
+* `-cred <user:passwd>`: (optional) if you send notifications, the TDS will authenticate using this user name and password.
+  If you do not include this option and specify non-localhost TDS endpoints to trigger, you will be prompted for the password on startup, and the user name will be set to `tdm`.
+* `-showOnly`: (optional) if this is present, just show the featureCollections that will be indexed and exit.
+* `-log level`: (optional) set the log4j logging level = `DEBUG`, `INFO` (default), `WARN`, `ERROR`
 
-#### Example
 
+#### Example:
+
+~~~bash
+/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/data/content -jar tdm-{{site.docset_version}}.jar -tds "https://my.tds.org/,http://localhost:3001/"
 ~~~
-/opt/jdk/bin/java -Xmx4g -Dtds.content.root.path=/opt/tds/content -jar tdm-{{site.docset_version}}.jar -tds "http://thredds.unidata.ucar.edu/,http://thredds2.unidata.ucar.edu:8081/"
-~~~
-
-
 
 #### Troubleshooting
 
 * Make sure the `<JVM Options>`, including `-Dtds.content.root.path`, come before the `-jar <TDM jar>`
-* The `<content directory>` does not include the `/thredds` subdirectory, e.g. `/opt/tds/content` not `/opt/tds/content/thredds`.
+* The `<content directory>` does not include the `/thredds` subdirectory, e.g. `/data/content` not `/data/content/thredds`.
 * Regarding permissions:
     * You must run the TDM as a user who has read and write permission into the data directories, so it can write the index files (OR)
     * If you are using [GRIB index redirection](tds_config_ref.html#grib-index-redirection), the TDM must have read access to the data directories, and write access to the index directories.
 
 ## Running The TDM:
 
-* Upon server startup, if `-tds` was used, but `-cred` was not, you will be prompted for the password for the `tdm` user password. 
+* Upon server startup, if `-tds` was used, but `-cred` was not, you will be prompted for the password for the `tdm` user password if sending triggers to non-localhost endpoints.
   This allows you to start up the TDM without putting the password into a startup script.
   Note that user `tdm` should be given only the role of `tdsTrigger`, which only gives rights to [trigger collection](#sending-triggers-to-the-tds) reloading.
-* The TDM will write index files into the data directories or index directories. 
+* The TDM will write index files into the data directories or index directories.
   The index files will have extensions `gbx9` and `ncx4`.
 * For each `featureCollection`, a log file is created in the TDM working directory, with name `fc.<collectionName>.log`.
   Monitor these logs to look for problems with the indexing.
@@ -85,7 +83,27 @@ bg
 
 The TDM scans the files in the feature collection, and when it detects that the collection has changed, rewrites the index files.
 If enabled, it will send a trigger message to the TDS, and the TDS will reload that dataset.
-To enable this, you must configure the TDS with the `tdsTrigger` role, and add the user `tdm` with that role.
+When the TDS and TDM are running on the same machine, the TDS will send triggers to the `/local/collection` endpoint.
+For remote TDSs, the TDM will send triggers to the `/admin/collection` endpoint, which requires the server to be configured with TLS and tomcat authentication.
+
+If you don't want to allow external triggers, for example if your datasets are static, simply don't enable the `tdsTrigger` role in Tomcat.
+You can also set `trigger="false"` in the `update` element in your catalog:
+
+~~~xml
+<update startup="never" trigger="false" />
+~~~
+
+### Local Triggers
+
+To send triggers to a TDS running on the same machine, refer to the TDS with the `-tds` flag using the hostname `localhost`.
+Upon startup, the TDM will generate a local API key file (`localapi.key`) in the directory containing the tdm jar.
+The TDM will sign local requests using this key contained within this file.
+The TDS will need to be able to read the local key file to verify requests on the server side.
+You will need to tell the TDS where the keyfile lives by setting the `tds.local.api.key` property in the [setenv.sh file](running_tomcat.html#setenv.sh).
+
+### Remote Triggers
+
+To send triggers to a remote TDS, you must configure the remote TDS with the `tdsTrigger` role, and add the user `tdm` with that role.
 Typically, you do that by editing the `${tomcat_home}/conf/tomcat-users.xml` file, e.g.:
 
 ~~~xml
@@ -102,13 +120,6 @@ Typically, you do that by editing the `${tomcat_home}/conf/tomcat-users.xml` fil
 For security, make sure the `tdm` user has only the `tdsTrigger` role.
 "%}
 
-If you don't want to allow external triggers, for example if your datasets are static, simply don't enable the `tdsTrigger` role in Tomcat.
-You can also set `trigger="false"` in the `update` element in your catalog:
-
-~~~xml
-<update startup="never" trigger="false" />
-~~~
-
 ## Catalog Configuration Examples
 
 Example configuration in the TDS configuration catalogs.
@@ -117,15 +128,15 @@ Point the TDM to the content directory using `-Dtds.content.root.path=<content d
 ### Static Dataset:
 
 ~~~xml
-<featureCollection name="NOMADS CFSRR" featureType="GRIB2" harvest="true" 
-                   path="grib/NOMADS/cfsrr/timeseries">
+<featureCollection name="NOMADS CFSRR" featureType="GRIB2" harvest="true"
+  path="grib/NOMADS/cfsrr/timeseries">
   <metadata inherited="true">
     <dataType>GRID</dataType>
     <dataFormat>GRIB-2</dataFormat>
   </metadata>
 
   <collection name="NOMADS-cfsrr-timeseries" spec="/san4/work/jcaron/cfsrr/**/.*grib2$"
-                   dateFormatMark="#cfsrr/#yyyyMM" timePartition="directory"/>
+    dateFormatMark="#cfsrr/#yyyyMM" timePartition="directory"/>
 
   <tdm rewrite="always"/>
 </featureCollection>
@@ -138,26 +149,26 @@ Point the TDM to the content directory using `-Dtds.content.root.path=<content d
 ### Dynamic dataset:
 
 ~~~xml
-<featureCollection name="DGEX-Alaska_12km" featureType="GRIB2" harvest="true" 
-                   path="grib/NCEP/DGEX/Alaska_12km">
+<featureCollection name="DGEX-Alaska_12km" featureType="GRIB2" harvest="true"
+  path="grib/NCEP/DGEX/Alaska_12km">
   <metadata inherited="true">
-     <dataType>GRID</dataType>
-     <dataFormat>GRIB-2</dataFormat>
+    <dataType>GRID</dataType>
+    <dataFormat>GRIB-2</dataFormat>
   </metadata>
 
   <collection name="DGEX-Alaska_12km"
-   spec="/data/ldm/pub/native/grid/NCEP/DGEX/Alaska_12km/.*grib2$"
-   dateFormatMark="#DGEX_Alaska_12km_#yyyyMMdd_HHmm"
-   timePartition="file"
-   olderThan="5 min"/>
+    spec="/data/ldm/pub/native/grid/NCEP/DGEX/Alaska_12km/.*grib2$"
+    dateFormatMark="#DGEX_Alaska_12km_#yyyyMMdd_HHmm"
+    timePartition="file"
+    olderThan="5 min"/>
 
   <tdm rewrite="true" rescan="0 0/15 * * * ? *" trigger="allow"/>
 </featureCollection>
 ~~~
 
 * `<tdm>` element for the TDM
-  * `rewrite="test"` tells the TDM to test for dataset changes
-  * `rescan="0 0/15 * * * ? *"`  rescan directories every 15 minutes.
+    * `rewrite="test"` tells the TDM to test for dataset changes
+    * `rescan="0 0/15 * * * ? *"`  rescan directories every 15 minutes.
 
 ## `GCPass1`
 
@@ -262,20 +273,20 @@ thin (0)           # <14>
 1. The Feature Collection configuration
 2. The top-level directory
 3. Subdirectory
-4. Partitions - in this case these are directories because this is a _directory partition_. 
-   * number of files in the partition 
-   * number of records in the partition 
-   * number of separate variables in the partition. 
-     _Inhomogeneous partitions look more complex to the user._
-   * number of runtimes in the partition
-   * number of horizontal (GDS), which are turned into groups 
-   * the starting and ending runtime. _Look for overlapping partitions_
+4. Partitions - in this case these are directories because this is a _directory partition_.
+    * number of files in the partition
+    * number of records in the partition
+    * number of separate variables in the partition.
+      _Inhomogeneous partitions look more complex to the user._
+    * number of runtimes in the partition
+    * number of horizontal (GDS), which are turned into groups
+    * the starting and ending runtime. _Look for overlapping partitions_
 5. Sum of subpartitions for this partition
 6. Grand sum over all partitions
 7. Summary (n, start/end) of run dates
 8. list of all table versions found, count of number of records for each. _Possibility that variables that should be separated by table version._
 9. list of all variables found, count of number of records for each. _Possibility that stray records are in the collection._
-10. list of all GDS hashes found, count of number of records for each. 
+10. list of all GDS hashes found, count of number of records for each.
     **Possibility of spurious differences with GDS hashes**.
 11.  list of all GDS templates found, count of number of records for each
 12.  count of records that have vertical coordinates in the GDS (GRIB1 only)
