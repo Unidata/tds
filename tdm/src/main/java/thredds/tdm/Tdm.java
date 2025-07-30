@@ -10,6 +10,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import java.io.InputStream;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.UUID;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -413,6 +415,9 @@ public class Tdm {
     @Parameter(names = {"-h", "--help"}, description = "Display this help and exit", help = true)
     public boolean help = false;
 
+    @Parameter(names = {"-v", "--version"}, description = "Display version information", required = false)
+    public boolean showVersionInfo = false;
+
     private final JCommander jc;
 
     public CommandLine(String progName, String[] args) throws ParameterException {
@@ -429,11 +434,29 @@ public class Tdm {
 
   }
 
+  private record TdmBuildInfo(String version, String buildDate) {
+    public void display() {
+      System.out.printf("TdmBuildInfo [version=%s, buildDate=%s]%n", version, buildDate);
+    }
+  }
+
+  private static TdmBuildInfo getTdmBuildInfo() {
+    Properties buildProps = new Properties();
+    try (InputStream stream = Tdm.class.getClassLoader().getResourceAsStream("tdm.properties")) {
+      buildProps.load(stream);
+    } catch (IOException e) {
+      tdmLogger.error("Error reading build properties");
+    }
+    return new TdmBuildInfo(buildProps.getProperty("tdm.version", "TDM-Unknown"),
+        buildProps.getProperty("tdm.buildTimestamp", "UnknownBuildTimestamp"));
+  }
+
   public static void main(String[] args) throws IOException, InterruptedException {
     try (FileSystemXmlApplicationContext springContext =
         new FileSystemXmlApplicationContext("classpath:resources/application-config.xml")) {
       Tdm app = (Tdm) springContext.getBean("TDM");
-
+      TdmBuildInfo buildInfo = getTdmBuildInfo();
+      tdmLogger.info("TDM version: {}", buildInfo.version);
       Map<String, String> aliases = (Map<String, String>) springContext.getBean("dataRootLocationAliasExpanders");
       for (Map.Entry<String, String> entry : aliases.entrySet())
         AliasTranslator.addAlias(entry.getKey(), entry.getValue());
@@ -449,7 +472,7 @@ public class Tdm {
       app.setContentDir(contentDir);
 
       // RandomAccessFile.setDebugLeaks(true);
-      HTTPSession.setGlobalUserAgent("TDM v5.0");
+      HTTPSession.setGlobalUserAgent(String.format("TDM-%s", buildInfo.version));
       // GribCollection.getDiskCache2().setNeverUseCache(true);
 
       String progName = Tdm.class.getName();
@@ -459,6 +482,11 @@ public class Tdm {
         if (cmdLine.help) {
           cmdLine.printUsage();
           return;
+        }
+
+        if (cmdLine.showVersionInfo) {
+          buildInfo.display();
+          System.exit(0);
         }
 
         if (cmdLine.catalog != null) {
