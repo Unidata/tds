@@ -9,8 +9,7 @@ apply from: "${projectDir}/helpers.gradle"
 // Jekyll Sites Build //
 ////////////////////////
 
-final def docsets = ['adminguide', 'devguide', 'quickstart', 'userguide']
-final def rawRepoName = 'docs-tds'
+final def docsets = ['adminguide', 'quickstart', 'userguide']
 final def buildAllJekyllSitesTaskName = 'buildAllJekyllSites'
 
 // copy shared files

@@ -1,6 +1,6 @@
 # How to use the shared directory
 
-The directory structure mimics the structure of a any of the jekyll docsets.
+The directory structure mimics the structure of any one of the jekyll docsets.
 If you would like a file to be shared between the various docsets, two things need to happen:
 
 1. place the file in the appropriate location under `shared/src/site/`
