@@ -29,8 +29,10 @@ import thredds.server.ncss.format.FormatsAvailabilityService;
 import thredds.server.ncss.format.SupportedFormat;
 import thredds.server.notebook.JupyterNotebookServiceCache;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDatasets;
+import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.nc2.grib.GribIndexCache;
 import ucar.nc2.grib.collection.GribCdmIndex;
 import ucar.nc2.jni.netcdf.Nc4Iosp;
@@ -161,7 +163,6 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     ucar.nc2.ncml.NcMLReader.setDebugFlags(debugFlags);
     ucar.nc2.dods.DODSNetcdfFile.setDebugFlags(debugFlags);
     CdmRemote.setDebugFlags(debugFlags);
-    Nc4Iosp.setDebugFlags(debugFlags);
     DataFactory.setDebugFlags(debugFlags);
 
     ucar.nc2.FileWriter2.setDebugFlags(debugFlags);
@@ -276,16 +277,28 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     String libraryPath = ThreddsConfig.get("Netcdf4Clibrary.libraryPath", null);
     String libraryName = ThreddsConfig.get("Netcdf4Clibrary.libraryName", null);
     if (libraryPath != null || libraryName != null) {
-      Nc4Iosp.setLibraryAndPath(libraryPath, libraryName);
+      // must be called before any calls to Nc4Iosp
+      NetcdfClibrary.setLibraryNameAndPath(libraryPath, libraryName);
     }
 
-    Boolean useForReading = ThreddsConfig.getBoolean("Netcdf4Clibrary.useForReading", false);
+    // needed to delay setting Nc4Iosp debug flags, in case threddsConfig was
+    // used to set library name and path
+    if (NetcdfClibrary.isLibraryPresent()) {
+      String tdsDebugFlags = tdsContext.getTdsDebugFlags();
+      if (!tdsDebugFlags.isEmpty()) {
+        startupLog.info("TdsInit: setting Nc4Iosp debug flags");
+        Nc4Iosp.setDebugFlags(new DebugFlagsImpl(tdsDebugFlags));
+      }
+    }
+
+    boolean useForReading = ThreddsConfig.getBoolean("Netcdf4Clibrary.useForReading", false);
     if (useForReading) {
-      if (Nc4Iosp.isClibraryPresent()) {
+      if (NetcdfClibrary.isLibraryPresent()) {
         try {
           // Registers Nc4Iosp in front of all the other IOSPs already registered in NetcdfFile.<clinit>().
           // Crucially, this means that we'll try to open a file with Nc4Iosp before we try it with H5iosp.
           NetcdfFile.registerIOProvider(Nc4Iosp.class);
+          NetcdfFiles.registerIOProvider(Nc4Iosp.class);
         } catch (IllegalAccessException | InstantiationException e) {
           startupLog.error("TdsInit: Unable to register IOSP: " + Nc4Iosp.class.getCanonicalName(), e);
         }
@@ -295,7 +308,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
       }
     }
 
-    if (Nc4Iosp.isClibraryPresent()) { // NetCDF-4 lib could be set as an environment variable or as a JVM parameter.
+    if (NetcdfClibrary.isLibraryPresent()) { // NetCDF-4 lib could be set as an environment variable or as a JVM
+                                             // parameter.
       FormatsAvailabilityService.setFormatAvailability(SupportedFormat.NETCDF4, true);
       FormatsAvailabilityService.setFormatAvailability(SupportedFormat.NETCDF4EXT, true);
     }
