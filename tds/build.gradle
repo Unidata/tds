@@ -37,7 +37,7 @@ dependencies {
   implementation project(':dap4:d4servlet')
 
   // threddsIso
-  implementation 'EDS:nciso-common:2.4.8-SNAPSHOT'
+  implementation 'EDS:nciso-common'
 
   // Server stuff
   providedCompile "jakarta.servlet:jakarta.servlet-api:${depVersion.jakartaServletApi}"

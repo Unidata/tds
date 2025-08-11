@@ -107,12 +107,15 @@ dependencies {
     api 'org.n52.sensorweb:52n-xml-om-v20'
 
     // edal-java (ncwms)
-    def edalVersion = '1.5.3.0'
+    def edalVersion = '1.5.3.1-SNAPSHOT'
     api "uk.ac.rdg.resc:edal-common:${edalVersion}"
     api "uk.ac.rdg.resc:edal-cdm:${edalVersion}"
     api "uk.ac.rdg.resc:edal-wms:${edalVersion}"
     api "uk.ac.rdg.resc:edal-graphics:${edalVersion}"
     api "uk.ac.rdg.resc:edal-godiva:${edalVersion}"
+
+    // threddsIso
+    api 'EDS:nciso-common:2.4.8-SNAPSHOT'
 
     // gwt version defined in gradle/any/shared-mvn-coords.gradle, accessible via gradle/any/dependencies.gradle
     api "com.google.gwt:gwt-dev:${depVersion.gwt}"
