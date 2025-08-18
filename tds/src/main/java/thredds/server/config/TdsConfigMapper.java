@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2025 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -9,6 +9,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -228,16 +232,48 @@ class TdsConfigMapper {
         }
       }
 
-      final String stylesLocation = getValueFromThreddsConfigOrDefault(WMS_STYLES_LOCATION_DIR, defaultStylesLocation);
-      wmsConfig.setStylesLocationDir(stylesLocation);
+      // ensure defaultStylesDir exists and is populated with bundled styles
+      Path defaultStylesPath = Paths.get(defaultStylesLocation);
       try {
-        startupLog.info("Loading custom WMS style files from " + stylesLocation);
-        SldTemplateStyleCatalogue.getStyleCatalogue().addStylesInDirectory(new File(stylesLocation));
+        Files.createDirectories(defaultStylesPath);
+        String[] bundledStyles = {"colored_fat_arrows.xml"};
+        for (String bundledStyle : bundledStyles) {
+          Path styleDestFile = defaultStylesPath.resolve(bundledStyle);
+          if (!styleDestFile.toFile().exists()) {
+            String style = "/WEB-INF/altContent/startup/bundled_styles/" + bundledStyle;
+            try (InputStream in = tdsContext.getServletContext().getResourceAsStream(style)) {
+              Files.copy(in, styleDestFile, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+              startupLog.error("Error copying default style {}", bundledStyle, e);
+            }
+          }
+        }
+      } catch (IOException e) {
+        startupLog.warn("Error populating default styles directory {}", defaultStylesLocation, e);
+      }
+
+      // always load styles in defaultStylesDir
+      try {
+        startupLog.info("Loading bundled WMS style files from " + defaultStylesPath);
+        SldTemplateStyleCatalogue.getStyleCatalogue().addStylesInDirectory(defaultStylesPath.toFile());
       } catch (FileNotFoundException e) {
-        if (!stylesLocation.equals(defaultStylesLocation)) {
-          startupLog.warn("Could not find custom styles directory {}", stylesLocation, e);
+        startupLog.warn("Error loading bundled WMS styles from directory {}", defaultStylesLocation, e);
+      }
+
+      // only load styles from WMS_STYLES_LOCATION_DIR (as set in threddsConfig.xml) if it is set
+      final String stylesLocation = getValueFromThreddsConfigOrDefault(WMS_STYLES_LOCATION_DIR, "");
+      if (!stylesLocation.isEmpty()) {
+        wmsConfig.setStylesLocationDir(stylesLocation);
+        try {
+          startupLog.info("Loading custom WMS style files from " + stylesLocation);
+          SldTemplateStyleCatalogue.getStyleCatalogue().addStylesInDirectory(new File(stylesLocation));
+        } catch (FileNotFoundException e) {
+          if (!stylesLocation.equals(defaultStylesLocation)) {
+            startupLog.warn("Could not find custom styles directory {}", stylesLocation, e);
+          }
         }
       }
+
 
       final String wmsConfigFile = getValueFromThreddsConfigOrDefault(WMS_CONFIG_FILE, defaultWmsConfigFile);
 
