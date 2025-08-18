@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
  * See LICENSE.txt for license information.
  */
 
@@ -190,6 +190,34 @@ public class TestWmsServer {
 
     assertWithMessage("result codes = " + Arrays.toString(resultCodes.toArray()))
         .that(resultCodes.stream().allMatch(code -> code.equals(HttpServletResponse.SC_OK))).isTrue();
+  }
+
+  @Test
+  @Category(NeedsCdmUnitTest.class)
+  public void testBundledStyles() throws IOException, JDOMException {
+    String endpoint = TestOnLocalServer.withHttpPath(
+        "wms/scanCdmUnitTests/ft/fmrc/apex_fmrc/Run_20091025_0000.nc?service=WMS&version=1.3.0&request=GetCapabilities");
+    byte[] result = TestOnLocalServer.getContent(endpoint, HttpServletResponse.SC_OK, ContentType.xmlwms);
+    Reader in = new StringReader(new String(result, StandardCharsets.UTF_8));
+    SAXBuilder sb = new SAXBuilder();
+    sb.setExpandEntities(false);
+    Document doc = sb.build(in);
+
+    // find all style elements
+    XPathExpression<Element> xpath = XPathFactory.instance()
+        .compile("//wms:Capability/wms:Layer/wms:Layer/wms:Layer/wms:Layer/wms:Style", Filters.element(), null, NS_WMS);
+    List<Element> styles = xpath.evaluate(doc);
+
+    // look for bundled style called "colored_fat_arrows"
+    Element coloredFatArrowStyle = null;
+    for (Element style : styles) {
+      Element styleName = style.getChild("Name", Namespace.getNamespace("http://www.opengis.net/wms"));
+      if (styleName != null && styleName.getValue().toLowerCase().startsWith("colored_fat_arrows")) {
+        coloredFatArrowStyle = styleName;
+        break;
+      }
+    }
+    assertWithMessage("Bundled 'colored_fat_arrows' style not found").that(coloredFatArrowStyle).isNotNull();
   }
 
   private int getMap() {
