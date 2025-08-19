@@ -49,7 +49,7 @@ dependencies {
     api 'com.beust:jcommander'
     api 'joda-time:joda-time'
 
-    api 'org.quartz-scheduler:quartz:2.3.2'
+    api 'org.quartz-scheduler:quartz:2.5.0'
     api 'org.eclipse.store:cache:2.1.3'
     api 'org.eclipse.serializer:persistence-binary-jdk8:2.1.3'
     api 'org.eclipse.serializer:persistence-binary-jdk17:2.1.3'

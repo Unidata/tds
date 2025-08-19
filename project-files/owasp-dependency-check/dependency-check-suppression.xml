@@ -2,141 +2,41 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
   <suppress>
     <notes><![CDATA[
-      file name example: spring-security-core-4.2.7.RELEASE.jar, spring-security-cweb-4.2.7.RELEASE.jar
-      reason: (CVE-2018-1258) only valid if specifically using in combination with Spring 5.0.5 RELEASE. https://pivotal.io/security/cve-2018-1258
-      (CVE-2020-4508) false positive for spring security 5.6.x, see https://github.com/OSSIndex/vulns/issues/276
-      ]]></notes>
-    <gav regex="true">^org\.springframework\.security:spring-security.*$</gav>
-    <cve>CVE-2018-1258</cve>
-    <cve>CVE-2020-5408</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name: spring-core-5.3.20.jar
-      reason: resolved CVE - only valid if using HTTPInvokerServiceExporter
-      ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
-    <cve>CVE-2016-1000027</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[(
-      file name: spring-web-5.3.20.jar
-      reason: resolved CVE - only valid if using HTTPInvokerServiceExporter
-      ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-web@.*$</packageUrl>
-    <cve>CVE-2016-1000027</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name: edal-coveragejson-1.4.2.1-SNAPSHOT.jar
-      reason: not an edal-java vulnerability (CVE is for a node-based CLI tool)
-      ]]></notes>
-    <packageUrl regex="true">^pkg:maven/uk\.ac\.rdg\.resc/edal\-coveragejson@.*$</packageUrl>
-    <cve>CVE-2020-7712</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name: jettison-1.4.1.jar
-      reason: not a jettison vulnerability (CVE is for a node-based CLI tool)
-      ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.codehaus\.jettison/jettison@.*$</packageUrl>
-    <cve>CVE-2020-7712</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name example: taglibs-standard-impl-1.2.5.jar
-      reason: These CVEs are for a GO based project called tag (MP3/MP4/OGG/FLAC metadata parsing library).
-              False positive. See https://github.com/dhowden/tag/issues/77 (from first CVE listed)
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.taglibs/taglibs\-standard\-impl@.*$</packageUrl>
-    <cve>CVE-2020-29242</cve>
-    <cve>CVE-2020-29243</cve>
-    <cve>CVE-2020-29244</cve>
-    <cve>CVE-2020-29245</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name: jdom2-2.0.6.jar
-      reason: mitigated by https://github.com/Unidata/thredds/pull/1368
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.jdom/jdom2@.*$</packageUrl>
-    <cve>CVE-2021-33813</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name: velocity-1.7.jar
-      reason: used by edal-java, but that application, as well as the TDS, does not allow users to upload/modify
-              velocity templates, so not impacted by this.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.velocity/velocity@.*$</packageUrl>
-    <cve>CVE-2020-13936</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name: h2-1.3.173.jar
-      reason: flagged by owasp as being vulnerable, but we are not using this dependency in the tds, so a false positive.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/com\.h2database/h2@.*$</packageUrl>
-
-    <cpe>cpe:/:a:h2database:h2:1.3.173</cpe>
-    <cve>CVE-2018-14335</cve>
-    <cve>CVE-2021-23463</cve>
-    <cve>CVE-2021-42392</cve>
-    <cve>CVE-2022-23221</cve>
-    <cve>CVE-2022-45868</cve>
-    <cwe>94</cwe>
-  </suppress>
-  <suppress>
-  <notes><![CDATA[
-      file name: commons-io-1.3.2.jar
-      reason: We do not use the vulnerable function (FileNameUtils.normalize)
-    ]]></notes>
-  <packageUrl regex="true">^pkg:maven/commons-io/commons-io@.*$</packageUrl>
-  <cve>CVE-2021-29425</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name: json-20230227.jar
-      reason: We do not use the vulnerable function (XML.toJSONObject)
-    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.json/json@.*$</packageUrl>
-    <cve>CVE-2022-45688</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-      file name: screenshot_sync
-      reason: False positive.  We do not use the fredsmith utils.
+      file name: tds-test-utils
+      reason: False positive. We do not use fredsmith-utils.
     ]]></notes>
     <cve>CVE-2021-4277</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
-       file name: javax.el-3.0.0.jar
-       reason: This jar contains an older, insecure version of junit.  NetCDF-Java uses
-               junit-4.13.1 for applications running JDK 1.7 and later. We require Java 1.8
-               at a minimum, so we're good with regards to this CVE.
-               See https://nvd.nist.gov/vuln/detail/CVE-2020-15250.
+      file name: h2-2.2.220.jar
+      reason: edal-java uses h2 to store the EPSG cache. The location of this
+      cache file is not based on user input and therefore the usage of H2 in
+      the TDS is not susceptible to "CWE-59 Improper Link Resolution Before File
+      Access ('Link Following')".
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.glassfish/javax\.el@.*$</packageUrl>
-    <vulnerabilityName>CVE-2020-15250</vulnerabilityName>
-    <vulnerabilityName>CVE-2021-28170</vulnerabilityName>
+    <packageUrl regex="true">^pkg:maven/com\.h2database/h2@.*$</packageUrl>
+    <vulnerabilityName>CVE-2018-14335</vulnerabilityName>
   </suppress>
   <suppress>
     <notes><![CDATA[
-      file name: quartz-2.3.2.jar
-      reason: We do not use the vulnerable function (SendQueueMessageJob.execute)
+      file name: jfreechart-1.0.19.jar
+      reason: Disputed CVEs, and we do not use the vulnerable components
+      (BubbleXYItemLabelGenerator.java, /chart/annotations/CategoryLineAnnotation,
+      setSeriesNeedle)
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.quartz\-scheduler/quartz@.*$</packageUrl>
-    <cve>CVE-2023-39017</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: jfreechart-1.0.19.jar
-   reason: Disputed CVEs and we do not use the vulnerable components (BubbleXYItemLabelGenerator.java, /chart/annotations/CategoryLineAnnotation, setSeriesNeedle)
-   ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.jfree/jfreechart@.*$</packageUrl>
     <vulnerabilityName>CVE-2024-23076</vulnerabilityName>
     <vulnerabilityName>CVE-2024-22949</vulnerabilityName>
     <vulnerabilityName>CVE-2023-52070</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      file name: spring-security*.jar
+      reason: CVE-2018-1258 is only valid if springframework 5.0.5 RELEASE is used
+      in combination with spring-security.
+    ]]></notes>
+    <filePath regex="true">.*spring-security-.*\.jar</filePath>
+    <cve>CVE-2018-1258</cve>
   </suppress>
 </suppressions>
