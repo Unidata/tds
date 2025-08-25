@@ -42,7 +42,7 @@ Additional WMS configuration options can be set in the `threddsConfig.xml` file.
 
 Further WMS configuration properties are set in the wmsConfig.xml file.
 These properties are mainly related with styling of WMS images.
-Similar to the `threddsConfig.xml` file, the WMS configuration file (wmsConfig.xml) is found in the `$tds.content.root.path{}/content/thredds` directory.
+Similar to the `threddsConfig.xml` file, the WMS configuration file (wmsConfig.xml) is found in the `${tds.content.root.path}/content/thredds` directory.
 A detailed description of the wmsConfig.xml file can be on the [Customizing WMS](../adminguide/customizing_wms.html) reference page.
 
 If you are installing a new TDS, you should find a default `wmsConfig.xml` file (along with other configuration files) in your content`/thredds` directory after you first deploy the TDS.
