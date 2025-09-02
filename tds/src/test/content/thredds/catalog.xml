@@ -339,4 +339,5 @@
   <!-- urls intended to test container auth without spring -->
   <datasetRoot path="containerauth" location="content/testdata"/>
 
+  <catalogRef xlink:title="Icechunk (requires properly configured Python-based gcdm server running)" xlink:href="icechunk.xml" name=""/>
 </catalog>

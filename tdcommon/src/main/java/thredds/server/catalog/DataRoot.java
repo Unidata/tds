@@ -183,7 +183,12 @@ public class DataRoot {
       return null;
 
     final String relativeLocation = getRelativeLocation(reqPath, rootPath, isFeatureCollection);
-
+    if (rootLocation != null && rootLocation.startsWith("gcdm:")) {
+      if (rootLocation.endsWith("/")) {
+        rootLocation = rootLocation.substring(0, rootLocation.length() - 1);
+      }
+      return rootLocation + "/" + relativeLocation;
+    }
     final MFile rootMFile = MFiles.create(rootLocation);
     final MFile mFile = rootMFile.getChild(relativeLocation);
     return mFile == null ? null : mFile.getPath();

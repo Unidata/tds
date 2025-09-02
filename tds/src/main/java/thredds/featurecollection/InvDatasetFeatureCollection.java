@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2021 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -576,7 +576,8 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
       String filename =
           new StringBuilder(topDirectory).append(topDirectory.endsWith("/") ? "" : "/").append(name).toString();
       DatasetUrl durl = DatasetUrl.create(null, filename);
-      if (useNetcdfJavaBuilders || DatasetManager.isLocationObjectStore(durl.getTrueurl())) {
+      if (useNetcdfJavaBuilders || DatasetManager.isLocationObjectStore(durl.getTrueurl())
+          || durl.getTrueurl().contains("gcdm:")) {
         return NetcdfDatasets.acquireDataset(null, durl, null, -1, null, null); // no enhancement
       } else {
         return NetcdfDataset.acquireDataset(null, durl, null, -1, null, null); // no enhancement

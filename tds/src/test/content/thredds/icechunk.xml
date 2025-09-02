@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="TDS Unit Test Server"
+  xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  version="1.2">
+
+  <service name="icechunk" base="" serviceType="compound">
+    <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/"/>
+    <service name="d4dap" serviceType="DAP4" base="/thredds/dap4/"/>
+    <service name="wcs" serviceType="WCS" base="/thredds/wcs/"/>
+    <service name="wms" serviceType="WMS" base="/thredds/wms/"/>
+    <service name="ncssGrid" serviceType="NetcdfSubset" base="/thredds/ncss/grid/"/>
+    <service name="cdmremote" serviceType="CdmRemote" base="/thredds/cdmremote/"/>
+    <service name="iso" serviceType="ISO" base="/thredds/iso/"/>
+    <service name="ncml" serviceType="NCML" base="/thredds/ncml/"/>
+    <service name="uddc" serviceType="UDDC" base="/thredds/uddc/"/>
+  </service>
+
+  <datasetRoot path="era5-icechunk" location="gcdm://localhost:1234" />
+
+  <dataset name="IceChunk ERA5 (requires properly configured Python-based gcdm server running)" ID="icechunk/era5"
+    urlPath="era5-icechunk/era5">
+    <metadata inherited="true">
+      <serviceName>icechunk</serviceName>
+      <authority>edu.ucar.unidata</authority>
+      <dataType>Grid</dataType>
+      <dataFormat>icechunk</dataFormat>
+      <documentation type="rights">Freely available</documentation>
+      <documentation xlink:href="http://www.emc.ncep.noaa.gov/modelinfo/index.html"
+        xlink:title="NCEP Model documentation" />
+
+      <creator>
+        <name vocabulary="DIF">Google/WeatherBench2</name>
+        <contact url="https://github.com/google-research/weatherbench2" email="" />
+      </creator>
+      <publisher>
+        <name vocabulary="DIF">UCAR/UNIDATA</name>
+        <contact url="http://www.unidata.ucar.edu/" email="support@unidata.ucar.edu" />
+      </publisher>
+      <timeCoverage>
+        <start>1959-10-10T00:00:00Z</start>
+        <end>2023-10-29T23:00:00Z</end>
+      </timeCoverage>
+      <dataSize units="bytes">6597069766656</dataSize>
+    </metadata>
+  </dataset>
+</catalog>

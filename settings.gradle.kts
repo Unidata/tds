@@ -40,6 +40,7 @@ dependencyResolutionManagement {
         includeModule("edu.ucar", "cdm-zarr")
         includeModule("edu.ucar", "cdm-test-utils")
         includeModule("edu.ucar", "dap4")
+        includeModule("edu.ucar", "gcdm")
         includeModule("edu.ucar", "grib")
         includeModule("edu.ucar", "httpservices")
         includeModule("edu.ucar", "netcdf4")
@@ -95,6 +96,8 @@ include(":docs")
 include(":tdcommon")
 
 include(":tds-ugrid")
+
+include(":tds-gcdm")
 
 // depends on :d4servlet
 include(":d4ts")

@@ -11,6 +11,7 @@ plugins {
 dependencies {
   implementation(platform(project(":tds-platform")))
 
+  runtimeOnly(project(":tds-gcdm"))
   runtimeOnly(project(":tds-ugrid"))
 
   runtimeOnly(tdsLibs.ucar.uicdm)

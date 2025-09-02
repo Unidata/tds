@@ -54,6 +54,8 @@ configurations["freshInstallTestsRuntimeOnly"].extendsFrom(configurations.runtim
 
 val gwt by configurations.creating { extendsFrom(configurations.implementation.get()) }
 
+val gcdm by configurations.creating {}
+
 ///////////////////////////
 // dependency management //
 ///////////////////////////
@@ -158,6 +160,9 @@ dependencies {
   // GWT for Godiva3
   gwt(tdsLibs.gwt.dev)
   gwt(tdsLibs.gwt.user)
+
+  // add gcdm capabilities to TDS
+  gcdm(project(":tds-gcdm"))
 
   /////////////
   // Testing //
@@ -276,34 +281,50 @@ val compileGwt =
 // Configure thredds WAR //
 ///////////////////////////
 
-tasks.war {
-  doFirst {
-    classpath
-      ?.find { it.name.contains("servlet-api") }
-      ?.let { throw GradleException("Found a servlet-api JAR in the WAR classpath: ${it.name}") }
-  }
-  // Replace '$projectVersion' and '$buildTimestamp' placeholders with the correct values.
-  // Currently, we only use those placeholders in tds.properties and README.txt.
-  val iso8601Format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-  var buildProps =
-    mapOf(
-      Pair("projectVersion", project.version),
-      Pair("buildTimestamp", iso8601Format.format(Date())),
-    )
+tasks.war { archiveFileName = "thredds##${project.version}.war" }
 
-  // War CopySpec already includes everything in 'src/main/webapp', which tds.properties lives
-  // within. So, the from() and into() methods aren't needed.
-  filesMatching("**/tds.properties") { expand(buildProps) }
-
-  from("README.txt") {
-    into("docs")
-    expand(buildProps)
+// gcdm capable thredds.war
+val warGcdm =
+  tasks.register<War>("warGcdm") {
+    // archiveClassifier.set("gcdm")
+    setClasspath(gcdm - configurations.providedCompile.get())
+    group = "build"
+    dependsOn(tasks.war)
+    archiveFileName = "thredds##${project.version}-gcdm.war"
   }
 
-  dependsOn(compileGwt)
-  from(gwtDir)
-  destinationDirectory = downloadsDir
-  archiveFileName = "thredds##${project.version}.war"
+// common war configuration
+val warTaskNames = listOf(tasks.war, warGcdm)
+
+for (taskName in warTaskNames) {
+  taskName {
+    doFirst {
+      classpath
+        ?.find { it.name.contains("servlet-api") }
+        ?.let { throw GradleException("Found a servlet-api JAR in the WAR classpath: ${it.name}") }
+    }
+    // Replace '$projectVersion' and '$buildTimestamp' placeholders with the correct values.
+    // Currently, we only use those placeholders in tds.properties and README.txt.
+    val iso8601Format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+    var buildProps =
+      mapOf(
+        Pair("projectVersion", project.version),
+        Pair("buildTimestamp", iso8601Format.format(Date())),
+      )
+
+    // War CopySpec already includes everything in 'src/main/webapp', which tds.properties lives
+    // within. So, the from() and into() methods aren't needed.
+    filesMatching("**/tds.properties") { expand(buildProps) }
+
+    from("README.txt") {
+      into("docs")
+      expand(buildProps)
+    }
+
+    dependsOn(compileGwt)
+    from(gwtDir)
+    destinationDirectory = downloadsDir
+  }
 }
 
 val copyWebappFilesForTests by

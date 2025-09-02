@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2019-2026 Carl Schroedl and the University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.wfs;
 
 import org.springframework.stereotype.Controller;
@@ -318,7 +323,7 @@ public class WFSController extends HttpServlet {
 
       if (actualPath != null)
         if (TdsRequestedDataset.getDatasetManager().useNetcdfJavaBuilders()
-            || DatasetManager.isLocationObjectStore(actualPath)) {
+            || DatasetManager.isLocationObjectStore(actualPath) || actualPath.contains("gcdm:")) {
           dataset = NetcdfDatasets.openDataset(actualPath);
         } else {
           dataset = NetcdfDataset.openDataset(actualPath);
