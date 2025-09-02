@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE.txt for license information.
  */
 
@@ -7,7 +7,6 @@ package thredds.core;
 
 import com.coverity.security.Escape;
 import org.jdom2.Attribute;
-import org.jdom2.output.XMLOutputter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,7 +15,6 @@ import thredds.core.DataRootManager.DataRootMatch;
 import thredds.featurecollection.FeatureCollectionCache;
 import thredds.featurecollection.InvDatasetFeatureCollection;
 import thredds.server.admin.DebugCommands;
-import thredds.server.catalog.DatasetScan;
 import thredds.server.catalog.FeatureCollectionRef;
 import thredds.server.catalog.tracker.DatasetTracker;
 import thredds.servlet.DatasetSource;
@@ -210,7 +208,7 @@ public class DatasetManager implements InitializingBean {
       }
 
       DatasetUrl durl = DatasetUrl.findDatasetUrl(location);
-      if (useNetcdfJavaBuilders || isLocationObjectStore(location)) {
+      if (useNetcdfJavaBuilders || isLocationObjectStore(location) || location.contains("gcdm:")) {
         ncfile = NetcdfDatasets.acquireFile(durl, null);
       } else {
         ncfile = NetcdfDataset.acquireFile(durl, null);
@@ -292,7 +290,8 @@ public class DatasetManager implements InitializingBean {
     NetcdfDataset ncd = null;
     try {
       // Convert to NetcdfDataset
-      if (useNetcdfJavaBuilders || isLocationObjectStore(ncfile.getLocation())) {
+      if (useNetcdfJavaBuilders || isLocationObjectStore(ncfile.getLocation())
+          || ncfile.getLocation().contains("gcdm:")) {
         ncd = NetcdfDatasets.enhance(ncfile, NetcdfDataset.getDefaultEnhanceMode(), null);
       } else {
         ncd = NetcdfDataset.wrap(ncfile, NetcdfDataset.getDefaultEnhanceMode());
@@ -436,7 +435,7 @@ public class DatasetManager implements InitializingBean {
       Optional<FeatureDatasetCoverage> opt = CoverageDatasetFactory.openCoverageDataset(location);
       // hack - CoverageDatasetFactory bombs out on an object store location string during the grib check,
       // this is the code from CoverageDatasetFactory.openCoverageDataset that comes after the grib check.
-      if (!opt.isPresent() && isLocationObjectStore(location)) {
+      if (!opt.isPresent() && isLocationObjectStore(location) || location.contains("gcdm:")) {
         // hack 2 - DtCoverageDataset not ported, so need to open the NetcdfDataset object through NetcdfDatasets
         // and pass that to CoverageDataset
         DtCoverageDataset gds = new DtCoverageDataset(NetcdfDatasets.openDataset(location));

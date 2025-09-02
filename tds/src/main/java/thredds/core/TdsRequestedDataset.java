@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -164,7 +164,8 @@ public class TdsRequestedDataset {
   public NetcdfFile openAsNetcdfFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
     NetcdfFile ncf = null;
     if (isRemote) {
-      if (datasetManager.useNetcdfJavaBuilders() || DatasetManager.isLocationObjectStore(path)) {
+      if (datasetManager.useNetcdfJavaBuilders() || DatasetManager.isLocationObjectStore(path)
+          || path.contains("gcdm:")) {
         ncf = NetcdfDatasets.openDataset(path);
       } else {
         ncf = NetcdfDataset.openDataset(path);
