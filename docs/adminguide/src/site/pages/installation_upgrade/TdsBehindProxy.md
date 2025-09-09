@@ -10,7 +10,7 @@ permalink: tds_behind_proxy.html
 
 {%include note.html content="
 The TDS reverse proxy using Apache has been tested and vetted by Unidata.  
-Other HTTPD servers (e.g., NGINX) have not yet been explored.
+Other HTTP servers (e.g., NGINX) have not yet been explored.
 " %}
 
 There are three options to choose from for configuring the Apache HTTP Server as a front-end proxy server for the TDS.  They differ in their communication protocol, features, and ease of use:
@@ -25,7 +25,7 @@ There are three options to choose from for configuring the Apache HTTP Server as
      
   3. **The Apache Tomcat Connectors project's `mod_jk` module with the Tomcat AJP connector**
 
-     `mod_ajp` offers the performance advantages of AJP, in addition to advanced load balancing capabilities and node failure detection.  This module does _not_ come with the Apache HTTP Server and must be build and maintained separately.
+     `mod_jk` offers the performance advantages of AJP, in addition to advanced load balancing capabilities and node failure detection.  This module does _not_ come with the Apache HTTP Server and must be build and maintained separately.
 
   
   {%include warning.html content="
@@ -50,7 +50,7 @@ There are three options to choose from for configuring the Apache HTTP Server as
 
 ## Implementing The Tomcat-Apache Proxy Using HTTP
 
-The following example shows how to implement a reverse proxy using the Apache HTTP Server and the Tomcat Servlet Container using HTTP via `mod_proxy`.
+The following example shows how to implement a reverse proxy using the Apache HTTP Server and the Tomcat Servlet Container using HTTP via `mod_proxy`/`mod_proxy_http`.
 
 ### Configure Apache HTTP Server To Use `mod_proxy` and `mod_proxy_http` 
 
@@ -70,7 +70,7 @@ The following example shows how to implement a reverse proxy using the Apache HT
 
 2. Configure the reverse proxy in the Apache HTTP Server.
 
-   Utilize the `ProxyPass` and `ProxyPassReverse` directives to tell Apache to forward http://<YOUT_HOST>/thredds/* to the Tomcat connector listening on port `8080` on `localhost`:
+   Utilize the `ProxyPass` and `ProxyPassReverse` directives to tell Apache to forward http://yourhost.edu/thredds/* to the Tomcat HTTP connector listening on port `8080` on `localhost`:
 
    ~~~bash
    ProxyPass         /thredds  http://localhost:8080/thredds
@@ -90,23 +90,58 @@ The following example shows how to implement a reverse proxy using the Apache HT
     We strongly encourage you to implement your reverse proxy over HTTPS instead of HTTP if you are proxying to a TDS instance installed on another host other than `localhost`.
     " %}
 
-3. Configure Tomcat and the TDS for the proxy.
+### Configure Tomcat For The proxy
 
-    Configure the Tomcat HTTP Connector (or SSL/TLS HTTP/1.1 Connector) with the appropriate proxy settings:
+Configure the Tomcat HTTP Connector (or SSL/TLS HTTP/1.1 Connector) with the appropriate proxy settings:
 
    ~~~bash
    <Connector port="8080"
               protocol="HTTP/1.1"
               ...
-              proxyName="yourhost.com"
+              proxyName="yourhost.edu"
               proxyPort="80"/>
    ~~~
 
 ## Implementing The Tomcat-Apache Proxy Using AJP
 
-The following example shows how to implement a proxy using the Apache HTTP Server and the Tomcat Servlet Container using `mod_jk`.
+There are two options available for show how to implement a proxy using the Apache HTTP Server and the Tomcat Servlet Container via AJP:  using and `mod_proxy`/`mod_proxy_ajp` or `mod_jk`. 
 
-### Install `mod_jk`
+### Option A: Configure Apache HTTP Server To Use `mod_proxy` and `mod_proxy_ajp` 
+
+1. Ensure your Apache HTTP Server installation includes the `mod_proxy` and `mod_proxy_ajp` modules.
+   
+   If you are uncertain, you can check to see if these modules are included either as a Dynamic Shared Object module or directly compiled into the `httpd` binary file by running the `apachectl` (a.k.a, Apache Control) command with the `-M` option:
+   
+      ~~~bash
+      # /usr/local/apache/bin/apachectl -M
+      Loaded Modules:
+       core_module (static)
+       ...
+       proxy_module (shared)
+       proxy_ajp_module (shared)
+       ...
+      ~~~
+
+2. Configure the reverse proxy in the Apache HTTP Server.
+
+   Utilize the `ProxyPass` and `ProxyPassReverse` directives to tell Apache to forward http://yourhost.edu/thredds/* to the Tomcat AJP connector listening on port `8080` on `localhost`:
+
+   ~~~bash
+   ProxyPass         /thredds  ajp://localhost:8080/thredds
+   ProxyPassReverse  /thredds  ajp://localhost:8080/thredds
+   ~~~
+
+   Notice the use of the AJP protocol (`ajp://`) in the above example.
+   
+   {%include note.html content="
+    AJP itself does not inherently provide encryption or security features, but instead relies on the network configuration and firewalls to restrict access to the AJP port.
+    " %}
+
+
+
+### Option B: Configure Apache HTTP Server To Use `mod_jk`
+
+#### Build and Install `mod_jk`
 
 1. [Download](https://tomcat.apache.org/download-connectors.cgi){:target="_blank"} the latest version of Tomcat's `mod_jk` module.
 
@@ -120,7 +155,7 @@ The following example shows how to implement a proxy using the Apache HTTP Serve
     # make install
     ~~~ 
 
-    Confirm the module was added to the directory in which the Apache HTTPD server stores its modules (`/usr/local/apache/modules` in this example):
+    Confirm the module was added to the directory in which the Apache HTTP Server stores its modules (`/usr/local/apache/modules` in this example):
     
     ~~~bash
     # cd /usr/local/apache/modules
@@ -129,13 +164,13 @@ The following example shows how to implement a proxy using the Apache HTTP Serve
     -rwxr-xr-x 1 root root 1147204 Oct  8 12:34 mod_jk.so
     ~~~
 
-### Configure Apache HTTP Server To Use `mod_jk` To Communicate With Tomcat
+#### Configure Apache HTTP Server To Use `mod_jk` To Communicate With Tomcat
 
 1.  Update Apache configurations to use the `mod_jk` module.
 
     `mod_jk` was built as a [DSO module](https://httpd.apache.org/docs/current/dso.html){:target="_blank"}, therefore you will need to update your Apache configurations to enable this 3rd-party module:
 
-    The following example shows adding `mod_jk` configurations to a Apache HTTPD 2.4 server built from source.  
+    The following example shows adding `mod_jk` configurations to a Apache HTTP Server built from source.  
     Modify the main Apache server configuration file (usually `httpd.conf`) in the following manner (in this example `/usr/local/apache/conf` is where the Apache configuration files are located):
    
     ~~~bash
@@ -172,7 +207,7 @@ The following example shows how to implement a proxy using the Apache HTTP Serve
 
 2. Create a [`workers.properties`](https://tomcat.apache.org/connectors-doc/reference/workers.html){:target="_blank"} file.
  
-   The `mod_jk` modules in the Apache HTTPD server uses the `workers.properties` file to relevant map requests to the TDS using Tomcat's AJP connector.  
+   The `mod_jk` modules in the Apache HTTP Server uses the `workers.properties` file to relevant map requests to the TDS using Tomcat's AJP connector.  
    
    Use your favorite text editor to create a `workers.properties` file in the Apache configuration directory that you specified in the previous step using the `JkWorkersFile` directive:
 
@@ -181,7 +216,7 @@ The following example shows how to implement a proxy using the Apache HTTP Serve
     # vi http.conf
     ~~~
 
-    Add the following configurations to the `workers.properties` module to define a `worker` that will handle communication between the Apache HTTPD server and Tomcat.  
+    Add the following configurations to the `workers.properties` module to define a `worker` that will handle communication between the Apache HTTP Server and Tomcat.  
      
     ~~~bash
     # workers.properties
@@ -232,7 +267,9 @@ The following example shows how to implement a proxy using the Apache HTTP Serve
     " %}
 
 
-### Configure Tomcat and the TDS for the proxy.
+### Configure Tomcat And The TDS For The Proxy
+
+Configuring Tomcat and the TDS for the reverse proxy will be the same regardless of what option for the Apache HTTP Server. 
 
 1. Modify the Tomcat `AJP Connector`
 
