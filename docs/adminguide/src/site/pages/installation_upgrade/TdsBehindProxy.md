@@ -104,7 +104,9 @@ Configure the Tomcat HTTP Connector (or SSL/TLS HTTP/1.1 Connector) with the app
 
 ## Implementing The Tomcat-Apache Proxy Using AJP
 
-There are two options available for show how to implement a proxy using the Apache HTTP Server and the Tomcat Servlet Container via AJP:  using and `mod_proxy`/`mod_proxy_ajp` or `mod_jk`. 
+There are two options available for implementing a reverse proxy using the Apache HTTP Server and the Tomcat Servlet Container via AJP:  
+* Option A: using the `mod_proxy`/`mod_proxy_ajp` modules; or
+* Option B: using the `mod_jk` module. 
 
 ### Option A: Configure Apache HTTP Server To Use `mod_proxy` and `mod_proxy_ajp` 
 
