@@ -18,9 +18,9 @@ topnav_dropdowns:
         - title: GitHub
           external_url: https://github.com/Unidata/netcdf-java
         - title: User's guide
-          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.7/userguide/index.html
+          external_url: https://docs.unidata.ucar.edu/netcdf-java/current/userguide/index.html
         - title: Public API
-          external_url: https://docs.unidata.ucar.edu/netcdf-java/5.7/javadoc/index.html
+          external_url: https://docs.unidata.ucar.edu/netcdf-java/current/javadoc/index.html
 
     - title: TDS
       folderitems:
