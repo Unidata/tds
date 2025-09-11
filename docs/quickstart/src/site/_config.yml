@@ -75,7 +75,7 @@ docset_name: quickstart
 ###########################################
 
 # this will appear in the sidebar and various doc pages
-netcdf-java_docset_version: 5.7
+netcdf-java_docset_version: 5.9
 
 # these will appear in various doc pages
 tomcat_version: 10.1
