@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2025 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
 package thredds.servlet;
+
+import static thredds.util.MFileUtils.isMfileZarr;
 
 import java.nio.charset.StandardCharsets;
 import jakarta.servlet.ServletContext;
@@ -290,15 +292,19 @@ public class ServletUtil {
 
     final MFile file = MFiles.create(location);
 
-    if (file == null) {
+    if (file == null || !file.exists()) {
       response.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not find file with URL path: " + requestPath);
       return;
     }
 
     if (file.isDirectory() && !file.isZipFile()) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-          "Expected a file name instead of a directory for URL path: " + requestPath);
-      return;
+      if (isMfileZarr(file)) {
+        return;
+      } else {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+            "Expected a file name instead of a directory for URL path: " + requestPath);
+        return;
+      }
     }
 
     response.setContentType(getContentType(requestPath, request.getServletContext()));

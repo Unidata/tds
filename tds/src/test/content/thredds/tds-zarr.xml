@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog name="Zarr Test Catalog"
   xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
-  xmlns:ncml="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" version="1.2">
+  version="1.2">
 
   <dataset name="Test Zarr Directory" ID="test-zarr-dir" urlPath="localContent/zarr/zarr_test_data.zarr" serviceName="all"/>
 
@@ -9,4 +9,21 @@
 
   <datasetRoot path="s3-zarr" location="cdms3:unidata-zarr-test-data#delimiter=/" />
   <dataset name="Test S3 Zarr" ID="test-s3-zarr" urlPath="s3-zarr/zarr_test_data.zarr/" serviceName="all"/>
+
+  <datasetScan name="Filesystem Dataset Scan Zarr" path="scanLocalZarr" location="content/testdata/zarr">
+    <metadata inherited="true">
+      <serviceName>all</serviceName>
+    </metadata>
+    <sort>
+      <lexigraphicByName increasing="true"/>
+    </sort>
+  </datasetScan>
+
+  <datasetScan name="S3 Dataset Scan Zarr"
+    ID="testS3DatasetScanZarr"
+    path="s3-dataset-scan-zarr"
+    location="cdms3:unidata-zarr-test-data#delimiter=/">
+    <serviceName>all</serviceName>
+  </datasetScan>
+
 </catalog>
