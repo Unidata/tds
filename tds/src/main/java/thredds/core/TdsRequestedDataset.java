@@ -93,7 +93,7 @@ public class TdsRequestedDataset {
 
   public static long getLastModified(String reqPath) {
     MFile file = getMFile(reqPath);
-    return (file == null) ? -1 : file.getLastModified();
+    return (file == null || file.isDirectory()) ? -1 : file.getLastModified();
   }
 
   public static File getFile(String reqPath) {
