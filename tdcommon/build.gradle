@@ -10,6 +10,7 @@ dependencies {
   testImplementation enforcedPlatform (project(':tds-testing-platform'))
   implementation 'edu.ucar:cdm-core'
   implementation 'edu.ucar:cdm-s3'
+  implementation 'edu.ucar:cdm-zarr'
   implementation 'edu.ucar:grib'
   implementation 'org.jdom:jdom2'
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -7,6 +7,7 @@ package thredds.server.catalog;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.io.IOException;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
@@ -148,6 +149,34 @@ public class TestTdsDatasetScan {
 
     List<Dataset> children = top.getDatasetsLocal();
     assertThat(children.size()).isEqualTo(3);
+  }
+
+  @Test
+  public void zarrLocalDatasetScan() throws IOException {
+    Catalog cat = TdsLocalCatalog.open("catalog/scanLocalZarr/zarr_test_data.zarr/catalog.xml");
+    assertThat(cat).isNotNull();
+
+    final Dataset dataset = cat.findDatasetByID("scanLocalZarr/zarr_test_data.zarr/group_with_dims");
+    assertThat(dataset).isNotNull();
+    assertThat(dataset.getServiceNameDefault()).ignoringCase().isEqualTo("all");
+
+    final Dataset zarrComponentDataset = cat.findDatasetByID("scanLocalZarr/zarr_test_data.zarr/.zgroup");
+    assertThat(zarrComponentDataset).isNotNull();
+    assertThat(zarrComponentDataset.getServiceNameDefault()).ignoringCase().isEqualTo("HTTPServer");
+  }
+
+  @Test
+  public void zarrS3DatasetScan() throws IOException {
+    Catalog cat = TdsLocalCatalog.open("catalog/s3-dataset-scan-zarr/zarr_test_data.zarr/catalog.xml");
+    assertThat(cat).isNotNull();
+
+    final Dataset dataset = cat.findDatasetByID("testS3DatasetScanZarr/zarr_test_data.zarr/group_with_dims");
+    assertThat(dataset).isNotNull();
+    assertThat(dataset.getServiceNameDefault()).ignoringCase().isEqualTo("all");
+
+    final Dataset zarrComponentDataset = cat.findDatasetByID("testS3DatasetScanZarr/zarr_test_data.zarr/.zgroup");
+    assertThat(zarrComponentDataset).isNotNull();
+    assertThat(zarrComponentDataset.getServiceNameDefault()).ignoringCase().isEqualTo("HTTPServer");
   }
 
   //////////////////////////////////////////////////////
