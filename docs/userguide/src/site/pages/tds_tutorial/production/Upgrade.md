@@ -1,6 +1,6 @@
 ---
 title: Upgrading to TDS version 5
-last_updated: 2024-12-16
+last_updated: 2025-09-16
 sidebar: user_sidebar
 toc: false
 permalink: upgrade.html
@@ -18,7 +18,101 @@ permalink: upgrade.html
   -Dtds.content.root.path=/data/content/
   ~~~
 
-## Overview
+## Quick Navigation
+* [Upgrade from v5.6 to v5.7](#57-upgrade)
+* [Summary of changes from v4.x through v5.6](#upgrading-from-4x)
+
+## 5.7 Upgrade
+
+The following changes will impact the upgrade process from v5.6 to v5.7.
+If you are upgrading to v5.7 from a version prior to v5.6, please see the [summary of changes from v4.x through v5.6](#upgrading-from-4x)
+Going forward, we will document significant changes relative to the previous release and not as a grand summary of changes since 4.x.
+
+### Caching
+
+Chronicle-Map has been replaced with a two-level cache--an entry-limited in-memory [Guava cache](https://github.com/google/guava/wiki/cachesexplained){:target="_blank"} (L1) and a persisted [EclipseStore](https://docs.eclipsestore.io/manual/storage/index.html){:target="_blank"} disk cache (L2).
+Since Chronicle-Map has been removed, the need to add special java options to export specific JVM packages is no longer necessary.
+We used to document these in `setEnvh.sh` as the `CHRONICLE_CACHE` variable:
+
+```bash
+CHRONICLE_CACHE="--add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-exports java.base/sun.nio.ch=ALL-UNNAMED --add-exports jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED --add-opens jdk.compiler/com.sun.tools.javac=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED"
+```
+
+You should remove these from the java options used to start the TDS.
+For more details, please see the [Running Tomcat](running_tomcat.html#setenv.sh) documentation.
+
+Additionally, because of the different caching stack used, a few of the cache related parameters defined in `threddsConfig.xml` have been removed.
+Specifically, the `maxBloatFactor` and `averageValueSize` configuration options have been removed from the `FeatureCollection` cache.
+For more information, please see the [TDS Configuration File Reference](tds_config_ref.html#featurecollection-cache) documentation.
+
+Finally, you will want to remove any of the old chronicle-map based caches:
+* `${tds.content.root.path}/thredds/cache/catalog/*`
+* `${tds.content.root.path}/thredds/cache/collection/*`
+
+### threddsIso
+
+The threddsIso service is once again bundled with the TDS war file, eliminating the need to manually obtain and install the plug-in.
+
+### wms
+
+#### New (old) style
+
+The version of the WMS service shipped with TDS 4.x contained a default style called `colored_fat_arrows`.
+This style is not part of the new `edal-java` library used in TDS 5.x, and as such, has not been usable out of the box.
+While it was possible to manually add this style, it is once again distributed as part of the TDS.
+
+#### Mandatory config changes
+
+If you have not modified the default `wmsConfig.xml` file (`${tds.content.root.path}/thredds/wmsConfig.xml`), you will need to delete it and allow the TDS to create a new one on startup.
+
+If you have modified the `wmsConfig.xml` file, you will need to make some changes before starting TDS v5.7.
+First, open the file and ensure that any references to the wmsConfig dtd are updated to reflect the new 2.0 dtd:
+
+```
+<!DOCTYPE wmsConfig SYSTEM "https://schemas.unidata.ucar.edu/thredds/dtd/ncwms/wmsConfig_2_0.dtd">
+```
+
+Note that older versions may reference the dtd using the hostname `www.unidata.ucar.edu` - these should be updated to use the schemas hostname exactly as shown above.
+
+Additionally, four new default WMS configuration options have been added, and these will need to be added to your existing configuration:
+
+```xml
+<wmsConfig>
+    <global>
+        <defaults>
+          ...
+          <defaultAboveMaxColor>#000000</defaultAboveMaxColor>
+          <defaultBelowMinColor>#000000</defaultBelowMinColor>
+          <defaultNoDataColor>extend</defaultNoDataColor>
+          <defaultOpacity>100</defaultOpacity>
+        </defaults>
+    </global>
+    ...
+</wmsConfig>
+```
+
+A description of these parameters can be found in the [wms customization documentation](customizing_wms.html).
+
+
+### TDM / TDS Local API
+
+A new, local API has been added to the TDS to simplify the process of running the TDM in situations where the TDS and TDM are running on the same system.
+Previously, you needed to configure a tdm tomcat user with authentication to send triggers to the TDS to initiate GRIB related updates.
+With the introduction of the new local API, the TDM can send triggers to a TDS located on the same host without the need for authentication.
+See the [TDM documentation](tdm_ref.html#local-triggers) for more details.
+
+### Zarr compatible datasetScan
+
+Starting with TDS 5.7, version 2 zarr datasets (represented by a directory or S3 key with appropriate delimiter) will be recognized by `datasetScan`s.
+These zarr datasets will have two entries in a catalog: a `catalogRef` that points to a catalog that exposes the underlying directory content (previous behavior), as well as a direct access `dataset` entry (new).
+Component files or objects within a zarr dataset (e.g. `.zgroup`, `.zarrts`, `.zarray`) will only be served using the `HTTPServer`.
+A zarr dataset can be served by any service other than `HTTPServer`.
+Note that many zarr stores utilize `blosc` for compression, which is not supported by netCDF-Java (but is scheduled to be part of the next release), so data access services may fail, but metadata services are expected to work.
+Information on how to describe object storage based datasets can be found in the [netCDF-Java DatasetUrl documentation](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/dataset_urls.html#object-stores).
+Examples of exposing object store hosted data can be seen [here](https://github.com/Unidata/tds/blob/main/tds/src/test/content/thredds/tds-s3.xml){:target="_blank"} and [here](https://github.com/Unidata/tds/blob/main/tds/src/test/content/thredds/tds-zarr.xml){:target="_blank"} (note S3 GRIB collections are a work in progress and not currently supported).
+More documentation to come in the future.
+
+## Upgrading from 4.x
 
 The configuration catalogs and internal state of the TDS has been extensively re-worked to be able to scale to large numbers of catalogs, datasets, and internal objects without excessive use of memory.
 A running TDS can be triggered to reread the configuration catalogs without having to restart.
