@@ -2,7 +2,7 @@
 theme: unidata-jekyll-theme
 
 # this will appear in an HTML meta tag, sidebar, and perhaps elsewhere
-docset_version: 5.7
+docset_version: 5.8
 
 # this appears on the top navigation bar next to the home button
 topnav_title: THREDDS Data Server (TDS)
@@ -79,4 +79,4 @@ netcdf-java_docset_version: 5.9
 # these will appear in various doc pages
 tomcat_version: 10.1
 java_version: 17
-servlet_spec: 3.1
+servlet_spec: 5.0

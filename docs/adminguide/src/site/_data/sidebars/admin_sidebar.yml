@@ -1,7 +1,7 @@
 entries:
 - title: Sidebar
   product: Administrator's Guide
-  version: 5.7
+  version: 5.8
   folders:
   - title:
     output: pdf
