@@ -1,6 +1,6 @@
 ---
 title: THREDDS Metadata
-last_updated: 2020-08-26
+last_updated: 2025-09-16
 sidebar: quickstart_sidebar
 toc: false
 permalink: thredds_metadata.html
@@ -145,7 +145,7 @@ The example enhanced catalog lives at `${tomcat_home}/content/thredds/enhancedCa
 
 ## Resources
 
-* [THREDDS Catalog Client Specification](/InvCatalogSpec.html#dlElements)
+* [THREDDS Catalog Client Specification](server_side_catalog_specification.html)
 
 ## Metadata Standards
 

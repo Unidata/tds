@@ -1,6 +1,6 @@
 ---
 title: Running Tomcat
-last_updated: 2025-07-29
+last_updated: 2025-09-16
 sidebar: user_sidebar
 toc: false
 permalink: running_tomcat.html
@@ -122,7 +122,7 @@ Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.
    # If running the TDM on the same machine as the TDS, you must set this to 
    # enable the use of the local API for receiving triggers. Otherwise, remove
    # this variable and its reference from JAVA_OPTS
-   PUBLIC_API_KEY="-Dtds.local.api.key=$CONTENT_ROOT/tdm/localapi.key"
+   LOCAL_API_KEY="-Dtds.local.api.key=$CONTENT_ROOT/tdm/localapi.key"
 
    # Set java prefs related variables (used by the wms service, for example)
    JAVA_PREFS_ROOTS="-Djava.util.prefs.systemRoot=$CONTENT_ROOT/thredds/javaUtilPrefs \
@@ -138,7 +138,7 @@ Download an {% include link_file.html file="tds_tutorial/getting_started/setenv.
    #
    # Standard setup.
    #
-   JAVA_OPTS="$CONTENT_ROOT_OPT $NORMAL $HEAP_DUMP $HEADLESS $JAVA_PREFS_ROOTS $PUBLIC_API_KEY"
+   JAVA_OPTS="$CONTENT_ROOT_OPT $NORMAL $HEAP_DUMP $HEADLESS $JAVA_PREFS_ROOTS $LOCAL_API_KEY"
 
    export JAVA_OPTS
    ~~~
