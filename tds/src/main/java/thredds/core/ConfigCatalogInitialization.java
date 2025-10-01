@@ -168,6 +168,8 @@ public class ConfigCatalogInitialization {
               "ConfigCatalogInitializion datasetTracker database already exists - closing it before reinitialization.");
           try {
             this.datasetTracker.close();
+            this.datasetTracker =
+                new DatasetTrackerDiskPersistedCache(Paths.get(trackerDir).toString(), trackerNumber, maxDatasets);
           } catch (IOException e) {
             logCatalogInit.error("There was an error closing the datasetTracker database.", e);
           }
