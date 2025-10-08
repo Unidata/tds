@@ -216,19 +216,18 @@ class TdsConfigMapper {
       }
       wmsConfig.setAllowRemote(Boolean.parseBoolean(WMS_ALLOW_REMOTE.getValueFromThreddsConfig()));
 
-      final String paletteLocation =
-          getValueFromThreddsConfigOrDefault(WMS_PALETTE_LOCATION_DIR, defaultPaletteLocation);
-      wmsConfig.setPaletteLocationDir(paletteLocation);
+      wmsConfig.setPaletteLocationDir(getFullPath(
+          getValueFromThreddsConfigOrDefault(WMS_PALETTE_LOCATION_DIR, defaultPaletteLocation), tdsContext));
       try {
-        startupLog.info("Loading custom WMS palette files from " + paletteLocation);
-        ColourPalette.addPaletteDirectory(new File(paletteLocation));
+        startupLog.info("Loading custom WMS palette files from " + wmsConfig.getPaletteLocationDir());
+        ColourPalette.addPaletteDirectory(new File(wmsConfig.getPaletteLocationDir()));
       } catch (FileNotFoundException e) {
         // If there is an error adding a custom palette, it is logged in the server startup log by edal-java.
         // If there is an error with the directory itself, it will throw a FileNotFoundException.
         // However, let's skip logging if the palette location is the default location, since an admin might not have
         // created a custom palette directory.
-        if (!paletteLocation.equals(defaultPaletteLocation)) {
-          startupLog.warn("Could not find custom palette directory {}", paletteLocation, e);
+        if (!wmsConfig.getPaletteLocationDir().equals(defaultPaletteLocation)) {
+          startupLog.warn("Could not find custom palette directory {}", wmsConfig.getPaletteLocationDir(), e);
         }
       }
 
@@ -263,17 +262,19 @@ class TdsConfigMapper {
       // only load styles from WMS_STYLES_LOCATION_DIR (as set in threddsConfig.xml) if it is set
       final String stylesLocation = getValueFromThreddsConfigOrDefault(WMS_STYLES_LOCATION_DIR, "");
       if (!stylesLocation.isEmpty()) {
-        wmsConfig.setStylesLocationDir(stylesLocation);
-        try {
-          startupLog.info("Loading custom WMS style files from " + stylesLocation);
-          SldTemplateStyleCatalogue.getStyleCatalogue().addStylesInDirectory(new File(stylesLocation));
-        } catch (FileNotFoundException e) {
-          if (!stylesLocation.equals(defaultStylesLocation)) {
-            startupLog.warn("Could not find custom styles directory {}", stylesLocation, e);
+        final String fullStylesLocation = getFullPath(stylesLocation, tdsContext);
+        // and is not the default location (which is always loaded)
+        if (!fullStylesLocation.equals(defaultStylesLocation)) {
+          wmsConfig.setStylesLocationDir(fullStylesLocation);
+          try {
+            startupLog.info("Loading custom WMS style files from {}", wmsConfig.getStylesLocationDir());
+            SldTemplateStyleCatalogue.getStyleCatalogue()
+                .addStylesInDirectory(new File(wmsConfig.getStylesLocationDir()));
+          } catch (FileNotFoundException e) {
+            startupLog.warn("Could not find custom styles directory {}", wmsConfig.getStylesLocationDir(), e);
           }
         }
       }
-
 
       final String wmsConfigFile = getValueFromThreddsConfigOrDefault(WMS_CONFIG_FILE, defaultWmsConfigFile);
 
@@ -319,6 +320,12 @@ class TdsConfigMapper {
       return defaultValue;
     }
     return value;
+  }
+
+  private static String getFullPath(String path, TdsContext tdsContext) {
+    Path p = Paths.get(path);
+    return p.isAbsolute() ? path
+        : Paths.get(tdsContext.getThreddsDirectory().getAbsolutePath()).resolve(p).toAbsolutePath().toString();
   }
 
   enum TdsUpdateConfigMappings {
