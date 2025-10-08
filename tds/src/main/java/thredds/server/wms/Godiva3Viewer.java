@@ -56,6 +56,7 @@ public class Godiva3Viewer implements Viewer {
   static private final Logger logger = LoggerFactory.getLogger(Godiva3Viewer.class);
 
   static private final String title = "Godiva3";
+  static private final String description = "A web-based OGC WMS client configured to visualize this dataset.";
 
   /**
    * Returns true if this is a gridded dataset that is accessible via WMS.
@@ -101,7 +102,6 @@ public class Godiva3Viewer implements Viewer {
       return null;
 
     }
-    return new ViewerLinkProvider.ViewerLink(Godiva3Viewer.title, url, "",
-        ViewerLinkProvider.ViewerLink.ViewerType.Browser);
+    return new ViewerLinkProvider.ViewerLink(title, url, description, ViewerLinkProvider.ViewerLink.ViewerType.Browser);
   }
 }
