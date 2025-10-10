@@ -301,9 +301,13 @@ entries:
               url: /dataset_source_plugin.html
               output: web, pdf
 
-        - title: Netcdf Subset Service (NCSS)
+        - title: Services
           output: web, pdf
           subfolderitems:
+            - title: TDS Services
+              url: /services_ref.html
+              output: web, pdf
+
             - title: NCSS Reference
               url: /netcdf_subset_service_ref.html
               output: web, pdf
@@ -314,13 +318,6 @@ entries:
 
             - title: NCSS For Point Data
               url: /ncss_point.html
-              output: web, pdf
-
-        - title: Services
-          output: web, pdf
-          subfolderitems:
-            - title: TDS Services
-              url: /services_ref.html
               output: web, pdf
 
             - title: WCS Reference
