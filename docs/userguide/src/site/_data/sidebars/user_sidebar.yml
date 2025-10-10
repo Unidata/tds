@@ -331,6 +331,16 @@ entries:
             - title: Customizing WMS
               url: /customizing_wms.html
               output: web, pdf
+        - title: GRIB
+          output: web, pdf
+          subfolderitems:
+            - title: GRIB Collection Configuration
+              url: /grib_collection_config_ref.html
+              output: web, pdf
+
+            - title: GRIB Time Partitions
+              url: /partitions_ref.html
+              output: web, pdf
 
     - title: Configuring TDS With DatasetScan
       url: /tds_dataset_scan_ref.html
@@ -356,21 +366,9 @@ entries:
       url: /tdm_ref.html
       output: web, pdf
 
-
-    
     - title: PointFeature Collection Reference
       url: /pointfeature_collection_ref.html
       output: web, pdf
-
-    - title: GRIB Collection Configuration
-      url: /grib_collection_config_ref.html
-      output: web, pdf
-       
-    - title: GRIB Time Partitions
-      url: /partitions_ref.html
-      output: web, pdf
-
-
 
     - title: Digital Libraries Reference
       url: /digital_libraries.html
