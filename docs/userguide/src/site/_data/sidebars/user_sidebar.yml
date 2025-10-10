@@ -268,26 +268,18 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: Dataset Viewer
-      url: /viewers_ref.html
-      output: web, pdf
-
-
+    - output: web, pdf
 
       subfolders:
-        - title: TDS Catalogs
+        - title: THREDDS Catalogs
           output: web, pdf
           subfolderitems:
-            - title: TDS Config (threddsConfig.xml)
-              url: /tds_config_ref.html
+            - title: Client-Side Catalog Specification
+              url: /client_side_catalog_specification.html
               output: web, pdf
 
             - title: Server-Side Catalog Specification
               url: /server_side_catalog_specification.html
-              output: web, pdf
-
-            - title: Client-Side Catalog Specification
-              url: /client_side_catalog_specification.html
               output: web, pdf
 
         - title: For Developers
@@ -301,9 +293,13 @@ entries:
               url: /dataset_source_plugin.html
               output: web, pdf
 
-        - title: Netcdf Subset Service (NCSS)
+        - title: Services
           output: web, pdf
           subfolderitems:
+            - title: TDS Services
+              url: /services_ref.html
+              output: web, pdf
+
             - title: NCSS Reference
               url: /netcdf_subset_service_ref.html
               output: web, pdf
@@ -314,13 +310,6 @@ entries:
 
             - title: NCSS For Point Data
               url: /ncss_point.html
-              output: web, pdf
-
-        - title: Services
-          output: web, pdf
-          subfolderitems:
-            - title: TDS Services
-              url: /services_ref.html
               output: web, pdf
 
             - title: WCS Reference
@@ -334,6 +323,20 @@ entries:
             - title: Customizing WMS
               url: /customizing_wms.html
               output: web, pdf
+        - title: GRIB
+          output: web, pdf
+          subfolderitems:
+            - title: GRIB Collection Configuration
+              url: /grib_collection_config_ref.html
+              output: web, pdf
+
+            - title: GRIB Time Partitions
+              url: /partitions_ref.html
+              output: web, pdf
+
+    - title: TDS Config (threddsConfig.xml)
+      url: /tds_config_ref.html
+      output: web, pdf
 
     - title: Configuring TDS With DatasetScan
       url: /tds_dataset_scan_ref.html
@@ -359,21 +362,13 @@ entries:
       url: /tdm_ref.html
       output: web, pdf
 
+    - title: Dataset Viewer
+      url: /viewers_ref.html
+      output: web, pdf
 
-    
     - title: PointFeature Collection Reference
       url: /pointfeature_collection_ref.html
       output: web, pdf
-
-    - title: GRIB Collection Configuration
-      url: /grib_collection_config_ref.html
-      output: web, pdf
-       
-    - title: GRIB Time Partitions
-      url: /partitions_ref.html
-      output: web, pdf
-
-
 
     - title: Digital Libraries Reference
       url: /digital_libraries.html
