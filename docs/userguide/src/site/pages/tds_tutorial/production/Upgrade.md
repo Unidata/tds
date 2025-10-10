@@ -1,6 +1,6 @@
 ---
 title: Upgrading to TDS version 5
-last_updated: 2025-09-17
+last_updated: 2025-10-10
 sidebar: user_sidebar
 toc: false
 permalink: upgrade.html
@@ -178,6 +178,8 @@ TDS 5.x uses the [edal-java](https://github.com/Reading-eScience-Centre/edal-jav
 As this is a major version change to that library, there may be some breaking changes.
 See also the [edal user guide](https://reading-escience-centre.gitbooks.io/edal-user-guide/content/) and the 
 [changes from ncWMS 1.x](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/01-ncwms1x.html#changes).
+If you created palette files for TDS 4.x and would like to use them in TDS 5.x, an open source tool named [Magic Palette Converter](https://github.com/billyz313/magic-palette-converter){:target="_blank"} for THREDDS is available to assist in the conversion (special thanks to [Billy Ashmall](https://github.com/Unidata/tds/discussions/346){:target="_blank"}!)
+
 Starting with TDS 5.6, `wmsConfig.xml` has been extended to support four new default options:
 * defaultAboveMaxColor
 * defaultBelowMinColor
