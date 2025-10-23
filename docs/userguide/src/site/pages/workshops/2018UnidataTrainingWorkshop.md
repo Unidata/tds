@@ -148,7 +148,7 @@ permalink:  workshop2018.html
 * Email Lists: thredds@unidata.ucar.edu; netcdf-java@unidata.ucar.edu
 * Support: support-thredds@unidata.ucar.edu; support-netcdf-java@unidata.ucar.edu
 * [TdsConfig on github](https://github.com/unidata/TdsConfig){:target="_blank"}
-* [Upgrading to 5.0](upgrade.html)
+* [Upgrading to 5.x](upgrade.html)
    
 ### 4:00 Open Discussion / Participant Systems / Participant feedback (Sean)
 

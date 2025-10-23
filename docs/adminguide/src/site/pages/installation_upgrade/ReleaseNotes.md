@@ -1,6 +1,6 @@
 ---
 title: Release Notes
-last_updated: 2025-09-17
+last_updated: 2025-10-23
 sidebar: admin_sidebar
 toc: true
 permalink: release_notes.html
@@ -19,11 +19,21 @@ permalink: release_notes.html
   ~~~
 
 ## Quick Navigation
+
+* [Upgrade from v5.8 to v5.9](#59-upgrade)
 * [Upgrade from v5.7 to v5.8](#58-upgrade)
 * [Upgrade from v5.6 to v5.7](#57-upgrade)
 * [Summary of changes from v4.x through v5.6](#upgrading-from-4x)
 
+## 5.9 Upgrade
+
 ## 5.8 Upgrade
+
+The TDS v5.8 release is a bug-fix-only release, and, if upgrading from 5.7, does not require any special changes to the TDS configuration.
+If upgrading from version 5.6 or prior, please see the upgrade notes detailed in the rest of this page.
+The major bug addressed in this release is related to caching of certain types of datasets on startup.
+It is strongly recommended that administrators upgrade to this release.
+More information about the release can be found on the [GitHub release page](https://github.com/Unidata/tds/releases/tag/v5.8){:target="_blank"}.
 
 ## 5.7 Upgrade
 

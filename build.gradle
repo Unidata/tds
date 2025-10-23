@@ -38,7 +38,7 @@ allprojects {
   // Matches Maven's "project.version". Used in MANIFEST.MF for "Implementation-Version".
   // We try to follow semantic versioning, and thus we use <major>.<minor>.<patch>-<prerelease version>
   // <prerelease version> may be SNAPSHOT, alphax, betax, etc.
-  version = '5.8-SNAPSHOT'
+  version = '5.9-SNAPSHOT'
   status = 'development'
   //status = 'release'
 }

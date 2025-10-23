@@ -1,7 +1,7 @@
 entries:
 - title: Sidebar
   product: TDS User's Guide
-  version: 5.8
+  version: 5.9
   folders:
 
   - title:
@@ -241,7 +241,7 @@ entries:
       url: /performance_tips.html
       output: web, pdf
 
-    - title: Upgrading To 5.0
+    - title: Upgrading To 5.x
       url: /upgrade.html
       output: web, pdf
 
