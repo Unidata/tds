@@ -1,6 +1,6 @@
 ---
 title: Upgrading to TDS version 5
-last_updated: 2025-10-10
+last_updated: 2025-10-23
 sidebar: user_sidebar
 toc: false
 permalink: upgrade.html
@@ -19,9 +19,13 @@ permalink: upgrade.html
   ~~~
 
 ## Quick Navigation
+
+* [Upgrade from v5.8 to v5.9](#59-upgrade)
 * [Upgrade from v5.7 to v5.8](#58-upgrade)
 * [Upgrade from v5.6 to v5.7](#57-upgrade)
 * [Summary of changes from v4.x through v5.6](#upgrading-from-4x)
+
+## 5.9 Upgrade
 
 ## 5.8 Upgrade
 
