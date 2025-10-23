@@ -241,7 +241,7 @@ entries:
       url: /performance_tips.html
       output: web, pdf
 
-    - title: Upgrading To 5.0
+    - title: Upgrading To 5.x
       url: /upgrade.html
       output: web, pdf
 
