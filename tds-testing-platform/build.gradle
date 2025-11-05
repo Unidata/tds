@@ -13,6 +13,7 @@ dependencies {
   api enforcedPlatform(project(':tds-platform'))
 
   constraints {
+    api "edu.ucar:cdm-test-utils:${depVersion.netcdfJava}"
 
     // Spring
     api 'org.springframework:spring-test'
