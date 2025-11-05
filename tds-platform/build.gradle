@@ -13,7 +13,7 @@ dependencies {
   // when resolving dependencies (even transitively)
   // If there is a conflict (previously hidden by optimistic resolution), we should get an error when we build, and
   // at that point we can take things on a case-by-case basis.
-  api enforcedPlatform("edu.ucar:netcdf-java-bom:${depVersion.netcdfJava}")
+  api enforcedPlatform("edu.ucar:netcdf-java-platform:${depVersion.netcdfJava}")
   api enforcedPlatform('org.springframework:spring-framework-bom:6.2.10')
   api enforcedPlatform('org.springframework.security:spring-security-bom:6.5.2')
   api enforcedPlatform("org.apache.logging.log4j:log4j-bom:2.25.1")
