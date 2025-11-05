@@ -655,15 +655,17 @@ public class CDMWrap {
     recordNode(cdmattr, dapattr);
     // Transfer the values
     Array values = cdmattr.getValues();
-    if (!validatecdmtype(cdmattr.getDataType(), values.getElementType()))
-      throw new DapException("Attr type versus attribute data mismatch: " + values.getElementType());
-    IndexIterator iter = values.getIndexIterator();
-    String[] valuelist = null;
-    Object vec = CDMTypeFcns.createVector(cdmattr.getDataType(), values.getSize());
-    for (int i = 0; iter.hasNext(); i++) {
-      java.lang.reflect.Array.set(vec, i, iter.next());
+    String[] valuelist = new String[] {};
+    if (values != null) {
+      if (!validatecdmtype(cdmattr.getDataType(), values.getElementType()))
+        throw new DapException("Attr type versus attribute data mismatch: " + values.getElementType());
+      IndexIterator iter = values.getIndexIterator();
+      Object vec = CDMTypeFcns.createVector(cdmattr.getDataType(), values.getSize());
+      for (int i = 0; iter.hasNext(); i++) {
+        java.lang.reflect.Array.set(vec, i, iter.next());
+      }
+      valuelist = (String[]) Convert.convert(DapType.STRING, attrtype, vec);
     }
-    valuelist = (String[]) Convert.convert(DapType.STRING, attrtype, vec);
     dapattr.setValues(valuelist);
     return dapattr;
   }
