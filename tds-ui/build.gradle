@@ -11,7 +11,7 @@ dependencies {
   implementation enforcedPlatform(project(':tds-platform'))
   testImplementation enforcedPlatform(project(':tds-testing-platform'))
 
-  runtimeOnly 'edu.ucar:uicdm'
+  runtimeOnly "edu.ucar:uicdm:${depVersion.netcdfJava}"
   runtimeOnly 'edu.ucar:cdm-s3'
   runtimeOnly project(':tds-ugrid')
 }
