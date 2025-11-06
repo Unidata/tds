@@ -3,6 +3,7 @@ apply from: "$rootDir/gradle/any/java-published.gradle"
 
 dependencies {
   implementation enforcedPlatform(project(':tds-platform'))
+  testImplementation enforcedPlatform (project(':tds-testing-platform'))
 
   implementation 'edu.ucar:dap4'
   implementation 'edu.ucar:httpservices'
@@ -11,4 +12,10 @@ dependencies {
   implementation 'org.apache.commons:commons-lang3'
   compileOnly 'jakarta.servlet:jakarta.servlet-api'
   compileOnly 'org.slf4j:slf4j-api'
+
+  testImplementation 'com.google.truth:truth'
+  testImplementation 'edu.ucar:cdm-test-utils'  // Contains stuff like the JUnit @Category classes.
+  testImplementation 'jakarta.servlet:jakarta.servlet-api'
+  testImplementation 'junit:junit'
+  testImplementation 'org.mockito:mockito-core'
 }
