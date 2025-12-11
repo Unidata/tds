@@ -1,6 +1,6 @@
 /*
- * Copyright 2012, UCAR/Unidata.
- * See the LICENSE file for more information.
+ * Copyright (c) 2012-2025 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
  */
 
 package dap4.servlet;
@@ -439,9 +439,10 @@ public class ChunkWriter extends OutputStream {
           avail = chunk.remaining();
         }
         int towrite = (left < avail ? left : avail);
-        chunk.put(b, off, towrite);
+        chunk.put(b, offset, towrite);
         left -= towrite;
         avail -= towrite;
+        offset += towrite;
       } while (left > 0);
     }
     writecount += len;
