@@ -9,8 +9,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import dap4.mock.mock.MockResponseOutputStream;
-import dap4.mock.mock.TestDapControllerBase;
+import dap4.mock.MockResponseOutputStream;
+import dap4.mock.TestDapControllerBase;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
