@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-package dap4.mock.mock;
+package dap4.mock;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.WriteListener;

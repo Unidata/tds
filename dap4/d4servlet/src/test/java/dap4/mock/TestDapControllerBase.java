@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-package dap4.mock.mock;
+package dap4.mock;
 
 import dap4.core.util.DapContext;
 import dap4.core.util.DapException;
