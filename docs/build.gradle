@@ -52,7 +52,7 @@ tasks.register(buildAllJekyllSitesTaskName) {
 String docTheme = "unidata-jekyll-docs:0.0.6"
 
 boolean isGitHub = System.getenv('GITHUB_ACTIONS') as boolean
-String imageBaseUrl = "docker.unidata.ucar.edu"
+String imageBaseUrl = "docker.io/unidata"
 if (isGitHub) {
   imageBaseUrl = "ghcr.io/unidata"
 }
