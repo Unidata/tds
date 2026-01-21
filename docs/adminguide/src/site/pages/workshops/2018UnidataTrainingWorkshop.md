@@ -140,7 +140,7 @@ permalink:  workshop2018.html
 ### 3:00 (30 minutes) Resources and Contributing (Sean)
 * [Source](https://github.com/unidata/thredds){:target="_blank"} on GitHub
 * [Issue](https://github.com/unidata/thredds/issues){:target="_blank"} Tracking with GitHub
-* Maven artifacts on [Nexus](https://artifacts.unidata.ucar.edu/){:target="_blank"} 
+* Maven artifacts on [artifacts.unidata.ucar.edu](https://artifacts.unidata.ucar.edu/){:target="_blank"} 
 * CDM/TDS Nightly Build/Test System (full test suite)
 * Continuous Integration on Travis (subset of tests)
 * Static code analysis on sonarcloud
