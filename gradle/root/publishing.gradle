@@ -16,7 +16,7 @@ if (!name.equals(rootProject.name)) {
 }
 
 apply plugin: 'maven-publish'
-apply from: "$rootDir/gradle/any/properties.gradle"  // For Nexus credential properties.
+apply from: "$rootDir/gradle/any/properties.gradle"  // For artifacts server credential properties.
 
 tasks.withType(GenerateModuleMetadata) {
   enabled = false
@@ -76,8 +76,8 @@ def createChecksumsTask = tasks.register('createChecksums') {
 }
 
 
-// The "publish" tasks require credentials for our Nexus server, which they look for in Gradle properties.
-// If those properties (i.e. NEXUS_USERNAME_KEY and NEXUS_PASSWORD_KEY) haven't been provided, the build will fail.
+// The "publish" tasks require credentials for our artifacts server, which they look for in Gradle properties.
+// If those properties (i.e. ARTIFACTS_USERNAME_KEY and ARTIFACTS_PASSWORD_KEY) haven't been provided, the build will fail.
 // Therefore, we only want to configure credentials when a "publish" task is part of the execution plan. Otherwise,
 // unavailable credentials could cause a build to fail even if we aren't doing any publishing. The TaskExecutionGraph
 // allows us to do that.
@@ -89,8 +89,8 @@ gradle.taskGraph.whenReady {TaskExecutionGraph taskGraph ->
 
   mavenPublishTasks.each {
     it.repository.credentials.with {
-      username = getPropertyOrFailBuild NEXUS_USERNAME_KEY
-      password = getPropertyOrFailBuild NEXUS_PASSWORD_KEY
+      username = getPropertyOrFailBuild ARTIFACTS_USERNAME_KEY
+      password = getPropertyOrFailBuild ARTIFACTS_PASSWORD_KEY
     }
   }
 }

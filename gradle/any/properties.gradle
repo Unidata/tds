@@ -1,7 +1,7 @@
 ext {
-  // Used to publish Maven artifacts to Unidata's Nexus repository, https://artifacts.unidata.ucar.edu
-  NEXUS_USERNAME_KEY = 'nexus.username'
-  NEXUS_PASSWORD_KEY = 'nexus.password'
+  // Used to publish Maven artifacts to Unidata's artifacts server, https://artifacts.unidata.ucar.edu
+  ARTIFACTS_USERNAME_KEY = 'artifacts.username'
+  ARTIFACTSS_PASSWORD_KEY = 'artifacts.password'
 
   // Used to publish static analysis report to https://sonarcloud.io/dashboard?id=edu.ucar.unidata:tds
   SONARQUBE_USER_TOKEN_KEY = 'sonarqube.user.token.tds'
