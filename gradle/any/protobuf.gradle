@@ -1,7 +1,0 @@
-apply plugin: 'com.google.protobuf'
-
-protobuf {
-  protoc {
-    artifact = "com.google.protobuf:protoc:${depVersion.protobuf}"
-  }
-}
