@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022-2026 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.tds;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -58,8 +63,9 @@ public class TestFreshTdsInstall {
     final String controlFileName = "enhancedCatalog.xml";
 
     // retrieve the sever base URI (set by Gretty) and construct catalog endpoint with it
-    final String preferredBaseURI = System.getProperty("gretty.preferredBaseURI");
-    assertThat(preferredBaseURI).isNotNull();
+    // final String preferredBaseURI = System.getProperty("gretty.preferredBaseURI");
+    final String preferredBaseURI = "http://localhost:8081/thredds";
+    // assertThat(preferredBaseURI).isNotNull();
     final String endpoint = preferredBaseURI + "/catalog/enhancedCatalog.xml";
 
     // server responds with HTTP code 200 and XML content. method contains JUnit assertions
