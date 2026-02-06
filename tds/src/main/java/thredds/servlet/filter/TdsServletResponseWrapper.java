@@ -66,10 +66,10 @@ public class TdsServletResponseWrapper extends HttpServletResponseWrapper {
     super.setStatus(sc);
   }
 
-  @Override
+
   public void setStatus(int sc, String sm) {
     this.setHttpStatusCode(sc);
-    super.setStatus(sc, sm);
+    super.setStatus(sc);
   }
 
   @Override
