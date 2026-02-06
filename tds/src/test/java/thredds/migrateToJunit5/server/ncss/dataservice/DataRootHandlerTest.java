@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-package thredds.server.ncss.dataservice;
+package thredds.migrateToJunit5.server.ncss.dataservice;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import thredds.junit4.SpringJUnit4ParameterizedClassRunner;
+import thredds.migrateToJunit5.junit4.junit4.SpringJUnit4ParameterizedClassRunner;
 import thredds.mock.params.GridPathParams;
 import thredds.mock.web.MockTdsContextLoader;
 import thredds.core.DataRootManager;

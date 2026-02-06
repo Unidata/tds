@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-package thredds.server.ncss.controller.grid;
+package thredds.migrateToJunit5.server.ncss.controller.grid;
 
 import org.junit.Before;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import thredds.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
+import thredds.migrateToJunit5.junit4.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
 import thredds.mock.params.GridDataParameters;
 import thredds.mock.params.GridPathParams;
 import thredds.server.ncss.format.SupportedFormat;

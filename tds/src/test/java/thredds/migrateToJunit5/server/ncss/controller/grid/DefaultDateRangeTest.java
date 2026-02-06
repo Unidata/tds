@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION
  * WITH THE ACCESS, USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-package thredds.server.ncss.controller.grid;
+package thredds.migrateToJunit5.server.ncss.controller.grid;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -37,7 +37,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
-import thredds.junit4.SpringJUnit4ParameterizedClassRunner;
+import thredds.migrateToJunit5.junit4.junit4.SpringJUnit4ParameterizedClassRunner;
 import thredds.mock.web.MockTdsContextLoader;
 import thredds.server.ncss.params.NcssGridParamsBean;
 import ucar.nc2.time.Calendar;

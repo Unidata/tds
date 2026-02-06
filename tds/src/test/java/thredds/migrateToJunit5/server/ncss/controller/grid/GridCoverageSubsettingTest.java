@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-package thredds.server.ncss.controller.grid;
+package thredds.migrateToJunit5.server.ncss.controller.grid;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertArrayEquals;
@@ -26,8 +26,8 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import thredds.junit4.SpringJUnit4ParameterizedClassRunner;
-import thredds.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
+import thredds.migrateToJunit5.junit4.junit4.SpringJUnit4ParameterizedClassRunner;
+import thredds.migrateToJunit5.junit4.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.ma2.Array;
 import ucar.nc2.NetcdfFile;

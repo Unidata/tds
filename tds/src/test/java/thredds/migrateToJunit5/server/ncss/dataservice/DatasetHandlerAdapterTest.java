@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-package thredds.server.ncss.dataservice;
+package thredds.migrateToJunit5.server.ncss.dataservice;
 
 import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
@@ -17,8 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import thredds.mock.params.GridPathParams;
 import thredds.mock.web.MockTdsContextLoader;
-import thredds.junit4.SpringJUnit4ParameterizedClassRunner;
-import thredds.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
+import thredds.migrateToJunit5.junit4.junit4.SpringJUnit4ParameterizedClassRunner;
+import thredds.migrateToJunit5.junit4.junit4.SpringJUnit4ParameterizedClassRunner.Parameters;
+import thredds.server.ncss.dataservice.DatasetHandlerAdapter;
 import ucar.nc2.dt.GridDataset;
 import ucar.unidata.util.test.category.NeedsCdmUnitTest;
 

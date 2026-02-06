@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-package thredds.server.ncss.controller.grid;
+package thredds.migrateToJunit5.server.ncss.controller.grid;
 
 import com.beust.jcommander.internal.Lists;
 import org.junit.Before;
@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import thredds.junit4.SpringJUnit4ParameterizedClassRunner;
+import thredds.migrateToJunit5.junit4.junit4.SpringJUnit4ParameterizedClassRunner;
 import thredds.mock.web.MockTdsContextLoader;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
