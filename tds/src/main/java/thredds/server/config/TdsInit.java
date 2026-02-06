@@ -533,6 +533,11 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
       startupLog.error("Failed to give epsg database extra time to clean-up. May get warning about a memory leak.");
     }
 
+    // native library cleaner threads from JNA
+    if (NetcdfClibrary.isLibraryPresent()) {
+      NetcdfClibrary.shutdown();
+    }
+
     startupLog.info("TdsInit shutdown");
     MDC.clear();
   }
