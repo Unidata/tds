@@ -1,6 +1,14 @@
+/*
+ * Copyright (c) 2009-2026 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.util;
 
-import junit.framework.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.server.wcs.Version;
@@ -12,13 +20,10 @@ import java.lang.invoke.MethodHandles;
  * @author edavis
  * @since 4.0
  */
-public class TestVersion extends TestCase {
+public class TestVersion {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  public TestVersion(String name) {
-    super(name);
-  }
-
+  @Test
   public void testValidVersions() {
     validVersionExpected("1.0");
     validVersionExpected("007");
@@ -36,14 +41,11 @@ public class TestVersion extends TestCase {
     invalidVersionExpected("1.");
   }
 
-  /**
-   * Test ...
-   */
+  @Test
   public void testCompareTo() {
     Version v1, v1_alt, v1_0, v1_0_alt, v1_0_0, v1_0_0_alt;
 
     Version v1_1;
-
 
     try {
       v1 = new Version("1");
@@ -111,5 +113,4 @@ public class TestVersion extends TestCase {
     }
     fail("Unexpected valid version <" + verStr + ">: ");
   }
-
 }

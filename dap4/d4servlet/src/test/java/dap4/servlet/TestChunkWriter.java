@@ -89,7 +89,7 @@ public class TestChunkWriter {
     // verify CHUNKSIZE (first chunk contains full MAXCHUNKSIZE bytes)
     assertThat(getSize(
         new byte[] {chunkResponseByteBuffer.get(), chunkResponseByteBuffer.get(), chunkResponseByteBuffer.get()}))
-            .isEqualTo(MAXCHUNKSIZE);
+        .isEqualTo(MAXCHUNKSIZE);
 
     // verify int values of first CHUNKDATA,
     int lastCompleteValueFromChunks = -1;
