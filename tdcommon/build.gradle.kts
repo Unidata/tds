@@ -4,8 +4,8 @@
  */
 
 plugins {
-  id("java-library-conventions")
-  id("protobuf-conventions")
+  id("tds-java-library-conventions")
+  id("tds-protobuf-conventions")
 }
 
 description = "A collection of utilities needed server-side, including THREDDS catalog handling."
@@ -15,35 +15,35 @@ extra["project.title"] = "Server-side common library"
 dependencies {
   implementation(platform(project(":tds-platform")))
 
-  implementation(libs.eclipse.serializerPersistenceBinaryJdk8)
-  implementation(libs.eclipse.serializerPersistenceBinaryJdk17)
-  implementation(libs.eclipse.storeCache)
-  implementation(libs.findbugs.jsr305)
-  implementation(libs.guava)
-  implementation(libs.jakarta.annotationApi)
-  implementation(libs.jakarta.validationApi)
-  implementation(libs.jdom2)
-  implementation(libs.protobuf)
-  implementation(libs.quartz)
-  implementation(libs.re2j)
-  implementation(libs.slf4j.api)
-  implementation(libs.springframework.beans)
-  implementation(libs.springframework.context)
-  implementation(libs.springframework.core)
-  implementation(libs.ucar.cdmCore)
-  implementation(libs.ucar.cdmS3)
-  implementation(libs.ucar.cdmZarr)
-  implementation(libs.ucar.grib)
+  implementation(tdsLibs.eclipse.serializerPersistenceBinaryJdk8)
+  implementation(tdsLibs.eclipse.serializerPersistenceBinaryJdk17)
+  implementation(tdsLibs.eclipse.storeCache)
+  implementation(tdsLibs.findbugs.jsr305)
+  implementation(tdsLibs.guava)
+  implementation(tdsLibs.jakarta.annotationApi)
+  implementation(tdsLibs.jakarta.validationApi)
+  implementation(tdsLibs.jdom2)
+  implementation(tdsLibs.protobuf)
+  implementation(tdsLibs.quartz)
+  implementation(tdsLibs.re2j)
+  implementation(tdsLibs.slf4j.api)
+  implementation(tdsLibs.springframework.beans)
+  implementation(tdsLibs.springframework.context)
+  implementation(tdsLibs.springframework.core)
+  implementation(tdsLibs.ucar.cdmCore)
+  implementation(tdsLibs.ucar.cdmS3)
+  implementation(tdsLibs.ucar.cdmZarr)
+  implementation(tdsLibs.ucar.grib)
 
   testImplementation(platform(project(":tds-testing-platform")))
 
-  testImplementation(libs.google.truth)
-  testImplementation(libs.mockito.core)
-  testImplementation(libs.ucar.cdmTestUtils)
+  testImplementation(tdsLibs.google.truth)
+  testImplementation(tdsLibs.mockito.core)
+  testImplementation(tdsLibs.ucar.cdmTestUtils)
 
-  testCompileOnly(libs.junit4)
+  testCompileOnly(tdsLibs.junit4)
 
-  testRuntimeOnly(libs.junit5.platformLauncher)
-  testRuntimeOnly(libs.junit5.vintageEngine)
-  testRuntimeOnly(libs.logback.classic)
+  testRuntimeOnly(tdsLibs.junit5.platformLauncher)
+  testRuntimeOnly(tdsLibs.junit5.vintageEngine)
+  testRuntimeOnly(tdsLibs.logback.classic)
 }

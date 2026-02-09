@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-plugins { alias(libs.plugins.spotless) }
+plugins { alias(tdsLibs.plugins.spotless) }
 
 description = "The NSF Unidata THREDDS Data Server (TDS)."
 
@@ -16,10 +16,10 @@ tasks.wrapper {
 }
 
 spotless {
-  // check all gradle build scripts (build-logic has its own formatting check)
+  // check all gradle build scripts (build-logic-tds has its own formatting check)
   kotlinGradle {
     target("*.gradle.kts", "**/*.gradle.kts")
-    targetExclude("build-logic/**/*")
+    targetExclude("build-logic-tds/**/*")
     ktfmt().googleStyle()
   }
 }

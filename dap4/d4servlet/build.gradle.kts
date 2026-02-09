@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-plugins { id("java-library-conventions") }
+plugins { id("tds-java-library-conventions") }
 
 description = "OPeNDAP DAP4 servlet used by the THREDDS Data Server (TDS)."
 
@@ -12,23 +12,23 @@ extra["project.title"] = "OPeNDAP DAP4 servlet code"
 dependencies {
   implementation(platform(project(":tds-platform")))
 
-  implementation(libs.commons.lang3)
-  implementation(libs.slf4j.api)
-  implementation(libs.ucar.cdmCore)
-  implementation(libs.ucar.dap4)
-  implementation(libs.ucar.httpservices)
+  implementation(tdsLibs.commons.lang3)
+  implementation(tdsLibs.slf4j.api)
+  implementation(tdsLibs.ucar.cdmCore)
+  implementation(tdsLibs.ucar.dap4)
+  implementation(tdsLibs.ucar.httpservices)
 
-  compileOnly(libs.jakarta.servletApi)
+  compileOnly(tdsLibs.jakarta.servletApi)
 
   testImplementation(platform(project(":tds-testing-platform")))
 
-  testImplementation(libs.google.truth)
-  testImplementation(libs.jakarta.servletApi)
-  testImplementation(libs.mockito.core)
-  testImplementation(libs.ucar.cdmTestUtils)
+  testImplementation(tdsLibs.google.truth)
+  testImplementation(tdsLibs.jakarta.servletApi)
+  testImplementation(tdsLibs.mockito.core)
+  testImplementation(tdsLibs.ucar.cdmTestUtils)
 
-  testCompileOnly(libs.junit4)
+  testCompileOnly(tdsLibs.junit4)
 
-  testRuntimeOnly(libs.junit5.platformLauncher)
-  testRuntimeOnly(libs.junit5.vintageEngine)
+  testRuntimeOnly(tdsLibs.junit5.platformLauncher)
+  testRuntimeOnly(tdsLibs.junit5.vintageEngine)
 }

@@ -9,10 +9,10 @@ import java.util.Date
 import org.akhikhl.gretty.FarmExtension
 
 plugins {
-  id("java-library-conventions")
-  alias(libs.plugins.cyclonedx.bom)
+  id("tds-java-library-conventions")
+  alias(tdsLibs.plugins.cyclonedx.bom)
   war
-  alias(libs.plugins.gretty)
+  alias(tdsLibs.plugins.gretty)
 }
 
 description =
@@ -64,67 +64,67 @@ dependencies {
   // general dependencies
   implementation(project(":tdcommon"))
 
-  implementation(libs.commons.lang3)
-  implementation(libs.coverity.escapers) // todo: replace with google escapers?
-  implementation(libs.findbugs.jsr305)
-  implementation(libs.guava)
-  implementation(libs.jdom2)
-  implementation(libs.jodaTime)
-  implementation(libs.json)
-  implementation(libs.quartz)
-  implementation(libs.ucar.cdmCore)
-  implementation(libs.ucar.cdmMisc)
-  implementation(libs.ucar.grib)
-  implementation(libs.ucar.httpservices)
+  implementation(tdsLibs.commons.lang3)
+  implementation(tdsLibs.coverity.escapers) // todo: replace with google escapers?
+  implementation(tdsLibs.findbugs.jsr305)
+  implementation(tdsLibs.guava)
+  implementation(tdsLibs.jdom2)
+  implementation(tdsLibs.jodaTime)
+  implementation(tdsLibs.json)
+  implementation(tdsLibs.quartz)
+  implementation(tdsLibs.ucar.cdmCore)
+  implementation(tdsLibs.ucar.cdmMisc)
+  implementation(tdsLibs.ucar.grib)
+  implementation(tdsLibs.ucar.httpservices)
 
   runtimeOnly(project(":tds-ugrid"))
 
-  runtimeOnly(libs.ucar.bufr)
-  runtimeOnly(libs.ucar.cdmImage)
-  runtimeOnly(libs.ucar.cdmMcidas)
-  runtimeOnly(libs.ucar.cdmRadial)
-  runtimeOnly(libs.ucar.cdmS3)
-  runtimeOnly(libs.ucar.cdmZarr)
-  runtimeOnly(libs.ucar.netcdf4)
+  runtimeOnly(tdsLibs.ucar.bufr)
+  runtimeOnly(tdsLibs.ucar.cdmImage)
+  runtimeOnly(tdsLibs.ucar.cdmMcidas)
+  runtimeOnly(tdsLibs.ucar.cdmRadial)
+  runtimeOnly(tdsLibs.ucar.cdmS3)
+  runtimeOnly(tdsLibs.ucar.cdmZarr)
+  runtimeOnly(tdsLibs.ucar.netcdf4)
 
   // logging
-  implementation(libs.slf4j.api)
-  runtimeOnly(libs.log4j.slf4j2Impl)
-  runtimeOnly(libs.log4j.jakartaWeb)
+  implementation(tdsLibs.slf4j.api)
+  runtimeOnly(tdsLibs.log4j.slf4j2Impl)
+  runtimeOnly(tdsLibs.log4j.jakartaWeb)
 
   /////////////////////////////////////
   // General Web Server Dependencies //
   /////////////////////////////////////
 
   // Spring
-  implementation(libs.springframework.beans)
-  implementation(libs.springframework.context)
-  implementation(libs.springframework.core)
-  implementation(libs.springframework.web)
-  implementation(libs.springframework.webmvc)
+  implementation(tdsLibs.springframework.beans)
+  implementation(tdsLibs.springframework.context)
+  implementation(tdsLibs.springframework.core)
+  implementation(tdsLibs.springframework.web)
+  implementation(tdsLibs.springframework.webmvc)
 
   // Needed for "xmlns:security" schema in applicationContext.xml.
-  runtimeOnly(libs.springsecurity.config)
+  runtimeOnly(tdsLibs.springsecurity.config)
 
   // Needed for FilterChainProxy in applicationContext.xml.
-  runtimeOnly(libs.springsecurity.web)
+  runtimeOnly(tdsLibs.springsecurity.web)
 
   // servlet
-  providedCompile(libs.jakarta.servletApi)
+  providedCompile(tdsLibs.jakarta.servletApi)
 
   // @Resource annotation
-  implementation(libs.jakarta.annotationApi)
+  implementation(tdsLibs.jakarta.annotationApi)
 
   // jstl / jsp
-  runtimeOnly(libs.glassfish.jstl)
-  runtimeOnly(libs.jakarta.jstlApi)
+  runtimeOnly(tdsLibs.glassfish.jstl)
+  runtimeOnly(tdsLibs.jakarta.jstlApi)
 
   // JSR 303 (bean validation) with Hibernate Validator
-  implementation(libs.jakarta.validationApi)
-  runtimeOnly(libs.glassfish.jakartaEl)
-  runtimeOnly(libs.hibernate.validator)
+  implementation(tdsLibs.jakarta.validationApi)
+  runtimeOnly(tdsLibs.glassfish.jakartaEl)
+  runtimeOnly(tdsLibs.hibernate.validator)
 
-  implementation(libs.thymeleaf.spring6)
+  implementation(tdsLibs.thymeleaf.spring6)
 
   ///////////////////////////////////
   // Service specific dependencies //
@@ -132,32 +132,32 @@ dependencies {
 
   // DAP2
   implementation(project(":opendap-servlet"))
-  implementation(libs.ucar.opendap)
+  implementation(tdsLibs.ucar.opendap)
 
   // DAP4
   implementation(project(":d4servlet"))
-  implementation(libs.ucar.dap4)
+  implementation(tdsLibs.ucar.dap4)
 
   // NCSS
-  implementation(libs.sensorweb.xmlOmV20)
-  implementation(libs.sensorweb.xmlWaterMLV20)
-  implementation(libs.ucar.waterml)
+  implementation(tdsLibs.sensorweb.xmlOmV20)
+  implementation(tdsLibs.sensorweb.xmlWaterMLV20)
+  implementation(tdsLibs.ucar.waterml)
 
   // threddsIso
-  implementation(libs.nciso.common)
+  implementation(tdsLibs.nciso.common)
 
   // edal-java / ncwms related libs
-  implementation(libs.edal.cdm)
-  implementation(libs.edal.common)
-  implementation(libs.edal.godiva)
-  implementation(libs.edal.graphics)
-  implementation(libs.edal.wms)
-  implementation(libs.oro)
-  runtimeOnly(libs.jaxen)
+  implementation(tdsLibs.edal.cdm)
+  implementation(tdsLibs.edal.common)
+  implementation(tdsLibs.edal.godiva)
+  implementation(tdsLibs.edal.graphics)
+  implementation(tdsLibs.edal.wms)
+  implementation(tdsLibs.oro)
+  runtimeOnly(tdsLibs.jaxen)
 
   // GWT for Godiva3
-  gwt(libs.gwt.dev)
-  gwt(libs.gwt.user)
+  gwt(tdsLibs.gwt.dev)
+  gwt(tdsLibs.gwt.user)
 
   /////////////
   // Testing //
@@ -167,48 +167,48 @@ dependencies {
 
   testImplementation(project(":tds-test-utils"))
 
-  testImplementation(libs.beust.jcommander) // todo: replace usage with core java
-  testImplementation(libs.commons.io)
-  testImplementation(libs.google.truth)
-  testImplementation(libs.hamcrest.core)
-  testImplementation(libs.jaxen) // Needed for XPath operations in mock tests
-  testImplementation(libs.logback.classic)
-  testImplementation(libs.pragmatists.junitparams)
-  testImplementation(libs.springframework.springTest)
-  testImplementation(libs.ucar.cdmTestUtils)
-  testImplementation(libs.xmlunit.core)
+  testImplementation(tdsLibs.beust.jcommander) // todo: replace usage with core java
+  testImplementation(tdsLibs.commons.io)
+  testImplementation(tdsLibs.google.truth)
+  testImplementation(tdsLibs.hamcrest.core)
+  testImplementation(tdsLibs.jaxen) // Needed for XPath operations in mock tests
+  testImplementation(tdsLibs.logback.classic)
+  testImplementation(tdsLibs.pragmatists.junitparams)
+  testImplementation(tdsLibs.springframework.springTest)
+  testImplementation(tdsLibs.ucar.cdmTestUtils)
+  testImplementation(tdsLibs.xmlunit.core)
 
-  testCompileOnly(libs.junit4)
+  testCompileOnly(tdsLibs.junit4)
 
-  testRuntimeOnly(libs.junit5.platformLauncher)
-  testRuntimeOnly(libs.junit5.vintageEngine)
+  testRuntimeOnly(tdsLibs.junit5.platformLauncher)
+  testRuntimeOnly(tdsLibs.junit5.vintageEngine)
 
   // integration test
   integrationTestsImplementation(project(":tds-test-utils"))
 
-  integrationTestsImplementation(libs.google.truth)
-  integrationTestsImplementation(libs.junit4)
-  integrationTestsImplementation(libs.springframework.springTest)
-  integrationTestsImplementation(libs.ucar.cdmTestUtils)
+  integrationTestsImplementation(tdsLibs.google.truth)
+  integrationTestsImplementation(tdsLibs.junit4)
+  integrationTestsImplementation(tdsLibs.springframework.springTest)
+  integrationTestsImplementation(tdsLibs.ucar.cdmTestUtils)
 
-  integrationTestsRuntimeOnly(libs.junit5.platformLauncher)
-  integrationTestsRuntimeOnly(libs.junit5.vintageEngine)
+  integrationTestsRuntimeOnly(tdsLibs.junit5.platformLauncher)
+  integrationTestsRuntimeOnly(tdsLibs.junit5.vintageEngine)
 
   // fresh installation tests
   freshInstallTestsImplementation(project(":tdcommon"))
   freshInstallTestsImplementation(project(":tds-test-utils"))
 
-  freshInstallTestsImplementation(libs.google.truth)
-  freshInstallTestsImplementation(libs.junit4)
-  freshInstallTestsImplementation(libs.slf4j.api)
-  freshInstallTestsImplementation(libs.springframework.beans)
-  freshInstallTestsImplementation(libs.springframework.context)
-  freshInstallTestsImplementation(libs.springframework.core)
-  freshInstallTestsImplementation(libs.ucar.cdmTestUtils)
-  freshInstallTestsImplementation(libs.xmlunit.core)
+  freshInstallTestsImplementation(tdsLibs.google.truth)
+  freshInstallTestsImplementation(tdsLibs.junit4)
+  freshInstallTestsImplementation(tdsLibs.slf4j.api)
+  freshInstallTestsImplementation(tdsLibs.springframework.beans)
+  freshInstallTestsImplementation(tdsLibs.springframework.context)
+  freshInstallTestsImplementation(tdsLibs.springframework.core)
+  freshInstallTestsImplementation(tdsLibs.ucar.cdmTestUtils)
+  freshInstallTestsImplementation(tdsLibs.xmlunit.core)
 
-  freshInstallTestsRuntimeOnly(libs.junit5.platformLauncher)
-  freshInstallTestsRuntimeOnly(libs.junit5.vintageEngine)
+  freshInstallTestsRuntimeOnly(tdsLibs.junit5.platformLauncher)
+  freshInstallTestsRuntimeOnly(tdsLibs.junit5.vintageEngine)
 }
 
 // without the "-parameters" compile option, we get failures like

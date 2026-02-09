@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-plugins { id("platform-conventions") }
+plugins { id("tds-platform-conventions") }
 
 description = "A Bill of Materials (BOM) for TDS plugins to utilize."
 

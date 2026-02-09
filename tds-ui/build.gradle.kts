@@ -4,7 +4,7 @@
  */
 
 plugins {
-  id("java-base-conventions")
+  id("tds-java-base-conventions")
   application
 }
 
@@ -13,7 +13,7 @@ dependencies {
 
   runtimeOnly(project(":tds-ugrid"))
 
-  runtimeOnly(libs.ucar.uicdm)
+  runtimeOnly(tdsLibs.ucar.uicdm)
 }
 
 application { mainClass = "ucar.nc2.ui.ToolsUI" }

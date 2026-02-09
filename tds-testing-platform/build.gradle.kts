@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-plugins { id("platform-conventions") }
+plugins { id("tds-platform-conventions") }
 
 description =
   "Platform containing the test-only dependencies of the public artifacts that comprise the THREDDS Data Server."
@@ -14,27 +14,27 @@ extra["project.title"] = "TDS test-only 3rd party libraries"
 javaPlatform.allowDependencies()
 
 dependencies {
-  api(platform(libs.junit5.bom))
+  api(platform(tdsLibs.junit5.bom))
 
   constraints {
-    api(libs.beust.jcommander)
-    api(libs.commons.io)
-    api(libs.google.truth)
-    api(libs.hamcrest.core)
-    api(libs.jaxen)
-    api(libs.junit4)
-    api(libs.logback.classic)
-    api(libs.mockito.core)
-    api(libs.pragmatists.junitparams)
-    api(libs.springframework.beans)
-    api(libs.springframework.context)
-    api(libs.springframework.core)
-    api(libs.springframework.springTest)
-    api(libs.ucar.cdmTestUtils)
-    api(libs.xmlunit.core)
+    api(tdsLibs.beust.jcommander)
+    api(tdsLibs.commons.io)
+    api(tdsLibs.google.truth)
+    api(tdsLibs.hamcrest.core)
+    api(tdsLibs.jaxen)
+    api(tdsLibs.junit4)
+    api(tdsLibs.logback.classic)
+    api(tdsLibs.mockito.core)
+    api(tdsLibs.pragmatists.junitparams)
+    api(tdsLibs.springframework.beans)
+    api(tdsLibs.springframework.context)
+    api(tdsLibs.springframework.core)
+    api(tdsLibs.springframework.springTest)
+    api(tdsLibs.ucar.cdmTestUtils)
+    api(tdsLibs.xmlunit.core)
 
-    runtime(libs.junit5.platformLauncher)
-    runtime(libs.junit5.vintageEngine)
-    runtime(libs.logback.classic)
+    runtime(tdsLibs.junit5.platformLauncher)
+    runtime(tdsLibs.junit5.vintageEngine)
+    runtime(tdsLibs.logback.classic)
   }
 }
