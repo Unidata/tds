@@ -4,8 +4,8 @@
  */
 
 plugins {
-  id("base-conventions")
-  id("testing-conventions")
+  id("tds-base-conventions")
+  id("tds-testing-conventions")
 }
 
 tasks {

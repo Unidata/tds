@@ -4,13 +4,13 @@
  */
 
 plugins {
-  id("java-base-conventions")
+  id("tds-java-base-conventions")
   id("com.google.protobuf")
 }
 
-val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+val libCatalog = extensions.getByType(VersionCatalogsExtension::class.java).named("tdsLibs")
 
-protobuf.protoc { artifact = libs.findLibrary("protobuf-protoc").get().get().toString() }
+protobuf.protoc { artifact = libCatalog.findLibrary("protobuf-protoc").get().get().toString() }
 
 tasks.withType(JacocoReport::class.java).configureEach {
   classDirectories.setFrom(

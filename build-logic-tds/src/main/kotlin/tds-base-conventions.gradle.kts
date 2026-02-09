@@ -9,7 +9,7 @@ val catalogs = extensions.getByType<VersionCatalogsExtension>()
 
 group = "edu.ucar"
 
-version = catalogs.named("libs").findVersion("tds").get().requiredVersion
+version = catalogs.named("tdsLibs").findVersion("tds").get().requiredVersion
 
 description = "A component to the THREDDS Data Server (TDS)."
 

@@ -3,7 +3,7 @@
  * See LICENSE for license information.
  */
 
-plugins { id("java-base-conventions") }
+plugins { id("tds-java-base-conventions") }
 
 dependencies {
   implementation(platform(project(":tds-platform")))
@@ -11,10 +11,10 @@ dependencies {
 
   implementation(project(":tdcommon"))
 
-  implementation(libs.slf4j.api)
-  implementation(libs.ucar.cdmCore)
-  implementation(libs.ucar.cdmTestUtils)
-  implementation(libs.ucar.httpservices)
+  implementation(tdsLibs.slf4j.api)
+  implementation(tdsLibs.ucar.cdmCore)
+  implementation(tdsLibs.ucar.cdmTestUtils)
+  implementation(tdsLibs.ucar.httpservices)
 
-  compileOnly(libs.junit4)
+  compileOnly(tdsLibs.junit4)
 }

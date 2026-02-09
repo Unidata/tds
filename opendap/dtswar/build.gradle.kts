@@ -4,7 +4,7 @@
  */
 
 plugins {
-  id("java-base-conventions")
+  id("tds-java-base-conventions")
   war
 }
 
@@ -15,14 +15,14 @@ dependencies {
 
   implementation(project(":opendap-servlet"))
 
-  implementation(libs.findbugs.jsr305)
-  implementation(libs.jdom2)
-  implementation(libs.slf4j.api)
-  implementation(libs.ucar.cdmCore)
-  implementation(libs.ucar.opendap)
+  implementation(tdsLibs.findbugs.jsr305)
+  implementation(tdsLibs.jdom2)
+  implementation(tdsLibs.slf4j.api)
+  implementation(tdsLibs.ucar.cdmCore)
+  implementation(tdsLibs.ucar.opendap)
 
-  compileOnly(libs.jakarta.servletApi)
+  compileOnly(tdsLibs.jakarta.servletApi)
 
-  runtimeOnly(libs.glassfish.jstl)
-  runtimeOnly(libs.jakarta.jstlApi)
+  runtimeOnly(tdsLibs.glassfish.jstl)
+  runtimeOnly(tdsLibs.jakarta.jstlApi)
 }

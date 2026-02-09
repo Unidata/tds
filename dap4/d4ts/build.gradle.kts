@@ -4,7 +4,7 @@
  */
 
 plugins {
-  id("java-base-conventions")
+  id("tds-java-base-conventions")
   war
 }
 
@@ -15,12 +15,12 @@ dependencies {
 
   implementation(project(":d4servlet"))
 
-  implementation(libs.slf4j.api)
-  implementation(libs.ucar.cdmCore)
-  implementation(libs.ucar.dap4)
+  implementation(tdsLibs.slf4j.api)
+  implementation(tdsLibs.ucar.cdmCore)
+  implementation(tdsLibs.ucar.dap4)
 
-  compileOnly(libs.jakarta.servletApi)
+  compileOnly(tdsLibs.jakarta.servletApi)
 
-  runtimeOnly(libs.log4j.slf4j2Impl)
-  runtimeOnly(libs.log4j.jakartaWeb)
+  runtimeOnly(tdsLibs.log4j.slf4j2Impl)
+  runtimeOnly(tdsLibs.log4j.jakartaWeb)
 }

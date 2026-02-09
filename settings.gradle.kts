@@ -76,9 +76,10 @@ dependencyResolutionManagement {
     }
     mavenCentral()
   }
+  versionCatalogs { create("tdsLibs") { from(files("gradle/tds.libs.versions.toml")) } }
 }
 
-includeBuild("build-logic")
+includeBuild("build-logic-tds")
 
 rootProject.name = "thredds-data-server"
 
@@ -130,4 +131,13 @@ include("tds-platform")
 
 include("tds-testing-platform")
 
-include("tds-plugin-bom")
+include(
+  "tds-plugin-bom"
+)
+
+// To debug netCDF-Java, uncomment the two includeBuild calls
+// below to create a composite build, making sure to point them
+// to your local copy of the netCDF-Java repository
+
+// includeBuild("../netcdf-java/build-logic-ncj")
+// includeBuild("../netcdf-java")

@@ -12,9 +12,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 plugins {
-  id("java-base-conventions")
-  alias(libs.plugins.shadow)
-  alias(libs.plugins.cyclonedx.bom)
+  id("tds-java-base-conventions")
+  alias(tdsLibs.plugins.shadow)
+  alias(tdsLibs.plugins.cyclonedx.bom)
   application
 }
 
@@ -27,31 +27,31 @@ dependencies {
 
   implementation(project(":tdcommon"))
 
-  implementation(libs.beust.jcommander)
-  implementation(libs.guava)
-  implementation(libs.httpcomponents.httpclient)
-  implementation(libs.jdom2)
-  implementation(libs.log4j.slf4j2Impl)
-  implementation(libs.protobuf)
-  implementation(libs.re2j)
-  implementation(libs.slf4j.api)
-  implementation(libs.springframework.beans)
-  implementation(libs.springframework.context)
-  implementation(libs.springframework.core)
-  implementation(libs.ucar.cdmCore)
-  implementation(libs.ucar.grib)
-  implementation(libs.ucar.httpservices)
+  implementation(tdsLibs.beust.jcommander)
+  implementation(tdsLibs.guava)
+  implementation(tdsLibs.httpcomponents.httpclient)
+  implementation(tdsLibs.jdom2)
+  implementation(tdsLibs.log4j.slf4j2Impl)
+  implementation(tdsLibs.protobuf)
+  implementation(tdsLibs.re2j)
+  implementation(tdsLibs.slf4j.api)
+  implementation(tdsLibs.springframework.beans)
+  implementation(tdsLibs.springframework.context)
+  implementation(tdsLibs.springframework.core)
+  implementation(tdsLibs.ucar.cdmCore)
+  implementation(tdsLibs.ucar.grib)
+  implementation(tdsLibs.ucar.httpservices)
 
   testImplementation(project(":tds-test-utils"))
 
-  testImplementation(libs.google.truth)
-  testImplementation(libs.logback.classic)
-  testImplementation(libs.ucar.cdmTestUtils)
+  testImplementation(tdsLibs.google.truth)
+  testImplementation(tdsLibs.logback.classic)
+  testImplementation(tdsLibs.ucar.cdmTestUtils)
 
-  testCompileOnly(libs.junit4)
+  testCompileOnly(tdsLibs.junit4)
 
-  testRuntimeOnly(libs.junit5.platformLauncher)
-  testRuntimeOnly(libs.junit5.vintageEngine)
+  testRuntimeOnly(tdsLibs.junit5.platformLauncher)
+  testRuntimeOnly(tdsLibs.junit5.vintageEngine)
 }
 
 application { mainClass = "thredds.tdm.Tdm" }

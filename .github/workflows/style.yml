@@ -22,5 +22,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      - name: build-logic-tds Code Style Check with Gradle and Spotless
+        run: ./gradlew :build-logic-tds:clean :build-logic-tds:spotlessCheck
       - name: Code Style Check with Gradle and Spotless
         run: ./gradlew clean spotlessCheck

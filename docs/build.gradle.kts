@@ -52,7 +52,7 @@ tasks.register(buildAllJekyllSitesTaskName) {
 val catalogs = extensions.getByType<VersionCatalogsExtension>()
 
 val docTheme =
-  "unidata-jekyll-docs:${catalogs.named("libs").findVersion("unidata-doc-theme").get().requiredVersion}"
+  "unidata-jekyll-docs:${catalogs.named("tdsLibs").findVersion("unidata-doc-theme").get().requiredVersion}"
 
 val isGitHub = System.getenv("GITHUB_ACTIONS") != null
 val imageBaseUrl = if (isGitHub) "ghcr.io/unidata" else "docker.io/unidata"
