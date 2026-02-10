@@ -12,9 +12,9 @@ jobs:
         java-vendor: [ 'temurin', 'corretto' ]
         servletcontainer: [ 'tomcat10' ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build and test with Gradle (${{ matrix.java-vendor }} ${{ matrix.java-version }})
-        uses: Unidata/thredds-test-action@v3
+        uses: Unidata/thredds-test-action@v4
         with:
           java-vendor: ${{ matrix.java-vendor }}
           java-version: ${{ matrix.java-version }}
@@ -22,9 +22,11 @@ jobs:
           test-command: '-Dtds.content.root.path=$CONTENT_DIR -Dtds.test.gretty.container=${{ matrix.servletcontainer }} --info --stacktrace testAll'
         env:
           CONTENT_DIR: ${{ github.workspace }}/tds/src/test/content
-      - uses: actions/upload-artifact@v4
+      - name: Cleanup build-logic-tds build directory
+        if: failure()
+        run: sudo rm -rf build-logic-tds/build/
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: tds_JUnit_Results_${{ github.sha }}_AdoptOpenJDK-HS-${{ matrix.java }}-${{ matrix.servletcontainer }}
-          path: build/reports/allTests
-
+          path: ${{ github.workspace }}/**/build/reports/*
