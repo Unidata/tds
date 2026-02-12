@@ -1,4 +1,4 @@
-![TDS icon](https://www.unidata.ucar.edu/images/logos/thredds_tds-150x150.png)
+![TDS icon](https://assets.unidata.ucar.edu/images/logos/thredds_tds-150x150.png)
 <br>
 <br>
 
