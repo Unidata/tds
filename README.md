@@ -1,8 +1,10 @@
-![TDS icon](https://assets.unidata.ucar.edu/images/logos/thredds_tds-150x150.png)
-<br>
-<br>
-
 ## THREDDS Data Server (TDS)
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://assets.unidata.ucar.edu/images/logos/thredds_tds-dm-150x150.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://assets.unidata.ucar.edu/images/logos/thredds_tds-150x150.png">
+  <img width=100 align="left" alt="Fallback image description" src="https://assets.unidata.ucar.edu/images/logos/thredds_tds-150x150.png">
+</picture>
 
 The THREDDS Data Server (TDS) provides metadata and data access to scientific
 datasets. Datasets can be served through OPeNDAP, OGC's WMS and WCS, HTTP, and other
