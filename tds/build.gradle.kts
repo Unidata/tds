@@ -7,6 +7,7 @@ import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
 import org.akhikhl.gretty.FarmExtension
+import org.cyclonedx.gradle.CyclonedxDirectTask
 
 plugins {
   id("tds-java-library-conventions")
@@ -229,9 +230,24 @@ tasks.withType(JavaCompile::class.java).configureEach { options.compilerArgs.add
 /////////////////////
 
 tasks.cyclonedxDirectBom {
+  includeConfigs = listOf("runtimeClasspath")
+  componentName = "thredds.war"
+  group = "build"
   xmlOutput = downloadsDir.file("thredds-${project.version}-sbom.xml")
   jsonOutput = downloadsDir.file("thredds-${project.version}-sbom.json")
 }
+
+val tdsGcdmSbom =
+  tasks.register<CyclonedxDirectTask>("tdsGcdmSbom") {
+    componentName = "thredds-gcdm.war"
+    group = "build"
+    includeConfigs = listOf("gcdm")
+    xmlOutput = downloadsDir.file("thredds-${project.version}-gcdm-sbom.xml")
+    jsonOutput = downloadsDir.file("thredds-${project.version}-gcdm-sbom.json")
+    dependsOn(warGcdm)
+  }
+
+tasks.cyclonedxBom { dependsOn(tdsGcdmSbom) }
 
 /////////////////////
 // GWT for Godiva3 //
