@@ -3,7 +3,10 @@
  * See LICENSE for license information.
  */
 
-plugins { alias(tdsLibs.plugins.spotless) }
+plugins {
+  id("tds-java-base-conventions")
+  alias(tdsLibs.plugins.spotless)
+}
 
 description = "The NSF Unidata THREDDS Data Server (TDS)."
 
