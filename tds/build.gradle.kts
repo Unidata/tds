@@ -297,7 +297,7 @@ val compileGwt =
 // Configure thredds WAR //
 ///////////////////////////
 
-tasks.war { archiveFileName = "thredds##${project.version}.war" }
+tasks.war { archiveFileName = "thredds-${project.version}.war" }
 
 // gcdm capable thredds.war
 val warGcdm =
@@ -306,7 +306,7 @@ val warGcdm =
     setClasspath(gcdm - configurations.providedCompile.get())
     group = "build"
     dependsOn(tasks.war)
-    archiveFileName = "thredds##${project.version}-gcdm.war"
+    archiveFileName = "thredds-${project.version}-gcdm.war"
   }
 
 // common war configuration
