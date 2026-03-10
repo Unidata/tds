@@ -235,6 +235,7 @@ tasks.cyclonedxDirectBom {
   group = "build"
   xmlOutput = downloadsDir.file("thredds-${project.version}-sbom.xml")
   jsonOutput = downloadsDir.file("thredds-${project.version}-sbom.json")
+  dependsOn(tasks.war)
 }
 
 val tdsGcdmSbom =
