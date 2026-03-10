@@ -83,5 +83,6 @@ dependencies {
     runtime(tdsLibs.ucar.cdmS3)
     runtime(tdsLibs.ucar.cdmZarr)
     runtime(tdsLibs.ucar.netcdf4)
+    runtime(tdsLibs.unidata.libblosc2Native)
   }
 }

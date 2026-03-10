@@ -89,6 +89,8 @@ dependencies {
   runtimeOnly(tdsLibs.ucar.cdmS3)
   runtimeOnly(tdsLibs.ucar.cdmZarr)
   runtimeOnly(tdsLibs.ucar.netcdf4)
+  // native jar for libblosc2
+  runtimeOnly(tdsLibs.unidata.libblosc2Native)
 
   // logging
   implementation(tdsLibs.slf4j.api)

@@ -48,6 +48,7 @@ dependencyResolutionManagement {
         includeModule("edu.ucar", "opendap")
         includeModule("edu.ucar", "uicdm")
         includeModule("edu.ucar", "waterml")
+        includeModule("edu.ucar.unidata", "libblosc2-native")
 
         includeModule("uk.ac.rdg.resc", "edal-cdm")
         includeModule("uk.ac.rdg.resc", "edal-common")
