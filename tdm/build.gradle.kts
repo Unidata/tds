@@ -101,6 +101,7 @@ tasks.clean { delete(Paths.get(rootDir.absolutePath, "build", "downloads")) }
 tasks.cyclonedxDirectBom {
   xmlOutput = downloadsDir.file("tdm-${project.version}-sbom.xml").asFile
   jsonOutput = downloadsDir.file("tdm-${project.version}-sbom.json").asFile
+  dependsOn(tasks.testClasses, tasks.shadowJar)
 }
 
 val createChecksums =
