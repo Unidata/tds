@@ -17,6 +17,7 @@ dependencies {
   constraints {
     // TODO - pull out what is needed from TDS into a new gradle subproject
     // to make a lighter weight dependency for plugin implementations to target
+    api(project(":tdcommon"))
     api(project(":tds"))
   }
 }
