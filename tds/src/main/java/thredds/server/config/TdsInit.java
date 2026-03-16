@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2025 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -70,6 +70,7 @@ import uk.ac.rdg.resc.edal.util.GISUtils.EpsgDatabasePath;
 public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, DisposableBean {
   static private final Logger startupLog = org.slf4j.LoggerFactory.getLogger("serverStartup");
   static private final Logger logCatalogInit = org.slf4j.LoggerFactory.getLogger("catalogInit");
+  private static Logger cacheLogger = org.slf4j.LoggerFactory.getLogger("cacheLogger");
 
   @Autowired
   private TdsContext tdsContext;
@@ -338,6 +339,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
       c.add(Calendar.SECOND, scourSecs / 2); // starting in half the scour time
       cdmDiskCacheTimer = new Timer("CdmDiskCache");
       cdmDiskCacheTimer.scheduleAtFixedRate(new CacheScourTask(maxSize), c.getTime(), (long) 1000 * scourSecs);
+      cacheLogger.info("Started a DiskCache scour task on {} every {} minutes until size below {} MB", dir,
+          scourSecs / 60, maxSize / 1000. / 1000.);
     }
 
     // persist joinExisting aggregations. default every 24 hours, delete stuff older than 90 days
@@ -473,7 +476,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
       StringBuilder sbuff = new StringBuilder();
       DiskCache.cleanCache(maxBytes, sbuff); // 1 Gbyte
       sbuff.append("----------------------\n");
-      // cacheLog.info(sbuff.toString());
+      cacheLogger.debug(sbuff.toString());
     }
   }
 
