@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 2025-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -36,13 +36,15 @@ import thredds.featurecollection.FeatureCollectionType;
 import thredds.featurecollection.InvDatasetFeatureCollection;
 import thredds.inventory.CollectionUpdateEvent;
 import thredds.inventory.CollectionUpdateType;
+import thredds.inventory.MFile;
+import thredds.inventory.MFiles;
 import thredds.server.admin.DebugCommands;
 import thredds.server.catalog.FeatureCollectionRef;
 import thredds.server.config.TdsContext;
 import thredds.servlet.ServletUtil;
 import thredds.util.ContentType;
+import thredds.util.MFileUtils;
 import ucar.nc2.grib.collection.GribCdmIndex;
-import ucar.nc2.util.IO;
 import ucar.unidata.util.StringUtil2;
 
 @Component
@@ -277,18 +279,18 @@ public class CollectionControllerCommon implements InitializingBean {
     try (FileOutputStream fos = new FileOutputStream(tempFile.getPath())) {
       ZipOutputStream zout = new ZipOutputStream(fos);
       for (FeatureCollectionRef fc : dataRootManager.getFeatureCollections()) {
-        File idxFile = GribCdmIndex.getTopIndexFileFromConfig(fc.getConfig());
+        MFile idxFile = GribCdmIndex.getTopIndexFileFromConfig(fc.getConfig());
         if (idxFile == null)
           continue;
         ZipEntry entry = new ZipEntry(idxFile.getName());
         zout.putNextEntry(entry);
-        IO.copyFile(idxFile.getPath(), zout);
+        MFileUtils.copyMFile(idxFile, zout);
         zout.closeEntry();
       }
       zout.close();
     }
 
-    ServletUtil.returnFile(req, res, tempFile, ContentType.binary.toString());
+    ServletUtil.returnFile(req, res, MFiles.create(tempFile.getAbsolutePath()), ContentType.binary.toString());
   }
 
   protected ResponseEntity<String> downloadIndex(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -301,7 +303,7 @@ public class CollectionControllerCommon implements InitializingBean {
       return new ResponseEntity<>(Escape.html(collectName) + " NOT FOUND", responseHeaders, HttpStatus.NOT_FOUND);
     }
 
-    File idxFile = GribCdmIndex.getTopIndexFileFromConfig(want.getConfig());
+    MFile idxFile = GribCdmIndex.getTopIndexFileFromConfig(want.getConfig());
     if (idxFile == null) {
       HttpHeaders responseHeaders = new HttpHeaders();
       responseHeaders.setContentType(MediaType.TEXT_PLAIN);

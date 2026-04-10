@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2025 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -14,6 +14,7 @@ import thredds.core.TdsRequestedDataset;
 import thredds.inventory.MFile;
 import thredds.inventory.MFiles;
 import thredds.util.ContentType;
+import thredds.util.MFileUtils;
 import thredds.util.RequestForwardUtils;
 import ucar.nc2.util.EscapeStrings;
 import ucar.nc2.util.IO;
@@ -91,7 +92,7 @@ public class ServletUtil {
       return;
     }
 
-    returnFile(servlet, req, res, new File(filename), contentType);
+    returnFile(servlet, req, res, MFiles.create(filename), contentType);
   }
 
   /**
@@ -104,7 +105,7 @@ public class ServletUtil {
    * @param contentType content type, if null, will try to guess
    * @throws IOException on write error
    */
-  public static void returnFile(HttpServlet servlet, HttpServletRequest req, HttpServletResponse res, File file,
+  public static void returnFile(HttpServlet servlet, HttpServletRequest req, HttpServletResponse res, MFile file,
       String contentType) throws IOException {
 
     // No file, nothing to view
@@ -120,7 +121,7 @@ public class ServletUtil {
     }
 
     // not a directory
-    if (!file.isFile()) {
+    if (file.isDirectory()) {
       res.sendError(HttpServletResponse.SC_BAD_REQUEST);
       return;
     }
@@ -158,16 +159,16 @@ public class ServletUtil {
    * @param contentType must not be null
    * @throws IOException or error
    */
-  public static void returnFile(HttpServletRequest req, HttpServletResponse res, File file, String contentType)
+  public static void returnFile(HttpServletRequest req, HttpServletResponse res, MFile file, String contentType)
       throws IOException {
     res.setContentType(contentType);
-    res.addDateHeader("Last-Modified", file.lastModified());
+    res.addDateHeader("Last-Modified", file.getLastModified());
     // res.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
 
     final boolean isRangeRequest = isRangeRequest(req.getHeader("Range"));
 
     final long startPos = getContentStartPosition(req.getHeader("Range"));
-    final long endPos = getContentEndPosition(req.getHeader("Range"), file.length());
+    final long endPos = getContentEndPosition(req.getHeader("Range"), file.getLength());
     final long contentLength = endPos - startPos;
 
     addContentLengthHeader(res, contentLength);
@@ -184,7 +185,7 @@ public class ServletUtil {
 
       if (isRangeRequest) {
         // set before content is sent
-        res.addHeader("Content-Range", "bytes " + startPos + "-" + (endPos - 1) + "/" + file.length());
+        res.addHeader("Content-Range", "bytes " + startPos + "-" + (endPos - 1) + "/" + file.getLength());
         res.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
 
         try (RandomAccessFile craf = RandomAccessFile.acquire(filename)) {
@@ -195,7 +196,7 @@ public class ServletUtil {
 
       // Return the file
       ServletOutputStream out = res.getOutputStream();
-      IO.copyFileB(file, out, 60 * 1000);
+      MFileUtils.copyMFileB(file, out, 60 * 1000);
       /*
        * try (WritableByteChannel cOut = Channels.newChannel(out)) {
        * IO.copyFileWithChannels(file, cOut);

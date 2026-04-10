@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -8,6 +8,7 @@ package thredds.server.catalog;
 import static thredds.util.MFileUtils.isMfileZarr;
 
 import java.net.URISyntaxException;
+import java.nio.file.DirectoryStream;
 import thredds.client.catalog.*;
 import thredds.client.catalog.builder.AccessBuilder;
 import thredds.client.catalog.builder.CatalogBuilder;
@@ -357,12 +358,16 @@ public class DatasetScan extends CatalogRef {
     final List<MFile> mFiles = new ArrayList<>();
 
     final CollectionConfig files = new CollectionConfig("files", directory.getPath(), true, fileFilters, null);
-    final Iterator<MFile> fileIterator = mController.getInventoryTop(files, true);
-    fileIterator.forEachRemaining(mFiles::add);
+    final DirectoryStream<MFile> fileIterator = mController.getInventoryTop(files, true);
+    if (fileIterator != null) {
+      fileIterator.forEach(mFiles::add);
+    }
 
     final CollectionConfig dirs = new CollectionConfig("dirs", directory.getPath(), true, dirFilters, null);
-    final Iterator<MFile> dirIterator = mController.getSubdirs(dirs, true);
-    dirIterator.forEachRemaining(mFiles::add);
+    final DirectoryStream<MFile> dirIterator = mController.getSubdirs(dirs, true);
+    if (dirIterator != null) {
+      dirIterator.forEach(mFiles::add);
+    }
 
     return mFiles;
   }
