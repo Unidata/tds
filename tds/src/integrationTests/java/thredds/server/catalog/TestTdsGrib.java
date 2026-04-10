@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 1998-2021 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
 package thredds.server.catalog;
+
+import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -108,7 +110,7 @@ public class TestTdsGrib {
     String catalogPath = TestOnLocalServer.withHttpPath("catalog/Grib/Nonexist/catalog.xml");
     try (HTTPMethod method = HTTPFactory.Get(null, catalogPath)) {
       int statusCode = method.execute();
-      assert statusCode == 404; // not 500
+      assertThat(statusCode).isEqualTo(404);
     }
   }
 
@@ -117,7 +119,7 @@ public class TestTdsGrib {
     String catalogPath = TestOnLocalServer.withHttpPath("catalog/Grib/Emptiness/catalog.xml");
     try (HTTPMethod method = HTTPFactory.Get(null, catalogPath)) {
       int statusCode = method.execute();
-      assert statusCode == 404; // not 500
+      assertThat(statusCode).isEqualTo(404);
     }
   }
 

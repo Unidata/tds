@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.tdm;
 
 import com.beust.jcommander.JCommander;
@@ -8,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import thredds.featurecollection.FeatureCollectionConfig;
 import thredds.featurecollection.FeatureCollectionType;
 import thredds.inventory.*;
-import thredds.inventory.filter.StreamFilter;
+import thredds.inventory.filter.RegExpMatch;
 import thredds.inventory.partition.*;
 import ucar.nc2.grib.GribIndex;
 import ucar.nc2.grib.GribIndexCache;
@@ -26,10 +31,7 @@ import ucar.nc2.util.DiskCache2;
 import ucar.nc2.util.Indent;
 import ucar.unidata.io.RandomAccessFile;
 import ucar.unidata.util.StringUtil2;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -291,7 +293,7 @@ public class GCpass1 {
 
     Formatter errlog = new Formatter();
     CollectionSpecParser specp = config.getCollectionSpecParser(errlog);
-    Path rootPath = Paths.get(specp.getRootDir());
+    String rootPath = specp.getRootDir();
     boolean isGrib1 = config.type == FeatureCollectionType.GRIB1;
 
     try (MCollection topCollection =
@@ -326,8 +328,7 @@ public class GCpass1 {
           accum.add(scanDirectoryPartitionRecurse(isGrib1, (DirectoryPartition) part, config, countersPart, logger,
               indent, fm));
         } else {
-          Path partPath = Paths.get(part.getRoot());
-          accum.add(scanLeafDirectoryCollection(isGrib1, config, countersPart, logger, partPath, false, indent, fm));
+          accum.add(scanLeafDirectoryCollection(isGrib1, config, countersPart, logger, part.getRoot(), false, indent, fm));
         }
       } catch (Throwable t) {
         logger.warn("Error making partition " + part.getRoot(), t);
@@ -349,7 +350,7 @@ public class GCpass1 {
    * @throws IOException
    */
   private Accum scanLeafDirectoryCollection(boolean isGrib1, FeatureCollectionConfig config, Counters parentCounters,
-      Logger logger, Path dirPath, boolean isTop, Indent indent, Formatter fm) throws IOException {
+      Logger logger, String dirPath, boolean isTop, Indent indent, Formatter fm) throws IOException {
 
     if (config.ptype == FeatureCollectionConfig.PartitionType.file) {
       reportOneFileHeader(indent, fm);
@@ -367,7 +368,7 @@ public class GCpass1 {
     // dcm.setUseGribFilter(false);
     dcm.putAuxInfo(FeatureCollectionConfig.AUX_CONFIG, config);
     if (specp.getFilter() != null)
-      dcm.setStreamFilter(new StreamFilter(specp.getFilter(), specp.getFilterOnName()));
+      dcm.setStreamFilter(new RegExpMatch(specp.getFilter(), specp.getFilterOnName()));
 
     try (CloseableIterator<MFile> iter = dcm.getFileIterator()) {
       while (iter.hasNext()) {
@@ -409,9 +410,9 @@ public class GCpass1 {
           accum.indexSize += ((float) mfile.getLength() / (1000 * 1000)); // mb
         } else {
           accum.fileSize += ((float) mfile.getLength() / (1000 * 1000)); // mb
-          File idxFile = GribIndexCache.getExistingFileOrCache(path + GribIndex.GBX9_IDX);
+          MFile idxFile = GribIndexCache.getExistingFileOrCache(GribIndex.makeIndexFileName(path));
           if (idxFile.exists())
-            accum.indexSize += ((float) idxFile.length() / (1000 * 1000)); // mb
+            accum.indexSize += ((float) idxFile.getLength() / (1000 * 1000)); // mb
         }
       }
     }

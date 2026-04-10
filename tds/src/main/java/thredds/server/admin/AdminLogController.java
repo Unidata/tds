@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import thredds.core.DataRootManager;
+import thredds.inventory.MFiles;
 import thredds.server.config.TdsContext;
 import thredds.servlet.ServletUtil;
 import thredds.util.ContentType;
@@ -73,7 +74,7 @@ public class AdminLogController {
 
     } else if (path.startsWith("access/")) {
       file = new File(tdsContext.getTomcatLogDirectory(), path.substring(7));
-      ServletUtil.returnFile(req, res, file, "text/plain");
+      ServletUtil.returnFile(req, res, MFiles.create(file.getAbsolutePath()), "text/plain");
       return null;
 
     } else if (path.equals("thredds/current")) {
@@ -84,7 +85,7 @@ public class AdminLogController {
 
     } else if (path.startsWith("thredds/")) {
       file = new File(tdsContext.getThreddsDirectory(), "logs/" + path.substring(8));
-      ServletUtil.returnFile(req, res, file, "text/plain");
+      ServletUtil.returnFile(req, res, MFiles.create(file.getAbsolutePath()), "text/plain");
       return null;
 
     } else {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -522,9 +522,9 @@ public class RadarDataInventory {
     final List<MFile> mFiles = new ArrayList<>();
 
     final CollectionConfig dirs = new CollectionConfig("dirs", directory.getPath(), false, null, null);
-    final Iterator<MFile> dirIterator = mController.getSubdirs(dirs, true);
+    final DirectoryStream<MFile> dirIterator = mController.getSubdirs(dirs, true);
     if (dirIterator != null) {
-      dirIterator.forEachRemaining(mFiles::add);
+      dirIterator.forEach(mFiles::add);
     }
 
     return mFiles;
@@ -535,9 +535,9 @@ public class RadarDataInventory {
     final List<MFile> mFiles = new ArrayList<>();
 
     final CollectionConfig files = new CollectionConfig("files", directory.getPath(), false, null, null);
-    final Iterator<MFile> fileIterator = mController.getInventoryTop(files, true);
+    final DirectoryStream<MFile> fileIterator = mController.getInventoryTop(files, true);
     if (fileIterator != null) {
-      fileIterator.forEachRemaining(mFiles::add);
+      fileIterator.forEach(mFiles::add);
     }
 
     return mFiles;
