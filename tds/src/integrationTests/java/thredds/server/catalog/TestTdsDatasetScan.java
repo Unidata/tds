@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -8,6 +8,9 @@ package thredds.server.catalog;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
@@ -202,4 +205,58 @@ public class TestTdsDatasetScan {
     assertThat(hasFileServer).isTrue();
   }
 
+  @Test
+  public void testEmptyDir() throws IOException {
+    // Create an empty directory in a dataset scan catalog, check that a catalogRef is not created.
+    // Next, add a file to the directory and make sure a new catalogRef is added to the catalog.
+    // Finally, remove the file and make sure the catalogRef count returns to the initial count.
+    // In all cases, the default scan behavior should see one additional catalogRef once the
+    // empty directory is created.
+    final String scanExcludeEmptyDirs = "catalog/scanLocalExcludeEmpty/catalog.xml";
+    final String scanDefaultExcludeEmptyDirs = "catalog/scanLocal/catalog.xml";
+    final int initialCatalogRefCount = 2;
+    checkCatalogRefCount(scanDefaultExcludeEmptyDirs, initialCatalogRefCount);
+    checkCatalogRefCount(scanExcludeEmptyDirs, initialCatalogRefCount);
+
+    final Path contentTestDataPath = Paths.get("src/test/content/thredds/public/testdata");
+    assertThat(Files.exists(contentTestDataPath)).isTrue();
+
+    // used during testing
+    final Path emptyDir = contentTestDataPath.resolve("empty");
+    final Path fileToAddToEmptyDir = emptyDir.resolve("empty.txt");
+
+    try {
+      // create empty directory, check that catalogRefs do not increase for
+      // scan that excludes empty directories
+      Files.createDirectory(emptyDir);
+      checkCatalogRefCount(scanDefaultExcludeEmptyDirs, initialCatalogRefCount + 1);
+      checkCatalogRefCount(scanExcludeEmptyDirs, initialCatalogRefCount);
+      // add file to empty directory, check that catalogRefs increases by 1 for
+      // scan that excludes empty directories
+      Files.createFile(fileToAddToEmptyDir);
+      checkCatalogRefCount(scanDefaultExcludeEmptyDirs, initialCatalogRefCount + 1);
+      checkCatalogRefCount(scanExcludeEmptyDirs, initialCatalogRefCount + 1);
+      // remove file from the empty directory, check that catalogRefs returns to initial count
+      // for scan that excludes empty directories
+      Files.deleteIfExists(fileToAddToEmptyDir);
+      checkCatalogRefCount(scanDefaultExcludeEmptyDirs, initialCatalogRefCount + 1);
+      checkCatalogRefCount(scanExcludeEmptyDirs, initialCatalogRefCount);
+    } finally {
+      // clean up in case of failures
+      Files.deleteIfExists(fileToAddToEmptyDir);
+      Files.deleteIfExists(emptyDir);
+    }
+  }
+
+  private static void checkCatalogRefCount(String catalogLocation, int expectedRefs) {
+    Catalog cat = TdsLocalCatalog.open(catalogLocation);
+    assertThat(cat).isNotNull();
+    int count = 0;
+    for (Dataset ds : cat.getAllDatasets()) {
+      if (ds instanceof CatalogRef) {
+        count++;
+      }
+    }
+    assertThat(count).isEqualTo(expectedRefs);
+  }
 }

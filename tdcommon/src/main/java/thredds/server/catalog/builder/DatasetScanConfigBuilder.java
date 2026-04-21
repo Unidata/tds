@@ -83,6 +83,7 @@ public class DatasetScanConfigBuilder {
    * <xsd:attribute name="path" type="xsd:string" use="required"/>
    * <xsd:attribute name="location" type="xsd:string"/>
    * <xsd:attribute name="addLatest" type="xsd:boolean"/>
+   * <xsd:attribute name="excludeEmptyDirs" type="xsd:boolean"/>
    * <xsd:attribute name="filter" type="xsd:string"/> <!-- deprecated : use filter element -->
    * </xsd:extension>
    * </xsd:complexContent>
@@ -113,6 +114,9 @@ public class DatasetScanConfigBuilder {
     }
 
     result.restrictAccess = dsElem.getAttributeValue("restrictAccess");
+
+    // Handle excludeEmptyDirs attribute
+    result.excludeEmptyDirs = dsElem.getAttributeValue("excludeEmptyDirs", "false").equalsIgnoreCase("true");
 
     // look for ncml
     Element ncmlElem = dsElem.getChild("netcdf", Catalog.defNS);

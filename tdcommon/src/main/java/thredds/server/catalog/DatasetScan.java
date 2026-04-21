@@ -5,6 +5,7 @@
 
 package thredds.server.catalog;
 
+import static thredds.util.MFileUtils.isEmpty;
 import static thredds.util.MFileUtils.isMfileZarr;
 
 import java.net.URISyntaxException;
@@ -222,7 +223,13 @@ public class DatasetScan extends CatalogRef {
       boolean isDir = mfile.isDirectory();
       boolean isZarr = isMfileZarr(mfile);
 
-      if (isDir) {
+      // if this is a directory, should it be skipped?
+      // skip the directory if datasetScan configured to skip empty dirs
+      // and the dir is empty
+      boolean skipDir = isDir && config.excludeEmptyDirs && isEmpty(mfile);
+
+      // handle directory
+      if (isDir && !skipDir) {
         CatalogRefBuilder catref = new CatalogRefBuilder(top);
         catref.setTitle(makeName(mfile));
         catref.setHref(mfile.getName() + "/catalog.xml");
@@ -273,7 +280,10 @@ public class DatasetScan extends CatalogRef {
         top.addDataset(ds);
       }
 
-      ds.put(Dataset.Id, parentId + mfile.getName());
+      // always add non-directory entries, otherwise, skip if it was
+      // determined that we should skip the directory
+      if (!isDir || !skipDir)
+        ds.put(Dataset.Id, parentId + mfile.getName());
     }
 
     if (config.addLatest != null && !config.addLatest.latestOnTop)

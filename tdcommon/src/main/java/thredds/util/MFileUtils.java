@@ -8,10 +8,11 @@ package thredds.util;
 import static ucar.nc2.util.IO.default_file_buffersize;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.DirectoryStream;
+import thredds.inventory.MControllers;
 import thredds.inventory.MFile;
 import ucar.nc2.iosp.zarr.ZarrKeys;
 import ucar.nc2.util.IO;
@@ -63,5 +64,23 @@ public class MFileUtils {
       InputStream in = new BufferedInputStream(fin);
       IO.copyB(in, out, bufferSize);
     }
+  }
+
+  /**
+   * Determine if a directory represented by an MFile is empty
+   *
+   * @param mfile MFile representing a possible directory
+   * @return true if mfile represents a directory and is empty, otherwise false
+   */
+  public static boolean isEmpty(MFile mfile) {
+    boolean isEmpty = false;
+    if (mfile.isDirectory()) {
+      try (DirectoryStream<MFile> mDirStream = MControllers.newDirectoryStream(mfile.getPath())) {
+        isEmpty = !mDirStream.iterator().hasNext();
+      } catch (IOException e) {
+        isEmpty = false;
+      }
+    }
+    return isEmpty;
   }
 }
