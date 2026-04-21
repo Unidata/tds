@@ -18,7 +18,7 @@ Here is a minimal catalog containing a `datasetScan` element:
 
 ~~~xml
 <?xml version="1.0" encoding="UTF-8"?>
-<catalog name="Unidata Workshop 2006 - NCEP Model Data" version="1.0.1"
+<catalog name="Unidata Workshop 2006 - NCEP Model Data" version="{{ site.inv_catalog_schema_version }}"
     xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
     xmlns:xlink="http://www.w3.org/1999/xlink">
   <service name="myserver" serviceType="OpenDAP" base="/thredds/dodsC/" />
@@ -43,7 +43,7 @@ For more information on Object Store files and URL syntax see [Dataset URLs](htt
 In the catalog that the TDS server sends to a client, the `datasetScan` element is shown as a catalog reference:
 
 ~~~xml
-<catalog name="Unidata Workshop 2006 - NCEP Model Data" version="1.0.1"
+<catalog name="Unidata Workshop 2006 - NCEP Model Data" version="{{ site.inv_catalog_schema_version }}"
     xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
@@ -127,7 +127,7 @@ The `datasetScan` element is an extension of a `dataset` element, and it can con
 Typically, you want all of its contained datasets to inherit the `metadata`, so add an inherited `metadata` element contained in the `datasetScan` element, for example:
 
 ~~~xml
-<catalog name="Unidata Workshop 2006 - NCEP Model Data" version="1.0.1"
+<catalog name="Unidata Workshop 2006 - NCEP Model Data" version="{{ site.inv_catalog_schema_version }}"
     xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0">
 
   <service name="myserver" serviceType="OpenDAP" base="/thredds/dodsC/" />
@@ -179,7 +179,7 @@ Its a good idea to always use a filter element with explicit includes, so if str
 
 ~~~xml
 <?xml version="1.0" encoding="UTF-8"?>
-<catalog name="Unidata Workshop 2006 - NCEP Model Data" version="1.0.1"
+<catalog name="Unidata Workshop 2006 - NCEP Model Data" version="{{ site.inv_catalog_schema_version }}"
     xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
@@ -212,7 +212,7 @@ A few gotchas to remember:
 
 ~~~xml
 <?xml version="1.0" encoding="UTF-8"?>
-<catalog name="Unidata Workshop 2006 - NCEP Model Data" version="1.0.1"
+<catalog name="Unidata Workshop 2006 - NCEP Model Data" version="{{ site.inv_catalog_schema_version }}"
     xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 

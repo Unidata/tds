@@ -345,9 +345,9 @@ Sort the files [lexicographically](https://en.wikipedia.org/wiki/Lexicographical
 
 ## `gribConfig` XML Schema
 
-The `gribConfig` schema definition, version 1.2.
+The `gribConfig` schema definition, version 1.3.
 
-see: [https://schemas.unidata.ucar.edu/thredds/InvCatalog.1.2.xsd](https://schemas.unidata.ucar.edu/thredds/InvCatalog.1.2.xsd){:target="_blank"}
+see: [https://schemas.unidata.ucar.edu/thredds/InvCatalog.{{ site.inv_catalog_schema_version }}.xsd](https://schemas.unidata.ucar.edu/thredds/InvCatalog.{{ site.inv_catalog_schema_version }}.xsd){:target="_blank"}
 
 ~~~xsd
 <xsd:complexType name="gribConfigType">

@@ -105,7 +105,7 @@ And, this is the result:
 
 ~~~xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" version="1.2" name="FNL-2010-01" xmlns:xlink="http://www.w3.org/1999/xlink">
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0" version="{{ site.inv_catalog_schema_version }}" name="FNL-2010-01" xmlns:xlink="http://www.w3.org/1999/xlink">
   <service name="VirtualServices" base="" serviceType="Compound">
     <service name="ncdods" base="/thredds/dodsC/" serviceType="OPENDAP"/>
     <service name="wcs" base="/thredds/wcs/" serviceType="WCS"/>
