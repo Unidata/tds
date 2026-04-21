@@ -360,3 +360,18 @@ So, when cataloged, this dataset would end up as something like this:
 <dataset name="NCEP GFS 191km Alaska 2005-10-11 00:00:00 GMT"
          urlPath="models/NCEP/GFS/Alaska_191km/GFS_Alaska_191km_20051011_0000.grib1"/>
 ~~~
+
+## Skipping Empty Directories
+
+By default, `datasetScan` will add a `catalogRef` for each directory that it finds, including directories that are empty.
+Starting with version 5.9 of the TDS, you can skip empty directories by adding the `excludeEmptyDirs="true"` attribute to the `datasetScan` element.
+For example:
+
+~~~xml
+<datasetScan name="Dataset Name" path="unique/path"
+  location="/data/directory/to/scan"
+  excludeEmptyDirs="true">
+~~~
+
+This will cause `datasetScan` to skip adding `catalogRef`s for empty directories.
+To preserve backwards compatibility, the `excludeEmptyDirs` attribute defaults to `false`.

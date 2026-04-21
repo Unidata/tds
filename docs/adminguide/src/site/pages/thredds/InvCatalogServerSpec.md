@@ -154,18 +154,20 @@ A `datasetScan` can be used wherever a `dataset` element is allowed.
         <xsd:attribute name="path" type="xsd:string" use="required"/>
         <xsd:attribute name="location" type="xsd:string"/>
         <xsd:attribute name="addLatest" type="xsd:boolean"/>
+        <xsd:attribute name="excludeEmptyDirs" type="xsd:boolean"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
 </xsd:element>
 ~~~
 
-* The `datasetScan` element generates nested THREDDS catalogs by scanning the directory named in the `location` attribute, and creating a `dataset` for each file found, and a `catalogRef` for each subdirectory. 
-* The location must be an absolute path. 
-* The `path` attribute is used to create the URL for these files and catalogs. 
-* The path must be globally unique over all paths for the TDS. 
-* Do not put leading or trailing slashes on the path.
+* The `datasetScan` element generates nested THREDDS catalogs by scanning the directory named in the `location` attribute, and creating a `dataset` for each file found, and a `catalogRef` for each subdirectory.
+  The location must be an absolute path.
+* The `path` attribute is used to create the URL for these files and catalogs.
+  The path must be globally unique over all paths for the TDS.
+  Do not put leading or trailing slashes on the path.
 * The `addLatest` attribute adds a *latest resolver service* to the `datasetScan`.
+* The `excludeEmptyDirs` configures the `datasetScan` to skip adding `catalogRef`s for empty directories.
 
 A `datasetScan` element is in the `dataset substitutionGroup`, so it can be used wherever a `dataset` element can be used. 
 It is an extension of a `DatasetType`, so any of the `dataset` element nested elements and attributes can be used in it. 
