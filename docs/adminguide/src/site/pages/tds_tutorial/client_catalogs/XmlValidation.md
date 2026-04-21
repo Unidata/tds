@@ -34,6 +34,6 @@ Or, you can simply use the [THREDDS Catalog Validation service](https://thredds.
 This service already knows where the schemas are located, so it's not necessary to add that information to the catalog; you only need it if you want to do your own validation.
 
 {%include note.html content="
-For more information, you can look at the [schema](https://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.7.xsd){:target='_blank'} referenced in the above example.
+For more information, you can look at the [schema](https://schemas.unidata.ucar.edu/thredds/InvCatalog.1.0.7.xsd){:target='_blank'} referenced in the above example.
 However, you'll probably want to study the [catalog specification](client_side_catalog_specification.html) instead, as it is much more digestible.
 " %}

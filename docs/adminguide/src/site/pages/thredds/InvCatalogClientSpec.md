@@ -18,7 +18,7 @@ Related resources:
 
 * [Client Catalog Primer](basic_client_catalog.html) 
 * [Client Catalog Example](https://thredds.ucar.edu/thredds/idd/forecastModels.xml){:target="_blank"} 
-* [Catalog XML Schema](https://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.2.xsd){:target="_blank"}
+* [Catalog XML Schema](https://schemas.unidata.ucar.edu/thredds/InvCatalog.1.2.xsd){:target="_blank"}
 * [Server-Side Catalog Specification](server_side_catalog_specification.html)
 
 ## Base Catalog Elements
