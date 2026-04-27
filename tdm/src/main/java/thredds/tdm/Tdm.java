@@ -67,7 +67,7 @@ public class Tdm {
   private static final org.slf4j.Logger detailLogger = org.slf4j.LoggerFactory.getLogger("tdmDetail");
   private static final boolean debug = false;
   private static final boolean debugOpenFiles = false;
-  private static final boolean debugTasks = true;
+  private static final boolean debugTasks = false;
   private static final String localApiKey = UUID.randomUUID().toString();
   private static final LocalApiSigner localApiSigner = new LocalApiSigner(localApiKey);
 
@@ -452,110 +452,123 @@ public class Tdm {
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
-    try (FileSystemXmlApplicationContext springContext =
-        new FileSystemXmlApplicationContext("classpath:resources/application-config.xml")) {
-      Tdm app = (Tdm) springContext.getBean("TDM");
-      TdmBuildInfo buildInfo = getTdmBuildInfo();
-      tdmLogger.info("TDM version: {}", buildInfo.version);
-      Map<String, String> aliases = (Map<String, String>) springContext.getBean("dataRootLocationAliasExpanders");
-      for (Map.Entry<String, String> entry : aliases.entrySet())
-        AliasTranslator.addAlias(entry.getKey(), entry.getValue());
+    FileSystemXmlApplicationContext springContext =
+        new FileSystemXmlApplicationContext("classpath:resources/application-config.xml");
+    Tdm app = (Tdm) springContext.getBean("TDM");
+    TdmBuildInfo buildInfo = getTdmBuildInfo();
+    tdmLogger.info("TDM version: {}", buildInfo.version);
+    Map<String, String> aliases = (Map<String, String>) springContext.getBean("dataRootLocationAliasExpanders");
+    for (Map.Entry<String, String> entry : aliases.entrySet())
+      AliasTranslator.addAlias(entry.getKey(), entry.getValue());
 
-      EventBus eventBus = (EventBus) springContext.getBean("fcTriggerEventBus");
-      CollectionUpdater collectionUpdater = (CollectionUpdater) springContext.getBean("collectionUpdater");
-      collectionUpdater.setEventBus(eventBus); // Autowiring not working
-      app.setUpdater(collectionUpdater, eventBus);
+    EventBus eventBus = (EventBus) springContext.getBean("fcTriggerEventBus");
+    CollectionUpdater collectionUpdater = (CollectionUpdater) springContext.getBean("collectionUpdater");
+    collectionUpdater.setEventBus(eventBus); // Autowiring not working
+    app.setUpdater(collectionUpdater, eventBus);
 
-      String contentDir = System.getProperty("tds.content.root.path");
-      if (contentDir == null)
-        contentDir = "../content";
-      app.setContentDir(contentDir);
+    String contentDir = System.getProperty("tds.content.root.path");
+    if (contentDir == null)
+      contentDir = "../content";
+    app.setContentDir(contentDir);
 
-      // RandomAccessFile.setDebugLeaks(true);
-      HTTPSession.setGlobalUserAgent(String.format("TDM-%s", buildInfo.version));
-      // GribCollection.getDiskCache2().setNeverUseCache(true);
+    // RandomAccessFile.setDebugLeaks(true);
+    HTTPSession.setGlobalUserAgent(String.format("TDM-%s", buildInfo.version));
+    // GribCollection.getDiskCache2().setNeverUseCache(true);
 
-      String progName = Tdm.class.getName();
-      boolean needPassword = false;
-      try {
-        CommandLine cmdLine = new CommandLine(progName, args);
-        if (cmdLine.help) {
-          cmdLine.printUsage();
-          return;
-        }
+    String progName = Tdm.class.getName();
+    boolean needPassword = false;
+    try {
+      CommandLine cmdLine = new CommandLine(progName, args);
+      if (cmdLine.help) {
+        cmdLine.printUsage();
+        springContext.close();
+        return;
+      }
 
-        if (cmdLine.showVersionInfo) {
-          buildInfo.display();
-          System.exit(0);
-        }
+      if (cmdLine.showVersionInfo) {
+        buildInfo.display();
+        springContext.close();
+        System.exit(0);
+      }
 
-        if (cmdLine.catalog != null) {
-          app.setCatalog(cmdLine.catalog);
+      if (cmdLine.catalog != null) {
+        app.setCatalog(cmdLine.catalog);
+      } else {
+
+        app.setCatalog(app.contentThreddsDir.resolve("catalog.xml").toString());
+      }
+
+      if (cmdLine.cred != null) { // LOOK could be http://user:password@server
+        String[] split = cmdLine.cred.split(":");
+        app.user = split[0];
+        app.pass = split[1];
+        app.sendTriggers = true;
+      }
+
+      if (cmdLine.forceOnStartup)
+        app.setForceOnStartup(true);
+
+      if (cmdLine.nthreads != 0)
+        app.setNThreads(cmdLine.nthreads);
+
+      if (cmdLine.showOnly)
+        app.setShowOnly(true);
+
+      if (cmdLine.tds != null) {
+        if (cmdLine.tds.equalsIgnoreCase("none")) {
+          app.setServerNames(null);
+          app.sendTriggers = false;
+
         } else {
-
-          app.setCatalog(app.contentThreddsDir.resolve("catalog.xml").toString());
-        }
-
-        if (cmdLine.cred != null) { // LOOK could be http://user:password@server
-          String[] split = cmdLine.cred.split(":");
-          app.user = split[0];
-          app.pass = split[1];
+          String[] tdss = cmdLine.tds.split(","); // comma separated
+          app.setServerNames(tdss);
+          // do we need to ask for a password because a non-local TDS is in the list of TDSs to trigger?
+          needPassword = Arrays.stream(tdss).anyMatch(server -> !server.contains("://localhost"));
           app.sendTriggers = true;
         }
-
-        if (cmdLine.forceOnStartup)
-          app.setForceOnStartup(true);
-
-        if (cmdLine.nthreads != 0)
-          app.setNThreads(cmdLine.nthreads);
-
-        if (cmdLine.showOnly)
-          app.setShowOnly(true);
-
-        if (cmdLine.tds != null) {
-          if (cmdLine.tds.equalsIgnoreCase("none")) {
-            app.setServerNames(null);
-            app.sendTriggers = false;
-
-          } else {
-            String[] tdss = cmdLine.tds.split(","); // comma separated
-            app.setServerNames(tdss);
-            // do we need to ask for a password because a non-local TDS is in the list of TDSs to trigger?
-            needPassword = Arrays.stream(tdss).anyMatch(server -> !server.contains("://localhost"));
-            app.sendTriggers = true;
-          }
-        }
-
-      } catch (ParameterException e) {
-        System.err.println(e.getMessage());
-        System.err.printf("Try \"%s --help\" for more information.%n", progName);
       }
 
-      if (!app.showOnly && app.pass == null && app.sendTriggers && needPassword) {
-        Scanner scanner = new Scanner(System.in, CDM.UTF8);
-        String passw;
-        while (true) {
-          System.out.printf("%nEnter password for tds trigger: ");
-          passw = scanner.nextLine();
-          System.out.printf("%nPassword = '%s' OK (Y/N)?", passw);
-          String ok = scanner.nextLine();
-          if (ok.equalsIgnoreCase("Y"))
-            break;
-        }
-        if (passw != null) {
-          app.pass = passw;
-          app.user = "tdm";
-        } else {
-          app.sendTriggers = false;
-        }
-      }
+    } catch (ParameterException e) {
+      System.err.println(e.getMessage());
+      System.err.printf("Try \"%s --help\" for more information.%n", progName);
+    }
 
-      if (app.init()) {
-        app.start();
+    if (!app.showOnly && app.pass == null && app.sendTriggers && needPassword) {
+      Scanner scanner = new Scanner(System.in, CDM.UTF8);
+      String passw;
+      while (true) {
+        System.out.printf("%nEnter password for tds trigger: ");
+        passw = scanner.nextLine();
+        System.out.printf("%nPassword = '%s' OK (Y/N)?", passw);
+        String ok = scanner.nextLine();
+        if (ok.equalsIgnoreCase("Y"))
+          break;
+      }
+      if (passw != null) {
+        app.pass = passw;
+        app.user = "tdm";
       } else {
-        System.out.printf("%nEXIT DUE TO ERRORS");
-        System.exit(1);
+        app.sendTriggers = false;
       }
+    }
+
+    // Register a shutdown hook to cleanly shut down the TDM when the process is terminated
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      tdmLogger.info("TDM shutting down...");
+      collectionUpdater.shutdown();
+      if (app.executor != null) {
+        app.executor.shutdown();
+      }
+      springContext.close();
+      tdmLogger.info("TDM shutdown complete.");
+    }));
+
+    if (app.init()) {
+      app.start();
+    } else {
+      System.out.printf("%nEXIT DUE TO ERRORS");
+      springContext.close();
+      System.exit(1);
     }
   }
 
