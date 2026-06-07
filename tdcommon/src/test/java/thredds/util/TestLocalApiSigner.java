@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 2025-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -7,6 +7,7 @@ package thredds.util;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 public class TestLocalApiSigner {
@@ -69,7 +70,7 @@ public class TestLocalApiSigner {
     final LocalApiSigner localApiSigner = new LocalApiSigner("test-key", timeoutMs / 1000);
     final String url1 = "http://localhost:8080/my/path?param1=val1";
     final String expectedSignature = localApiSigner.generateSignatureGet(url1);
-    Thread.sleep(timeoutMs + 1);
+    TimeUnit.MILLISECONDS.sleep(timeoutMs + 100);
     assertThat(localApiSigner.verifySignatureGet(url1, expectedSignature)).isFalse();
   }
 }
