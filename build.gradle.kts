@@ -6,6 +6,7 @@
 plugins {
   id("tds-java-base-conventions")
   alias(tdsLibs.plugins.spotless)
+  id("tds-versions-conventions")
 }
 
 description = "The NSF Unidata THREDDS Data Server (TDS)."
