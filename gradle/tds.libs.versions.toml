@@ -141,10 +141,11 @@ ucar-cdmTestUtils = { module = "edu.ucar:cdm-test-utils", version.ref = "netcdf-
 xmlunit-core = { module = "org.xmlunit:xmlunit-core", version.ref = "xmlunit" }
 
 [plugins]
-cyclonedx-bom = { id = "org.cyclonedx.bom", version = "3.2.0" }
+# keep at 3.2.2 until spring validation error in tests can be sorted out
+cyclonedx-bom = { id = "org.cyclonedx.bom", version = "3.2.2" }
 execfork = { id = "com.github.psxpaul.execfork", version = "0.2.2"}
-gretty =  { id = "org.gretty", version = "5.0.1" }
-protobuf = { id = "com.google.protobuf", version = "0.9.6" }
-shadow = { id = "com.gradleup.shadow", version = "9.3.2" }
-spotless = { id = "com.diffplug.spotless", version = "8.3.0" }
+gretty =  { id = "org.gretty", version = "5.0.2" }
+protobuf = { id = "com.google.protobuf", version = "0.10.0" }
+shadow = { id = "com.gradleup.shadow", version = "9.4.2" }
+spotless = { id = "com.diffplug.spotless", version = "8.6.0" }
 versions = { id = "com.github.ben-manes.versions", version = "0.54.0" }
