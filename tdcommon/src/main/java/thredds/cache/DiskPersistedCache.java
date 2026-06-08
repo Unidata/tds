@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 2025-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import org.eclipse.serializer.collections.lazy.LazyHashMap;
 import org.eclipse.serializer.concurrency.XThreads;
-import org.eclipse.serializer.persistence.binary.jdk17.types.BinaryHandlersJDK17;
 import org.eclipse.serializer.persistence.binary.jdk8.types.BinaryHandlersJDK8;
 import org.eclipse.store.storage.embedded.configuration.types.EmbeddedStorageConfiguration;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageFoundation;
@@ -141,7 +140,6 @@ public final class DiskPersistedCache<K, V> {
           .createEmbeddedStorageFoundation().setDataBaseName(name).setRoot(level2Cache);
 
       foundation.onConnectionFoundation(BinaryHandlersJDK8::registerJDK8TypeHandlers);
-      foundation.onConnectionFoundation(BinaryHandlersJDK17::registerJDK17TypeHandlers);
 
       storageManager = foundation.start();
       logger.info("{} cache stored at {}", storageManager.databaseName(), cacheDir);

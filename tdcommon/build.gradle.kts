@@ -16,7 +16,6 @@ dependencies {
   implementation(platform(project(":tds-platform")))
 
   implementation(tdsLibs.eclipse.serializerPersistenceBinaryJdk8)
-  implementation(tdsLibs.eclipse.serializerPersistenceBinaryJdk17)
   implementation(tdsLibs.eclipse.storeCache)
   implementation(tdsLibs.findbugs.jsr305)
   implementation(tdsLibs.guava)

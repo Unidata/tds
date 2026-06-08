@@ -26,7 +26,6 @@ dependencies {
     api(tdsLibs.commons.lang3)
     api(tdsLibs.coverity.escapers)
     api(tdsLibs.eclipse.serializerPersistenceBinaryJdk8)
-    api(tdsLibs.eclipse.serializerPersistenceBinaryJdk17)
     api(tdsLibs.eclipse.storeCache)
     api(tdsLibs.edal.cdm)
     api(tdsLibs.edal.common)
