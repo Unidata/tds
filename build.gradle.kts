@@ -6,6 +6,7 @@
 plugins {
   id("tds-java-base-conventions")
   alias(tdsLibs.plugins.spotless)
+  id("tds-versions-conventions")
 }
 
 description = "The NSF Unidata THREDDS Data Server (TDS)."
@@ -14,8 +15,8 @@ description = "The NSF Unidata THREDDS Data Server (TDS)."
 // and run ./gradlew wrapper twice
 tasks.wrapper {
   distributionType = Wrapper.DistributionType.ALL
-  gradleVersion = "9.4.0"
-  distributionSha256Sum = "b21468753cb43c167738ee04f10c706c46459cf8f8ae6ea132dc9ce589a261f2"
+  gradleVersion = "9.5.1"
+  distributionSha256Sum = "c72fb9991f6025cbe337d52ba77e531b3faf62bdd3e348fe1ccee9f51c71adb0"
 }
 
 spotless {
