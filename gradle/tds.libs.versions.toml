@@ -35,8 +35,8 @@ quartz = "2.5.2"
 re2j = "1.8"
 sensorweb-waterml = "2.7.0"
 slf4j = "2.0.18"
-spring-framework = "6.2.18"
-spring-security = "6.5.10"
+spring-framework = "6.2.19"
+spring-security = "6.5.11"
 thymeleaf = "3.1.5.RELEASE"
 
 # testing only
