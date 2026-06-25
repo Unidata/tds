@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 2021-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -107,7 +107,10 @@ public class WmsDetailedConfig {
     try {
       SAXBuilder builder = new SAXBuilder();
       builder.setXMLReaderFactory(XMLReaders.NONVALIDATING);
+      // this is the same as builder.setFeature("http://xml.org/sax/features/external-general-entities", false);
       builder.setExpandEntities(false);
+      builder.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+      builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
       Document doc = builder.build(in);
       // Load the global default settings
       XPathExpression<Element> defaultSettingsExpression = XPathFactory.instance().compile("/wmsConfig/global/defaults",
