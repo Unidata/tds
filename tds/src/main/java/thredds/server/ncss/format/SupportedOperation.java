@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -20,7 +20,9 @@ import static thredds.server.ncss.format.SupportedFormat.*;
 public enum SupportedOperation {
   DATASET_INFO_REQUEST("Dataset info request", XML_FILE),
   DATASET_BOUNDARIES_REQUEST("Dataset grid boundaries request", WKT, JSON),
-  GRID_REQUEST("Grid data request", NETCDF3, NETCDF4, NETCDF4EXT),
+  GRID_REQUEST_NC3("Grid data request", NETCDF3, NETCDF4, NETCDF4EXT),
+  GRID_REQUEST_NC4("Grid data request", NETCDF4, NETCDF3, NETCDF4EXT),
+  GRID_REQUEST_NC4EXT("Grid data request", NETCDF4EXT, NETCDF3, NETCDF4),
   GRID_AS_POINT_REQUEST("Grid as point request", CSV_STREAM, CSV_FILE, XML_STREAM, XML_FILE, NETCDF3, NETCDF4,
       NETCDF4EXT),
   POINT_REQUEST("Point data request", CSV_STREAM, CSV_FILE, XML_STREAM, XML_FILE, NETCDF3, NETCDF4, NETCDF4EXT),

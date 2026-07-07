@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 1998-2017 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE.txt for license information.
  */
+
 package thredds.server.ncss.controller;
 
 import java.util.regex.Matcher;
@@ -9,6 +10,8 @@ import java.util.regex.Pattern;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
@@ -67,8 +70,23 @@ public class NcssGridController extends AbstractNcssController {
   @Autowired
   private AllowedServices allowedServices;
 
+  private SupportedOperation SUPPORTED_GRID_REQUEST;
+
   protected String getBase() {
     return StandardService.netcdfSubsetGrid.getBase();
+  }
+
+  @EventListener
+  public void init(ContextRefreshedEvent event) {
+    if (SUPPORTED_GRID_REQUEST == null) {
+      String defaultGridFormat =
+          ThreddsConfig.get("NetcdfSubsetService.defaultGridFormat", SupportedFormat.NETCDF3.name());
+      SUPPORTED_GRID_REQUEST = switch (defaultGridFormat.toUpperCase(Locale.ROOT)) {
+        case "NETCDF4" -> SupportedOperation.GRID_REQUEST_NC4;
+        case "NETCDF4EXT" -> SupportedOperation.GRID_REQUEST_NC4EXT;
+        default -> SupportedOperation.GRID_REQUEST_NC3;
+      };
+    }
   }
 
   @RequestMapping("**") // data request
@@ -105,7 +123,7 @@ public class NcssGridController extends AbstractNcssController {
   private void handleRequestGrid(HttpServletResponse res, NcssGridParamsBean params, String datasetPath,
       CoverageCollection gcd) throws IOException, NcssException, InvalidRangeException {
     // Supported formats are netcdf3 (default) and netcdf4ext/ netcdf4 (turned on in TdsInit if C library is present)
-    SupportedFormat sf = SupportedOperation.GRID_REQUEST.getSupportedFormat(params.getAccept());
+    SupportedFormat sf = SUPPORTED_GRID_REQUEST.getSupportedFormat(params.getAccept());
     NetcdfFileFormat version = getNetcdfFileFormat(sf);
 
     // all variables have to have the same vertical axis if a vertical coordinate was set. LOOK can we relax this ?
@@ -227,7 +245,7 @@ public class NcssGridController extends AbstractNcssController {
       Document doc = writer.makeDatasetDescription();
       Element root = doc.getRootElement();
       root.setAttribute("location", datasetUrlPath);
-      root.addContent(makeAcceptXML(SupportedOperation.GRID_REQUEST));
+      root.addContent(makeAcceptXML(SUPPORTED_GRID_REQUEST));
 
       return new ModelAndView("threddsXmlView", "Document", doc);
     }
@@ -236,7 +254,7 @@ public class NcssGridController extends AbstractNcssController {
   @RequestMapping(value = "**/dataset.html")
   public ModelAndView getGridDatasetDescriptionHtml(HttpServletRequest req, HttpServletResponse res)
       throws IOException {
-    return getDatasetDescriptionHtml(req, res, SupportedOperation.GRID_REQUEST);
+    return getDatasetDescriptionHtml(req, res, SUPPORTED_GRID_REQUEST);
   }
 
   @RequestMapping(value = "**/pointDataset.html")
@@ -269,7 +287,7 @@ public class NcssGridController extends AbstractNcssController {
       model.put("accept", makeAcceptList(op));
 
       switch (op) {
-        case GRID_REQUEST:
+        case GRID_REQUEST_NC3, GRID_REQUEST_NC4, GRID_REQUEST_NC4EXT:
           return new ModelAndView("templates/ncssGrid", model);
         case GRID_AS_POINT_REQUEST:
           return new ModelAndView("templates/ncssGridAsPoint", model);

@@ -1,6 +1,6 @@
 ---
 title: TDS Configuration File Reference (threddsConfig.xml)
-last_updated: 2025-10-10
+last_updated: 2026-07-07
 sidebar: user_sidebar
 toc: false
 permalink: tds_config_ref.html
@@ -289,6 +289,7 @@ The following shows all the configuration options available in the `NetcdfSubset
   <scour>10 min</scour>
   <maxAge>5 min</maxAge>
   <maxFileDownloadSize>-1</maxFileDownloadSize>
+  <defaultGridFormat>netcdf3</defaultGridFormat>
 </NetcdfSubsetService>
 ~~~
 
@@ -297,7 +298,7 @@ Here is the description of the various options:
 
 * `allow`: a value of `false` disables the NetCDF Subset Service.
 * `dir`: the working directory for creating files for download (see [choosing a cache directory](#disk-caching-and-temporary-files)).
-  If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cache/ncss/` directory. 
+  If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cache/ncss/` directory.
   We recommend that you do not specify a `NetcdfSubsetService.dir` element, and use the default.
 * `scour`: how often to scour the working directory, to delete files that were not successfully downloaded.
 * `maxAge`: how long to leave the files in the working directory while the download is occurring.
@@ -305,6 +306,9 @@ Here is the description of the various options:
 * `maxFileDownloadSize`: maximum size of file that can be requested.
   Optional; default is that there is no size limitation.
   If the file is > 2 GB, large format netCDF will be written.
+* `defaultGridFormat`: default format for grid requests.
+  Optional; default is `netcdf3`.
+  Must be one of `netcdf3`, `netcdf4` (netCDF-4 classic data model), or `netcdf4ext` (netCDF-4 extended data model).
 
 ### ncISO Services
 
