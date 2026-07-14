@@ -343,6 +343,7 @@ for (taskName in warTaskNames) {
     dependsOn(compileGwt)
     from(gwtDir)
     destinationDirectory = downloadsDir
+    manifest { manifest { attributes["Built-On"] = buildProps["buildTimestamp"] } }
   }
 }
 
