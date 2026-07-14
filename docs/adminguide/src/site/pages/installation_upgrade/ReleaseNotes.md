@@ -20,12 +20,30 @@ permalink: release_notes.html
 
 ## Quick Navigation
 
+* [Upgrade from v5.9 to v5.10](#510-upgrade)
 * [Upgrade from v5.8 to v5.9](#59-upgrade)
 * [Upgrade from v5.7 to v5.8](#58-upgrade)
 * [Upgrade from v5.6 to v5.7](#57-upgrade)
 * [Summary of changes from v4.x through v5.6](#upgrading-from-4x)
 
+## 5.10 Upgrade
+
 ## 5.9 Upgrade
+
+The TDS v5.9 release includes multiple enhancements and bug fixes.
+While new features may require configuration changes to utilize, there are no configuration changes required before upgrading from the previous release (TDS v4.8).
+If upgrading from a release prior to v4.8, please see the information below or the visit the [GitHub release notes](https://github.com/Unidata/tds/releases) of the intermediate versions for upgrade instructions.
+Notable enhancements include:
+
+* Support for Blosc compression
+* Migrate code to use netCDF-Java's new MFile abstractions to support GRIB feature collections against object storage (index files must already exist in object storage or locally, but indexing of collections must be handled manually for now)
+* Extend datasetScan to optionally [exclude empty directories](tds_dataset_scan_ref.html#skipping-empty-directories)
+* Allow admins to set the [NCSS GRID request default format](tds_config_ref.html#netcdf-subset-service-ncss)
+
+Also notable is a potentially large improvement in WMS performance thanks to bug fixes in the edal-java library, as well as some security-related hardening.
+Finally, we now produce a Software Bill of Materials (SBOMs) for thredds.war using the [CycloneDX](https://owasp.org/www-project-cyclonedx/){:target="_blank"} standard (driven by the OWASP Foundation).
+The SBOMs are available from the [NSF Unidata downloads page](https://downloads.unidata.ucar.edu/tds/){:target="_blank"} and the [GitHub release page](https://github.com/Unidata/tds/releases/tag/v5.8){:target="_blank"}.
+More information about the release can be found on the [GitHub release page](https://github.com/Unidata/tds/releases/tag/v5.8){:target="_blank"}.
 
 ## 5.8 Upgrade
 
