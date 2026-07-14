@@ -20,10 +20,13 @@ permalink: release_notes.html
 
 ## Quick Navigation
 
+* [Upgrade from v5.9 to v5.10](#510-upgrade)
 * [Upgrade from v5.8 to v5.9](#59-upgrade)
 * [Upgrade from v5.7 to v5.8](#58-upgrade)
 * [Upgrade from v5.6 to v5.7](#57-upgrade)
 * [Summary of changes from v4.x through v5.6](#upgrading-from-4x)
+
+## 5.10 Upgrade
 
 ## 5.9 Upgrade
 
