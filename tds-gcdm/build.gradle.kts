@@ -59,7 +59,7 @@ val startDaemon =
     errorOutput = project.layout.buildDirectory.file("gcdm_logs/gcdm-error.log")
     waitForPort = 16111
     waitForOutput = "Server started, listening on 16111"
-    dependsOn(tasks.jar, tasks.testClasses)
+    dependsOn(tasks.testClasses, tasks.assemble)
   }
 
 tasks.withType<Test> { dependsOn(startDaemon) }
