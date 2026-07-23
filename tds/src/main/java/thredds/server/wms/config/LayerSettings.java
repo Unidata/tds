@@ -72,7 +72,7 @@ public class LayerSettings {
       throw new WmsConfigException("defaultPaletteName must contain a value");
     }
     this.defaultNumColorBands =
-        getInteger(parentElement, "defaultNumColorBands", Extents.newExtent(5, ColourPalette.MAX_NUM_COLOURS));
+        getInteger(parentElement, "defaultNumColorBands", Extents.newExtent(1, ColourPalette.MAX_NUM_COLOURS));
     this.logScaling = getBoolean(parentElement, "logScaling");
     this.intervalTime = getBoolean(parentElement, "intervalTime");
     if (this.intervalTime == null) {
