@@ -21,7 +21,7 @@ dependencies {
   api(platform(tdsLibs.springsecurity.bom))
   api(platform(tdsLibs.ucar.netcdfJavaBom))
   // temporary overrides from netCDF-Java bom (only for TDS 5.9 release)
-  api(platform("software.amazon.awssdk:bom:2.47.3"))
+  api(platform("software.amazon.awssdk:bom:2.49.6"))
   api(platform("com.fasterxml.jackson:jackson-bom:2.22.1"))
 
   constraints {
