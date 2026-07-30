@@ -14,9 +14,9 @@ description = "The NSF Unidata THREDDS Data Server (TDS)."
 // To upgrade gradle, update the version and expected checksum values below
 // and run ./gradlew wrapper twice
 tasks.wrapper {
-  distributionType = Wrapper.DistributionType.ALL
-  gradleVersion = "9.5.1"
-  distributionSha256Sum = "c72fb9991f6025cbe337d52ba77e531b3faf62bdd3e348fe1ccee9f51c71adb0"
+  distributionType = Wrapper.DistributionType.BIN
+  gradleVersion = "9.6.1"
+  distributionSha256Sum = "9c0f7faeeb306cb14e4279a3e084ca6b596894089a0638e68a07c945a32c9e14"
 }
 
 spotless {

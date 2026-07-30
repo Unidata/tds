@@ -41,21 +41,29 @@ sourceSets {
   }
 }
 
-val integrationTestsImplementation by
-  configurations.getting { extendsFrom(configurations.implementation.get()) }
-val integrationTestsRuntimeOnly by configurations.getting
+val integrationTestsImplementation =
+  configurations.named("integrationTestsImplementation") {
+    extendsFrom(configurations.implementation.get())
+  }
+val integrationTestsRuntimeOnly = configurations.named("integrationTestsRuntimeOnly")
 
-configurations["integrationTestsRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+configurations.named("integrationTestsRuntimeOnly").configure {
+  extendsFrom(configurations.runtimeOnly.get())
+}
 
-val freshInstallTestsImplementation by
-  configurations.getting { extendsFrom(configurations.implementation.get()) }
-val freshInstallTestsRuntimeOnly by configurations.getting
+val freshInstallTestsImplementation =
+  configurations.named("freshInstallTestsImplementation") {
+    extendsFrom(configurations.implementation.get())
+  }
+val freshInstallTestsRuntimeOnly = configurations.named("freshInstallTestsRuntimeOnly")
 
-configurations["freshInstallTestsRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+configurations.named("freshInstallTestsRuntimeOnly").configure {
+  extendsFrom(configurations.runtimeOnly.get())
+}
 
-val gwt by configurations.creating { extendsFrom(configurations.implementation.get()) }
+val gwt = configurations.create("gwt") { extendsFrom(configurations.implementation.get()) }
 
-val gcdm by configurations.creating {}
+val gcdm = configurations.create("gcdm")
 
 ///////////////////////////
 // dependency management //
@@ -347,8 +355,8 @@ for (taskName in warTaskNames) {
   }
 }
 
-val copyWebappFilesForTests by
-  tasks.registering(Copy::class) {
+val copyWebappFilesForTests =
+  tasks.register<Copy>("copyWebappFilesForTests") {
     from("src/main/webapp")
     from("src/main/webapp/WEB-INF/classes")
     into(sourceSets.test.get().java.destinationDirectory)
