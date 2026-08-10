@@ -561,7 +561,11 @@ public class ReqState {
    */
 
   public String getInitParameter(String name) {
-    return (myServletConfig.getInitParameter(name));
+    String value = null;
+    if (myServletConfig != null) {
+      value = myServletConfig.getInitParameter(name);
+    }
+    return (value);
   }
 
   public String getDodsBlobURL_OLDANDBUSTED() {

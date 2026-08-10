@@ -213,4 +213,19 @@ public class TestTdsDodsServer {
       }
     }, false);
   }
+
+  @Test
+  public void testInfoEndpoint() throws IOException {
+    String endpoint = TestOnLocalServer.withHttpPath("dodsC/localContent/testData.nc.info");
+    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+      HttpGet httpGet = new HttpGet(endpoint);
+      HttpResponse response = httpClient.execute(httpGet);
+      StatusLine status = response.getStatusLine();
+      Assert.assertEquals(200, status.getStatusCode());
+      HttpEntity entity = response.getEntity();
+      Assert.assertEquals(MediaType.TEXT_HTML_VALUE + ";charset=ISO-8859-1", entity.getContentType().getValue());
+      String responseString = EntityUtils.toString(entity);
+      Assert.assertTrue(responseString.toLowerCase().contains("<b> long_name: </b> x dimension name"));
+    }
+  }
 }
