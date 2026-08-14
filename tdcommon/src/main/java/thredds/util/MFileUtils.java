@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.nio.file.DirectoryStream;
 import thredds.inventory.MControllers;
 import thredds.inventory.MFile;
+import thredds.inventory.filter.CompositeMFileFilter;
 import ucar.nc2.iosp.zarr.ZarrKeys;
 import ucar.nc2.util.IO;
 
@@ -70,17 +71,34 @@ public class MFileUtils {
    * Determine if a directory represented by an MFile is empty
    *
    * @param mfile MFile representing a possible directory
-   * @return true if mfile represents a directory and is empty, otherwise false
+   * @param fileFilters filter for including/excluding files (may be null)
+   * @param dirFilters filter for including/excluding directories (may be null)
+   * @return true if mfile represents a directory and is empty, or effectively empty due to filters, otherwise false
    */
-  public static boolean isEmpty(MFile mfile) {
-    boolean isEmpty = false;
-    if (mfile.isDirectory()) {
-      try (DirectoryStream<MFile> mDirStream = MControllers.newDirectoryStream(mfile.getPath())) {
-        isEmpty = !mDirStream.iterator().hasNext();
-      } catch (IOException e) {
-        isEmpty = false;
-      }
+  public static boolean isEmpty(MFile mfile, CompositeMFileFilter fileFilters, CompositeMFileFilter dirFilters) {
+    if (!mfile.isDirectory()) {
+      return false;
     }
-    return isEmpty;
+
+    boolean hasFilters = fileFilters != null || dirFilters != null;
+
+    try (DirectoryStream<MFile> mDirStream = MControllers.newDirectoryStream(mfile.getPath())) {
+      for (MFile childMFile : mDirStream) {
+        if (!hasFilters) {
+          return false;
+        }
+
+        boolean isDir = childMFile.isDirectory();
+        boolean includeDir = isDir && dirFilters != null && dirFilters.accept(childMFile);
+        boolean includeFile = !isDir && fileFilters != null && fileFilters.accept(childMFile);
+        if (includeDir || includeFile) {
+          return false;
+        }
+      }
+
+      return true;
+    } catch (IOException e) {
+      return false;
+    }
   }
 }

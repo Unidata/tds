@@ -140,6 +140,21 @@
     </sort>
   </datasetScan>
 
+  <datasetScan name="Test Scan Local Exclude Empty Dirs with Filters (no ID)" path="scanLocalExcludeEmptyWithFilters"
+    location="content/testdata/"
+    excludeEmptyDirs="true">
+    <metadata inherited="true">
+      <serviceName>all</serviceName>
+    </metadata>
+    <sort>
+      <lexigraphicByName increasing="true"/>
+    </sort>
+    <filter>
+      <exclude wildcard="zarr_*" />
+      <exclude wildcard="zarr_*" atomic="false" collection="true" />
+    </filter>
+  </datasetScan>
+
   <!-- a scan on the entire /upc/share/cdmUnitTest directory; not all services will make sense -->
   <datasetScan name="Test scan cdmUnitTest (ID)" ID="scanCdmUnitTests" path="scanCdmUnitTests" location="${cdmUnitTest}/">
     <metadata inherited="true">
