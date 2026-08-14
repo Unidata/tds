@@ -167,7 +167,7 @@ A `datasetScan` can be used wherever a `dataset` element is allowed.
   The path must be globally unique over all paths for the TDS.
   Do not put leading or trailing slashes on the path.
 * The `addLatest` attribute adds a *latest resolver service* to the `datasetScan`.
-* The `excludeEmptyDirs` configures the `datasetScan` to skip adding `catalogRef`s for empty directories.
+* The `excludeEmptyDirs` configures the `datasetScan` to skip adding `catalogRef`s for empty, or effectively empty, directories.
 
 A `datasetScan` element is in the `dataset substitutionGroup`, so it can be used wherever a `dataset` element can be used. 
 It is an extension of a `DatasetType`, so any of the `dataset` element nested elements and attributes can be used in it. 

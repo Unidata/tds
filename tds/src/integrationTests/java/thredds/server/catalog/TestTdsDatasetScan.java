@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
@@ -246,6 +247,27 @@ public class TestTdsDatasetScan {
       Files.deleteIfExists(fileToAddToEmptyDir);
       Files.deleteIfExists(emptyDir);
     }
+  }
+
+  @Test
+  public void TestEmptyDirByFilter() throws IOException {
+    // Tests that a directory is empty only because of filters
+    // "catalog/scanLocalExcludeEmptyWithFilters/catalog.xml" has a filter to exclude files
+    // and dirs that match, which effectively makes the zarr/ directory empty
+    // and thus it does not appear in the datasetScan as a catalogRef
+    final String scanExcludeEmptyDirs = "catalog/scanLocalExcludeEmptyWithFilters/catalog.xml";
+    final String scanDefaultExcludeEmptyDirs = "catalog/scanLocal/catalog.xml";
+    final int expectedCatalogRefsAllDirs = 2;
+    checkCatalogRefCount(scanDefaultExcludeEmptyDirs, expectedCatalogRefsAllDirs);
+    Catalog cat = TdsLocalCatalog.open(scanExcludeEmptyDirs);
+    List<Dataset> catRefs = new ArrayList<>();
+    for (Dataset ds : cat.getAllDatasets()) {
+      if (ds instanceof CatalogRef) {
+        catRefs.add(ds);
+      }
+    }
+    assertThat(catRefs).hasSize(expectedCatalogRefsAllDirs - 1);
+    assertThat(catRefs.get(0).getName()).ignoringCase().isNotEqualTo("zarr");
   }
 
   private static void checkCatalogRefCount(String catalogLocation, int expectedRefs) {

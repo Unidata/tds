@@ -375,3 +375,4 @@ For example:
 
 This will cause `datasetScan` to skip adding `catalogRef`s for empty directories.
 To preserve backwards compatibility, the `excludeEmptyDirs` attribute defaults to `false`.
+Starting with version 5.10 of the TDS, this will also exclude effectively empty directories (directories that are empty due to the use of filters).

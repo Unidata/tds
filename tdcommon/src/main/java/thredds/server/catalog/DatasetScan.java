@@ -226,7 +226,7 @@ public class DatasetScan extends CatalogRef {
       // if this is a directory, should it be skipped?
       // skip the directory if datasetScan configured to skip empty dirs
       // and the dir is empty
-      boolean skipDir = isDir && config.excludeEmptyDirs && isEmpty(mfile);
+      boolean skipDir = isDir && config.excludeEmptyDirs && isEmpty(mfile, fileFilters, dirFilters);
 
       // handle directory
       if (isDir && !skipDir) {
