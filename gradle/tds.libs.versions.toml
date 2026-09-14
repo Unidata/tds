@@ -2,7 +2,7 @@
 tds = "5.10-SNAPSHOT"
 
 unidata-doc-theme = "0.1.1"
-netcdf-java = "5.10.0"
+netcdf-java = "5.11.0-SNAPSHOT"
 
 # 3rd party dependencies
 colt = "1.2.0"
@@ -10,7 +10,7 @@ commons-lang3 = "3.20.0"
 coverity-escapers = "1.1.1"
 eclipse-store = "4.2.0"
 edal-java = "1.5.3.3"
-grpc = "1.83.0"
+grpc = "1.84.0"
 guava = "33.6.0-jre"
 gwt = "2.13.1"
 hibernate = "8.0.3.Final"
@@ -23,14 +23,14 @@ jaxen = "2.0.6"
 jcommander = "1.82"
 jdom2 = "2.0.6.1"
 joda-time = "2.14.3"
-json = "20260719"
+json = "20260814"
 jsr305 = "3.0.2"
 libblosc2 = "2.23.1.0"
 log4j = "2.26.1"
 logback-classic = "1.5.38"
 nciso = "2.4.9"
 oro = "2.0.8"
-protobuf = "4.35.1"
+protobuf = "4.36.1"
 quartz = "2.5.2"
 re2j = "1.8"
 sensorweb-waterml = "2.7.0"
@@ -47,7 +47,10 @@ junit5 = "5.14.4"
 junitparams = "1.0.5"
 mockito-core = "2.28.2"
 truth = "1.4.5"
-xmlunit = "2.12.0"
+xmlunit = "2.13.0"
+
+# 3rd party transitive (to control resolution)
+jna = "5.19.1"
 
 [libraries]
 beust-jcommander = { module = "com.beust:jcommander", version.ref = "jcommander" }
@@ -125,6 +128,9 @@ ucar-uicdm = { module = "edu.ucar:uicdm", version.ref = "netcdf-java" }
 ucar-waterml = { module = "edu.ucar:waterml" }
 unidata-libblosc2Native = { module = "edu.ucar.unidata:libblosc2-native", version.ref = "libblosc2" }
 
+# transitive resolution
+jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
+
 ## test only
 commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
 google-truth = { module = "com.google.truth:truth", version.ref = "truth" }
@@ -140,10 +146,10 @@ ucar-cdmTestUtils = { module = "edu.ucar:cdm-test-utils", version.ref = "netcdf-
 xmlunit-core = { module = "org.xmlunit:xmlunit-core", version.ref = "xmlunit" }
 
 [plugins]
-cyclonedx-bom = { id = "org.cyclonedx.bom", version = "3.3.0" }
+cyclonedx-bom = { id = "org.cyclonedx.bom", version = "3.4.1" }
 execfork = { id = "com.github.psxpaul.execfork", version = "0.2.2"}
 gretty =  { id = "org.gretty", version = "5.0.2" }
 protobuf = { id = "com.google.protobuf", version = "0.10.0" }
 shadow = { id = "com.gradleup.shadow", version = "9.6.1" }
-spotless = { id = "com.diffplug.spotless", version = "8.9.0" }
-versions = { id = "io.github.ben-manes.versions", version = "0.56.0" }
+spotless = { id = "com.diffplug.spotless", version = "8.10.2" }
+versions = { id = "io.github.ben-manes.versions", version = "0.61.0" }
