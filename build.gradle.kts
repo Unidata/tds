@@ -15,8 +15,8 @@ description = "The NSF Unidata THREDDS Data Server (TDS)."
 // and run ./gradlew wrapper twice
 tasks.wrapper {
   distributionType = Wrapper.DistributionType.BIN
-  gradleVersion = "9.6.1"
-  distributionSha256Sum = "9c0f7faeeb306cb14e4279a3e084ca6b596894089a0638e68a07c945a32c9e14"
+  gradleVersion = "9.7.1"
+  distributionSha256Sum = "acd53f1edaf02f1a8ff99879f8a34b302661a057d9b063ae9e35b552f804d20a"
 }
 
 spotless {

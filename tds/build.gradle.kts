@@ -43,27 +43,27 @@ sourceSets {
 
 val integrationTestsImplementation =
   configurations.named("integrationTestsImplementation") {
-    extendsFrom(configurations.implementation.get())
+    extendsFrom(configurations.implementation.get(), configurations.testImplementation.get())
   }
 val integrationTestsRuntimeOnly = configurations.named("integrationTestsRuntimeOnly")
 
 configurations.named("integrationTestsRuntimeOnly").configure {
-  extendsFrom(configurations.runtimeOnly.get())
+  extendsFrom(configurations.runtimeOnly.get(), configurations.testRuntimeOnly.get())
 }
 
 val freshInstallTestsImplementation =
   configurations.named("freshInstallTestsImplementation") {
-    extendsFrom(configurations.implementation.get())
+    extendsFrom(configurations.implementation.get(), configurations.testImplementation.get())
   }
 val freshInstallTestsRuntimeOnly = configurations.named("freshInstallTestsRuntimeOnly")
 
 configurations.named("freshInstallTestsRuntimeOnly").configure {
-  extendsFrom(configurations.runtimeOnly.get())
+  extendsFrom(configurations.runtimeOnly.get(), configurations.testRuntimeOnly.get())
 }
 
 val gwt = configurations.create("gwt") { extendsFrom(configurations.implementation.get()) }
 
-val gcdm = configurations.create("gcdm")
+val gcdm = configurations.create("gcdm") { extendsFrom(configurations.implementation.get()) }
 
 ///////////////////////////
 // dependency management //
@@ -351,7 +351,6 @@ for (taskName in warTaskNames) {
     dependsOn(compileGwt)
     from(gwtDir)
     destinationDirectory = downloadsDir
-    manifest { manifest { attributes["Built-On"] = buildProps["buildTimestamp"] } }
   }
 }
 
