@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.4.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.4.xsd
+                      https://dependency-check.github.io/DependencyCheck/dependency-suppression.1.4.xsd">
   <suppress>
     <notes><![CDATA[
       file name: tds-test-utils
@@ -58,5 +61,21 @@
     <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents\.core5/httpcore5-h2@.*$</packageUrl>
     <cve>CVE-2026-54399</cve>
     <cve>CVE-2026-54428</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      file name: jna-5.19.1.jar
+      reason: JNA is being detected as Sun Java SE 6
+    ]]></notes>
+    <filePath regex="true">.*[/\\]jna-.*\.jar</filePath>
+    <cpe>cpe:/a:sun:java_se</cpe>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      file name: jna-5.19.1.jar
+      reason: JNA is being detected as Oracle Java SE 6
+    ]]></notes>
+    <filePath regex="true">.*[/\\]jna-.*\.jar</filePath>
+    <cpe>cpe:/a:oracle:java_se</cpe>
   </suppress>
 </suppressions>
