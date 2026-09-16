@@ -9,7 +9,7 @@
 							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
               http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
               http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-              http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security-6.3.xsd">
+              http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security-7.0.xsd">
 
 
     <!-- Enables the Spring MVC @Controller programming model  -->
@@ -18,6 +18,7 @@
     </mvc:annotation-driven>
 
     <!-- Allow RequestMappings that start with "**" -->
+    <!-- deprecated in Spring 7; TODO migrate to PathPattern -->
     <bean id="pathMatcher" class="org.springframework.util.AntPathMatcher"/>
 
     <!-- Application root Context: defines shared resources visible to all other web components -->
@@ -30,7 +31,7 @@
 
     <!-- servlet filters -->
     <bean id="springDelegatingFilter" class="org.springframework.security.web.FilterChainProxy">
-        <security:filter-chain-map request-matcher="ant">
+        <security:filter-chain-map request-matcher="path">
             <security:filter-chain pattern="/dap4/**" filters="
                httpHeadFilter,
                requestQueryFilterAllowAngleBrackets,

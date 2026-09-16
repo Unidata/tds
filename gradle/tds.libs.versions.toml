@@ -13,12 +13,12 @@ edal-java = "1.5.3.3"
 grpc = "1.84.0"
 guava = "33.6.0-jre"
 gwt = "2.13.1"
-hibernate = "8.0.3.Final"
+hibernate = "9.1.3.Final"
 httpcomponents = "4.5.13"
-jakarta-el = "4.0.2"
+expressly = "6.0.0"
 jakarta-jstl = "3.0.1"
 jakarta-servlet-api = "6.1.0"
-jakartaee = "10.0.0"
+jakartaee = "11.0.0"
 jaxen = "2.0.6"
 jcommander = "1.82"
 jdom2 = "2.0.6.1"
@@ -35,8 +35,8 @@ quartz = "2.5.2"
 re2j = "1.8"
 sensorweb-waterml = "2.7.0"
 slf4j = "2.0.18"
-spring-framework = "6.2.19"
-spring-security = "6.5.11"
+spring-framework = "7.0.9"
+spring-security = "7.0.6"
 thymeleaf = "3.1.5.RELEASE"
 
 # testing only
@@ -65,7 +65,7 @@ edal-godiva = { module = "uk.ac.rdg.resc:edal-godiva", version.ref = "edal-java"
 edal-graphics = { module = "uk.ac.rdg.resc:edal-graphics", version.ref = "edal-java" }
 edal-wms = { module = "uk.ac.rdg.resc:edal-wms", version.ref = "edal-java" }
 findbugs-jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
-glassfish-jakartaEl = { module = "org.glassfish:jakarta.el", version.ref = "jakarta-el" }
+glassfish-expressly = { module = "org.glassfish.expressly:expressly", version.ref = "expressly" }
 glassfish-jstl = { module = "org.glassfish.web:jakarta.servlet.jsp.jstl", version.ref = "jakarta-jstl" }
 grpc-nettyShaded = { module = "io.grpc:grpc-netty-shaded", version.ref = "grpc"}
 grpc-protocGenGrpcJava = { module = "io.grpc:protoc-gen-grpc-java", version.ref = "grpc" }
@@ -108,6 +108,8 @@ springframework-webmvc = { module = "org.springframework:spring-webmvc" }
 springsecurity-bom = { module = "org.springframework.security:spring-security-bom", version.ref = "spring-security" }
 springsecurity-config = { module = "org.springframework.security:spring-security-config" }
 springsecurity-web = { module = "org.springframework.security:spring-security-web" }
+# no dedicated spring 7 thymeleaf dependency at this point, but this still
+# works with spring
 thymeleaf-spring6 = { module = "org.thymeleaf:thymeleaf-spring6", version.ref = "thymeleaf" }
 ucar-bufr = { module = "edu.ucar:bufr" }
 ucar-cdmCore = { module = "edu.ucar:cdm-core" }

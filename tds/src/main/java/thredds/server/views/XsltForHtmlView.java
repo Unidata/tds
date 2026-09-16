@@ -1,4 +1,8 @@
-/* Copyright */
+/*
+ * Copyright (c) 2015-2026 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.views;
 
 import org.jdom2.Document;
@@ -6,13 +10,9 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.transform.JDOMResult;
 import org.jdom2.transform.JDOMSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.servlet.view.AbstractView;
-import thredds.server.config.TdsContext;
 import thredds.util.ContentType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +28,6 @@ import java.util.Map;
  * @author caron
  * @since 5/1/2015
  */
-@Component
 public class XsltForHtmlView extends AbstractView {
 
   protected void renderMergedOutputModel(Map model, HttpServletRequest req, HttpServletResponse res) throws Exception {

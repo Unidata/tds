@@ -133,11 +133,4 @@ val createChecksums =
 
 tasks.assemble { dependsOn(tasks.cyclonedxBom, createChecksums) }
 
-configurations.all {
-  // exclude commons-logging
-  // Standard Commons Logging discovery in action with spring-jcl (remove to avoid potential
-  // conflicts)
-  exclude(group = "commons-logging", module = "commons-logging")
-}
-
 configurations.testRuntimeOnly { exclude(group = "org.apache.logging.log4j") }

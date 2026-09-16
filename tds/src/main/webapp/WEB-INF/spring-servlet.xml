@@ -15,11 +15,8 @@
     <mvc:resources mapping="/**" location="/"/>
 
     <!-- View resolvers common to most tds controllers and servlets -->
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
-        <property name="cache" value="true"/>
-        <property name="order" value="1"/>
-        <property name="location" value="/WEB-INF/view.xml"/>
-    </bean>
+    <!-- Named views (threddsFileView, threddsInvCatXmlView, threddsXmlView, threddsXsltView) and
+         BeanNameViewResolver (order 1) are defined in thredds.server.views.TdsViewConfiguration -->
 
     <!--<bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">-->
     <bean id="customTemplateResolver" class="thredds.server.views.TdsExtensibleTemplateResolver">
