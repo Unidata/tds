@@ -28,6 +28,18 @@ permalink: upgrade.html
 
 ## 5.10 Upgrade
 
+The TDS v5.10 release includes a major version upgrade to Spring, which means we now require Servlet specification 6.1 as the minimum supported servlet container version.
+For users running the TDS under Apache Tomcat, this means upgrading to Tomcat 11 will be required.
+
+* Upgraded to Spring Framework 7.0.8 and Spring Security 7.0.6.
+* Upgraded to Jakarta EE 11 (Servlet 6.1, Jakarta Validation 3.1) and Hibernate Validator 9.1.3.Final with Expressly 6.0.0 as the Expression Language provider.
+
+Additionally:
+
+* WMS has been extended to support `NUMCOLORBANDS` values as small as 1 (previously it was limited to a minimum of 5).
+* The DAP2 server `.info` endpoint has been restored (this has not been unintentionally broken since the move from TDS version `4.x` to `5.x`)
+* DatasetScan `excludeEmptyDirs="true"` functionality will now exclude effectively empty directories (empty due to filter exclusions)
+
 ## 5.9 Upgrade
 
 The TDS v5.9 release includes multiple enhancements and bug fixes.

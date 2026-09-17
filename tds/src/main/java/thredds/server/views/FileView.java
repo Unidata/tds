@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package thredds.server.views;
 
 import org.springframework.web.servlet.view.AbstractView;
@@ -16,7 +17,7 @@ import ucar.unidata.io.RandomAccessFile;
 
 /**
  * LOOK: wants to replace ServletUtil.returnFile() ?
- * Associated with threddsFileView in tds/src/main/webapp/WEB-INF/view.xml
+ * Associated with threddsFileView in thredds.server.views.TdsViewConfiguration
  *
  * Render the response to a request for a local file including byte range requests.
  * <p/>

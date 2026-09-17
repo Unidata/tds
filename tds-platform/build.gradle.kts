@@ -67,7 +67,7 @@ dependencies {
     api(tdsLibs.ucar.opendap)
     api(tdsLibs.ucar.waterml)
 
-    runtime(tdsLibs.glassfish.jakartaEl)
+    runtime(tdsLibs.glassfish.expressly)
     runtime(tdsLibs.glassfish.jstl)
     runtime(tdsLibs.hibernate.validator)
     runtime(tdsLibs.jakarta.jstlApi)

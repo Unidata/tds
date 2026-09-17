@@ -10,7 +10,7 @@ jobs:
       matrix:
         java-version: [ 17 ]
         java-vendor: [ 'temurin', 'corretto' ]
-        servletcontainer: [ 'tomcat10' ]
+        servletcontainer: [ 'tomcat11' ]
     steps:
       - uses: actions/checkout@v6
       - name: Build and test with Gradle (${{ matrix.java-vendor }} ${{ matrix.java-version }})

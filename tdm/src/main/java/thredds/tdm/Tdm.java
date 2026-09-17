@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2025 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -482,7 +482,7 @@ public class Tdm {
       if (cmdLine.help) {
         cmdLine.printUsage();
         springContext.close();
-        return;
+        System.exit(0);
       }
 
       if (cmdLine.showVersionInfo) {

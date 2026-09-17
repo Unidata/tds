@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package thredds.server.ncss.controller;
 
 import org.jdom2.Element;
@@ -59,10 +60,10 @@ public abstract class AbstractNcssController {
 
 
   protected void setResponseHeaders(HttpServletResponse response, HttpHeaders httpHeaders) {
-    Set<String> keySet = httpHeaders.keySet();
-    for (String key : keySet) {
-      if (httpHeaders.containsKey(key)) { // LOOK why test again?
-        response.setHeader(key, httpHeaders.get(key).get(0)); // LOOK why only first one ?
+    for (String key : httpHeaders.headerNames()) {
+      List<String> values = httpHeaders.get(key);
+      if (values != null && !values.isEmpty()) {
+        response.setHeader(key, values.get(0)); // LOOK why only first one ?
       }
     }
   }

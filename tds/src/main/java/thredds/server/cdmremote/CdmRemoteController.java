@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -112,7 +112,7 @@ public class CdmRemoteController {
           return new ResponseEntity<>(ncml, responseHeaders, HttpStatus.OK);
 
         default:
-          return new ResponseEntity<>("Unrecognized request", null, HttpStatus.BAD_REQUEST);
+          return new ResponseEntity<>("Unrecognized request", HttpStatus.BAD_REQUEST);
       }
     }
   }

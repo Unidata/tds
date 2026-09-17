@@ -134,7 +134,7 @@ dependencies {
 
   // JSR 303 (bean validation) with Hibernate Validator
   implementation(tdsLibs.jakarta.validationApi)
-  runtimeOnly(tdsLibs.glassfish.jakartaEl)
+  runtimeOnly(tdsLibs.glassfish.expressly)
   runtimeOnly(tdsLibs.hibernate.validator)
 
   implementation(tdsLibs.thymeleaf.spring6)
@@ -374,7 +374,7 @@ tasks.withType(Test::class.java).configureEach { exclude("**/migrateToJunit5/**"
 var servletContainerName = System.getProperty("tds.test.gretty.container")
 
 if (servletContainerName == null || servletContainerName.isEmpty()) {
-  servletContainerName = "tomcat10"
+  servletContainerName = "tomcat11"
 }
 
 val cleanTestContentRoot = layout.buildDirectory.dir("freshInstallTests").get().asFile
@@ -408,6 +408,9 @@ farms {
       httpPort = 8081
       System.getProperty("unidata.testdata.path")?.let {
         systemProperty("unidata.testdata.path", it)
+      }
+      System.getProperty("jna.library.path")?.let {
+        systemProperty("jna.library.path", it)
       }
     },
   )
@@ -482,10 +485,6 @@ configurations.all {
   // check with:
   // ./gradlew -q tds:dependencyInsight --configuration runtimeClasspath --dependency stax-api
   exclude(group = "stax", module = "stax-api")
-  // exclude commons-logging
-  // Standard Commons Logging discovery in action with spring-jcl (remove to avoid potential
-  // conflicts)
-  exclude(group = "commons-logging", module = "commons-logging")
 }
 
 // "testRuntime" extends from "runtime", meaning that "testRuntime" will get the log4j dependencies
