@@ -206,7 +206,8 @@ abstract public class DapController extends HttpServlet {
         }
       }
     } catch (Throwable t) {
-      t.printStackTrace();
+      if (DEBUG)
+        t.printStackTrace();
       int code = HttpServletResponse.SC_BAD_REQUEST;
       if (t instanceof DapException) {
         DapException e = (DapException) t;
@@ -446,7 +447,8 @@ abstract public class DapController extends HttpServlet {
     } else {
       StringWriter sw = new StringWriter();
       PrintWriter p = new PrintWriter(sw);
-      t.printStackTrace(p);
+      if (DEBUG)
+        t.printStackTrace(p);
       p.close();
       sw.close();
       err.setMessage(sw.toString());
