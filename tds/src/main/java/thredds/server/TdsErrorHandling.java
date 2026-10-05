@@ -1,6 +1,9 @@
-/* Copyright */
-package thredds.server;
+/*
+ * Copyright (c) 2015-2026 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
 
+package thredds.server;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -21,6 +24,7 @@ import thredds.server.exception.MethodNotImplementedException;
 import thredds.server.exception.RequestTooLargeException;
 import thredds.server.exception.ServiceNotAllowed;
 import thredds.server.ncss.exception.NcssException;
+import ucar.ma2.InvalidRangeException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
@@ -38,6 +42,7 @@ import static org.springframework.web.util.HtmlUtils.htmlEscape;
  * IOException INTERNAL_SERVER_ERROR
  * UnsupportedOperationException UNPROCESSABLE_ENTITY
  * IllegalArgumentException BAD_REQUEST
+ * InvalidRangeException BAD_REQUEST
  * BindException BAD_REQUEST
  * Throwable INTERNAL_SERVER_ERROR
  *
@@ -128,6 +133,16 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
     else
       return new ResponseEntity<>("IllegalArgumentException: " + htmlEscape(mess), responseHeaders,
           HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ucar.ma2.InvalidRangeException.class)
+  public ResponseEntity<String> handle(InvalidRangeException ex) {
+    logger.warn("TDS Error", ex);
+
+    HttpHeaders responseHeaders = new HttpHeaders();
+    responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+    return new ResponseEntity<>("Invalid Range: " + htmlEscape(ex.getMessage()), responseHeaders,
+        HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(NcssException.class)
