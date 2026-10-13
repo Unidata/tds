@@ -487,13 +487,12 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
    */
   @Override
   public void destroy() {
-    System.out.printf("TdsInit.destroy() is called%n");
+    startupLog.info("TdsInit.destroy() is called");
 
     // prefs
     try {
       store.save();
     } catch (IOException ioe) {
-      ioe.printStackTrace();
       startupLog.error("TdsInit: Prefs save failed", ioe);
     }
 

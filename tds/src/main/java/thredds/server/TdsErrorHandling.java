@@ -1,6 +1,9 @@
-/* Copyright */
-package thredds.server;
+/*
+ * Copyright (c) 2015-2026 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
 
+package thredds.server;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -21,6 +24,7 @@ import thredds.server.exception.MethodNotImplementedException;
 import thredds.server.exception.RequestTooLargeException;
 import thredds.server.exception.ServiceNotAllowed;
 import thredds.server.ncss.exception.NcssException;
+import ucar.ma2.InvalidRangeException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
@@ -38,6 +42,7 @@ import static org.springframework.web.util.HtmlUtils.htmlEscape;
  * IOException INTERNAL_SERVER_ERROR
  * UnsupportedOperationException UNPROCESSABLE_ENTITY
  * IllegalArgumentException BAD_REQUEST
+ * InvalidRangeException BAD_REQUEST
  * BindException BAD_REQUEST
  * Throwable INTERNAL_SERVER_ERROR
  *
@@ -62,7 +67,7 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
   @ExceptionHandler(RequestTooLargeException.class)
   public ResponseEntity<String> handle(RequestTooLargeException ex) {
-    logger.warn("TDS Error", ex);
+    logWarnWithTraceIfDebug(ex);
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -82,7 +87,7 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
   @ExceptionHandler(FileNotFoundException.class)
   public ResponseEntity<String> handle(FileNotFoundException ex) {
-    logger.warn("TDS Error", ex);
+    logWarnWithTraceIfDebug(ex);
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -117,7 +122,7 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<String> handle(IllegalArgumentException ex) {
-    logger.warn("TDS Error", ex);
+    logWarnWithTraceIfDebug(ex);
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -128,6 +133,16 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
     else
       return new ResponseEntity<>("IllegalArgumentException: " + htmlEscape(mess), responseHeaders,
           HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ucar.ma2.InvalidRangeException.class)
+  public ResponseEntity<String> handle(InvalidRangeException ex) {
+    logger.warn("TDS Error", ex);
+
+    HttpHeaders responseHeaders = new HttpHeaders();
+    responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+    return new ResponseEntity<>("Invalid Range: " + htmlEscape(ex.getMessage()), responseHeaders,
+        HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(NcssException.class)
@@ -205,6 +220,19 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
     return null;
   }
 
+  /**
+   * Log a message to warn but only include the stacktrace if debug is enabled
+   * <br>
+   * 
+   * @param t throwable
+   */
+  private static void logWarnWithTraceIfDebug(Throwable t) {
+    if (logger.isDebugEnabled()) {
+      logger.warn("TDS Error:", t);
+    } else {
+      logger.warn("TDS Error: (Exception: {})", t.getMessage());
+    }
+  }
 
   /*
    * see http://www.mytechnotes.biz/2012/08/spring-mvc-with-annotations-example.html
