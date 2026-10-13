@@ -716,7 +716,7 @@ public class CeParser extends Ceparse {
         if (yyn == 49)
         /* "ce.y":259 */ /* lalr1.java:489 */
         {
-          yyval = new Integer(EQUAL);
+          yyval = EQUAL;
         } ;
         break;
 
@@ -725,7 +725,7 @@ public class CeParser extends Ceparse {
         if (yyn == 50)
         /* "ce.y":260 */ /* lalr1.java:489 */
         {
-          yyval = new Integer(GREATER);
+          yyval = GREATER;
         } ;
         break;
 
@@ -734,7 +734,7 @@ public class CeParser extends Ceparse {
         if (yyn == 51)
         /* "ce.y":261 */ /* lalr1.java:489 */
         {
-          yyval = new Integer(LESS);
+          yyval = LESS;
         } ;
         break;
 
@@ -743,7 +743,7 @@ public class CeParser extends Ceparse {
         if (yyn == 52)
         /* "ce.y":262 */ /* lalr1.java:489 */
         {
-          yyval = new Integer(NOT_EQUAL);
+          yyval = NOT_EQUAL;
         } ;
         break;
 
@@ -752,7 +752,7 @@ public class CeParser extends Ceparse {
         if (yyn == 53)
         /* "ce.y":263 */ /* lalr1.java:489 */
         {
-          yyval = new Integer(GREATER_EQL);
+          yyval = GREATER_EQL;
         } ;
         break;
 
@@ -761,7 +761,7 @@ public class CeParser extends Ceparse {
         if (yyn == 54)
         /* "ce.y":264 */ /* lalr1.java:489 */
         {
-          yyval = new Integer(LESS_EQL);
+          yyval = LESS_EQL;
         } ;
         break;
 
@@ -770,7 +770,7 @@ public class CeParser extends Ceparse {
         if (yyn == 55)
         /* "ce.y":265 */ /* lalr1.java:489 */
         {
-          yyval = new Integer(REGEXP);
+          yyval = REGEXP;
         } ;
         break;
 

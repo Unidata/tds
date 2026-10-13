@@ -175,7 +175,7 @@ class Celex implements Lexer, ExprParserConstants {
           removetrailingblanks();
           // See if this is a number
           try {
-            Double number = new Double(yytext.toString());
+            Double number = Double.valueOf(yytext.toString());
             isnumber = true;
           } catch (NumberFormatException nfe) {
             isnumber = false;
@@ -218,7 +218,7 @@ class Celex implements Lexer, ExprParserConstants {
           removetrailingblanks();
           /* If this looks like a number, then treat it as such. */
           try {
-            new Double(yytext.toString());
+            Double.valueOf(yytext.toString());
             isnumber = true;
           } catch (NumberFormatException nfe) {
             isnumber = false;
