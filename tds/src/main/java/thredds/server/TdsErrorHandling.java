@@ -67,7 +67,7 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
   @ExceptionHandler(RequestTooLargeException.class)
   public ResponseEntity<String> handle(RequestTooLargeException ex) {
-    logger.warn("TDS Error", ex);
+    logWarnWithTraceIfDebug(ex);
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -87,7 +87,7 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
   @ExceptionHandler(FileNotFoundException.class)
   public ResponseEntity<String> handle(FileNotFoundException ex) {
-    logger.warn("TDS Error", ex);
+    logWarnWithTraceIfDebug(ex);
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -122,7 +122,7 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
 
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<String> handle(IllegalArgumentException ex) {
-    logger.warn("TDS Error", ex);
+    logWarnWithTraceIfDebug(ex);
 
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -220,6 +220,19 @@ public class TdsErrorHandling implements HandlerExceptionResolver {
     return null;
   }
 
+  /**
+   * Log a message to warn but only include the stacktrace if debug is enabled
+   * <br>
+   * 
+   * @param t throwable
+   */
+  private static void logWarnWithTraceIfDebug(Throwable t) {
+    if (logger.isDebugEnabled()) {
+      logger.warn("TDS Error:", t);
+    } else {
+      logger.warn("TDS Error: (Exception: {})", t.getMessage());
+    }
+  }
 
   /*
    * see http://www.mytechnotes.biz/2012/08/spring-mvc-with-annotations-example.html

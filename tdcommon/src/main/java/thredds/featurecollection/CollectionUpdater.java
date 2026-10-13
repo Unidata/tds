@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package thredds.featurecollection;
 
 import com.google.common.eventbus.EventBus;
@@ -185,11 +186,10 @@ public class CollectionUpdater {
       return;
     try {
       scheduler.shutdown(true);
-      System.out.printf("Quartz scheduler shutdown%n");
+      fcLogger.info("Quartz scheduler shutdown");
     } catch (Throwable e) {
       fcLogger.error("Scheduler failed to shutdown", e);
       scheduler = null;
-      // e.printStackTrace();
     }
   }
 

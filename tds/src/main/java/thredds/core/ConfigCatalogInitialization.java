@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2025 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -41,7 +41,7 @@ public class ConfigCatalogInitialization {
   static private final org.slf4j.Logger logCatalogInit =
       org.slf4j.LoggerFactory.getLogger(ConfigCatalogInitialization.class);
   static private final String ERROR = "*** ERROR: ";
-  static private final boolean show = true;
+  static private final boolean show = false;
   static private final ReadMode defaultReadMode = ReadMode.check;
 
   @Autowired

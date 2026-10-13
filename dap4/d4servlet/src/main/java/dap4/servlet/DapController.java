@@ -1,8 +1,7 @@
 /*
- * Copyright 2012, UCAR/Unidata.
- * See the LICENSE file for more information.
+ * Copyright (c) 2012-2026 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
  */
-
 
 package dap4.servlet;
 
@@ -18,7 +17,6 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.ByteOrder;
 import java.util.Map;
-import java.util.zip.Checksum;
 
 abstract public class DapController extends HttpServlet {
 
