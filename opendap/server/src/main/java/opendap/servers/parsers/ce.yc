@@ -189,13 +189,13 @@ arg_list: //==expr.arg_list
 
 /* %type SelectionTag */
 rel_op:
-	  '='     {$$=new Integer(EQUAL);}
-	| '>'     {$$=new Integer(GREATER);}
-	| '<'     {$$=new Integer(LESS);}
-	| '!' '=' {$$=new Integer(NOT_EQUAL);}
-	| '>' '=' {$$=new Integer(GREATER_EQL);}
-	| '<' '=' {$$=new Integer(LESS_EQL);}
-	| '=' '~' {$$=new Integer(REGEXP);}
+	  '='     {$$=EQUAL;}
+	| '>'     {$$=GREATER;}
+	| '<'     {$$=LESS;}
+	| '!' '=' {$$=NOT_EQUAL;}
+	| '>' '=' {$$=GREATER_EQL;}
+	| '<' '=' {$$=LESS_EQL;}
+	| '=' '~' {$$=REGEXP;}
 	;
 
 ident:  word
