@@ -34,6 +34,7 @@ import java.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import thredds.core.StandardService;
 import thredds.core.TdsRequestedDataset;
 import thredds.servlet.ServletUtil;
 import ucar.nc2.NetcdfFile;
@@ -58,6 +59,19 @@ public class DatasetHandlerAdapter {
    */
   public static NetcdfDataset openDataset(final HttpServletRequest req, final HttpServletResponse res,
       String datasetPath) throws Exception {
+    return openDataset(req, res, datasetPath, null);
+  }
+
+  /**
+   * Open a NetcdfDataset based on the incoming url request.
+   *
+   * @param req incoming url request
+   * @param res outgoing web based response
+   * @param service the service making the request, so that per-dataset service control can be applied
+   * @return dataset a NetcdfDataset as specified in the request
+   */
+  public static NetcdfDataset openDataset(final HttpServletRequest req, final HttpServletResponse res,
+      String datasetPath, final StandardService service) throws Exception {
 
     NetcdfFile netcdfFile = null;
     NetcdfDataset dataset = null;
@@ -76,7 +90,7 @@ public class DatasetHandlerAdapter {
     } else {
 
       try {
-        netcdfFile = TdsRequestedDataset.getNetcdfFile(req, res, datasetPath);
+        netcdfFile = TdsRequestedDataset.getNetcdfFile(req, res, datasetPath, service);
 
         _log.debug("datasetPath: " + datasetPath + " netcdfFile location: " + netcdfFile.getLocation());
 

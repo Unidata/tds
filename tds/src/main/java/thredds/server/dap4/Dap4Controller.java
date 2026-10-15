@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 2012-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -17,6 +17,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import thredds.core.StandardService;
 import thredds.core.TdsRequestedDataset;
 import thredds.server.config.TdsContext;
 
@@ -117,7 +118,8 @@ public class Dap4Controller extends DapController {
     if (datasetPath.startsWith(prefix)) {
       datasetPath = datasetPath.substring(prefix.length());
     }
-    NetcdfFile ncf = TdsRequestedDataset.getNetcdfFile(drq.getRequest(), drq.getResponse(), datasetPath);
+    NetcdfFile ncf =
+        TdsRequestedDataset.getNetcdfFile(drq.getRequest(), drq.getResponse(), datasetPath, StandardService.dap4);
     NetcdfDataset ncd;
     ncd = NetcdfDataset.wrap(ncf, ENHANCEMENT);
     return new CDMWrap().open(ncd);

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2018-2026 University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.notebook;
 
 import org.json.JSONArray;
@@ -59,6 +64,9 @@ public class NotebookController {
         || !validateRequestedFile(filename)) {
       throw new ServiceNotAllowed(StandardService.jupyterNotebook.toString());
     }
+    // see if the config catalog declares this service for this dataset
+    TdsRequestedDataset.checkServiceControl(StandardService.jupyterNotebook,
+        new TdsRequestedDataset(req, getBase()).getPath());
     if (validationResult.hasErrors()) {
       throw new BindException(validationResult);
     }
@@ -104,6 +112,9 @@ public class NotebookController {
     if (!allowedServices.isAllowed(StandardService.jupyterNotebook)) {
       throw new ServiceNotAllowed(StandardService.jupyterNotebook.toString());
     }
+    // see if the config catalog declares this service for this dataset
+    TdsRequestedDataset.checkServiceControl(StandardService.jupyterNotebook,
+        new TdsRequestedDataset(req, getBase()).getPath());
     if (validationResult.hasErrors()) {
       throw new BindException(validationResult);
     }

@@ -11,12 +11,14 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import thredds.client.catalog.ServiceType;
 import thredds.core.DataRootManager.DataRootMatch;
 import thredds.featurecollection.FeatureCollectionCache;
 import thredds.featurecollection.InvDatasetFeatureCollection;
 import thredds.server.admin.DebugCommands;
 import thredds.server.catalog.FeatureCollectionRef;
 import thredds.server.catalog.tracker.DatasetTracker;
+import thredds.server.exception.ServiceNotAllowed;
 import thredds.servlet.DatasetSource;
 import thredds.servlet.ServletUtil;
 import thredds.servlet.restrict.Authorizer;
@@ -43,8 +45,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.Set;
 
 /**
  * Provides an API to obtain the various Dataset objects, given the request Path.
@@ -64,6 +68,9 @@ public class DatasetManager implements InitializingBean {
 
   @Autowired
   private DataRootManager dataRootManager;
+
+  @Autowired
+  private AllowedServices allowedServices;
 
   @Autowired
   private FeatureCollectionCache featureCollectionCache;
@@ -142,6 +149,12 @@ public class DatasetManager implements InitializingBean {
 
   // return null means request has been handled, and calling routine should exit without further processing
   public NetcdfFile openNetcdfFile(HttpServletRequest req, HttpServletResponse res, String reqPath) throws IOException {
+    return openNetcdfFile(req, res, reqPath, null);
+  }
+
+  // return null means request has been handled, and calling routine should exit without further processing
+  public NetcdfFile openNetcdfFile(HttpServletRequest req, HttpServletResponse res, String reqPath,
+      @Nullable StandardService service) throws IOException {
     if (log.isDebugEnabled())
       log.debug("DatasetHandler wants " + reqPath);
 
@@ -154,6 +167,9 @@ public class DatasetManager implements InitializingBean {
     // see if its under resource control
     if (!resourceControlOk(req, res, reqPath))
       return null;
+
+    // See if the config catalog declares this service for this dataset
+    checkServiceControl(service, reqPath);
 
     // HEY LOOK datascan below has its own Ncml
     // look for a dataset (non scan, non fmrc) that has an ncml element
@@ -264,12 +280,21 @@ public class DatasetManager implements InitializingBean {
   // return null means request has been handled, and calling routine should exit without further processing
   public GridDataset openGridDataset(HttpServletRequest req, HttpServletResponse res, String reqPath)
       throws IOException {
+    return openGridDataset(req, res, reqPath, null);
+  }
+
+  // return null means request has been handled, and calling routine should exit without further processing
+  public GridDataset openGridDataset(HttpServletRequest req, HttpServletResponse res, String reqPath,
+      @Nullable StandardService service) throws IOException {
     // first look for a feature collection
     DataRootManager.DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
       // see if its under resource control
       if (!resourceAuthorized(req, res, match.dataRoot.getRestrict()))
         return null;
+
+      // see if the config catalog declares this service for this collection
+      checkServiceControl(service, reqPath);
 
       FeatureCollectionRef featCollection = match.dataRoot.getFeatureCollection();
       if (log.isDebugEnabled())
@@ -283,7 +308,7 @@ public class DatasetManager implements InitializingBean {
     }
 
     // fetch it as a NetcdfFile; this deals with possible NcML
-    NetcdfFile ncfile = openNetcdfFile(req, res, reqPath);
+    NetcdfFile ncfile = openNetcdfFile(req, res, reqPath, service);
     if (ncfile == null)
       return null;
 
@@ -318,12 +343,21 @@ public class DatasetManager implements InitializingBean {
   // return null means request has been handled, and calling routine should exit without further processing
   public FeatureDatasetPoint openPointDataset(HttpServletRequest req, HttpServletResponse res, String reqPath)
       throws IOException {
+    return openPointDataset(req, res, reqPath, null);
+  }
+
+  // return null means request has been handled, and calling routine should exit without further processing
+  public FeatureDatasetPoint openPointDataset(HttpServletRequest req, HttpServletResponse res, String reqPath,
+      @Nullable StandardService service) throws IOException {
     // first look for a feature collection
     DataRootManager.DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
       // see if its under resource control
       if (!resourceAuthorized(req, res, match.dataRoot.getRestrict()))
         return null;
+
+      // see if the config catalog declares this service for this collection
+      checkServiceControl(service, reqPath);
 
       FeatureCollectionRef featCollection = match.dataRoot.getFeatureCollection();
       if (log.isDebugEnabled())
@@ -337,7 +371,7 @@ public class DatasetManager implements InitializingBean {
     }
 
     // fetch it as a NetcdfFile; this deals with possible NcML
-    NetcdfFile ncfile = openNetcdfFile(req, res, reqPath);
+    NetcdfFile ncfile = openNetcdfFile(req, res, reqPath, service);
     if (ncfile == null)
       return null;
 
@@ -383,6 +417,12 @@ public class DatasetManager implements InitializingBean {
   // return null means request has been handled, and calling routine should exit without further processing
   public CoverageCollection openCoverageDataset(HttpServletRequest req, HttpServletResponse res, String reqPath)
       throws IOException {
+    return openCoverageDataset(req, res, reqPath, null);
+  }
+
+  // return null means request has been handled, and calling routine should exit without further processing
+  public CoverageCollection openCoverageDataset(HttpServletRequest req, HttpServletResponse res, String reqPath,
+      @Nullable StandardService service) throws IOException {
     if (reqPath == null)
       return null;
 
@@ -392,6 +432,9 @@ public class DatasetManager implements InitializingBean {
     // see if its under resource control
     if (!resourceControlOk(req, res, reqPath))
       return null;
+
+    // see if the config catalog declares this service for this dataset
+    checkServiceControl(service, reqPath);
 
     // if ncml, must handle specially.
     // check this before checking for a datasetRoot or featureCollection,
@@ -472,12 +515,20 @@ public class DatasetManager implements InitializingBean {
 
   public SimpleGeometryFeatureDataset openSimpleGeometryDataset(HttpServletRequest req, HttpServletResponse res,
       String reqPath) throws IOException {
+    return openSimpleGeometryDataset(req, res, reqPath, null);
+  }
+
+  public SimpleGeometryFeatureDataset openSimpleGeometryDataset(HttpServletRequest req, HttpServletResponse res,
+      String reqPath, @Nullable StandardService service) throws IOException {
     // first look for a feature collection
     DataRootManager.DataRootMatch match = dataRootManager.findDataRootMatch(reqPath);
     if ((match != null) && (match.dataRoot.getFeatureCollection() != null)) {
       // see if its under resource control
       if (!resourceAuthorized(req, res, match.dataRoot.getRestrict()))
         return null;
+
+      // see if the config catalog declares this service for this collection
+      checkServiceControl(service, reqPath);
 
       FeatureCollectionRef featCollection = match.dataRoot.getFeatureCollection();
       if (log.isDebugEnabled())
@@ -491,7 +542,7 @@ public class DatasetManager implements InitializingBean {
     }
 
     // fetch it as a NetcdfFile; this deals with possible NcML
-    NetcdfFile ncfile = openNetcdfFile(req, res, reqPath);
+    NetcdfFile ncfile = openNetcdfFile(req, res, reqPath, service);
     if (ncfile == null)
       return null;
 
@@ -550,6 +601,58 @@ public class DatasetManager implements InitializingBean {
     }
 
     return resourceAuthorized(req, res, rc);
+  }
+
+  /////////////////////////////////////////////////////////////////
+  // Per-dataset service control
+
+  /**
+   * Is this service declared in the config catalog for the dataset at this path?
+   * <br>
+   * This is in addition to the global service control of {@link AllowedServices}, and can only narrow it.
+   * A path with no recorded service set is allowed, so that missing data never causes a blanket denial.
+   * <br>
+   * 
+   * @param service the service being requested; null means do not check
+   * @param reqPath the request path
+   * @return true if ok to proceed
+   */
+  public boolean serviceControlOk(@Nullable StandardService service, String reqPath) {
+    if (service == null || reqPath == null)
+      return true;
+    if (allowedServices != null && !allowedServices.isAllowOnlyDeclared())
+      return true; // enforcement turned off server wide
+
+    if (reqPath.startsWith("/"))
+      reqPath = reqPath.substring(1);
+
+    // An individually declared dataset is an exact path match, so it wins over a prefix-matched dataRoot;
+    // A dataset's urlPath may start with the path of a datasetScan or featureCollection it is not part of
+    Set<ServiceType> declared = (datasetTracker == null) ? null : datasetTracker.findAllowedServices(reqPath);
+    if (declared == null) {
+      // datasetScan and featureCollection may declare their services at the dataRoot
+      declared = dataRootManager.findDeclaredServices(reqPath);
+    }
+
+    if (declared == null)
+      return true; // nothing recorded for this path; fail open
+
+    return declared.contains(service.getType());
+  }
+
+  /**
+   * Throw {@link ServiceNotAllowed} if this service is not declared for the dataset at this path.
+   * <br>
+   * 
+   * @param service the service being requested; null means do not check
+   * @param reqPath the request path
+   */
+  public void checkServiceControl(@Nullable StandardService service, String reqPath) {
+    if (serviceControlOk(service, reqPath))
+      return;
+
+    log.warn("Service {} is not declared for dataset {}", service.getType(), reqPath);
+    throw new ServiceNotAllowed(service.getType() + " not enabled for dataset " + reqPath);
   }
 
   private boolean resourceAuthorized(HttpServletRequest req, HttpServletResponse res, String rc) {

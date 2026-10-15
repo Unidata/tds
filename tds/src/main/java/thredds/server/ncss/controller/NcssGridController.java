@@ -99,7 +99,8 @@ public class NcssGridController extends AbstractNcssController {
       throw new BindException(validationResult);
 
     String datasetPath = getDatasetPath(req);
-    try (CoverageCollection gcd = TdsRequestedDataset.getCoverageCollection(req, res, datasetPath)) {
+    try (CoverageCollection gcd =
+        TdsRequestedDataset.getCoverageCollection(req, res, datasetPath, StandardService.netcdfSubsetGrid)) {
       if (gcd == null)
         return;
 
@@ -236,7 +237,8 @@ public class NcssGridController extends AbstractNcssController {
   public ModelAndView getDatasetDescriptionXml(HttpServletRequest req, HttpServletResponse res) throws IOException {
     String datasetPath = getDatasetPath(req);
 
-    try (CoverageCollection gcd = TdsRequestedDataset.getCoverageCollection(req, res, datasetPath)) {
+    try (CoverageCollection gcd =
+        TdsRequestedDataset.getCoverageCollection(req, res, datasetPath, StandardService.netcdfSubsetGrid)) {
       if (gcd == null)
         return null; // restricted dataset
       String datasetUrlPath = buildDatasetUrl(datasetPath);
@@ -267,7 +269,8 @@ public class NcssGridController extends AbstractNcssController {
       throws IOException {
     String datasetPath = getDatasetPath(req);
 
-    try (CoverageCollection gcd = TdsRequestedDataset.getCoverageCollection(req, res, datasetPath)) {
+    try (CoverageCollection gcd =
+        TdsRequestedDataset.getCoverageCollection(req, res, datasetPath, StandardService.netcdfSubsetGrid)) {
       if (gcd == null)
         return null; // restricted dataset
       String datasetUrlPath = buildDatasetUrl(datasetPath);
@@ -320,7 +323,8 @@ public class NcssGridController extends AbstractNcssController {
 
   @RequestMapping("**/datasetBoundaries.wkt")
   public void getDatasetBoundariesWKT(HttpServletRequest req, HttpServletResponse res) throws IOException {
-    try (CoverageCollection gcd = TdsRequestedDataset.getCoverageCollection(req, res, getDatasetPath(req))) {
+    try (CoverageCollection gcd =
+        TdsRequestedDataset.getCoverageCollection(req, res, getDatasetPath(req), StandardService.netcdfSubsetGrid)) {
       if (gcd == null)
         return;
 
@@ -332,7 +336,8 @@ public class NcssGridController extends AbstractNcssController {
 
   @RequestMapping("**/datasetBoundaries.json")
   public void getDatasetBoundariesGeoJSON(HttpServletRequest req, HttpServletResponse res) throws IOException {
-    try (CoverageCollection gcd = TdsRequestedDataset.getCoverageCollection(req, res, getDatasetPath(req))) {
+    try (CoverageCollection gcd =
+        TdsRequestedDataset.getCoverageCollection(req, res, getDatasetPath(req), StandardService.netcdfSubsetGrid)) {
       if (gcd == null)
         return;
 

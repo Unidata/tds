@@ -106,7 +106,7 @@ public class IsoController extends AbstractMetadataController {
       // If service not allowed, respond accordingly (403);
       isAllowed(as.isAllowed(StandardService.iso), _metadataServiceType, res);
       res.setContentType(ContentType.xml.getContentHeader());
-      netCdfDataset = DatasetHandlerAdapter.openDataset(req, res, getInfoPath(req));
+      netCdfDataset = DatasetHandlerAdapter.openDataset(req, res, getInfoPath(req), StandardService.iso);
       if (netCdfDataset == null) {
         res.sendError(HttpServletResponse.SC_NOT_FOUND, "ThreddsIso Extension: Requested resource not found.");
       } else {

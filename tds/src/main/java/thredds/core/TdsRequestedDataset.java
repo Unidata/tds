@@ -18,6 +18,7 @@ import ucar.nc2.ft2.coverage.CoverageCollection;
 import ucar.nc2.ft2.simpgeometry.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,7 +51,13 @@ public class TdsRequestedDataset {
   // return null means request has been handled, and calling routine should exit without further processing
   public static FeatureDatasetPoint getPointDataset(HttpServletRequest request, HttpServletResponse response,
       String path) throws IOException {
-    TdsRequestedDataset trd = new TdsRequestedDataset(request, null);
+    return getPointDataset(request, response, path, null);
+  }
+
+  // return null means request has been handled, and calling routine should exit without further processing
+  public static FeatureDatasetPoint getPointDataset(HttpServletRequest request, HttpServletResponse response,
+      String path, @Nullable StandardService service) throws IOException {
+    TdsRequestedDataset trd = new TdsRequestedDataset(request, null, service);
     if (path != null)
       trd.path = path;
     return trd.openAsPointDataset(request, response);
@@ -59,7 +66,13 @@ public class TdsRequestedDataset {
   // return null means request has been handled, and calling routine should exit without further processing
   public static GridDataset getGridDataset(HttpServletRequest request, HttpServletResponse response, String path)
       throws IOException {
-    TdsRequestedDataset trd = new TdsRequestedDataset(request, null);
+    return getGridDataset(request, response, path, null);
+  }
+
+  // return null means request has been handled, and calling routine should exit without further processing
+  public static GridDataset getGridDataset(HttpServletRequest request, HttpServletResponse response, String path,
+      @Nullable StandardService service) throws IOException {
+    TdsRequestedDataset trd = new TdsRequestedDataset(request, null, service);
     if (path != null)
       trd.path = path;
     return trd.openAsGridDataset(request, response);
@@ -68,7 +81,13 @@ public class TdsRequestedDataset {
   // return null means request has been handled, and calling routine should exit without further processing
   public static CoverageCollection getCoverageCollection(HttpServletRequest request, HttpServletResponse response,
       String path) throws IOException {
-    TdsRequestedDataset trd = new TdsRequestedDataset(request, null);
+    return getCoverageCollection(request, response, path, null);
+  }
+
+  // return null means request has been handled, and calling routine should exit without further processing
+  public static CoverageCollection getCoverageCollection(HttpServletRequest request, HttpServletResponse response,
+      String path, @Nullable StandardService service) throws IOException {
+    TdsRequestedDataset trd = new TdsRequestedDataset(request, null, service);
     if (path != null)
       trd.path = path;
     return trd.openAsCoverageDataset(request, response);
@@ -76,7 +95,12 @@ public class TdsRequestedDataset {
 
   public static SimpleGeometryFeatureDataset getSimpleGeometryFeatureDataset(HttpServletRequest request,
       HttpServletResponse response, String path) throws IOException {
-    TdsRequestedDataset trd = new TdsRequestedDataset(request, null);
+    return getSimpleGeometryFeatureDataset(request, response, path, null);
+  }
+
+  public static SimpleGeometryFeatureDataset getSimpleGeometryFeatureDataset(HttpServletRequest request,
+      HttpServletResponse response, String path, @Nullable StandardService service) throws IOException {
+    TdsRequestedDataset trd = new TdsRequestedDataset(request, null, service);
     if (path != null)
       trd.path = path;
     return trd.openAsSimpleGeometryDataset(request, response);
@@ -85,7 +109,13 @@ public class TdsRequestedDataset {
   // return null means request has been handled, and calling routine should exit without further processing
   public static NetcdfFile getNetcdfFile(HttpServletRequest request, HttpServletResponse response, String path)
       throws IOException {
-    TdsRequestedDataset trd = new TdsRequestedDataset(request, null);
+    return getNetcdfFile(request, response, path, null);
+  }
+
+  // return null means request has been handled, and calling routine should exit without further processing
+  public static NetcdfFile getNetcdfFile(HttpServletRequest request, HttpServletResponse response, String path,
+      @Nullable StandardService service) throws IOException {
+    TdsRequestedDataset trd = new TdsRequestedDataset(request, null, service);
     if (path != null)
       trd.path = path;
     return trd.openAsNetcdfFile(request, response);
@@ -122,11 +152,36 @@ public class TdsRequestedDataset {
     return datasetManager.resourceControlOk(request, response, path);
   }
 
+  /**
+   * Is this service declared in the config catalog for the dataset at this path?
+   *
+   * @see DatasetManager#serviceControlOk
+   */
+  public static boolean serviceControlOk(StandardService service, String path) {
+    return datasetManager.serviceControlOk(service, path);
+  }
+
+  /**
+   * Throw {@code ServiceNotAllowed} if this service is not declared for the dataset at this path.
+   *
+   * @see DatasetManager#checkServiceControl
+   */
+  public static void checkServiceControl(StandardService service, String path) {
+    datasetManager.checkServiceControl(service, path);
+  }
+
   ///////////////////////////////////////////////////////////////////////////////////
   private boolean isRemote = false;
   private String path;
+  private final StandardService service;
 
   public TdsRequestedDataset(HttpServletRequest request, String removePrefix) throws IOException {
+    this(request, removePrefix, null);
+  }
+
+  public TdsRequestedDataset(HttpServletRequest request, String removePrefix, @Nullable StandardService service)
+      throws IOException {
+    this.service = service;
     this.path = TdsPathUtils.extractPath(request, removePrefix);
     if (this.path == null) {
       this.path = ServletUtil.getParameterIgnoreCase(request, "dataset");
@@ -140,24 +195,25 @@ public class TdsRequestedDataset {
   // return null means request has been handled, and calling routine should exit without further processing
   public FeatureDatasetPoint openAsPointDataset(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    return datasetManager.openPointDataset(request, response, path);
+    return datasetManager.openPointDataset(request, response, path, service);
   }
 
   // return null means request has been handled, and calling routine should exit without further processing
   public CoverageCollection openAsCoverageDataset(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    return datasetManager.openCoverageDataset(request, response, path);
+    return datasetManager.openCoverageDataset(request, response, path, service);
   }
 
   public SimpleGeometryFeatureDataset openAsSimpleGeometryDataset(HttpServletRequest request,
       HttpServletResponse response) throws IOException {
     return isRemote ? SimpleGeometryFeatureDataset.open(path)
-        : datasetManager.openSimpleGeometryDataset(request, response, path);
+        : datasetManager.openSimpleGeometryDataset(request, response, path, service);
   }
 
   // return null means request has been handled, and calling routine should exit without further processing
   public GridDataset openAsGridDataset(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    return isRemote ? ucar.nc2.dt.grid.GridDataset.open(path) : datasetManager.openGridDataset(request, response, path);
+    return isRemote ? ucar.nc2.dt.grid.GridDataset.open(path)
+        : datasetManager.openGridDataset(request, response, path, service);
   }
 
   // return null means request has been handled, and calling routine should exit without further processing
@@ -171,7 +227,7 @@ public class TdsRequestedDataset {
         ncf = NetcdfDataset.openDataset(path);
       }
     } else {
-      ncf = datasetManager.openNetcdfFile(request, response, path);
+      ncf = datasetManager.openNetcdfFile(request, response, path, service);
     }
     return ncf;
   }

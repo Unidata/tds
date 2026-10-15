@@ -14,6 +14,7 @@ import thredds.core.AllowedServices;
 import thredds.core.DatasetManager;
 import thredds.core.StandardService;
 import thredds.inventory.*;
+import thredds.server.catalog.DeclaredServices;
 import thredds.server.catalog.FeatureCollectionRef;
 import ucar.nc2.dataset.DatasetUrl;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -31,8 +32,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Formatter;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Abstract superclass for Feature Collection Datasets.
@@ -180,6 +183,23 @@ public abstract class InvDatasetFeatureCollection implements Closeable {
     virtualService =
         new Service("VirtualServices", "", ServiceType.Compound.toString(), ServiceType.Compound.getDescription(), null,
             nestedOk, orgService.getProperties(), ServiceType.Compound.getAccessType());
+  }
+
+  /**
+   * The service types this collection uses.
+   * <br>
+   * The declared (or standard) service of the collection, plus the service used by the
+   * generated {@code files/} datasets. This is the set that per-dataset service control
+   * enforces for this collection's DataRoot.
+   *
+   * @return the service types, Compound services flattened; empty if no service could be resolved
+   */
+  public Set<ServiceType> getDeclaredServiceTypes() {
+    Set<ServiceType> result = EnumSet.noneOf(ServiceType.class);
+    result.addAll(DeclaredServices.flatten(orgService));
+    result.addAll(DeclaredServices.flatten(virtualService));
+    result.addAll(DeclaredServices.flatten(downloadService));
+    return result;
   }
 
   public void close() {

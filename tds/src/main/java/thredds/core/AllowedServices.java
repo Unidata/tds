@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -56,6 +56,7 @@ public class AllowedServices implements AllowedServicesIF {
   private List<Service> allowedPointCollectionServices = new ArrayList<>();
   private List<Service> allowedRadialServices = new ArrayList<>();
   private Map<String, Service> globalServices = new HashMap<>();
+  private boolean allowOnlyDeclared = true; // per-dataset service control, see threddsConfig.xml
 
   // see WEB-INF/tdsGlobalConfig.xml
   public void setAllow(Map<String, Boolean> map) {
@@ -207,6 +208,21 @@ public class AllowedServices implements AllowedServicesIF {
     return s != null && s.allowed;
   }
 
+  /**
+   * Whether a service must be declared in the config catalog for a dataset before it may be used against it.
+   * Set from {@code threddsConfig.xml} {@code Services/allowOnlyDeclared}; default true.
+   */
+  public boolean isAllowOnlyDeclared() {
+    return allowOnlyDeclared;
+  }
+
+  public void setAllowOnlyDeclared(Boolean allowOnlyDeclared) {
+    if (allowOnlyDeclared == null)
+      return;
+    this.allowOnlyDeclared = allowOnlyDeclared;
+    logServerStartup.info("AllowedServices allowOnlyDeclared={}", allowOnlyDeclared);
+  }
+
   @Nullable
   public Service getStandardService(StandardService type) {
     AllowedService s = allowed.get(type);
@@ -234,10 +250,21 @@ public class AllowedServices implements AllowedServicesIF {
     }
   }
 
+  @Nullable
   public Service findGlobalService(String name) {
     if (name == null)
       return null;
     return globalServices.get(name);
+  }
+
+  /** The service types that are currently enabled server-wide */
+  public Set<ServiceType> getGloballyEnabledServiceTypes() {
+    Set<ServiceType> result = EnumSet.noneOf(ServiceType.class);
+    for (AllowedService as : allowed.values()) {
+      if (as.allowed)
+        result.add(as.ss.type);
+    }
+    return result;
   }
 
   public Collection<Service> getGlobalServices() {
@@ -291,6 +318,10 @@ public class AllowedServices implements AllowedServicesIF {
 
     act = new DebugCommands.Action("showServices", "Show standard and global services") {
       public void doAction(DebugCommands.Event e) {
+        e.pw.printf("%n<h3>Per-dataset Service Control</h3>%n");
+        e.pw.printf(" <b>allowOnlyDeclared:</b> %s%n", isAllowOnlyDeclared());
+        e.pw.printf(" <b>globally enabled:</b> %s%n", getGloballyEnabledServiceTypes());
+
         e.pw.printf("%n<h3>Global Services</h3>%n");
         for (Service s : getGlobalServices()) {
           if (s.getType() == ServiceType.Compound) {

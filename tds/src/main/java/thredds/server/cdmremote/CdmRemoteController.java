@@ -82,7 +82,8 @@ public class CdmRemoteController {
       System.out.printf(" path=%s%n query=%s%n", datasetPath, request.getQueryString());
 
     // LOOK heres where we want the Dataset, not the netcdfFile (!)
-    try (NetcdfFile ncfile = TdsRequestedDataset.getNetcdfFile(request, response, datasetPath)) {
+    try (NetcdfFile ncfile =
+        TdsRequestedDataset.getNetcdfFile(request, response, datasetPath, StandardService.cdmRemote)) {
       if (ncfile == null)
         return null; // failed resource control
 
@@ -127,7 +128,8 @@ public class CdmRemoteController {
     String datasetPath = TdsPathUtils.extractPath(request, "/cdmremote");
     String absPath = getAbsolutePath(request);
 
-    try (NetcdfFile ncfile = TdsRequestedDataset.getNetcdfFile(request, response, datasetPath)) {
+    try (NetcdfFile ncfile =
+        TdsRequestedDataset.getNetcdfFile(request, response, datasetPath, StandardService.cdmRemote)) {
       if (ncfile == null)
         return null;
 
@@ -164,7 +166,8 @@ public class CdmRemoteController {
       System.out.printf(" path=%s%n query=%s%n", datasetPath, request.getQueryString());
     }
 
-    try (NetcdfFile ncfile = TdsRequestedDataset.getNetcdfFile(request, response, datasetPath)) {
+    try (NetcdfFile ncfile =
+        TdsRequestedDataset.getNetcdfFile(request, response, datasetPath, StandardService.cdmRemote)) {
       if (ncfile == null)
         return;
 
@@ -200,7 +203,8 @@ public class CdmRemoteController {
       System.out.printf(" path=%s%n query=%s%n", datasetPath, request.getQueryString());
     long start = System.currentTimeMillis();
 
-    try (NetcdfFile ncfile = TdsRequestedDataset.getNetcdfFile(request, response, datasetPath)) {
+    try (NetcdfFile ncfile =
+        TdsRequestedDataset.getNetcdfFile(request, response, datasetPath, StandardService.cdmRemote)) {
       if (ncfile == null)
         return;
 

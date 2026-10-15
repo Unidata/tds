@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
+
 package thredds.server.ncss.controller;
 
 import com.google.common.cache.CacheBuilder;
@@ -91,7 +92,8 @@ public class NcssPointController extends AbstractNcssController {
       throw new BindException(validationResult);
 
     String datasetPath = getDatasetPath(req);
-    try (FeatureDatasetPoint fdp = TdsRequestedDataset.getPointDataset(req, res, datasetPath)) {
+    try (FeatureDatasetPoint fdp =
+        TdsRequestedDataset.getPointDataset(req, res, datasetPath, StandardService.netcdfSubsetPoint)) {
       if (fdp == null)
         return;
 
@@ -120,7 +122,8 @@ public class NcssPointController extends AbstractNcssController {
   public ModelAndView getDatasetDescriptionXml(HttpServletRequest req, HttpServletResponse res) throws IOException {
     String datasetPath = getDatasetPath(req);
 
-    try (FeatureDatasetPoint fdp = TdsRequestedDataset.getPointDataset(req, res, datasetPath)) {
+    try (FeatureDatasetPoint fdp =
+        TdsRequestedDataset.getPointDataset(req, res, datasetPath, StandardService.netcdfSubsetPoint)) {
       if (fdp == null)
         return null; // restricted dataset
 
@@ -141,7 +144,8 @@ public class NcssPointController extends AbstractNcssController {
   public ModelAndView getDatasetDescriptionHtml(HttpServletRequest req, HttpServletResponse res) throws IOException {
     String datasetPath = getDatasetPath(req);
 
-    try (FeatureDatasetPoint fdp = TdsRequestedDataset.getPointDataset(req, res, datasetPath)) {
+    try (FeatureDatasetPoint fdp =
+        TdsRequestedDataset.getPointDataset(req, res, datasetPath, StandardService.netcdfSubsetPoint)) {
       if (fdp == null)
         return null; // restricted dataset
 
@@ -215,7 +219,8 @@ public class NcssPointController extends AbstractNcssController {
   public ModelAndView getStations(HttpServletRequest req, HttpServletResponse res, NcssPointParamsBean params)
       throws IOException {
     String datasetPath = getDatasetPath(req);
-    try (FeatureDatasetPoint fd = TdsRequestedDataset.getPointDataset(req, res, datasetPath)) {
+    try (FeatureDatasetPoint fd =
+        TdsRequestedDataset.getPointDataset(req, res, datasetPath, StandardService.netcdfSubsetPoint)) {
       if (fd == null)
         return null;
 

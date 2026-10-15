@@ -105,7 +105,7 @@ public class UddcController extends AbstractMetadataController {
       res.setContentType(ContentType.html.getContentHeader());
       // If service not allowed, respond accordingly (403);
       isAllowed(as.isAllowed(StandardService.iso), _metadataServiceType, res);
-      netCdfDataset = DatasetHandlerAdapter.openDataset(req, res, getInfoPath(req));
+      netCdfDataset = DatasetHandlerAdapter.openDataset(req, res, getInfoPath(req), StandardService.uddc);
       if (netCdfDataset == null) {
         res.sendError(HttpServletResponse.SC_NOT_FOUND, "ThreddsIso Extension: Requested resource not found.");
       } else {

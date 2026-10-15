@@ -6,12 +6,14 @@
 package thredds.core;
 
 import com.coverity.security.Escape;
+import javax.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import thredds.client.catalog.Access;
 import thredds.client.catalog.CatalogRef;
 import thredds.client.catalog.Dataset;
+import thredds.client.catalog.ServiceType;
 import thredds.featurecollection.FeatureCollectionCache;
 import thredds.server.admin.DebugCommands;
 import thredds.server.catalog.*;
@@ -43,6 +45,8 @@ public class ConfigCatalogInitialization {
   static private final String ERROR = "*** ERROR: ";
   static private final boolean show = false;
   static private final ReadMode defaultReadMode = ReadMode.check;
+  // bump when the persisted DatasetExt / DataRootExt format changes, so stale databases are rebuilt
+  static private final long trackerVersion = 2;
 
   @Autowired
   private TdsContext tdsContext; // used for getContentDirectory, contextPath
@@ -121,6 +125,14 @@ public class ConfigCatalogInitialization {
     numberCatalogs = prefs.getInt("numberCatalogs", 10);
     nextCatId = prefs.getLong("nextCatId", 1);
 
+    long previousVersion = prefs.getLong("trackerVersion", 1);
+    if (previousVersion != trackerVersion) {
+      // the persisted format changed; start a new database rather than trying to read the old one
+      trackerNumber++;
+      logCatalogInit.info("ConfigCatalogInitialization tracker format changed from version {} to {};"
+          + " starting new tracker database {}", previousVersion, trackerVersion, trackerNumber);
+    }
+
     makeDebugActions();
     this.contentRootPath = this.tdsContext.getThreddsDirectory();
     this.contextPath = tdsContext.getContextPath();
@@ -177,7 +189,7 @@ public class ConfigCatalogInitialization {
         }
         this.catalogTracker = new CatalogTracker(trackerDir, true, numberCatalogs, nextCatId);
         this.dataRootTracker = new DataRootTracker(trackerDir, true, callback);
-        this.dataRootPathMatcher = new DataRootPathMatcher(ccc, dataRootTracker); // starting over
+        this.dataRootPathMatcher = new DataRootPathMatcher(ccc, dataRootTracker, allowedServices); // starting over
         ccc.setRootCatalogKeys(readRootCatalogs(readMode));
         break;
 
@@ -185,7 +197,7 @@ public class ConfigCatalogInitialization {
         this.catalogTracker = new CatalogTracker(trackerDir, false, numberCatalogs, nextCatId); // use existing catalog
                                                                                                 // list
         this.dataRootTracker = new DataRootTracker(trackerDir, false, callback); // use existing data roots
-        this.dataRootPathMatcher = new DataRootPathMatcher(ccc, dataRootTracker);
+        this.dataRootPathMatcher = new DataRootPathMatcher(ccc, dataRootTracker, allowedServices);
         ccc.setRootCatalogKeys(readRootCatalogs(readMode)); // read just roots to get global services
         checkExistingCatalogs(readMode);
         break;
@@ -194,7 +206,7 @@ public class ConfigCatalogInitialization {
         this.catalogTracker = new CatalogTracker(trackerDir, false, numberCatalogs, nextCatId); // use existing catalog
                                                                                                 // list
         this.dataRootTracker = new DataRootTracker(trackerDir, false, callback); // use existing data roots
-        this.dataRootPathMatcher = new DataRootPathMatcher(ccc, dataRootTracker);
+        this.dataRootPathMatcher = new DataRootPathMatcher(ccc, dataRootTracker, allowedServices);
         ccc.setRootCatalogKeys(readRootCatalogs(readMode)); // read just roots to get global services
         break;
     }
@@ -203,6 +215,7 @@ public class ConfigCatalogInitialization {
     nextCatId = catalogTracker.getNextCatId();
     if (prefs != null) {
       prefs.putLong("trackerNumber", trackerNumber);
+      prefs.putLong("trackerVersion", trackerVersion);
       prefs.putLong("nextCatId", nextCatId);
       prefs.putInt("numberCatalogs", numberCatalogs);
     }
@@ -411,7 +424,7 @@ public class ConfigCatalogInitialization {
       return;
 
     for (Dataset ds : datasets) {
-      if (datasetTracker.trackDataset(catId, ds, callback))
+      if (datasetTracker.trackDataset(catId, ds, declaredServicesFor(ds), callback))
         countDatasets++;
       if (maxDatasetsProcess > 0 && countDatasets > maxDatasetsProcess)
         exceedLimit = true;
@@ -468,6 +481,22 @@ public class ConfigCatalogInitialization {
         processDatasets(catId, readMode, dirPath, ds.getDatasetsLocal(), idMap);
       }
     }
+  }
+
+  /**
+   * The services declared for a plain {@code <dataset>} element, or null when nothing needs to be stored.
+   * datasetScan and featureCollection are covered by their DataRoot, so they are skipped here.
+   * Sets that allow everything set by the global configuration are not stored.
+   */
+  @Nullable
+  private Set<ServiceType> declaredServicesFor(Dataset ds) {
+    if ((ds instanceof DatasetScan) || (ds instanceof FeatureCollectionRef) || (ds instanceof CatalogScan))
+      return null;
+    if (ds.getUrlPath() == null)
+      return null;
+
+    Set<ServiceType> declared = DeclaredServices.forDataset(ds, allowedServices);
+    return DeclaredServices.narrowsGlobal(declared, allowedServices) ? declared : null;
   }
 
   // dirPath is the directory relative to rootDir, directory is absolute
