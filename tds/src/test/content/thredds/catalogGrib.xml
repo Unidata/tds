@@ -10,6 +10,7 @@
     <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/"/>
     <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/grid/"/>
     <service name="cdmremote" serviceType="CdmRemote" base="/thredds/cdmremote/"/>
+    <service name="notebook" serviceType="JupyterNotebook" base="/thredds/notebook/"/>
   </service>
 
   <!-- test GRIB collection  -->
