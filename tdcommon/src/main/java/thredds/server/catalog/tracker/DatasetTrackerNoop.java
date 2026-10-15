@@ -1,8 +1,14 @@
-/* Copyright */
+/*
+ * Copyright (c) 2015-2026 John Caron and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.catalog.tracker;
 
 import thredds.client.catalog.Dataset;
+import thredds.client.catalog.ServiceType;
 import java.util.Formatter;
+import java.util.Set;
 
 /**
  * Description
@@ -13,7 +19,7 @@ import java.util.Formatter;
 public class DatasetTrackerNoop implements DatasetTracker {
 
   @Override
-  public boolean trackDataset(long catId, Dataset ds, Callback callback) {
+  public boolean trackDataset(long catId, Dataset ds, Set<ServiceType> declaredServices, Callback callback) {
     if (callback == null)
       return false;
 
@@ -40,6 +46,11 @@ public class DatasetTrackerNoop implements DatasetTracker {
 
   @Override
   public String findNcml(String path) {
+    return null;
+  }
+
+  @Override
+  public Set<ServiceType> findAllowedServices(String path) {
     return null;
   }
 

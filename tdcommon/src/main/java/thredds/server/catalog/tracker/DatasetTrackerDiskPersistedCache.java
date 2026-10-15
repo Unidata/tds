@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 2025-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Formatter;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
@@ -88,7 +89,8 @@ public class DatasetTrackerDiskPersistedCache implements DatasetTracker, AutoClo
   }
 
   @Override
-  public boolean trackDataset(long catId, Dataset dataset, DatasetTracker.Callback callback) {
+  public boolean trackDataset(long catId, Dataset dataset, Set<ServiceType> declaredServices,
+      DatasetTracker.Callback callback) {
     if (callback != null) {
       callback.hasDataset(dataset);
       boolean track = false;
@@ -107,7 +109,8 @@ public class DatasetTrackerDiskPersistedCache implements DatasetTracker, AutoClo
     boolean hasRestrict = dataset.getRestrictAccess() != null;
     boolean hasNcml = (dataset.getNcmlElement() != null) && !(dataset instanceof DatasetScan)
         && !(dataset instanceof FeatureCollectionRef);
-    if (!hasRestrict && !hasNcml)
+    boolean hasServices = declaredServices != null && !declaredServices.isEmpty();
+    if (!hasRestrict && !hasNcml && !hasServices)
       return false;
 
     String path = null;
@@ -158,7 +161,7 @@ public class DatasetTrackerDiskPersistedCache implements DatasetTracker, AutoClo
     }
 
     // changed = true;
-    DatasetExt dsext = new DatasetExt(catId, dataset.getRestrictAccess(), ncml);
+    DatasetExt dsext = new DatasetExt(catId, dataset.getRestrictAccess(), ncml, declaredServices);
     if (datasetMap == null) {
       catalogInitLog.error("DatasetTracker cache not properly initialized. Can't track dataset {}", dataset);
       return false;
@@ -187,6 +190,19 @@ public class DatasetTrackerDiskPersistedCache implements DatasetTracker, AutoClo
     if (dext == null)
       return null;
     return dext.getNcml();
+  }
+
+  @Override
+  public Set<ServiceType> findAllowedServices(String path) {
+    if (datasetMap == null) {
+      return null;
+    }
+    if (path.startsWith("/"))
+      path = path.substring(1);
+    DatasetExt dext = datasetMap.get(path);
+    if (dext == null)
+      return null;
+    return dext.getDeclaredServices();
   }
 
   @Override
