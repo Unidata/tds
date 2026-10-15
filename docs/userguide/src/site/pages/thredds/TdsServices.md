@@ -1,6 +1,6 @@
 ---
 title: TDS Services
-last_updated: 2020-08-21
+last_updated: 2026-10-15
 sidebar: user_sidebar
 toc: false
 permalink: services_ref.html
@@ -18,6 +18,7 @@ The TDS has a set of **Standard Data Services** that are always available (unles
 * resolver
 * netcdfSubsetGrid
 * netcdfSubsetPoint
+* notebook
 * opendap
 * wcs
 * wms
@@ -34,6 +35,15 @@ You can still define your own services, either globally in the root catalog, or 
 * Services placed in the root catalog are global and can be referenced in any other config catalog.
 * Services placed in any other catalog are local, are used only in that catalog, and override (by name) any global services.
 
+### Declared Services Control Access
+
+Enabling a service in [`threddsConfig.xml`](tds_config_ref.html#controlling-data-services) makes it available to the whole server; it does not make it available for every dataset.
+A data access request succeeds only if the service is enabled server-wide and declared for the requested dataset in its configuration catalog.
+Requesting an undeclared service returns `403 Forbidden` with a `Service Not Allowed: ...` body, even if the URL is otherwise valid.
+
+{% include note.html content="
+See [Per-Dataset Service Control](config_catalog.html#per-dataset-service-control) for how the allowed set is derived and for the `allowOnlyDeclared` escape hatch.
+" %}
 
 ## Server Information Services
 
@@ -67,42 +77,40 @@ Consult the [Configuration Catalogs](config_catalog.html) documentation and [TDS
 | THREDDS Catalog Services | Enabled | `/thredds/catalog.{xml|html}`<br/> `/thredds/catalog/*/catalog.{xml|html}`<br/>`/thredds/catalog/*/*.{xml|html}` |
 | Remote THREDDS Catalog Service | *Disabled* | `/thredds/remoteCatalogService` |
 
-
 ## ncISO Metadata Services
 
 The ncISO plugin adds the *ncISO Metadata Services*, which facilitate the generation of [ISO 19115 metadata representation](https://en.wikipedia.org/wiki/Geospatial_metadata){:target="_blank"} from data in [NetCDF](https://www.unidata.ucar.edu/software/netcdf/).
 
-  {% include note.html content="
-  Learn how to [enable the ncISO services](adding_ogc_iso_services.html#nciso-configuration).
-  " %}
+{% include note.html content="
+Learn how to [enable the ncISO services](adding_ogc_iso_services.html#nciso-configuration).
+" %}
 
 The three ncISO Metadata Services are:
 
-* **ISO**
+### **ISO**
 
-  The ISO Metadata Service provides [ISO 19115 metadata representation](https://www.ngdc.noaa.gov/wiki/index.php/NcISO){:target="_blank"} of a dataset's structure and metadata.
+The ISO Metadata Service provides [ISO 19115 metadata representation](https://www.ngdc.noaa.gov/wiki/index.php/NcISO){:target="_blank"} of a dataset's structure and metadata.
 
-* **NCML**
+### **NCML**
 
-    The *NCML Metadata Service* provides NCML representation of a dataset.
+The *NCML Metadata Service* provides NCML representation of a dataset.
     
-    {% include note.html content="
-    More details are available about how to [Use NcML in the TDS](using_ncml_in_the_tds.html). 
-  " %}
+{% include note.html content="
+More details are available about how to [Use NcML in the TDS](using_ncml_in_the_tds.html). 
+" %}
 
-
-* **UDDC**
+### **UDDC**
     
-    Provide an evaluation of how well the metadata contained in a dataset conforms to the [NetCDF Attribute Convention for Data Discovery (NACDD)](https://wiki.esipfed.org/Category:Attribute_Conventions_Dataset_Discovery){:target="_blank"}.
+Provide an evaluation of how well the metadata contained in a dataset conforms to the [NetCDF Attribute Convention for Data Discovery (NACDD)](https://wiki.esipfed.org/Category:Attribute_Conventions_Dataset_Discovery){:target="_blank"}.
 
 #### Basic Configuration:
 
 |-----------------|-------------------|-------------------------------|
 | Service Name         | Default Availability | Access Point   |
 |:----------------|:------------------|:------------------------------|
-| ISO | Disabled | `/thredds/iso/*`  |
-| NCML | Disabled | `/thredds/ncml/*`  |
-| UDDC | Disabled | `/thredds/uddc/*`  |
+| ISO  | Disabled | `/thredds/iso/*` |
+| NCML | Disabled | `/thredds/ncml/*` |
+| UDDC | Disabled | `/thredds/uddc/*` |
 
 #### Catalog Service Configuration:
 (These are the exact [required](services_ref.html#tds-requirements-for-thredds-catalog-service-elements) values to enable these service.)
@@ -120,63 +128,56 @@ The three ncISO Metadata Services are:
 
 The TDS provides a number of different *Data Access Services*, including:
 
-* **OPeNDAP**
-   
-   The [OPeNDAP DAP2](https://en.wikipedia.org/wiki/OPeNDAP){:target="_blank"} data access protocol.
-   
-   {% include note.html content="
-   View all the available [configuration options](basic_config_catalog.html) for OPeNDAP in the TDS.
-   " %}
+### **OPeNDAP**
+
+The [OPeNDAP DAP2](https://en.wikipedia.org/wiki/OPeNDAP){:target="_blank"} data access protocol.
+
+{% include note.html content="
+  View all the available [configuration options](basic_config_catalog.html) for OPeNDAP in the TDS.
+" %}
            
-* **NetCDF Subset Service**
+### **NetCDF Subset Service**
 
-   The [NetCDF Subset Service (NCSS)](netcdf_subset_service_ref.html) is a web service for subsetting CDM scientific datasets. 
+The [NetCDF Subset Service (NCSS)](netcdf_subset_service_ref.html) is a web service for subsetting CDM scientific datasets. 
+
+{% include note.html content="
+  Set NCSS configuration options in the [TDS Configuration File](tds_config_ref.html#netcdf-subset-service-ncss) (threddsConfig.xml).
+" %}
    
-   {% include note.html content="
-   Set NCSS configuration options in the [TDS Configuration File](tds_config_ref.html#netcdf-subset-service-ncss) (threddsConfig.xml).
-   " %}
-   
-* **CDM Remote**
+### **CDM Remote**
 
-   The [`cdmremote/ncstream`](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/cdmremote.html){:target="_blank"} data access service is automatically enabled when an appropriate FeatureCollection is used.
+The [`cdmremote/ncstream`](https://docs.unidata.ucar.edu/netcdf-java/{{site.netcdf-java_docset_version}}/userguide/cdmremote.html){:target="_blank"} data access service is automatically enabled when an appropriate FeatureCollection is used.
 
-        
-* **OGC Web Coverage Service (WCS)**
+### **OGC Web Coverage Service (WCS)**
 
-   [OGC Web Coverage Service (WCS)](https://www.ogc.org/standards/wcs){:target="_blank"} supports access to geospatial data as "coverages".
-                                                                                                                                            
-   {% include note.html content="
-   More setup, configuration, and implementation details for the TDS OGC WCS implementation are available in the [TDS WCS Reference](wcs_ref.html).
-   " %}
+[OGC Web Coverage Service (WCS)](https://www.ogc.org/standards/wcs){:target="_blank"} supports access to geospatial data as "coverages".
+                                                                                                                                        
+{% include note.html content="
+More setup, configuration, and implementation details for the TDS OGC WCS implementation are available in the [TDS WCS Reference](wcs_ref.html).
+" %}
+
+### **OGC Web Map Service (WMS)**
+
+The [OGC Web Map Service (WMS)](https://www.opengeospatial.org/standards/wms){:target="_blank"}  supports access to geo-registered map images from geoscience datasets.
+
+{% include note.html content="
+More setup, configuration, and implementation details for the TDS OGC WMS implementation are available in the [TDS WMS Reference](adding_wms.html).
+" %}
+    
+### **HTTP File Download**
+
+The HTTP File Download service supports HTTP byte ranges. 
+
+{% include note.html content="
+Set HTTP File Download  configuration options in the [TDS Configuration File](tds_config_ref.html) (threddsConfig.xml).
+" %}
+
+### **JupyterNotebook Service**
+
+The [JupyterNotebook Service](customizing_tds_look_and_feel.html#jupyter-notebooks){:target="_blank"} provides a method of bootstrapping the process of visualizing and analyzing TDS datasets without large data transfers using Python.
 
 
-* **OGC Web Map Service (WMS)**
-
-   The [OGC Web Map Service (WMS)](https://www.opengeospatial.org/standards/wms){:target="_blank"}  supports access to geo-registered map images from geoscience datasets.
-
-   {% include note.html content="
-   More setup, configuration, and implementation details for the TDS OGC WMS implementation are available in the [TDS WMS Reference](adding_wms.html).
-   " %}
-   
-        
-* **HTTP File Download**
-
-   The HTTP File Download service supports HTTP byte ranges. 
-   
-   {% include note.html content="
-   Set HTTP File Download  configuration options in the [TDS Configuration File](tds_config_ref.html) (threddsConfig.xml).
-   " %}
-
-* **OGC Sensor Observation Service (SOS)**
-
-   The [Sensor Observation Service (SOS)](https://www.ogc.org/standards/sos){:target="_blank"} standard is applicable to use cases in which sensor data needs to be managed in an interoperable way. 
-   
-   {% include note.html content="
-   The [NcSOS plugin](https://github.com/asascience-open/ncSOS/wiki){:target='_blank'} adds a OGC SOS service to your existing THREDDS server.
-   (This plugin is maintained by the developers at [Applied Science Associates](http://asascience.com/){:target='_blank'}.)
-   " %}
-
-#### Basic Configuration:
+### Basic Configuration:
 
 |-----------------|-------------------|-------------------------------|
 | Service Name         | Default Availability | Access Point   |
@@ -187,7 +188,7 @@ The TDS provides a number of different *Data Access Services*, including:
 | OGC Web Coverage Service (WCS) | Enabled | `/thredds/wcs/*` |
 | OGC Web Map Service (WMS) | Enabled | `/thredds/wms/*` |
 | HTTP File Download | Enabled | `/thredds/fileServer/*` |
-| OGC Sensor Observation Service (SOS) | *Disabled* | `/thredds/sos/*` | 
+| Jupyter Notebook Service | Enabled | `/thredds/notebook/*` | 
 
 #### Catalog Service Configuration:
 (These are the exact [required](services_ref.html#tds-requirements-for-thredds-catalog-service-elements) values to enable these service.)
@@ -201,10 +202,7 @@ The TDS provides a number of different *Data Access Services*, including:
 | OGC Web Coverage Service (WCS) | `WCS` | `/thredds/wcs/` | 
 | OGC Web Map Service (WMS) | `WMS` | `/thredds/wms/` | 
 | HTTP File Download | `HTTPServer` | `/thredds/fileServer/` |
-| OGC Sensor Observation Service (SOS) | `SOS` | `/thredds/sos/` |
-  
-   
-
+| JupyterNotebook | `JupyterNotebook` | `/thredds/notebook/` |
 
 ## TDS Requirements For THREDDS Catalog `service` Elements
 
@@ -230,13 +228,13 @@ The `serviceType` and `base` values are **required** in the following examples:
 For Feature Type `GRID`, use:
 
 ~~~xml
-<service name="ncssGrid" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
+  <service name="ncssGrid" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
 ~~~
 
 For Feature Types `POINT` or `STATION`, use:
 
 ~~~xml
-<service name="ncssPoint" serviceType="NetcdfSubset" base="/thredds/ncss/point/" />
+  <service name="ncssPoint" serviceType="NetcdfSubset" base="/thredds/ncss/point/" />
 ~~~
 
 #### WCS
@@ -268,10 +266,10 @@ For Feature Types `POINT` or `STATION`, use:
 ~~~
 
 
-#### SOS
+#### Jupyter Notebook
   
 ~~~xml
-  <service name="sos" serviceType="SOS" base="/thredds/sos/" />
+  <service name="notebook" serviceType="JupyterNotebook" base="/thredds/notebook/"/>
 ~~~
 
 ### Compound `service` Element Example
@@ -290,6 +288,6 @@ For Feature Types `POINT` or `STATION`, use:
   <service name="ncml" serviceType="NCML" base="/thredds/ncml/"/>
   <service name="uddc" serviceType="UDDC" base="/thredds/uddc/"/>
 
-  <service name="sos" serviceType="SOS" base="/thredds/sos/"/>
+  <service name="notebook" serviceType="JupyterNotebook" base="/thredds/notebook/"/>
 </service>
 ~~~

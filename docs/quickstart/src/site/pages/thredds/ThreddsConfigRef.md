@@ -1,6 +1,6 @@
 ---
 title: TDS Configuration File Reference (threddsConfig.xml)
-last_updated: 2026-07-07
+last_updated: 2026-10-15
 sidebar: quickstart_sidebar
 toc: false
 permalink: tds_config_ref.html
@@ -29,25 +29,25 @@ In the `serverInformation` element, you provide basic information about your ser
 
 ~~~xml
 <serverInformation>
-  <name>Initial TDS Installation</name>
-  <logoUrl>/thredds/threddsIcon.png</logoUrl>
-  <logoAltText>Initial TDS Installation</logoAltText>
+    <name>Initial TDS Installation</name>
+    <logoUrl>/thredds/threddsIcon.png</logoUrl>
+    <logoAltText>Initial TDS Installation</logoAltText>
 
-  <abstract>Scientific Data</abstract>
-  <keywords>meteorology, atmosphere, climate, ocean, earth science</keywords>
+    <abstract>Scientific Data</abstract>
+    <keywords>meteorology, atmosphere, climate, ocean, earth science</keywords>
 
-  <contact>
-    <name>Support</name>
-    <organization>My Group</organization>
-    <email>support@my.group</email>
-    <phone></phone>
-  </contact>
-  <hostInstitution>
-    <name>My Group</name>
-    <webSite>http://www.my.group/</webSite>
-    <logoUrl>myGroup.gif</logoUrl>
-    <logoAltText>My Group</logoAltText>
-  </hostInstitution>
+    <contact>
+      <name>Support</name>
+      <organization>My Group</organization>
+      <email>support@my.group</email>
+      <phone></phone>
+    </contact>
+    <hostInstitution>
+      <name>My Group</name>
+      <webSite>http://www.my.group/</webSite>
+      <logoUrl>myGroup.gif</logoUrl>
+      <logoAltText>My Group</logoAltText>
+    </hostInstitution>
 </serverInformation>
 ~~~
 
@@ -153,6 +153,23 @@ If you do not want the TDS to check for this on startup, set this to `false`.
 
 ## Controlling Data Services
 
+### Per-Dataset Service Control
+
+The elements in this section enable or disable a service for the entire server.
+In addition, the services declared for a dataset or collection in your [configuration catalogs](config_catalog.html) control which services may actually be used against a given dataset.
+
+~~~xml
+<Services>
+  <allowOnlyDeclared>true</allowOnlyDeclared>
+</Services>
+~~~
+
+* `allowOnlyDeclared`: when `true` (the default), a data access request succeeds only if the service is enabled server-wide **and** declared for the requested dataset.
+  A request for an undeclared service gets a `403 Forbidden` response with a `Service Not Allowed: ...` message, and the denial is logged at WARN level.
+* Setting it to `false` restores the pre-5.10 behavior, in which the services declared in a configuration catalog only affect what is *advertised* in the generated client catalogs, and any enabled service can be used against any dataset by anyone who knows the URL convention.
+
+See [Per-Dataset Service Control](config_catalog.html#per-dataset-service-control) for details, including upgrade guidance.
+
 ### Remote Catalog Service For Catalogs
 
 Catalog services are available by default for catalogs served by the local TDS.
@@ -249,23 +266,23 @@ Here is the description of the various options:
 * `allowRemote`: a value of `true` enables the WMS service for datasets available from a remote server.
 * `paletteLocationDir`: optionally specify the location of the directory containing your own palette files, by specifying the directory
   where they are contained.
-  * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
-  * The default directory for custom palette files is `${tds.content.root.path}/thredds/wmsPalettes`.
-  * If you don't specify a custom palette directory, or specify it incorrectly, the default directory will be used.
-  * Custom palette files will be loaded in addition to the default palettes, which are described
-    [here](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap).
-  * Note that the palette file format has changed between TDS version 4.x and TDS version 5.x. Please refer to the
-    [EDAL-Java palette file directory](https://github.com/Reading-eScience-Centre/edal-java/tree/master/graphics/src/main/resources/palettes)
-    for examples of palette files that are compatible with the TDS version 5.x WMS service.
-  * More information on the format of palette files can also be found in the
-    [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#:~:text=To%20add%20new,in%20hexadecimal%20notation.).
-  * If you created palette files for TDS 4.x and would like to use them in TDS 5.x, an open source tool named [Magic Palette Converter](https://github.com/billyz313/magic-palette-converter){:target="_blank"} for THREDDS is available to assist in the conversion (special thanks to [Billy Ashmall](https://github.com/Unidata/tds/discussions/346){:target="_blank"}!)
+    * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
+    * The default directory for custom palette files is `${tds.content.root.path}/thredds/wmsPalettes`.
+    * If you don't specify a custom palette directory, or specify it incorrectly, the default directory will be used.
+    * Custom palette files will be loaded in addition to the default palettes, which are described
+      [here](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap).
+    * Note that the palette file format has changed between TDS version 4.x and TDS version 5.x. Please refer to the
+      [EDAL-Java palette file directory](https://github.com/Reading-eScience-Centre/edal-java/tree/master/graphics/src/main/resources/palettes)
+      for examples of palette files that are compatible with the TDS version 5.x WMS service.
+    * More information on the format of palette files can also be found in the
+      [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#:~:text=To%20add%20new,in%20hexadecimal%20notation.).
+    * If you created palette files for TDS 4.x and would like to use them in TDS 5.x, an open source tool named [Magic Palette Converter](https://github.com/billyz313/magic-palette-converter){:target="_blank"} for THREDDS is available to assist in the conversion (special thanks to [Billy Ashmall](https://github.com/Unidata/tds/discussions/346){:target="_blank"}!)
 * `stylesLocationDir`: optionally specify the location of a directory containing your own style files, by specifying the directory
   where they are contained.
   Note: the default directory for style files is `${tds.content.root.path}/thredds/wmsStyles` and will always be searched.
-  * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
-  * More information on the format of style files can also be found in the
-    [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#styles).
+    * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
+    * More information on the format of style files can also be found in the
+      [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#styles).
 * `maxImageWidth`: the maximum image width in pixels that this WMS service will return.
 * `maxImageHeight`: the maximum image height in pixels that this WMS service will return.
 
@@ -583,11 +600,11 @@ The `scour` element uses any valid `udunits` time string, such as `sec, min, hou
   You can set the maximum number of catalogs in the cache.
   The amount of memory used by a catalog can be approximated simply by the size in bytes of the `catalog.xml` file itself.
 * `reread`:
-  * `always`: on startup, all catalogs are read. (default).
-    _safest, use if there are a small number of catalogs._
-  * `check`: on startup, catalogs that have changed will be reread.
-  * `trigger`: after initial read, config catalogs will only be read again if user explicitly triggers it.
-    _fastest startup if catalogs rarely change._
+    * `always`: on startup, all catalogs are read. (default).
+      _safest, use if there are a small number of catalogs._
+    * `check`: on startup, catalogs that have changed will be reread.
+    * `trigger`: after initial read, config catalogs will only be read again if user explicitly triggers it.
+      _fastest startup if catalogs rarely change._
 * `dir`: The location where the database is written.
   Default is `${tds.content.root.path}/thredds/cache/catalog/`.
   We recommend that you leave the default and use a symbolic link to move it if needed.

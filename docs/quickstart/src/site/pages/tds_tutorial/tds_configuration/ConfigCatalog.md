@@ -1,6 +1,6 @@
 ---
 title: Configuration Catalogs
-last_updated: 2020-08-24
+last_updated: 2026-10-15
 sidebar: quickstart_sidebar
 toc: false
 permalink: config_catalog.html
@@ -71,7 +71,7 @@ This would add an additional access URL for DAP4:
 * Service names do not have to be unique globally within a TDS, only on a catalog by catalog basis.
 * Duplicate service names do not adversely affect the TDS.
   However, clients reading a catalog with duplicate service names may get confused if a dataset references that service name.
-* `<service>` elements may defined in the top-level catalog and referenced globally. 
+* `<service>` elements may defined in the top-level catalog and referenced globally.
 
 #### Why Duplicate Names Are A Bad Idea
 
@@ -94,9 +94,44 @@ Here's an example:
 ~~~
 
 Explanation:
-* A dataset that references `service1` will be fine. 
+* A dataset that references `service1` will be fine.
   But, only because both `service1` instances have the same `serviceType` and ``base` URL.
 * A dataset that references `service2` may find either the HTTP file service or the WCS service.
+
+## Per-Dataset Service Control
+
+As of TDS v5.10, the services declared for a dataset or collection do more than decide what is advertised in the generated client catalog: they also decide which services may actually be used against that dataset.
+
+Access to a dataset through a given service succeeds only if the service is:
+
+1. enabled for the whole server in [`threddsConfig.xml`](tds_config_ref.html#controlling-data-services), and
+1. declared (locally or inherited) for that dataset in the configuration catalog.
+
+A request for a service that is not declared for the dataset gets a `403 Forbidden` response, for example:
+
+~~~
+HTTP/1.1 403 Forbidden
+Content-Type: text/plain
+
+Service Not Allowed: OPENDAP not enabled for dataset testData/mydata.nc
+~~~
+
+Note:
+* The allowed set is derived from the dataset's effective `serviceName`, with `Compound` services expanded to their members, which is exactly the set used to build the `<access>` elements of the client catalog.
+  There is no separate access-control syntax to maintain.
+* `datasetScan` and `featureCollection` elements apply their declared set to every dataset they generate.
+  A `featureCollection`'s `files/` datasets keep the `HTTPServer` access they are generated with, even though the collection's own virtual service omits it.
+* Datasets that declare no `serviceName` use the [Standard Services](#standard-services) for their `dataType`, and are restricted to those.
+* If no service information was recorded for a request path, the request is allowed, and the usual `404` applies to unknown paths.
+  Missing information never causes a blanket denial.
+* This is orthogonal to [restricted access](restict_access_to_tds.html), which controls who may access a dataset rather than how.
+
+{% include warning.html content="
+Starting with TDS 5.10, catalogs that under-declare their services will start rejecting requests that previously succeeded.
+Review your configuration catalogs after upgrading, and check the `Debug -> Catalogs -> Show data roots` and `Show standard and global services` admin pages to see the recorded service sets.
+To restore the previous advertise-only behavior server-wide, set
+`<Services><allowOnlyDeclared>false</allowOnlyDeclared></Services>` in `threddsConfig.xml`.
+" %}
 
 ## TDS Requirements For The `service` Element
 
@@ -191,9 +226,9 @@ The TDS defines a set of Standard Services, based on `dataType`.
 
 4. Examine the new set of services:
 
-   1. Bring the catalog up in a browser: <http://localhost:8080/thredds/catalog.html>{:target="_blank"}
-   2. Click down to one of the NAM dataset pages.
-   3. How many new access methods are there as compared to the single OPeNDAP access method from before?
+    1. Bring the catalog up in a browser: <http://localhost:8080/thredds/catalog.html>{:target="_blank"}
+    2. Click down to one of the NAM dataset pages.
+    3. How many new access methods are there as compared to the single OPeNDAP access method from before?
 
 {%include ahead.html content="
 The `dataType` of a `featureCollection` is always known, so there is no need to explicitly define the services for these more advanced catalog configurations.
@@ -217,29 +252,29 @@ The `dataType` of a `featureCollection` is always known, so there is no need to 
 
 ~~~xml
 ...
-  <dataset name="Precip Set">
+<dataset name="Precip Set">
 
-    <metadata inherited="true">
-      <serviceName>all</serviceName>
-      <description>Multi-sensor precipitation estimates</description>
-      <keyword>Precipitation</keyword>
-      <creator>
-        <name>National Weather Service</name>
+  <metadata inherited="true">
+    <serviceName>all</serviceName>
+    <description>Multi-sensor precipitation estimates</description>
+    <keyword>Precipitation</keyword>
+    <creator>
+      <name>National Weather Service</name>
       <contact url="http://water.weather.gov/precip/" email="AHPS.Precip@noaa.gov" />
-      </creator>
-      <dataType>Grid</dataType>
-    </metadata>
-    <dataset name="Precip Data" ID="precip1" urlPath="precip/nws_precip_conus_20130909.nc">
-      <date type="created">2013-09-09</date>
-    </dataset>
-    <dataset name="More Precip Data" ID="precip2"   
-             urlPath="precip/nws_precip_conus_20130910.nc">
-      <metadata>
-        <serviceName>odap</serviceName>
-        <date type="created">2013-09-10</date>
-      </metadata>
-    </dataset>
+    </creator>
+    <dataType>Grid</dataType>
+  </metadata>
+  <dataset name="Precip Data" ID="precip1" urlPath="precip/nws_precip_conus_20130909.nc">
+    <date type="created">2013-09-09</date>
   </dataset>
+  <dataset name="More Precip Data" ID="precip2"
+    urlPath="precip/nws_precip_conus_20130910.nc">
+    <metadata>
+      <serviceName>odap</serviceName>
+      <date type="created">2013-09-10</date>
+    </metadata>
+  </dataset>
+</dataset>
 ~~~
 
 1. Children datasets `Precip Data` and `More Precip Data` inherit the `dataType` element
@@ -249,20 +284,20 @@ The `datasetScan` element is an extension of the `dataset` element and so can co
 
 ~~~xml
       <datasetScan name="Precip Set" ID="precipset"
-                   path="precip" location="/machine/tds/data/precip/">
-          <metadata inherited="true">
-              <serviceName>all</serviceName>
-            <documentation>Multi-sensor precipitation estimates</documentation>
-              <keyword>Precipitation</keyword>
-              <creator>
-                <name>National Weather Service</name>
-              <contact url="http://water.weather.gov/precip/" 
-                         email="AHPS.Precip@noaa.gov" />
-              </creator>
-              <dataType>Grid</dataType>
-              <date type="created">2013</date>
-          </metadata>
-      </datasetScan>
+  path="precip" location="/machine/tds/data/precip/">
+  <metadata inherited="true">
+    <serviceName>all</serviceName>
+    <documentation>Multi-sensor precipitation estimates</documentation>
+    <keyword>Precipitation</keyword>
+    <creator>
+      <name>National Weather Service</name>
+      <contact url="http://water.weather.gov/precip/"
+        email="AHPS.Precip@noaa.gov" />
+    </creator>
+    <dataType>Grid</dataType>
+    <date type="created">2013</date>
+  </metadata>
+</datasetScan>
 ~~~
 
 The client view of the above `datasetScan` element will be a `catalogRef` element which will also contain any metadata contained in the `datasetScan` element.
@@ -270,10 +305,10 @@ It will look something like:
 
 ~~~xml
 <catalogRef xlink:href="/thredds/catalog/precipscan/catalog.xml"
-               xlink:title="Precip Set" ID="precipset" name="">
-    <metadata inherited="true">
-        ...
-    </metadata>
+  xlink:title="Precip Set" ID="precipset" name="">
+  <metadata inherited="true">
+    ...
+  </metadata>
 </catalogRef >
 ~~~
 
@@ -282,48 +317,48 @@ For instance, given that the `precip/` directory contained five files, the resul
 
 ~~~xml
   <service name="all" serviceType="Compound" base="">
-    <service name="odap" serviceType="OPENDAP" base="/thredds/dodsC/"/>
-    <service name="dap4" serviceType="DAP4" base="/thredds/dap4/"/>
-    <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/"/>
-  </service>
-  <dataset name="Precip Set" ID="precipset">
-    <metadata inherited="true">
-      <serviceName>all</serviceName>
-      <dataType>GRID</dataType>
-      <documentation>Multi-sensor precipitation estimates</documentation>
-      <creator>
-        <name>National Weather Service</name>
-        <contact url="http://water.weather.gov/precip/" email="AHPS.Precip@noaa.gov"/>
-      </creator>
-    <keyword>Precipitation</keyword>
-    <date type="created">2013</date>
-    </metadata>
-    <dataset name="nws_precip_conus_20130913.nc" ID="precipset/nws_precip_conus_20130913.nc"
-          urlPath="precipscan/nws_precip_conus_20130913.nc">
-      <dataSize units="Mbytes">1.710</dataSize>
-      <date type="modified">2014-10-16T16:19:53Z</date>
-    </dataset>
-    <dataset name="nws_precip_conus_20130912.nc" ID="precipset/nws_precip_conus_20130912.nc"
-          urlPath="precipscan/nws_precip_conus_20130912.nc">
-      <dataSize units="Mbytes">1.710</dataSize>
-      <date type="modified">2014-10-16T16:19:53Z</date>
-    </dataset>
-    <dataset name="nws_precip_conus_20130911.nc" ID="precipset/nws_precip_conus_20130911.nc"
-          urlPath="precipscan/nws_precip_conus_20130911.nc">
-      <dataSize units="Mbytes">1.710</dataSize>
-      <date type="modified">2014-10-16T16:19:53Z</date>
-    </dataset>
-    <dataset name="nws_precip_conus_20130910.nc" ID="precipset/nws_precip_conus_20130910.nc"
-          urlPath="precipscan/nws_precip_conus_20130910.nc">
-      <dataSize units="Mbytes">1.710</dataSize>
-      <date type="modified">2014-10-16T16:19:53Z</date>
-    </dataset>
-    <dataset name="nws_precip_conus_20130909.nc" ID="precipset/nws_precip_conus_20130909.nc"
-          urlPath="precipscan/nws_precip_conus_20130909.nc">
-      <dataSize units="Mbytes">1.710</dataSize>
-      <date type="modified">2014-10-16T16:19:53Z</date>
-    </dataset>
-  </dataset>
+  <service name="odap" serviceType="OPENDAP" base="/thredds/dodsC/"/>
+  <service name="dap4" serviceType="DAP4" base="/thredds/dap4/"/>
+  <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/"/>
+</service>
+<dataset name="Precip Set" ID="precipset">
+<metadata inherited="true">
+  <serviceName>all</serviceName>
+  <dataType>GRID</dataType>
+  <documentation>Multi-sensor precipitation estimates</documentation>
+  <creator>
+    <name>National Weather Service</name>
+    <contact url="http://water.weather.gov/precip/" email="AHPS.Precip@noaa.gov"/>
+  </creator>
+  <keyword>Precipitation</keyword>
+  <date type="created">2013</date>
+</metadata>
+<dataset name="nws_precip_conus_20130913.nc" ID="precipset/nws_precip_conus_20130913.nc"
+  urlPath="precipscan/nws_precip_conus_20130913.nc">
+  <dataSize units="Mbytes">1.710</dataSize>
+  <date type="modified">2014-10-16T16:19:53Z</date>
+</dataset>
+<dataset name="nws_precip_conus_20130912.nc" ID="precipset/nws_precip_conus_20130912.nc"
+  urlPath="precipscan/nws_precip_conus_20130912.nc">
+  <dataSize units="Mbytes">1.710</dataSize>
+  <date type="modified">2014-10-16T16:19:53Z</date>
+</dataset>
+<dataset name="nws_precip_conus_20130911.nc" ID="precipset/nws_precip_conus_20130911.nc"
+  urlPath="precipscan/nws_precip_conus_20130911.nc">
+  <dataSize units="Mbytes">1.710</dataSize>
+  <date type="modified">2014-10-16T16:19:53Z</date>
+</dataset>
+<dataset name="nws_precip_conus_20130910.nc" ID="precipset/nws_precip_conus_20130910.nc"
+  urlPath="precipscan/nws_precip_conus_20130910.nc">
+  <dataSize units="Mbytes">1.710</dataSize>
+  <date type="modified">2014-10-16T16:19:53Z</date>
+</dataset>
+<dataset name="nws_precip_conus_20130909.nc" ID="precipset/nws_precip_conus_20130909.nc"
+  urlPath="precipscan/nws_precip_conus_20130909.nc">
+  <dataSize units="Mbytes">1.710</dataSize>
+  <date type="modified">2014-10-16T16:19:53Z</date>
+</dataset>
+</dataset>
   ~~~
 
 ## Managing `datasetRoot` And `datasetScan` Elements
@@ -345,7 +380,7 @@ The `datasetRoot` and `datasetScan` are said to define a **data root**.
 * Each accessible dataset must be associated with a data root, i.e., the beginning part of its URL path must match a data root path.
   If there are multiple matches, the longest match is used.
 * Each data root must have a unique `path` for all catalogs used by the TDS.
-  Note: Because the TDS uses the set of all given path values to map URLs to datasets, each path value MUST be unique across all config catalogs on a given TDS installation. 
+  Note: Because the TDS uses the set of all given path values to map URLs to datasets, each path value MUST be unique across all config catalogs on a given TDS installation.
   Duplicates will cause warning messages in the `catalogInit.log` file.
 * The directory pointed to by `location` should be absolute
 * The locations may be used in multiple data roots
@@ -372,7 +407,7 @@ http://hostname:port/thredds/dodsC/model/run0023/mydata.nc
 
 where:
 
-* `http://hostname:port` is the server's hostname and port. 
+* `http://hostname:port` is the server's hostname and port.
   By using relative service base URLs, you never have to specify this explicitly in your catalogs.
   This means you can change hosts or ports without having to rewrite your catalogs.
 * `/thredds` is the name of the web application, taken from the `thredds.war` file.
@@ -399,8 +434,8 @@ To exclude the `00Z` runs, the `filter` could be modified to:
 
 ~~~xml
 <filter>
-    <include wildcard="*eta_211.nc" />
-    <exclude wildcard="*00_eta_211.nc" />
+  <include wildcard="*eta_211.nc" />
+  <exclude wildcard="*00_eta_211.nc" />
 </filter>
 ~~~
 
@@ -419,8 +454,8 @@ For example, if the data directory contained a `badData/` directory, it could be
 
 ~~~xml
 <filter>
-    <include wildcard="*eta_211.nc" />
-    <exclude wildcard="*12_eta_211.nc" />
+  <include wildcard="*eta_211.nc" />
+  <exclude wildcard="*12_eta_211.nc" />
 </filter>
 ~~~
 
@@ -434,7 +469,7 @@ A sort element can be added to a `datasetScan` element to specify an increasing 
 
 ~~~xml
 <sort>
-    <lexigraphicByName increasing="true" />
+  <lexigraphicByName increasing="true" />
 </sort>
 ~~~
 
@@ -472,7 +507,7 @@ If the match succeeds, any regular expression [capturing groups](https://docs.or
 
 A capturing group is a part of a regular expression enclosed in parentheses.
 When a regular expression with a capturing group is applied to a string, the substring that matches the capturing group is saved for later use.
-The captured strings can then be substituted into another string in place of capturing group references, `$n`, where `n` is an integer indicating a particular capturing group. 
+The captured strings can then be substituted into another string in place of capturing group references, `$n`, where `n` is an integer indicating a particular capturing group.
 The capturing groups are numbered according to the order in which they appear in the match string.
 
 For example, the regular expression `Hi (.*), how are (.*)?` when applied to the string `Hi "Fred, how are you?` would capture the strings `Fred` and `you`.
@@ -483,7 +518,7 @@ Here's an example `namer`:
 ~~~xml
 <namer>
   <regExpOnName regExp="nws_precip_conus_(\d{4})(\d{2})(\d{2}).nc"
-                replaceString="NWS CONUS Precipitation for $2-$3-$1"/>
+    replaceString="NWS CONUS Precipitation for $2-$3-$1"/>
 </namer>
 ~~~
 
@@ -517,8 +552,8 @@ For instance, adding:
 
 ~~~xml
 <addTimeCoverage datasetNameMatchPattern="nws_precip_conus_(\d{4})(\d{2})(\d{2}).nc"
-                 startTimeSubstitutionPattern="$1-$2-$3T00:00:00"
-                 duration="24 hours" />
+  startTimeSubstitutionPattern="$1-$2-$3T00:00:00"
+  duration="24 hours" />
 ~~~
 
 to a `datasetScan` element and given a data file named  `nws_precip_conus_20130910.nc` results in the following `timeCoverage` element:
@@ -550,7 +585,7 @@ to our catalog and:
 
 ~~~xml
 <addProxies>
-    <latestComplete name="latestComplete.xml" top="true" serviceName="latest" lastModifiedLimit="60" />
+  <latestComplete name="latestComplete.xml" top="true" serviceName="latest" lastModifiedLimit="60" />
 </addProxies>
 ~~~
 
@@ -567,6 +602,6 @@ The `latestComplete` element includes a `name` attribute which provides the name
 The `simpleLatest` element allows for the same attributes as the `latestComplete` element minus the `lastModifiedLimit` attribute.
 
 In this case, all the attributes have default values:
- * `name` attribute defaults to `"latest.xml"`, 
- * `top` attribute defaults to `"true"`, 
- * `serviceName` attribute defaults to `"latest"`.
+* `name` attribute defaults to `"latest.xml"`,
+* `top` attribute defaults to `"true"`,
+* `serviceName` attribute defaults to `"latest"`.

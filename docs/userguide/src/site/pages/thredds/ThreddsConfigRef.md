@@ -1,6 +1,6 @@
 ---
 title: TDS Configuration File Reference (threddsConfig.xml)
-last_updated: 2026-07-07
+last_updated: 2026-10-15
 sidebar: user_sidebar
 toc: false
 permalink: tds_config_ref.html
@@ -152,6 +152,23 @@ The default (`true`) is for the TDS to check for the current stable and developm
 If you do not want the TDS to check for this on startup, set this to `false`.
 
 ## Controlling Data Services
+
+### Per-Dataset Service Control
+
+The elements in this section enable or disable a service for the entire server.
+In addition, the services declared for a dataset or collection in your [configuration catalogs](config_catalog.html) control which services may actually be used against a given dataset.
+
+~~~xml
+<Services>
+  <allowOnlyDeclared>true</allowOnlyDeclared>
+</Services>
+~~~
+
+* `allowOnlyDeclared`: when `true` (the default), a data access request succeeds only if the service is enabled server-wide **and** declared for the requested dataset.
+  A request for an undeclared service gets a `403 Forbidden` response with a `Service Not Allowed: ...` message, and the denial is logged at WARN level.
+* Setting it to `false` restores the pre-5.10 behavior, in which the services declared in a configuration catalog only affect what is *advertised* in the generated client catalogs, and any enabled service can be used against any dataset by anyone who knows the URL convention.
+
+See [Per-Dataset Service Control](config_catalog.html#per-dataset-service-control) for details, including upgrade guidance.
 
 ### Remote Catalog Service For Catalogs
 
