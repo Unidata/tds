@@ -1,6 +1,6 @@
 ---
 title: Configuration Catalogs
-last_updated: 2020-08-24
+last_updated: 2026-10-15
 sidebar: user_sidebar
 toc: false
 permalink: config_catalog.html
@@ -97,6 +97,41 @@ Explanation:
 * A dataset that references `service1` will be fine. 
   But, only because both `service1` instances have the same `serviceType` and ``base` URL.
 * A dataset that references `service2` may find either the HTTP file service or the WCS service.
+
+## Per-Dataset Service Control
+
+As of TDS v5.10, the services declared for a dataset or collection do more than decide what is advertised in the generated client catalog: they also decide which services may actually be used against that dataset.
+
+Access to a dataset through a given service succeeds only if the service is:
+
+1. enabled for the whole server in [`threddsConfig.xml`](tds_config_ref.html#controlling-data-services), and
+1. declared (locally or inherited) for that dataset in the configuration catalog.
+
+A request for a service that is not declared for the dataset gets a `403 Forbidden` response, for example:
+
+~~~
+HTTP/1.1 403 Forbidden
+Content-Type: text/plain
+
+Service Not Allowed: OPENDAP not enabled for dataset testData/mydata.nc
+~~~
+
+Note:
+* The allowed set is derived from the dataset's effective `serviceName`, with `Compound` services expanded to their members, which is exactly the set used to build the `<access>` elements of the client catalog.
+  There is no separate access-control syntax to maintain.
+* `datasetScan` and `featureCollection` elements apply their declared set to every dataset they generate.
+  A `featureCollection`'s `files/` datasets keep the `HTTPServer` access they are generated with, even though the collection's own virtual service omits it.
+* Datasets that declare no `serviceName` use the [Standard Services](#standard-services) for their `dataType`, and are restricted to those.
+* If no service information was recorded for a request path, the request is allowed, and the usual `404` applies to unknown paths.
+  Missing information never causes a blanket denial.
+* This is orthogonal to [restricted access](restict_access_to_tds.html), which controls who may access a dataset rather than how.
+
+{% include warning.html content="
+Starting with TDS 5.10, catalogs that under-declare their services will start rejecting requests that previously succeeded.
+Review your configuration catalogs after upgrading, and check the `Debug -> Catalogs -> Show data roots` and `Show standard and global services` admin pages to see the recorded service sets.
+To restore the previous advertise-only behavior server-wide, set
+`<Services><allowOnlyDeclared>false</allowOnlyDeclared></Services>` in `threddsConfig.xml`.
+" %}
 
 ## TDS Requirements For The `service` Element
 

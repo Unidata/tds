@@ -1,6 +1,6 @@
 ---
 title: TDS Configuration File Reference (threddsConfig.xml)
-last_updated: 2026-07-07
+last_updated: 2026-10-15
 sidebar: admin_sidebar
 toc: false
 permalink: tds_config_ref.html
@@ -29,32 +29,32 @@ In the `serverInformation` element, you provide basic information about your ser
 
 ~~~xml
 <serverInformation>
-    <name>Initial TDS Installation</name>
-    <logoUrl>/thredds/threddsIcon.png</logoUrl>
-    <logoAltText>Initial TDS Installation</logoAltText>
+  <name>Initial TDS Installation</name>
+  <logoUrl>/thredds/threddsIcon.png</logoUrl>
+  <logoAltText>Initial TDS Installation</logoAltText>
 
-    <abstract>Scientific Data</abstract>
-    <keywords>meteorology, atmosphere, climate, ocean, earth science</keywords>
+  <abstract>Scientific Data</abstract>
+  <keywords>meteorology, atmosphere, climate, ocean, earth science</keywords>
 
-    <contact>
-      <name>Support</name>
-      <organization>My Group</organization>
-      <email>support@my.group</email>
-      <phone></phone>
-    </contact>
-    <hostInstitution>
-      <name>My Group</name>
-      <webSite>http://www.my.group/</webSite>
-      <logoUrl>myGroup.gif</logoUrl>
-      <logoAltText>My Group</logoAltText>
-    </hostInstitution>
+  <contact>
+    <name>Support</name>
+    <organization>My Group</organization>
+    <email>support@my.group</email>
+    <phone></phone>
+  </contact>
+  <hostInstitution>
+    <name>My Group</name>
+    <webSite>http://www.my.group/</webSite>
+    <logoUrl>myGroup.gif</logoUrl>
+    <logoAltText>My Group</logoAltText>
+  </hostInstitution>
 </serverInformation>
 ~~~
 
 The information provided in the `serverInformation` element is used in:
 
 * the headers of all generated HTML pages (they contain the names and
-logos of the server and host institution)
+  logos of the server and host institution)
 * the Server section of the WMS `GetCapabilities` response
 * the server information documents ([see below](#server-information-documents))
 * the Server section of the WCS `GetCapabilities` response
@@ -82,12 +82,12 @@ Default CSS files are provided, and should not be modified. Instead, these can b
 
 ~~~xml
 <htmlSetup>
-    <standardCssUrl>standard.css</standardCssUrl> <!--1-->
-    <catalogCssUrl>catalog.css</catalogCssUrl>    <!--2-->
-    <datasetCssUrl>dataset.css</datasetCssUrl>    <!--3-->
-    <openDapCssUrl>tdsDap.css</openDapCssUrl>     <!--4-->
-    <googleTrackingCode>XX-XXXXXXXX-X</googleTrackingCode>  <!--5-->
-    <generateDatasetJsonLD>false</generateDatasetJsonLD>    <!--6-->
+  <standardCssUrl>standard.css</standardCssUrl> <!--1-->
+  <catalogCssUrl>catalog.css</catalogCssUrl>    <!--2-->
+  <datasetCssUrl>dataset.css</datasetCssUrl>    <!--3-->
+  <openDapCssUrl>tdsDap.css</openDapCssUrl>     <!--4-->
+  <googleTrackingCode>XX-XXXXXXXX-X</googleTrackingCode>  <!--5-->
+  <generateDatasetJsonLD>false</generateDatasetJsonLD>    <!--6-->
 </htmlSetup>
 ~~~
 1. The CSS used in all TDS generate html pages (except the OPeNDAP form).
@@ -95,7 +95,7 @@ Default CSS files are provided, and should not be modified. Instead, these can b
 3. The CSS used in TDS Dataset catalogs pages
 4. The CSS used in the OPeNDAP form.
 5. Google Analytics Tracking Code (GATC) enables tracking catalog use.
-      Obtain the GATC from [Google](https://marketingplatform.google.com/about/analytics/){:target="_blank"} and enter it here to enable this feature.
+   Obtain the GATC from [Google](https://marketingplatform.google.com/about/analytics/){:target="_blank"} and enter it here to enable this feature.
 6. If set to `true`, [`schema.org/Dataset`](https://schema.org/Dataset){:target="_blank"} objects will be encoded using json-ld and embedded into the `<head>` element of the generated dataset HTML pages.
 
 ### Controlling THREDDS Catalog Output
@@ -153,6 +153,23 @@ If you do not want the TDS to check for this on startup, set this to `false`.
 
 ## Controlling Data Services
 
+### Per-Dataset Service Control
+
+The elements in this section enable or disable a service for the entire server.
+In addition, the services declared for a dataset or collection in your [configuration catalogs](config_catalog.html) control which services may actually be used against a given dataset.
+
+~~~xml
+<Services>
+  <allowOnlyDeclared>true</allowOnlyDeclared>
+</Services>
+~~~
+
+* `allowOnlyDeclared`: when `true` (the default), a data access request succeeds only if the service is enabled server-wide **and** declared for the requested dataset.
+  A request for an undeclared service gets a `403 Forbidden` response with a `Service Not Allowed: ...` message, and the denial is logged at WARN level.
+* Setting it to `false` restores the pre-5.10 behavior, in which the services declared in a configuration catalog only affect what is *advertised* in the generated client catalogs, and any enabled service can be used against any dataset by anyone who knows the URL convention.
+
+See [Per-Dataset Service Control](config_catalog.html#per-dataset-service-control) for details, including upgrade guidance.
+
 ### Remote Catalog Service For Catalogs
 
 Catalog services are available by default for catalogs served by the local TDS.
@@ -175,13 +192,13 @@ However, for remote catalogs, these services must be explicitly enabled in `thre
 ~~~
 
 This controls the `OPeNDAP` data service.
-Because it's easy for a user to inadvertently request very large amounts of data, the TDS limits the size of the data response. 
+Because it's easy for a user to inadvertently request very large amounts of data, the TDS limits the size of the data response.
 In our experience legitimate requests ask for subset sizes that are well below the defaults.
 
 * `ascLimit`: maximum size of an ascii data request , in Megabytes.
-   Default 50 Mbytes.
+  Default 50 Mbytes.
 * `binLimit`: maximum size of a binary data request , in Megabytes.
-   Default is 500 Mbytes.
+  Default is 500 Mbytes.
 * `serverVersion`: this is the String returned by the OPeNDAP `getVersion` request, and placed into the `XDOS-Server` HTTP Header on all OPeNDAP responses.
 
 ### WCS Service
@@ -206,17 +223,17 @@ The following shows all the configuration options available in the WCS section o
 </WCS>
 ~~~
 
-We recommend that you include in the `threddsConfig.xml` file only the options you want to change. 
+We recommend that you include in the `threddsConfig.xml` file only the options you want to change.
 Here is the description of the various options:
 
 * `allow`: a value of `false` disables the WCS service.
 * `dir`: the working directory where generated files are cached before being sent to the client (see [choosing a
-cache directory](#disk-caching-and-temporary-files)).
+  cache directory](#disk-caching-and-temporary-files)).
   If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cache/wcs/` directory.
   We recommend that you do not specify a `WCS.dir` element, and use the default.
 * `scour`: how often to scour the working directory, to delete files that were not successfully downloaded.
 * `maxAge`: how long to leave the files in the working directory while the download is occurring.
-   The files are deleted after a successful download. Do not set to <= 0.
+  The files are deleted after a successful download. Do not set to <= 0.
 
 ### WMS Service
 
@@ -248,24 +265,24 @@ Here is the description of the various options:
 * `allow`: a value of `false` disables the WMS service.
 * `allowRemote`: a value of `true` enables the WMS service for datasets available from a remote server.
 * `paletteLocationDir`: optionally specify the location of the directory containing your own palette files, by specifying the directory
-where they are contained.
-  * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
-  * The default directory for custom palette files is `${tds.content.root.path}/thredds/wmsPalettes`. 
-  * If you don't specify a custom palette directory, or specify it incorrectly, the default directory will be used.
-  * Custom palette files will be loaded in addition to the default palettes, which are described
-  [here](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap).
-  * Note that the palette file format has changed between TDS version 4.x and TDS version 5.x. Please refer to the 
-  [EDAL-Java palette file directory](https://github.com/Reading-eScience-Centre/edal-java/tree/master/graphics/src/main/resources/palettes) 
-  for examples of palette files that are compatible with the TDS version 5.x WMS service.
-  * More information on the format of palette files can also be found in the 
-  [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#:~:text=To%20add%20new,in%20hexadecimal%20notation.).
-  * If you created palette files for TDS 4.x and would like to use them in TDS 5.x, an open source tool named [Magic Palette Converter](https://github.com/billyz313/magic-palette-converter){:target="_blank"} for THREDDS is available to assist in the conversion (special thanks to [Billy Ashmall](https://github.com/Unidata/tds/discussions/346){:target="_blank"}!)
+  where they are contained.
+    * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
+    * The default directory for custom palette files is `${tds.content.root.path}/thredds/wmsPalettes`.
+    * If you don't specify a custom palette directory, or specify it incorrectly, the default directory will be used.
+    * Custom palette files will be loaded in addition to the default palettes, which are described
+      [here](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/04-usage.html#getmap).
+    * Note that the palette file format has changed between TDS version 4.x and TDS version 5.x. Please refer to the
+      [EDAL-Java palette file directory](https://github.com/Reading-eScience-Centre/edal-java/tree/master/graphics/src/main/resources/palettes)
+      for examples of palette files that are compatible with the TDS version 5.x WMS service.
+    * More information on the format of palette files can also be found in the
+      [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#:~:text=To%20add%20new,in%20hexadecimal%20notation.).
+    * If you created palette files for TDS 4.x and would like to use them in TDS 5.x, an open source tool named [Magic Palette Converter](https://github.com/billyz313/magic-palette-converter){:target="_blank"} for THREDDS is available to assist in the conversion (special thanks to [Billy Ashmall](https://github.com/Unidata/tds/discussions/346){:target="_blank"}!)
 * `stylesLocationDir`: optionally specify the location of a directory containing your own style files, by specifying the directory
   where they are contained.
   Note: the default directory for style files is `${tds.content.root.path}/thredds/wmsStyles` and will always be searched.
-  * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
-  * More information on the format of style files can also be found in the
-    [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#styles).
+    * If the directory location starts with a `/`, the path is absolute, otherwise it is relative to `${tds.content.root.path}/thredds/`.
+    * More information on the format of style files can also be found in the
+      [ncWMS documentation](https://reading-escience-centre.gitbooks.io/ncwms-user-guide/content/06-development.html#styles).
 * `maxImageWidth`: the maximum image width in pixels that this WMS service will return.
 * `maxImageHeight`: the maximum image height in pixels that this WMS service will return.
 
@@ -298,7 +315,7 @@ Here is the description of the various options:
 
 * `allow`: a value of `false` disables the NetCDF Subset Service.
 * `dir`: the working directory for creating files for download (see [choosing a cache directory](#disk-caching-and-temporary-files)).
-  If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cache/ncss/` directory. 
+  If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cache/ncss/` directory.
   We recommend that you do not specify a `NetcdfSubsetService.dir` element, and use the default.
 * `scour`: how often to scour the working directory, to delete files that were not successfully downloaded.
 * `maxAge`: how long to leave the files in the working directory while the download is occurring.
@@ -307,8 +324,8 @@ Here is the description of the various options:
   Optional; default is that there is no size limitation.
   If the file is > 2 GB, large format netCDF will be written.
 * `defaultGridFormat`: default format for grid requests.
-   Optional; default is `netcdf3`.
-   Must be one of `netcdf3`, `netcdf4` (netCDF-4 classic data model), or `netcdf4ext` (netCDF-4 extended data model).
+  Optional; default is `netcdf3`.
+  Must be one of `netcdf3`, `netcdf4` (netCDF-4 classic data model), or `netcdf4ext` (netCDF-4 extended data model).
 
 ### ncISO Services
 
@@ -399,7 +416,7 @@ cd {tomcat_home}
 ln -s /data/thredds/content content
 ~~~
 
-These various caches at times may contain large amounts of data. 
+These various caches at times may contain large amounts of data.
 You should choose a location that will not fill up (especially if that location affects other important locations like `/opt`, `/usr/local`, `/home`, etc).
 If you have a large disk for your data, that may be a good location for the cache directories.
 On unix-like machines, you can run `df` to get a listing of disks on your machine.
@@ -425,7 +442,7 @@ If `alwaysUse` is `false`, TDS will try to write them to the same directory as t
 Write permission will be determined by what rights the _Tomcat user_ has (the user that starts up and runs the Tomcat servlet container).
 For security reasons, you want to carefully limit the file permissions of the Tomcat user.
 
-When opening a file, if `alwaysUse` is `true`, TDS looks only in the cache directory for the temporary file. 
+When opening a file, if `alwaysUse` is `true`, TDS looks only in the cache directory for the temporary file.
 If `alwaysUse` is `false`, TDS wil first look for the temporary file in the same directory as the original file, and if not found, then will look in the cache.
 
 Every `scour` amount of time, the largest items in the cache will be deleted, until the directory has less than `maxSize` bytes.
@@ -446,7 +463,7 @@ We recommend that you use this default, by not specifying the `DiskCache.dir` el
 </AggregationCache>
 ~~~
 
-If you have `joinExisting` Aggregations, coordinate information will be written to a cache directory specified by `dir` (see [choosing a cache directory](#disk-caching-and-temporary-files)). 
+If you have `joinExisting` Aggregations, coordinate information will be written to a cache directory specified by `dir` (see [choosing a cache directory](#disk-caching-and-temporary-files)).
 If not otherwise set, the TDS will use the `${tds.content.root.path}/thredds/cache/agg/` directory.
 We recommend that you use this default, by not specifying a `AggregationCache`.`dir` element.
 
@@ -456,7 +473,7 @@ Otherwise, make `maxAge` longer than the longest time between changes.
 Basically, you don't want to remove active aggregations.
 
 `cachePathPolicy` controls how cache files are stored in `dir`.
-It must be set to one of `oneDirectory` or `nestedDirectory` (the default). 
+It must be set to one of `oneDirectory` or `nestedDirectory` (the default).
 `oneDirectory` will put all cache files into the same directory, while `nestedDirectory` will preserve their directory structure.
 Use `nestedDirectory` for large aggregations, as some file systems struggle when a directory contains thousands of files.
 
@@ -501,13 +518,13 @@ These elements control where GRIB index files are written.
 
 * If `alwaysUse` is true, grib index files will always be written to the _index directory_ specified by `dir` (see [choosing a cache directory](#disk-caching-and-temporary-files)).
   If not otherwise set, the TDS will use the ${tds.content.root.path}/thredds/cache/grib/ directory
-  If `neverUse` is true, the index directory will never be used. 
+  If `neverUse` is true, the index directory will never be used.
   If neither is set, the TDS will try to write grib indexes to the same directory as the original file, and if the TDS doesn't have write permission it will then write the files to the index directory.
   Write permission will be determined by what rights the _Tomcat user_ has (the user that starts up Tomcat).
   For security reasons, you want to carefully limit the file permissions of the Tomcat user.
-* The policy must be set to one of `oneDirectory` or `nestedDirectory` (the default). 
+* The policy must be set to one of `oneDirectory` or `nestedDirectory` (the default).
   `oneDirectory` will put all index files into the same directory, while `nestedDirectory` will preserve the directory structure
-of the index files. 
+  of the index files.
   Use `nestedDirectory` for large collections of files, as some file systems struggle when a directory contains thousands of files.
 * Every `scour` amount of time, any files in the cache that are older than `maxAge` will be removed.
   To turn off scouring, set the scour time to 0 (e.g.: `0 hours`), or leave out the `<scour>` element.
@@ -516,7 +533,7 @@ of the index files.
 Managing the GRIB indices is an important task, and can be difficult if the files are changing, as in a rolling archive, or for very large collections.
 There are two typical ways to do this:
 
-* For rolling archives, allow the indices to be written in the same directory as the data files by specifying `<neverUse>true</neverUse>` or by not using a `<neverUse>` or `<alwaysUse>` element (which uses the default behavior). 
+* For rolling archives, allow the indices to be written in the same directory as the data files by specifying `<neverUse>true</neverUse>` or by not using a `<neverUse>` or `<alwaysUse>` element (which uses the default behavior).
   When you delete the data files, delete the corresponding indices.
 
 * If you need to keep the index files separate from your data files, set `<alwaysUse>true</alwaysUse>`, and use `<policy>nestedDirectory</policy>`.
@@ -582,13 +599,13 @@ The `scour` element uses any valid `udunits` time string, such as `sec, min, hou
 * `keepInMemory`: Configuration catalogs are always cached in memory, for performance reasons.
   You can set the maximum number of catalogs in the cache.
   The amount of memory used by a catalog can be approximated simply by the size in bytes of the `catalog.xml` file itself.
-* `reread`: 
-  * `always`: on startup, all catalogs are read. (default).
-    _safest, use if there are a small number of catalogs._
-  * `check`: on startup, catalogs that have changed will be reread.
-  * `trigger`: after initial read, config catalogs will only be read again if user explicitly triggers it.
-    _fastest startup if catalogs rarely change._
-* `dir`: The location where the database is written. 
+* `reread`:
+    * `always`: on startup, all catalogs are read. (default).
+      _safest, use if there are a small number of catalogs._
+    * `check`: on startup, catalogs that have changed will be reread.
+    * `trigger`: after initial read, config catalogs will only be read again if user explicitly triggers it.
+      _fastest startup if catalogs rarely change._
+* `dir`: The location where the database is written.
   Default is `${tds.content.root.path}/thredds/cache/catalog/`.
   We recommend that you leave the default and use a symbolic link to move it if needed.
 * `maxDatasets`: The maximum number of datasets.

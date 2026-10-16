@@ -1,6 +1,6 @@
 ---
 title: Customizing the TDS Look and Feel
-last_updated: 2020-08-24
+last_updated: 2026-10-15
 sidebar: user_sidebar
 toc: false
 permalink: customizing_tds_look_and_feel.html
@@ -58,7 +58,7 @@ To contribute a template fragment, place the `fragment` element in `templates/td
 
 #### Example: overwriting the default header
 
-Add the following to the 'template/tdsTemplateFragments.html' file:
+Add the following to the `template/tdsTemplateFragments.html` file:
 
 ~~~html
 <div th:fragment="header">Your header content here</div>
@@ -78,7 +78,7 @@ additional content sections are optional and will only render as HTML elements i
 
 #### Example: adding content to the bottom of the Catalog
 
-Add the following to the 'template/tdsTemplateFragments.html' file:
+Add the following to the `template/tdsTemplateFragments.html` file:
 
 ~~~html
 <div th:fragment="datasetCustomContentBottom">
@@ -88,7 +88,7 @@ Add the following to the 'template/tdsTemplateFragments.html' file:
 
 #### Example: contributing multiple fragments
 
-To add multiple fragments to a customizable section, add the following to the 'template/tdsTemplateFragments.html' file:
+To add multiple fragments to a customizable section, add the following to the `template/tdsTemplateFragments.html` file:
 
 ~~~html
 <div th:fragment="datasetCustomContentBottom">
@@ -122,7 +122,7 @@ Each tab button must implement the click event handler `switchTab(buttonElement,
 
 #### Example
 
-Add the following to the 'template/tdsTemplateFragments.html' file:
+Add the following to the `template/tdsTemplateFragments.html` file:
 
 ~~~html
 <div th:fragment="customInfoTabButtons">
@@ -201,7 +201,7 @@ class DatasetContext {
 
   String getCatName();
 
-  List<Map<String, String>> get Documentation();
+  List<Map<String, String>> getDocumentation();
 
   List<Map<String, String>> getAccess();
 
@@ -241,7 +241,7 @@ class DatasetContext {
 
 Add a section to a dataset view which links to the host institution site and displays a table of all properties returned by `getAllContext()`.
 
-Add the following to the 'template/tdsTemplateFragments.html' file:
+Add the following to the `template/tdsTemplateFragments.html` file:
 
 ~~~html
 <div th:fragment="datasetCustomContentBottom">
@@ -268,11 +268,9 @@ The data models are defined and populated in
 ## Jupyter Notebooks
 
 ### About
-The goal of the *Jupyter Notebook service* is to provide a method of interacting with and visualizing TDS datasets without
-large data transfers. 
-When the Notebook service is enabled, the service provides a list of available Notebooks the demo access to requested dataset via [Siphon](https://unidata.github.io/siphon/latest/api/){:target="_blank"}. 
-The service returns requested Notebooks as `ipynb` files, which may be viewed in Jupyter Notebook or JupyterLab and edited by the end user to 
-explore capabilities of the dataset and Siphon.
+The goal of the *Jupyter Notebook service* is to provide a method of interacting with and visualizing TDS datasets without large data transfers.
+When the Notebook service is enabled and added to the list of services for a dataset, the service provides a list of available Notebooks the demo access to requested dataset via [Siphon](https://unidata.github.io/siphon/latest/api/){:target="_blank"}.
+The service returns requested Notebooks as `ipynb` files, which may be viewed in Jupyter Notebook or JupyterLab and edited by the end user to explore the capabilities of the dataset and Siphon.
 
 Read more about Jupyter Notebooks [here](https://jupyter-notebook.readthedocs.io/en/stable/).
 

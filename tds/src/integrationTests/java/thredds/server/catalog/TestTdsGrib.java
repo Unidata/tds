@@ -145,7 +145,7 @@ public class TestTdsGrib {
     Assert.assertNotNull("cant find dataset id=" + id, id);
     List<Access> accesses = ds.getAccess();
 
-    Assert.assertEquals(3, accesses.size());
+    Assert.assertEquals(4, accesses.size());
     Assert.assertNull("should not have servicetype HTTP", ds.getAccess(ServiceType.HTTPServer));
   }
 
@@ -160,7 +160,7 @@ public class TestTdsGrib {
     Assert.assertNotNull("cant find dataset id=" + id, id);
     List<Access> accesses = ds.getAccess();
 
-    Assert.assertEquals(4, accesses.size());
+    Assert.assertEquals(5, accesses.size());
     Assert.assertNotNull("should have servicetype HTTP", ds.getAccess(ServiceType.HTTPServer));
   }
 

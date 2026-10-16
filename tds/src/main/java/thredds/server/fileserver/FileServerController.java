@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -7,6 +7,7 @@ package thredds.server.fileserver;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import thredds.core.StandardService;
 import thredds.core.TdsRequestedDataset;
 import thredds.servlet.ServletUtil;
 import thredds.util.TdsPathUtils;
@@ -35,6 +36,9 @@ public class FileServerController {
                                                                      // ??
       return;
     }
+
+    // see if the config catalog declares this service for this dataset
+    TdsRequestedDataset.checkServiceControl(StandardService.httpServer, reqPath);
 
     ServletUtil.writeMFileToResponse(req, res, reqPath);
   }

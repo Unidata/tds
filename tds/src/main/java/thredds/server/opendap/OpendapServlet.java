@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -25,10 +25,12 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import thredds.core.StandardService;
 import thredds.core.TdsRequestedDataset;
 import thredds.server.config.TdsContext;
 import thredds.server.config.ThreddsConfig;
 import thredds.server.exception.RequestTooLargeException;
+import thredds.server.exception.ServiceNotAllowed;
 import thredds.servlet.ServletUtil;
 import thredds.servlet.filter.CookieFilter;
 import thredds.util.TdsPathUtils;
@@ -232,6 +234,12 @@ public class OpendapServlet extends AbstractServlet implements InitializingBean 
 
       // 403 - request too big
     } catch (RequestTooLargeException e) {
+      // handled at the Spring level by TdsErrorHandling, so
+      // pass it on up the stack
+      throw e;
+
+      // 403 - service not enabled for this dataset
+    } catch (ServiceNotAllowed e) {
       // handled at the Spring level by TdsErrorHandling, so
       // pass it on up the stack
       throw e;
@@ -947,7 +955,7 @@ public class OpendapServlet extends AbstractServlet implements InitializingBean 
      * }
      */
 
-    NetcdfFile ncd = TdsRequestedDataset.getNetcdfFile(req, preq.getResponse(), reqPath);
+    NetcdfFile ncd = TdsRequestedDataset.getNetcdfFile(req, preq.getResponse(), reqPath, StandardService.opendap);
     if (null == ncd) {
       return null; // error message already sent
     }

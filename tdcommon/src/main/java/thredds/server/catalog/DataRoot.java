@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -8,8 +8,13 @@ package thredds.server.catalog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import java.lang.invoke.MethodHandles;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
+import thredds.client.catalog.ServiceType;
 import thredds.inventory.MFile;
 import thredds.inventory.MFiles;
 
@@ -42,8 +47,13 @@ public class DataRoot {
   private final CatalogScan catScan; // 4) the CatalogScan that created this (may be null)
   private final Type type;
   private final String restrict;
+  private final Set<ServiceType> declaredServices; // services declared in the config catalog (may be null)
 
   public DataRoot(FeatureCollectionRef featCollection) {
+    this(featCollection, null);
+  }
+
+  public DataRoot(FeatureCollectionRef featCollection, @Nullable Set<ServiceType> declaredServices) {
     this.path = featCollection.getPath();
     this.dirLocation = featCollection.getTopDirectoryLocation();
     this.datasetScan = null;
@@ -52,10 +62,15 @@ public class DataRoot {
     this.type = Type.featureCollection;
     this.name = featCollection.getCollectionName();
     this.restrict = featCollection.getRestrictAccess();
+    this.declaredServices = copy(declaredServices);
     logger.debug(" DataRoot %s==%s%n", path, dirLocation);
   }
 
   public DataRoot(DatasetScan scan) {
+    this(scan, null);
+  }
+
+  public DataRoot(DatasetScan scan, @Nullable Set<ServiceType> declaredServices) {
     this.path = scan.getPath();
     this.dirLocation = scan.getScanLocation();
     this.datasetScan = scan;
@@ -64,6 +79,7 @@ public class DataRoot {
     this.type = Type.datasetScan;
     this.name = scan.getName();
     this.restrict = scan.getRestrictAccess();
+    this.declaredServices = copy(declaredServices);
     logger.debug(" DataRoot %s==%s%n", path, dirLocation);
   }
 
@@ -76,10 +92,15 @@ public class DataRoot {
     this.type = Type.catalogScan;
     this.name = catScan.getName();
     this.restrict = null;
+    this.declaredServices = null;
     logger.debug(" DataRoot %s==%s%n", path, dirLocation);
   }
 
   public DataRoot(String path, String dirLocation, String restrict) {
+    this(path, dirLocation, restrict, null);
+  }
+
+  public DataRoot(String path, String dirLocation, String restrict, @Nullable Set<ServiceType> declaredServices) {
     this.path = path;
     this.dirLocation = dirLocation;
     this.datasetScan = null;
@@ -88,7 +109,14 @@ public class DataRoot {
     this.type = Type.datasetRoot;
     this.name = null;
     this.restrict = restrict;
+    this.declaredServices = copy(declaredServices);
     logger.debug(" DataRoot %s==%s%n", path, dirLocation);
+  }
+
+  @Nullable
+  private static Set<ServiceType> copy(@Nullable Set<ServiceType> declaredServices) {
+    return (declaredServices == null || declaredServices.isEmpty()) ? null
+        : Collections.unmodifiableSet(EnumSet.copyOf(declaredServices));
   }
 
   public String getPath() {
@@ -121,6 +149,16 @@ public class DataRoot {
 
   public String getRestrict() {
     return restrict;
+  }
+
+  /**
+   * The services declared for this data root in the config catalog.
+   *
+   * @return the declared service types, or null if none were recorded
+   */
+  @Nullable
+  public Set<ServiceType> getDeclaredServices() {
+    return declaredServices;
   }
 
   // used by PathMatcher

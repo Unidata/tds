@@ -1,9 +1,10 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 package thredds.server.wcs;
 
+import thredds.core.StandardService;
 import thredds.core.TdsRequestedDataset;
 import thredds.servlet.ServletUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ public class WcsRequestParser {
      */
 
 
-    TdsRequestedDataset trd = new TdsRequestedDataset(req, "/wcs");
+    TdsRequestedDataset trd = new TdsRequestedDataset(req, "/wcs", StandardService.wcs);
     CoverageCollection gridDataset = null;
     try {
       gridDataset = trd.openAsCoverageDataset(req, res);

@@ -1,9 +1,18 @@
-/* Copyright */
+/*
+ * Copyright (c) 2015-2026 John Caron and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.catalog.tracker;
 
+import thredds.client.catalog.ServiceType;
 import thredds.server.catalog.DataRoot;
+import thredds.server.catalog.DeclaredServices;
+import javax.annotation.Nullable;
 import java.io.*;
 import java.util.Formatter;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Externalized DataRoot.
@@ -22,6 +31,7 @@ public class DataRootExt implements Comparable<DataRootExt> {
   private String catLocation;
   private String name;
   private String restrict;
+  private Set<ServiceType> declaredServices;
 
   private DataRoot dataRoot;
 
@@ -35,6 +45,7 @@ public class DataRootExt implements Comparable<DataRootExt> {
     this.name = dataRoot.getName();
     this.catLocation = catLocation;
     this.restrict = dataRoot.getRestrict();
+    this.declaredServices = dataRoot.getDeclaredServices();
   }
 
   public String getPath() {
@@ -45,7 +56,7 @@ public class DataRootExt implements Comparable<DataRootExt> {
     if (dataRoot != null)
       return dataRoot;
     if (type == DataRoot.Type.datasetRoot) {
-      dataRoot = new DataRoot(path, dirLocation, restrict);
+      dataRoot = new DataRoot(path, dirLocation, restrict, declaredServices);
     }
     return dataRoot;
   }
@@ -53,6 +64,7 @@ public class DataRootExt implements Comparable<DataRootExt> {
   public void setDataRoot(DataRoot dataRoot) {
     this.dataRoot = dataRoot;
     this.restrict = dataRoot.getRestrict();
+    this.declaredServices = dataRoot.getDeclaredServices();
   }
 
   public String getCatLocation() {
@@ -75,6 +87,16 @@ public class DataRootExt implements Comparable<DataRootExt> {
     return restrict;
   }
 
+  /**
+   * The services declared for this data root in the config catalog.
+   *
+   * @return the declared service types, or null if none were recorded
+   */
+  @Nullable
+  public Set<ServiceType> getDeclaredServices() {
+    return declaredServices;
+  }
+
   /*
    * message DataRoot {
    * required string urlPath = 1;
@@ -94,6 +116,8 @@ public class DataRootExt implements Comparable<DataRootExt> {
     }
     if (restrict != null)
       builder.setRestrict(restrict);
+    for (String serviceName : DeclaredServices.toNames(declaredServices))
+      builder.addDeclaredService(serviceName);
 
     ConfigCatalogExtProto.DataRoot index = builder.build();
     byte[] b = index.toByteArray();
@@ -132,6 +156,8 @@ public class DataRootExt implements Comparable<DataRootExt> {
       name = dsp.getName();
     if (dsp.getRestrict().length() > 0)
       restrict = dsp.getRestrict();
+    List<String> serviceNames = dsp.getDeclaredServiceList();
+    declaredServices = DeclaredServices.fromNames(serviceNames);
   }
 
   ////////////////////////////
@@ -177,6 +203,8 @@ public class DataRootExt implements Comparable<DataRootExt> {
     f.format("%s -> %s; type=%s", path, dirLocation, type);
     if (restrict != null)
       f.format("; restrict=%s", restrict);
+    if (declaredServices != null)
+      f.format("; services=%s", declaredServices);
     return f.toString();
   }
 }

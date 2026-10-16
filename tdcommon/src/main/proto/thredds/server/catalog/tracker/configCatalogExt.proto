@@ -25,6 +25,7 @@ message DataRoot {
   string catLocation = 4;    // omit for simple dataset root
   string name = 5;           // omit for simple dataset root
   string restrict = 6;       // restrict
+  repeated string declaredService = 7;   // ServiceType names declared in the config catalog
 }
 
 message Dataset {
@@ -34,6 +35,7 @@ message Dataset {
   string id = 4;
   string restrict = 5;
   string ncml = 6;
+  repeated string declaredService = 7;   // ServiceType names declared in the config catalog
 
   repeated Access access = 10;
   repeated Property property = 11;

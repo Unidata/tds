@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998-2018 John Caron and University Corporation for Atmospheric Research/Unidata
+ * Copyright (c) 1998-2026 John Caron and University Corporation for Atmospheric Research/Unidata
  * See LICENSE for license information.
  */
 
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import thredds.client.catalog.ServiceType;
 import thredds.server.admin.DebugCommands;
 import thredds.server.catalog.*;
 import thredds.server.catalog.tracker.DataRootExt;
@@ -135,6 +136,22 @@ public class DataRootManager implements InitializingBean {
     return match;
   }
 
+  /**
+   * Find the services declared in the config catalog for the data root that matches this request path.
+   * <br>
+   * 
+   * @param spath the request path
+   * @return the declared service types, or null if nothing is recorded for this path
+   */
+  public synchronized Set<ServiceType> findDeclaredServices(String spath) {
+    if (spath == null || dataRootPathMatcher == null)
+      return null;
+    if (spath.startsWith("/"))
+      spath = spath.substring(1);
+
+    return dataRootPathMatcher.findDeclaredServices(spath);
+  }
+
   private synchronized DataRoot findDataRoot(String spath) {
     if (spath == null)
       return null;
@@ -220,6 +237,8 @@ public class DataRootManager implements InitializingBean {
             e.pw.printf(" for %s directory= <a href='%s'>%s</a>", ds.getType(), url, ds.getDirLocation());
             if (ds.getRestrict() != null)
               e.pw.printf(" (restrict ='%s')", ds.getRestrict());
+            if (ds.getDeclaredServices() != null)
+              e.pw.printf(" (declared services =%s)", ds.getDeclaredServices());
             e.pw.printf("%n");
           }
         }

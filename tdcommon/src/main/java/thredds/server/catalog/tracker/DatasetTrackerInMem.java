@@ -1,4 +1,8 @@
-/* Copyright */
+/*
+ * Copyright (c) 2015-2026 John Caron and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.catalog.tracker;
 
 import org.jdom2.Element;
@@ -6,11 +10,13 @@ import org.jdom2.output.XMLOutputter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.client.catalog.Dataset;
+import thredds.client.catalog.ServiceType;
 import thredds.server.catalog.DatasetScan;
 import thredds.server.catalog.FeatureCollectionRef;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * DatasetTracker using in memory hash table
@@ -30,13 +36,15 @@ public class DatasetTrackerInMem implements DatasetTracker {
 
   // InvDataset (not DatasetScan, DatasetFmrc) that have an NcML element in it. key is the request Path
   private Map<String, String> ncmlDatasetHash = new HashMap<>();
+  // declared services, key is the request path
+  private Map<String, Set<ServiceType>> declaredServicesHash = new HashMap<>();
   // private int count;
 
   public boolean init(String dirPath, long maxDatasets) {
     return true;
   }
 
-  public boolean trackDataset(long catId, Dataset dataset, Callback callback) {
+  public boolean trackDataset(long catId, Dataset dataset, Set<ServiceType> declaredServices, Callback callback) {
     if (callback != null)
       callback.hasDataset(dataset);
 
@@ -46,6 +54,9 @@ public class DatasetTrackerInMem implements DatasetTracker {
       else
         putResourceControl(dataset);
     }
+
+    if (declaredServices != null && !declaredServices.isEmpty())
+      putDeclaredServices(dataset, declaredServices);
 
     // dont track ncml for DatasetScan or FeatureCollectionRef
     if (dataset instanceof DatasetScan)
@@ -116,9 +127,29 @@ public class DatasetTrackerInMem implements DatasetTracker {
     // return rc;
   }
 
+  /** This tracks the services declared for a Dataset in the config catalog */
+  void putDeclaredServices(Dataset ds, Set<ServiceType> declaredServices) {
+    String path = (ds instanceof DatasetScan) ? ((DatasetScan) ds).getPath()
+        : (ds instanceof FeatureCollectionRef) ? ((FeatureCollectionRef) ds).getPath() : ds.getUrlPath();
+    if (path == null)
+      return;
+    declaredServicesHash.put(path, declaredServices);
+  }
+
   @Override
   public String findNcml(String path) {
     return ncmlDatasetHash.get(path);
+  }
+
+  @Override
+  public Set<ServiceType> findAllowedServices(String path) {
+    if (declaredServicesHash.isEmpty())
+      return null;
+
+    if (path.startsWith("/"))
+      path = path.substring(1);
+
+    return declaredServicesHash.get(path);
   }
 
   @Override
@@ -130,6 +161,7 @@ public class DatasetTrackerInMem implements DatasetTracker {
   public boolean reinit() {
     resourceControlHash = new HashMap<>(); // path, restrictAccess string for datasets
     ncmlDatasetHash = new HashMap<>();
+    declaredServicesHash = new HashMap<>();
     return true;
   }
 
@@ -144,6 +176,9 @@ public class DatasetTrackerInMem implements DatasetTracker {
     f.format("DatasetTrackerInMem%n");
     for (Map.Entry<String, String> entry : ncmlDatasetHash.entrySet()) {
       f.format(" %s == %s%n", entry.getKey(), entry.getValue());
+    }
+    for (Map.Entry<String, Set<ServiceType>> entry : declaredServicesHash.entrySet()) {
+      f.format(" %s services == %s%n", entry.getKey(), entry.getValue());
     }
   }
 }

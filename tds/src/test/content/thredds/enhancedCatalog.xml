@@ -6,6 +6,7 @@
   <service name="both" serviceType="Compound" base="">
     <service name="ncdods" serviceType="OPENDAP" base="/thredds/dodsC/" />
     <service name="HTTPServer" serviceType="HTTPServer" base="/thredds/fileServer/" />
+    <service name="notebook" serviceType="JupyterNotebook" base="/thredds/notebook/"/>
   </service>
 
   <dataset name="NCEP Model Data">

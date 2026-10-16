@@ -36,13 +36,11 @@ import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Formatter;
-import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
@@ -59,6 +57,7 @@ import uk.ac.rdg.resc.edal.wms.WmsServlet;
 import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import thredds.core.StandardService;
 import thredds.core.TdsRequestedDataset;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -156,7 +155,7 @@ public class ThreddsWmsServlet extends WmsServlet implements InitializingBean {
      */
     // Look - is setting this to null the right thing to do??
     String removePrefix = null;
-    TdsRequestedDataset tdsDataset = new TdsRequestedDataset(httpServletRequest, removePrefix);
+    TdsRequestedDataset tdsDataset = new TdsRequestedDataset(httpServletRequest, removePrefix, StandardService.wms);
     ThreddsWmsCatalogue catalogue = acquireCatalogue(httpServletRequest, httpServletResponse, tdsDataset.getPath());
 
     // set default style if needed
@@ -216,7 +215,8 @@ public class ThreddsWmsServlet extends WmsServlet implements InitializingBean {
 
   private static NetcdfDataset acquireNetcdfDataset(HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse, String tdsDatasetPath) throws IOException {
-    NetcdfFile ncf = TdsRequestedDataset.getNetcdfFile(httpServletRequest, httpServletResponse, tdsDatasetPath);
+    NetcdfFile ncf =
+        TdsRequestedDataset.getNetcdfFile(httpServletRequest, httpServletResponse, tdsDatasetPath, StandardService.wms);
     if (TdsRequestedDataset.useNetcdfJavaBuilders()) {
       return NetcdfDatasets.enhance(ncf, NetcdfDataset.getDefaultEnhanceMode(), null);
     } else {

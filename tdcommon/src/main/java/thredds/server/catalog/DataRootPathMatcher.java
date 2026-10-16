@@ -1,15 +1,22 @@
-/* Copyright */
+/*
+ * Copyright (c) 2015-2026 John Caron and University Corporation for Atmospheric Research/Unidata
+ * See LICENSE for license information.
+ */
+
 package thredds.server.catalog;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thredds.client.catalog.CatalogRef;
 import thredds.client.catalog.Dataset;
+import thredds.client.catalog.ServiceType;
 import thredds.server.catalog.tracker.DataRootExt;
 import thredds.server.catalog.tracker.DataRootTracker;
+import ucar.nc2.constants.FeatureType;
 import ucar.nc2.util.AliasTranslator;
 import ucar.unidata.util.StringUtil2;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -42,14 +49,21 @@ public class DataRootPathMatcher {
 
   private ConfigCatalogCache ccc;
   private DataRootTracker tracker;
+  private AllowedServicesIF allowedServices;
 
   private final TreeSet<String> treeSet = new TreeSet<>(new PathComparator()); // this should be in-memory for speed
   private final Map<String, DataRootExt> map = new HashMap<>(); // this could be turned into an off-heap cache if
                                                                 // needed, with persistence.
 
   public DataRootPathMatcher(ConfigCatalogCache ccc, DataRootTracker tracker) {
+    this(ccc, tracker, null);
+  }
+
+  public DataRootPathMatcher(ConfigCatalogCache ccc, DataRootTracker tracker,
+      @Nullable AllowedServicesIF allowedServices) {
     this.ccc = ccc;
     this.tracker = tracker;
+    this.allowedServices = allowedServices;
 
     for (DataRootExt dre : tracker.getDataRoots()) {
       put(dre);
@@ -82,6 +96,22 @@ public class DataRootPathMatcher {
 
   public DataRootExt get(String path) {
     return map.get(path);
+  }
+
+  /**
+   * Find the services declared for the data root that matches this request path.
+   *
+   * @param reqPath the request path
+   * @return the declared service types, or null if no data root matches or none are recorded
+   */
+  @Nullable
+  public Set<ServiceType> findDeclaredServices(String reqPath) {
+    String path = findLongestPathMatch(reqPath);
+    if (path == null)
+      return null;
+
+    DataRootExt dataRootExt = map.get(path);
+    return (dataRootExt == null) ? null : dataRootExt.getDeclaredServices();
   }
 
   /**
@@ -244,7 +274,8 @@ public class DataRootPathMatcher {
     }
 
     // add it
-    putRoot(new DataRoot(dscan), catalogRelPath);
+    putRoot(new DataRoot(dscan, DeclaredServices.forDataset(dscan, dscan.getFeatureType(), allowedServices)),
+        catalogRelPath);
     logCatalogInit.debug(" added rootPath=<" + path + ">  for directory= <" + dscan.getScanLocation() + ">");
     return true;
   }
@@ -276,7 +307,7 @@ public class DataRootPathMatcher {
     }
 
     // add it
-    putRoot(new DataRoot(fc), catalogRelPath);
+    putRoot(new DataRoot(fc, DeclaredServices.forDataset(fc, featureTypeOf(fc), allowedServices)), catalogRelPath);
     logCatalogInit.debug(" added rootPath=<" + path + ">  for feature collection= <" + fc.getName() + ">");
     return true;
   }
@@ -345,6 +376,11 @@ public class DataRootPathMatcher {
     putRoot(new DataRoot(catScan), catalogRelPath);
     logCatalogInit.debug(" added rootPath=<" + path + ">  for CatalogScan location= <" + location + ">");
     return true;
+  }
+
+  @Nullable
+  private static FeatureType featureTypeOf(FeatureCollectionRef fc) {
+    return (fc.getFeatureCollectionType() == null) ? null : fc.getFeatureCollectionType().getFeatureType();
   }
 
   private void putRoot(DataRoot droot, String catalogRelPath) {

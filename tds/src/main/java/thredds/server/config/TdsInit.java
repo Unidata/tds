@@ -258,6 +258,9 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     allowedServices.setAllowService(StandardService.jupyterNotebook,
         ThreddsConfig.getBoolean("JupyterNotebookService.allow"));
 
+    // per-dataset service control: only services declared in the config catalog may be used against a dataset
+    allowedServices.setAllowOnlyDeclared(ThreddsConfig.getBoolean("Services.allowOnlyDeclared"));
+
 
     // CDM configuration
 
