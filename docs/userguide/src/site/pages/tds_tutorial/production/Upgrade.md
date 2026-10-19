@@ -1,6 +1,6 @@
 ---
 title: Upgrading to TDS version 5
-last_updated: 2025-10-23
+last_updated: 2026-10-19
 sidebar: user_sidebar
 toc: false
 permalink: upgrade.html
@@ -20,11 +20,14 @@ permalink: upgrade.html
 
 ## Quick Navigation
 
+* [Upgrade from v5.10 to v5.11](#511-upgrade)
 * [Upgrade from v5.9 to v5.10](#510-upgrade)
 * [Upgrade from v5.8 to v5.9](#59-upgrade)
 * [Upgrade from v5.7 to v5.8](#58-upgrade)
 * [Upgrade from v5.6 to v5.7](#57-upgrade)
 * [Summary of changes from v4.x through v5.6](#upgrading-from-4x)
+
+## 5.11 Upgrade
 
 ## 5.10 Upgrade
 
@@ -39,6 +42,9 @@ Additionally:
 * WMS has been extended to support `NUMCOLORBANDS` values as small as 1 (previously it was limited to a minimum of 5).
 * The DAP2 server `.info` endpoint has been restored (this has not been unintentionally broken since the move from TDS version `4.x` to `5.x`)
 * DatasetScan `excludeEmptyDirs="true"` functionality will now exclude effectively empty directories (empty due to filter exclusions)
+* Services are now [disabled on a per-dataset level](config_catalog.html#per-dataset-service-control) (see threddsConfig.xml for [fallback options](tds_config_ref.html#per-dataset-service-control))
+* WMS Curvilinear coordinate cache bug fixed in Unidata's fork of edal-java (cache could grow unbounded)
+* Support for RRFS GRIB2 (more information can be found in the netCDF-Java v5.11.0 [release notes](https://github.com/Unidata/netcdf-java/releases/tag/5.11.0))
 
 ## 5.9 Upgrade
 
