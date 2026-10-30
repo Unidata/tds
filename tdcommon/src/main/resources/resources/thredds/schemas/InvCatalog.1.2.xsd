@@ -906,6 +906,8 @@
         </xsd:complexType>
       </xsd:element>
 
+      <xsd:element name="filesSort" type="fileSortType" minOccurs="0"/>
+
     </xsd:sequence>
 
     <xsd:attribute name="datasetTypes" type="gribDatasetTypes"/>
