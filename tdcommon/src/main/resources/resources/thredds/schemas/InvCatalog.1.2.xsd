@@ -603,6 +603,7 @@
             <xsd:element name="addLatest" type="addLatestType" minOccurs="0"/>
             <xsd:element ref="addProxies" minOccurs="0"/>      <!-- deprecated, use addLatest -->
             <xsd:element ref="addTimeCoverage" minOccurs="0"/>
+            <xsd:element name="addDatasetSize" minOccurs="0"/>
           </xsd:sequence>
 
           <xsd:attribute name="path" type="xsd:string" use="required"/>
