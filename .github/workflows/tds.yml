@@ -9,7 +9,9 @@ jobs:
     strategy:
       matrix:
         java-version: [ 17 ]
-        java-vendor: [ 'temurin', 'corretto' ]
+        # disable corretto until artifacts cert is moved to new provider
+        #java-vendor: [ 'temurin', 'corretto' ]
+        java-vendor: [ 'temurin' ]
         servletcontainer: [ 'tomcat11' ]
     steps:
       - uses: actions/checkout@v6
