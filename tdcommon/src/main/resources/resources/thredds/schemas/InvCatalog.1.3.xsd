@@ -603,12 +603,13 @@
             <xsd:element name="addLatest" type="addLatestType" minOccurs="0"/>
             <xsd:element ref="addProxies" minOccurs="0"/>      <!-- deprecated, use addLatest -->
             <xsd:element ref="addTimeCoverage" minOccurs="0"/>
+            <xsd:element name="addDatasetSize" minOccurs="0"/>
           </xsd:sequence>
 
           <xsd:attribute name="path" type="xsd:string" use="required"/>
           <xsd:attribute name="location" type="xsd:string"/>
           <xsd:attribute name="addLatest" type="xsd:boolean"/>
-          <xsd:attribute name="excludeEmptyDirs" type="xsd:boolean"/>
+          <xsd:attribute name="excludeEmptyDirs" type="xsd:boolean" minOccurs="0"/>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
@@ -906,6 +907,8 @@
           <xsd:attribute name="name" type="xsd:string" use="required"/>
         </xsd:complexType>
       </xsd:element>
+
+      <xsd:element name="filesSort" type="fileSortType" minOccurs="0"/>
 
     </xsd:sequence>
 
