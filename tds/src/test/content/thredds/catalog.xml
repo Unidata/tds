@@ -365,7 +365,7 @@
   <catalogRef xlink:title="TDS Zarr" xlink:href="tds-zarr.xml" name=""/>
   <catalogRef xlink:title="Test nested aggregation" xlink:href="catalogNestedAgg.xml" name=""/>
   <catalogRef xlink:title="Per-dataset service control" xlink:href="serviceControl.xml" name=""/>
-
+  <catalogRef xlink:title="Default disabled service" xlink:href="defaultServices.xml" name=""/>
   <catalogScan location="catalogs5" path="catalogs5" name="catalog scan with version 5 features"/>
 
   <!-- urls intended to test container auth without spring -->
