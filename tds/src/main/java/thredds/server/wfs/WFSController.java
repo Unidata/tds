@@ -5,10 +5,14 @@
 
 package thredds.server.wfs;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import thredds.core.AllowedServices;
 import thredds.core.DatasetManager;
+import thredds.core.StandardService;
 import thredds.core.TdsRequestedDataset;
+import thredds.server.exception.ServiceNotAllowed;
 import thredds.servlet.ServletUtil;
 import ucar.nc2.dataset.CoordinateSystem;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -34,6 +38,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/wfs")
 public class WFSController extends HttpServlet {
+
+  @Autowired
+  private AllowedServices allowedServices;
 
   public static final String TDSNAMESPACE = "tdswfs";
 
@@ -297,6 +304,10 @@ public class WFSController extends HttpServlet {
    */
   @RequestMapping("**")
   public void httpHandler(HttpServletRequest hsreq, HttpServletResponse hsres) {
+    // check if service is disabled server-wide
+    if (!allowedServices.isAllowed(StandardService.wfs))
+      throw new ServiceNotAllowed(StandardService.wfs.toString());
+
     try {
 
       PrintWriter wr = hsres.getWriter();
@@ -318,6 +329,14 @@ public class WFSController extends HttpServlet {
       if (hsreq.getServletPath().length() > 4) {
         datasetReqPath = hsreq.getServletPath().substring(4, hsreq.getServletPath().length());
       }
+
+      // check if dataset is restricted
+      if (!TdsRequestedDataset.resourceControlOk(hsreq, hsres, datasetReqPath)) {
+        return;
+      }
+
+      // see if the config catalog declares this service for this dataset
+      TdsRequestedDataset.checkServiceControl(StandardService.wfs, datasetReqPath);
 
       actualPath = TdsRequestedDataset.getLocationFromRequestPath(datasetReqPath);
 

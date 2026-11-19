@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Ensure WFS is off by default, even if explicitly added to a dataset -->
+<catalog name="TDS Unit Test Per-Dataset Service Control"
+         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns:xlink="http://www.w3.org/1999/xlink" version="1.3">
+
+    <service name="svcOpendapAndWfs" base="" serviceType="compound">
+        <service name="svcCompoundOdap" serviceType="OpenDAP" base="/thredds/dodsC/"/>
+        <service name="svcCompoundWfs" serviceType="WFS" base="/thredds/wfs/"/>
+    </service>
+
+    <datasetRoot path="defaultWfsOff" location="content/testdata/"/>
+
+    <!-- declares a compound service with both opendap and httpServer -->
+    <dataset name="WFS off by default" ID="defaultWfsOffCompound" serviceName="svcOpendapAndWfs"
+             urlPath="defaultWfsOff/testgrid1.nc" />
+
+</catalog>

@@ -20,6 +20,7 @@
         <entry key="iso_ncml" value="true"/>
         <entry key="uddc" value="true"/>
         <entry key="jupyterNotebook" value="true"/>
+        <entry key="wfs" value="false"/>
       </map>
     </property>
 
