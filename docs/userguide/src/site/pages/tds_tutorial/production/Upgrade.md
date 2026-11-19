@@ -1,6 +1,6 @@
 ---
 title: Upgrading to TDS version 5
-last_updated: 2026-10-19
+last_updated: 2026-11-19
 sidebar: user_sidebar
 toc: false
 permalink: upgrade.html
@@ -31,6 +31,12 @@ permalink: upgrade.html
 ## 5.12 Upgrade
 
 ## 5.11 Upgrade
+
+The TDS v5.11 release contains a single change from v5.10: a fix for a security vulnerability.
+This vulnerability allows clients to bypass dataset-level authentication and authorization checks by using the experimental and undocumented Web Feature Service (WFS).
+The security vulnerability specifically affects TDS instances configured to [restrict access at the dataset level in TDS catalogs](https://docs.unidata.ucar.edu/tds/current/userguide/restict_access_to_tds.html#restrict-access-by-dataset-in-tds-catalogs) for netCDF-based datasets conforming to the CF Simple Geometry specification.
+No other data formats or TDS services are affected.
+Administrators whose TDSs serve sensitive data stored in netCDF files following the CF Simple Geometry specification that rely on per-dataset level restrictions should upgrade to this release as soon as possible.
 
 ## 5.10 Upgrade
 
