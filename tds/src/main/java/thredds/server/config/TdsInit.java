@@ -240,8 +240,8 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
 
     //////////////////////////////////////////////////////////
     // Controlling Data Services
-    // allows users to control services in ThreddsConfig, but not override the default if they havent set
-    // LOOK only exposing the ones alreaady in use. maybe let user override tdsGlobalConfig.xml (phase out
+    // allows users to control services in ThreddsConfig, but not override the default if they haven't set
+    // LOOK only exposing the ones already in use. maybe let user override tdsGlobalConfig.xml (phase out)
     ////////////////////////////////////////////////////////// ThreddsConfig)
 
     allowedServices.setAllowService(StandardService.catalogRemote,
@@ -257,6 +257,7 @@ public class TdsInit implements ApplicationListener<ContextRefreshedEvent>, Disp
     allowedServices.setAllowService(StandardService.iso, ThreddsConfig.getBoolean("NCISO.isoAllow"));
     allowedServices.setAllowService(StandardService.jupyterNotebook,
         ThreddsConfig.getBoolean("JupyterNotebookService.allow"));
+    allowedServices.setAllowService(StandardService.wfs, ThreddsConfig.getBoolean("WFS.allow"));
 
     // per-dataset service control: only services declared in the config catalog may be used against a dataset
     allowedServices.setAllowOnlyDeclared(ThreddsConfig.getBoolean("Services.allowOnlyDeclared"));
